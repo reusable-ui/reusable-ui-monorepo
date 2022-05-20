@@ -1,0 +1,45 @@
+{
+  "name": "@nodestrap/colors",
+  "version": "5.0.0",
+  "description": "A color management system for web components using css variables (css custom properties).",
+  "keywords": [
+    "colors",
+    "themes",
+    "css",
+    "stylesheet",
+    "config",
+    "configuration",
+    "variables",
+    "property"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://nodestrap.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodestrap/nodestrap-monorepo.git"
+  },
+  "main": "dist/colors.js",
+  "types": "dist/colors.d.ts",
+  "type": "module",
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.1",
+    "@cssfn/css-types": "^2.0.1",
+    "@cssfn/types": "^2.0.1",
+    "@types/color": "^3.0.3",
+    "color": "^4.2.3"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^16.2.14",
+    "jsdom": "^19.0.0"
+  }
+}
