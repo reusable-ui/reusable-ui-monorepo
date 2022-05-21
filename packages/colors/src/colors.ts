@@ -317,7 +317,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
     
     
     // handle Color:
-    if ((typeof(newValue) === 'object') && (Object.getPrototypeOf(newValue) === Color.prototype)) {
+    if (newValue instanceof Color) {
         cssVals[colorName] = stringColor(newValue); // update the actual object
         return true;
     } // if
