@@ -110,7 +110,11 @@ export const config = new LiveConfig(
     /*mildLevel:*/ 0.8,
     /*boldLevel:*/ 0.8,
     /*updatedCallback:*/ () => {
-        //
+        defineBackg(colorsProxy.backg);
+        defineForeg(colorsProxy.foreg);
+        for (const themeName in themes) {
+            defineTheme(themeName, colorsProxy[themeName as keyof ColorList]);
+        } // for
     }
 );
 
