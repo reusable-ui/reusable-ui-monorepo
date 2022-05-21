@@ -1,26 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
+import {
+    default as React,
+    // FC,
+    // ReactElement,
+    // useReducer,
+    // useRef,
+    useState,
+} from 'react';
+// import logo from './logo.svg';
 import './App.css';
+import {
+    colors,
+    cssVals,
+    
+    themes,
+    themesText,
+    
+    defineBackg,
+    defineForeg,
+    defineTheme,
+} from '@nodestrap/colors'
+import { Styles } from '@cssfn/cssfn-react'
+
+
+
+Object.assign(globalThis, {
+    colors,
+    cssVals,
+    
+    themes,
+    themesText,
+    
+    defineBackg,
+    defineForeg,
+    defineTheme,
+})
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [value, setValue] = useState(0);
+    const handleTriggerRerender = () => {
+        setValue(value + 1);
+    };
+    
+    
+    
+    return (
+        <div className="App">
+            <article>
+                <p>
+                    Loaded stylesheets:
+                </p>
+                <div className='stylesheet-view'>
+                    <Styles />
+                </div>
+            </article>
+            <article className='actions'>
+                <button onClick={handleTriggerRerender}>
+                    Trigger re-render whole app
+                </button>
+            </article>
+        </div>
+    );
 }
 
 export default App;
