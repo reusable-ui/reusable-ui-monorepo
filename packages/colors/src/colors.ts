@@ -242,7 +242,7 @@ const isColorInstance = (obj: any): obj is Color => (
     &&
     (typeof((obj as any).hex) === 'function')
 );
-const stringColor = (color: Color) => {
+const stringColor     = (color: Color) => {
     if (color.alpha() === 1) { // solid color
         return color.hex().toLocaleLowerCase();
     }
@@ -250,7 +250,7 @@ const stringColor = (color: Color) => {
         return color.toString().toLocaleLowerCase();
     } // if
 };
-const isRef       = (value: string): value is CssCustomRef => value.startsWith('var(--');
+const isRef           = (value: string): value is CssCustomRef => value.startsWith('var(--');
 
 
 
