@@ -8,7 +8,6 @@ import type {
 import type {
     // css custom properties:
     CssCustomRef,
-    CssCustomValue,
     
     
     
@@ -239,32 +238,55 @@ const stringColor = (color: Color) => {
         return color.toString().toLocaleLowerCase();
     } // if
 };
-const isRef       = (value: any): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
-
-
-
-export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
-const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
-    return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
-        get: (_colorList, colorName: keyof ColorList): CssColor|undefined => {
-            const color = colorList[colorName];
-            if (color === undefined) return undefined; // unknown color name => return `undefined`
-            
-            
-            
-            return stringColor(color);
-        },
-    });
-}, { prefix: 'col' });
-export { cssConfig }
+const isRef       = (value: string): value is CssCustomRef => value.startsWith('var(--');
 
 
 
 // proxy handlers:
 /**
- * Prevent assignments other than `Color|validColorName|var(--ref)|undefined|null`.
+ * Always get a safe `CssColor` representation instead of a `Color` object.
  */
-const setValue = (_colors: object, colorName: keyof ColorList, newValue: any): boolean => {
+const getCssColor   = (_object: object, colorName: keyof ColorList): CssColor|undefined => {
+    const color = colorList[colorName];
+    if (color === undefined) return undefined; // unknown color name => return `undefined`
+    
+    
+    
+    return stringColor(color);
+};
+/**
+ * Always get a nice `Color` representation instead of a bare `string`.
+ */
+const getColorValue = (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
+    const value = cssVals[colorName];
+    
+    
+    
+    // handle undefined or null:
+    if (value === undefined) return undefined; // unknown color name => return `undefined`
+    
+    
+    
+    // handle validColorName or var(--ref):
+    if (typeof(value) === 'string') {
+        // handle var(--ref):
+        if (isRef(value)) return value;
+        
+        
+        
+        // handle validColorName:
+        return Color(value);
+    } // if
+    
+    
+    
+    // unknown expression => error:
+    throw TypeError();
+};
+/**
+ * Prevents assignment other than `Color|validColorName|var(--ref)|undefined|null`.
+ */
+const setColorValue = (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
     // handle undefined or null:
     if ((newValue === undefined) || (newValue === null)) {
         delete cssVals[colorName]; // delete the actual object
@@ -283,7 +305,7 @@ const setValue = (_colors: object, colorName: keyof ColorList, newValue: any): b
         
         
         
-        // handle var(--ref):
+        // handle validColorName:
         const color = Color(newValue);
         cssVals[colorName] = stringColor(color); // update the actual object
         return true;
@@ -299,13 +321,24 @@ const setValue = (_colors: object, colorName: keyof ColorList, newValue: any): b
     
     
     
-    // invalid color value => throw an error:
+    // invalid color value => error:
     throw TypeError('The value must be a `Color|validColorName|var(--ref)|undefined|null`.');
-}
+};
+
+
+
+export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
+const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
+    return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
+        get: getCssColor,
+    });
+}, { prefix: 'col' });
+export { cssConfig }
+
 
 
 const colorsProxy = new Proxy(colors, {
-    set: setValue,
+    set: setColorValue,
 });
 export { 
     colorsProxy as colors,
@@ -317,19 +350,8 @@ export {
 
 export type ColorVals = { [Key in keyof CssColorConfigProps]: Color }
 const cssValsProxy = new Proxy<ColorVals>(cssVals as unknown as ColorVals, {
-    get: (_cssVals, colorName: keyof ColorList): Color|CssCustomValue|undefined => {
-        const value = cssVals[colorName];
-        if (value === undefined) return undefined; // unknown color name => return `undefined`
-        
-        
-        
-        if ((typeof(value) === 'string') && !isRef(value)) {
-            // TODO
-        } // if
-        
-        return value;
-    },
-    set: setValue,
+    get: getColorValue,
+    set: setColorValue,
 });
 export { cssValsProxy as cssVals }
 
