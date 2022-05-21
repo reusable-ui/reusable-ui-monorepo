@@ -233,6 +233,15 @@ export type ColorList  = typeof colorList;
 
 
 // utilities:
+const isColorInstance = (obj: any): obj is Color => (
+    !!obj
+    &&
+    (typeof(obj) === 'object')
+    &&
+    (typeof((obj as any).alpha) === 'function')
+    &&
+    (typeof((obj as any).hex) === 'function')
+);
 const stringColor = (color: Color) => {
     if (color.alpha() === 1) { // solid color
         return color.hex().toLocaleLowerCase();
@@ -317,7 +326,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
     
     
     // handle Color:
-    if (newValue instanceof Color) {
+    if (isColorInstance(newValue)) {
         cssVals[colorName] = stringColor(newValue); // update the actual object
         return true;
     } // if
@@ -428,7 +437,7 @@ export {
 export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     if (!color) throw Error('You cannot delete the background color.');
     if (typeof(color) === 'string') color = Color(color);
-    if (!(color instanceof Color)) throw TypeError('The value must be a string or Color.');
+    if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
     
     
     
@@ -457,7 +466,7 @@ export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
 export const defineForeg = (color: Color|string) => {
     if (!color) throw Error('You cannot delete the foreground color.');
     if (typeof(color) === 'string') color = Color(color);
-    if (!(color instanceof Color)) throw TypeError('The value must be a string or Color.');
+    if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
     
     
     
@@ -497,7 +506,7 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
     }
     else {
         if (typeof(color) === 'string') color = Color(color);
-        if (!(color instanceof Color)) throw TypeError('The value must be a string or Color.');
+        if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
         
         
         
