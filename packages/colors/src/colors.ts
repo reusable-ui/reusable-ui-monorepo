@@ -368,26 +368,47 @@ export { cssValsProxy as cssVals }
 // a proxy for enumerating filtered color grop:
 // a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
-const createFilterProxy = <TColorList extends Partial<ColorList>>(filter: TColorList) => new Proxy<ColorRefs<TColorList>>(filter as unknown as ColorRefs<TColorList>, {
-    get : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
-        if (!(colorName in filter)) return undefined; // not in filter => return `undefined`
+const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TColorList) => new Proxy<ColorRefs<TColorList>>(colorGroup as unknown as ColorRefs<TColorList>, {
+    get                      : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
+        if (!(colorName in colorGroup)) return undefined; // not in colorGroup => return `undefined`
         
         return getColorValue(_object, colorName);
     },
-    set : (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
-        if (!(colorName in filter)) return false; // not in filter => return `false`
+    set                      : (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
+        const success = setColorValue(_object, colorName, newValue);
         
-        return setColorValue(_object, colorName, newValue);
+        if (success) {
+            // update/delete from/to the `colorGroup`:
+            const newColor = cssValsProxy[colorName];
+            if (!newColor) {
+                delete (colorGroup as any)[colorName];
+            }
+            else {
+                (colorGroup as any)[colorName] = newColor;
+            } // if
+        } // if
+        
+        return success;
+    },
+    deleteProperty           : (_object: object, colorName: keyof ColorList): boolean => {
+        const success = setColorValue(_object, colorName, undefined);
+        
+        if (success) {
+            // delete from the `colorGroup`:
+            delete (colorGroup as any)[colorName];
+        } // if
+        
+        return success;
     },
     
     has                      : (_object: object, colorName: keyof ColorList): boolean => {
-        return (colorName in filter);
+        return (colorName in colorGroup);
     },
     ownKeys                  : (_object: object): ArrayLike<string|symbol> => {
-        return Object.keys(filter);
+        return Object.keys(colorGroup);
     },
     getOwnPropertyDescriptor : (_object: object, colorName: keyof ColorList): PropertyDescriptor|undefined => {
-        if (!(colorName in filter)) return undefined; // not in filter => return `undefined`
+        if (!(colorName in colorGroup)) return undefined; // not in colorGroup => return `undefined`
         
         return Object.getOwnPropertyDescriptor(colors, colorName);
     },
