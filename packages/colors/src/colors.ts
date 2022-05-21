@@ -1,7 +1,6 @@
 // cssfn:
 import type {
     Optional,
-    DictionaryOf,
 }                           from '@cssfn/types'         // cssfn general types
 import type {
     // css custom properties:
@@ -441,23 +440,11 @@ export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     
     
     
-    // define sub-colors:
-    const backg     = color            as any;
-    const backgThin = thinColor(color) as any;
-    const backgMild = mildColor(color) as any;
-    const backgBold = boldColor(color) as any;
-    
-    // update caches:
-    pageBg.backg      = backg;
-    pageMix.backgThin = backgThin;
-    pageMix.backgMild = backgMild;
-    pageMix.backgBold = backgBold;
-    
     // update cssConfig:
-    cssVals.backg     = backg;
-    cssVals.backgThin = backgThin;
-    cssVals.backgMild = backgMild;
-    cssVals.backgBold = backgBold;
+    cssValsProxy.backg     = color;
+    cssValsProxy.backgThin = thinColor(color);
+    cssValsProxy.backgMild = mildColor(color);
+    cssValsProxy.backgBold = boldColor(color);
     
     
     
@@ -470,39 +457,20 @@ export const defineForeg = (color: Color|string) => {
     
     
     
-    // define sub-colors:
-    const foreg     = color            as any;
-    const foregThin = thinColor(color) as any;
-    const foregMild = mildColor(color) as any;
-    const foregBold = boldColor(color) as any;
-    
-    // update caches:
-    pageFg.foreg      = foreg;
-    pageMix.foregThin = foregThin;
-    pageMix.foregMild = foregMild;
-    pageMix.foregBold = foregBold;
-    
     // update cssConfig:
-    cssVals.foreg     = foreg;
-    cssVals.foregThin = foregThin;
-    cssVals.foregMild = foregMild;
-    cssVals.foregBold = foregBold;
+    cssValsProxy.foreg     = color;
+    cssValsProxy.foregThin = thinColor(color);
+    cssValsProxy.foregMild = mildColor(color);
+    cssValsProxy.foregBold = boldColor(color);
 };
 export const defineTheme = (name: string, color: Optional<Color|string>) => {
     if (!color) {
-        // delete caches:
-        delete (themes     as DictionaryOf<typeof themes>    )[   name      ];
-        delete (themesText as DictionaryOf<typeof themesText>)[`${name}Text`];
-        delete (themesThin as DictionaryOf<typeof themesThin>)[`${name}Thin`];
-        delete (themesMild as DictionaryOf<typeof themesMild>)[`${name}Mild`];
-        delete (themesBold as DictionaryOf<typeof themesBold>)[`${name}Bold`];
-        
         // delete cssConfig:
-        (cssVals as DictionaryOf<typeof cssVals>)[   name      ] = undefined as any;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Text`] = undefined as any;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Thin`] = undefined as any;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Mild`] = undefined as any;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Bold`] = undefined as any;
+        delete cssValsProxy[   name       as keyof ColorList];
+        delete cssValsProxy[`${name}Text` as keyof ColorList];
+        delete cssValsProxy[`${name}Thin` as keyof ColorList];
+        delete cssValsProxy[`${name}Mild` as keyof ColorList];
+        delete cssValsProxy[`${name}Bold` as keyof ColorList];
     }
     else {
         if (typeof(color) === 'string') color = Color(color);
@@ -510,26 +478,11 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         
         
         
-        // define sub-colors:
-        const theme          = color               as any;
-        const themeTextValue = textColor(color)    as any;
-        const themeText      = textColorRef(color) as any;
-        const themeThin      = thinColor(color)    as any;
-        const themeMild      = mildColor(color)    as any;
-        const themeBold      = boldColor(color)    as any;
-        
-        // update caches:
-        (themes     as DictionaryOf<typeof themes>    )[   name      ] = theme;
-        (themesText as DictionaryOf<typeof themesText>)[`${name}Text`] = themeTextValue;
-        (themesThin as DictionaryOf<typeof themesThin>)[`${name}Thin`] = themeThin;
-        (themesMild as DictionaryOf<typeof themesMild>)[`${name}Mild`] = themeMild;
-        (themesBold as DictionaryOf<typeof themesBold>)[`${name}Bold`] = themeBold;
-        
         // update cssConfig:
-        (cssVals as DictionaryOf<typeof cssVals>)[   name      ]       = theme;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Text`]       = themeText;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Thin`]       = themeThin;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Mild`]       = themeMild;
-        (cssVals as DictionaryOf<typeof cssVals>)[`${name}Bold`]       = themeBold;
+        cssValsProxy[   name       as keyof ColorList] = color;
+        cssValsProxy[`${name}Text` as keyof ColorList] = textColorRef(color);
+        cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(color);
+        cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(color);
+        cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(color);
     } // if
 };
