@@ -213,7 +213,7 @@ const themesBold = {
     darkBold      : boldColor(themes.dark),
 };
 
-const allColors  = {
+const colorList  = {
     ...basics,
     ...themes,
     ...pageBg,
@@ -224,51 +224,35 @@ const allColors  = {
     ...themesMild,
     ...themesBold,
 };
+type ColorList  = typeof colorList;
 //#endregion define colors by group
 
 
 
-type ColorList  = typeof allColors;
-type ColorProps = { [key in keyof ColorList]: CssColor } & CssConfigProps;
-const stringColorCache = new WeakMap<Color, string>();
-const isRef = (value: any): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
-export const [cssProps, cssVals, cssConfig] = createCssConfig(() => {
-    return new Proxy(allColors as unknown as ColorProps, {
-        get: (t, propName: string): string|undefined => {
-            let color = (allColors as Dictionary<Color>)[propName];
-            if (color === undefined) return undefined;
+type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
+const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
+    return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
+        get: (_colorList, colorName: keyof ColorList): CssColor|undefined => {
+            const color = colorList[colorName];
+            if (color === undefined) return undefined; // unknown color name => return `undefined`
             
             
             
-            if (isRef(color)) return color; // do not convert the string if it's likely a css variable
-            
-            
-            
-            let strColor = stringColorCache.get(color);
-            if (strColor) return strColor;
-            
-            strColor = stringColor(color);
-            stringColorCache.set(color, strColor);
-            
-            return strColor;
-        },
-        set : (t, propName: string, newValue: any): boolean => {
-            if (typeof(newValue) === 'string') {
-                if (!isRef(newValue)) { // do not convert the string if it's likely a css variable
-                    newValue = Color(newValue);
-                } // if
+            if (color.alpha() === 1) { // solid color
+                return color.hex().toLocaleLowerCase();
+            }
+            else { // semi transparent color
+                return color.toString().toLocaleLowerCase();
             } // if
-            if ((typeof(newValue) !== 'string') && !(newValue instanceof Color)) throw TypeError('The value must be a string or Color.');
-            
-            
-            
-            (allColors as Dictionary<Color>)[propName] = newValue as Color;
-            return true;
         },
     });
 }, { prefix: 'col' });
-export { cssProps as colors, cssProps as default }
-const colors = cssProps;
+export { 
+    colors,
+    colors as cssProps,
+    colors as default,
+}
+export { cssVals, cssConfig }
 
 
 
@@ -304,8 +288,6 @@ export {
 
 
 // utilities:
-const stringColor = (color: Color) => ((color.alpha() === 1) ? color.hex() : color.toString()).toLowerCase();
-
 export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     if (!color) throw Error('You cannot delete the background color.');
     if (typeof(color) === 'string') color = Color(color);
