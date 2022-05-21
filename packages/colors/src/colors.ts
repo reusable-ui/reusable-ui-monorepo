@@ -8,12 +8,11 @@ import type {
 import type {
     // css custom properties:
     CssCustomRef,
-    CssCustomValue,
     
     
     
     // css known (standard) properties:
-    CssKnownPropsOf,
+    CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     CssConfigProps,
@@ -26,24 +25,101 @@ import Color                from 'color'                // color utilities
 
 
 // general types:
-type ColorType = CssKnownPropsOf<'color'> | CssCustomValue
-export type { ColorType as Color }
+export type CssColor = CssKnownValueOf<'color'>
 
 
 
-// color fn:
+//#region color functions
+/*
+    may be removed if *css 4* `color()` -or- `color-mod()` already exists
+*/
 
-// might be removed if *css 4* `color()` -or- `color-mod()` already exists
-const config = {
-    thinLevel : 0.5,
-    mildLevel : 0.8,
-    boldLevel : 0.8,
-};
+
+
+class LiveConfig {
+    //#region private properties
+    #thinLevel : number
+    #mildLevel : number
+    #boldLevel : number
+    
+    readonly #updatedCallback : () => void
+    //#endregion private properties
+    
+    
+    
+    //#region constructors
+    constructor(thinLevel: number, mildLevel: number, boldLevel: number, updatedCallback: () => void) {
+        this.#thinLevel       = thinLevel;
+        this.#mildLevel       = mildLevel;
+        this.#boldLevel       = boldLevel;
+        
+        this.#updatedCallback = updatedCallback;
+    }
+    //#endregion constructors
+    
+    
+    
+    //#region public properties
+    get thinLevel() { return this.#thinLevel }
+    set thinLevel(newValue: number) {
+        if (!this.#isValidRange(newValue)) return; // not in range or not a number => ignore
+        
+        if (this.#thinLevel === newValue) return; // no change => no need to update
+        
+        this.#thinLevel = newValue; // update
+        this.#update();
+    }
+    
+    get mildLevel() { return this.#mildLevel }
+    set mildLevel(newValue: number) {
+        if (!this.#isValidRange(newValue)) return; // not in range or not a number => ignore
+        
+        if (this.#mildLevel === newValue) return; // no change => no need to update
+        
+        this.#mildLevel = newValue; // update
+        this.#update();
+    }
+    
+    get boldLevel() { return this.#boldLevel }
+    set boldLevel(newValue: number) {
+        if (!this.#isValidRange(newValue)) return; // not in range or not a number => ignore
+        
+        if (this.#boldLevel === newValue) return; // no change => no need to update
+        
+        this.#boldLevel = newValue; // update
+        this.#update();
+    }
+    //#endregion public properties
+    
+    
+    
+    //#region private methods
+    #isValidRange(value: number): boolean {
+        return (value >= 0) && (value <= 1);
+    }
+    #update(): void {
+        this.#updatedCallback();
+    }
+    //#endregion private methods
+}
+export type { LiveConfig }
+export const config = new LiveConfig(
+    /*thinLevel:*/ 0.5,
+    /*mildLevel:*/ 0.8,
+    /*boldLevel:*/ 0.8,
+    /*updatedCallback:*/ () => {
+        //
+    }
+);
+
+
+
 const textColorValue = (color: Color): Color        => (color.isLight() ? themes.dark : themes.light)
 const textColor      = (color: Color): CssCustomRef => (color.isLight() ? colors.dark : colors.light)
 const thinColor      = (color: Color): Color        => color.alpha(config.thinLevel)
 const mildColor      = (color: Color): Color        => color.mix(page1.backg as Color, config.mildLevel)
 const boldColor      = (color: Color): Color        => color.mix(page2.foreg as Color, config.boldLevel)
+//#endregion color functions
 
 
 
@@ -59,7 +135,7 @@ const basics = {
     green    : Color('#198754'),
     teal     : Color('#20c997'),
     cyan     : Color('#0dcaf0'),
-
+    
     black    : Color('#000000'),
     white    : Color('#ffffff'),
     gray     : Color('#6c757d'),
@@ -88,7 +164,7 @@ const page3 = {
     backgThin : thinColor(page1.backg),
     backgMild : mildColor(page1.backg),
     backgBold : boldColor(page1.backg),
-
+    
     foregThin : thinColor(page2.foreg),
     foregMild : mildColor(page2.foreg),
     foregBold : boldColor(page2.foreg),
@@ -154,10 +230,10 @@ const allColors  = {
 
 
 type ColorList  = typeof allColors;
-type ColorProps = { [key in keyof ColorList]: ColorType } & CssConfigProps;
+type ColorProps = { [key in keyof ColorList]: CssColor } & CssConfigProps;
 const stringColorCache = new WeakMap<Color, string>();
 const isRef = (value: any): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
-export const [cssProps, cssVals, cssConfig] = createCssConfig<ColorProps>(() => {
+export const [cssProps, cssVals, cssConfig] = createCssConfig(() => {
     return new Proxy(allColors as unknown as ColorProps, {
         get: (t, propName: string): string|undefined => {
             let color = (allColors as Dictionary<Color>)[propName];
@@ -194,43 +270,6 @@ export const [cssProps, cssVals, cssConfig] = createCssConfig<ColorProps>(() => 
 }, { prefix: 'col' });
 export { cssProps as colors, cssProps as default }
 const colors = cssProps;
-
-
-
-// might be removed if *css 4* `color()` -or- `color-mod()` already exists
-export const configProxy = new Proxy(
-    config,
-    {
-        set : (config, propName: string, newValue: any): boolean => {
-            if (!(propName in config)) return false; // the requested propName does not exist
-            if ((typeof(newValue) !== 'number') || (newValue < 0) || (newValue > 1)) return false; // invalid value
-            
-            
-            
-            // compare `oldValue` & `newValue`:
-            const oldValue = (config as any)[propName];
-            if (oldValue === newValue) return true; // success but no change => no need to update
-            
-            
-            
-            // apply changes & update:
-            (config as any)[propName] = newValue;
-            
-            
-            
-            defineBackg(page1.backg);
-            defineForeg(page2.foreg);
-            for (const [themeName, themeColor] of Object.entries(themes)) {
-                defineTheme(themeName, themeColor);
-            } // for
-            
-            
-            
-            return true; // notify the operation was completed successfully
-        },
-    }
-);
-export { configProxy as config }
 
 
 
