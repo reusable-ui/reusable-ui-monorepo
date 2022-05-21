@@ -1,12 +1,11 @@
 // cssfn:
 import type {
     Optional,
-    Dictionary,
-    ValueOf,
     DictionaryOf,
 }                           from '@cssfn/types'         // cssfn general types
 import type {
     // css custom properties:
+    CssCustomSimpleRef,
     CssCustomRef,
     
     
@@ -15,7 +14,11 @@ import type {
     CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 import {
+    // types:
     CssConfigProps,
+    
+    
+    
     createCssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
@@ -337,7 +340,8 @@ export { cssConfig }
 
 
 
-const colorsProxy = new Proxy(colors, {
+export type ColorRefs<TColorList extends { [Key in keyof TColorList]: Color }> = { [Key in keyof TColorList]: CssCustomSimpleRef }
+const colorsProxy = new Proxy<ColorRefs<ColorList>>(colors, {
     set: setColorValue,
 });
 export { 
@@ -348,8 +352,8 @@ export {
 
 
 
-export type ColorVals = { [Key in keyof CssColorConfigProps]: Color }
-const cssValsProxy = new Proxy<ColorVals>(cssVals as unknown as ColorVals, {
+export type ColorVals<TColorList extends { [Key in keyof TColorList]: Color }> = { [Key in keyof TColorList]: Color|CssCustomRef }
+const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as ColorVals<ColorList>, {
     get: getColorValue,
     set: setColorValue,
 });
@@ -357,29 +361,21 @@ export { cssValsProxy as cssVals }
 
 
 
-const createProxy = <TColorGroup extends { [key in keyof TColorGroup]: Color },>(colorGroup: TColorGroup) => new Proxy(colorGroup as unknown as { [key in keyof TColorGroup]: ValueOf<typeof colors> }, {
-    get: (cg, propName: string): (ValueOf<typeof colors>|undefined) => {
-        if (!(propName in colorGroup)) return undefined; // not found
+const createFilterProxy = <TColorList extends { [Key in keyof TColorList]: Color }>(filter: TColorList) => new Proxy<ColorRefs<TColorList>>(filter as unknown as ColorRefs<TColorList>, {
+    get: (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
+        if (!(colorName in filter)) return undefined; // not in filter => return `undefined`
         
-        return (colors as DictionaryOf<typeof colors>)[propName];
+        return getColorValue(_object, colorName);
     },
-    set: (cg, propName: string, newValue: ValueOf<typeof colors>) => {
-        const colorValue = Color(newValue);
+    set: (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
+        if (!(colorName in filter)) return false; // not in filter => return `false`
         
-        (cssVals as DictionaryOf<typeof cssVals>)[propName] = colorValue as any;
-        
-        if (propName in colorGroup) {
-            (colorGroup as Dictionary<Color>)[propName]     = colorValue;
-        } // if
-        
-        
-        
-        return true;
+        return setColorValue(_object, colorName, newValue);
     },
 });
 
-const themesProxy     = createProxy(themes);
-const themesTextProxy = createProxy(themesText);
+const themesProxy     = createFilterProxy(themes);
+const themesTextProxy = createFilterProxy(themesText);
 
 export {
     themesProxy     as themes,
