@@ -227,7 +227,7 @@ const colorList  = {
     ...themesMild,
     ...themesBold,
 };
-type ColorList  = typeof colorList;
+export type ColorList  = typeof colorList;
 //#endregion define colors by group
 
 
@@ -332,17 +332,19 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
 
 export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
 const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
+    // a proxy for converting `Color` to `CssColor`:
     return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
-        get: getCssColor,
+        get : getCssColor,
     });
 }, { prefix: 'col' });
 export { cssConfig }
 
 
 
-export type ColorRefs<TColorList extends { [Key in keyof TColorList]: Color }> = { [Key in keyof TColorList]: CssCustomSimpleRef }
+export type ColorRefs<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: CssCustomSimpleRef }
+// a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const colorsProxy = new Proxy<ColorRefs<ColorList>>(colors, {
-    set: setColorValue,
+    set : setColorValue,
 });
 export { 
     colorsProxy as colors,
@@ -352,25 +354,42 @@ export {
 
 
 
-export type ColorVals<TColorList extends { [Key in keyof TColorList]: Color }> = { [Key in keyof TColorList]: Color|CssCustomRef }
+export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: Color|CssCustomRef }
+// a proxy for converting `CssColor` to `Color`:
+// a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as ColorVals<ColorList>, {
-    get: getColorValue,
-    set: setColorValue,
+    get : getColorValue,
+    set : setColorValue,
 });
 export { cssValsProxy as cssVals }
 
 
 
-const createFilterProxy = <TColorList extends { [Key in keyof TColorList]: Color }>(filter: TColorList) => new Proxy<ColorRefs<TColorList>>(filter as unknown as ColorRefs<TColorList>, {
-    get: (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
+// a proxy for enumerating filtered color grop:
+// a proxy for converting `CssColor` to `Color`:
+// a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
+const createFilterProxy = <TColorList extends Partial<ColorList>>(filter: TColorList) => new Proxy<ColorRefs<TColorList>>(filter as unknown as ColorRefs<TColorList>, {
+    get : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
         if (!(colorName in filter)) return undefined; // not in filter => return `undefined`
         
         return getColorValue(_object, colorName);
     },
-    set: (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
+    set : (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
         if (!(colorName in filter)) return false; // not in filter => return `false`
         
         return setColorValue(_object, colorName, newValue);
+    },
+    
+    has                      : (_object: object, colorName: keyof ColorList): boolean => {
+        return (colorName in filter);
+    },
+    ownKeys                  : (_object: object): ArrayLike<string|symbol> => {
+        return Object.keys(filter);
+    },
+    getOwnPropertyDescriptor : (_object: object, colorName: keyof ColorList): PropertyDescriptor|undefined => {
+        if (!(colorName in filter)) return undefined; // not in filter => return `undefined`
+        
+        return Object.getOwnPropertyDescriptor(colors, colorName);
     },
 });
 
