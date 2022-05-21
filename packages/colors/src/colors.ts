@@ -117,8 +117,8 @@ export const config = new LiveConfig(
 const textColorValue = (color: Color): Color        => (color.isLight() ? themes.dark : themes.light)
 const textColor      = (color: Color): CssCustomRef => (color.isLight() ? colors.dark : colors.light)
 const thinColor      = (color: Color): Color        => color.alpha(config.thinLevel)
-const mildColor      = (color: Color): Color        => color.mix(page1.backg as Color, config.mildLevel)
-const boldColor      = (color: Color): Color        => color.mix(page2.foreg as Color, config.boldLevel)
+const mildColor      = (color: Color): Color        => color.mix(pageBg.backg, config.mildLevel)
+const boldColor      = (color: Color): Color        => color.mix(pageFg.foreg, config.boldLevel)
 //#endregion color functions
 
 
@@ -153,21 +153,20 @@ const themes = {
     dark      : Color('#212529'),
 };
 
-const page1 = {
-    backg : basics.white,
+const pageBg  = {
+    backg     : basics.white,
 };
-
-const page2 = {
-    foreg : textColorValue(page1.backg),
+const pageFg  = {
+    foreg     : textColorValue(pageBg.backg),
 };
-const page3 = {
-    backgThin : thinColor(page1.backg),
-    backgMild : mildColor(page1.backg),
-    backgBold : boldColor(page1.backg),
+const pageMix = {
+    backgThin : thinColor(pageBg.backg),
+    backgMild : mildColor(pageBg.backg),
+    backgBold : boldColor(pageBg.backg),
     
-    foregThin : thinColor(page2.foreg),
-    foregMild : mildColor(page2.foreg),
-    foregBold : boldColor(page2.foreg),
+    foregThin : thinColor(pageFg.foreg),
+    foregMild : mildColor(pageFg.foreg),
+    foregBold : boldColor(pageFg.foreg),
 };
 
 const themesText = {
@@ -217,9 +216,9 @@ const themesBold = {
 const allColors  = {
     ...basics,
     ...themes,
-    ...page1,
-    ...page2,
-    ...page3,
+    ...pageBg,
+    ...pageFg,
+    ...pageMix,
     ...themesText,
     ...themesThin,
     ...themesMild,
@@ -321,10 +320,10 @@ export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     const backgBold = boldColor(color) as any;
     
     // update caches:
-    page1.backg       = backg;
-    page3.backgThin   = backgThin;
-    page3.backgMild   = backgMild;
-    page3.backgBold   = backgBold;
+    pageBg.backg      = backg;
+    pageMix.backgThin = backgThin;
+    pageMix.backgMild = backgMild;
+    pageMix.backgBold = backgBold;
     
     // update cssConfig:
     cssVals.backg     = backg;
@@ -350,10 +349,10 @@ export const defineForeg = (color: Color|string) => {
     const foregBold = boldColor(color) as any;
     
     // update caches:
-    page2.foreg       = foreg;
-    page3.foregThin   = foregThin;
-    page3.foregMild   = foregMild;
-    page3.foregBold   = foregBold;
+    pageFg.foreg      = foreg;
+    pageMix.foregThin = foregThin;
+    pageMix.foregMild = foregMild;
+    pageMix.foregBold = foregBold;
     
     // update cssConfig:
     cssVals.foreg     = foreg;
