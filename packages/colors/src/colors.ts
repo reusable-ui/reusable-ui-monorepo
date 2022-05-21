@@ -114,11 +114,11 @@ export const config = new LiveConfig(
 
 
 
-const textColorValue = (color: Color): Color        => (color.isLight() ? themes.dark : themes.light)
-const textColor      = (color: Color): CssCustomRef => (color.isLight() ? colors.dark : colors.light)
-const thinColor      = (color: Color): Color        => color.alpha(config.thinLevel)
-const mildColor      = (color: Color): Color        => color.mix(pageBg.backg, config.mildLevel)
-const boldColor      = (color: Color): Color        => color.mix(pageFg.foreg, config.boldLevel)
+const textColor    = (color: Color): Color        => (color.isLight() ? themes.dark : themes.light)
+const textColorRef = (color: Color): CssCustomRef => (color.isLight() ? colors.dark : colors.light)
+const thinColor    = (color: Color): Color        => color.alpha(config.thinLevel)
+const mildColor    = (color: Color): Color        => color.mix(pageBg.backg, config.mildLevel)
+const boldColor    = (color: Color): Color        => color.mix(pageFg.foreg, config.boldLevel)
 //#endregion color functions
 
 
@@ -157,7 +157,7 @@ const pageBg  = {
     backg     : basics.white,
 };
 const pageFg  = {
-    foreg     : textColorValue(pageBg.backg),
+    foreg     : textColor(pageBg.backg),
 };
 const pageMix = {
     backgThin : thinColor(pageBg.backg),
@@ -170,14 +170,14 @@ const pageMix = {
 };
 
 const themesText = {
-    primaryText   : textColorValue(themes.primary),
-    secondaryText : textColorValue(themes.secondary),
-    successText   : textColorValue(themes.success),
-    infoText      : textColorValue(themes.info),
-    warningText   : textColorValue(themes.warning),
-    dangerText    : textColorValue(themes.danger),
-    lightText     : textColorValue(themes.light),
-    darkText      : textColorValue(themes.dark),
+    primaryText   : textColor(themes.primary),
+    secondaryText : textColor(themes.secondary),
+    successText   : textColor(themes.success),
+    infoText      : textColor(themes.info),
+    warningText   : textColor(themes.warning),
+    dangerText    : textColor(themes.danger),
+    lightText     : textColor(themes.light),
+    darkText      : textColor(themes.dark),
 };
 
 const themesThin = {
@@ -333,7 +333,7 @@ export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     
     
     
-    if (autoDefineForeg) defineForeg(textColorValue(color));
+    if (autoDefineForeg) defineForeg(textColor(color));
 };
 export const defineForeg = (color: Color|string) => {
     if (!color) throw Error('You cannot delete the foreground color.');
@@ -383,12 +383,12 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         
         
         // define sub-colors:
-        const theme          = color                 as any;
-        const themeTextValue = textColorValue(color) as any;
-        const themeText      = textColor(color)      as any;
-        const themeThin      = thinColor(color)      as any;
-        const themeMild      = mildColor(color)      as any;
-        const themeBold      = boldColor(color)      as any;
+        const theme          = color               as any;
+        const themeTextValue = textColor(color)    as any;
+        const themeText      = textColorRef(color) as any;
+        const themeThin      = thinColor(color)    as any;
+        const themeMild      = mildColor(color)    as any;
+        const themeBold      = boldColor(color)    as any;
         
         // update caches:
         (themes     as DictionaryOf<typeof themes>    )[   name      ] = theme;
