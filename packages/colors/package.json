@@ -1,5 +1,5 @@
 {
-  "name": "@nodestrap/colors",
+  "name": "@reusable-ui/colors",
   "version": "5.0.0",
   "description": "A color management system for web components using css variables (css custom properties).",
   "keywords": [
@@ -13,11 +13,11 @@
     "property"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://nodestrap.org",
+  "homepage": "https://reusableui.org",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nodestrap/nodestrap-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
   "main": "dist/colors.js",
   "types": "dist/colors.d.ts",

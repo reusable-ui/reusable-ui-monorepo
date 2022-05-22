@@ -18,7 +18,7 @@ import {
     defineBackg,
     defineForeg,
     defineTheme,
-} from '@nodestrap/colors'
+} from '@reusable-ui/colors'
 import { Styles } from '@cssfn/cssfn-react'
 
 
