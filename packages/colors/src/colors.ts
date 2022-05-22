@@ -373,7 +373,10 @@ const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as Color
     get : getColorValue,
     set : setColorValue,
 });
-export { cssValsProxy as cssVals }
+export {
+    cssValsProxy as colorValues,
+    cssValsProxy as cssVals,
+}
 
 
 
