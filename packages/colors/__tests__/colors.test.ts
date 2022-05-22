@@ -2,8 +2,9 @@ import type {
     JSDOM as _JSDOM,
 } from 'jsdom'
 import type {
-    colors as _colors,
-    themes as _themes,
+    colors      as _colors,
+    themes      as _themes,
+    colorValues as _colorValues,
 } from '../dist/colors.js'
 // import type {
 //     // style sheets:
@@ -15,9 +16,23 @@ import type {
 import type {
     styleSheetRegistry as _styleSheetRegistry,
 } from '@cssfn/cssfn/dist/styleSheets.js'
+import type Color from 'color'
 import {
     jest,
 } from '@jest/globals'
+
+
+
+// utilities:
+const isColorInstance = (obj: any): obj is Color => (
+    !!obj
+    &&
+    (typeof(obj) === 'object')
+    &&
+    (typeof((obj as any).alpha) === 'function')
+    &&
+    (typeof((obj as any).hex) === 'function')
+);
 
 
 
@@ -49,6 +64,7 @@ jest.isolateModules(() => {
     let dom                : _JSDOM              = undefined as any;
     let colors             : typeof _colors      = undefined as any;
     let themes             : typeof _themes      = undefined as any;
+    let colorValues        : typeof _colorValues = undefined as any;
     let styleSheetRegistry : typeof _styleSheetRegistry = undefined as any;
     // let render             : typeof _render      = undefined as any;
     // let lastStyleSheet     : StyleSheet|null     = null;
@@ -73,6 +89,7 @@ jest.isolateModules(() => {
         
         colors             = colorsModule.colors
         themes             = colorsModule.themes
+        colorValues        = colorsModule.colorValues
         styleSheetRegistry = styleSheetModule.styleSheetRegistry
         
         
@@ -291,6 +308,110 @@ jest.isolateModules(() => {
         themeColors.forEach((colorName) => {
             suffixes.forEach((suffix) => {
                 expect(allThemeColors.includes(colorName + suffix)).toBe(false);
+            });
+        });
+    });
+    
+    
+    
+    test('test enumerating colorValues', async () => {
+        await yieldTime();
+        
+        // get all possible keys:
+        const allColors = Object.keys(colorValues);
+        expect(allColors.length).toBeGreaterThanOrEqual(1);
+        
+        // test in operator:
+        allColors.forEach((colorName) => {
+            expect(colorName in colorValues).toBe(true);
+        });
+        
+        // test non existing string prop:
+        expect((colorValues as any)['booFoo']).toBe(undefined);
+        expect('booFoo' in colorValues).toBe(false);
+        
+        // test non existing number prop:
+        expect((colorValues as any)[123]).toBe(undefined);
+        expect(123 in colorValues).toBe(false);
+        
+        // test non existing symbol prop:
+        const symProp = Symbol();
+        expect((colorValues as any)[symProp]).toBe(undefined);
+        expect(symProp in colorValues).toBe(false);
+        
+        // test the keys should be the same as before:
+        expect(Object.keys(colorValues)).toEqual(allColors);
+        
+        // test values:
+        allColors.forEach((colorName) => {
+            const colorValue = (colorValues as any)[colorName] as any;
+            expect(isColorInstance(colorValue) || ((typeof(colorValue) === 'string') && colorValue.startsWith('var(--'))).toBe(true);
+        });
+        
+        // the keys should includes basic colors:
+        const basicColors: string[] = [
+            'blue',
+            'indigo',
+            'purple',
+            'pink',
+            'red',
+            'orange',
+            'yellow',
+            'green',
+            'teal',
+            'cyan',
+            
+            'black',
+            'white',
+            'gray',
+            'grayDark',
+        ];
+        basicColors.forEach((colorName) => {
+            expect(allColors.includes(colorName)).toBe(true);
+        });
+        
+        // the keys should includes theme colors:
+        const themeColors: string[] = [
+            'primary',
+            'secondary',
+            'success',
+            'info',
+            'warning',
+            'danger',
+            'light',
+            'dark',
+        ];
+        themeColors.forEach((colorName) => {
+            expect(allColors.includes(colorName)).toBe(true);
+        });
+        
+        // the keys should includes page colors:
+        const pageColors: string[] = [
+            'backg',
+            'foreg',
+            
+            'backgThin',
+            'backgMild',
+            'backgBold',
+            
+            'foregThin',
+            'foregMild',
+            'foregBold',
+        ];
+        pageColors.forEach((colorName) => {
+            expect(allColors.includes(colorName)).toBe(true);
+        });
+        
+        // the keys should includes theme colors with suffixed Text|Thin|Mild|Bold:
+        const suffixes: string[] = [
+            'Text',
+            'Thin',
+            'Mild',
+            'Bold',
+        ];
+        themeColors.forEach((colorName) => {
+            suffixes.forEach((suffix) => {
+                expect(allColors.includes(colorName + suffix)).toBe(true);
             });
         });
     });
