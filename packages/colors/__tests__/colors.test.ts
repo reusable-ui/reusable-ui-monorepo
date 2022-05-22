@@ -415,4 +415,47 @@ jest.isolateModules(() => {
             });
         });
     });
+    
+    
+    
+    test('test delete', async () => {
+        await yieldTime();
+        
+        
+        
+        // by delete operator:
+        
+        // @ts-ignore
+        delete colors.orange;
+        // @ts-ignore
+        delete themes.warning;
+        // @ts-ignore
+        delete colorValues.teal;
+        
+        await yieldTime();
+        
+        expect(colors.orange).toBe(undefined);
+        expect(colorValues.orange).toBe(undefined);
+        expect('orange' in colors).toBe(false);
+        expect('orange' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('orange')).toBe(false);
+        expect(Object.keys(colorValues).includes('orange')).toBe(false);
+        
+        expect(colors.warning).toBe(undefined);
+        expect(colorValues.warning).toBe(undefined);
+        expect(colorValues.warning).toBe(undefined);
+        expect('warning' in colors).toBe(false);
+        expect('warning' in colorValues).toBe(false);
+        expect('warning' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('warning')).toBe(false);
+        expect(Object.keys(colorValues).includes('warning')).toBe(false);
+        expect(Object.keys(colorValues).includes('warning')).toBe(false);
+        
+        expect(colors.teal).toBe(undefined);
+        expect(colorValues.teal).toBe(undefined);
+        expect('teal' in colors).toBe(false);
+        expect('teal' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('teal')).toBe(false);
+        expect(Object.keys(colorValues).includes('teal')).toBe(false);
+    });
 });
