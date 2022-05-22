@@ -10,10 +10,9 @@ import {
 import './App.css';
 import {
     colors,
-    cssVals,
+    colorValues,
     
     themes,
-    themesText,
     
     defineBackg,
     defineForeg,
@@ -25,10 +24,9 @@ import { Styles } from '@cssfn/cssfn-react'
 
 Object.assign(globalThis, {
     colors,
-    cssVals,
+    colorValues,
     
     themes,
-    themesText,
     
     defineBackg,
     defineForeg,
