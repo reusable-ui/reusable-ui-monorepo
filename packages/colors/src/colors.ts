@@ -377,11 +377,13 @@ export { cssValsProxy as cssVals }
 
 
 
-// a proxy for enumerating filtered color grop:
+export type ThemeColorList  = typeof themes;
+
+// a proxy for enumerating theme colors:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
-const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TColorList) => new Proxy<ColorRefs<TColorList>>(colorGroup as unknown as ColorRefs<TColorList>, {
+const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as ColorRefs<ThemeColorList>, {
     get                      : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
-        if (!(colorName in colorGroup)) return undefined; // not in colorGroup => return `undefined`
+        if (!(colorName in themes)) return undefined; // not in themes => return `undefined`
         
         return colorsProxy[colorName];
     },
@@ -389,13 +391,13 @@ const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TC
         const success = setColorValue(_object, colorName, newValue);
         
         if (success) {
-            // update/delete from/to the `colorGroup`:
+            // update/delete from/to the `themes`:
             const newColor = cssValsProxy[colorName];
             if (!newColor) {
-                delete (colorGroup as any)[colorName];
+                delete (themes as any)[colorName];
             }
             else {
-                (colorGroup as any)[colorName] = newColor;
+                (themes as any)[colorName] = newColor;
             } // if
         } // if
         
@@ -405,32 +407,27 @@ const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TC
         const success = setColorValue(_object, colorName, undefined);
         
         if (success) {
-            // delete from the `colorGroup`:
-            delete (colorGroup as any)[colorName];
+            // delete from the `themes`:
+            delete (themes as any)[colorName];
         } // if
         
         return success;
     },
     
     has                      : (_object: object, colorName: keyof ColorList): boolean => {
-        return (colorName in colorGroup);
+        return (colorName in themes);
     },
     ownKeys                  : (_object: object): ArrayLike<string|symbol> => {
-        return Object.keys(colorGroup);
+        return Object.keys(themes);
     },
     getOwnPropertyDescriptor : (_object: object, colorName: keyof ColorList): PropertyDescriptor|undefined => {
-        if (!(colorName in colorGroup)) return undefined; // not in colorGroup => return `undefined`
+        if (!(colorName in themes)) return undefined; // not in themes => return `undefined`
         
         return Object.getOwnPropertyDescriptor(colors, colorName);
     },
 });
-
-const themesProxy     = createFilterProxy(themes);
-const themesTextProxy = createFilterProxy(themesText);
-
 export {
-    themesProxy     as themes,
-    themesTextProxy as themesText,
+    themesProxy as themes,
 }
 
 
