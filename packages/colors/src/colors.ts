@@ -384,7 +384,7 @@ const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TC
     get                      : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
         if (!(colorName in colorGroup)) return undefined; // not in colorGroup => return `undefined`
         
-        return getColorValue(_object, colorName);
+        return colorsProxy[colorName];
     },
     set                      : (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
         const success = setColorValue(_object, colorName, newValue);
