@@ -378,7 +378,6 @@ export { cssValsProxy as cssVals }
 
 
 // a proxy for enumerating filtered color grop:
-// a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const createFilterProxy = <TColorList extends Partial<ColorList>>(colorGroup: TColorList) => new Proxy<ColorRefs<TColorList>>(colorGroup as unknown as ColorRefs<TColorList>, {
     get                      : (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
