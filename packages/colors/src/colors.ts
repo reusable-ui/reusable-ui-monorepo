@@ -407,6 +407,8 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
         return success;
     },
     deleteProperty           : (_object: object, colorName: keyof ColorList): boolean => {
+        if (!(colorName in themes)) return true; // delete something not in themes => return `true` (always success for deleting non existing keys)
+        
         const success = setColorValue(_object, colorName, undefined);
         
         if (success) {
