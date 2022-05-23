@@ -16,7 +16,7 @@ import type {
 import type {
     styleSheetRegistry as _styleSheetRegistry,
 } from '@cssfn/cssfn/dist/styleSheets.js'
-import type Color from 'color'
+import Color from 'color'
 import {
     jest,
 } from '@jest/globals'
@@ -610,6 +610,7 @@ jest.isolateModules(() => {
         
         
         // by valid color names:
+        
         (colors as any).mintGreen = '#8dd9c2';
         // @ts-ignore
         themes.happy = 'deeppink';
@@ -651,6 +652,7 @@ jest.isolateModules(() => {
         
         
         // by css ref:
+        
         (colors as any).burgundy = 'var(--link-otherColor)';
         // @ts-ignore
         themes.exciting = 'var(--hotpink)';
@@ -688,5 +690,47 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('blueFire')).toBe(true);
         expect(Object.keys(themes).includes('blueFire')).toBe(false);
         expect(Object.keys(colorValues).includes('blueFire')).toBe(true);
+        
+        
+        
+        // by Color object:
+        
+        (colors as any).cream = Color('#f0c1a7');
+        // @ts-ignore
+        themes.brokenWhite = Color('#e3dfdc');
+        // @ts-ignore
+        colorValues.freshBlue = Color('#0bd8fa').alpha(0.5);
+        
+        await yieldTime();
+        
+        expect((colors as any).cream).toBe('var(--col-cream)');
+        expect((themes as any).cream).toBe(undefined);
+        expect((colorValues as any).cream?.hex?.()?.toLocaleLowerCase?.()).toBe('#f0c1a7');
+        expect('cream' in colors).toBe(true);
+        expect('cream' in themes).toBe(false);
+        expect('cream' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('cream')).toBe(true);
+        expect(Object.keys(themes).includes('cream')).toBe(false);
+        expect(Object.keys(colorValues).includes('cream')).toBe(true);
+        
+        expect((colors as any).brokenWhite).toBe('var(--col-brokenWhite)');
+        expect((themes as any).brokenWhite).toBe('var(--col-brokenWhite)');
+        expect((colorValues as any).brokenWhite?.hex?.()?.toLocaleLowerCase?.()).toBe('#e3dfdc');
+        expect('brokenWhite' in colors).toBe(true);
+        expect('brokenWhite' in themes).toBe(true);
+        expect('brokenWhite' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('brokenWhite')).toBe(true);
+        expect(Object.keys(themes).includes('brokenWhite')).toBe(true);
+        expect(Object.keys(colorValues).includes('brokenWhite')).toBe(true);
+        
+        expect((colors as any).freshBlue).toBe('var(--col-freshBlue)');
+        expect((themes as any).freshBlue).toBe(undefined);
+        expect((colorValues as any).freshBlue?.toString?.()?.toLocaleLowerCase?.()).toBe('rgba(11, 216, 250, 0.5)');
+        expect('freshBlue' in colors).toBe(true);
+        expect('freshBlue' in themes).toBe(false);
+        expect('freshBlue' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('freshBlue')).toBe(true);
+        expect(Object.keys(themes).includes('freshBlue')).toBe(false);
+        expect(Object.keys(colorValues).includes('freshBlue')).toBe(true);
     });
 });
