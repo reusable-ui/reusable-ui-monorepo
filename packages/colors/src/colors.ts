@@ -112,19 +112,21 @@ export const config = new LiveConfig(
     /*updatedCallback:*/ () => {
         defineBackg(colorsProxy.backg);
         defineForeg(colorsProxy.foreg);
-        for (const themeName in themes) {
-            defineTheme(themeName, colorsProxy[themeName as keyof ColorList]);
-        } // for
+        defineAllThemes();
     }
 );
 
 
 
-const textColor    = (color: Color): Color        => (color.isLight() ? themes.dark : themes.light)
-const textColorRef = (color: Color): CssCustomRef => (color.isLight() ? colors.dark : colors.light)
-const thinColor    = (color: Color): Color        => color.alpha(config.thinLevel)
-const mildColor    = (color: Color): Color        => color.mix(pageBg.backg, config.mildLevel)
-const boldColor    = (color: Color): Color        => color.mix(pageFg.foreg, config.boldLevel)
+const textColorInit = (color: Color): Color => (color.isLight() ? themes.dark : themes.light)
+const textColor     = (color: Color): Color => resolveColor(color.isLight() ? cssValsProxy.dark : cssValsProxy.light) ?? color
+
+const thinColor     = (color: Color): Color => color.alpha(config.thinLevel)
+
+const mildColorInit = (color: Color): Color => color.mix(pageBg.backg, config.mildLevel)
+const boldColorInit = (color: Color): Color => color.mix(pageFg.foreg, config.boldLevel)
+const mildColor     = (color: Color): Color => color.mix(resolveColor(cssValsProxy.backg) ?? color, config.mildLevel)
+const boldColor     = (color: Color): Color => color.mix(resolveColor(cssValsProxy.foreg) ?? color, config.boldLevel)
 //#endregion color functions
 
 
@@ -163,27 +165,25 @@ const pageBg  = {
     backg     : basics.white,
 };
 const pageFg  = {
-    foreg     : textColor(pageBg.backg),
+    foreg     : textColorInit(pageBg.backg),
 };
 const pageMix = {
     backgThin : thinColor(pageBg.backg),
-    backgMild : mildColor(pageBg.backg),
-    backgBold : boldColor(pageBg.backg),
+    backgBold : boldColorInit(pageBg.backg),
     
     foregThin : thinColor(pageFg.foreg),
-    foregMild : mildColor(pageFg.foreg),
-    foregBold : boldColor(pageFg.foreg),
+    foregMild : mildColorInit(pageFg.foreg),
 };
 
 const themesText = {
-    primaryText   : textColor(themes.primary),
-    secondaryText : textColor(themes.secondary),
-    successText   : textColor(themes.success),
-    infoText      : textColor(themes.info),
-    warningText   : textColor(themes.warning),
-    dangerText    : textColor(themes.danger),
-    lightText     : textColor(themes.light),
-    darkText      : textColor(themes.dark),
+    primaryText   : textColorInit(themes.primary),
+    secondaryText : textColorInit(themes.secondary),
+    successText   : textColorInit(themes.success),
+    infoText      : textColorInit(themes.info),
+    warningText   : textColorInit(themes.warning),
+    dangerText    : textColorInit(themes.danger),
+    lightText     : textColorInit(themes.light),
+    darkText      : textColorInit(themes.dark),
 };
 
 const themesThin = {
@@ -198,25 +198,25 @@ const themesThin = {
 };
 
 const themesMild = {
-    primaryMild   : mildColor(themes.primary),
-    secondaryMild : mildColor(themes.secondary),
-    successMild   : mildColor(themes.success),
-    infoMild      : mildColor(themes.info),
-    warningMild   : mildColor(themes.warning),
-    dangerMild    : mildColor(themes.danger),
-    lightMild     : mildColor(themes.light),
-    darkMild      : mildColor(themes.dark),
+    primaryMild   : mildColorInit(themes.primary),
+    secondaryMild : mildColorInit(themes.secondary),
+    successMild   : mildColorInit(themes.success),
+    infoMild      : mildColorInit(themes.info),
+    warningMild   : mildColorInit(themes.warning),
+    dangerMild    : mildColorInit(themes.danger),
+    lightMild     : mildColorInit(themes.light),
+    darkMild      : mildColorInit(themes.dark),
 };
 
 const themesBold = {
-    primaryBold   : boldColor(themes.primary),
-    secondaryBold : boldColor(themes.secondary),
-    successBold   : boldColor(themes.success),
-    infoBold      : boldColor(themes.info),
-    warningBold   : boldColor(themes.warning),
-    dangerBold    : boldColor(themes.danger),
-    lightBold     : boldColor(themes.light),
-    darkBold      : boldColor(themes.dark),
+    primaryBold   : boldColorInit(themes.primary),
+    secondaryBold : boldColorInit(themes.secondary),
+    successBold   : boldColorInit(themes.success),
+    infoBold      : boldColorInit(themes.info),
+    warningBold   : boldColorInit(themes.warning),
+    dangerBold    : boldColorInit(themes.danger),
+    lightBold     : boldColorInit(themes.light),
+    darkBold      : boldColorInit(themes.dark),
 };
 
 const colorList  = {
@@ -247,13 +247,36 @@ const isColorInstance = (obj: any): obj is Color => (
 );
 const stringColor     = (color: Color) => {
     if (color.alpha() === 1) { // solid color
-        return color.hex().toLocaleLowerCase();
+        return color.hex().toLowerCase();
     }
     else { // semi transparent color
-        return color.toString().toLocaleLowerCase();
+        return color.toString().toLowerCase();
     } // if
 };
 const isRef           = (value: string): value is CssCustomRef => value.startsWith('var(--');
+const resolveColor    = (color: Color|CssCustomRef): Color|null => {
+    if (isColorInstance(color)) return color;
+    let colorRef = color;
+    
+    
+    
+    const colorPrefix = cssConfig.prefix ? `var(--${cssConfig.prefix}-` : `var(--`;
+    
+    
+    for (let attempts = 3; attempts > 0; attempts--) {
+        if (!colorRef.startsWith(colorPrefix)) return null;       // can't resolve color outside color config
+        const colorProp = colorRef.slice(colorPrefix.length, -1); // remove `var(--col-` & `)`
+        
+        const result = cssValsProxy[colorProp as keyof ColorList];
+        if (isColorInstance(result)) return result;
+        
+        colorRef = result;
+    } // for
+    
+    
+    
+    return null; // can't resolve deeply
+};
 
 
 
@@ -450,12 +473,12 @@ export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
     // update cssConfig:
     cssValsProxy.backg     = color;
     cssValsProxy.backgThin = thinColor(color);
-    cssValsProxy.backgMild = mildColor(color);
     cssValsProxy.backgBold = boldColor(color);
     
     
     
     if (autoDefineForeg) defineForeg(textColor(color));
+    defineAllThemes();
 };
 export const defineForeg = (color: Color|string) => {
     if (!color) throw Error('You cannot delete the foreground color.');
@@ -468,7 +491,14 @@ export const defineForeg = (color: Color|string) => {
     cssValsProxy.foreg     = color;
     cssValsProxy.foregThin = thinColor(color);
     cssValsProxy.foregMild = mildColor(color);
-    cssValsProxy.foregBold = boldColor(color);
+};
+const defineAllThemes = () => {
+    for (const themeName in themes) {
+        let baseColor = resolveColor(cssValsProxy[themeName as keyof ColorList]);
+        if (!baseColor) continue; // unresolved color => skip
+        
+        defineTheme(themeName, baseColor);
+    } // for
 };
 export const defineTheme = (name: string, color: Optional<Color|string>) => {
     if (!color) {
@@ -487,7 +517,7 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         
         // update cssConfig:
         cssValsProxy[   name       as keyof ColorList] = color;
-        cssValsProxy[`${name}Text` as keyof ColorList] = textColorRef(color);
+        cssValsProxy[`${name}Text` as keyof ColorList] = textColor(color);
         cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(color);
         cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(color);
         cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(color);
