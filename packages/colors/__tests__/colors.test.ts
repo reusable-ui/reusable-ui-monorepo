@@ -5,6 +5,8 @@ import type {
     colors      as _colors,
     themes      as _themes,
     colorValues as _colorValues,
+    config      as _config,
+    defineBackg as _defineBackg,
 } from '../dist/colors.js'
 // import type {
 //     // style sheets:
@@ -65,6 +67,8 @@ jest.isolateModules(() => {
     let colors             : typeof _colors      = undefined as any;
     let themes             : typeof _themes      = undefined as any;
     let colorValues        : typeof _colorValues = undefined as any;
+    let config             : typeof _config      = undefined as any;
+    let defineBackg        : typeof _defineBackg = undefined as any;
     let styleSheetRegistry : typeof _styleSheetRegistry = undefined as any;
     // let render             : typeof _render      = undefined as any;
     // let lastStyleSheet     : StyleSheet|null     = null;
@@ -90,6 +94,8 @@ jest.isolateModules(() => {
         colors             = colorsModule.colors
         themes             = colorsModule.themes
         colorValues        = colorsModule.colorValues
+        config             = colorsModule.config
+        defineBackg        = colorsModule.defineBackg
         styleSheetRegistry = styleSheetModule.styleSheetRegistry
         
         
@@ -178,12 +184,10 @@ jest.isolateModules(() => {
             'foreg',
             
             'backgThin',
-            'backgMild',
             'backgBold',
             
             'foregThin',
             'foregMild',
-            'foregBold',
         ];
         pageColors.forEach((colorName) => {
             expect(allColors.includes(colorName)).toBe(true);
@@ -287,12 +291,10 @@ jest.isolateModules(() => {
             'foreg',
             
             'backgThin',
-            'backgMild',
             'backgBold',
             
             'foregThin',
             'foregMild',
-            'foregBold',
         ];
         pageColors.forEach((colorName) => {
             expect(allThemeColors.includes(colorName)).toBe(false);
@@ -391,12 +393,10 @@ jest.isolateModules(() => {
             'foreg',
             
             'backgThin',
-            'backgMild',
             'backgBold',
             
             'foregThin',
             'foregMild',
-            'foregBold',
         ];
         pageColors.forEach((colorName) => {
             expect(allColors.includes(colorName)).toBe(true);
@@ -622,7 +622,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
         expect((themes as any).mintGreen).toBe(undefined);
-        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect((colorValues as any).mintGreen?.hex?.()?.toLowerCase?.()).toBe('#8dd9c2');
         expect('mintGreen' in colors).toBe(true);
         expect('mintGreen' in themes).toBe(false);
         expect('mintGreen' in colorValues).toBe(true);
@@ -632,7 +632,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).happy).toBe('var(--col-happy)');
         expect((themes as any).happy).toBe('var(--col-happy)');
-        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect((colorValues as any).happy?.hex?.()?.toLowerCase?.()).toBe('#ff1493');
         expect('happy' in colors).toBe(true);
         expect('happy' in themes).toBe(true);
         expect('happy' in colorValues).toBe(true);
@@ -642,7 +642,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
         expect((themes as any).freshWater).toBe(undefined);
-        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect((colorValues as any).freshWater?.toString?.()?.toLowerCase?.()).toBe('rgb(173, 235, 235)');
         expect('freshWater' in colors).toBe(true);
         expect('freshWater' in themes).toBe(false);
         expect('freshWater' in colorValues).toBe(true);
@@ -708,7 +708,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).cream).toBe('var(--col-cream)');
         expect((themes as any).cream).toBe(undefined);
-        expect((colorValues as any).cream?.hex?.()?.toLocaleLowerCase?.()).toBe('#f0c1a7');
+        expect((colorValues as any).cream?.hex?.()?.toLowerCase?.()).toBe('#f0c1a7');
         expect('cream' in colors).toBe(true);
         expect('cream' in themes).toBe(false);
         expect('cream' in colorValues).toBe(true);
@@ -718,7 +718,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).brokenWhite).toBe('var(--col-brokenWhite)');
         expect((themes as any).brokenWhite).toBe('var(--col-brokenWhite)');
-        expect((colorValues as any).brokenWhite?.hex?.()?.toLocaleLowerCase?.()).toBe('#e3dfdc');
+        expect((colorValues as any).brokenWhite?.hex?.()?.toLowerCase?.()).toBe('#e3dfdc');
         expect('brokenWhite' in colors).toBe(true);
         expect('brokenWhite' in themes).toBe(true);
         expect('brokenWhite' in colorValues).toBe(true);
@@ -728,7 +728,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).freshBlue).toBe('var(--col-freshBlue)');
         expect((themes as any).freshBlue).toBe(undefined);
-        expect((colorValues as any).freshBlue?.toString?.()?.toLocaleLowerCase?.()).toBe('rgba(11, 216, 250, 0.5)');
+        expect((colorValues as any).freshBlue?.toString?.()?.toLowerCase?.()).toBe('rgba(11, 216, 250, 0.5)');
         expect('freshBlue' in colors).toBe(true);
         expect('freshBlue' in themes).toBe(false);
         expect('freshBlue' in colorValues).toBe(true);
@@ -806,7 +806,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
         expect((themes as any).mintGreen).toBe(undefined);
-        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect((colorValues as any).mintGreen?.hex?.()?.toLowerCase?.()).toBe('#8dd9c2');
         expect('mintGreen' in colors).toBe(true);
         expect('mintGreen' in themes).toBe(false);
         expect('mintGreen' in colorValues).toBe(true);
@@ -816,7 +816,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).happy).toBe('var(--col-happy)');
         expect((themes as any).happy).toBe('var(--col-happy)');
-        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect((colorValues as any).happy?.hex?.()?.toLowerCase?.()).toBe('#ff1493');
         expect('happy' in colors).toBe(true);
         expect('happy' in themes).toBe(true);
         expect('happy' in colorValues).toBe(true);
@@ -826,7 +826,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
         expect((themes as any).freshWater).toBe(undefined);
-        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect((colorValues as any).freshWater?.toString?.()?.toLowerCase?.()).toBe('rgb(173, 235, 235)');
         expect('freshWater' in colors).toBe(true);
         expect('freshWater' in themes).toBe(false);
         expect('freshWater' in colorValues).toBe(true);
@@ -904,7 +904,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
         expect((themes as any).mintGreen).toBe(undefined);
-        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect((colorValues as any).mintGreen?.hex?.()?.toLowerCase?.()).toBe('#8dd9c2');
         expect('mintGreen' in colors).toBe(true);
         expect('mintGreen' in themes).toBe(false);
         expect('mintGreen' in colorValues).toBe(true);
@@ -914,7 +914,7 @@ jest.isolateModules(() => {
         
         expect((colors as any).happy).toBe('var(--col-happy)');
         expect((themes as any).happy).toBe('var(--col-happy)');
-        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect((colorValues as any).happy?.hex?.()?.toLowerCase?.()).toBe('#ff1493');
         expect('happy' in colors).toBe(true);
         expect('happy' in themes).toBe(true);
         expect('happy' in colorValues).toBe(true);
@@ -924,12 +924,62 @@ jest.isolateModules(() => {
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
         expect((themes as any).freshWater).toBe(undefined);
-        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect((colorValues as any).freshWater?.toString?.()?.toLowerCase?.()).toBe('rgb(173, 235, 235)');
         expect('freshWater' in colors).toBe(true);
         expect('freshWater' in themes).toBe(false);
         expect('freshWater' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('freshWater')).toBe(true);
         expect(Object.keys(themes).includes('freshWater')).toBe(false);
         expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
+    });
+    
+    
+    
+    test('test defineBackg', async () => {
+        //#region reset colors module
+        {
+            const colorsModule = await import('../dist/colors.js')
+            
+            colors             = colorsModule.colors
+            themes             = colorsModule.themes
+            colorValues        = colorsModule.colorValues
+            config             = colorsModule.config
+            defineBackg        = colorsModule.defineBackg
+        }
+        //#endregion reset colors module
+        await yieldTime();
+        
+        colorValues.foreg     = Color('#212529');
+        
+        themes.primary   = Color('#0d6efd') as any;
+        themes.secondary = Color('#6c757d') as any;
+        themes.success   = Color('#198754') as any;
+        themes.info      = Color('#0dcaf0') as any;
+        themes.warning   = Color('#ffc107') as any;
+        themes.danger    = Color('#dc3545') as any;
+        themes.light     = Color('#f8f9fa') as any;
+        themes.dark      = Color('#212529') as any;
+        
+        
+        
+        // test with dark background:
+        
+        defineBackg('#1d3758');
+        await yieldTime();
+        
+        expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#1d3758');
+        
+        // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
+        expect((colorValues as any).foreg).toBe('var(--col-light)');
+        expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryMild?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).successMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).infoMild     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).warningMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerMild   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).lightMild                              ).toBe('var(--col-foregMild)');
+        expect((colorValues as any).darkMild     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
     });
 });
