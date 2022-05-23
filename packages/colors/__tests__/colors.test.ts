@@ -611,7 +611,8 @@ jest.isolateModules(() => {
         
         // by valid color names:
         
-        (colors as any).mintGreen = '#8dd9c2';
+        // @ts-ignore
+        colors.mintGreen = '#8dd9c2';
         // @ts-ignore
         themes.happy = 'deeppink';
         // @ts-ignore
@@ -653,7 +654,8 @@ jest.isolateModules(() => {
         
         // by css ref:
         
-        (colors as any).burgundy = 'var(--link-otherColor)';
+        // @ts-ignore
+        colors.burgundy = 'var(--link-otherColor)';
         // @ts-ignore
         themes.exciting = 'var(--hotpink)';
         // @ts-ignore
@@ -695,7 +697,8 @@ jest.isolateModules(() => {
         
         // by Color object:
         
-        (colors as any).cream = Color('#f0c1a7');
+        // @ts-ignore
+        colors.cream = Color('#f0c1a7');
         // @ts-ignore
         themes.brokenWhite = Color('#e3dfdc');
         // @ts-ignore
@@ -739,7 +742,7 @@ jest.isolateModules(() => {
         
         try {
             // @ts-ignore
-            (colors as any).someColor = 'invalidName';
+            colors.someColor = 'invalidName';
         } catch{ }
         try {
             // @ts-ignore
@@ -781,5 +784,54 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('badColor')).toBe(false);
         expect(Object.keys(themes).includes('badColor')).toBe(false);
         expect(Object.keys(colorValues).includes('badColor')).toBe(false);
+        
+        
+        
+        // by invalid color names of existing color:
+        
+        try {
+            // @ts-ignore
+            colors.mintGreen = 'invalidName';
+        } catch{ }
+        try {
+            // @ts-ignore
+            themes.happy = 'unknownColor';
+        } catch{ }
+        try {
+            // @ts-ignore
+            colorValues.freshWater = 'unnamedColor';
+        } catch{ }
+        
+        await yieldTime();
+        
+        expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
+        expect((themes as any).mintGreen).toBe(undefined);
+        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect('mintGreen' in colors).toBe(true);
+        expect('mintGreen' in themes).toBe(false);
+        expect('mintGreen' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('mintGreen')).toBe(true);
+        expect(Object.keys(themes).includes('mintGreen')).toBe(false);
+        expect(Object.keys(colorValues).includes('mintGreen')).toBe(true);
+        
+        expect((colors as any).happy).toBe('var(--col-happy)');
+        expect((themes as any).happy).toBe('var(--col-happy)');
+        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect('happy' in colors).toBe(true);
+        expect('happy' in themes).toBe(true);
+        expect('happy' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('happy')).toBe(true);
+        expect(Object.keys(themes).includes('happy')).toBe(true);
+        expect(Object.keys(colorValues).includes('happy')).toBe(true);
+        
+        expect((colors as any).freshWater).toBe('var(--col-freshWater)');
+        expect((themes as any).freshWater).toBe(undefined);
+        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect('freshWater' in colors).toBe(true);
+        expect('freshWater' in themes).toBe(false);
+        expect('freshWater' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('freshWater')).toBe(true);
+        expect(Object.keys(themes).includes('freshWater')).toBe(false);
+        expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
     });
 });
