@@ -435,27 +435,33 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect(colors.orange).toBe(undefined);
+        expect((themes as any).orange).toBe(undefined);
         expect(colorValues.orange).toBe(undefined);
         expect('orange' in colors).toBe(false);
+        expect('orange' in themes).toBe(false);
         expect('orange' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('orange')).toBe(false);
+        expect(Object.keys(themes).includes('orange')).toBe(false);
         expect(Object.keys(colorValues).includes('orange')).toBe(false);
         
         expect(colors.warning).toBe(undefined);
-        expect(colorValues.warning).toBe(undefined);
+        expect(themes.warning).toBe(undefined);
         expect(colorValues.warning).toBe(undefined);
         expect('warning' in colors).toBe(false);
-        expect('warning' in colorValues).toBe(false);
+        expect('warning' in themes).toBe(false);
         expect('warning' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('warning')).toBe(false);
-        expect(Object.keys(colorValues).includes('warning')).toBe(false);
+        expect(Object.keys(themes).includes('warning')).toBe(false);
         expect(Object.keys(colorValues).includes('warning')).toBe(false);
         
         expect(colors.teal).toBe(undefined);
+        expect((themes as any).teal).toBe(undefined);
         expect(colorValues.teal).toBe(undefined);
         expect('teal' in colors).toBe(false);
+        expect('teal' in themes).toBe(false);
         expect('teal' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('teal')).toBe(false);
+        expect(Object.keys(themes).includes('teal')).toBe(false);
         expect(Object.keys(colorValues).includes('teal')).toBe(false);
         
         // delete non existing keys:
@@ -489,27 +495,33 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect(colors.purple).toBe(undefined);
+        expect((themes as any).purple).toBe(undefined);
         expect(colorValues.purple).toBe(undefined);
         expect('purple' in colors).toBe(false);
+        expect('purple' in themes).toBe(false);
         expect('purple' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('purple')).toBe(false);
+        expect(Object.keys(themes).includes('purple')).toBe(false);
         expect(Object.keys(colorValues).includes('purple')).toBe(false);
         
         expect(colors.info).toBe(undefined);
-        expect(colorValues.info).toBe(undefined);
+        expect(themes.info).toBe(undefined);
         expect(colorValues.info).toBe(undefined);
         expect('info' in colors).toBe(false);
-        expect('info' in colorValues).toBe(false);
+        expect('info' in themes).toBe(false);
         expect('info' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('info')).toBe(false);
-        expect(Object.keys(colorValues).includes('info')).toBe(false);
+        expect(Object.keys(themes).includes('info')).toBe(false);
         expect(Object.keys(colorValues).includes('info')).toBe(false);
         
         expect(colors.indigo).toBe(undefined);
+        expect((themes as any).indigo).toBe(undefined);
         expect(colorValues.indigo).toBe(undefined);
         expect('indigo' in colors).toBe(false);
+        expect('indigo' in themes).toBe(false);
         expect('indigo' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('indigo')).toBe(false);
+        expect(Object.keys(themes).includes('indigo')).toBe(false);
         expect(Object.keys(colorValues).includes('indigo')).toBe(false);
         
         // assigning undefined to non existing keys:
@@ -543,27 +555,33 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect(colors.yellow).toBe(undefined);
+        expect((themes as any).yellow).toBe(undefined);
         expect(colorValues.yellow).toBe(undefined);
         expect('yellow' in colors).toBe(false);
+        expect('yellow' in themes).toBe(false);
         expect('yellow' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('yellow')).toBe(false);
+        expect(Object.keys(themes).includes('yellow')).toBe(false);
         expect(Object.keys(colorValues).includes('yellow')).toBe(false);
         
         expect(colors.secondary).toBe(undefined);
-        expect(colorValues.secondary).toBe(undefined);
+        expect(themes.secondary).toBe(undefined);
         expect(colorValues.secondary).toBe(undefined);
         expect('secondary' in colors).toBe(false);
-        expect('secondary' in colorValues).toBe(false);
+        expect('secondary' in themes).toBe(false);
         expect('secondary' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('secondary')).toBe(false);
-        expect(Object.keys(colorValues).includes('secondary')).toBe(false);
+        expect(Object.keys(themes).includes('secondary')).toBe(false);
         expect(Object.keys(colorValues).includes('secondary')).toBe(false);
         
         expect(colors.pink).toBe(undefined);
+        expect((themes as any).pink).toBe(undefined);
         expect(colorValues.pink).toBe(undefined);
         expect('pink' in colors).toBe(false);
+        expect('pink' in themes).toBe(false);
         expect('pink' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('pink')).toBe(false);
+        expect(Object.keys(themes).includes('pink')).toBe(false);
         expect(Object.keys(colorValues).includes('pink')).toBe(false);
         
         // assigning null to non existing keys:
@@ -582,5 +600,52 @@ jest.isolateModules(() => {
         expect(Object.keys(colors)).toEqual(prevKeys3);
         expect(Object.keys(themes)).toEqual(prevThemeKeys3);
         expect(Object.keys(colorValues)).toEqual(prevKeys3);
+    });
+    
+    
+    
+    test('test add', async () => {
+        await yieldTime();
+        
+        
+        
+        // by valid color names:
+        (colors as any).mintGreen = '#8dd9c2';
+        // @ts-ignore
+        themes.happy = 'deeppink';
+        // @ts-ignore
+        colorValues.freshWater = 'hsla(180deg, 60%, 80%)';
+        
+        await yieldTime();
+        
+        expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
+        expect((themes as any).mintGreen).toBe(undefined);
+        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect('mintGreen' in colors).toBe(true);
+        expect('mintGreen' in themes).toBe(false);
+        expect('mintGreen' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('mintGreen')).toBe(true);
+        expect(Object.keys(themes).includes('mintGreen')).toBe(false);
+        expect(Object.keys(colorValues).includes('mintGreen')).toBe(true);
+        
+        expect((colors as any).happy).toBe('var(--col-happy)');
+        expect((themes as any).happy).toBe('var(--col-happy)');
+        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect('happy' in colors).toBe(true);
+        expect('happy' in themes).toBe(true);
+        expect('happy' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('happy')).toBe(true);
+        expect(Object.keys(themes).includes('happy')).toBe(true);
+        expect(Object.keys(colorValues).includes('happy')).toBe(true);
+        
+        expect((colors as any).freshWater).toBe('var(--col-freshWater)');
+        expect((themes as any).freshWater).toBe(undefined);
+        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect('freshWater' in colors).toBe(true);
+        expect('freshWater' in themes).toBe(false);
+        expect('freshWater' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('freshWater')).toBe(true);
+        expect(Object.keys(themes).includes('freshWater')).toBe(false);
+        expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
     });
 });
