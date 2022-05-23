@@ -457,5 +457,22 @@ jest.isolateModules(() => {
         expect('teal' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('teal')).toBe(false);
         expect(Object.keys(colorValues).includes('teal')).toBe(false);
+        
+        // delete non existing keys:
+        const prevKeys = Object.keys(colors);
+        const prevThemeKeys = Object.keys(themes);
+        delete (colors as any).whateverBooFoo;
+        delete (themes as any).whateverBooFoo;
+        delete (colorValues as any).whateverBooFoo;
+        expect(Object.keys(colors)).toEqual(prevKeys);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys);
+        expect(Object.keys(colorValues)).toEqual(prevKeys);
+        
+        // delete existing keys but not in themes:
+        delete (themes as any).black;
+        delete (themes as any).gray;
+        expect(Object.keys(colors)).toEqual(prevKeys);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys);
+        expect(Object.keys(colorValues)).toEqual(prevKeys);
     });
 });
