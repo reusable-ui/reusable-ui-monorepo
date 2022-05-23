@@ -936,29 +936,21 @@ jest.isolateModules(() => {
     
     
     test('test defineBackg', async () => {
-        //#region reset colors module
-        {
-            const colorsModule = await import('../dist/colors.js')
-            
-            colors             = colorsModule.colors
-            themes             = colorsModule.themes
-            colorValues        = colorsModule.colorValues
-            config             = colorsModule.config
-            defineBackg        = colorsModule.defineBackg
-        }
-        //#endregion reset colors module
         await yieldTime();
         
-        colorValues.foreg     = Color('#212529');
+        //#region reset the defaults
+        colorValues.backg = 'var(--col-white)';
+        colorValues.foreg = 'var(--col-dark)';
         
-        themes.primary   = Color('#0d6efd') as any;
-        themes.secondary = Color('#6c757d') as any;
-        themes.success   = Color('#198754') as any;
-        themes.info      = Color('#0dcaf0') as any;
-        themes.warning   = Color('#ffc107') as any;
-        themes.danger    = Color('#dc3545') as any;
-        themes.light     = Color('#f8f9fa') as any;
-        themes.dark      = Color('#212529') as any;
+        themes.primary    = Color('#0d6efd') as any;
+        themes.secondary  = Color('#6c757d') as any;
+        themes.success    = Color('#198754') as any;
+        themes.info       = Color('#0dcaf0') as any;
+        themes.warning    = Color('#ffc107') as any;
+        themes.danger     = Color('#dc3545') as any;
+        themes.light      = Color('#f8f9fa') as any;
+        themes.dark       = Color('#212529') as any;
+        //#endregion reset the defaults
         
         
         
