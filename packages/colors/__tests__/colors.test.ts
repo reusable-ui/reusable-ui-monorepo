@@ -833,5 +833,103 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('freshWater')).toBe(true);
         expect(Object.keys(themes).includes('freshWater')).toBe(false);
         expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
+        
+        
+        
+        // by invalid object of nonexisting color:
+        
+        try {
+            // @ts-ignore
+            colors.weirdColor = {};
+        } catch{ }
+        try {
+            // @ts-ignore
+            themes.bad = ['boo', 'foo', 123];
+        } catch{ }
+        try {
+            // @ts-ignore
+            colorValues.illegalColor = Symbol();
+        } catch{ }
+        
+        await yieldTime();
+        
+        expect((colors as any).weirdColor).toBe(undefined);
+        expect((themes as any).weirdColor).toBe(undefined);
+        expect((colorValues as any).weirdColor).toBe(undefined);
+        expect('weirdColor' in colors).toBe(false);
+        expect('weirdColor' in themes).toBe(false);
+        expect('weirdColor' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('weirdColor')).toBe(false);
+        expect(Object.keys(themes).includes('weirdColor')).toBe(false);
+        expect(Object.keys(colorValues).includes('weirdColor')).toBe(false);
+        
+        expect((colors as any).bad).toBe(undefined);
+        expect((themes as any).bad).toBe(undefined);
+        expect((colorValues as any).bad).toBe(undefined);
+        expect('bad' in colors).toBe(false);
+        expect('bad' in themes).toBe(false);
+        expect('bad' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('bad')).toBe(false);
+        expect(Object.keys(themes).includes('bad')).toBe(false);
+        expect(Object.keys(colorValues).includes('bad')).toBe(false);
+        
+        expect((colors as any).illegalColor).toBe(undefined);
+        expect((themes as any).illegalColor).toBe(undefined);
+        expect((colorValues as any).illegalColor).toBe(undefined);
+        expect('illegalColor' in colors).toBe(false);
+        expect('illegalColor' in themes).toBe(false);
+        expect('illegalColor' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('illegalColor')).toBe(false);
+        expect(Object.keys(themes).includes('illegalColor')).toBe(false);
+        expect(Object.keys(colorValues).includes('illegalColor')).toBe(false);
+        
+        
+        
+        // by invalid object of existing color:
+        
+        try {
+            // @ts-ignore
+            colors.mintGreen = new Map();
+        } catch{ }
+        try {
+            // @ts-ignore
+            themes.happy = 123;
+        } catch{ }
+        try {
+            // @ts-ignore
+            colorValues.freshWater = new Set();
+        } catch{ }
+        
+        await yieldTime();
+        
+        expect((colors as any).mintGreen).toBe('var(--col-mintGreen)');
+        expect((themes as any).mintGreen).toBe(undefined);
+        expect((colorValues as any).mintGreen?.hex?.()?.toLocaleLowerCase?.()).toBe('#8dd9c2');
+        expect('mintGreen' in colors).toBe(true);
+        expect('mintGreen' in themes).toBe(false);
+        expect('mintGreen' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('mintGreen')).toBe(true);
+        expect(Object.keys(themes).includes('mintGreen')).toBe(false);
+        expect(Object.keys(colorValues).includes('mintGreen')).toBe(true);
+        
+        expect((colors as any).happy).toBe('var(--col-happy)');
+        expect((themes as any).happy).toBe('var(--col-happy)');
+        expect((colorValues as any).happy?.hex?.()?.toLocaleLowerCase?.()).toBe('#ff1493');
+        expect('happy' in colors).toBe(true);
+        expect('happy' in themes).toBe(true);
+        expect('happy' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('happy')).toBe(true);
+        expect(Object.keys(themes).includes('happy')).toBe(true);
+        expect(Object.keys(colorValues).includes('happy')).toBe(true);
+        
+        expect((colors as any).freshWater).toBe('var(--col-freshWater)');
+        expect((themes as any).freshWater).toBe(undefined);
+        expect((colorValues as any).freshWater?.toString?.()?.toLocaleLowerCase?.()).toBe('rgb(173, 235, 235)');
+        expect('freshWater' in colors).toBe(true);
+        expect('freshWater' in themes).toBe(false);
+        expect('freshWater' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('freshWater')).toBe(true);
+        expect(Object.keys(themes).includes('freshWater')).toBe(false);
+        expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
     });
 });
