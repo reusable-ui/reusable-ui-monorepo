@@ -528,5 +528,59 @@ jest.isolateModules(() => {
         expect(Object.keys(colors)).toEqual(prevKeys2);
         expect(Object.keys(themes)).toEqual(prevThemeKeys2);
         expect(Object.keys(colorValues)).toEqual(prevKeys2);
+        
+        
+        
+        // by assigning null:
+        
+        // @ts-ignore
+        colors.yellow = null;
+        // @ts-ignore
+        themes.secondary = null;
+        // @ts-ignore
+        colorValues.pink = null;
+        
+        await yieldTime();
+        
+        expect(colors.yellow).toBe(undefined);
+        expect(colorValues.yellow).toBe(undefined);
+        expect('yellow' in colors).toBe(false);
+        expect('yellow' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('yellow')).toBe(false);
+        expect(Object.keys(colorValues).includes('yellow')).toBe(false);
+        
+        expect(colors.secondary).toBe(undefined);
+        expect(colorValues.secondary).toBe(undefined);
+        expect(colorValues.secondary).toBe(undefined);
+        expect('secondary' in colors).toBe(false);
+        expect('secondary' in colorValues).toBe(false);
+        expect('secondary' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('secondary')).toBe(false);
+        expect(Object.keys(colorValues).includes('secondary')).toBe(false);
+        expect(Object.keys(colorValues).includes('secondary')).toBe(false);
+        
+        expect(colors.pink).toBe(undefined);
+        expect(colorValues.pink).toBe(undefined);
+        expect('pink' in colors).toBe(false);
+        expect('pink' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('pink')).toBe(false);
+        expect(Object.keys(colorValues).includes('pink')).toBe(false);
+        
+        // assigning null to non existing keys:
+        const prevKeys3 = Object.keys(colors);
+        const prevThemeKeys3 = Object.keys(themes);
+        (colors as any).whateverBooFoo = null;
+        (themes as any).whateverBooFoo = null;
+        (colorValues as any).whateverBooFoo = null;
+        expect(Object.keys(colors)).toEqual(prevKeys3);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys3);
+        expect(Object.keys(colorValues)).toEqual(prevKeys3);
+        
+        // assigning null to existing keys but not in themes:
+        (themes as any).black = null;
+        (themes as any).gray = null;
+        expect(Object.keys(colors)).toEqual(prevKeys3);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys3);
+        expect(Object.keys(colorValues)).toEqual(prevKeys3);
     });
 });
