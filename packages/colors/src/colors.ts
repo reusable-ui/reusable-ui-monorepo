@@ -458,34 +458,43 @@ export {
 
 
 // utilities:
-export const defineBackg = (color: Color|string, autoDefineForeg = true) => {
+export const defineBackg = (color: Color|CssCustomRef|(string & {}), autoDefineForeg = true) => {
     if (!color) throw Error('You cannot delete the background color.');
-    if (typeof(color) === 'string') color = Color(color);
-    if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
+    if ((typeof(color) === 'string') && !isRef(color)) color = Color(color);
+    if ((typeof(color) !== 'string') && !isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
     
     
     
     // update cssConfig:
-    cssValsProxy.backg     = color;
-    cssValsProxy.backgThin = thinColor(color);
-    cssValsProxy.backgBold = boldColor(color);
+    cssValsProxy.backg = color;
+    const colorValue = resolveColor(color);
+    if (colorValue) {
+        cssValsProxy.backgThin = thinColor(colorValue);
+        cssValsProxy.backgBold = boldColor(colorValue);
+        
+        
+        
+        if (autoDefineForeg) defineForeg(textColor(colorValue));
+    } // if
     
     
     
-    if (autoDefineForeg) defineForeg(textColor(color));
     defineAllThemes();
 };
-export const defineForeg = (color: Color|string) => {
+export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
     if (!color) throw Error('You cannot delete the foreground color.');
-    if (typeof(color) === 'string') color = Color(color);
-    if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
+    if ((typeof(color) === 'string') && !isRef(color)) color = Color(color);
+    if ((typeof(color) !== 'string') && !isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
     
     
     
     // update cssConfig:
-    cssValsProxy.foreg     = color;
-    cssValsProxy.foregThin = thinColor(color);
-    cssValsProxy.foregMild = mildColor(color);
+    cssValsProxy.foreg = color;
+    const colorValue = resolveColor(color);
+    if (colorValue) {
+        cssValsProxy.foregThin = thinColor(colorValue);
+        cssValsProxy.foregMild = mildColor(colorValue);
+    } // if
 };
 const defineAllThemes = () => {
     for (const themeName in themes) {
@@ -511,6 +520,7 @@ export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(st
     }
     else {
         if ((typeof(color) === 'string') && !isRef(color)) color = Color(color);
+        if ((typeof(color) !== 'string') && !isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
         
         
         
