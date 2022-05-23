@@ -420,13 +420,8 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
         const success = setColorValue(_object, colorName, newValue);
         
         if (success) {
-            // update/delete from/to the `themes`:
-            if (isDeleting) {
-                delete (themes as any)[colorName];
-            }
-            else {
-                (themes as any)[colorName] = ({} as any); // i know it's an invalid Color value, but the value will never be fetched, only fetch the key
-            } // if
+            // update sub theme colors:
+            defineTheme(colorName, newValue as any);
         } // if
         
         return success;
@@ -437,8 +432,8 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
         const success = setColorValue(_object, colorName, undefined);
         
         if (success) {
-            // delete from the `themes`:
-            delete (themes as any)[colorName];
+            // delete sub theme colors:
+            defineTheme(colorName, undefined);
         } // if
         
         return success;
@@ -500,7 +495,7 @@ const defineAllThemes = () => {
         defineTheme(themeName, baseColor);
     } // for
 };
-export const defineTheme = (name: string, color: Optional<Color|string>) => {
+export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(string & {})>) => {
     if (!color) {
         // delete cssConfig:
         delete cssValsProxy[   name       as keyof ColorList];
@@ -515,17 +510,20 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         delete (themes as any)[name];
     }
     else {
-        if (typeof(color) === 'string') color = Color(color);
-        if (!isColorInstance(color)) throw TypeError('The value must be a `string` or `Color`.');
+        if ((typeof(color) === 'string') && !isRef(color)) color = Color(color);
         
         
         
         // update cssConfig:
         cssValsProxy[   name       as keyof ColorList] = color;
-        cssValsProxy[`${name}Text` as keyof ColorList] = textColor(color);
-        cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(color);
-        cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(color);
-        cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(color);
+        
+        const colorValue = resolveColor(color);
+        if (colorValue) {
+            cssValsProxy[`${name}Text` as keyof ColorList] = textColor(colorValue);
+            cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(colorValue);
+            cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(colorValue);
+            cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(colorValue);
+        } // if
         
         
         
