@@ -939,17 +939,19 @@ jest.isolateModules(() => {
         await yieldTime();
         
         //#region reset the defaults
-        colorValues.backg = 'var(--col-white)';
-        colorValues.foreg = 'var(--col-dark)';
+        colorValues.blue   = '#0d6efd' as any;
+        colorValues.yellow = '#ffc107' as any;
+        colorValues.backg  = 'var(--col-white)';
+        colorValues.foreg  = 'var(--col-dark)';
         
-        themes.primary    = Color('#0d6efd') as any;
-        themes.secondary  = Color('#6c757d') as any;
-        themes.success    = Color('#198754') as any;
-        themes.info       = Color('#0dcaf0') as any;
-        themes.warning    = Color('#ffc107') as any;
-        themes.danger     = Color('#dc3545') as any;
-        themes.light      = Color('#f8f9fa') as any;
-        themes.dark       = Color('#212529') as any;
+        themes.primary     = Color('#0d6efd') as any;
+        themes.secondary   = Color('#6c757d') as any;
+        themes.success     = Color('#198754') as any;
+        themes.info        = Color('#0dcaf0') as any;
+        themes.warning     = Color('#ffc107') as any;
+        themes.danger      = Color('#dc3545') as any;
+        themes.light       = Color('#f8f9fa') as any;
+        themes.dark        = Color('#212529') as any;
         //#endregion reset the defaults
         
         
@@ -995,5 +997,27 @@ jest.isolateModules(() => {
         expect((colorValues as any).dangerMild   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         expect((colorValues as any).lightMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         expect((colorValues as any).darkMild                               ).toBe('var(--col-foregMild)');
+        
+        
+        
+        // test with dark background ref:
+        
+        defineBackg('var(--col-blue)');
+        await yieldTime();
+        
+        expect((colorValues as any).backg).toBe('var(--col-blue)');
+        
+        // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
+        expect((colorValues as any).foreg).toBe('var(--col-light)');
+        expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryMild                            ).toBe('var(--col-blue)'                                                           );
+        expect((colorValues as any).secondaryMild?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).successMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).infoMild     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).warningMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerMild   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).lightMild                              ).toBe('var(--col-foregMild)');
+        expect((colorValues as any).darkMild     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
     });
 });
