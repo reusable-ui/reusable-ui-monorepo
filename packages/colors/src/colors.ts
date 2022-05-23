@@ -402,7 +402,7 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
                 delete (themes as any)[colorName];
             }
             else {
-                (themes as any)[colorName] = Color(newValue);
+                (themes as any)[colorName] = ({} as any); // i know it's an invalid Color value, but the value will never be fetched, only fetch the key
             } // if
         } // if
         
