@@ -391,16 +391,18 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
         return colorsProxy[colorName];
     },
     set                      : (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
+        const isDeleting = (newValue === undefined) || (newValue === null);
+        if (isDeleting && (!(colorName in themes))) return true; // delete something not in themes => return `true` (always success for deleting non existing keys)
+        
         const success = setColorValue(_object, colorName, newValue);
         
         if (success) {
             // update/delete from/to the `themes`:
-            const newColor = cssValsProxy[colorName];
-            if (!newColor) {
+            if (isDeleting) {
                 delete (themes as any)[colorName];
             }
             else {
-                (themes as any)[colorName] = newColor;
+                (themes as any)[colorName] = Color(newValue);
             } // if
         } // if
         
