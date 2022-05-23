@@ -508,6 +508,11 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         delete cssValsProxy[`${name}Thin` as keyof ColorList];
         delete cssValsProxy[`${name}Mild` as keyof ColorList];
         delete cssValsProxy[`${name}Bold` as keyof ColorList];
+        
+        
+        
+        // delete from the `themes`:
+        delete (themes as any)[name];
     }
     else {
         if (typeof(color) === 'string') color = Color(color);
@@ -521,5 +526,10 @@ export const defineTheme = (name: string, color: Optional<Color|string>) => {
         cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(color);
         cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(color);
         cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(color);
+        
+        
+        
+        // update to the `themes`:
+        (themes as any)[name] = ({} as any); // i know it's an invalid Color value, but the value will never be fetched, only fetch the key
     } // if
 };
