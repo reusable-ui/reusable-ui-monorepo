@@ -732,5 +732,54 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('freshBlue')).toBe(true);
         expect(Object.keys(themes).includes('freshBlue')).toBe(false);
         expect(Object.keys(colorValues).includes('freshBlue')).toBe(true);
+        
+        
+        
+        // by invalid color names of nonexisting color:
+        
+        try {
+            // @ts-ignore
+            (colors as any).someColor = 'invalidName';
+        } catch{ }
+        try {
+            // @ts-ignore
+            themes.sad = 'unknownColor';
+        } catch{ }
+        try {
+            // @ts-ignore
+            colorValues.badColor = 'unnamedColor';
+        } catch{ }
+        
+        await yieldTime();
+        
+        expect((colors as any).someColor).toBe(undefined);
+        expect((themes as any).someColor).toBe(undefined);
+        expect((colorValues as any).someColor).toBe(undefined);
+        expect('someColor' in colors).toBe(false);
+        expect('someColor' in themes).toBe(false);
+        expect('someColor' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('someColor')).toBe(false);
+        expect(Object.keys(themes).includes('someColor')).toBe(false);
+        expect(Object.keys(colorValues).includes('someColor')).toBe(false);
+        
+        expect((colors as any).sad).toBe(undefined);
+        expect((themes as any).sad).toBe(undefined);
+        expect((colorValues as any).sad).toBe(undefined);
+        expect('sad' in colors).toBe(false);
+        expect('sad' in themes).toBe(false);
+        expect('sad' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('sad')).toBe(false);
+        expect(Object.keys(themes).includes('sad')).toBe(false);
+        expect(Object.keys(colorValues).includes('sad')).toBe(false);
+        
+        expect((colors as any).badColor).toBe(undefined);
+        expect((themes as any).badColor).toBe(undefined);
+        expect((colorValues as any).badColor).toBe(undefined);
+        expect('badColor' in colors).toBe(false);
+        expect('badColor' in themes).toBe(false);
+        expect('badColor' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('badColor')).toBe(false);
+        expect(Object.keys(themes).includes('badColor')).toBe(false);
+        expect(Object.keys(colorValues).includes('badColor')).toBe(false);
     });
 });
