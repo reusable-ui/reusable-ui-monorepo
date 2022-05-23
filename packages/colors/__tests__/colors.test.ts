@@ -474,5 +474,59 @@ jest.isolateModules(() => {
         expect(Object.keys(colors)).toEqual(prevKeys);
         expect(Object.keys(themes)).toEqual(prevThemeKeys);
         expect(Object.keys(colorValues)).toEqual(prevKeys);
+        
+        
+        
+        // by assigning undefined:
+        
+        // @ts-ignore
+        colors.purple = undefined;
+        // @ts-ignore
+        themes.info = undefined;
+        // @ts-ignore
+        colorValues.indigo = undefined;
+        
+        await yieldTime();
+        
+        expect(colors.purple).toBe(undefined);
+        expect(colorValues.purple).toBe(undefined);
+        expect('purple' in colors).toBe(false);
+        expect('purple' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('purple')).toBe(false);
+        expect(Object.keys(colorValues).includes('purple')).toBe(false);
+        
+        expect(colors.info).toBe(undefined);
+        expect(colorValues.info).toBe(undefined);
+        expect(colorValues.info).toBe(undefined);
+        expect('info' in colors).toBe(false);
+        expect('info' in colorValues).toBe(false);
+        expect('info' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('info')).toBe(false);
+        expect(Object.keys(colorValues).includes('info')).toBe(false);
+        expect(Object.keys(colorValues).includes('info')).toBe(false);
+        
+        expect(colors.indigo).toBe(undefined);
+        expect(colorValues.indigo).toBe(undefined);
+        expect('indigo' in colors).toBe(false);
+        expect('indigo' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('indigo')).toBe(false);
+        expect(Object.keys(colorValues).includes('indigo')).toBe(false);
+        
+        // assigning undefined to non existing keys:
+        const prevKeys2 = Object.keys(colors);
+        const prevThemeKeys2 = Object.keys(themes);
+        (colors as any).whateverBooFoo = undefined;
+        (themes as any).whateverBooFoo = undefined;
+        (colorValues as any).whateverBooFoo = undefined;
+        expect(Object.keys(colors)).toEqual(prevKeys2);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys2);
+        expect(Object.keys(colorValues)).toEqual(prevKeys2);
+        
+        // assigning undefined to existing keys but not in themes:
+        (themes as any).black = undefined;
+        (themes as any).gray = undefined;
+        expect(Object.keys(colors)).toEqual(prevKeys2);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys2);
+        expect(Object.keys(colorValues)).toEqual(prevKeys2);
     });
 });
