@@ -647,5 +647,46 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('freshWater')).toBe(true);
         expect(Object.keys(themes).includes('freshWater')).toBe(false);
         expect(Object.keys(colorValues).includes('freshWater')).toBe(true);
+        
+        
+        
+        // by css ref:
+        (colors as any).burgundy = 'var(--link-otherColor)';
+        // @ts-ignore
+        themes.exciting = 'var(--hotpink)';
+        // @ts-ignore
+        colorValues.blueFire = 'var(--awesomeColor)';
+        
+        await yieldTime();
+        
+        expect((colors as any).burgundy).toBe('var(--col-burgundy)');
+        expect((themes as any).burgundy).toBe(undefined);
+        expect((colorValues as any).burgundy).toBe('var(--link-otherColor)');
+        expect('burgundy' in colors).toBe(true);
+        expect('burgundy' in themes).toBe(false);
+        expect('burgundy' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('burgundy')).toBe(true);
+        expect(Object.keys(themes).includes('burgundy')).toBe(false);
+        expect(Object.keys(colorValues).includes('burgundy')).toBe(true);
+        
+        expect((colors as any).exciting).toBe('var(--col-exciting)');
+        expect((themes as any).exciting).toBe('var(--col-exciting)');
+        expect((colorValues as any).exciting).toBe('var(--hotpink)');
+        expect('exciting' in colors).toBe(true);
+        expect('exciting' in themes).toBe(true);
+        expect('exciting' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('exciting')).toBe(true);
+        expect(Object.keys(themes).includes('exciting')).toBe(true);
+        expect(Object.keys(colorValues).includes('exciting')).toBe(true);
+        
+        expect((colors as any).blueFire).toBe('var(--col-blueFire)');
+        expect((themes as any).blueFire).toBe(undefined);
+        expect((colorValues as any).blueFire).toBe('var(--awesomeColor)');
+        expect('blueFire' in colors).toBe(true);
+        expect('blueFire' in themes).toBe(false);
+        expect('blueFire' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('blueFire')).toBe(true);
+        expect(Object.keys(themes).includes('blueFire')).toBe(false);
+        expect(Object.keys(colorValues).includes('blueFire')).toBe(true);
     });
 });
