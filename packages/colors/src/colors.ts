@@ -282,6 +282,8 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
 
 
 // proxy handlers:
+const reservedColors : string[] = ['dark', 'light', 'backg',  'foreg'];
+
 /**
  * Always get a safe `CssColor` representation instead of a `Color` object.
  */
@@ -328,6 +330,10 @@ const getColorValue = (_object: object, colorName: keyof ColorList): Color|undef
 const setColorValue = (_object: object, colorName: keyof ColorList, newValue: any): boolean => {
     // handle undefined or null:
     if ((newValue === undefined) || (newValue === null)) {
+        if (reservedColors.includes(colorName)) {
+            throw TypeError(`Cannot delete reserved color name: ${colorName}.`);
+        } // if
+        
         delete cssVals[colorName]; // delete the actual object
         return true;
     } // if
@@ -363,6 +369,17 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
     // invalid color value => error:
     throw TypeError('The value must be a `Color|validColorName|var(--ref)|undefined|null`.');
 };
+/**
+ * Prevents deleting reserved colors.
+ */
+const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => {
+    if (reservedColors.includes(colorName)) {
+        throw TypeError(`Cannot delete reserved color name: ${colorName}.`);
+    } // if
+    
+    delete cssVals[colorName]; // delete the actual object
+    return true;
+}
 
 
 
@@ -380,7 +397,8 @@ export { cssConfig }
 export type ColorRefs<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: CssCustomSimpleRef }
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const colorsProxy = new Proxy<ColorRefs<ColorList>>(colors, {
-    set : setColorValue,
+    set            : setColorValue,
+    deleteProperty : deleteColor,
 });
 export { 
     colorsProxy as colors,
@@ -394,8 +412,9 @@ export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof T
 // a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as ColorVals<ColorList>, {
-    get : getColorValue,
-    set : setColorValue,
+    get            : getColorValue,
+    set            : setColorValue,
+    deleteProperty : deleteColor,
 });
 export {
     cssValsProxy as colorValues,
@@ -430,7 +449,7 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
     deleteProperty           : (_object: object, colorName: keyof ColorList): boolean => {
         if (!(colorName in themes)) return true; // delete something not in themes => return `true` (always success for deleting non existing keys)
         
-        const success = setColorValue(_object, colorName, undefined);
+        const success = deleteColor(_object, colorName);
         
         if (success) {
             // delete sub theme colors:
