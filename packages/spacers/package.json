@@ -1,0 +1,40 @@
+{
+  "name": "@reusable-ui/spacers",
+  "version": "5.0.0",
+  "description": "A spacer (margins/paddings/gaps) management system for web components using css variables (css custom properties).",
+  "keywords": [
+    "spacers",
+    "margins",
+    "paddings",
+    "gaps",
+    "css",
+    "stylesheet",
+    "config",
+    "configuration",
+    "variables",
+    "property"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/spacers.js",
+  "types": "dist/spacers.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.4",
+    "@cssfn/css-types": "^2.0.1"
+  }
+}
