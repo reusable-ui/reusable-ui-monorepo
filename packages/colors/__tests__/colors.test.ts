@@ -8,6 +8,7 @@ import type {
     config      as _config,
     defineBackg as _defineBackg,
     defineForeg as _defineForeg,
+    defineTheme as _defineTheme,
 } from '../dist/colors.js'
 // import type {
 //     // style sheets:
@@ -71,6 +72,7 @@ jest.isolateModules(() => {
     let config             : typeof _config      = undefined as any;
     let defineBackg        : typeof _defineBackg = undefined as any;
     let defineForeg        : typeof _defineForeg = undefined as any;
+    let defineTheme        : typeof _defineTheme = undefined as any;
     let styleSheetRegistry : typeof _styleSheetRegistry = undefined as any;
     // let render             : typeof _render      = undefined as any;
     // let lastStyleSheet     : StyleSheet|null     = null;
@@ -99,6 +101,7 @@ jest.isolateModules(() => {
         config             = colorsModule.config
         defineBackg        = colorsModule.defineBackg
         defineForeg        = colorsModule.defineForeg
+        defineTheme        = colorsModule.defineTheme
         styleSheetRegistry = styleSheetModule.styleSheetRegistry
         
         
@@ -1362,5 +1365,103 @@ jest.isolateModules(() => {
         expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
         expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
         expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+    });
+    
+    
+    
+    test('test defineTheme', async () => {
+        await yieldTime();
+        
+        //#region reset the defaults
+        colorValues.white  = '#ffffff' as any;
+        colorValues.dark   = '#212529' as any;
+        (colorValues as any).tea = '#14a586' as any;
+        colorValues.backg  = 'var(--col-white)';
+        colorValues.foreg  = 'var(--col-dark)';
+        //#endregion reset the defaults
+        
+        
+        
+        // test with a valid color name:
+        
+        defineTheme('caramel', '#be8b6b');
+        await yieldTime();
+        
+        expect((colors as any).caramel).toBe('var(--col-caramel)');
+        expect((themes as any).caramel).toBe('var(--col-caramel)');
+        expect((colorValues as any).caramel?.hex?.()?.toLowerCase?.()).toBe('#be8b6b');
+        expect('caramel' in colors).toBe(true);
+        expect('caramel' in themes).toBe(true);
+        expect('caramel' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('caramel')).toBe(true);
+        expect(Object.keys(themes).includes('caramel')).toBe(true);
+        const suffixes: string[] = [
+            'Text',
+            'Thin',
+            'Mild',
+            'Bold',
+        ];
+        suffixes.forEach((suffix) => {
+            expect(`caramel${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`caramel${suffix}`)).toBe(true);
+        });
+        expect(Object.keys(colorValues).includes('caramel')).toBe(true);
+        
+        expect((colorValues as any).caramelText).toBe('var(--col-dark)');
+        expect((colorValues as any).caramelThin?.hex?.()?.toLowerCase?.()).toBe(Color('#be8b6b').alpha(                config.thinLevel).hex().toLowerCase());
+        expect((colorValues as any).caramelMild?.hex?.()?.toLowerCase?.()).toBe(Color('#be8b6b').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).caramelBold?.hex?.()?.toLowerCase?.()).toBe(Color('#be8b6b').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with a ref color:
+        
+        defineTheme('greenTea', 'var(--col-tea)');
+        await yieldTime();
+        
+        expect((colors as any).greenTea).toBe('var(--col-greenTea)');
+        expect((themes as any).greenTea).toBe('var(--col-greenTea)');
+        expect((colorValues as any).greenTea).toBe('var(--col-tea)');
+        expect('greenTea' in colors).toBe(true);
+        expect('greenTea' in themes).toBe(true);
+        expect('greenTea' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('greenTea')).toBe(true);
+        expect(Object.keys(themes).includes('greenTea')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`greenTea${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`greenTea${suffix}`)).toBe(true);
+        });
+        expect(Object.keys(colorValues).includes('greenTea')).toBe(true);
+        
+        expect((colorValues as any).greenTeaText).toBe('var(--col-dark)');
+        expect((colorValues as any).greenTeaThin?.hex?.()?.toLowerCase?.()).toBe(Color('#14a586').alpha(                config.thinLevel).hex().toLowerCase());
+        expect((colorValues as any).greenTeaMild?.hex?.()?.toLowerCase?.()).toBe(Color('#14a586').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).greenTeaBold?.hex?.()?.toLowerCase?.()).toBe(Color('#14a586').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with a Color object:
+        
+        defineTheme('royalBlue', Color('#3f66da'));
+        await yieldTime();
+        
+        expect((colors as any).royalBlue).toBe('var(--col-royalBlue)');
+        expect((themes as any).royalBlue).toBe('var(--col-royalBlue)');
+        expect((colorValues as any).royalBlue?.hex?.()?.toLowerCase?.()).toBe('#3f66da');
+        expect('royalBlue' in colors).toBe(true);
+        expect('royalBlue' in themes).toBe(true);
+        expect('royalBlue' in colorValues).toBe(true);
+        expect(Object.keys(colors).includes('royalBlue')).toBe(true);
+        expect(Object.keys(themes).includes('royalBlue')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`royalBlue${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`royalBlue${suffix}`)).toBe(true);
+        });
+        expect(Object.keys(colorValues).includes('royalBlue')).toBe(true);
+        
+        expect((colorValues as any).royalBlueText).toBe('var(--col-light)');
+        expect((colorValues as any).royalBlueThin?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').alpha(                config.thinLevel).hex().toLowerCase());
+        expect((colorValues as any).royalBlueMild?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        expect((colorValues as any).royalBlueBold?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
     });
 });
