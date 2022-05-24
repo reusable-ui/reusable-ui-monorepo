@@ -7,6 +7,7 @@ import type {
     colorValues as _colorValues,
     config      as _config,
     defineBackg as _defineBackg,
+    defineForeg as _defineForeg,
 } from '../dist/colors.js'
 // import type {
 //     // style sheets:
@@ -69,6 +70,7 @@ jest.isolateModules(() => {
     let colorValues        : typeof _colorValues = undefined as any;
     let config             : typeof _config      = undefined as any;
     let defineBackg        : typeof _defineBackg = undefined as any;
+    let defineForeg        : typeof _defineForeg = undefined as any;
     let styleSheetRegistry : typeof _styleSheetRegistry = undefined as any;
     // let render             : typeof _render      = undefined as any;
     // let lastStyleSheet     : StyleSheet|null     = null;
@@ -96,6 +98,7 @@ jest.isolateModules(() => {
         colorValues        = colorsModule.colorValues
         config             = colorsModule.config
         defineBackg        = colorsModule.defineBackg
+        defineForeg        = colorsModule.defineForeg
         styleSheetRegistry = styleSheetModule.styleSheetRegistry
         
         
@@ -1122,7 +1125,7 @@ jest.isolateModules(() => {
         
         // test with Color(dark background):
         
-        defineBackg('#1d3758');
+        defineBackg(Color('#1d3758'));
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#1d3758');
@@ -1194,5 +1197,170 @@ jest.isolateModules(() => {
         expect((colorValues as any).dangerMild   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         expect((colorValues as any).lightMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         expect((colorValues as any).darkMild                               ).toBe('var(--col-foregMild)');
+    });
+    
+    
+    
+    test('test defineForeg', async () => {
+        await yieldTime();
+        
+        //#region reset the defaults
+        colorValues.purple = '#6f42c1' as any;
+        colorValues.pink   = '#d63384' as any;
+        colorValues.white  = '#ffffff' as any;
+        colorValues.backg  = 'var(--col-white)';
+        colorValues.foreg  = 'var(--col-dark)';
+        
+        themes.primary     = Color('#0d6efd') as any;
+        themes.secondary   = Color('#6c757d') as any;
+        themes.success     = Color('#198754') as any;
+        themes.info        = Color('#0dcaf0') as any;
+        themes.warning     = Color('#ffc107') as any;
+        themes.danger      = Color('#dc3545') as any;
+        themes.light       = Color('#f8f9fa') as any;
+        themes.dark        = Color('#212529') as any;
+        //#endregion reset the defaults
+        
+        
+        
+        // test with dark foreground:
+        
+        defineForeg('#152927');
+        await yieldTime();
+        
+        expect((colorValues as any).foreg?.hex?.()?.toLowerCase?.()).toBe('#152927');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#152927').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#152927').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#152927'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with light foreground:
+        
+        defineForeg('#a4b682');
+        await yieldTime();
+        
+        expect((colorValues as any).foreg?.hex?.()?.toLowerCase?.()).toBe('#a4b682');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#a4b682').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#a4b682').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#a4b682'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with dark foreground ref:
+        
+        defineForeg('var(--col-purple)');
+        await yieldTime();
+        
+        expect((colorValues as any).foreg).toBe('var(--col-purple)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#6f42c1').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#6f42c1').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#6f42c1'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with light foreground ref:
+        
+        defineForeg('var(--col-pink)');
+        await yieldTime();
+        
+        expect((colorValues as any).foreg).toBe('var(--col-pink)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#d63384').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#d63384').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#d63384'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with Color(dark foreground):
+        
+        defineForeg(Color('#631626'));
+        await yieldTime();
+        
+        expect((colorValues as any).foreg?.hex?.()?.toLowerCase?.()).toBe('#631626');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#631626').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#631626').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#631626'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with Color(light foreground):
+        
+        defineForeg(Color('#d0de8a'));
+        await yieldTime();
+        
+        expect((colorValues as any).foreg?.hex?.()?.toLowerCase?.()).toBe('#d0de8a');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#d0de8a').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#d0de8a').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with invalid color value:
+        
+        try {
+            defineForeg('invalidColor123');
+        } catch {}
+        await yieldTime();
+        
+        expect((colorValues as any).foreg?.hex?.()?.toLowerCase?.()).toBe('#d0de8a');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#d0de8a').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).foregMild?.hex?.()?.toLowerCase?.()).toBe(Color('#d0de8a').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
+        
+        expect((colorValues as any).primaryBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).secondaryBold?.hex?.()?.toLowerCase?.()).toBe(Color('#6c757d').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).successBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#198754').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).infoBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#0dcaf0').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).warningBold  ?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).dangerBold   ?.hex?.()?.toLowerCase?.()).toBe(Color('#dc3545').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).lightBold    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
+        expect((colorValues as any).darkBold     ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#d0de8a'), config.boldLevel).hex().toLowerCase());
     });
 });
