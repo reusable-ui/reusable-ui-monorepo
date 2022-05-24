@@ -263,7 +263,7 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
     const colorPrefix = cssConfig.prefix ? `var(--${cssConfig.prefix}-` : `var(--`;
     
     
-    for (let attempts = 3; attempts > 0; attempts--) {
+    for (let attempts = 10; attempts > 0; attempts--) {
         if (!colorRef.startsWith(colorPrefix)) return null;       // can't resolve color outside color config
         const colorProp = colorRef.slice(colorPrefix.length, -1); // remove `var(--col-` & `)`
         
@@ -495,6 +495,10 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
         cssValsProxy.foregThin = thinColor(colorValue);
         cssValsProxy.foregMild = mildColor(colorValue);
     } // if
+    
+    
+    
+    defineAllThemes();
 };
 const defineAllThemes = () => {
     for (const themeName in themes) {
