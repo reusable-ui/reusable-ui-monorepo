@@ -453,6 +453,16 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('warning')).toBe(false);
         expect(Object.keys(themes).includes('warning')).toBe(false);
         expect(Object.keys(colorValues).includes('warning')).toBe(false);
+        const suffixes: string[] = [
+            'Text',
+            'Thin',
+            'Mild',
+            'Bold',
+        ];
+        suffixes.forEach((suffix) => {
+            expect(`warning${suffix}` in themes).toBe(false);
+            expect(Object.keys(themes).includes(`warning${suffix}`)).toBe(false);
+        });
         
         expect(colors.teal).toBe(undefined);
         expect((themes as any).teal).toBe(undefined);
@@ -467,11 +477,19 @@ jest.isolateModules(() => {
         // delete non existing keys:
         const prevKeys = Object.keys(colors);
         const prevThemeKeys = Object.keys(themes);
+        const prevThemeTextKeys = Object.keys(themes).map((theme) => `${theme}Text`);
+        const prevThemeThinKeys = Object.keys(themes).map((theme) => `${theme}Thin`);
+        const prevThemeMildKeys = Object.keys(themes).map((theme) => `${theme}Mild`);
+        const prevThemeBoldKeys = Object.keys(themes).map((theme) => `${theme}Bold`);
         delete (colors as any).whateverBooFoo;
         delete (themes as any).whateverBooFoo;
         delete (colorValues as any).whateverBooFoo;
         expect(Object.keys(colors)).toEqual(prevKeys);
         expect(Object.keys(themes)).toEqual(prevThemeKeys);
+        expect(prevThemeTextKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeThinKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeMildKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeBoldKeys.every((item) => (item in colors))).toBe(true);
         expect(Object.keys(colorValues)).toEqual(prevKeys);
         
         // delete existing keys but not in themes:
@@ -479,6 +497,10 @@ jest.isolateModules(() => {
         delete (themes as any).gray;
         expect(Object.keys(colors)).toEqual(prevKeys);
         expect(Object.keys(themes)).toEqual(prevThemeKeys);
+        expect(prevThemeTextKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeThinKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeMildKeys.every((item) => (item in colors))).toBe(true);
+        expect(prevThemeBoldKeys.every((item) => (item in colors))).toBe(true);
         expect(Object.keys(colorValues)).toEqual(prevKeys);
         
         
@@ -512,6 +534,10 @@ jest.isolateModules(() => {
         expect('info' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('info')).toBe(false);
         expect(Object.keys(themes).includes('info')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`info${suffix}` in themes).toBe(false);
+            expect(Object.keys(themes).includes(`info${suffix}`)).toBe(false);
+        });
         expect(Object.keys(colorValues).includes('info')).toBe(false);
         
         expect(colors.indigo).toBe(undefined);
@@ -572,6 +598,10 @@ jest.isolateModules(() => {
         expect('secondary' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('secondary')).toBe(false);
         expect(Object.keys(themes).includes('secondary')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`secondary${suffix}` in themes).toBe(false);
+            expect(Object.keys(themes).includes(`secondary${suffix}`)).toBe(false);
+        });
         expect(Object.keys(colorValues).includes('secondary')).toBe(false);
         
         expect(colors.pink).toBe(undefined);
