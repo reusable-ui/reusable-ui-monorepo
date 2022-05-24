@@ -119,14 +119,14 @@ export const config = new LiveConfig(
 
 
 const textColorInit = (color: Color): Color => (color.isLight() ? themes.dark : themes.light)
-const textColor     = (color: Color): Color => resolveColor(color.isLight() ? cssValsProxy.dark : cssValsProxy.light) ?? color
+const textColor     = (color: Color): Color => (color.isLight() ? cssValsProxy.dark : cssValsProxy.light) ?? color
 
 const thinColor     = (color: Color): Color => color.alpha(config.thinLevel)
 
 const mildColorInit = (color: Color): Color => color.mix(pageBg.backg, config.mildLevel)
 const boldColorInit = (color: Color): Color => color.mix(pageFg.foreg, config.boldLevel)
-const mildColor     = (color: Color): Color => color.mix(resolveColor(cssValsProxy.backg) ?? color, config.mildLevel)
-const boldColor     = (color: Color): Color => color.mix(resolveColor(cssValsProxy.foreg) ?? color, config.boldLevel)
+const mildColor     = (color: Color): Color => color.mix(cssValsProxy.backg ?? color, config.mildLevel)
+const boldColor     = (color: Color): Color => color.mix(cssValsProxy.foreg ?? color, config.boldLevel)
 //#endregion color functions
 
 
@@ -267,8 +267,9 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
         if (!colorRef.startsWith(colorPrefix)) return null;       // can't resolve color outside color config
         const colorProp = colorRef.slice(colorPrefix.length, -1); // remove `var(--col-` & `)`
         
-        const result = cssValsProxy[colorProp as keyof ColorList];
-        if (isColorInstance(result)) return result;
+        const result = cssVals[colorProp as keyof ColorList];
+        if (typeof(result) !== 'string') return null; // can't resolve non-string value
+        if (!isRef(result)) return Color(result);
         
         colorRef = result;
     } // for
@@ -295,7 +296,7 @@ const getCssColor   = (_object: object, colorName: keyof ColorList): CssColor|un
 /**
  * Always get a nice `Color` representation instead of a bare `string`.
  */
-const getColorValue = (_object: object, colorName: keyof ColorList): Color|CssCustomRef|undefined => {
+const getColorValue = (_object: object, colorName: keyof ColorList): Color|undefined => {
     const value = cssVals[colorName];
     
     
@@ -308,7 +309,7 @@ const getColorValue = (_object: object, colorName: keyof ColorList): Color|CssCu
     // handle validColorName or var(--ref):
     if (typeof(value) === 'string') {
         // handle var(--ref):
-        if (isRef(value)) return value;
+        if (isRef(value)) return resolveColor(value) ?? undefined;
         
         
         
@@ -389,7 +390,7 @@ export {
 
 
 
-export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: Color|CssCustomRef }
+export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: Color }
 // a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
 const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as ColorVals<ColorList>, {
@@ -466,7 +467,7 @@ export const defineBackg = (color: Color|CssCustomRef|(string & {}), autoDefineF
     
     
     // update cssConfig:
-    cssValsProxy.backg = color;
+    cssValsProxy.backg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
         cssValsProxy.backgThin = thinColor(colorValue);
@@ -489,7 +490,7 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
     
     
     // update cssConfig:
-    cssValsProxy.foreg = color;
+    cssValsProxy.foreg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
         cssValsProxy.foregThin = thinColor(colorValue);
@@ -502,7 +503,7 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
 };
 const defineAllThemes = () => {
     for (const themeName in themes) {
-        let baseColor = resolveColor(cssValsProxy[themeName as keyof ColorList]);
+        let baseColor = cssValsProxy[themeName as keyof ColorList];
         if (!baseColor) continue; // unresolved color => skip
         
         defineTheme(themeName, baseColor);
@@ -529,7 +530,7 @@ export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(st
         
         
         // update cssConfig:
-        cssValsProxy[   name       as keyof ColorList] = color;
+        cssValsProxy[name as keyof ColorList] = color as any;
         
         const colorValue = resolveColor(color);
         if (colorValue) {
