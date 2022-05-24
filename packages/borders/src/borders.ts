@@ -23,6 +23,11 @@ export {
     
     radiuses,
     radiuses as borderRadiuses,
+    
+    radiusValues,
+    radiusValues as borderRadiusValues,
+    
+    cssBorderRadiusConfig,
 }                           from './borders-radiuses.js'
 
 
@@ -37,7 +42,7 @@ export type Border      = CssComplexValueOf<CssKnownValueOf<'border'>>
 
 
 //#region configs
-const [borders, borderValues, cssConfig] = createCssConfig(() => {
+const [borders, borderValues, cssBorderConfig] = createCssConfig(() => {
     const widths = {
         none  : '0px'          as BorderWidth,
         hair  : '1px'          as BorderWidth,
@@ -63,10 +68,15 @@ const [borders, borderValues, cssConfig] = createCssConfig(() => {
 }, { prefix: 'bd' });
 export {
     borders,
+    borders as cssProps,
     borders as default,
 }
 export {
     borderValues,
-    cssConfig,
+    borderValues as cssVals,
+}
+export {
+    cssBorderConfig,
+    cssBorderConfig as cssConfig,
 }
 //#endregion configs
