@@ -1463,5 +1463,69 @@ jest.isolateModules(() => {
         expect((colorValues as any).royalBlueThin?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').alpha(                config.thinLevel).hex().toLowerCase());
         expect((colorValues as any).royalBlueMild?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').mix(Color('#ffffff'), config.mildLevel).hex().toLowerCase());
         expect((colorValues as any).royalBlueBold?.hex?.()?.toLowerCase?.()).toBe(Color('#3f66da').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
+        
+        
+        
+        // test with an invalid color name:
+        
+        const prevKeys = Object.keys(colors);
+        const prevThemeKeys = Object.keys(themes);
+        try {
+            defineTheme('crazyMan', 'beehMehhBoo');
+        } catch {}
+        await yieldTime();
+        
+        expect((colors as any).crazyMan).toBe(undefined);
+        expect((themes as any).crazyMan).toBe(undefined);
+        expect((colorValues as any).crazyMan).toBe(undefined);
+        expect('crazyMan' in colors).toBe(false);
+        expect('crazyMan' in themes).toBe(false);
+        expect('crazyMan' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('crazyMan')).toBe(false);
+        expect(Object.keys(themes).includes('crazyMan')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`crazyMan${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`crazyMan${suffix}`)).toBe(false);
+        });
+        expect(Object.keys(colorValues).includes('crazyMan')).toBe(false);
+        
+        expect((colorValues as any).crazyManText).toBe(undefined);
+        expect((colorValues as any).crazyManThin).toBe(undefined);
+        expect((colorValues as any).crazyManMild).toBe(undefined);
+        expect((colorValues as any).crazyManBold).toBe(undefined);
+        
+        expect(Object.keys(colors)).toEqual(prevKeys);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys);
+        
+        
+        
+        // test with an invalid object:
+        
+        try {
+            defineTheme('crazyGirl', {} as any);
+        } catch {}
+        await yieldTime();
+        
+        expect((colors as any).crazyGirl).toBe(undefined);
+        expect((themes as any).crazyGirl).toBe(undefined);
+        expect((colorValues as any).crazyGirl).toBe(undefined);
+        expect('crazyGirl' in colors).toBe(false);
+        expect('crazyGirl' in themes).toBe(false);
+        expect('crazyGirl' in colorValues).toBe(false);
+        expect(Object.keys(colors).includes('crazyGirl')).toBe(false);
+        expect(Object.keys(themes).includes('crazyGirl')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`crazyGirl${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`crazyGirl${suffix}`)).toBe(false);
+        });
+        expect(Object.keys(colorValues).includes('crazyGirl')).toBe(false);
+        
+        expect((colorValues as any).crazyGirlText).toBe(undefined);
+        expect((colorValues as any).crazyGirlThin).toBe(undefined);
+        expect((colorValues as any).crazyGirlMild).toBe(undefined);
+        expect((colorValues as any).crazyGirlBold).toBe(undefined);
+        
+        expect(Object.keys(colors)).toEqual(prevKeys);
+        expect(Object.keys(themes)).toEqual(prevThemeKeys);
     });
 });
