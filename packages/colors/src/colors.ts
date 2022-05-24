@@ -393,7 +393,10 @@ const [colors, colorValues, cssColorConfig] = createCssConfig<CssColorConfigProp
         get : getCssColor,
     });
 }, { prefix: 'col' });
-export { cssColorConfig }
+export {
+    cssColorConfig,
+    cssColorConfig as cssConfig,
+}
 
 
 
