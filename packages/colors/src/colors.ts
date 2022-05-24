@@ -260,7 +260,7 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
     
     
     
-    const colorPrefix = cssConfig.prefix ? `var(--${cssConfig.prefix}-` : `var(--`;
+    const colorPrefix = cssColorConfig.prefix ? `var(--${cssColorConfig.prefix}-` : `var(--`;
     
     
     for (let attempts = 10; attempts > 0; attempts--) {
@@ -387,13 +387,13 @@ const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => 
 
 //#region configs
 export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
-const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
+const [colors, cssVals, cssColorConfig] = createCssConfig<CssColorConfigProps>(() => {
     // a proxy for converting `Color` to `CssColor`:
     return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
         get : getCssColor,
     });
 }, { prefix: 'col' });
-export { cssConfig }
+export { cssColorConfig }
 
 
 
@@ -489,7 +489,7 @@ export const defineBackg = (color: Color|CssCustomRef|(string & {}), autoDefineF
     
     
     
-    // update cssConfig:
+    // update cssColorConfig:
     cssValsProxy.backg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
@@ -512,7 +512,7 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
     
     
     
-    // update cssConfig:
+    // update cssColorConfig:
     cssValsProxy.foreg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
@@ -534,7 +534,7 @@ const defineAllThemes = () => {
 };
 export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(string & {})>) => {
     if (!color) {
-        // delete cssConfig:
+        // delete cssColorConfig:
         delete cssValsProxy[   name       as keyof ColorList];
         delete cssValsProxy[`${name}Text` as keyof ColorList];
         delete cssValsProxy[`${name}Thin` as keyof ColorList];
@@ -552,7 +552,7 @@ export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(st
         
         
         
-        // update cssConfig:
+        // update cssColorConfig:
         cssValsProxy[name as keyof ColorList] = color as any;
         
         const colorValue = resolveColor(color);
