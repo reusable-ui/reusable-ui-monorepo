@@ -267,7 +267,7 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
         if (!colorRef.startsWith(colorPrefix)) return null;       // can't resolve color outside color config
         const colorProp = colorRef.slice(colorPrefix.length, -1); // remove `var(--col-` & `)`
         
-        const result = cssVals[colorProp as keyof ColorList];
+        const result = colorValues[colorProp as keyof ColorList];
         if (typeof(result) !== 'string') return null; // can't resolve non-string value
         if (!isRef(result)) return Color(result);
         
@@ -300,7 +300,7 @@ const getCssColor   = (_object: object, colorName: keyof ColorList): CssColor|un
  * Always get a nice `Color` representation instead of a bare `string`.
  */
 const getColorValue = (_object: object, colorName: keyof ColorList): Color|undefined => {
-    const value = cssVals[colorName];
+    const value = colorValues[colorName];
     
     
     
@@ -335,7 +335,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
             throw TypeError(`Cannot delete reserved color name: ${colorName}.`);
         } // if
         
-        delete cssVals[colorName]; // delete the actual object
+        delete colorValues[colorName]; // delete the actual object
         return true;
     } // if
     
@@ -345,7 +345,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
     if (typeof(newValue) === 'string') {
         // handle var(--ref):
         if (isRef(newValue)) {
-            cssVals[colorName] = newValue; // update the actual object
+            colorValues[colorName] = newValue; // update the actual object
             return true;
         } // if
         
@@ -353,7 +353,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
         
         // handle validColorName:
         const color = Color(newValue);
-        cssVals[colorName] = stringColor(color); // update the actual object
+        colorValues[colorName] = stringColor(color); // update the actual object
         return true;
     } // if
     
@@ -361,7 +361,7 @@ const setColorValue = (_object: object, colorName: keyof ColorList, newValue: an
     
     // handle Color:
     if (isColorInstance(newValue)) {
-        cssVals[colorName] = stringColor(newValue); // update the actual object
+        colorValues[colorName] = stringColor(newValue); // update the actual object
         return true;
     } // if
     
@@ -378,7 +378,7 @@ const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => 
         throw TypeError(`Cannot delete reserved color name: ${colorName}.`);
     } // if
     
-    delete cssVals[colorName]; // delete the actual object
+    delete colorValues[colorName]; // delete the actual object
     return true;
 }
 //#endregion proxy handlers
@@ -387,7 +387,7 @@ const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => 
 
 //#region configs
 export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
-const [colors, cssVals, cssColorConfig] = createCssConfig<CssColorConfigProps>(() => {
+const [colors, colorValues, cssColorConfig] = createCssConfig<CssColorConfigProps>(() => {
     // a proxy for converting `Color` to `CssColor`:
     return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
         get : getCssColor,
@@ -414,7 +414,7 @@ export {
 export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: Color }
 // a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
-const cssValsProxy = new Proxy<ColorVals<ColorList>>(cssVals as unknown as ColorVals<ColorList>, {
+const cssValsProxy = new Proxy<ColorVals<ColorList>>(colorValues as unknown as ColorVals<ColorList>, {
     get            : getColorValue,
     set            : setColorValue,
     deleteProperty : deleteColor,
