@@ -11,9 +11,11 @@ import './App.css';
 import {
     borders,
     borderValues,
+    cssBorderConfig,
     
     radiuses,
     radiusValues,
+    cssBorderRadiusConfig,
 } from '@reusable-ui/borders'
 import { Styles } from '@cssfn/cssfn-react'
 
@@ -22,9 +24,11 @@ import { Styles } from '@cssfn/cssfn-react'
 Object.assign(globalThis, {
     borders,
     borderValues,
+    cssBorderConfig,
     
     radiuses,
     radiusValues,
+    cssBorderRadiusConfig,
 })
 
 
