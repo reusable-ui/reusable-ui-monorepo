@@ -1031,6 +1031,7 @@ jest.isolateModules(() => {
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
@@ -1055,6 +1056,7 @@ jest.isolateModules(() => {
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#212529').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
@@ -1079,6 +1081,7 @@ jest.isolateModules(() => {
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#0d6efd'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild                            ).toBe('var(--col-blue)'                                                           );
@@ -1103,6 +1106,7 @@ jest.isolateModules(() => {
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#212529').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#ffc107'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#ffc107'), config.mildLevel).hex().toLowerCase());
@@ -1127,6 +1131,7 @@ jest.isolateModules(() => {
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#f8f9fa').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#1d3758'), config.mildLevel).hex().toLowerCase());
@@ -1151,6 +1156,7 @@ jest.isolateModules(() => {
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#212529').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
@@ -1177,6 +1183,7 @@ jest.isolateModules(() => {
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
+        expect((colorValues as any).foregThin?.toString?.()?.toLowerCase?.()).toBe(Color('#212529').alpha(config.thinLevel).toString().toLowerCase());
         expect((colorValues as any).foregMild    ?.hex?.()?.toLowerCase?.()).toBe(Color('#212529').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
         
         expect((colorValues as any).primaryMild  ?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#ffe6c9'), config.mildLevel).hex().toLowerCase());
