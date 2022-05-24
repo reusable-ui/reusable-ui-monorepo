@@ -26,7 +26,7 @@ import Color                from 'color'                // color utilities
 
 
 
-// general types:
+// types:
 export type CssColor = CssKnownValueOf<'color'>
 
 
