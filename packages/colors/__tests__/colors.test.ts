@@ -1026,6 +1026,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#1d3758');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#1d3758').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#1d3758').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
@@ -1048,6 +1050,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#ffe6c9');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').mix(Color('#f8f9fa'), config.boldLevel).hex().toLowerCase());
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
@@ -1070,6 +1074,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg).toBe('var(--col-blue)');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#0d6efd').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#0d6efd').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
@@ -1092,6 +1098,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg).toBe('var(--col-yellow)');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#ffc107').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#ffc107').mix(Color('#f8f9fa'), config.boldLevel).hex().toLowerCase());
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
@@ -1114,6 +1122,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#1d3758');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#1d3758').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#1d3758').mix(Color('#212529'), config.boldLevel).hex().toLowerCase());
         
         // dark background => light foreground => 'var(--col-light)' => '#f8f9fa'
         expect((colorValues as any).foreg).toBe('var(--col-light)');
@@ -1136,6 +1146,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#ffe6c9');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').mix(Color('#f8f9fa'), config.boldLevel).hex().toLowerCase());
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
@@ -1160,6 +1172,8 @@ jest.isolateModules(() => {
         await yieldTime();
         
         expect((colorValues as any).backg?.hex?.()?.toLowerCase?.()).toBe('#ffe6c9');
+        expect((colorValues as any).backgThin?.toString?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').alpha(config.thinLevel).toString().toLowerCase());
+        expect((colorValues as any).backgBold?.hex?.()?.toLowerCase?.()).toBe(Color('#ffe6c9').mix(Color('#f8f9fa'), config.boldLevel).hex().toLowerCase());
         
         // light background => dark foreground => 'var(--col-dark)' => '#212529'
         expect((colorValues as any).foreg).toBe('var(--col-dark)');
