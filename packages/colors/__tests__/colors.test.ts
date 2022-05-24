@@ -460,8 +460,8 @@ jest.isolateModules(() => {
             'Bold',
         ];
         suffixes.forEach((suffix) => {
-            expect(`warning${suffix}` in themes).toBe(false);
-            expect(Object.keys(themes).includes(`warning${suffix}`)).toBe(false);
+            expect(`warning${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`warning${suffix}`)).toBe(false);
         });
         
         expect(colors.teal).toBe(undefined);
@@ -535,8 +535,8 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('info')).toBe(false);
         expect(Object.keys(themes).includes('info')).toBe(false);
         suffixes.forEach((suffix) => {
-            expect(`info${suffix}` in themes).toBe(false);
-            expect(Object.keys(themes).includes(`info${suffix}`)).toBe(false);
+            expect(`info${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`info${suffix}`)).toBe(false);
         });
         expect(Object.keys(colorValues).includes('info')).toBe(false);
         
@@ -599,8 +599,8 @@ jest.isolateModules(() => {
         expect(Object.keys(colors).includes('secondary')).toBe(false);
         expect(Object.keys(themes).includes('secondary')).toBe(false);
         suffixes.forEach((suffix) => {
-            expect(`secondary${suffix}` in themes).toBe(false);
-            expect(Object.keys(themes).includes(`secondary${suffix}`)).toBe(false);
+            expect(`secondary${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`secondary${suffix}`)).toBe(false);
         });
         expect(Object.keys(colorValues).includes('secondary')).toBe(false);
         
@@ -668,6 +668,16 @@ jest.isolateModules(() => {
         expect('happy' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('happy')).toBe(true);
         expect(Object.keys(themes).includes('happy')).toBe(true);
+        const suffixes: string[] = [
+            'Text',
+            'Thin',
+            'Mild',
+            'Bold',
+        ];
+        suffixes.forEach((suffix) => {
+            expect(`happy${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`happy${suffix}`)).toBe(true);
+        });
         expect(Object.keys(colorValues).includes('happy')).toBe(true);
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
@@ -711,6 +721,10 @@ jest.isolateModules(() => {
         expect('exciting' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('exciting')).toBe(true);
         expect(Object.keys(themes).includes('exciting')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`exciting${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`exciting${suffix}`)).toBe(false);
+        });
         expect(Object.keys(colorValues).includes('exciting')).toBe(true);
         
         expect((colors as any).blueFire).toBe('var(--col-blueFire)');
@@ -754,6 +768,10 @@ jest.isolateModules(() => {
         expect('brokenWhite' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('brokenWhite')).toBe(true);
         expect(Object.keys(themes).includes('brokenWhite')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`brokenWhite${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`brokenWhite${suffix}`)).toBe(true);
+        });
         expect(Object.keys(colorValues).includes('brokenWhite')).toBe(true);
         
         expect((colors as any).freshBlue).toBe('var(--col-freshBlue)');
@@ -803,6 +821,10 @@ jest.isolateModules(() => {
         expect('sad' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('sad')).toBe(false);
         expect(Object.keys(themes).includes('sad')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`sad${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`sad${suffix}`)).toBe(false);
+        });
         expect(Object.keys(colorValues).includes('sad')).toBe(false);
         
         expect((colors as any).badColor).toBe(undefined);
@@ -852,6 +874,10 @@ jest.isolateModules(() => {
         expect('happy' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('happy')).toBe(true);
         expect(Object.keys(themes).includes('happy')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`happy${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`happy${suffix}`)).toBe(true);
+        });
         expect(Object.keys(colorValues).includes('happy')).toBe(true);
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
@@ -901,6 +927,10 @@ jest.isolateModules(() => {
         expect('bad' in colorValues).toBe(false);
         expect(Object.keys(colors).includes('bad')).toBe(false);
         expect(Object.keys(themes).includes('bad')).toBe(false);
+        suffixes.forEach((suffix) => {
+            expect(`bad${suffix}` in colors).toBe(false);
+            expect(Object.keys(colors).includes(`bad${suffix}`)).toBe(false);
+        });
         expect(Object.keys(colorValues).includes('bad')).toBe(false);
         
         expect((colors as any).illegalColor).toBe(undefined);
@@ -950,6 +980,10 @@ jest.isolateModules(() => {
         expect('happy' in colorValues).toBe(true);
         expect(Object.keys(colors).includes('happy')).toBe(true);
         expect(Object.keys(themes).includes('happy')).toBe(true);
+        suffixes.forEach((suffix) => {
+            expect(`happy${suffix}` in colors).toBe(true);
+            expect(Object.keys(colors).includes(`happy${suffix}`)).toBe(true);
+        });
         expect(Object.keys(colorValues).includes('happy')).toBe(true);
         
         expect((colors as any).freshWater).toBe('var(--col-freshWater)');
