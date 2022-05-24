@@ -235,7 +235,7 @@ export type ColorList  = typeof colorList;
 
 
 
-// utilities:
+//#region utilities
 const isColorInstance = (obj: any): obj is Color => (
     !!obj
     &&
@@ -278,10 +278,11 @@ const resolveColor    = (color: Color|CssCustomRef): Color|null => {
     
     return null; // can't resolve deeply
 };
+//#endregion utilities
 
 
 
-// proxy handlers:
+//#region proxy handlers
 const reservedColors : string[] = ['dark', 'light', 'backg',  'foreg'];
 
 /**
@@ -380,9 +381,11 @@ const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => 
     delete cssVals[colorName]; // delete the actual object
     return true;
 }
+//#endregion proxy handlers
 
 
 
+//#region configs
 export type CssColorConfigProps = CssConfigProps & { [ColorName in keyof ColorList]: CssColor };
 const [colors, cssVals, cssConfig] = createCssConfig<CssColorConfigProps>(() => {
     // a proxy for converting `Color` to `CssColor`:
@@ -474,10 +477,11 @@ const themesProxy = new Proxy<ColorRefs<ThemeColorList>>(themes as unknown as Co
 export {
     themesProxy as themes,
 }
+//#endregion configs
 
 
 
-// utilities:
+//#region utilities
 export const defineBackg = (color: Color|CssCustomRef|(string & {}), autoDefineForeg = true) => {
     if (!color) throw Error('You cannot delete the background color.');
     if ((typeof(color) === 'string') && !isRef(color)) color = Color(color);
@@ -565,3 +569,4 @@ export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(st
         (themes as any)[name] = ({} as any); // i know it's an invalid Color value, but the value will never be fetched, only fetch the key
     } // if
 };
+//#endregion utilities
