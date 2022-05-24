@@ -12,14 +12,27 @@ import {
     createCssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
+// internals:
+export * as radius          from './borders-radiuses.js'
+export * as borderRadius    from './borders-radiuses.js'
+export {
+    // types:
+    BorderRadius,
+    
+    
+    
+    radiuses,
+    radiuses as borderRadiuses,
+}                           from './borders-radiuses.js'
 
 
-//#region general types
+
+//#region types
 export type BorderWidth = CssKnownValueOf<'borderWidth'>
 export type BorderColor = CssKnownValueOf<'borderColor'>
 export type BorderStyle = CssKnownValueOf<'borderStyle'>
 export type Border      = CssComplexValueOf<CssKnownValueOf<'border'>>
-//#endregion general types
+//#endregion types
 
 
 
