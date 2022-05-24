@@ -1,0 +1,41 @@
+{
+  "name": "@reusable-ui/borders",
+  "version": "5.0.0",
+  "description": "A border (stroke) management system for web components using css variables (css custom properties).",
+  "keywords": [
+    "borders",
+    "css",
+    "stylesheet",
+    "config",
+    "configuration",
+    "variables",
+    "property"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/borders.js",
+  "types": "dist/borders.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.4",
+    "@cssfn/css-types": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^16.2.14",
+    "jsdom": "^19.0.0"
+  }
+}
