@@ -119,14 +119,14 @@ export const config = new LiveConfig(
 
 
 const textColorInit = (color: Color): Color => (color.isLight() ? themes.dark : themes.light)
-const textColor     = (color: Color): Color => (color.isLight() ? cssValsProxy.dark : cssValsProxy.light) ?? color
+const textColor     = (color: Color): Color => (color.isLight() ? colorValuesProxy.dark : colorValuesProxy.light) ?? color
 
 const thinColor     = (color: Color): Color => color.alpha(config.thinLevel)
 
 const mildColorInit = (color: Color): Color => color.mix(pageBg.backg, config.mildLevel)
 const boldColorInit = (color: Color): Color => color.mix(pageFg.foreg, config.boldLevel)
-const mildColor     = (color: Color): Color => color.mix(cssValsProxy.backg ?? color, config.mildLevel)
-const boldColor     = (color: Color): Color => color.mix(cssValsProxy.foreg ?? color, config.boldLevel)
+const mildColor     = (color: Color): Color => color.mix(colorValuesProxy.backg ?? color, config.mildLevel)
+const boldColor     = (color: Color): Color => color.mix(colorValuesProxy.foreg ?? color, config.boldLevel)
 //#endregion color functions
 
 
@@ -414,14 +414,14 @@ export {
 export type ColorVals<TColorList extends Partial<ColorList>> = { [Key in keyof TColorList]: Color }
 // a proxy for converting `CssColor` to `Color`:
 // a proxy for preventing assignment other than `Color|validColorName|var(--ref)|undefined|null`:
-const cssValsProxy = new Proxy<ColorVals<ColorList>>(colorValues as unknown as ColorVals<ColorList>, {
+const colorValuesProxy = new Proxy<ColorVals<ColorList>>(colorValues as unknown as ColorVals<ColorList>, {
     get            : getColorValue,
     set            : setColorValue,
     deleteProperty : deleteColor,
 });
 export {
-    cssValsProxy as colorValues,
-    cssValsProxy as cssVals,
+    colorValuesProxy as colorValues,
+    colorValuesProxy as cssVals,
 }
 
 
@@ -490,11 +490,11 @@ export const defineBackg = (color: Color|CssCustomRef|(string & {}), autoDefineF
     
     
     // update cssColorConfig:
-    cssValsProxy.backg = color as any;
+    colorValuesProxy.backg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
-        cssValsProxy.backgThin = thinColor(colorValue);
-        cssValsProxy.backgBold = boldColor(colorValue);
+        colorValuesProxy.backgThin = thinColor(colorValue);
+        colorValuesProxy.backgBold = boldColor(colorValue);
         
         
         
@@ -513,11 +513,11 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
     
     
     // update cssColorConfig:
-    cssValsProxy.foreg = color as any;
+    colorValuesProxy.foreg = color as any;
     const colorValue = resolveColor(color);
     if (colorValue) {
-        cssValsProxy.foregThin = thinColor(colorValue);
-        cssValsProxy.foregMild = mildColor(colorValue);
+        colorValuesProxy.foregThin = thinColor(colorValue);
+        colorValuesProxy.foregMild = mildColor(colorValue);
     } // if
     
     
@@ -526,7 +526,7 @@ export const defineForeg = (color: Color|CssCustomRef|(string & {})) => {
 };
 const defineAllThemes = () => {
     for (const themeName in themes) {
-        let baseColor = cssValsProxy[themeName as keyof ColorList];
+        let baseColor = colorValuesProxy[themeName as keyof ColorList];
         if (!baseColor) continue; // unresolved color => skip
         
         defineTheme(themeName, baseColor);
@@ -535,11 +535,11 @@ const defineAllThemes = () => {
 export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(string & {})>) => {
     if (!color) {
         // delete cssColorConfig:
-        delete cssValsProxy[   name       as keyof ColorList];
-        delete cssValsProxy[`${name}Text` as keyof ColorList];
-        delete cssValsProxy[`${name}Thin` as keyof ColorList];
-        delete cssValsProxy[`${name}Mild` as keyof ColorList];
-        delete cssValsProxy[`${name}Bold` as keyof ColorList];
+        delete colorValuesProxy[   name       as keyof ColorList];
+        delete colorValuesProxy[`${name}Text` as keyof ColorList];
+        delete colorValuesProxy[`${name}Thin` as keyof ColorList];
+        delete colorValuesProxy[`${name}Mild` as keyof ColorList];
+        delete colorValuesProxy[`${name}Bold` as keyof ColorList];
         
         
         
@@ -553,14 +553,14 @@ export const defineTheme = (name: string, color: Optional<Color|CssCustomRef|(st
         
         
         // update cssColorConfig:
-        cssValsProxy[name as keyof ColorList] = color as any;
+        colorValuesProxy[name as keyof ColorList] = color as any;
         
         const colorValue = resolveColor(color);
         if (colorValue) {
-            cssValsProxy[`${name}Text` as keyof ColorList] = textColor(colorValue);
-            cssValsProxy[`${name}Thin` as keyof ColorList] = thinColor(colorValue);
-            cssValsProxy[`${name}Mild` as keyof ColorList] = mildColor(colorValue);
-            cssValsProxy[`${name}Bold` as keyof ColorList] = boldColor(colorValue);
+            colorValuesProxy[`${name}Text` as keyof ColorList] = textColor(colorValue);
+            colorValuesProxy[`${name}Thin` as keyof ColorList] = thinColor(colorValue);
+            colorValuesProxy[`${name}Mild` as keyof ColorList] = mildColor(colorValue);
+            colorValuesProxy[`${name}Bold` as keyof ColorList] = boldColor(colorValue);
         } // if
         
         
