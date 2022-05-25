@@ -2,7 +2,7 @@
 import type {
     // cssfn properties:
     CssSelectorCollection,
-}                           from '@cssfn/css-types'
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
