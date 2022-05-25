@@ -7,7 +7,7 @@ import {
     // rules:
     rule,
     fallbacks,
-    isActive,
+    ifActive,
     
     
     
@@ -120,7 +120,7 @@ export const stripoutLink = () => style({
         
         
         // states:
-        ...isActive({
+        ...ifActive({
             // foregrounds:
             color      : unset, // removes blue color
         }),
