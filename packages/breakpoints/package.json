@@ -1,0 +1,42 @@
+{
+  "name": "@reusable-ui/breakpoints",
+  "version": "5.0.0",
+  "description": "A responsive management system based on screen width.",
+  "keywords": [
+    "responsive",
+    "breakpoints",
+    "design",
+    "layouts",
+    "css",
+    "stylesheet",
+    "config",
+    "configuration",
+    "variables",
+    "property"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/breakpoints.js",
+  "types": "dist/breakpoints.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-types": "^2.0.1"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.3"
+  }
+}
