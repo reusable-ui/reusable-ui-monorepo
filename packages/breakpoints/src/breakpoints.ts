@@ -12,7 +12,8 @@ import type {
 import {
     // rules:
     rule,
-    noRule,
+    alwaysRule,
+    neverRule,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 
 
@@ -100,7 +101,7 @@ export const maxBefore = (breakpointName: BreakpointName): BreakpointValue|null 
     
     
     if ((value >= 0.02)) return (value - 0.02);
-    return null; // nothing smaller than 0.02
+    return null; // nothing smaller than 0.02 (near zero)
 };
 //#endregion utilities
 
@@ -109,75 +110,79 @@ export const maxBefore = (breakpointName: BreakpointName): BreakpointValue|null 
 //#region rules
 /**
  * Applies given `styles` if the screen width is equal to / bigger than the specified `breakpointName`.
- * @param breakpointName the name of the minimum breakpoint.
- * @param styles the style(s) to apply if the screen width meets the minimum breakpoint width.
- * @returns A `Rule` object represents the media rule.
+ * @param breakpointName The name of the minimum breakpoint.
+ * @param styles The style(s) to apply if the screen width meets the minimum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
 export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const minWidth = min(breakpointName);
-    return rule((minWidth ? `@media (min-width: ${minWidth}px)` : null), styles);
+    if (minWidth === null) return alwaysRule(styles); // no minimum limit => always applied the `styles`
+    
+    
+    
+    return rule(`@media (min-width: ${minWidth}px)`, styles);
 };
 
 /**
  * Applies given `styles` if the screen width is smaller than the specified `breakpointName`.
- * @param breakpointName the name of the maximum breakpoint.
- * @param styles the style(s) to apply if the screen width meets the maximum breakpoint width.
- * @returns A `Rule` object represents the media rule.
+ * @param breakpointName The name of the maximum breakpoint.
+ * @param styles The style(s) to apply if the screen width meets the maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
 export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const maxWidth = maxBefore(breakpointName);
-    return rule((maxWidth ? `@media (max-width: ${maxWidth}px)` : null), styles);
+    const maxWidthBeforeCurrent = maxBefore(breakpointName);
+    if (maxWidthBeforeCurrent === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    return rule(`@media (max-width: ${maxWidthBeforeCurrent}px)`, styles);
 };
 
 /**
  * Applies given `styles` if the screen width is between the specified `lowerBreakpointName` and `upperBreakpointName`.
- * @param lowerBreakpointName the name of the minimum breakpoint.
- * @param upperBreakpointName the name of the maximum breakpoint.
- * @param styles the style(s) to apply if the screen width meets the minimum & maximum breakpoint width.
- * @returns A `Rule` object represents the media rule.
+ * @param lowerBreakpointName The name of the minimum breakpoint.
+ * @param upperBreakpointName The name of the maximum breakpoint.
+ * @param styles The style(s) to apply if the screen width meets the minimum & maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `lowerBreakpointName` or `upperBreakpointName` are not found in breakpoints.
  */
 export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth = min(lowerBreakpointName);
-    const maxWidth = maxBefore(upperBreakpointName);
-    if (minWidth && maxWidth) {
-        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`, styles);
-    }
-    else if (minWidth) {
-        return rule(`@media (min-width: ${minWidth}px)`, styles);
-    }
-    else if (maxWidth) {
-        return rule(`@media (max-width: ${maxWidth}px)`, styles);
+    const minWidth            = min(lowerBreakpointName);
+    const maxWidthBeforeUpper = maxBefore(upperBreakpointName);
+    if (maxWidthBeforeUpper === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    if (minWidth) {
+        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeUpper}px)`, styles);
     }
     else {
-        return noRule(styles);
+        return rule(`@media (max-width: ${maxWidthBeforeUpper}px)`, styles);
     } // if
 };
 
 /**
  * Applies given `styles` if the screen width is between the specified `breakpointName` and the next breakpoint.
- * @param breakpointName the name of the desired breakpoint.
- * @param styles the style(s) to apply if the screen width meets the minimum & maximum breakpoint width.
- * @returns A `Rule` object represents the media rule.
+ * @param breakpointName The name of the desired breakpoint.
+ * @param styles The style(s) to apply if the screen width meets the minimum & maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const ifScreenWidth            = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth = min(breakpointName);
-    const nextBp   = next(breakpointName);
-    const maxWidth = nextBp ? maxBefore(nextBp) : null;
-    if (minWidth && maxWidth) {
-        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`, styles);
-    }
-    else if (minWidth) {
-        return rule(`@media (min-width: ${minWidth}px)`, styles);
-    }
-    else if (maxWidth) {
-        return rule(`@media (max-width: ${maxWidth}px)`, styles);
+export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+    const minWidth             = min(breakpointName);
+    const nextBp               = next(breakpointName);
+    const maxWidthBeforeNextBp = nextBp ? maxBefore(nextBp) : null;
+    if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    if (minWidth) {
+        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     }
     else {
-        return noRule(styles);
+        return rule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     } // if
 };
 //#endregion rules
