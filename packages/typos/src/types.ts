@@ -22,3 +22,4 @@ export type OverflowWrap   = CssKnownValueOf<'overflowWrap'>
 export type Foreground     = CssKnownValueOf<'color'>
 export type Background     = CssComplexValueOf<CssKnownValueOf<'background'>>
 export type Opacity        = CssKnownValueOf<'opacity'>
+export type Margin         = CssComplexValueOf<CssKnownValueOf<'margin'>>
