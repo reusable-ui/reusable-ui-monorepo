@@ -149,17 +149,19 @@ export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles:
  * @throws The specified `lowerBreakpointName` or `upperBreakpointName` are not found in breakpoints.
  */
 export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth            = min(lowerBreakpointName);
-    const maxWidthBeforeUpper = maxBefore(upperBreakpointName);
-    if (maxWidthBeforeUpper === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    const minWidth             = min(lowerBreakpointName);
+    
+    const nextBp               = next(upperBreakpointName);
+    const maxWidthBeforeNextBp = nextBp ? maxBefore(nextBp) : null;
+    if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
     
     
     
     if (minWidth) {
-        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeUpper}px)`, styles);
+        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     }
     else {
-        return rule(`@media (max-width: ${maxWidthBeforeUpper}px)`, styles);
+        return rule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     } // if
 };
 
@@ -172,6 +174,7 @@ export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, up
  */
 export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const minWidth             = min(breakpointName);
+    
     const nextBp               = next(breakpointName);
     const maxWidthBeforeNextBp = nextBp ? maxBefore(nextBp) : null;
     if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
