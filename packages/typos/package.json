@@ -1,0 +1,38 @@
+{
+  "name": "@reusable-ui/typos",
+  "version": "5.0.0",
+  "description": "Texts, paragraphs, fonts and more.",
+  "keywords": [
+    "texts",
+    "paragraphs",
+    "fonts",
+    "typography"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/typos.js",
+  "types": "dist/typos.d.ts",
+  "type": "module",
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.6",
+    "@cssfn/css-types": "^2.0.2",
+    "@reusable-ui/colors": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.4"
+  }
+}
