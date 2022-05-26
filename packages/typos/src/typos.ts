@@ -5,6 +5,11 @@ import type {
     
     
     
+    // css custom properties:
+    CssCustomRef,
+    
+    
+    
     // css known (standard) properties:
     CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
@@ -33,6 +38,7 @@ import {
 
 // reusable-ui:
 import {
+    // configs:
     colors,
 }                           from '@reusable-ui/colors'  // reads/writes css variables configuration
 
@@ -42,8 +48,8 @@ import {
 export type FontSize       = CssComplexValueOf<CssKnownValueOf<'fontSize'>>
 export type FontFamily     = CssComplexValueOf<CssKnownValueOf<'fontFamily'>>
 export type FontWeight     = CssKnownValueOf<'fontWeight'>
-export type FontStyle      = CssKnownValueOf<'fontStyle'>
-export type TextDecoration = CssKnownValueOf<'textDecoration'>
+export type FontStyle      = CssComplexValueOf<CssKnownValueOf<'fontStyle'>>
+export type TextDecoration = CssComplexValueOf<CssKnownValueOf<'textDecoration'>>
 export type LineHeight     = CssKnownValueOf<'lineHeight'>
 export type OverflowWrap   = CssKnownValueOf<'overflowWrap'>
 export type Foreground     = CssKnownValueOf<'color'>
@@ -63,27 +69,29 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
             '"Segoe UI"',
             'Roboto',
             '"Helvetica Neue"',
-            'Arial',
             '"Noto Sans"',
             '"Liberation Sans"',
+            'Arial',
             'sans-serif',
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"',
             '"Noto Color Emoji"',
-        ]                                    as FontFamily,
+        ]                                   as FontFamily,
         fontFamilyMonospace  : [
             'SFMono-Regular',
-            'Menlo', 'Monaco',
+            'Menlo',
+            'Monaco',
             'Consolas',
             '"Liberation Mono"',
             '"Courier New"',
             'monospace',
-        ]                                    as FontFamily,
+        ]                                   as FontFamily,
         
         fontWeightLighter    : 'lighter'    as FontWeight,
         fontWeightLight      : 300          as FontWeight,
         fontWeightNormal     : 400          as FontWeight,
+        fontWeightSemibold   : 600          as FontWeight,
         fontWeightBold       : 700          as FontWeight,
         fontWeightBolder     : 'bolder'     as FontWeight,
         
@@ -96,20 +104,20 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
         
         overflowWrap         : 'break-word' as OverflowWrap,
         
-        foreg                : colors.foreg as Foreground,
+        foreg                : colors.foreg as Foreground | CssCustomRef,
         /**
-         * Default is a solid color of `colors.backg`.  
+         * The default is a solid color of `colors.backg`.  
          * It can be an image or gradient with the average color of `colors.backg`.
          */
-        backg                : colors.backg as Background,
+        backg                : colors.backg as Background | CssCustomRef,
     };
     
     return {
         ...basics,
         
-        fontSize             : basics.fontSizeNm                                as FontSize,
         fontSizeXs           : [['calc(', basics.fontSizeNm, '*', 0.50  , ')']] as FontSize,
         fontSizeSm           : [['calc(', basics.fontSizeNm, '*', 0.75  , ')']] as FontSize,
+        fontSize             :            basics.fontSizeNm                     as FontSize,
         fontSizeMd           : [['calc(', basics.fontSizeNm, '*', 1.25  , ')']] as FontSize,
         fontSizeLg           : [['calc(', basics.fontSizeNm, '*', 1.50  , ')']] as FontSize,
         fontSizeXl           : [['calc(', basics.fontSizeNm, '*', 1.75  , ')']] as FontSize,
@@ -147,6 +155,6 @@ styleSheets([
             // customize:
             ...usesCssProps(typos),
         }),
-    })
-])
+    }),
+]);
 //#endregion style sheets
