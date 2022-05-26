@@ -1,0 +1,37 @@
+{
+  "name": "@reusable-ui/layouts",
+  "version": "5.0.0",
+  "description": "Mixins of reusable common layout.",
+  "keywords": [
+    "layouts",
+    "design",
+    "commons",
+    "css",
+    "stylesheet"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/layouts.js",
+  "types": "dist/layouts.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-types": "^2.0.2"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.4"
+  }
+}
