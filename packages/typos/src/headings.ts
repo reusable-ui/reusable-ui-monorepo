@@ -1,10 +1,5 @@
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomRef,
-    
-    
-    
     // cssfn properties:
     CssSelector,
     CssSelectorCollection,
@@ -68,12 +63,12 @@ import {
 const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
     return {
         fontSize       : 'unset',
-        fontSize1      : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
-        fontSize2      : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
-        fontSize3      : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
-        fontSize4      : [['calc(', 1.50, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
-        fontSize5      : [['calc(', 1.25, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
-        fontSize6      : [['calc(', 1.00, '*', typos.fontSize, ')']] as FontSize | CssCustomRef,
+        fontSize1      : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize,
+        fontSize2      : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize,
+        fontSize3      : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize,
+        fontSize4      : [['calc(', 1.50, '*', typos.fontSize, ')']] as FontSize,
+        fontSize5      : [['calc(', 1.25, '*', typos.fontSize, ')']] as FontSize,
+        fontSize6      : [['calc(', 1.00, '*', typos.fontSize, ')']] as FontSize,
         
         fontFamily     : 'inherit' as FontFamily,
         fontWeight     : 500       as FontWeight,

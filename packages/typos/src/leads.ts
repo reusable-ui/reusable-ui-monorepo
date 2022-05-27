@@ -1,8 +1,4 @@
 // cssfn:
-import type {
-    // css custom properties:
-    CssCustomRef,
-}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
@@ -51,16 +47,16 @@ import {
 //#region configs
 const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
     return {
-        fontSize       : typos.fontSizeMd      as FontSize       | CssCustomRef,
-        fontFamily     : pargs.fontFamily      as FontFamily     | CssCustomRef,
-        fontWeight     : typos.fontWeightLight as FontWeight     | CssCustomRef,
-        fontStyle      : pargs.fontStyle       as FontStyle      | CssCustomRef,
-        textDecoration : pargs.textDecoration  as TextDecoration | CssCustomRef,
-        lineHeight     : pargs.lineHeight      as LineHeight     | CssCustomRef,
+        fontSize       : typos.fontSizeMd      as FontSize,
+        fontFamily     : pargs.fontFamily      as FontFamily,
+        fontWeight     : typos.fontWeightLight as FontWeight,
+        fontStyle      : pargs.fontStyle       as FontStyle,
+        textDecoration : pargs.textDecoration  as TextDecoration,
+        lineHeight     : pargs.lineHeight      as LineHeight,
         
-        foreg          : pargs.foreg           as Foreground     | CssCustomRef,
+        foreg          : pargs.foreg           as Foreground,
         
-        margin         : pargs.margin          as Margin         | CssCustomRef,
+        margin         : pargs.margin          as Margin,
     };
 }, { prefix: 'lead' });
 export {

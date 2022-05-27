@@ -1,8 +1,4 @@
 // cssfn:
-import type {
-    // css custom properties:
-    CssCustomRef,
-}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     atRoot,
@@ -93,12 +89,12 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
         
         overflowWrap         : 'break-word' as OverflowWrap,
         
-        foreg                : colors.foreg as Foreground | CssCustomRef,
+        foreg                : colors.foreg as Foreground,
         /**
          * The default is a solid color of `colors.backg`.  
          * It can be an image or gradient with the average color of `colors.backg`.
          */
-        backg                : colors.backg as Background | CssCustomRef,
+        backg                : colors.backg as Background,
     };
     
     return {
