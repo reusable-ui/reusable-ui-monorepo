@@ -1,4 +1,8 @@
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
@@ -25,19 +29,6 @@ import {
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    Foreground,
-    MarginBlockStart,
-    MarginBlockEnd,
-    MarginInlineStart,
-    MarginInlineEnd,
-}                           from './types.js'
 import {
     typos,
 }                           from './typos.js'
@@ -50,19 +41,26 @@ import {
 //#region configs
 const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
     return {
-        fontSize          : typos.fontSizeMd        as FontSize,
-        fontFamily        : pargs.fontFamily        as FontFamily,
-        fontWeight        : typos.fontWeightLight   as FontWeight,
-        fontStyle         : pargs.fontStyle         as FontStyle,
-        textDecoration    : pargs.textDecoration    as TextDecoration,
-        lineHeight        : pargs.lineHeight        as LineHeight,
+        // foregrounds:
+        foreg             : pargs.foreg             as CssKnownProps['foreg'],
         
-        foreg             : pargs.foreg             as Foreground,
         
-        marginBlockStart  : pargs.marginBlockStart  as MarginBlockStart,
-        marginBlockEnd    : pargs.marginBlockEnd    as MarginBlockEnd,
-        marginInlineStart : pargs.marginInlineStart as MarginInlineStart,
-        marginInlineEnd   : pargs.marginInlineEnd   as MarginInlineEnd,
+        
+        // spacings:
+        marginInlineStart : pargs.marginInlineStart as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : pargs.marginInlineEnd   as CssKnownProps['marginInlineEnd'],
+        marginBlockStart  : pargs.marginBlockStart  as CssKnownProps['marginBlockStart'],
+        marginBlockEnd    : pargs.marginBlockEnd    as CssKnownProps['marginBlockEnd'],
+        
+        
+        
+        // typos:
+        fontSize          : typos.fontSizeMd        as CssKnownProps['fontSize'],
+        fontFamily        : pargs.fontFamily        as CssKnownProps['fontFamily'],
+        fontWeight        : typos.fontWeightLight   as CssKnownProps['fontWeight'],
+        fontStyle         : pargs.fontStyle         as CssKnownProps['fontStyle'],
+        textDecoration    : pargs.textDecoration    as CssKnownProps['textDecoration'],
+        lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'lead' });
 export {

@@ -1,5 +1,9 @@
 // cssfn:
 import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
+import type {
     // cssfn properties:
     CssSelector,
     CssSelectorCollection,
@@ -42,20 +46,6 @@ import {
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    Foreground,
-    Opacity,
-    MarginBlockStart,
-    MarginBlockEnd,
-    MarginInlineStart,
-    MarginInlineEnd,
-}                           from './types.js'
 import {
     typos,
 }                           from './typos.js'
@@ -65,28 +55,38 @@ import {
 //#region configs
 const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
     return {
-        fontSize          : 'unset'                                     as FontSize,
-        fontSize1         : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize,
-        fontSize2         : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize,
-        fontSize3         : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize,
-        fontSize4         : [['calc(', 1.50, '*', typos.fontSize, ')']] as FontSize,
-        fontSize5         : [['calc(', 1.25, '*', typos.fontSize, ')']] as FontSize,
-        fontSize6         : [['calc(', 1.00, '*', typos.fontSize, ')']] as FontSize,
+        // appearances:
+        subOpacity        : 0.8       as CssKnownProps['opacity'],
         
-        fontFamily        : 'inherit' as FontFamily,
-        fontWeight        : 500       as FontWeight,
-        fontStyle         : 'inherit' as FontStyle,
-        textDecoration    : 'inherit' as TextDecoration,
-        lineHeight        : 1.25      as LineHeight,
         
-        foreg             : 'inherit' as Foreground,
         
-        marginBlockStart  : 0         as MarginBlockStart,
-        marginBlockEnd    : '0.75em'  as MarginBlockEnd,
-        marginInlineStart : 0         as MarginInlineStart,
-        marginInlineEnd   : 0         as MarginInlineEnd,
+        // foregrounds:
+        foreg             : 'inherit' as CssKnownProps['foreg'],
         
-        subOpacity        : 0.8       as Opacity,
+        
+        
+        // spacings:
+        marginInlineStart : 0         as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : 0         as CssKnownProps['marginInlineEnd'],
+        marginBlockStart  : 0         as CssKnownProps['marginBlockStart'],
+        marginBlockEnd    : '0.75em'  as CssKnownProps['marginBlockEnd'],
+        
+        
+        
+        // typos:
+        fontSize          : 'unset'                                     as CssKnownProps['fontSize'],
+        fontSize1         : [['calc(', 2.25, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize2         : [['calc(', 2.00, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize3         : [['calc(', 1.75, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize4         : [['calc(', 1.50, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize5         : [['calc(', 1.25, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize6         : [['calc(', 1.00, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        
+        fontFamily        : 'inherit' as CssKnownProps['fontFamily'],
+        fontWeight        : 500       as CssKnownProps['fontWeight'],
+        fontStyle         : 'inherit' as CssKnownProps['fontStyle'],
+        textDecoration    : 'inherit' as CssKnownProps['textDecoration'],
+        lineHeight        : 1.25      as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'h' });
 export {

@@ -1,4 +1,8 @@
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
@@ -22,32 +26,28 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
-// internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    Foreground,
-    Opacity,
-}                           from './types.js'
-
 
 
 //#region configs
 const [secondaries, secondaryValues, cssSecondaryConfig] = createCssConfig(() => {
     return {
-        fontSize       : 'inherit' as FontSize,
-        fontFamily     : 'inherit' as FontFamily,
-        fontWeight     : 'inherit' as FontWeight,
-        fontStyle      : 'inherit' as FontStyle,
-        textDecoration : 'inherit' as TextDecoration,
-        lineHeight     : 'inherit' as LineHeight,
+        // appearances:
+        opacity        : 0.65      as CssKnownProps['opacity'],
         
-        foreg          : 'inherit' as Foreground,
-        opacity        : 0.65      as Opacity,
+        
+        
+        // foregrounds:
+        foreg          : 'inherit' as CssKnownProps['foreg'],
+        
+        
+        
+        // typos:
+        fontSize       : 'inherit' as CssKnownProps['fontSize'],
+        fontFamily     : 'inherit' as CssKnownProps['fontFamily'],
+        fontWeight     : 'inherit' as CssKnownProps['fontWeight'],
+        fontStyle      : 'inherit' as CssKnownProps['fontStyle'],
+        textDecoration : 'inherit' as CssKnownProps['textDecoration'],
+        lineHeight     : 'inherit' as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'sec' });
 export {

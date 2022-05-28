@@ -1,4 +1,8 @@
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     atRoot,
@@ -28,25 +32,27 @@ import {
     colors,
 }                           from '@reusable-ui/colors'  // a color management system
 
-// internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    OverflowWrap,
-    Foreground,
-    Background,
-}                           from './types.js'
-
 
 
 //#region configs
 const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
     const basics = {
-        fontSizeNm           : '1rem'       as FontSize,
+        // backgrounds:
+        /**
+         * The default is a solid color of `colors.backg`.  
+         * It can be an image or gradient with the average color of `colors.backg`.
+         */
+        backg                : colors.backg as CssKnownProps['backg'],
+        
+        
+        
+        // foregrounds:
+        foreg                : colors.foreg as CssKnownProps['foreg'],
+        
+        
+        
+        // typos:
+        fontSizeNm           : '1rem'       as CssKnownProps['fontSize'],
         
         fontFamilySansSerief : [
             'system-ui',
@@ -62,7 +68,7 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"',
             '"Noto Color Emoji"',
-        ]                                   as FontFamily,
+        ]                                   as CssKnownProps['fontFamily'],
         fontFamilyMonospace  : [
             'SFMono-Regular',
             'Menlo',
@@ -71,49 +77,45 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
             '"Liberation Mono"',
             '"Courier New"',
             'monospace',
-        ]                                   as FontFamily,
+        ]                                   as CssKnownProps['fontFamily'],
         
-        fontWeightLighter    : 'lighter'    as FontWeight,
-        fontWeightLight      : 300          as FontWeight,
-        fontWeightNormal     : 400          as FontWeight,
-        fontWeightSemibold   : 600          as FontWeight,
-        fontWeightBold       : 700          as FontWeight,
-        fontWeightBolder     : 'bolder'     as FontWeight,
+        fontWeightLighter    : 'lighter'    as CssKnownProps['fontWeight'],
+        fontWeightLight      : 300          as CssKnownProps['fontWeight'],
+        fontWeightNormal     : 400          as CssKnownProps['fontWeight'],
+        fontWeightSemibold   : 600          as CssKnownProps['fontWeight'],
+        fontWeightBold       : 700          as CssKnownProps['fontWeight'],
+        fontWeightBolder     : 'bolder'     as CssKnownProps['fontWeight'],
         
-        fontStyle            : 'normal'     as FontStyle,
-        textDecoration       : 'none'       as TextDecoration,
+        fontStyle            : 'normal'     as CssKnownProps['fontStyle'],
+        textDecoration       : 'none'       as CssKnownProps['textDecoration'],
         
-        lineHeightSm         : 1.25         as LineHeight,
-        lineHeightNm         : 1.50         as LineHeight,
-        lineHeightLg         : 2.00         as LineHeight,
+        lineHeightSm         : 1.25         as CssKnownProps['lineHeight'],
+        lineHeightNm         : 1.50         as CssKnownProps['lineHeight'],
+        lineHeightLg         : 2.00         as CssKnownProps['lineHeight'],
         
-        overflowWrap         : 'break-word' as OverflowWrap,
-        
-        foreg                : colors.foreg as Foreground,
-        /**
-         * The default is a solid color of `colors.backg`.  
-         * It can be an image or gradient with the average color of `colors.backg`.
-         */
-        backg                : colors.backg as Background,
+        overflowWrap         : 'break-word' as CssKnownProps['overflowWrap'],
     };
     
     return {
         ...basics,
         
-        fontSizeXs           : [['calc(', basics.fontSizeNm, '*', 0.50  , ')']] as FontSize,
-        fontSizeSm           : [['calc(', basics.fontSizeNm, '*', 0.75  , ')']] as FontSize,
-        fontSize             :            basics.fontSizeNm                     as FontSize,
-        fontSizeMd           : [['calc(', basics.fontSizeNm, '*', 1.25  , ')']] as FontSize,
-        fontSizeLg           : [['calc(', basics.fontSizeNm, '*', 1.50  , ')']] as FontSize,
-        fontSizeXl           : [['calc(', basics.fontSizeNm, '*', 1.75  , ')']] as FontSize,
-        fontSizeXxl          : [['calc(', basics.fontSizeNm, '*', 2.00  , ')']] as FontSize,
-        fontSizeXxxl         : [['calc(', basics.fontSizeNm, '*', 2.25  , ')']] as FontSize,
         
-        fontFamily           : basics.fontFamilySansSerief                      as FontFamily,
         
-        fontWeight           : basics.fontWeightNormal                          as FontWeight,
+        // typos:
+        fontSizeXs           : [['calc(', basics.fontSizeNm, '*', 0.50  , ')']] as CssKnownProps['fontSize'],
+        fontSizeSm           : [['calc(', basics.fontSizeNm, '*', 0.75  , ')']] as CssKnownProps['fontSize'],
+        fontSize             :            basics.fontSizeNm                     as CssKnownProps['fontSize'],
+        fontSizeMd           : [['calc(', basics.fontSizeNm, '*', 1.25  , ')']] as CssKnownProps['fontSize'],
+        fontSizeLg           : [['calc(', basics.fontSizeNm, '*', 1.50  , ')']] as CssKnownProps['fontSize'],
+        fontSizeXl           : [['calc(', basics.fontSizeNm, '*', 1.75  , ')']] as CssKnownProps['fontSize'],
+        fontSizeXxl          : [['calc(', basics.fontSizeNm, '*', 2.00  , ')']] as CssKnownProps['fontSize'],
+        fontSizeXxxl         : [['calc(', basics.fontSizeNm, '*', 2.25  , ')']] as CssKnownProps['fontSize'],
         
-        lineHeight           : basics.lineHeightNm                              as LineHeight,
+        fontFamily           : basics.fontFamilySansSerief                      as CssKnownProps['fontFamily'],
+        
+        fontWeight           : basics.fontWeightNormal                          as CssKnownProps['fontWeight'],
+        
+        lineHeight           : basics.lineHeightNm                              as CssKnownProps['lineHeight'],
     };
 }, { prefix: '' });
 export {

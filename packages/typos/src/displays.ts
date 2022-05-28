@@ -1,4 +1,8 @@
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // scopes:
     globalScope,
@@ -13,20 +17,6 @@ import {
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    Foreground,
-    Opacity,
-    MarginBlockStart,
-    MarginBlockEnd,
-    MarginInlineStart,
-    MarginInlineEnd,
-}                           from './types.js'
 import {
     typos,
 }                           from './typos.js'
@@ -40,28 +30,38 @@ import {
 //#region configs
 const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
     return {
-        fontSize          : 'unset'                                    as FontSize,
-        fontSize1         : [['calc(', 5.0, '*', typos.fontSize, ')']] as FontSize,
-        fontSize2         : [['calc(', 4.5, '*', typos.fontSize, ')']] as FontSize,
-        fontSize3         : [['calc(', 4.0, '*', typos.fontSize, ')']] as FontSize,
-        fontSize4         : [['calc(', 3.5, '*', typos.fontSize, ')']] as FontSize,
-        fontSize5         : [['calc(', 3.0, '*', typos.fontSize, ')']] as FontSize,
-        fontSize6         : [['calc(', 2.5, '*', typos.fontSize, ')']] as FontSize,
+        // appearances:
+        subOpacity        : heads.subOpacity        as CssKnownProps['opacity'],
         
-        fontFamily        : heads.fontFamily        as FontFamily,
-        fontWeight        : 300                     as FontWeight,
-        fontStyle         : heads.fontStyle         as FontStyle,
-        textDecoration    : heads.textDecoration    as TextDecoration,
-        lineHeight        : heads.lineHeight        as LineHeight,
         
-        foreg             : heads.foreg             as Foreground,
         
-        marginBlockStart  : heads.marginBlockStart  as MarginBlockStart,
-        marginBlockEnd    : heads.marginBlockEnd    as MarginBlockEnd,
-        marginInlineStart : heads.marginInlineStart as MarginInlineStart,
-        marginInlineEnd   : heads.marginInlineEnd   as MarginInlineEnd,
+        // foregrounds:
+        foreg             : heads.foreg             as CssKnownProps['foreg'],
         
-        subOpacity        : heads.subOpacity        as Opacity,
+        
+        
+        // spacings:
+        marginInlineStart : heads.marginInlineStart as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : heads.marginInlineEnd   as CssKnownProps['marginInlineEnd'],
+        marginBlockStart  : heads.marginBlockStart  as CssKnownProps['marginBlockStart'],
+        marginBlockEnd    : heads.marginBlockEnd    as CssKnownProps['marginBlockEnd'],
+        
+        
+        
+        // typos:
+        fontSize          : 'unset'                                    as CssKnownProps['fontSize'],
+        fontSize1         : [['calc(', 5.0, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize2         : [['calc(', 4.5, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize3         : [['calc(', 4.0, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize4         : [['calc(', 3.5, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize5         : [['calc(', 3.0, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        fontSize6         : [['calc(', 2.5, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'],
+        
+        fontFamily        : heads.fontFamily        as CssKnownProps['fontFamily'],
+        fontWeight        : 300                     as CssKnownProps['fontWeight'],
+        fontStyle         : heads.fontStyle         as CssKnownProps['fontStyle'],
+        textDecoration    : heads.textDecoration    as CssKnownProps['textDecoration'],
+        lineHeight        : heads.lineHeight        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'd' });
 export {

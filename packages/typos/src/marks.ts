@@ -46,16 +46,24 @@ const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
         // backgrounds:
         backg             : colors.warningThin as CssKnownProps['backg'],
         
+        
+        
         // foregrounds:
         foreg             : 'inherit'          as CssKnownProps['foreg'],
+        
+        
         
         // borders:
         border            : borders.default    as CssKnownProps['border'],
         borderRadius      : borderRadiuses.sm  as CssKnownProps['borderRadius'],
         
+        
+        
         // spacings:
         paddingInline     : '0.2em'            as CssKnownProps['paddingInline'],
         paddingBlock      : '0em'              as CssKnownProps['paddingBlock'],
+        
+        
         
         // typos:
         fontSize          : 'inherit'          as CssKnownProps['fontSize'],

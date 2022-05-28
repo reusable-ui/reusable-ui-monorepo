@@ -1,4 +1,8 @@
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
@@ -25,19 +29,6 @@ import {
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
-import type {
-    FontSize,
-    FontFamily,
-    FontWeight,
-    FontStyle,
-    TextDecoration,
-    LineHeight,
-    Foreground,
-    MarginBlockStart,
-    MarginBlockEnd,
-    MarginInlineStart,
-    MarginInlineEnd,
-}                           from './types.js'
 import {
     typos,
 }                           from './typos.js'
@@ -47,19 +38,26 @@ import {
 //#region configs
 const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() => {
     return {
-        fontSize          : typos.fontSizeMd as FontSize,
-        fontFamily        : 'inherit'        as FontFamily,
-        fontWeight        : 'inherit'        as FontWeight,
-        fontStyle         : 'inherit'        as FontStyle,
-        textDecoration    : 'inherit'        as TextDecoration,
-        lineHeight        : 'inherit'        as LineHeight,
+        // foregrounds:
+        foreg             : 'inherit'        as CssKnownProps['foreg'],
         
-        foreg             : 'inherit'        as Foreground,
         
-        marginBlockStart  : '1em'            as MarginBlockStart,
-        marginBlockEnd    : '1em'            as MarginBlockEnd,
-        marginInlineStart : 0                as MarginInlineStart,
-        marginInlineEnd   : 0                as MarginInlineEnd,
+        
+        // spacings:
+        marginInlineStart : 0                as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : 0                as CssKnownProps['marginInlineEnd'],
+        marginBlockStart  : '1em'            as CssKnownProps['marginBlockStart'],
+        marginBlockEnd    : '1em'            as CssKnownProps['marginBlockEnd'],
+        
+        
+        
+        // typos:
+        fontSize          : typos.fontSizeMd as CssKnownProps['fontSize'],
+        fontFamily        : 'inherit'        as CssKnownProps['fontFamily'],
+        fontWeight        : 'inherit'        as CssKnownProps['fontWeight'],
+        fontStyle         : 'inherit'        as CssKnownProps['fontStyle'],
+        textDecoration    : 'inherit'        as CssKnownProps['textDecoration'],
+        lineHeight        : 'inherit'        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'bq' });
 export {
