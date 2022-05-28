@@ -3,7 +3,7 @@ inline then block
 
 
 group sequences:
-// (layouts|positions|appearances|sizes|accessibilities|backgrounds|foregrounds|borders|spacings|typos|states|children):
+// (layouts|positions|appearances|sizes|accessibilities|backgrounds|foregrounds|borders|spacings|typos|states|children|customize):
 
 // layouts:
 
@@ -28,3 +28,5 @@ group sequences:
 // states:
 
 // children:
+
+// customize:
