@@ -1,29 +1,23 @@
 // cssfn:
 import type {
-    // css values:
-    CssComplexSingleValueOf,
-    CssComplexValueOf,
-    
-    
-    
     // css known (standard) properties:
-    CssKnownValueOf,
+    CssKnownProps,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 
 
 
 // types:
-export type FontSize          = CssComplexValueOf      <CssKnownValueOf<'fontSize'>>
-export type FontFamily        = CssComplexValueOf      <CssKnownValueOf<'fontFamily'>>
-export type FontWeight        = CssComplexSingleValueOf<CssKnownValueOf<'fontWeight'>>
-export type FontStyle         = CssComplexValueOf      <CssKnownValueOf<'fontStyle'>>
-export type TextDecoration    = CssComplexValueOf      <CssKnownValueOf<'textDecoration'>>
-export type LineHeight        = CssComplexSingleValueOf<CssKnownValueOf<'lineHeight'>>
-export type OverflowWrap      = CssComplexSingleValueOf<CssKnownValueOf<'overflowWrap'>>
-export type Foreground        = CssComplexSingleValueOf<CssKnownValueOf<'color'>>
-export type Background        = CssComplexValueOf      <CssKnownValueOf<'background'>>
-export type Opacity           = CssComplexSingleValueOf<CssKnownValueOf<'opacity'>>
-export type MarginBlockStart  = CssComplexValueOf      <CssKnownValueOf<'marginBlockStart'>>
-export type MarginBlockEnd    = CssComplexValueOf      <CssKnownValueOf<'marginBlockEnd'>>
-export type MarginInlineStart = CssComplexValueOf      <CssKnownValueOf<'marginInlineStart'>>
-export type MarginInlineEnd   = CssComplexValueOf      <CssKnownValueOf<'marginInlineEnd'>>
+export type FontSize          = CssKnownProps['fontSize']
+export type FontFamily        = CssKnownProps['fontFamily']
+export type FontWeight        = CssKnownProps['fontWeight']
+export type FontStyle         = CssKnownProps['fontStyle']
+export type TextDecoration    = CssKnownProps['textDecoration']
+export type LineHeight        = CssKnownProps['lineHeight']
+export type OverflowWrap      = CssKnownProps['overflowWrap']
+export type Foreground        = CssKnownProps['color']
+export type Background        = CssKnownProps['background']
+export type Opacity           = CssKnownProps['opacity']
+export type MarginBlockStart  = CssKnownProps['marginBlockStart']
+export type MarginBlockEnd    = CssKnownProps['marginBlockEnd']
+export type MarginInlineStart = CssKnownProps['marginInlineStart']
+export type MarginInlineEnd   = CssKnownProps['marginInlineEnd']
