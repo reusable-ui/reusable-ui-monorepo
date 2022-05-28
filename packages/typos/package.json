@@ -32,6 +32,7 @@
   "dependencies": {
     "@cssfn/css-config": "^2.0.8",
     "@cssfn/css-types": "^2.0.2",
+    "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0"
   },
   "peerDependencies": {

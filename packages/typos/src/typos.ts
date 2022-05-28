@@ -26,7 +26,7 @@ import {
 import {
     // configs:
     colors,
-}                           from '@reusable-ui/colors'  // reads/writes css variables configuration
+}                           from '@reusable-ui/colors'  // a color management system
 
 // internals:
 import type {
