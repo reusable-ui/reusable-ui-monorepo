@@ -33,7 +33,10 @@ import type {
     TextDecoration,
     LineHeight,
     Foreground,
-    Margin,
+    MarginBlockStart,
+    MarginBlockEnd,
+    MarginInlineStart,
+    MarginInlineEnd,
 }                           from './types.js'
 
 
@@ -41,16 +44,19 @@ import type {
 //#region configs
 const [paragraphs, paragraphValues, cssParagraphConfig] = createCssConfig(() => {
     return {
-        fontSize       : 'inherit'    as FontSize,
-        fontFamily     : 'inherit'    as FontFamily,
-        fontWeight     : 'inherit'    as FontWeight,
-        fontStyle      : 'inherit'    as FontStyle,
-        textDecoration : 'inherit'    as TextDecoration,
-        lineHeight     : 'inherit'    as LineHeight,
+        fontSize          : 'inherit' as FontSize,
+        fontFamily        : 'inherit' as FontFamily,
+        fontWeight        : 'inherit' as FontWeight,
+        fontStyle         : 'inherit' as FontStyle,
+        textDecoration    : 'inherit' as TextDecoration,
+        lineHeight        : 'inherit' as LineHeight,
         
-        foreg          : 'inherit'    as Foreground,
+        foreg             : 'inherit' as Foreground,
         
-        margin         : [['1em', 0]] as Margin,
+        marginBlockStart  : '1em'     as MarginBlockStart,
+        marginBlockEnd    : '1em'     as MarginBlockEnd,
+        marginInlineStart : 0         as MarginInlineStart,
+        marginInlineEnd   : 0         as MarginInlineEnd,
     };
 }, { prefix: 'p' });
 export {

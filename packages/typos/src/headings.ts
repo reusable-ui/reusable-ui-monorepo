@@ -51,7 +51,10 @@ import type {
     LineHeight,
     Foreground,
     Opacity,
-    Margin,
+    MarginBlockStart,
+    MarginBlockEnd,
+    MarginInlineStart,
+    MarginInlineEnd,
 }                           from './types.js'
 import {
     typos,
@@ -62,25 +65,28 @@ import {
 //#region configs
 const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
     return {
-        fontSize       : 'unset',
-        fontSize1      : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize,
-        fontSize2      : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize,
-        fontSize3      : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize,
-        fontSize4      : [['calc(', 1.50, '*', typos.fontSize, ')']] as FontSize,
-        fontSize5      : [['calc(', 1.25, '*', typos.fontSize, ')']] as FontSize,
-        fontSize6      : [['calc(', 1.00, '*', typos.fontSize, ')']] as FontSize,
+        fontSize          : 'unset',
+        fontSize1         : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize,
+        fontSize2         : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize,
+        fontSize3         : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize,
+        fontSize4         : [['calc(', 1.50, '*', typos.fontSize, ')']] as FontSize,
+        fontSize5         : [['calc(', 1.25, '*', typos.fontSize, ')']] as FontSize,
+        fontSize6         : [['calc(', 1.00, '*', typos.fontSize, ')']] as FontSize,
         
-        fontFamily     : 'inherit' as FontFamily,
-        fontWeight     : 500       as FontWeight,
-        fontStyle      : 'inherit' as FontStyle,
-        textDecoration : 'inherit' as TextDecoration,
-        lineHeight     : 1.25      as LineHeight,
+        fontFamily        : 'inherit' as FontFamily,
+        fontWeight        : 500       as FontWeight,
+        fontStyle         : 'inherit' as FontStyle,
+        textDecoration    : 'inherit' as TextDecoration,
+        lineHeight        : 1.25      as LineHeight,
         
-        foreg          : 'inherit' as Foreground,
+        foreg             : 'inherit' as Foreground,
         
-        margin         : [[0, 0, '0.75em', 0]] as Margin,
+        marginBlockStart  : 0         as MarginBlockStart,
+        marginBlockEnd    : '0.75em'  as MarginBlockEnd,
+        marginInlineStart : 0         as MarginInlineStart,
+        marginInlineEnd   : 0         as MarginInlineEnd,
         
-        subOpacity     : 0.8       as Opacity,
+        subOpacity        : 0.8       as Opacity,
     };
 }, { prefix: 'h' });
 export {

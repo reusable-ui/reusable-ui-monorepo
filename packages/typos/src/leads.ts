@@ -33,7 +33,10 @@ import type {
     TextDecoration,
     LineHeight,
     Foreground,
-    Margin,
+    MarginBlockStart,
+    MarginBlockEnd,
+    MarginInlineStart,
+    MarginInlineEnd,
 }                           from './types.js'
 import {
     typos,
@@ -47,16 +50,19 @@ import {
 //#region configs
 const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
     return {
-        fontSize       : typos.fontSizeMd      as FontSize,
-        fontFamily     : pargs.fontFamily      as FontFamily,
-        fontWeight     : typos.fontWeightLight as FontWeight,
-        fontStyle      : pargs.fontStyle       as FontStyle,
-        textDecoration : pargs.textDecoration  as TextDecoration,
-        lineHeight     : pargs.lineHeight      as LineHeight,
+        fontSize          : typos.fontSizeMd        as FontSize,
+        fontFamily        : pargs.fontFamily        as FontFamily,
+        fontWeight        : typos.fontWeightLight   as FontWeight,
+        fontStyle         : pargs.fontStyle         as FontStyle,
+        textDecoration    : pargs.textDecoration    as TextDecoration,
+        lineHeight        : pargs.lineHeight        as LineHeight,
         
-        foreg          : pargs.foreg           as Foreground,
+        foreg             : pargs.foreg             as Foreground,
         
-        margin         : pargs.margin          as Margin,
+        marginBlockStart  : pargs.marginBlockStart  as MarginBlockStart,
+        marginBlockEnd    : pargs.marginBlockEnd    as MarginBlockEnd,
+        marginInlineStart : pargs.marginInlineStart as MarginInlineStart,
+        marginInlineEnd   : pargs.marginInlineEnd   as MarginInlineEnd,
     };
 }, { prefix: 'lead' });
 export {
