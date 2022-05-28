@@ -65,7 +65,7 @@ import {
 //#region configs
 const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
     return {
-        fontSize          : 'unset',
+        fontSize          : 'unset'                                     as FontSize,
         fontSize1         : [['calc(', 2.25, '*', typos.fontSize, ')']] as FontSize,
         fontSize2         : [['calc(', 2.00, '*', typos.fontSize, ')']] as FontSize,
         fontSize3         : [['calc(', 1.75, '*', typos.fontSize, ')']] as FontSize,

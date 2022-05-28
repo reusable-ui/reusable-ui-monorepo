@@ -40,7 +40,7 @@ import {
 //#region configs
 const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
     return {
-        fontSize          : 'unset',
+        fontSize          : 'unset'                                    as FontSize,
         fontSize1         : [['calc(', 5.0, '*', typos.fontSize, ')']] as FontSize,
         fontSize2         : [['calc(', 4.5, '*', typos.fontSize, ')']] as FontSize,
         fontSize3         : [['calc(', 4.0, '*', typos.fontSize, ')']] as FontSize,
