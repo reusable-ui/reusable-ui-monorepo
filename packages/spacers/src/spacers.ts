@@ -23,7 +23,7 @@ export type CssLength = CssComplexValueOf<CssKnownValueOf<'gap'>>
 //#region configs
 const [spacers, spacerValues, cssSpacerConfig] = createCssConfig(() => {
     const basics = {
-        none    : '0px'     as CssLength,
+        none    : '0rem'    as CssLength,
         md      : '1rem'    as CssLength,
     };
     
