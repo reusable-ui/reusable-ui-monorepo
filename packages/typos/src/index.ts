@@ -2,6 +2,7 @@
 export {
     // configs:
     typos,
+    typos as default,
     typoValues,
     cssTypoConfig,
 }                           from './typos.js'
