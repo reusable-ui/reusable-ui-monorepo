@@ -2,8 +2,9 @@
 import type {
     // css known (standard) properties:
     CssKnownProps,
-}                           from '@cssfn/css-types'     // cssfn css specific types
-import type {
+    
+    
+    
     // cssfn properties:
     CssSelector,
     CssSelectorCollection,
@@ -33,7 +34,7 @@ import {
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
     flat,
-}                           from '@cssfn/cssfn/src/utilities.js'
+}                           from '@cssfn/cssfn/dist/utilities.js'
 import {
     createCssConfig,
     
@@ -47,6 +48,7 @@ import {
 
 // internals:
 import {
+    // configs:
     typos,
 }                           from './typos.js'
 
@@ -125,7 +127,7 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
     
     
     return rules([
-        // global rule for h1-h6:
+        // shared rule for h1-h6:
         rule(selectorsWithLevels, {
             // layouts:
             display : 'block',
@@ -157,7 +159,7 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
                 
                 
                 // spacings:
-                // make subtitle closer to the main heading:
+                // make the subtitle closer to the main heading:
                 marginBlockStart: `calc(0px - ${cssProps.marginBlockEnd})`, // cancel-out parent's marginBlockEnd with negative marginBlockStart
                 
                 ...ifNotLastChild({

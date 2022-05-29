@@ -30,6 +30,7 @@ import {
 
 // internals:
 import {
+    // configs:
     typos,
 }                           from './typos.js'
 

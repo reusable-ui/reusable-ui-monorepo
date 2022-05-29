@@ -30,9 +30,11 @@ import {
 
 // internals:
 import {
+    // configs:
     typos,
 }                           from './typos.js'
 import {
+    // configs:
     paragraphs as pargs,
 }                           from './paragraphs.js'
 

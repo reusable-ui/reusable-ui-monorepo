@@ -18,10 +18,16 @@ import {
 
 // internals:
 import {
+    // configs:
     typos,
 }                           from './typos.js'
 import {
+    // configs:
     headings as heads,
+    
+    
+    
+    // styles:
     usesHeadingRule,
 }                           from './headings.js'
 

@@ -31,7 +31,6 @@ import {
     // configs:
     colors,
 }                           from '@reusable-ui/colors'  // a color management system
-// reusable-ui:
 import {
     // configs:
     borders,
@@ -61,7 +60,7 @@ const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
         
         // spacings:
         paddingInline     : '0.2em'            as CssKnownProps['paddingInline'],
-        paddingBlock      : '0em'              as CssKnownProps['paddingBlock'],
+        paddingBlock      : 0                  as CssKnownProps['paddingBlock'],
         
         
         
