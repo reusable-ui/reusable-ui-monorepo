@@ -65,8 +65,8 @@ const [codes, codeValues, cssCodeConfig] = createCssConfig(() => {
         
         
         // spacings:
-        paddingInline     : 0                         as CssKnownProps['paddingInline'],
-        paddingBlock      : 0                         as CssKnownProps['paddingBlock'],
+        paddingInline     : '0em'                     as CssKnownProps['paddingInline'],
+        paddingBlock      : '0em'                     as CssKnownProps['paddingBlock'],
         
         
         

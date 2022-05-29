@@ -45,8 +45,8 @@ const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() 
         
         
         // spacings:
-        marginInlineStart : 0                as CssKnownProps['marginInlineStart'],
-        marginInlineEnd   : 0                as CssKnownProps['marginInlineEnd'],
+        marginInlineStart : '0em'            as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : '0em'            as CssKnownProps['marginInlineEnd'],
         marginBlockStart  : '1em'            as CssKnownProps['marginBlockStart'],
         marginBlockEnd    : '1em'            as CssKnownProps['marginBlockEnd'],
         

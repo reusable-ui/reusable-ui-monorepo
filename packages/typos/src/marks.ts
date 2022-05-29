@@ -60,7 +60,7 @@ const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
         
         // spacings:
         paddingInline     : '0.2em'            as CssKnownProps['paddingInline'],
-        paddingBlock      : 0                  as CssKnownProps['paddingBlock'],
+        paddingBlock      : '0em'              as CssKnownProps['paddingBlock'],
         
         
         

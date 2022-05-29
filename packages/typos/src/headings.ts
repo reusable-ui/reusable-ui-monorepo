@@ -68,9 +68,9 @@ const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
         
         
         // spacings:
-        marginInlineStart : 0         as CssKnownProps['marginInlineStart'],
-        marginInlineEnd   : 0         as CssKnownProps['marginInlineEnd'],
-        marginBlockStart  : 0         as CssKnownProps['marginBlockStart'],
+        marginInlineStart : '0em'     as CssKnownProps['marginInlineStart'],
+        marginInlineEnd   : '0em'     as CssKnownProps['marginInlineEnd'],
+        marginBlockStart  : '0em'     as CssKnownProps['marginBlockStart'],
         marginBlockEnd    : '0.75em'  as CssKnownProps['marginBlockEnd'],
         
         
