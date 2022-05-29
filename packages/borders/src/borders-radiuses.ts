@@ -23,7 +23,7 @@ export type BorderRadius = CssComplexValueOf<CssKnownValueOf<'borderRadius'>>
 //#region configs
 const [radiuses, radiusValues, cssBorderRadiusConfig] = createCssConfig(() => {
     const basics = {
-        none    : '0px'      as BorderRadius,
+        none    : '0rem'     as BorderRadius,
         sm      : '0.25rem'  as BorderRadius,
         md      : '0.375rem' as BorderRadius,
         lg      : '0.5rem'   as BorderRadius,
