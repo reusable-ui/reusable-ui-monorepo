@@ -130,36 +130,31 @@ export const usePropValidation = (props: ValidationProps): Validation & Validati
 
 // react components:
 
-export interface ValidationProps extends Partial<Validation>
+export interface ValidationProps extends React.PropsWithChildren<Partial<Validation>>
 {
     /**
      * `undefined` : same as `true`.  
      * `true`      : validation is enabled  - implements `isValid` prop.  
      * `false`     : validation is disabled - equivalent as `isValid = null` (uncheck).
      */
-    enableValidation?  : boolean
-
+    enableValidation  ?: boolean
+    
     /**
      * `undefined` : *automatic* detect valid/invalid state.  
      * `null`      : force validation state to *uncheck*.  
      * `true`      : force validation state to *valid*.  
      * `false`     : force validation state to *invalid*.
      */
-    isValid?           : Result
-
+    isValid           ?: Result
+    
     /**
      * `undefined` : same as `true`.  
      * `true`      : inherits `enableValidation` & `isValid` from parent (`ValidationProvider` context).  
      * `false`     : independent `enableValidation` & `isValid`.
      */
-    inheritValidation? : boolean
-
-
-
-    // children:
-    children?          : React.ReactNode
+    inheritValidation ?: boolean
 }
-export function ValidationProvider(props: ValidationProps) {
+const ValidationProvider = (props: ValidationProps) => {
     // fn props:
     const { atRoot, ...propValidation } = usePropValidation(props);
     if (atRoot) {
@@ -175,4 +170,7 @@ export function ValidationProvider(props: ValidationProps) {
         </Context.Provider>
     );
 }
-export { ValidationProvider as default }
+export {
+    ValidationProvider,
+    ValidationProvider as default,
+}

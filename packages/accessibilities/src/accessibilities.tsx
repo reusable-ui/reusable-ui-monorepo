@@ -189,7 +189,7 @@ export const usePropActive = <TDefaultActive extends unknown = boolean>(props: A
 
 // react components:
 
-export interface AccessibilityProps extends Partial<Accessibility>
+export interface AccessibilityProps extends React.PropsWithChildren<Partial<Accessibility>>
 {
     /**
      * `undefined` : same as `true`.  
@@ -236,13 +236,8 @@ export interface AccessibilityProps extends Partial<Accessibility>
      * `false`     : independent `active`.
      */
     inheritActive   ?: boolean
-    
-    
-    
-    // children:
-    children        ?: React.ReactNode
 }
-export function AccessibilityProvider(props: AccessibilityProps) {
+const AccessibilityProvider = (props: AccessibilityProps) => {
     // fn props:
     const propAccess = usePropAccessibility(props);
     
@@ -254,4 +249,7 @@ export function AccessibilityProvider(props: AccessibilityProps) {
         </Context.Provider>
     );
 }
-export { AccessibilityProvider as default }
+export {
+    AccessibilityProvider,
+    AccessibilityProvider as default,
+}
