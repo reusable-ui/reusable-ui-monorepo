@@ -13,18 +13,19 @@ import {
 
 
 // defaults:
-const _defaultEnableRootValidation = false;
-const _defaultEnableValidation     = true;
-const _defaultIsValid              = undefined as (Result|undefined);
+const _defaultEnableRootValidation = false; // no validation at root level
+const _defaultEnableValidation     = true;  // perform validation at <ValidationProvider>
 
-const _defaultInheritValidation    = true;
+const _defaultIsValid              = undefined as (Result|undefined); // all descendants are independent valid/invalid/uncheck
+
+const _defaultInheritValidation    = true;  // if ancestor is valid/invalid/uncheck => all descendants are forced to valid/invalid/uncheck
 
 
 
 // validation results:
 
 /**
- * Validation was skipped because its not required. Neither success nor error shown.
+ * No validation was performed. Neither success nor error is shown.
  */
 export type Uncheck = null
 /**
@@ -32,7 +33,7 @@ export type Uncheck = null
  */
 export type Error   = false
 /**
- * Validation was successful and the value meet the criteria.
+ * Validation was successful and the value meets the criteria.
  */
 export type Success = true
 export type Result  = Uncheck|Error|Success;
@@ -50,7 +51,7 @@ export interface Validation {
      * `false`     : validation is disabled - equivalent as `isValid = null` (uncheck).
      */
     enableValidation  : boolean
-
+    
     /**
      * `undefined` : *automatic* detect valid/invalid state.  
      * `null`      : force validation state to *uncheck*.  
@@ -59,6 +60,7 @@ export interface Validation {
      */
     isValid?          : Result
 }
+
 interface ValidationRoot {
     atRoot?           : true|undefined
 }
@@ -77,15 +79,17 @@ Context.displayName  = 'Validation';
 
 
 // hooks:
-
 export const usePropValidation = (props: ValidationProps): Validation & ValidationRoot => {
     // contexts:
     const valContext = useContext(Context);
     const atRoot     = valContext.atRoot;
-
-
-
-    const inheritValidation : boolean = (props.inheritValidation ?? _defaultInheritValidation);
+    
+    
+    
+    const inheritValidation : boolean = props.inheritValidation ?? _defaultInheritValidation;
+    
+    
+    
     const enableValidation = atRoot ? (props.enableValidation ?? _defaultEnableRootValidation) : (
         (
             inheritValidation
@@ -99,17 +103,17 @@ export const usePropValidation = (props: ValidationProps): Validation & Validati
     );
     const isValid = ((): Result|undefined => {
         if (!enableValidation) return null; // if validation was disabled => treat validity as `uncheck` (null)
-
+        
         
         
         const contextIsValid = (
             inheritValidation
             ?
-            valContext.isValid          // inherit
+            valContext.isValid          // force inherit to descendants (if was set)
             :
-            undefined                   // independent
+            undefined                   // independent descendants
         );
-        if (contextIsValid !== undefined) return contextIsValid; // if the context's validity was set other than `auto` (undefined) => use it
+        if (contextIsValid !== undefined) return contextIsValid; // if the context's validity was set other than `auto` (undefined) => force inherit to descendants
         
         
         
