@@ -19,26 +19,26 @@ const defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box'
 
 
 // utilities:
-const isRef      = <TElement extends Element = Element>(test: TElement|React.RefObject<TElement>|null): test is React.RefObject<TElement> => {
+const isRef      = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null): elementRef is React.RefObject<TElement> => {
     return (
-        !!test
+        !!elementRef
         &&
-        ('current' in test)
+        ('current' in elementRef)
     );
 };
-const getElement = <TElement extends Element = Element>(resizingElementRef: TElement|React.RefObject<TElement>|null): TElement|null => {
-    return isRef(resizingElementRef) ? resizingElementRef.current : resizingElementRef;
+const getElement = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null): TElement|null => {
+    return isRef(elementRef) ? elementRef.current : elementRef;
 };
 
 
 
-export type ResizeObserverCallback<TElement extends Element = Element> = (resizingElement: TElement, size: ResizeObserverSize) => void
-export const useResizeObserver =  <TElement extends Element = Element>(resizingElementRef: TElement|React.RefObject<TElement>|null, resizeObserverCallback: ResizeObserverCallback<TElement>, options = defaultElementResizeOptions) => {
+export type ElementResizeCallback<TElement extends Element = Element> = (element: TElement, size: ResizeObserverSize) => void
+export const useElementResizeObserver = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = defaultElementResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        const resizingElement = getElement(resizingElementRef);
-        if (!resizingElement) return;
+        const element = getElement(elementRef);
+        if (!element) return;
         
         
         
@@ -47,15 +47,15 @@ export const useResizeObserver =  <TElement extends Element = Element>(resizingE
             switch (options.box ?? 'content-box') {
                 case 'content-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        resizeObserverCallback(resizingElement, entry.contentBoxSize[0]);
+                        elementResizeCallback(element, entry.contentBoxSize[0]);
                     };
                 case 'border-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        resizeObserverCallback(resizingElement, entry.borderBoxSize[0]);
+                        elementResizeCallback(element, entry.borderBoxSize[0]);
                     };
                 case 'device-pixel-content-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        resizeObserverCallback(resizingElement, entry.devicePixelContentBoxSize[0]);
+                        elementResizeCallback(element, entry.devicePixelContentBoxSize[0]);
                     };
                 default:
                     throw TypeError();
@@ -66,7 +66,7 @@ export const useResizeObserver =  <TElement extends Element = Element>(resizingE
         
         // setups:
         const observer = new ResizeObserver(handleResize);
-        observer.observe(resizingElement, options);
+        observer.observe(element, options);
         
         
         
@@ -74,13 +74,13 @@ export const useResizeObserver =  <TElement extends Element = Element>(resizingE
         return () => {
             observer.disconnect();
         };
-    }, [getElement(resizingElementRef), resizeObserverCallback]);
+    }, [getElement(elementRef), elementResizeCallback]);
 };
 
 
 
 export type WindowResizeCallback = (size: ResizeObserverSize) => void
-export const useWindowResizeObserver =   (windowResizeCallback: WindowResizeCallback, options = defaultWindowResizeOptions) => {
+export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallback, options = defaultWindowResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
