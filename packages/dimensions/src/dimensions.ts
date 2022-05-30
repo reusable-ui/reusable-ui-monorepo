@@ -2,13 +2,62 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useCallback,
+    useEffect,
 }                           from 'react'
+
+// cssfn:
+import type {
+    // css custom properties:
+    CssCustomName,
+    CssCustomSimpleRef,
+    
+    
+    
+    // cssfn properties:
+    CssStyle,
+    
+    CssSelector,
+}                           from '@cssfn/css-types'     // cssfn css specific types
+import {
+    // rules:
+    rule,
+    
+    
+    
+    // rule shortcuts:
+    atGlobal,
+    
+    
+    
+    // styles:
+    vars,
+    
+    
+    
+    // style sheets:
+    styleSheet,
+    
+    
+    
+    // utilities:
+    iif,
+}                           from '@cssfn/cssfn'
 
 // reusable-ui:
 import {
     // hooks:
     useIsomorphicLayoutEffect,
 }                           from '@reusable-ui/hooks'   // react helper hooks
+
+// other libs:
+import {
+    Subject,
+}                           from 'rxjs'
 
 
 
@@ -132,3 +181,89 @@ export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallba
         };
     }, [windowResizeCallback]);
 };
+
+
+
+export interface CssSizeOptions extends ResizeObserverOptions {
+    selector      ?: CssSelector
+    varInlineSize ?: CssCustomName|CssCustomSimpleRef
+    varBlockSize  ?: CssCustomName|CssCustomSimpleRef
+}
+export const useElementCssSize = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, options: CssSizeOptions) => {
+    // cssfn:
+    const liveStyleSheet = new Subject<CssStyle|null>();
+    styleSheet(liveStyleSheet);
+    
+    
+    
+    // dom effects:
+    const {
+        selector = ':root',
+        varInlineSize,
+        varBlockSize,
+    } = options;
+    const elementResizeCallback = useCallback((_element: TElement, size: ResizeObserverSize) => {
+        // update the `liveStyleSheet`:
+        liveStyleSheet.next({
+            ...atGlobal({
+                ...rule(selector, {
+                    ...iif(!!varInlineSize, vars({
+                        [varInlineSize ?? ''] : `${size.inlineSize}px`,
+                    })),
+                    ...iif(!!varBlockSize, vars({
+                        [varBlockSize  ?? ''] : `${size.blockSize }px`,
+                    })),
+                }),
+            }),
+        });
+    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
+    
+    useElementResizeObserver(elementRef, elementResizeCallback);
+    
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // deactivate the `liveStyleSheet`:
+            liveStyleSheet.next(null);
+        };
+    }, []); // runs once at startup
+};
+export const useWindowCssSize  = (options: CssSizeOptions) => {
+    // cssfn:
+    const liveStyleSheet = new Subject<CssStyle|null>();
+    styleSheet(liveStyleSheet);
+    
+    
+    
+    // dom effects:
+    const {
+        selector = ':root',
+        varInlineSize,
+        varBlockSize,
+    } = options;
+    const windowResizeCallback = useCallback((size: ResizeObserverSize) => {
+        // update the `liveStyleSheet`:
+        liveStyleSheet.next({
+            ...atGlobal({
+                ...rule(selector, {
+                    ...iif(!!varInlineSize, vars({
+                        [varInlineSize ?? ''] : `${size.inlineSize}px`,
+                    })),
+                    ...iif(!!varBlockSize, vars({
+                        [varBlockSize  ?? ''] : `${size.blockSize }px`,
+                    })),
+                }),
+            }),
+        });
+    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
+    
+    useWindowResizeObserver(windowResizeCallback);
+    
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // deactivate the `liveStyleSheet`:
+            liveStyleSheet.next(null);
+        };
+    }, []); // runs once at startup
+}
