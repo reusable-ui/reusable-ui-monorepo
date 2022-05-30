@@ -8,6 +8,7 @@ import {
     // hooks:
     useCallback,
     useEffect,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -184,6 +185,36 @@ export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallba
 
 
 
+type ReusableLiveStyleSheet = [boolean, Subject<CssStyle|null>];
+const reusableLiveStyleSheets : ReusableLiveStyleSheet[] = [];
+const allocateLiveStyleSheet = (): Subject<CssStyle|null> => {
+    const reusableLiveStyleSheet = reusableLiveStyleSheets.find(([inUse]) => !inUse);
+    if (reusableLiveStyleSheet) { // found => re-use it
+        reusableLiveStyleSheet[0] = true; // mark as in_use
+        return reusableLiveStyleSheet[1]; // return the liveStyleSheet
+    } // if
+    
+    
+    
+    // create a new liveStyleSheet:
+    const newLiveStyleSheet = new Subject<CssStyle|null>();
+    styleSheet(newLiveStyleSheet);
+    reusableLiveStyleSheets.push([
+        true,             // mark as in_use
+        newLiveStyleSheet // the new liveStyleSheet
+    ]);
+    return newLiveStyleSheet;
+};
+const releaseLiveStyleSheet = (liveStyleSheet: Subject<CssStyle|null>): void => {
+    for (let index = 0; index < reusableLiveStyleSheets.length; index++) {
+        if (reusableLiveStyleSheets[index][1] === liveStyleSheet) { // equal by reference
+            reusableLiveStyleSheets[index][0] = false; // mark as free
+            liveStyleSheet.next(null); // deactivate generated styleSheet
+            return; // stop the search
+        } // if
+    } // for
+}
+
 export interface CssSizeOptions extends ResizeObserverOptions {
     selector      ?: CssSelector
     varInlineSize ?: CssCustomName|CssCustomSimpleRef
@@ -191,8 +222,7 @@ export interface CssSizeOptions extends ResizeObserverOptions {
 }
 export const useElementCssSize = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, options: CssSizeOptions) => {
     // cssfn:
-    const liveStyleSheet = new Subject<CssStyle|null>();
-    styleSheet(liveStyleSheet);
+    const liveStyleSheet = useMemo(allocateLiveStyleSheet, []);
     
     
     
@@ -220,18 +250,19 @@ export const useElementCssSize = <TElement extends Element = Element>(elementRef
     
     useElementResizeObserver(elementRef, elementResizeCallback);
     
+    
+    
     useEffect(() => {
         // cleanups:
         return () => {
             // deactivate the `liveStyleSheet`:
-            liveStyleSheet.next(null);
+            releaseLiveStyleSheet(liveStyleSheet);
         };
     }, []); // runs once at startup
 };
 export const useWindowCssSize  = (options: CssSizeOptions) => {
     // cssfn:
-    const liveStyleSheet = new Subject<CssStyle|null>();
-    styleSheet(liveStyleSheet);
+    const liveStyleSheet = useMemo(allocateLiveStyleSheet, []);
     
     
     
@@ -259,11 +290,13 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
     
     useWindowResizeObserver(windowResizeCallback);
     
+    
+    
     useEffect(() => {
         // cleanups:
         return () => {
             // deactivate the `liveStyleSheet`:
-            liveStyleSheet.next(null);
+            releaseLiveStyleSheet(liveStyleSheet);
         };
     }, []); // runs once at startup
 }
