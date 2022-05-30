@@ -76,3 +76,59 @@ export const useResizeObserver =  <TElement extends Element = Element>(resizingE
         };
     }, [getElement(resizingElementRef), resizeObserverCallback]);
 };
+
+
+
+export type WindowResizeCallback = (size: ResizeObserverSize) => void
+export const useWindowResizeObserver =   (windowResizeCallback: WindowResizeCallback, options = defaultWindowResizeOptions) => {
+    // dom effects:
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (typeof(window) === 'undefined') return;
+        
+        
+        
+        // handlers:
+        const handleResize = ((): (() => void) => {
+            switch (options.box ?? 'content-box') {
+                case 'content-box':
+                    return () => {
+                        windowResizeCallback({
+                            inlineSize : window.innerWidth,
+                            blockSize  : window.innerHeight,
+                        });
+                    };
+                case 'border-box':
+                    return () => {
+                        windowResizeCallback({
+                            inlineSize : window.outerWidth,
+                            blockSize  : window.outerHeight,
+                        });
+                    };
+                case 'device-pixel-content-box':
+                    const scale = window.devicePixelRatio;
+                    return () => {
+                        windowResizeCallback({
+                            inlineSize : window.innerWidth  * scale,
+                            blockSize  : window.innerHeight * scale,
+                        });
+                    };
+                default:
+                    throw TypeError();
+            } // switch
+        })();
+        
+        
+        
+        // setups:
+        window.addEventListener('resize', handleResize);
+        handleResize(); // the first trigger similar to `ResizeObserver`
+        
+        
+        
+        // cleanups:
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [windowResizeCallback]);
+};
