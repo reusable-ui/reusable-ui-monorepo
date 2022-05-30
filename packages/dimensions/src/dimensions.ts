@@ -213,7 +213,7 @@ const releaseLiveStyleSheet = (liveStyleSheet: Subject<CssStyle|null>): void => 
             return; // stop the search
         } // if
     } // for
-}
+};
 
 export interface CssSizeOptions extends ResizeObserverOptions {
     selector      ?: CssSelector
@@ -299,4 +299,4 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
             releaseLiveStyleSheet(liveStyleSheet);
         };
     }, []); // runs once at startup
-}
+};
