@@ -82,6 +82,7 @@ const getElement = <TElement extends Element = Element>(elementRef: TElement|Rea
 
 
 
+// hooks:
 export type ElementResizeCallback<TElement extends Element = Element> = (element: TElement, size: ResizeObserverSize) => void
 export const useElementResizeObserver = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = defaultElementResizeOptions) => {
     // dom effects:
@@ -299,4 +300,34 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
             releaseLiveStyleSheet(liveStyleSheet);
         };
     }, []); // runs once at startup
+};
+
+
+
+// react components:
+export interface UseElementCssSizeProps<TElement extends Element = Element> extends CssSizeOptions
+{
+    elementRef: TElement|React.RefObject<TElement>|null
+}
+export const UseElementCssSize = <TElement extends Element = Element>(props: UseElementCssSizeProps<TElement>): JSX.Element|null => {
+    // hooks:
+    useElementCssSize(props.elementRef, props);
+    
+    
+    
+    // jsx:
+    return null;
+};
+
+export interface UseWindowCssSizeProps extends CssSizeOptions
+{
+}
+export const UseWindowCssSize = (props: UseWindowCssSizeProps): JSX.Element|null => {
+    // hooks:
+    useWindowCssSize(props);
+    
+    
+    
+    // jsx:
+    return null;
 };
