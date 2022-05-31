@@ -1,6 +1,5 @@
 import {
     default as React,
-    // FC,
     // ReactElement,
     // useReducer,
     // useRef,
