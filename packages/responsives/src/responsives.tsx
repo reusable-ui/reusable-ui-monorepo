@@ -13,6 +13,11 @@ import {
     
     
     
+    // utilities:
+    startTransition,
+    
+    
+    
     // contexts:
     createContext,
     useContext,
@@ -374,9 +379,45 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     //#region reset the fallback index to zero every container's client area resized
     const clientAreaResizeCallback = useCallback((): void => {
-        currentFallbackIndex.current = 0;
-        triggerRender();
+        currentFallbackIndex.current = 0; // reset to the first fallback
+        startTransition(() => { // not an urgent update, a bit delayed of ui is ok
+            triggerRender(); // (re)render the next generation
+        });
     }, [triggerRender]);
     useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
     //#endregion reset the fallback index to zero every container's client area resized
+    
+    //#region (re)calculates the existence of overflowed_layout each time the generation updated
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (currentFallbackIndex.current >= maxFallbackIndex) return; // maximum fallbacks has already reached => nothing more fallback
+        
+        
+        
+        const hasOverflowed = childRefs.some((childRef): boolean => {
+            const child = childRef?.current;
+            if (!child) return false;
+            return isOverflowed(child);
+        });
+        if (hasOverflowed) {
+            currentFallbackIndex.current++; // current fallback has a/some overflowed_layout => not satisfied => try the next fallback
+            startTransition(() => { // not an urgent update, a bit delayed of ui is ok
+                triggerRender(); // (re)render the next generation
+            });
+        } // if
+    }, [triggerRender, generation]); // runs each time the generation updated
+    //#endregion (re)calculates the existence of overflowed each time the generation updated
+    
+    
+    
+    // jsx:
+    return (
+        <ResponsiveContext.Provider value={{ currentFallback }}>
+            { childrenWithRefs.map(({ child }) => child) }
+        </ResponsiveContext.Provider>
+    );
 };
+export {
+    ResponsiveProvider,
+    ResponsiveProvider as default,
+}
