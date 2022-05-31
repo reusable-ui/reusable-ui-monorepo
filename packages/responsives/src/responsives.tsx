@@ -28,6 +28,7 @@ import type {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
+    useTriggerRender,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // utilities:
@@ -313,8 +314,6 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     const {
         // responsives:
         fallbacks,
-        horzResponsive,
-        vertResponsive,
         
         
         
@@ -325,19 +324,24 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     // states:
-    const [currentFallbackIndex, setCurrentFallbackIndex] = useState<number>(0);
+    const currentFallbackIndex = useRef(0);
+    const [triggerRender, generation] = useTriggerRender();
     
     
     
     // fn props:
     const maxFallbackIndex = (fallbacks.length - 1);
-    const currentFallback  = (currentFallbackIndex <= maxFallbackIndex) ? fallbacks[currentFallbackIndex] : fallbacks[maxFallbackIndex];
-    
-    const children         = (typeof(childrenFn) !== 'function') ? childrenFn : childrenFn(currentFallback);
+    const currentFallback  = (currentFallbackIndex.current <= maxFallbackIndex) ? fallbacks[currentFallbackIndex.current] : fallbacks[maxFallbackIndex];
     
     type ChildWithRef      = { child: React.ReactNode, ref: React.RefObject<Element>|null }
     const childrenWithRefs : ChildWithRef[] = (
-        React.Children.toArray(children)
+        React.Children.toArray(
+            (typeof(childrenFn) !== 'function')
+            ?
+            childrenFn
+            :
+            childrenFn(currentFallback)
+        )
         .map((child): ChildWithRef => {
             if (!React.isValidElement(child)) return {
                 child,
@@ -362,9 +366,17 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             };
         })
     );
-    const childRefs        = childrenWithRefs.map(({ ref }) => ref);
     
     
     
     // dom effects:
+    const childRefs = childrenWithRefs.map(({ ref }) => ref);
+    
+    //#region reset the fallback index to zero every container's client area resized
+    const clientAreaResizeCallback = useCallback((): void => {
+        currentFallbackIndex.current = 0;
+        triggerRender();
+    }, [triggerRender]);
+    useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
+    //#endregion reset the fallback index to zero every container's client area resized
 };
