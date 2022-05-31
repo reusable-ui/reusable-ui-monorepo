@@ -38,7 +38,7 @@ import {
 import {
     // utilities:
     setRef,
-}                           from '@reusable-ui/utilities'   // react helper hooks
+}                           from '@reusable-ui/utilities'   // common utility functions
 
 
 
