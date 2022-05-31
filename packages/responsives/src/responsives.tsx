@@ -155,3 +155,61 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
     
     return false; // not found
 };
+
+export const isOverflowed = (element: Element): boolean => {
+    // ignores non-overflowable child:
+    if (!isOverflowable(element)) return false;
+    
+    
+    
+    const {
+        clientWidth,
+        clientHeight,
+        scrollWidth,
+        scrollHeight,
+    } = element; // warning: force reflow => major performance bottleneck!
+    if (
+        (scrollWidth  > clientWidth ) // horz scrollbar detected
+        ||
+        (scrollHeight > clientHeight) // vert scrollbar detected
+    ) {
+        return true;
+    } // if
+    
+    
+    
+    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1;
+    
+    
+    
+    //#region handle padding right & bottom
+    const {
+        paddingLeft   : paddingLeftStr,
+        paddingTop    : paddingTopStr,
+        paddingRight  : paddingRightStr,
+        paddingBottom : paddingBottomStr,
+    } = getComputedStyle(element); // warning: force reflow => major performance bottleneck!
+    // snap fractional css_pixel to nearest integer device_pixel:
+    const paddingLeft   = ((parseFloat(paddingLeftStr  ) || 0) * pixelScale);
+    const paddingTop    = ((parseFloat(paddingTopStr   ) || 0) * pixelScale);
+    const paddingRight  = ((parseFloat(paddingRightStr ) || 0) * pixelScale);
+    const paddingBottom = ((parseFloat(paddingBottomStr) || 0) * pixelScale);
+    
+    
+    
+    const {
+        left   : elmLeft,
+        top    : elmTop,
+        right  : elmRight,
+        bottom : elmBottom,
+    } = element.getBoundingClientRect(); // warning: force reflow => major performance bottleneck!
+    const minLeft   = Math.round((elmLeft   * pixelScale) + paddingLeft  );
+    const minTop    = Math.round((elmTop    * pixelScale) + paddingTop   );
+    const maxRight  = Math.round((elmRight  * pixelScale) - paddingRight );
+    const maxBottom = Math.round((elmBottom * pixelScale) - paddingBottom);
+    
+    
+    
+    return hasOverflowedDescendant(element, minLeft, minTop, maxRight, maxBottom);
+    //#endregion handle padding right & bottom
+};
