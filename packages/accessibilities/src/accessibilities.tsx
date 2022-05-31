@@ -57,19 +57,19 @@ export interface Accessibility extends TAccessibility {
 /**
  * A react context for accessibility stuff.
  */
-export const Context = createContext<Accessibility>(/*defaultValue :*/{
+export const AccessibilityContext = createContext<Accessibility>(/*defaultValue :*/{
     enabled  : _defaultEnabled,
     readOnly : _defaultReadOnly,
     active   : _defaultActive,
 });
-Context.displayName  = 'Accessibility';
+AccessibilityContext.displayName  = 'Accessibility';
 
 
 
 // hooks:
 export const usePropAccessibility = <TDefaultEnabled extends unknown = boolean, TDefaultReadOnly = boolean, TDefaultActive = boolean>(props: AccessibilityProps, defaultEnabled: boolean|TDefaultEnabled = _defaultEnabled, defaultReadOnly: boolean|TDefaultReadOnly = _defaultReadOnly, defaultActive: boolean|TDefaultActive = _defaultActive): Accessibility|TAccessibility<TDefaultEnabled, TDefaultReadOnly, TDefaultActive> => {
     // contexts:
-    const accessContext = useContext(Context);
+    const accessContext = useContext(AccessibilityContext);
     
     
     
@@ -118,7 +118,7 @@ export const usePropAccessibility = <TDefaultEnabled extends unknown = boolean, 
 
 export const usePropEnabled = <TDefaultEnabled extends unknown = boolean>(props: AccessibilityProps, defaultEnabled: boolean|TDefaultEnabled = _defaultEnabled): boolean|TDefaultEnabled => {
     // contexts:
-    const accessContext = useContext(Context);
+    const accessContext = useContext(AccessibilityContext);
     
     
     
@@ -141,7 +141,7 @@ export const usePropEnabled = <TDefaultEnabled extends unknown = boolean>(props:
 
 export const usePropReadOnly = <TDefaultReadOnly extends unknown = boolean>(props: AccessibilityProps, defaultReadOnly: boolean|TDefaultReadOnly = _defaultReadOnly): boolean|TDefaultReadOnly => {
     // contexts:
-    const accessContext = useContext(Context);
+    const accessContext = useContext(AccessibilityContext);
     
     
     
@@ -164,7 +164,7 @@ export const usePropReadOnly = <TDefaultReadOnly extends unknown = boolean>(prop
 
 export const usePropActive = <TDefaultActive extends unknown = boolean>(props: AccessibilityProps, defaultActive: boolean|TDefaultActive = _defaultActive): boolean|TDefaultActive => {
     // contexts:
-    const accessContext = useContext(Context);
+    const accessContext = useContext(AccessibilityContext);
     
     
     
@@ -244,9 +244,9 @@ const AccessibilityProvider = (props: AccessibilityProps) => {
     
     
     return (
-        <Context.Provider value={propAccess}>
+        <AccessibilityContext.Provider value={propAccess}>
             {props.children}
-        </Context.Provider>
+        </AccessibilityContext.Provider>
     );
 }
 export {

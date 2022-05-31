@@ -68,20 +68,20 @@ interface ValidationRoot {
 /**
  * A react context for validation stuff.
  */
-export const Context = createContext<Validation & ValidationRoot>(/*defaultValue :*/{
+export const ValidationContext = createContext<Validation & ValidationRoot>(/*defaultValue :*/{
     enableValidation  : _defaultEnableValidation,
     isValid           : _defaultIsValid,
     
     atRoot            : true,
 });
-Context.displayName  = 'Validation';
+ValidationContext.displayName  = 'Validation';
 
 
 
 // hooks:
 export const usePropValidation = (props: ValidationProps): Validation & ValidationRoot => {
     // contexts:
-    const valContext = useContext(Context);
+    const valContext = useContext(ValidationContext);
     const atRoot     = valContext.atRoot;
     
     
@@ -165,9 +165,9 @@ const ValidationProvider = (props: ValidationProps) => {
     
     
     return (
-        <Context.Provider value={propValidation}>
+        <ValidationContext.Provider value={propValidation}>
             {props.children}
-        </Context.Provider>
+        </ValidationContext.Provider>
     );
 }
 export {
