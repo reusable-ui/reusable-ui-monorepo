@@ -292,3 +292,79 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
         };
     }, [...resizableElements, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
+
+
+
+// react components:
+
+export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
+export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
+{
+    // responsives:
+    fallbacks : Fallbacks<TFallback>
+    
+    
+    
+    // children:
+    children  : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
+}
+const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>) => {
+    // rest props:
+    const {
+        // responsives:
+        fallbacks,
+        horzResponsive,
+        vertResponsive,
+        
+        
+        
+        // children:
+        children: childrenFn,
+    } = props;
+    
+    
+    
+    // states:
+    const [currentFallbackIndex, setCurrentFallbackIndex] = useState<number>(0);
+    
+    
+    
+    // fn props:
+    const maxFallbackIndex = (fallbacks.length - 1);
+    const currentFallback  = (currentFallbackIndex <= maxFallbackIndex) ? fallbacks[currentFallbackIndex] : fallbacks[maxFallbackIndex];
+    
+    const children         = (typeof(childrenFn) !== 'function') ? childrenFn : childrenFn(currentFallback);
+    
+    type ChildWithRef      = { child: React.ReactNode, ref: React.RefObject<Element>|null }
+    const childrenWithRefs : ChildWithRef[] = (
+        React.Children.toArray(children)
+        .map((child): ChildWithRef => {
+            if (!React.isValidElement(child)) return {
+                child,
+                ref: null,
+            };
+            
+            
+            
+            const childRef   = _useRef<Element>(null);
+            const refName    = (typeof(child.type) !== 'function') ? 'ref' : 'outerRef'; // assumes all function components are valid reusable-ui_component
+            const childModif = React.cloneElement(child, {
+                [refName]: (elm: Element) => {
+                    setRef((child as any)[refName], elm); // preserves the original ref|outerRef
+                    
+                    setRef(childRef               , elm); // append a new childRef
+                },
+            });
+            
+            return {
+                child : childModif,
+                ref   : childRef,
+            };
+        })
+    );
+    const childRefs        = childrenWithRefs.map(({ ref }) => ref);
+    
+    
+    
+    // dom effects:
+};
