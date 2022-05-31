@@ -22,7 +22,6 @@ import {
 import {
     // utilities:
     setRef,
-    parseNumber,
 }                           from '@reusable-ui/utilities'   // react helper hooks
 
 
@@ -73,21 +72,30 @@ const isOverflowable = (element: Element): boolean => {
 };
 
 const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop: number|null, maxRight: number|null, maxBottom: number|null): boolean => {
-    if (Array.from(element.children).some((child) => {
-        if (!isOverflowable(child)) return false;
+    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1;
+    const children   = element.children;
+    for (let index = 0; index < children.length; index++) {
+        const child = children[index];
         
         
         
+        // skip non-overflowable child:
+        if (!isOverflowable(child)) continue;
+        
+        
+        
+        // measures child's boundaries:
         let {
             left   : childLeft,
             top    : childTop,
             right  : childRight,
             bottom : childBottom,
         } = child.getBoundingClientRect(); // warning: force reflow => major performance bottleneck!
-        childLeft   = Math.round(childLeft  );
-        childTop    = Math.round(childTop   );
-        childRight  = Math.round(childRight );
-        childBottom = Math.round(childBottom);
+        // snap fractional css_pixel to nearest integer device_pixel:
+        childLeft   = Math.round(childLeft   * pixelScale);
+        childTop    = Math.round(childTop    * pixelScale);
+        childRight  = Math.round(childRight  * pixelScale);
+        childBottom = Math.round(childBottom * pixelScale);
         
         
         
@@ -97,10 +105,12 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
             marginRight  : marginRightStr,
             marginBottom : marginBottomStr,
         } = getComputedStyle(child); // warning: force reflow => major performance bottleneck!
-        const marginLeft     = (parseNumber(marginLeftStr  ) ?? 0);
-        const marginTop      = (parseNumber(marginTopStr   ) ?? 0);
-        const marginRight    = (parseNumber(marginRightStr ) ?? 0);
-        const marginBottom   = (parseNumber(marginBottomStr) ?? 0);
+        // snap fractional css_pixel to nearest integer device_pixel:
+        const marginLeft     = ((parseFloat(marginLeftStr  ) || 0) * pixelScale);
+        const marginTop      = ((parseFloat(marginTopStr   ) || 0) * pixelScale);
+        const marginRight    = ((parseFloat(marginRightStr ) || 0) * pixelScale);
+        const marginBottom   = ((parseFloat(marginBottomStr) || 0) * pixelScale);
+        // add cummulative shifts from ancestor:
         const minLeftShift   = (minLeft   === null) ? null : Math.round(minLeft   + marginLeft  );
         const minTopShift    = (minTop    === null) ? null : Math.round(minTop    + marginTop   );
         const maxRightShift  = (maxRight  === null) ? null : Math.round(maxRight  - marginRight );
@@ -108,6 +118,7 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
         
         
         
+        // compares child's boundaries vs max boundaries:
         if (
             (
                 (minLeftShift !== null)
@@ -138,8 +149,9 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
         
         
         
-        return hasOverflowedDescendant(child, minLeftShift, minTopShift, maxRightShift, maxBottomShift); // nested search
-    })) return true; // found
+        // nested search
+        if (hasOverflowedDescendant(child, minLeftShift, minTopShift, maxRightShift, maxBottomShift)) return true; // found
+    } // for
     
     return false; // not found
 };
