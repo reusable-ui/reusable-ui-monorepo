@@ -18,7 +18,17 @@ import {
     useContext,
 }                           from 'react'
 
+// cssfn:
+import type {
+    // types:
+    SingleOrArray,
+}                           from '@cssfn/types'
+
 // reusable-ui:
+import {
+    // hooks:
+    useIsomorphicLayoutEffect,
+}                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // utilities:
     setRef,
@@ -212,4 +222,72 @@ export const isOverflowed = (element: Element): boolean => {
     
     return hasOverflowedDescendant(element, minLeft, minTop, maxRight, maxBottom);
     //#endregion handle padding right & bottom
+};
+
+
+
+// hooks:
+export interface ClientAreaResizeObserverOptions {
+    // responsives:
+    horzResponsive? : boolean
+    vertResponsive? : boolean
+}
+export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<React.RefObject<Element> | null>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
+    // options:
+    const {
+        horzResponsive = true,
+        vertResponsive = false,
+    } = options;
+    
+    
+    
+    // states:
+    const [prevSizes] = useState<Map<Element, ResizeObserverSize>>(() => new Map()); // remember prev element's sizes
+    
+    
+    
+    // dom effects:
+    const resizableElements = [resizingElementRefs].flat().map((elmRef) => elmRef?.current ?? null);
+    useIsomorphicLayoutEffect(() => {
+        // setups:
+        const handleResize = (entries: ResizeObserverEntry[]) => {
+            let resized = false;
+            for (const entry of entries) {
+                const currentSize = entry.contentBoxSize[0];
+                
+                
+                
+                const prevSize = prevSizes.get(entry.target);
+                if (prevSize && !resized) { // if has prev size record => now is the resize event
+                         if (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
+                        resized = true; // mark has resized
+                    } // if
+                    else if (vertResponsive && (prevSize.blockSize  !== currentSize.blockSize )) { // resized at vert axis
+                        resized = true; // mark has resized
+                    } // if
+                } // if
+                
+                
+                
+                // record the current size to be compared in the future event:
+                prevSizes.set(entry.target, currentSize);
+            } // for
+            
+            
+            
+            // fire the resize callback:
+            if (resized) clientAreaResizeCallback();
+        };
+        
+        const observer = new ResizeObserver(handleResize);
+        const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
+        resizableElements.forEach((element) => element && observer.observe(element, sizeOptions));
+        
+        
+        
+        // cleanups:
+        return () => {
+            observer.disconnect();
+        };
+    }, [...resizableElements, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
