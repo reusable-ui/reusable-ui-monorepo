@@ -288,6 +288,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
         // cleanups:
         return () => {
             observer.disconnect();
+            prevSizes.clear(); // un-reference all Element(s)
         };
     }, [...resizableElements, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
