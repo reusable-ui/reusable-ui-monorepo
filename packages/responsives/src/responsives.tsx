@@ -319,18 +319,20 @@ export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
 export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
 {
     // responsives:
-    fallbacks : Fallbacks<TFallback>
+    fallbacks      : Fallbacks<TFallback>
+    useTransition ?: boolean
     
     
     
     // children:
-    children  : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
+    children       : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
 }
 const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>) => {
     // rest props:
     const {
         // responsives:
         fallbacks,
+        useTransition = true,
         
         
         
@@ -390,10 +392,17 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     //#region reset the fallback index to zero every container's client area resized
     const clientAreaResizeCallback = useCallback((): void => {
-        startTransition(() => { // not an urgent update, a bit delayed of ui is ok
+        if (useTransition) {
+            // lazy responsives => a bit delayed of responsives is ok
+            startTransition(() => {
+                dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
+            });
+        }
+        else {
+            // greedy responsives => no delayed of responsives
             dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
-        });
-    }, []); // generate once at startup
+        } // if
+    }, [useTransition]);
     useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
     //#endregion reset the fallback index to zero every container's client area resized
     
@@ -410,10 +419,11 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             return isOverflowed(child);
         });
         if (hasOverflowed) {
+            // an urgent update, the user should not to see any overflowed_layout
             dispatchCurrentFallbackIndex(FallbackIndexAction.Increment); // current fallback has a/some overflowed_layout => not satisfied => try the next fallback & trigger to (re)render
         } // if
     }, [currentFallbackIndex]); // runs each time the fallback updated
-    //#endregion (re)calculates the existence of overflowed each time the fallback updated
+    //#endregion (re)calculates the existence of overflowed_layout each time the fallback updated
     
     
     
