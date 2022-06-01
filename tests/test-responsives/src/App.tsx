@@ -30,12 +30,22 @@ function App() {
                     fallbacks={['1000px', '800px', '600px', '400px']}
                 >{(currentFallback) =>
                     <article className='responsive-test'>
-                        <div style={{ width: currentFallback }}>resize me</div>
+                        <ResponsiveLayout width={currentFallback} />
                     </article>
                 }
                 </ResponsiveProvider>
             </div>
         </>
+    );
+}
+
+interface ResponsiveLayoutProps {
+    width: string
+}
+function ResponsiveLayout({ width }: ResponsiveLayoutProps): JSX.Element | null {
+    console.log(`render <ResponsiveLayout width='${width}'>`);
+    return (
+        <div style={{ width: width }}>resize me</div>
     );
 }
 
