@@ -7,7 +7,7 @@ import {
     
     // hooks:
     useState,
-    useReducer,
+    useRef,
     useRef as _useRef, // avoids eslint check
     useCallback,
     
@@ -33,6 +33,7 @@ import type {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
+    useTriggerRender,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // utilities:
@@ -302,19 +303,6 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
 
 // react components:
 
-const enum FallbackIndexAction {
-    Reset,
-    Increment,
-}
-const fallbackIndexReducer = (currentIndex: number, action: FallbackIndexAction): number => {
-    switch (action) {
-        case FallbackIndexAction.Reset:
-            return 0;
-        case FallbackIndexAction.Increment:
-            return (currentIndex + 1);
-    } // switch
-};
-
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
 export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
 {
@@ -343,13 +331,17 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     // states:
-    const [currentFallbackIndex, dispatchCurrentFallbackIndex] = useReducer(fallbackIndexReducer, 0);
+    // local storages without causing to (re)render
+    const currentFallbackIndex = useRef(0);
+    
+    // manually controls the (re)render event:
+    const [triggerRender, generation] = useTriggerRender();
     
     
     
     // fn props:
     const maxFallbackIndex = (fallbacks.length - 1);
-    const currentFallback  = (currentFallbackIndex <= maxFallbackIndex) ? fallbacks[currentFallbackIndex] : fallbacks[maxFallbackIndex];
+    const currentFallback  = (currentFallbackIndex.current <= maxFallbackIndex) ? fallbacks[currentFallbackIndex.current] : fallbacks[maxFallbackIndex];
     
     type ChildWithRef      = { child: React.ReactNode, ref: React.RefObject<Element>|null }
     const childrenWithRefs : ChildWithRef[] = (
@@ -392,24 +384,27 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     //#region reset the fallback index to zero every container's client area resized
     const clientAreaResizeCallback = useCallback((): void => {
+        // reset to the first fallback (0th):
+        currentFallbackIndex.current = 0;
+        
         if (useTransition) {
             // lazy responsives => a bit delayed of responsives is ok:
             startTransition(() => {
-                dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
+                triggerRender();
             });
         }
         else {
             // greedy responsives => no delayed of responsives:
-            dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
+            triggerRender();
         } // if
     }, [useTransition]);
     useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
     //#endregion reset the fallback index to zero every container's client area resized
     
-    //#region (re)calculates the existence of overflowed_layout each time the fallback updated
+    //#region (re)calculates the existence of overflowed_layout each time the generation updated
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (currentFallbackIndex >= maxFallbackIndex) return; // maximum fallbacks has already reached => nothing more fallback
+        if (currentFallbackIndex.current >= maxFallbackIndex) return; // maximum fallbacks has already reached => nothing more fallback
         
         
         
@@ -419,11 +414,14 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             return isOverflowed(child);
         });
         if (hasOverflowed) {
+            // current fallback has a/some overflowed_layout => not satisfied => try the next fallback:
+            currentFallbackIndex.current++;
+            
             // an urgent update, the user should not to see any overflowed_layout:
-            dispatchCurrentFallbackIndex(FallbackIndexAction.Increment); // current fallback has a/some overflowed_layout => not satisfied => try the next fallback & trigger to (re)render
+            triggerRender();
         } // if
-    }, [currentFallbackIndex]); // runs each time the fallback updated
-    //#endregion (re)calculates the existence of overflowed_layout each time the fallback updated
+    }, [generation]); // runs each time the generation updated
+    //#endregion (re)calculates the existence of overflowed_layout each time the generation updated
     
     
     
