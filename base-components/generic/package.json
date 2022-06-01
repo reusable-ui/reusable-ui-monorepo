@@ -1,5 +1,5 @@
 {
-  "name": "@reusable-ui/element",
+  "name": "@reusable-ui/generic",
   "version": "5.0.0",
   "description": "An unstyled basic building block of Reusable-UI components.",
   "keywords": [
@@ -17,8 +17,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/Element.js",
-  "types": "dist/Element.d.ts",
+  "main": "dist/Generic.js",
+  "types": "dist/Generic.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
