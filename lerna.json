@@ -1,6 +1,11 @@
 {
   "packages": [
     "utilities/*",
+    
+    "base-components/*",
+    "base-content-components/*",
+    "components/*",
+    
     "tests/*"
   ],
   "version": "independent"

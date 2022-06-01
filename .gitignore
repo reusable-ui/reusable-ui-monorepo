@@ -1,5 +1,10 @@
 node_modules/
+
 utilities/*/dist/
+
+base-components/*/dist/
+base-content-components/*/dist/
+components/*/dist/
 
 
 lerna-debug.log

@@ -1,6 +1,15 @@
 node_modules/
+
 utilities/*/src/
 utilities/*/__tests__/
+
+base-components/*/src/
+base-components/*/__tests__/
+base-content-components/*/src/
+base-content-components/*/__tests__/
+components/*/src/
+components/*/__tests__/
+
 
 lerna-debug.log
 npm-debug.log
