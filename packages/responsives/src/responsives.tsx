@@ -393,13 +393,13 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     //#region reset the fallback index to zero every container's client area resized
     const clientAreaResizeCallback = useCallback((): void => {
         if (useTransition) {
-            // lazy responsives => a bit delayed of responsives is ok
+            // lazy responsives => a bit delayed of responsives is ok:
             startTransition(() => {
                 dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
             });
         }
         else {
-            // greedy responsives => no delayed of responsives
+            // greedy responsives => no delayed of responsives:
             dispatchCurrentFallbackIndex(FallbackIndexAction.Reset); // reset to the first fallback & trigger to (re)render
         } // if
     }, [useTransition]);
@@ -419,7 +419,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             return isOverflowed(child);
         });
         if (hasOverflowed) {
-            // an urgent update, the user should not to see any overflowed_layout
+            // an urgent update, the user should not to see any overflowed_layout:
             dispatchCurrentFallbackIndex(FallbackIndexAction.Increment); // current fallback has a/some overflowed_layout => not satisfied => try the next fallback & trigger to (re)render
         } // if
     }, [currentFallbackIndex]); // runs each time the fallback updated
