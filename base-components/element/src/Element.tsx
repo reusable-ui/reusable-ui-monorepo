@@ -70,10 +70,10 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
         const autoRole      : Role|undefined = preferredRole ??                  ([defaultRole].flat()?.[0] ??  undefined); // take the first item of `defaultRole` (if any)
         const isDesiredType : boolean        = !!autoRole    &&                  ([defaultRole].flat().includes(autoRole)); // the `autoRole` is in `defaultRole`
         
-        const tag           : Tag|undefined  = preferredTag  ?? (isDesiredType ? ([defaultTag ].flat()?.[0] ??  undefined) : undefined); // if `isDesiredType` => take the first item of `defaultTag` (if any)
+        const tag           : Tag|undefined  = preferredTag  ?? (isDesiredType ? ([defaultTag ].flat()?.[0] ??  undefined) : undefined); // if `isDesiredType` --> take the first item of `defaultTag` (if any)
         const isSemanticTag : boolean        = !!tag         &&                  ([defaultTag ].flat().includes(tag     )); // the `tag` is in `defaultTag`
         
-        const role          : Role|undefined =                   isDesiredType ? (isSemanticTag ? '' : autoRole) : autoRole; // `''` => has implicit role in `(semantic)tag` => do not render role attribute, `undefined` => lets the BaseComponent decide the appropriate role
+        const role          : Role|undefined =                   isDesiredType ? (isSemanticTag ? '' : autoRole) : autoRole; // `''` --> has implicit role in `(semantic)tag` --> do not render role attribute, `undefined` --> lets the BaseComponent decide the appropriate role
         
         
         
