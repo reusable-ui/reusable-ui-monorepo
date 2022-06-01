@@ -1,0 +1,15 @@
+import type { CssKnownProps } from '@cssfn/css-types';
+export declare type FontSize = CssKnownProps['fontSize'];
+export declare type FontFamily = CssKnownProps['fontFamily'];
+export declare type FontWeight = CssKnownProps['fontWeight'];
+export declare type FontStyle = CssKnownProps['fontStyle'];
+export declare type TextDecoration = CssKnownProps['textDecoration'];
+export declare type LineHeight = CssKnownProps['lineHeight'];
+export declare type OverflowWrap = CssKnownProps['overflowWrap'];
+export declare type Foreground = CssKnownProps['color'];
+export declare type Background = CssKnownProps['background'];
+export declare type Opacity = CssKnownProps['opacity'];
+export declare type MarginBlockStart = CssKnownProps['marginBlockStart'];
+export declare type MarginBlockEnd = CssKnownProps['marginBlockEnd'];
+export declare type MarginInlineStart = CssKnownProps['marginInlineStart'];
+export declare type MarginInlineEnd = CssKnownProps['marginInlineEnd'];

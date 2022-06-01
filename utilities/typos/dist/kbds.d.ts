@@ -1,0 +1,32 @@
+declare const kbds: import("@cssfn/css-config").Refs<{
+    backg: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Background<import("@cssfn/css-types").CssLength>> | null | undefined;
+    foreg: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Color> | null | undefined;
+    border: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Border<import("@cssfn/css-types").CssLength>> | null | undefined;
+    borderRadius: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.BorderRadius<import("@cssfn/css-types").CssLength>> | null | undefined;
+    paddingInline: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.PaddingInline<import("@cssfn/css-types").CssLength>> | null | undefined;
+    paddingBlock: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.PaddingBlock<import("@cssfn/css-types").CssLength>> | null | undefined;
+    fontSize: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontSize<import("@cssfn/css-types").CssLength>> | null | undefined;
+    fontFamily: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontFamily> | null | undefined;
+    fontWeight: import("@cssfn/css-types").CssComplexSingleValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontWeight> | null | undefined;
+    fontStyle: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontStyle> | null | undefined;
+    textDecoration: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.TextDecoration<import("@cssfn/css-types").CssLength>> | null | undefined;
+    lineHeight: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.LineHeight<import("@cssfn/css-types").CssLength>> | null | undefined;
+    overflowWrap: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.OverflowWrap> | null | undefined;
+}>, kbdValues: import("@cssfn/css-config").Vals<{
+    backg: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Background<import("@cssfn/css-types").CssLength>> | null | undefined;
+    foreg: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Color> | null | undefined;
+    border: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.Border<import("@cssfn/css-types").CssLength>> | null | undefined;
+    borderRadius: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.BorderRadius<import("@cssfn/css-types").CssLength>> | null | undefined;
+    paddingInline: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.PaddingInline<import("@cssfn/css-types").CssLength>> | null | undefined;
+    paddingBlock: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.PaddingBlock<import("@cssfn/css-types").CssLength>> | null | undefined;
+    fontSize: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontSize<import("@cssfn/css-types").CssLength>> | null | undefined;
+    fontFamily: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontFamily> | null | undefined;
+    fontWeight: import("@cssfn/css-types").CssComplexSingleValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontWeight> | null | undefined;
+    fontStyle: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.FontStyle> | null | undefined;
+    textDecoration: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.TextDecoration<import("@cssfn/css-types").CssLength>> | null | undefined;
+    lineHeight: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.LineHeight<import("@cssfn/css-types").CssLength>> | null | undefined;
+    overflowWrap: import("@cssfn/css-types").CssComplexValueOf<import("@cssfn/css-types").CssCustomKeyframesRef | import("csstype").Property.OverflowWrap> | null | undefined;
+}>, cssKbdConfig: import("@cssfn/css-config").LiveCssConfigOptions;
+export { kbds, kbds as cssProps, kbds as default, };
+export { kbdValues, kbdValues as cssVals, };
+export { cssKbdConfig, cssKbdConfig as cssConfig, };
