@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/react-router-compat-link",
   "version": "5.0.0",
-  "description": "A react-router compatible Link for use with reusable-ui components in harmony.",
+  "description": "A react-router compatible Link for use with Reusable-UI components in harmony.",
   "keywords": [
     "link",
     "navigation",
