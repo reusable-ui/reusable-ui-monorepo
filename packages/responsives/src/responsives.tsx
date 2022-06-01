@@ -253,7 +253,6 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
     
     
     // dom effects:
-    const resizableElements = [resizingElementRefs].flat().map((elmRef) => elmRef?.current ?? null);
     useIsomorphicLayoutEffect(() => {
         // setups:
         const handleResize = (entries: ResizeObserverEntry[]) => {
@@ -287,7 +286,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
         
         const observer = new ResizeObserver(handleResize);
         const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
-        resizableElements.forEach((element) => element && observer.observe(element, sizeOptions));
+        [resizingElementRefs].flat().forEach((elmRef) => elmRef && elmRef.current && observer.observe(elmRef.current, sizeOptions));
         
         
         
@@ -296,7 +295,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
             observer.disconnect();
             prevSizes.clear(); // un-reference all Element(s)
         };
-    }, [...resizableElements, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
+    }, [...[resizingElementRefs].flat(), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
 
 
