@@ -150,15 +150,19 @@ export interface GenericProps<TElement extends Element = Element>
         // React.DOMAttributes<TElement>,
         SemanticProps
 {
-    // essentials:
-    style          ?: React.CSSProperties
-    outerRef       ?: React.Ref<TElement> // setter ref
+    // refs:
     elmRef         ?: React.Ref<TElement> // setter ref
+    outerRef       ?: React.Ref<TElement> // setter ref
     
     
     
     // identifiers:
     id             ?: string
+    
+    
+    
+    // styles:
+    style          ?: React.CSSProperties
     
     
     
@@ -180,8 +184,8 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
         
         
         // refs:
-        outerRef,
         elmRef,
+        outerRef,
         
         
         
@@ -213,17 +217,17 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
     
     // refs:
     const ref = useMemo((): React.Ref<TElement>|undefined => {
-        if (!outerRef && !elmRef) return undefined; // both are undefined => undefined
+        if (!elmRef && !outerRef) return undefined; // both are undefined => undefined
         
-        if (outerRef && elmRef) { // both are defined => merge them
+        if (elmRef && outerRef) { // both are defined => merge them
             return (elm: TElement): void => {
-                setRef(outerRef, elm);
                 setRef(elmRef  , elm);
+                setRef(outerRef, elm);
             };
         } // if
         
-        return outerRef ?? elmRef; // one of them is defined
-    }, [outerRef, elmRef]);
+        return elmRef ?? outerRef; // one of them is defined
+    }, [elmRef, outerRef]);
     
     
     
