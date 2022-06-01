@@ -301,7 +301,6 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
 
 
 // react components:
-
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
 export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
 {
