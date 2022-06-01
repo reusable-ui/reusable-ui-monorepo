@@ -32,6 +32,9 @@ export const useIsomorphicLayoutEffect = isClientSide ? useLayoutEffect : useEff
 const triggerRenderReducer = (_currentGeneration: object, _newGeneration: void): object => {
     return {}; // update with a new object
 };
+/**
+ * Manually controls the (re)render event.
+ */
 export const useTriggerRender = () => {
     const [generation, setState] = useReducer(triggerRenderReducer, {});
     return [setState, generation] as const;
