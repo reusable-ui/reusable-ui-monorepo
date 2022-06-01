@@ -240,6 +240,16 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
             {...{
                 ref,
             } as {}}
+            
+            
+            
+            // identifiers:
+            id={id}
+            
+            
+            
+            // styles:
+            style={style}
         />
     );
 };
