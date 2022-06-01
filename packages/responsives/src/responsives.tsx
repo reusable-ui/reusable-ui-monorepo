@@ -331,7 +331,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     // states:
-    // local storages without causing to (re)render
+    // local storages without causing to (re)render, we need to manual control the (re)render event:
     const currentFallbackIndex = useRef(0);
     
     // manually controls the (re)render event:
