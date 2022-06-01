@@ -52,6 +52,9 @@ export interface SemanticData {
     isDesiredType : boolean,
     isSemanticTag : boolean,
 }
+
+const separatorSym = Symbol();
+
 export const useSemantic     = (props: SemanticProps, options: SemanticOptions = props): SemanticData => {
     const {
         tag  : preferredTag,
@@ -81,7 +84,7 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
             isSemanticTag,
         };
         // eslint-disable-next-line
-    }, [preferredTag, preferredRole, defaultTag, defaultRole].flat());
+    }, [preferredTag, separatorSym, preferredRole, separatorSym, defaultTag, separatorSym, defaultRole].flat());
 };
 export const useTestSemantic = (props: SemanticProps, options: SemanticOptions): SemanticData => {
     const {
@@ -126,7 +129,7 @@ export const useTestSemantic = (props: SemanticProps, options: SemanticOptions):
             defaultRole,
         };
         // eslint-disable-next-line
-    }, [props_defaultTag, props_defaultRole, options_defaultTag, options_defaultRole].flat());
+    }, [props_defaultTag, separatorSym, props_defaultRole, separatorSym, options_defaultTag, separatorSym, options_defaultRole].flat());
     
     
     
