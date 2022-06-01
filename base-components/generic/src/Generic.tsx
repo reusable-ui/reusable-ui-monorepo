@@ -147,7 +147,7 @@ export const useTestSemantic = (props: SemanticProps, options: SemanticOptions):
 // react components:
 export interface GenericProps<TElement extends Element = Element>
     extends
-        // React.DOMAttributes<TElement>,
+        React.DOMAttributes<TElement>,
         SemanticProps
 {
     // refs:
@@ -204,7 +204,7 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
         classes,
         variantClasses,
         stateClasses,
-    ...restAriaProps} = props;
+    ...restAriaDomProps} = props;
     
     
     
@@ -231,12 +231,45 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
     
     
     
+    // classes:
+    const className = useMemo((): string|undefined => {
+        return (
+            Array.from(new Set([
+                // main:
+                mainClass,
+                
+                
+                
+                // additionals:
+                ...(classes ?? []),
+                
+                
+                
+                // variants:
+                ...(variantClasses ?? []),
+                
+                
+                
+                // states:
+                ...(stateClasses ?? []),
+            ].filter((c) => !!c))).join(' ')
+            ||
+            undefined
+        );
+        // eslint-disable-next-line
+    }, [mainClass, classes, variantClasses, stateClasses].flat());
+    
+    
+    
     // jsx:
     return (
         <Tag
+            {...(restAriaDomProps as {})}
+            
+            
+            
             // semantics:
             role={role}
-            {...restAriaProps}
             
             
             
@@ -254,6 +287,11 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
             
             // styles:
             style={style}
+            
+            
+            
+            // classes:
+            className={className}
         />
     );
 };
