@@ -237,7 +237,7 @@ export interface AccessibilityProps extends React.PropsWithChildren<Partial<Acce
      */
     inheritActive   ?: boolean
 }
-const AccessibilityProvider = (props: AccessibilityProps) => {
+const AccessibilityProvider = (props: AccessibilityProps): JSX.Element|null => {
     // fn props:
     const propAccess = usePropAccessibility(props);
     
@@ -248,7 +248,7 @@ const AccessibilityProvider = (props: AccessibilityProps) => {
             {props.children}
         </AccessibilityContext.Provider>
     );
-}
+};
 export {
     AccessibilityProvider,
     AccessibilityProvider as default,

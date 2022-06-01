@@ -154,7 +154,7 @@ export interface ValidationProps extends React.PropsWithChildren<Partial<Validat
      */
     inheritValidation ?: boolean
 }
-const ValidationProvider = (props: ValidationProps) => {
+const ValidationProvider = (props: ValidationProps): JSX.Element|null => {
     // fn props:
     const { atRoot, ...propValidation } = usePropValidation(props);
     if (atRoot) {
@@ -169,7 +169,7 @@ const ValidationProvider = (props: ValidationProps) => {
             {props.children}
         </ValidationContext.Provider>
     );
-}
+};
 export {
     ValidationProvider,
     ValidationProvider as default,
