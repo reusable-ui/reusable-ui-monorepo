@@ -22,7 +22,7 @@ import type {
 
 // semantics:
 export type Tag         = keyof JSX.IntrinsicElements | ''
-export type Role        = React.AriaRole
+export type Role        = React.AriaRole | '' | (string & {})
 export type DefaultTag  = SingleOrArray<Optional<Tag>>
 export type DefaultRole = SingleOrArray<Optional<Role>>
 
@@ -54,34 +54,34 @@ export interface SemanticData {
 }
 export const useSemantic     = (props: SemanticProps, options: SemanticOptions = props): SemanticData => {
     const {
-        tag,
-        role,
+        tag  : preferredTag,
+        role : preferredRole,
     } = props;
     
     const {
-        semanticTag,
-        semanticRole,
+        defaultTag,
+        defaultRole,
     } = options;
     
-    return useMemo(() => {
-        const roleAbs       : Role|undefined = role ??                  ([semanticRole].flat()?.[0] ?? undefined);
-        const isDesiredType : boolean        = !!roleAbs &&             ([semanticRole].flat().includes(roleAbs));
+    return useMemo((): SemanticData => {
+        const autoRole      : Role|undefined = preferredRole ??                  ([defaultRole].flat()?.[0] ??  undefined); // take the first item of `defaultRole` (if any)
+        const isDesiredType : boolean        = !!autoRole    &&                  ([defaultRole].flat().includes(autoRole)); // the `autoRole` is in `defaultRole`
         
-        const tagFn         : Tag|undefined  = tag  ?? (isDesiredType ? ([semanticTag ].flat()?.[0] ?? undefined) : undefined);
-        const isSemanticTag : boolean        = !!tagFn   &&             ([semanticTag ].flat().includes(tagFn  ));
+        const tag           : Tag|undefined  = preferredTag  ?? (isDesiredType ? ([defaultTag ].flat()?.[0] ??  undefined) : undefined); // if `isDesiredType` => take the first item of `defaultTag` (if any)
+        const isSemanticTag : boolean        = !!tag         &&                  ([defaultTag ].flat().includes(tag     )); // the `tag` is in `defaultTag`
         
-        const roleFn        : Role|undefined = isDesiredType ? (isSemanticTag ? '' : roleAbs   ) : roleAbs; /* `''` => do not render role attribute, `undefined` => lets the BaseComponent decide the appropriate role */
+        const role          : Role|undefined =                   isDesiredType ? (isSemanticTag ? '' : autoRole) : autoRole; // `''` => has implicit role in `(semantic)tag` => do not render role attribute, `undefined` => lets the BaseComponent decide the appropriate role
         
         
         
         return {
-            tag  : tagFn,
-            role : roleFn,
+            tag,
+            role,
             isDesiredType,
             isSemanticTag,
         };
         // eslint-disable-next-line
-    }, [tag, role, semanticTag, semanticRole].flat());
+    }, [preferredTag, preferredRole, defaultTag, defaultRole].flat());
 };
 export const useTestSemantic = (props: SemanticProps, options: SemanticOptions) => {
     const {
