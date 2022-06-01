@@ -17,8 +17,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/react-router-compat-link.js",
-  "types": "dist/react-router-compat-link.d.ts",
+  "main": "dist/Link.js",
+  "types": "dist/Link.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
