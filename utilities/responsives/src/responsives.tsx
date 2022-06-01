@@ -313,7 +313,7 @@ export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObse
     // children:
     children       : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
 }
-const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>) => {
+const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>): JSX.Element|null => {
     // rest props:
     const {
         // responsives:
