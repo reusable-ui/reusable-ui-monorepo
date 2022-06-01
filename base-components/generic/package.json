@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@cssfn/types": "^2.0.1",
+    "@reusable-ui/utilities": "^5.0.0",
     "@types/react": "^18.0.9"
   },
   "peerDependencies": {

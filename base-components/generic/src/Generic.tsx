@@ -16,6 +16,12 @@ import type {
     SingleOrArray,
 }                           from '@cssfn/types'
 
+// reusable-ui:
+import {
+    // utilities:
+    setRef,
+}                           from '@reusable-ui/utilities'   // common utility functions
+
 
 
 // types:
@@ -135,3 +141,109 @@ export const useTestSemantic = (props: SemanticProps, options: SemanticOptions):
     
     return useSemantic(props, newOptions);
 };
+
+
+
+// react components:
+export interface GenericProps<TElement extends Element = Element>
+    extends
+        // React.DOMAttributes<TElement>,
+        SemanticProps
+{
+    // essentials:
+    style          ?: React.CSSProperties
+    outerRef       ?: React.Ref<TElement> // setter ref
+    elmRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // identifiers:
+    id             ?: string
+    
+    
+    
+    // classes:
+    mainClass      ?: Optional<string>
+    classes        ?: Optional<string>[]
+    variantClasses ?: Optional<string>[]
+    stateClasses   ?: Optional<string>[]
+}
+const Generic = <TElement extends Element = Element>(props: GenericProps<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // semantics:
+        defaultTag  : _defaultTag,
+        defaultRole : _defaultRole,
+        tag         : _tag,
+        role        : _role,
+        
+        
+        
+        // refs:
+        outerRef,
+        elmRef,
+        
+        
+        
+        // identifiers:
+        id,
+        
+        
+        
+        // styles:
+        style,
+        
+        
+        
+        // classes:
+        mainClass,
+        classes,
+        variantClasses,
+        stateClasses,
+    ...restAriaProps} = props;
+    
+    
+    
+    // semantics:
+    const {tag: tagFn, role: roleFn} = useSemantic(props);
+    const Tag  = tagFn  || 'div';     // default to <div>
+    const role = roleFn || undefined; // ignores an empty string '' of role
+    
+    
+    
+    // refs:
+    const ref = useMemo((): React.Ref<TElement>|undefined => {
+        if (!outerRef && !elmRef) return undefined; // both are undefined => undefined
+        
+        if (outerRef && elmRef) { // both are defined => merge them
+            return (elm: TElement): void => {
+                setRef(outerRef, elm);
+                setRef(elmRef  , elm);
+            };
+        } // if
+        
+        return outerRef ?? elmRef; // one of them is defined
+    }, [outerRef, elmRef]);
+    
+    
+    
+    // jsx:
+    return (
+        <Tag
+            // semantics:
+            role={role}
+            {...restAriaProps}
+            
+            
+            
+            // refs:
+            {...{
+                ref,
+            } as {}}
+        />
+    );
+};
+export {
+    Generic,
+    Generic as default,
+}
