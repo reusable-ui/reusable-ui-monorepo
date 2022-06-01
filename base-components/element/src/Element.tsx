@@ -83,50 +83,50 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
         // eslint-disable-next-line
     }, [preferredTag, preferredRole, defaultTag, defaultRole].flat());
 };
-export const useTestSemantic = (props: SemanticProps, options: SemanticOptions) => {
+export const useTestSemantic = (props: SemanticProps, options: SemanticOptions): SemanticData => {
     const {
-        semanticTag  : props_semanticTag,
-        semanticRole : props_semanticRole,
+        defaultTag  : props_defaultTag,
+        defaultRole : props_defaultRole,
     } = props;
     
     const {
-        semanticTag  : options_semanticTag,
-        semanticRole : options_semanticRole,
+        defaultTag  : options_defaultTag,
+        defaultRole : options_defaultRole,
     } = options;
     
     const newOptions = useMemo((): SemanticOptions => {
-        const semanticTag = ((): SemanticTag => {
-            if (!props_semanticTag) return options_semanticTag;
+        const defaultTag = ((): DefaultTag => {
+            if (!props_defaultTag) return options_defaultTag;
             
             
             
-            if (props_semanticTag === options_semanticTag) return options_semanticTag;
+            if (props_defaultTag === options_defaultTag) return options_defaultTag;
             
-            const semanticTag1 = Array.isArray(props_semanticTag)   ? props_semanticTag   : [props_semanticTag];
-            const semanticTag2 = Array.isArray(options_semanticTag) ? options_semanticTag : [options_semanticTag];
-            const intersect    = semanticTag1.filter((p) => semanticTag2.includes(p));
-            return (intersect.length) ? intersect : null;
+            const defaultTag1  = [props_defaultTag  ].flat();
+            const defaultTag2  = [options_defaultTag].flat();
+            const intersectTag = defaultTag1.filter((item) => defaultTag2.includes(item));
+            return intersectTag.length ? intersectTag : null;
         })();
         
-        const semanticRole = ((): SemanticRole => {
-            if (!props_semanticRole) return options_semanticRole;
+        const defaultRole = ((): DefaultRole => {
+            if (!props_defaultRole) return options_defaultRole;
             
             
             
-            if (props_semanticRole === options_semanticRole) return options_semanticRole;
+            if (props_defaultRole === options_defaultRole) return options_defaultRole;
             
-            const semanticRole1 = Array.isArray(props_semanticRole)   ? props_semanticRole   : [props_semanticRole];
-            const semanticRole2 = Array.isArray(options_semanticRole) ? options_semanticRole : [options_semanticRole];
-            const intersect     =  semanticRole1.filter((p) => semanticRole2.includes(p));
-            return (intersect.length) ? intersect : null;
+            const defaultRole1  = [props_defaultRole  ].flat();
+            const defaultRole2  = [options_defaultRole].flat();
+            const intersectRole =  defaultRole1.filter((item) => defaultRole2.includes(item));
+            return intersectRole.length ? intersectRole : null;
         })();
         
         return {
-            semanticTag,
-            semanticRole,
+            defaultTag,
+            defaultRole,
         };
         // eslint-disable-next-line
-    }, [props_semanticTag, props_semanticRole, options_semanticTag, options_semanticRole].flat());
+    }, [props_defaultTag, props_defaultRole, options_defaultTag, options_defaultRole].flat());
     
     
     
