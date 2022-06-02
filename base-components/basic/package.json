@@ -1,0 +1,41 @@
+{
+  "name": "@reusable-ui/basic",
+  "version": "5.0.0",
+  "description": "A styled basic building block of Reusable-UI components.",
+  "keywords": [
+    "component",
+    "basic",
+    "generic",
+    "element",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Basic.js",
+  "types": "dist/Basic.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@types/react": "^18.0.9"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
