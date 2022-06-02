@@ -22,6 +22,7 @@ import {
     
     // styles:
     style,
+    vars,
     
     
     
@@ -48,6 +49,11 @@ import type {
     // types:
     VariantMixin,
 }                           from '@reusable-ui/css-types'   // cssfn css specific types
+import {
+    // configs:
+    colors,
+    themes as colorThemes,
+}                           from '@reusable-ui/colors'  // a color management system
 
 
 
@@ -220,9 +226,233 @@ export const usesNudeVariant = (): CssRule => {
 
 
 export interface NudeVariant {
-    nude?: boolean
+    nude ?: boolean
 }
-export const useNudeVariant = (props: NudeVariant) => ({
-    class: props.nude ? 'nude' : null,
+export const useNudeVariant = ({nude}: NudeVariant) => ({
+    class: nude ? 'nude' : null,
 });
 //#endregion nude
+
+
+// colors:
+
+//#region themes
+export type ThemeName = (keyof typeof colorThemes) | (string & {})
+export interface ThemeVars {
+    /**
+     * themed background color.
+     */
+    backg             : any
+    /**
+     * themed foreground color.
+     */
+    foreg             : any
+    /**
+     * themed border color.
+     */
+    border            : any
+    
+    /**
+     * themed foreground color - at outlined variant.
+     */
+    foregOutlined     : any
+    
+    /**
+     * themed background color - at mild variant.
+     */
+    backgMild         : any
+    /**
+     * themed foreground color - at mild variant.
+     */
+    foregMild         : any
+    
+    /**
+     * themed focus color - at focused state.
+     */
+    focus             : any
+    
+    
+    
+    /**
+     * conditional background color.
+     */
+    backgCond         : any
+    /**
+     * conditional foreground color.
+     */
+    foregCond         : any
+    /**
+     * conditional border color.
+     */
+    borderCond        : any
+    
+    /**
+     * conditional foreground color - at outlined variant.
+     */
+    foregOutlinedCond : any
+    
+    /**
+     * conditional background color - at mild variant.
+     */
+    backgMildCond     : any
+    /**
+     * conditional foreground color - at mild variant.
+     */
+    foregMildCond     : any
+    
+    /**
+     * conditional focus color - at focused state.
+     */
+    focusCond         : any
+    
+    
+    
+    /**
+     * important conditional background color.
+     */
+    backgImpt         : any
+    /**
+     * important conditional foreground color.
+     */
+    foregImpt         : any
+    /**
+     * important conditional border color.
+     */
+    borderImpt        : any
+    
+    /**
+     * important conditional foreground color - at outlined variant.
+     */
+    foregOutlinedImpt : any
+    
+    /**
+     * important conditional background color - at mild variant.
+     */
+    backgMildImpt     : any
+    /**
+     * important conditional foreground color - at mild variant.
+     */
+    foregMildImpt     : any
+    
+    /**
+     * important conditional focus color - at focused state.
+     */
+    focusImpt         : any
+}
+const [themes] = cssVar<ThemeVars>();
+
+
+
+export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
+
+
+
+/**
+ * Uses `<Basic>` theme colors.  
+ * For example: `primary`, `secondary`, `danger`, `success`, etc.
+ * @param factory Customize the callback to create theme color definitions for each theme in `options`.
+ * @param options Customize the theme options.
+ * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
+ */
+export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => {
+    return [
+        () => style({
+            ...variants([
+                options.map((themeName) =>
+                    ifTheme(themeName,
+                        factory(themeName)
+                    )
+                ),
+            ]),
+        }),
+        themes,
+    ];
+};
+
+/**
+ * Creates theme color definitions for the given `themeName`.
+ * @param themeName The theme name.
+ * @returns A `CssRule` represents theme color definitions for the given `themeName`.
+ */
+export const themeOf = (themeName: ThemeName): CssRule => style({
+    ...vars({
+        [themes.foreg            ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.backg            ] : colors[   themeName       as keyof typeof colors], // base color
+        [themes.border           ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        
+        [themes.foregOutlined    ] : themes.backg,
+        
+        [themes.foregMild        ] : themes.border,
+        [themes.backgMild        ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        
+        [themes.focus            ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+    }),
+});
+
+/**
+ * Gets all available theme options.
+ * @returns A `ThemeName[]` represents all available theme options.
+ */
+export const themeOptions = (): ThemeName[] => Object.keys(colorThemes) as ThemeName[];
+
+
+
+/**
+ * Creates a default theme color definitions.
+ * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a default theme color definitions`.
+ */
+export const usesThemeDefault = (themeName: ThemeName|null = null): CssRule => usesThemeCond(themeName);
+
+/**
+ * Creates conditional color definitions for the given `themeName`.
+ * @param themeName The theme name as the conditional color -or- `null` for undefining the conditional.
+ * @returns A `CssRule` represents conditional color definitions for the given `themeName`.
+ */
+export const usesThemeCond = (themeName: ThemeName|null): CssRule => style({
+    ...vars({
+        [themes.foregCond        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.backgCond        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.borderCond       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        
+        [themes.foregOutlinedCond] : !themeName ? null : themes.backgCond,
+        
+        [themes.foregMildCond    ] : !themeName ? null : themes.borderCond,
+        [themes.backgMildCond    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        
+        [themes.focusCond        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+    }),
+});
+
+/**
+ * Creates important conditional color definitions for the given `themeName`.
+ * @param themeName The theme name as the important conditional color -or- `null` for undefining the important conditional.
+ * @returns A `CssRule` represents important conditional color definitions for the given `themeName`.
+ */
+export const usesThemeImpt = (themeName: ThemeName|null): CssRule => style({
+    ...vars({
+        [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.backgImpt        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.borderImpt       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        
+        [themes.foregOutlinedImpt] : !themeName ? null : themes.backgImpt,
+        
+        [themes.foregMildImpt    ] : !themeName ? null : themes.borderImpt,
+        [themes.backgMildImpt    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        
+        [themes.focusImpt        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+    }),
+});
+
+
+
+export interface ThemeVariant {
+    theme ?: ThemeName
+}
+export const useThemeVariant = ({theme}: ThemeVariant, themeDefault?: ThemeName) => {
+    const themeName = theme ?? themeDefault;
+    return {
+        class: themeName ? `th${pascalCase(themeName)}` : null,
+    };
+};
+//#endregion themes
