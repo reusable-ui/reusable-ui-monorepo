@@ -29,6 +29,7 @@ import {
     
     // utilities:
     pascalCase,
+    solidBackg,
 }                           from '@cssfn/cssfn'             // writes css in javascript
 import {
     // utilities:
@@ -710,3 +711,124 @@ export const useMildVariant = ({mild}: MildVariant) => ({
     class: mild ? 'mild' : null,
 });
 //#endregion mild
+
+//#region backg
+export interface BackgVars {
+    /**
+     * none background.
+     */
+    backgNone   : any
+    
+    /**
+     * functional background color.
+     */
+    backgFn     : any
+    /**
+     * final background color.
+     */
+    backgCol    : any
+    /**
+     * final background layers.
+     */
+    backg       : any
+}
+const [backgs] = cssVar<BackgVars>();
+
+/**
+ * Uses `<Basic>` background layer(s).
+ * @returns A `VariantMixin<BackgVars>` represents background layer(s) definitions.
+ */
+export const usesBackg = (): VariantMixin<BackgVars> => {
+    // dependencies:
+    const [, themes   ] = usesThemeVariant();
+    const [, gradients] = usesGradientVariant();
+    const [, outlineds] = usesOutlinedVariant();
+    const [, milds    ] = usesMildVariant();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [backgs.backgNone] : solidBackg('transparent'),
+                
+                [backgs.backgFn]   : fallbacks(
+                    themes.backgImpt,  // first  priority
+                    themes.backg,      // second priority
+                    themes.backgCond,  // third  priority
+                    
+                    basics.backg,      // default => uses config's background
+                ),
+                [backgs.backgCol]  : fallbacks(
+                    outlineds.backgTg, // toggle outlined (if `usesOutlinedVariant()` applied)
+                    milds.backgTg,     // toggle mild     (if `usesMildVariant()` applied)
+                    
+                    backgs.backgFn,    // default => uses our `backgFn`
+                ),
+                [backgs.backg]     : [
+                    // layering: backg1 | backg2 | backg3 ...
+                    
+                    // top layer:
+                    fallbacks(
+                        gradients.backgGradTg, // toggle gradient (if `usesGradientVariant()` applied)
+                        
+                        backgs.backgNone,      // default => no top layer
+                    ),
+                    
+                    // bottom layer:
+                    backgs.backgCol,
+                ],
+            }),
+        }),
+        backgs,
+    ];
+};
+//#endregion backg
+
+//#region foreg
+export interface ForegVars {
+    /**
+     * functional foreground color.
+     */
+    foregFn     : any
+    /**
+     * final foreground color.
+     */
+    foreg       : any
+}
+const [foregs] = cssVar<ForegVars>();
+
+/**
+ * Uses `<Basic>` foreground color (text color).
+ * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
+ */
+export const usesForeg = (): VariantMixin<ForegVars> => {
+    // dependencies:
+    const [, themes   ] = usesThemeVariant();
+    const [, outlineds] = usesOutlinedVariant();
+    const [, milds    ] = usesMildVariant();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [foregs.foregFn] : fallbacks(
+                    themes.foregImpt,  // first  priority
+                    themes.foreg,      // second priority
+                    themes.foregCond,  // third  priority
+                    
+                    basics.foreg,      // default => uses config's foreground
+                ),
+                [foregs.foreg]   : fallbacks(
+                    outlineds.foregTg, // toggle outlined (if `usesOutlinedVariant()` applied)
+                    milds.foregTg,     // toggle mild     (if `usesMildVariant()` applied)
+                    
+                    foregs.foregFn,    // default => uses our `foregFn`
+                ),
+            }),
+        }),
+        foregs,
+    ];
+};
+//#endregion foreg
