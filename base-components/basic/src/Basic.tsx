@@ -161,4 +161,13 @@ export const usesOrientationRule = (options?: OrientationRuleOptions): Orientati
         orientationBlockSelector,
     ];
 };
+
+
+
+export interface OrientationVariant {
+    orientation ?: OrientationName
+}
+export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
+    class: orientation ?? null,
+});
 //#endregion orientation
