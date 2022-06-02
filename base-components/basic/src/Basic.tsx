@@ -609,3 +609,104 @@ export const useOutlinedVariant = ({outlined}: OutlinedVariant) => ({
     class: outlined ? 'outlined' : null,
 });
 //#endregion outlined
+
+//#region mild
+export interface MildVars {
+    /**
+     * functional background color - at mild variant.
+     */
+    backgFn : any
+    /**
+     * toggles_on background color - at mild variant.
+     */
+    backgTg : any
+    
+    
+    
+    /**
+     * functional foreground color - at mild variant.
+     */
+    foregFn : any
+    /**
+     * toggles_on foreground color - at mild variant.
+     */
+    foregTg : any
+}
+const [milds] = cssVar<MildVars>();
+
+
+
+// by design: grandpa's `.mild` does not affect current `.mild`
+// parent not `.mild` -and- current not `.mild`:
+export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(:is(.mild&, &.mild))', styles);
+// parent is  `.mild` -or-  current is  `.mild`:
+export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is(.mild&, &.mild)' , styles);
+
+
+
+/**
+ * Uses `<Basic>` toggleable mildification.
+ * @param factory Customize the callback to create mildification definitions for each toggle state.
+ * @returns A `VariantMixin<MildVars>` represents toggleable mildification definitions.
+ */
+export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
+    // dependencies:
+    const [themeRules, themes] = usesThemeVariant();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
+                // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themeRules,
+            ]),
+            ...vars({
+                [milds.backgFn] : fallbacks(
+                    themes.backgMildImpt,  // first  priority
+                    themes.backgMild,      // second priority
+                    themes.backgMildCond,  // third  priority
+                    
+                    basics.backg,          // default => uses config's background
+                ),
+                
+                [milds.foregFn] : fallbacks(
+                    themes.foregMildImpt,  // first  priority
+                    themes.foregMild,      // second priority
+                    themes.foregMildCond,  // third  priority
+                    
+                    basics.foreg,          // default => uses config's foreground
+                ),
+            }),
+            ...variants([
+                ifNotMild(factory(false)),
+                ifMild(factory(true)),
+            ]),
+        }),
+        milds,
+    ];
+};
+
+/**
+ * Creates mildification definitions for the given `toggle`.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
+ * @returns A `CssRule` represents mildification definitions for the given `toggle`.
+ */
+export const mildOf = (toggle: (boolean|null) = true): CssRule => style({
+    ...vars({
+        // *toggle on/off* the mildification props:
+        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null),
+        [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null),
+    }),
+});
+
+
+
+export interface MildVariant {
+    mild ?: boolean
+}
+export const useMildVariant = ({mild}: MildVariant) => ({
+    class: mild ? 'mild' : null,
+});
+//#endregion mild
