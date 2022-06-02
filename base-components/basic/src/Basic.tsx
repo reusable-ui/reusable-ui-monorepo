@@ -38,6 +38,11 @@ import {
     solidBackg,
 }                           from '@cssfn/cssfn'             // writes css in javascript
 import {
+    // types:
+    ReadonlyCssCustomRefs,
+    
+    
+    
     // utilities:
     cssVar,
     fallbacks,
@@ -54,15 +59,16 @@ import {
 }                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
 // reusable-ui:
-import type {
-    // types:
-    VariantMixin,
-}                           from '@reusable-ui/css-types'   // cssfn css specific types
 import {
     // configs:
     colors,
     themes as colorThemes,
 }                           from '@reusable-ui/colors'      // a color management system
+
+
+
+// types:
+export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 
 
 

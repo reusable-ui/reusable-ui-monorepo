@@ -37,7 +37,6 @@
     "@cssfn/css-types": "^2.0.2",
     "@cssfn/css-var": "^2.0.3",
     "@reusable-ui/colors": "^5.0.0",
-    "@reusable-ui/css-types": "^5.0.0",
     "@types/react": "^18.0.9"
   },
   "peerDependencies": {
