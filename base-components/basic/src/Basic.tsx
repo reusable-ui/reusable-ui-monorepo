@@ -6,6 +6,11 @@
 
 // cssfn:
 import type {
+    // css custom properties:
+    CssCustomSimpleRef,
+    
+    
+    
     // cssfn properties:
     CssRule,
     
@@ -29,6 +34,7 @@ import {
     
     // utilities:
     pascalCase,
+    iif,
     solidBackg,
 }                           from '@cssfn/cssfn'             // writes css in javascript
 import {
@@ -832,3 +838,174 @@ export const usesForeg = (): VariantMixin<ForegVars> => {
     ];
 };
 //#endregion foreg
+
+//#region border (color) 
+export interface BorderVars {
+    /**
+     * functional border color.
+     */
+    borderFn    : any
+    /**
+     * final border color.
+     */
+    borderCol   : any
+}
+const [borders] = cssVar<BorderVars>();
+
+
+
+/**
+ * Uses `<Basic>` border color.
+ * @returns A `VariantMixin<BorderVars>` represents border color definitions.
+ */
+export const usesBorder = (): VariantMixin<BorderVars> => {
+    // dependencies:
+    const [, themes   ] = usesThemeVariant();
+    const [, outlineds] = usesOutlinedVariant();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [borders.borderFn]  : fallbacks(
+                    themes.borderImpt,  // first  priority
+                    themes.border,      // second priority
+                    themes.borderCond,  // third  priority
+                    
+                    basics.borderColor, // default => uses config's border color
+                ),
+                [borders.borderCol] : fallbacks(
+                    outlineds.foregTg,  // toggle outlined (if `usesOutlinedVariant()` applied)
+                    
+                    borders.borderFn,   // default => uses our `borderFn`
+                ),
+            }),
+        }),
+        borders,
+    ];
+};
+//#endregion border (color) 
+
+//#region border stroke
+export interface BorderStrokeVars {
+    /**
+     * final border mix (style, width, color, etc).
+     */
+    border      : any
+    /**
+     * final border width.
+     */
+    borderWidth : any
+}
+const [borderStrokes] = cssVar<BorderStrokeVars>();
+
+
+
+/**
+ * Uses `<Basic>` border stroke.
+ * @returns A `VariantMixin<BorderStrokeVars>` represents border stroke definitions.
+ */
+export const usesBorderStroke = (): VariantMixin<BorderStrokeVars> => {
+    return [
+        () => style({
+            ...vars({
+                [borderStrokes.border     ] : basics.border,      // default => uses config's border
+                [borderStrokes.borderWidth] : basics.borderWidth, // default => uses config's border width
+            }),
+        }),
+        borderStrokes,
+    ];
+};
+
+export const extendsBorderStroke = (cssProps?: { border: CssCustomSimpleRef, borderWidth: CssCustomSimpleRef }): CssRule => {
+    // dependencies:
+    
+    // colors:
+    const [, borders      ] = usesBorder();
+    
+    // borders:
+    const [, borderStrokes] = usesBorderStroke();
+    
+    
+    
+    return style({
+        // borders:
+        // cssProps.borderStroke** => ref.borderStroke**
+        ...iif(!!cssProps, vars({
+            [borderStrokes.border     ] : cssProps?.border,
+            [borderStrokes.borderWidth] : cssProps?.borderWidth,
+        })),
+        border      : borderStrokes.border,      // all border properties
+        borderColor : borders.borderCol,         // overwrite color prop
+        borderWidth : borderStrokes.borderWidth, // overwrite width prop
+    });
+};
+//#endregion border stroke
+
+//#region border radius
+export interface BorderRadiusVars {
+    /**
+     * top start (left) radius.
+     */
+    borderStartStartRadius : any
+    /**
+     * top end (right) radius.
+     */
+    borderStartEndRadius   : any
+    /**
+     * bottom start (left) radius.
+     */
+    borderEndStartRadius   : any
+    /**
+     * bottom end (right) radius.
+     */
+    borderEndEndRadius     : any
+}
+const [borderRadiuses] = cssVar<BorderRadiusVars>();
+
+
+
+/**
+ * Uses `<Basic>` border radius.
+ * @returns A `VariantMixin<BorderRadiusVars>` represents border radius definitions.
+ */
+export const usesBorderRadius = (): VariantMixin<BorderRadiusVars> => {
+    return [
+        () => style({
+            ...vars({
+                [borderRadiuses.borderStartStartRadius] : basics.borderRadius, // default => uses config's border radius
+                [borderRadiuses.borderStartEndRadius  ] : basics.borderRadius, // default => uses config's border radius
+                [borderRadiuses.borderEndStartRadius  ] : basics.borderRadius, // default => uses config's border radius
+                [borderRadiuses.borderEndEndRadius    ] : basics.borderRadius, // default => uses config's border radius
+            }),
+        }),
+        borderRadiuses,
+    ];
+};
+
+export const extendsBorderRadius = (cssProps?: { borderRadius: CssCustomSimpleRef }): CssRule => {
+    // dependencies:
+    
+    // borders:
+    const [, borderRadiuses] = usesBorderRadius();
+    
+    
+    
+    return style({
+        // borders:
+        // cssProps.borderRadius** => ref.borderRadius**
+        ...iif(!!cssProps, vars({
+            [borderRadiuses.borderStartStartRadius] : cssProps?.borderRadius,
+            [borderRadiuses.borderStartEndRadius  ] : cssProps?.borderRadius,
+            [borderRadiuses.borderEndStartRadius  ] : cssProps?.borderRadius,
+            [borderRadiuses.borderEndEndRadius    ] : cssProps?.borderRadius,
+        })),
+        borderRadius           : undefined,                             // delete short prop
+        borderStartStartRadius : borderRadiuses.borderStartStartRadius, // overwrite radius prop
+        borderStartEndRadius   : borderRadiuses.borderStartEndRadius,   // overwrite radius prop
+        borderEndStartRadius   : borderRadiuses.borderEndStartRadius,   // overwrite radius prop
+        borderEndEndRadius     : borderRadiuses.borderEndEndRadius,     // overwrite radius prop
+    });
+};
+//#endregion border radius
