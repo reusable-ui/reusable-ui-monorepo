@@ -17,7 +17,7 @@ import type {
     CssStyleCollection,
     
     CssSelectorCollection,
-}                           from '@cssfn/css-types'         // cssfn css specific types
+}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
     // rules:
     rule,
@@ -36,7 +36,7 @@ import {
     pascalCase,
     iif,
     solidBackg,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'         // writes css in javascript
 import {
     // types:
     ReadonlyCssCustomRefs,
@@ -46,7 +46,7 @@ import {
     // utilities:
     cssVar,
     fallbacks,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
+}                           from '@cssfn/css-var'       // strongly typed of css variables
 import {
     // createCssConfig,
     
@@ -56,14 +56,14 @@ import {
     // usesCssProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
+}                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // configs:
     colors,
     themes as colorThemes,
-}                           from '@reusable-ui/colors'      // a color management system
+}                           from '@reusable-ui/colors'  // a color management system
 
 
 
