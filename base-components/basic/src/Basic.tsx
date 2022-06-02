@@ -53,7 +53,7 @@ import {
     // configs:
     colors,
     themes as colorThemes,
-}                           from '@reusable-ui/colors'  // a color management system
+}                           from '@reusable-ui/colors'      // a color management system
 
 
 
@@ -456,3 +456,60 @@ export const useThemeVariant = ({theme}: ThemeVariant, themeDefault?: ThemeName)
     };
 };
 //#endregion themes
+
+//#region gradient
+export interface GradientVars {
+    /**
+     * toggles_on background gradient - at gradient variant.
+     */
+    backgGradTg : any
+}
+const [gradients] = cssVar<GradientVars>();
+
+
+
+// grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
+export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':where(:not(.gradient)) :not(:is(.gradient&, &.gradient))', styles);
+// grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
+export const ifGradient    = (styles: CssStyleCollection): CssRule => rule([           '.gradient &',   ':is(.gradient&, &.gradient)'], styles);
+
+
+
+/**
+ * Uses `<Basic>` toggleable gradient.
+ * @param factory Customize the callback to create gradient definitions for each toggle state.
+ * @returns A `VariantMixin<GradientVars>` represents toggleable gradient definitions.
+ */
+export const usesGradientVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = gradientOf): VariantMixin<GradientVars> => {
+    return [
+        () => style({
+            ...variants([
+                ifNotGradient(factory(false)),
+                ifGradient(factory(true)),
+            ]),
+        }),
+        gradients,
+    ];
+};
+
+/**
+ * Creates gradient definitions for the given `toggle`.
+ * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
+ * @returns A `CssRule` represents gradient definitions for the given `toggle`.
+ */
+export const gradientOf = (toggle: (boolean|null) = true) => style({
+    ...vars({
+        // *toggle on/off* the background gradient prop:
+        [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null),
+    }),
+});
+
+
+
+export interface GradientVariant {
+    gradient?: boolean
+}
+export const useGradientVariant = ({gradient}: GradientVariant) => ({
+    class: gradient ? 'gradient' : null,
+});
+//#endregion gradient
