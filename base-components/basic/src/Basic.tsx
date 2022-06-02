@@ -56,7 +56,7 @@ import type {
 //#region sizes
 export type SizeName = 'sm'|'lg' | (string & {})
 export interface SizeVars {
-    // empty (might be added soon)
+    // empty (may be added soon)
 }
 const [sizes] = cssVar<SizeVars>();
 
