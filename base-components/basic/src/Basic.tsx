@@ -103,4 +103,13 @@ export const sizeOf = (sizeName: SizeName): CssRule => style({
  * @returns A `SizeName[]` represents all available size options.
  */
 export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
+
+
+
+export interface SizeVariant {
+    size ?: SizeName
+}
+export const useSizeVariant = ({size}: SizeVariant) => ({
+    class: size ? `sz${pascalCase(size)}` : null,
+});
 //#endregion sizes
