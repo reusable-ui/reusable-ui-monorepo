@@ -23,6 +23,7 @@ import {
     // styles:
     style,
     vars,
+    imports,
     
     
     
@@ -32,6 +33,7 @@ import {
 import {
     // utilities:
     cssVar,
+    fallbacks,
 }                           from '@cssfn/css-var'           // strongly typed of css variables
 import {
     // createCssConfig,
@@ -497,7 +499,7 @@ export const usesGradientVariant = (factory : ((toggle?: (boolean|null)) => CssS
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
  * @returns A `CssRule` represents gradient definitions for the given `toggle`.
  */
-export const gradientOf = (toggle: (boolean|null) = true) => style({
+export const gradientOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the background gradient prop:
         [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null),
@@ -507,9 +509,103 @@ export const gradientOf = (toggle: (boolean|null) = true) => style({
 
 
 export interface GradientVariant {
-    gradient?: boolean
+    gradient ?: boolean
 }
 export const useGradientVariant = ({gradient}: GradientVariant) => ({
     class: gradient ? 'gradient' : null,
 });
 //#endregion gradient
+
+//#region outlined
+export interface OutlinedVars {
+    /**
+     * functional background color - at outlined variant.
+     */
+    backgFn : any
+    /**
+     * toggles_on background color - at outlined variant.
+     */
+    backgTg : any
+    
+    
+    
+    /**
+     * functional foreground color - at outlined variant.
+     */
+    foregFn : any
+    /**
+     * toggles_on foreground color - at outlined variant.
+     */
+    foregTg : any
+}
+const [outlineds] = cssVar<OutlinedVars>();
+
+
+
+// grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
+export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':where(:not(.outlined)) :not(:is(.outlined&, &.outlined))', styles);
+// grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
+export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule([           '.outlined &',   ':is(.outlined&, &.outlined)'], styles);
+
+
+
+/**
+ * Uses `<Basic>` toggleable outlining.
+ * @param factory Customize the callback to create outlining definitions for each toggle state.
+ * @returns A `VariantMixin<OutlinedVars>` represents toggleable outlining definitions.
+ */
+export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
+    // dependencies:
+    const [themeRules, themes] = usesThemeVariant();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // makes   `usesOutlinedVariant()` implicitly `usesThemeVariant()`
+                // because `usesOutlinedVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themeRules,
+            ]),
+            ...vars({
+                [outlineds.foregFn] : fallbacks(
+                    themes.foregOutlinedImpt,  // first  priority
+                    themes.foregOutlined,      // second priority
+                    themes.foregOutlinedCond,  // third  priority
+                    
+                    basics.foreg,              // default => uses config's foreground
+                ),
+                
+                [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
+            }),
+            ...variants([
+                ifNotOutlined(factory(false)),
+                ifOutlined(factory(true)),
+            ]),
+        }),
+        outlineds,
+    ];
+};
+
+/**
+ * Creates outlining definitions for the given `toggle`.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
+ * @returns A `CssRule` represents outlining definitions for the given `toggle`.
+ */
+export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
+    ...vars({
+        // *toggle on/off* the outlined props:
+        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null),
+        [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null),
+    }),
+});
+
+
+
+export interface OutlinedVariant {
+    outlined ?: boolean
+}
+export const useOutlinedVariant = ({outlined}: OutlinedVariant) => ({
+    class: outlined ? 'outlined' : null,
+});
+//#endregion outlined
