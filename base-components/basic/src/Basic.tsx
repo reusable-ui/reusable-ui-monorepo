@@ -378,14 +378,14 @@ export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCo
  */
 export const themeOf = (themeName: ThemeName): CssRule => style({
     ...vars({
-        [themes.foreg            ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.backg            ] : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foreg            ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.border           ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
         
         [themes.foregOutlined    ] : themes.backg,
         
-        [themes.foregMild        ] : themes.border,
         [themes.backgMild        ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMild        ] : themes.border,
         
         [themes.focus            ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
@@ -413,14 +413,14 @@ export const usesThemeDefault = (themeName: ThemeName|null = null): CssRule => u
  */
 export const usesThemeCond = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themes.foregCond        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.backgCond        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foregCond        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.borderCond       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
         
         [themes.foregOutlinedCond] : !themeName ? null : themes.backgCond,
         
-        [themes.foregMildCond    ] : !themeName ? null : themes.borderCond,
         [themes.backgMildCond    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMildCond    ] : !themeName ? null : themes.borderCond,
         
         [themes.focusCond        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
@@ -433,14 +433,14 @@ export const usesThemeCond = (themeName: ThemeName|null): CssRule => style({
  */
 export const usesThemeImpt = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.backgImpt        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
         [themes.borderImpt       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
         
         [themes.foregOutlinedImpt] : !themeName ? null : themes.backgImpt,
         
-        [themes.foregMildImpt    ] : !themeName ? null : themes.borderImpt,
         [themes.backgMildImpt    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMildImpt    ] : !themeName ? null : themes.borderImpt,
         
         [themes.focusImpt        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
@@ -568,6 +568,8 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
                 themeRules,
             ]),
             ...vars({
+                [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
+                
                 [outlineds.foregFn] : fallbacks(
                     themes.foregOutlinedImpt,  // first  priority
                     themes.foregOutlined,      // second priority
@@ -575,8 +577,6 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
                     
                     basics.foreg,              // default => uses config's foreground
                 ),
-                
-                [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
             }),
             ...variants([
                 ifNotOutlined(factory(false)),
@@ -595,8 +595,8 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
 export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the outlined props:
-        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null),
         [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null),
+        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null),
     }),
 });
 
@@ -696,8 +696,8 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
 export const mildOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification props:
-        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null),
         [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null),
+        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null),
     }),
 });
 
