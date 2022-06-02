@@ -171,3 +171,58 @@ export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
     class: orientation ?? null,
 });
 //#endregion orientation
+
+//#region nude
+export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(.nude)', styles);
+export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     '.nude' , styles);
+
+
+
+export const usesNudeVariant = (): CssRule => {
+    // dependencies:
+    
+    // borders:
+    const [, borderStrokes ] = usesBorderStroke();
+ // const [, borderRadiuses] = usesBorderRadius();
+    
+    // spacings:
+    const [, paddings      ] = usesPadding();
+    
+    
+    
+    return style({
+        ...variants([
+            ifNude({
+                // backgrounds:
+                backg : [['none'], '!important'], // discard background, no valid/invalid animation
+                
+                
+                
+                // borders:
+                [borderStrokes.borderWidth            ] : '0px', // discard border
+             // // remove rounded corners on top:
+             // [borderRadiuses.borderStartStartRadius] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+             // [borderRadiuses.borderStartEndRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+             // // remove rounded corners on bottom:
+             // [borderRadiuses.borderEndStartRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+             // [borderRadiuses.borderEndEndRadius    ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                
+                
+                
+                // spacings:
+                [paddings.paddingInline] : '0px', // discard padding
+                [paddings.paddingBlock ] : '0px', // discard padding
+            }),
+        ]),
+    });
+};
+
+
+
+export interface NudeVariant {
+    nude?: boolean
+}
+export const useNudeVariant = (props: NudeVariant) => ({
+    class: props.nude ? 'nude' : null,
+});
+//#endregion nude
