@@ -60,10 +60,14 @@ export interface SizeVars {
 }
 const [sizes] = cssVar<SizeVars>();
 
+
+
 export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
 
+
+
 /**
- * Uses basic sizes.  
+ * Uses `<Basic>` sizes.  
  * For example: `sm`, `lg`.
  * @param factory Customize the callback to create sizing definitions for each size in `options`.
  * @param options Customize the size options.
@@ -73,26 +77,30 @@ export const usesSizeVariant = (factory : ((sizeName: SizeName) => CssStyleColle
     return [
         () => style({
             ...variants([
-                options.map((sizeName) => ifSize(sizeName,
-                    factory(sizeName)
-                )),
+                options.map((sizeName) =>
+                    ifSize(sizeName,
+                        factory(sizeName)
+                    )
+                ),
             ]),
         }),
         sizes,
     ];
 };
+
 /**
  * Creates sizing definitions for the given `sizeName`.
- * @param sizeName The given size name written in camel case.
+ * @param sizeName The size name.
  * @returns A `CssRule` represents sizing definitions for the given `sizeName`.
  */
 export const sizeOf = (sizeName: SizeName): CssRule => style({
     // overwrites propName = propName{SizeName}:
     ...overwriteProps(sizes, usesSuffixedProps(sizes, sizeName)),
 });
+
 /**
- * Gets the all available size options.
- * @returns A `SizeName[]` represents the all available size options.
+ * Gets all available size options.
+ * @returns A `SizeName[]` represents all available size options.
  */
 export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
 //#endregion sizes
