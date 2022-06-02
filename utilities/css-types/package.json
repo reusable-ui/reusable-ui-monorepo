@@ -1,0 +1,38 @@
+{
+  "name": "@reusable-ui/css-types",
+  "version": "5.0.0",
+  "description": "CSS typescript definitions.",
+  "keywords": [
+    "css",
+    "typescript",
+    "stylesheet",
+    "javascript",
+    "css-in-js",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/css-types.js",
+  "types": "dist/css-types.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-types": "^2.0.2",
+    "@cssfn/css-var": "^2.0.3"
+  }
+}
