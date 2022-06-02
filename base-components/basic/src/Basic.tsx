@@ -967,7 +967,7 @@ const [borderRadiuses] = cssVar<BorderRadiusVars>();
 
 
 /**
- * Uses `<Basic>` border radius.
+ * Uses `<Basic>` border radiuses.
  * @returns A `VariantMixin<BorderRadiusVars>` represents border radius definitions.
  */
 export const usesBorderRadius = (): VariantMixin<BorderRadiusVars> => {
@@ -1009,3 +1009,59 @@ export const extendsBorderRadius = (cssProps?: { borderRadius: CssCustomSimpleRe
     });
 };
 //#endregion border radius
+
+
+// spacings:
+
+//#region padding
+export interface PaddingVars {
+    /**
+     * left & right paddings.
+     */
+    paddingInline : any
+    /**
+     * top & bottom paddings.
+     */
+    paddingBlock  : any
+}
+const [paddings] = cssVar<PaddingVars>();
+
+
+
+/**
+ * Uses `<Basic>` paddings.
+ * @returns A `VariantMixin<PaddingVars>` represents paddings definitions.
+ */
+export const usesPadding = (): VariantMixin<PaddingVars> => {
+    return [
+        () => style({
+            ...vars({
+                [paddings.paddingInline] : basics.paddingInline, // default => uses config's padding inline
+                [paddings.paddingBlock ] : basics.paddingBlock,  // default => uses config's padding block
+            }),
+        }),
+        paddings,
+    ];
+};
+
+export const extendsPadding = (cssProps?: { paddingInline: CssCustomSimpleRef, paddingBlock: CssCustomSimpleRef }): CssRule => {
+    // dependencies:
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
+    return style({
+        // spacings:
+        // cssProps.padding** => ref.padding**
+        ...iif(!!cssProps, vars({
+            [paddings.paddingInline] : cssProps?.paddingInline,
+            [paddings.paddingBlock ] : cssProps?.paddingBlock,
+        })),
+        padding       : undefined,              // delete short prop
+        paddingInline : paddings.paddingInline, // overwrite padding prop
+        paddingBlock  : paddings.paddingBlock,  // overwrite padding prop
+    });
+};
+//#endregion padding
