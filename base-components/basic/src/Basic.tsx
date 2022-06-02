@@ -10,6 +10,8 @@ import type {
     CssRule,
     
     CssStyleCollection,
+    
+    CssSelectorCollection,
 }                           from '@cssfn/css-types'         // cssfn css specific types
 import {
     // rules:
@@ -113,3 +115,50 @@ export const useSizeVariant = ({size}: SizeVariant) => ({
     class: size ? `sz${pascalCase(size)}` : null,
 });
 //#endregion sizes
+
+//#region orientation
+export type OrientationName = 'inline'|'block'
+
+
+
+export interface OrientationRuleOptions {
+    defaultOrientation        ?: OrientationName
+    orientationInlineSelector ?: CssSelectorCollection
+    orientationBlockSelector  ?: CssSelectorCollection
+}
+export const defaultInlineOrientationRuleOptions : OrientationRuleOptions = { defaultOrientation: 'inline' };
+export const defaultBlockOrientationRuleOptions  : OrientationRuleOptions = { defaultOrientation: 'block'  };
+export const normalizeOrientationRule = (options: OrientationRuleOptions|undefined, defaultOptions: OrientationRuleOptions): Required<OrientationRuleOptions> => {
+    const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
+    const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(.block)'  : '.inline');
+    const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(.inline)' : '.block' );
+    
+    
+    
+    return {
+        ...options, // preserves foreign props
+        
+        defaultOrientation,
+        orientationInlineSelector,
+        orientationBlockSelector,
+    };
+};
+
+
+
+export type OrientationMixin = readonly [CssSelectorCollection, CssSelectorCollection]
+export const usesOrientationRule = (options?: OrientationRuleOptions): OrientationMixin => {
+    // options:
+    const {
+        orientationInlineSelector,
+        orientationBlockSelector,
+    } = normalizeOrientationRule(options, defaultBlockOrientationRuleOptions);
+    
+    
+    
+    return [
+        orientationInlineSelector,
+        orientationBlockSelector,
+    ];
+};
+//#endregion orientation
