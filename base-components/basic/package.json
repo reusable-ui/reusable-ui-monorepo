@@ -33,6 +33,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "@cssfn/cssfn-react": "^2.0.6",
     "@cssfn/css-config": "^2.0.9",
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/css-var": "^2.0.4",

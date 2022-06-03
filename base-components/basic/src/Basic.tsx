@@ -51,15 +51,14 @@ import {
     
     
     
-    // style sheets:
-    styleSheet,
-    
-    
-    
     // utilities:
     pascalCase,
     solidBackg,
 }                           from '@cssfn/cssfn'         // writes css in javascript
+import {
+    // style sheets:
+    createUseStyleSheet,
+}                           from '@cssfn/cssfn-react'   // writes css in react hook
 import {
     // types:
     ReadonlyCssCustomRefs,
@@ -1482,7 +1481,7 @@ export const usesBasicVariants = () => {
     });
 };
 
-export const useBasicSheet = styleSheet(() => ({
+export const useBasicStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesBasicLayout(),
