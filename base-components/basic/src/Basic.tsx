@@ -1388,27 +1388,17 @@ export const usesBasicLayout = () => {
             // colors:
             usesThemeDefault(),
             
-            
-            
             // backgrounds:
             backgRule,
-            
-            
             
             // foregrounds:
             foregRule,
             
-            
-            
             // borders:
             borderRule,
             
-            
-            
             // animations:
             animRule,
-            
-            
             
             // spacings:
             paddingRule,
