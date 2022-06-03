@@ -995,7 +995,7 @@ export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
             [borders.borderEndStartRadius  ] : cssBorderProps?.borderRadius,
             [borders.borderEndEndRadius    ] : cssBorderProps?.borderRadius,
         })),
-        borderRadius           : undefined,                      // delete short prop
+        borderRadius           : null,                           // delete short prop
         borderStartStartRadius : borders.borderStartStartRadius, // overwrite radius prop
         borderStartEndRadius   : borders.borderStartEndRadius,   // overwrite radius prop
         borderEndStartRadius   : borders.borderEndStartRadius,   // overwrite radius prop
@@ -1057,7 +1057,7 @@ export const extendsPadding = (cssProps?: CssPaddingProps): CssRule => {
             [paddings.paddingInline] : cssProps?.paddingInline,
             [paddings.paddingBlock ] : cssProps?.paddingBlock,
         })),
-        padding       : undefined,              // delete short prop
+        padding       : null,                   // delete short prop
         paddingInline : paddings.paddingInline, // overwrite padding prop
         paddingBlock  : paddings.paddingBlock,  // overwrite padding prop
     });
