@@ -594,6 +594,8 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
             ...vars({
                 [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
                 
+                
+                
                 [outlineds.foregFn] : fallbacks(
                     themes.foregOutlinedImpt,  // first  priority
                     themes.foregOutlined,      // second priority
@@ -695,6 +697,8 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                     basics.backg,          // default => uses config's background
                 ),
                 
+                
+                
                 [milds.foregFn] : fallbacks(
                     themes.foregMildImpt,  // first  priority
                     themes.foregMild,      // second priority
@@ -742,6 +746,8 @@ export interface BackgVars {
      */
     backgNone   : any
     
+    
+    
     /**
      * functional background color.
      */
@@ -750,6 +756,9 @@ export interface BackgVars {
      * final background color.
      */
     backgCol    : any
+    
+    
+    
     /**
      * final background layers.
      */
@@ -775,20 +784,25 @@ export const usesBackg = (): VariantMixin<BackgVars> => {
             ...vars({
                 [backgs.backgNone] : solidBackg('transparent'),
                 
-                [backgs.backgFn]   : fallbacks(
+                
+                
+                [backgs.backgFn  ] : fallbacks(
                     themes.backgImpt,  // first  priority
                     themes.backg,      // second priority
                     themes.backgCond,  // third  priority
                     
                     basics.backg,      // default => uses config's background
                 ),
-                [backgs.backgCol]  : fallbacks(
+                [backgs.backgCol ] : fallbacks(
                     outlineds.backgTg, // toggle outlined (if `usesOutlinedVariant()` applied)
                     milds.backgTg,     // toggle mild     (if `usesMildVariant()` applied)
                     
                     backgs.backgFn,    // default => uses our `backgFn`
                 ),
-                [backgs.backg]     : [
+                
+                
+                
+                [backgs.backg    ] : [
                     // layering: backg1 | backg2 | backg3 ...
                     
                     // top layer:
@@ -843,7 +857,7 @@ export const usesForeg = (): VariantMixin<ForegVars> => {
                     
                     basics.foreg,      // default => uses config's foreground
                 ),
-                [foregs.foreg]   : fallbacks(
+                [foregs.foreg  ] : fallbacks(
                     outlineds.foregTg, // toggle outlined (if `usesOutlinedVariant()` applied)
                     milds.foregTg,     // toggle mild     (if `usesMildVariant()` applied)
                     
@@ -1060,6 +1074,8 @@ export interface AnimVars {
      */
     boxShadow     : any
     
+    
+    
     /**
      * none filter.
      */
@@ -1069,10 +1085,14 @@ export interface AnimVars {
      */
     filter        : any
     
+    
+    
     /**
      * none transform.
      */
     transfNone    : any
+    
+    
     
     /**
      * none animation.
