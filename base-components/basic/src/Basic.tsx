@@ -744,25 +744,25 @@ export interface BackgVars {
     /**
      * none background.
      */
-    backgNone   : any
+    backgNone    : any
     
     
     
     /**
      * functional background color.
      */
-    backgFn     : any
+    backgColorFn : any
     /**
      * final background color.
      */
-    backgCol    : any
+    backgColor   : any
     
     
     
     /**
      * final background layers.
      */
-    backg       : any
+    backg        : any
 }
 const [backgs] = cssVar<BackgVars>();
 
@@ -782,27 +782,27 @@ export const usesBackg = (): VariantMixin<BackgVars> => {
     return [
         () => style({
             ...vars({
-                [backgs.backgNone] : solidBackg('transparent'),
+                [backgs.backgNone   ] : solidBackg('transparent'),
                 
                 
                 
-                [backgs.backgFn  ] : fallbacks(
+                [backgs.backgColorFn] : fallbacks(
                     themes.backgImpt,  // first  priority
                     themes.backg,      // second priority
                     themes.backgCond,  // third  priority
                     
                     basics.backg,      // default => uses config's background
                 ),
-                [backgs.backgCol ] : fallbacks(
-                    outlineds.backgTg, // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.backgTg,     // toggle mild     (if `usesMildVariant()` applied)
+                [backgs.backgColor  ] : fallbacks(
+                    outlineds.backgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
+                    milds.backgTg,       // toggle mild     (if `usesMildVariant()` applied)
                     
-                    backgs.backgFn,    // default => uses our `backgFn`
+                    backgs.backgColorFn, // default => uses our `backgColorFn`
                 ),
                 
                 
                 
-                [backgs.backg    ] : [
+                [backgs.backg       ] : [
                     // layering: backg1 | backg2 | backg3 ...
                     
                     // top layer:
@@ -813,7 +813,7 @@ export const usesBackg = (): VariantMixin<BackgVars> => {
                     ),
                     
                     // bottom layer:
-                    backgs.backgCol,
+                    backgs.backgColor,
                 ],
             }),
         }),
