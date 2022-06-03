@@ -6,8 +6,20 @@
 
 // cssfn:
 import type {
+    // css values:
+    CssSimpleValue,
+    
+    
+    
     // css custom properties:
     CssCustomSimpleRef,
+    CssCustomRef,
+    CssCustomValue,
+    
+    
+    
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -1071,3 +1083,137 @@ export const extendsPadding = (cssProps?: { paddingInline: CssCustomSimpleRef, p
     });
 };
 //#endregion padding
+
+
+// animations:
+
+//#region animations
+export interface AnimVars {
+    /**
+     * none boxShadow.
+     */
+    boxShadowNone : any
+    /**
+     * final boxShadow layers.
+     */
+    boxShadow     : any
+    
+    /**
+     * none filter.
+     */
+    filterNone    : any
+    /**
+     * final filter.
+     */
+    filter        : any
+    
+    /**
+     * none transform.
+     */
+    transfNone    : any
+    
+    /**
+     * none animation.
+     */
+    animNone      : any
+    /**
+     * final animation.
+     */
+    anim          : any
+}
+const [anims] = cssVar<AnimVars>();
+
+
+
+const setsBoxShadow = new Set<CssCustomSimpleRef>();
+const setsFilter    = new Set<CssCustomSimpleRef>();
+const setsAnim      = new Set<CssCustomSimpleRef>();
+const animRegistry  = {
+    get boxShadows      (): CssCustomSimpleRef[]         { return Array.from(setsBoxShadow) },
+    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)          },
+    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item)       },
+    
+    
+    
+    get filters         (): CssCustomSimpleRef[]         { return Array.from(setsFilter)    },
+    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)             },
+    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)          },
+    
+    
+    
+    get anims           (): CssCustomSimpleRef[]         { return Array.from(setsAnim)      },
+    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)               },
+    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)            },
+};
+export type AnimRegistry = typeof animRegistry
+
+
+
+export type AnimMixin = readonly [() => CssRule, ReadonlyCssCustomRefs<AnimVars>, AnimRegistry]
+/**
+ * Uses `<Basic>` animation.
+ * @returns A `AnimMixin` represents animation definitions.
+ */
+export const usesAnim = (): AnimMixin => {
+    return [
+        () => style({
+            ...vars({
+                [anims.boxShadowNone] : [[0, 0, 'transparent']],
+                [anims.boxShadow    ] : [
+                    // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
+                    
+                    // layers:
+                    anims.boxShadowNone,
+                    ...animRegistry.boxShadows,
+                ],
+                
+                
+                
+                [anims.filterNone   ] : 'brightness(100%)',
+                [anims.filter       ] : [[
+                    // combining: filter1 * filter2 * filter3 ...
+                    
+                    // layers:
+                    anims.filterNone,
+                    ...animRegistry.filters,
+                ]],
+                
+                
+                
+                [anims.transfNone   ] : 'translate(0)',
+                
+                
+                
+                [anims.animNone     ] : 'none',
+                [anims.anim         ] : [
+                    // layering: anim1 | anim2 | anim3 ...
+                    
+                    // layers:
+                    anims.animNone,
+                    ...animRegistry.anims,
+                ],
+            }),
+            
+            
+            
+            // declare default values at lowest specificity:
+            ...vars(Object.fromEntries([
+                ...animRegistry.boxShadows.map((ref) => [ ref, anims.boxShadowNone ]),
+                ...animRegistry.filters   .map((ref) => [ ref, anims.filterNone    ]),
+                ...animRegistry.anims     .map((ref) => [ ref, anims.animNone      ]),
+            ])),
+        }),
+        anims,
+        animRegistry,
+    ];
+};
+
+
+
+export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
+
+export const fallbackNoneBoxShadow = (boxShadow : (CssKnownProps['boxShadow'] & CssSimpleValue[])[number]): typeof boxShadow => isRef(boxShadow) ? fallbacks(boxShadow, anims.boxShadowNone) : boxShadow;
+export const fallbackNoneFilter    = (filter    : (CssKnownProps['filter'   ] & CssSimpleValue[])[number]): typeof filter    => isRef(filter   ) ? fallbacks(filter   , anims.filterNone   ) : filter;
+export const fallbackNoneTransf    = (transf    : (CssKnownProps['transf'   ] & CssSimpleValue[])[number]): typeof transf    => isRef(transf   ) ? fallbacks(transf   , anims.transfNone   ) : transf;
+export const fallbackNoneAnim      = (anim      : (CssKnownProps['anim'     ] & CssSimpleValue[])[number]): typeof anim      => isRef(anim     ) ? fallbacks(anim     , anims.animNone     ) : anim;
+//#endregion animations
