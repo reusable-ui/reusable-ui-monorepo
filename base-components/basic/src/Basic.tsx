@@ -70,7 +70,7 @@ import {
     
     
     // utilities:
-    // usesCssProps,
+    usesCssProps,
     usesSuffixedProps,
     overwriteProps,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
@@ -1327,3 +1327,95 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     };
 };
 //#endregion excited
+
+
+
+// styles:
+export const usesBasicLayout = () => {
+    // dependencies:
+    
+    // backgrounds:
+    const [backgRule   , backgs] = usesBackg();
+    
+    // foregrounds:
+    const [foregRule   , foregs] = usesForeg();
+    
+    // borders:
+    const [borderRule          ] = usesBorder();
+    
+    // animations:
+    const [animRule    , anims ] = usesAnim();
+    
+    // spacings:
+    const [paddingRule         ] = usesPadding();
+    
+    
+    
+    return style({
+        ...imports([
+            // themes:
+            usesThemeDefault(),
+            
+            
+            
+            // backgrounds:
+            backgRule,
+            
+            
+            
+            // foregrounds:
+            foregRule,
+            
+            
+            
+            // borders:
+            borderRule,
+            
+            
+            
+            // animations:
+            animRule,
+            
+            
+            
+            // spacings:
+            paddingRule,
+        ]),
+        ...style({
+            // layouts:
+            display   : 'block',
+            
+            
+            
+            // customize:
+            ...usesCssProps(basics), // apply config's cssProps
+            
+            
+            
+            // backgrounds:
+            backg     : backgs.backg,
+            
+            
+            
+            // foregrounds:
+            foreg     : foregs.foreg,
+            
+            
+            
+            // borders:
+            ...extendsBorder(basics), // extends border css vars
+            
+            
+            
+            // animations:
+            boxShadow : anims.boxShadow,
+            filter    : anims.filter,
+            anim      : anims.anim,
+            
+            
+            
+            // spacings:
+            ...extendsPadding(basics), // extends padding css vars
+        }),
+    });
+};
