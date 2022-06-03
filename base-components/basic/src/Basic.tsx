@@ -50,6 +50,11 @@ import {
     
     
     
+    // style sheets:
+    styleSheet,
+    
+    
+    
     // utilities:
     pascalCase,
     solidBackg,
@@ -216,47 +221,61 @@ export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
 //#endregion orientation
 
 //#region nude
+export interface NudeVars {
+    // empty (may be added soon)
+}
+const [nudes] = cssVar<NudeVars>();
+
+
+
 export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(.nude)', styles);
 export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     '.nude' , styles);
 
 
 
-export const usesNudeVariant = (): CssRule => {
+/**
+ * Removes background, border & padding on `<Basic>`.  
+ * @returns A `VariantMixin<NudeVars>` represents nudeification definitions.
+ */
+export const usesNudeVariant = (): VariantMixin<NudeVars> => {
     // dependencies:
     
     // borders:
-    const [, borders] = usesBorder();
+    const [, borders ] = usesBorder();
     
     // spacings:
-    const [, paddings      ] = usesPadding();
+    const [, paddings] = usesPadding();
     
     
     
-    return style({
-        ...variants([
-            ifNude({
-                // backgrounds:
-                backg : [['none'], '!important'], // discard background, no valid/invalid animation
-                
-                
-                
-                // borders:
-                [borders.borderWidth           ] : '0px', // discard border
-             // // remove rounded corners on top:
-             // [borders.borderStartStartRadius] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-             // [borders.borderStartEndRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-             // // remove rounded corners on bottom:
-             // [borders.borderEndStartRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-             // [borders.borderEndEndRadius    ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                
-                
-                
-                // spacings:
-                [paddings.paddingInline] : '0px', // discard padding
-                [paddings.paddingBlock ] : '0px', // discard padding
-            }),
-        ]),
-    });
+    return [
+        () => style({
+            ...variants([
+                ifNude({
+                    // backgrounds:
+                    backg : [['none'], '!important'], // discard background, no valid/invalid animation
+                    
+                    
+                    
+                    // borders:
+                    [borders.borderWidth           ] : '0px', // discard border
+                 // // remove rounded corners on top:
+                 // [borders.borderStartStartRadius] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                 // [borders.borderStartEndRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                 // // remove rounded corners on bottom:
+                 // [borders.borderEndStartRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                 // [borders.borderEndEndRadius    ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                    
+                    
+                    
+                    // spacings:
+                    [paddings.paddingInline] : '0px', // discard padding
+                    [paddings.paddingBlock ] : '0px', // discard padding
+                }),
+            ]),
+        }),
+        nudes,
+    ];
 };
 
 
@@ -1353,7 +1372,7 @@ export const usesBasicLayout = () => {
     
     return style({
         ...imports([
-            // themes:
+            // colors:
             usesThemeDefault(),
             
             
@@ -1419,3 +1438,42 @@ export const usesBasicLayout = () => {
         }),
     });
 };
+export const usesBasicVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizesRule   ] = usesSizeVariant();
+    const [nudeRule    ] = usesNudeVariant();
+    
+    // colors:
+    const [themesRule  ] = usesThemeVariant();
+    const [gradientRule] = usesGradientVariant();
+    const [outlinedRule] = usesOutlinedVariant();
+    const [mildRule    ] = usesMildVariant();
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            sizesRule,
+            nudeRule,
+            
+            // colors:
+            themesRule,
+            gradientRule,
+            outlinedRule,
+            mildRule,
+        ]),
+    });
+};
+
+export const useBasicSheet = styleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesBasicLayout(),
+        
+        // variants:
+        usesBasicVariants(),
+    ]),
+}), { id: 'rbkpy0qh2b' }); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
