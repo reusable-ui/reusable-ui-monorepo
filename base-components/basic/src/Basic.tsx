@@ -526,7 +526,7 @@ export const usesGradientVariant = (factory : ((toggle?: (boolean|null)) => CssS
 export const gradientOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the background gradient prop:
-        [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null),
+        [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
@@ -621,8 +621,8 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
 export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the outlined props:
-        [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null),
-        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null),
+        [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
@@ -724,8 +724,8 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
 export const mildOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification props:
-        [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null),
-        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null),
+        [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
@@ -995,7 +995,7 @@ export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
             [borders.borderEndStartRadius  ] : cssBorderProps?.borderRadius,
             [borders.borderEndEndRadius    ] : cssBorderProps?.borderRadius,
         })),
-        borderRadius           : null,                           // delete short prop
+        borderRadius           : null,                           // `null` => delete `borderRadius` prop, `undefined` => preserves `borderRadius` prop
         borderStartStartRadius : borders.borderStartStartRadius, // overwrite radius prop
         borderStartEndRadius   : borders.borderStartEndRadius,   // overwrite radius prop
         borderEndStartRadius   : borders.borderEndStartRadius,   // overwrite radius prop
@@ -1057,7 +1057,7 @@ export const extendsPadding = (cssProps?: CssPaddingProps): CssRule => {
             [paddings.paddingInline] : cssProps?.paddingInline,
             [paddings.paddingBlock ] : cssProps?.paddingBlock,
         })),
-        padding       : null,                   // delete short prop
+        padding       : null,                   // `null` => delete `padding` prop, `undefined` => preserves `padding` prop
         paddingInline : paddings.paddingInline, // overwrite padding prop
         paddingBlock  : paddings.paddingBlock,  // overwrite padding prop
     });
