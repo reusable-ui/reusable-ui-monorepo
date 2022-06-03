@@ -46,7 +46,6 @@ import {
     
     // utilities:
     pascalCase,
-    iif,
     solidBackg,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
@@ -977,10 +976,10 @@ export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
     return style({
         // border strokes:
         // cssBorderProps.borderStroke** => ref.borderStroke**
-        ...iif(!!cssBorderProps, vars({
+        ...vars({
             [borders.border     ] : cssBorderProps?.border,
             [borders.borderWidth] : cssBorderProps?.borderWidth,
-        })),
+        }),
         border      : borders.border,      // all border properties
         borderColor : borders.borderColor, // overwrite color prop
         borderWidth : borders.borderWidth, // overwrite width prop
@@ -989,12 +988,12 @@ export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
         
         // border radiuses:
         // cssBorderProps.borderRadius** => ref.borderRadius**
-        ...iif(!!cssBorderProps, vars({
+        ...vars({
             [borders.borderStartStartRadius] : cssBorderProps?.borderRadius,
             [borders.borderStartEndRadius  ] : cssBorderProps?.borderRadius,
             [borders.borderEndStartRadius  ] : cssBorderProps?.borderRadius,
             [borders.borderEndEndRadius    ] : cssBorderProps?.borderRadius,
-        })),
+        }),
         borderRadius           : null,                           // `null` => delete `borderRadius` prop, `undefined` => preserves `borderRadius` prop
         borderStartStartRadius : borders.borderStartStartRadius, // overwrite radius prop
         borderStartEndRadius   : borders.borderStartEndRadius,   // overwrite radius prop
@@ -1053,10 +1052,10 @@ export const extendsPadding = (cssProps?: CssPaddingProps): CssRule => {
     return style({
         // spacings:
         // cssProps.padding** => ref.padding**
-        ...iif(!!cssProps, vars({
+        ...vars({
             [paddings.paddingInline] : cssProps?.paddingInline,
             [paddings.paddingBlock ] : cssProps?.paddingBlock,
-        })),
+        }),
         padding       : null,                   // `null` => delete `padding` prop, `undefined` => preserves `padding` prop
         paddingInline : paddings.paddingInline, // overwrite padding prop
         paddingBlock  : paddings.paddingBlock,  // overwrite padding prop
