@@ -862,11 +862,11 @@ export interface BorderVars {
     /**
      * functional border color.
      */
-    borderFn    : any
+    borderColorFn : any
     /**
      * final border color.
      */
-    borderCol   : any
+    borderColor   : any
 }
 const [borders] = cssVar<BorderVars>();
 
@@ -886,17 +886,17 @@ export const usesBorder = (): VariantMixin<BorderVars> => {
     return [
         () => style({
             ...vars({
-                [borders.borderFn]  : fallbacks(
-                    themes.borderImpt,  // first  priority
-                    themes.border,      // second priority
-                    themes.borderCond,  // third  priority
+                [borders.borderColorFn] : fallbacks(
+                    themes.borderImpt,     // first  priority
+                    themes.border,         // second priority
+                    themes.borderCond,     // third  priority
                     
-                    basics.borderColor, // default => uses config's border color
+                    basics.borderColor,    // default => uses config's border color
                 ),
-                [borders.borderCol] : fallbacks(
-                    outlineds.foregTg,  // toggle outlined (if `usesOutlinedVariant()` applied)
+                [borders.borderColor  ] : fallbacks(
+                    outlineds.foregTg,     // toggle outlined (if `usesOutlinedVariant()` applied)
                     
-                    borders.borderFn,   // default => uses our `borderFn`
+                    borders.borderColorFn, // default => uses our `borderColorFn`
                 ),
             }),
         }),
@@ -955,7 +955,7 @@ export const extendsBorderStroke = (cssProps?: { border: CssCustomSimpleRef, bor
             [borderStrokes.borderWidth] : cssProps?.borderWidth,
         })),
         border      : borderStrokes.border,      // all border properties
-        borderColor : borders.borderCol,         // overwrite color prop
+        borderColor : borders.borderColor,       // overwrite color prop
         borderWidth : borderStrokes.borderWidth, // overwrite width prop
     });
 };
