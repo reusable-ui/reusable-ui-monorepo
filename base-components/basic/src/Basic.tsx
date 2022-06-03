@@ -1,8 +1,13 @@
-// // react:
-// import {
-//     // react:
-//     default as React,
-// }                           from 'react'
+// react:
+import {
+    // react:
+    default as React,
+    
+    
+    
+    // hooks:
+    useRef,
+}                           from 'react'
 
 // cssfn:
 import type {
@@ -34,6 +39,7 @@ import {
     // rules:
     rule,
     variants,
+    states,
     
     
     
@@ -75,11 +81,16 @@ import {
     colors,
     themes as colorThemes,
 }                           from '@reusable-ui/colors'  // a color management system
+import {
+    // hooks:
+    useTriggerRender,
+}                           from '@reusable-ui/hooks'   // react helper hooks
 
 
 
 // types:
 export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
+export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 
 
 
@@ -1202,3 +1213,117 @@ export const fallbackNoneFilter    = (filter    : (CssKnownProps['filter'   ] & 
 export const fallbackNoneTransf    = (transf    : (CssKnownProps['transf'   ] & CssSimpleValue[])[number]): typeof transf    => isRef(transf   ) ? fallbacks(transf   , anims.transfNone   ) : transf;
 export const fallbackNoneAnim      = (anim      : (CssKnownProps['anim'     ] & CssSimpleValue[])[number]): typeof anim      => isRef(anim     ) ? fallbacks(anim     , anims.animNone     ) : anim;
 //#endregion animations
+
+//#region excited
+export interface ExcitedVars {
+    filter : any
+    anim   : any
+}
+const [exciteds] = cssVar<ExcitedVars>();
+
+{
+    const [, , animRegistry] = usesAnim();
+    animRegistry.registerFilter(exciteds.filter);
+    animRegistry.registerAnim(exciteds.anim);
+}
+
+
+
+export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':not(.excited)', styles);
+export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(     '.excited' , styles);
+
+
+
+/**
+ * Uses `<Basic>` excited states.
+ * @returns A `StateMixin<ExcitedVars>` represents excited state definitions.
+ */
+export const usesExcitedState = (): StateMixin<ExcitedVars> => {
+    return [
+        () => style({
+            ...states([
+                ifExcited(
+                    vars({
+                        [exciteds.filter] : basics.filterExcited,
+                        [exciteds.anim  ] : basics.animExcited,
+                    }),
+                ),
+            ]),
+        }),
+        exciteds,
+    ];
+};
+
+
+
+export interface TogglerExcitedProps
+{
+    // accessibilities:
+    excited         ?: boolean
+    onExcitedChange ?: (newExcited: boolean) => void
+}
+export const useExcitedState = (props: TogglerExcitedProps) => {
+    /*
+     * state is excited/normal based on [controllable excited]
+     */
+    const excitedFn: boolean = (props.excited /*controllable*/ ?? false);
+    
+    
+    
+    // states:
+    // local storages without causing to (re)render, we need to manual control the (re)render event:
+    /**
+     * `true` => excited, `false` => normal
+     */
+    const excited = useRef(excitedFn);
+    
+    // manually controls the (re)render event:
+    const [triggerRender] = useTriggerRender();
+    
+    
+    
+    if (excited.current !== excitedFn) {
+        excited.current = excitedFn; // update the state
+        
+        
+        
+        if (excitedFn) {
+            // wait until the non-excited `<Basic>` has seen by browser ui, then re-render the excited `<Basic>`
+            setTimeout(() => {
+                triggerRender(); // re-render the excited `<Basic>`
+            }, 0);
+        } // if
+    } // if
+    
+    
+    
+    const handleIdle = () => {
+        // clean up finished animation
+        
+        excited.current = false; // mark the animation was completed (stopped)
+        
+        props.onExcitedChange?.(false); // request to stop
+        if (excitedFn) {
+            triggerRender(); // need to restart the animation
+        } // if
+    }
+    return {
+        excited : excited.current,
+        
+        class   : ((): string|null => {
+            // fully excited:
+            if (excited.current) return 'excited';
+            
+            // fully normal:
+            return null;
+        })(),
+        
+        handleAnimationEnd : (e: React.AnimationEvent<HTMLElement>) => {
+            if (e.target !== e.currentTarget) return; // no bubbling
+            if (/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) {
+                handleIdle();
+            }
+        },
+    };
+};
+//#endregion excited
