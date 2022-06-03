@@ -70,7 +70,7 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'       // strongly typed of css variables
 import {
-    // createCssConfig,
+    createCssConfig,
     
     
     
@@ -86,6 +86,19 @@ import {
     colors,
     themes as colorThemes,
 }                           from '@reusable-ui/colors'  // a color management system
+import {
+    // configs:
+    borders as borderStrokes,
+    borderRadiuses,
+}                           from '@reusable-ui/borders' // a border (stroke) management system
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers' // a spacer (gap) management system
+import {
+    // configs:
+    typos,
+}                           from '@reusable-ui/typos'   // a typography management system
 import {
     // hooks:
     useTriggerRender,
@@ -1477,3 +1490,127 @@ export const useBasicSheet = styleSheet(() => ({
         usesBasicVariants(),
     ]),
 }), { id: 'rbkpy0qh2b' }); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+// configs:
+export const [basics, cssBasicConfig] = createCssConfig(() => {
+    // dependencies:
+    const [, , , propsManager] = usesAnim();
+    const filters = propsManager.filters();
+    
+    const [, {filter: filterExcited} ] = usesExcitedState();
+    
+    
+    
+    //#region keyframes
+    const keyframesExcited  : PropEx.Keyframes = {
+        from : {
+            filter: [[ // double array => makes the JSS treat as space separated values
+                ...filters.filter((f) => (f !== filterExcited)),
+                
+             // filterExcited, // missing the last => let's the browser interpolated it
+            ].map(fallbackNoneFilter)],
+        },
+        to   : {
+            filter: [[ // double array => makes the JSS treat as space separated values
+                ...filters.filter((f) => (f !== filterExcited)),
+                
+                filterExcited, // existing the last => let's the browser interpolated it
+            ].map(fallbackNoneFilter)],
+        },
+    };
+    //#endregion keyframes
+    
+    
+    
+    const keyframesNone : PropEx.Keyframes = { };
+    
+    
+    const transDuration = '300ms';
+    
+    return {
+        //#region foreg, backg, borders
+        foreg                : 'currentColor',
+        
+        backg                : 'transparent',
+        backgGrad            : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
+        
+        border               : [[borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color]],
+        borderWidth          : borderStrokes.defaultWidth,
+        borderColor          : borderStrokes.color,
+        
+        borderRadius         : borderRadiuses.md,
+        borderRadiusSm       : borderRadiuses.sm,
+        borderRadiusLg       : borderRadiuses.lg,
+        //#endregion foreg, backg, borders
+        
+        
+        
+        //#region spacings
+        paddingInline        : [['calc((', spacers.sm, '+', spacers.md, ')/2)']],
+        paddingBlock         : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']],
+        paddingInlineSm      : spacers.sm,
+        paddingBlockSm       : spacers.xs,
+        paddingInlineLg      : spacers.md,
+        paddingBlockLg       : spacers.sm,
+        //#endregion spacings
+        
+        
+        
+        // appearances:
+        opacity              : 1,
+        
+        
+        
+        //#region typos
+        fontSize             : typos.fontSizeNm,
+        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']],
+        fontSizeLg           : typos.fontSizeMd,
+        fontFamily           : 'inherit',
+        fontWeight           : 'inherit',
+        fontStyle            : 'inherit',
+        textDecoration       : 'inherit',
+        lineHeight           : 'inherit',
+        //#endregion typos
+        
+        
+        
+        //#region animations
+        transDuration        : transDuration,
+        transition           : [
+            // foreg, backg, borders:
+            ['color'      , transDuration, 'ease-out'],
+            ['background' , transDuration, 'ease-out'],
+            ['border'     , transDuration, 'ease-out'],
+            
+            // sizes:
+            ['inline-size', transDuration, 'ease-out'],
+            ['block-size' , transDuration, 'ease-out'],
+            
+            // spacings:
+            // ['padding'    , transDuration, 'ease-out'], // beautiful but uncomfortable
+            
+            // appearances:
+            ['opacity'    , transDuration, 'ease-out'],
+            
+            // typos:
+            ['font-size'  , transDuration, 'ease-out'],
+        ],
+        
+        // boxShadow            : [[0, 0, 'transparent']],
+        // filter               : 'brightness(100%)',
+        // transf               : 'translate(0)',
+        
+        '@keyframes none'    : keyframesNone,
+        // anim                 : [[keyframesNone]],
+        
+        
+        
+        filterExcited        : [['invert(80%)']],
+        
+        '@keyframes excited' : keyframesExcited,
+        animExcited          : [['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited]],
+        //#endregion animations
+    };
+}, { prefix: 'bsc' });
