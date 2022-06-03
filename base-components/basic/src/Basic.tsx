@@ -1038,7 +1038,11 @@ export const usesPadding = (): VariantMixin<PaddingVars> => {
     ];
 };
 
-export const extendsPadding = (cssProps?: { paddingInline: CssCustomSimpleRef, paddingBlock: CssCustomSimpleRef }): CssRule => {
+export interface CssPaddingProps {
+    paddingInline ?: CssCustomSimpleRef
+    paddingBlock  ?: CssCustomSimpleRef
+}
+export const extendsPadding = (cssProps?: CssPaddingProps): CssRule => {
     // dependencies:
     
     // spacings:
