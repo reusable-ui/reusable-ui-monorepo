@@ -71,7 +71,7 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'           // strongly typed of css variables
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -1506,7 +1506,7 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [basics, cssBasicConfig] = createCssConfig(() => {
+export const [basics, cssBasicConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();
