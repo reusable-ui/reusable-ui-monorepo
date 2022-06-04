@@ -18,7 +18,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -40,7 +40,7 @@ import {
 
 
 //#region configs
-export const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
+export const [marks, markValues, cssMarkConfig] = cssConfig(() => {
     return {
         // backgrounds:
         backg             : colors.warningThin as CssKnownProps['backg'],

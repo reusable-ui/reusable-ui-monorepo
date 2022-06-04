@@ -13,7 +13,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
@@ -34,7 +34,7 @@ import {
 
 
 //#region configs
-export const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
+export const [displays, displayValues, cssDisplayConfig] = cssConfig(() => {
     return {
         // appearances:
         subOpacity        : heads.subOpacity        as CssKnownProps['opacity'],

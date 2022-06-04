@@ -18,7 +18,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -35,7 +35,7 @@ import {
 
 
 //#region configs
-export const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
+export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
     const basics = {
         // backgrounds:
         /**

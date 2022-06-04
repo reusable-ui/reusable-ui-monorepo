@@ -20,7 +20,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -41,7 +41,7 @@ import {
 
 
 //#region configs
-export const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
+export const [leads, leadValues, cssLeadConfig] = cssConfig(() => {
     return {
         // foregrounds:
         foreg             : pargs.foreg             as CssKnownProps['foreg'],

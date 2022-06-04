@@ -18,7 +18,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -39,7 +39,7 @@ import {
 
 
 //#region configs
-export const [horzRules, horzRuleValues, cssHorzRuleConfig] = createCssConfig(() => {
+export const [horzRules, horzRuleValues, cssHorzRuleConfig] = cssConfig(() => {
     return {
         // appearances:
         opacity        : 0.25               as CssKnownProps['opacity'],

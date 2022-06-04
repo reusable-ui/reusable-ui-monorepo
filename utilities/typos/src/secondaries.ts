@@ -18,7 +18,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -29,7 +29,7 @@ import {
 
 
 //#region configs
-export const [secondaries, secondaryValues, cssSecondaryConfig] = createCssConfig(() => {
+export const [secondaries, secondaryValues, cssSecondaryConfig] = cssConfig(() => {
     return {
         // appearances:
         opacity        : 0.65      as CssKnownProps['opacity'],

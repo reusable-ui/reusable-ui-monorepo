@@ -18,7 +18,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -45,7 +45,7 @@ import {
 
 
 //#region configs
-export const [kbds, kbdValues, cssKbdConfig] = createCssConfig(() => {
+export const [kbds, kbdValues, cssKbdConfig] = cssConfig(() => {
     return {
         // backgrounds:
         backg             : colors.grayDark      as CssKnownProps['backg'],

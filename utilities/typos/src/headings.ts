@@ -36,7 +36,7 @@ import {
     flat,
 }                           from '@cssfn/cssfn/dist/utilities.js'
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -55,7 +55,7 @@ import {
 
 
 //#region configs
-export const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
+export const [headings, headingValues, cssHeadingConfig] = cssConfig(() => {
     return {
         // appearances:
         subOpacity        : 0.8       as CssKnownProps['opacity'],

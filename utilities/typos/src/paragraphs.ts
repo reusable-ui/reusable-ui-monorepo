@@ -20,7 +20,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -31,7 +31,7 @@ import {
 
 
 //#region configs
-export const [paragraphs, paragraphValues, cssParagraphConfig] = createCssConfig(() => {
+export const [paragraphs, paragraphValues, cssParagraphConfig] = cssConfig(() => {
     return {
         // foregrounds:
         foreg             : 'inherit' as CssKnownProps['foreg'],

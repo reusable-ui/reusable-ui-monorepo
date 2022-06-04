@@ -20,7 +20,7 @@ import {
     styleSheets,
 }                           from '@cssfn/cssfn'         // writes css in javascript
 import {
-    createCssConfig,
+    cssConfig,
     
     
     
@@ -37,7 +37,7 @@ import {
 
 
 //#region configs
-export const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() => {
+export const [blockquotes, blockquoteValues, cssBlockquoteConfig] = cssConfig(() => {
     return {
         // foregrounds:
         foreg             : 'inherit'        as CssKnownProps['foreg'],
