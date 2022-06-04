@@ -1157,19 +1157,19 @@ const setsBoxShadow = new Set<CssCustomSimpleRef>();
 const setsFilter    = new Set<CssCustomSimpleRef>();
 const setsAnim      = new Set<CssCustomSimpleRef>();
 const animRegistry  = {
-    get boxShadows      (): CssCustomSimpleRef[]         { return Array.from(setsBoxShadow) },
+    get boxShadows      ():    CssCustomSimpleRef[]      { return Array.from(setsBoxShadow) },
     registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)          },
     unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item)       },
     
     
     
-    get filters         (): CssCustomSimpleRef[]         { return Array.from(setsFilter)    },
+    get filters         ():    CssCustomSimpleRef[]      { return Array.from(setsFilter)    },
     registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)             },
     unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)          },
     
     
     
-    get anims           (): CssCustomSimpleRef[]         { return Array.from(setsAnim)      },
+    get anims           ():    CssCustomSimpleRef[]      { return Array.from(setsAnim)      },
     registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)               },
     unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)            },
 };
@@ -1480,13 +1480,14 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
         // variants:
         usesBasicVariants(),
     ]),
-}), { id: 'rbkpy0qh2b' }); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'rbkpy0qh2b' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
 // configs:
 export const [basics, cssBasicConfig] = createCssConfig(() => {
     // dependencies:
+    
     const [, , animRegistry] = usesAnim();
     const filters = animRegistry.filters;
     
@@ -1494,7 +1495,7 @@ export const [basics, cssBasicConfig] = createCssConfig(() => {
     
     
     
-    //#region keyframes
+    // keyframes:
     const [keyframesExcitedRule, keyframesExcited] = keyframes({
         from : {
             filter: [[
@@ -1511,91 +1512,98 @@ export const [basics, cssBasicConfig] = createCssConfig(() => {
             ]].map(fallbackNoneFilter),
         },
     });
-    //#endregion keyframes
     
     
     
-    const transDuration = '300ms';
+    const transitionDuration = '300ms';
     
     return {
         // appearances:
-        opacity              : 1,
+        opacity              : 1                            as CssKnownProps['opacity'],
         
         
         
         // backgrounds:
-        backg                : 'transparent',
-        backgGrad            : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
+        backg                : 'transparent'                as CssKnownProps['backg'],
+        backgGrad            : [
+            ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
+        ]                                                   as CssKnownProps['backgroundImage'],
         
         
         
         // foregrounds:
-        foreg                : 'currentColor',
+        foreg                : 'currentColor'               as CssKnownProps['foreg'],
         
         
         
         // borders:
-        border               : [[borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color]],
-        borderWidth          : borderStrokes.defaultWidth,
-        borderColor          : borderStrokes.color,
+        border               : [
+            [borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color],
+        ]                                                   as CssKnownProps['border'],
+        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth'],
+        borderColor          : borderStrokes.color          as CssKnownProps['borderColor'],
         
-        borderRadius         : borderRadiuses.md,
-        borderRadiusSm       : borderRadiuses.sm,
-        borderRadiusLg       : borderRadiuses.lg,
+        borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
+        borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
+        borderRadiusLg       : borderRadiuses.lg            as CssKnownProps['borderRadius'],
         
         
         
         // animations:
-        transDuration        : transDuration,
+        transitionDuration   : transitionDuration           as CssKnownProps['transitionDuration'],
         transition           : [
-            // foreg, backg, borders:
-            ['color'      , transDuration, 'ease-out'],
-            ['background' , transDuration, 'ease-out'],
-            ['border'     , transDuration, 'ease-out'],
+            // appearances:
+            ['opacity'    , transitionDuration, 'ease-out'],
             
             // sizes:
-            ['inline-size', transDuration, 'ease-out'],
-            ['block-size' , transDuration, 'ease-out'],
+            ['inline-size', transitionDuration, 'ease-out'],
+            ['block-size' , transitionDuration, 'ease-out'],
+            
+            // backgrounds:
+            ['background' , transitionDuration, 'ease-out'],
+            
+            // foregrounds:
+            ['color'      , transitionDuration, 'ease-out'],
+            
+            // borders:
+            ['border'     , transitionDuration, 'ease-out'],
             
             // spacings:
-            // ['padding'    , transDuration, 'ease-out'], // beautiful but uncomfortable
-            
-            // appearances:
-            ['opacity'    , transDuration, 'ease-out'],
+         // ['padding'    , transitionDuration, 'ease-out'], // beautiful but uncomfortable
             
             // typos:
-            ['font-size'  , transDuration, 'ease-out'],
-        ],
+            ['font-size'  , transitionDuration, 'ease-out'],
+        ]                                                   as CssKnownProps['transition'],
         
-     // boxShadow            : [[0, 0, 'transparent']],
-     // filter               : 'brightness(100%)',
-     // transf               : 'translate(0)',
-        
-        filterExcited        : [['invert(80%)']],
+        filterExcited        : [[
+            'invert(80%)',
+        ]]                                                  as CssKnownProps['filter'],
         
         ...keyframesExcitedRule,
-        animExcited          : [['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited]],
+        animExcited          : [
+            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited],
+        ]                                                   as CssKnownProps['anim'],
         
         
         
         // spacings:
-        paddingInline        : [['calc((', spacers.sm, '+', spacers.md, ')/2)']],
-        paddingBlock         : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']],
-        paddingInlineSm      : spacers.sm,
-        paddingBlockSm       : spacers.xs,
-        paddingInlineLg      : spacers.md,
-        paddingBlockLg       : spacers.sm,
+        paddingInline        : [['calc((', spacers.sm, '+', spacers.md, ')/2)']]    as CssKnownProps['paddingInline'],
+        paddingBlock         : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']]    as CssKnownProps['paddingBlock' ],
+        paddingInlineSm      : spacers.sm                                           as CssKnownProps['paddingInline'],
+        paddingBlockSm       : spacers.xs                                           as CssKnownProps['paddingBlock' ],
+        paddingInlineLg      : spacers.md                                           as CssKnownProps['paddingInline'],
+        paddingBlockLg       : spacers.sm                                           as CssKnownProps['paddingBlock' ],
         
         
         
         // typos:
-        fontSize             : typos.fontSizeNm,
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']],
-        fontSizeLg           : typos.fontSizeMd,
-        fontFamily           : 'inherit',
-        fontWeight           : 'inherit',
-        fontStyle            : 'inherit',
-        textDecoration       : 'inherit',
-        lineHeight           : 'inherit',
+        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'],
+        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'],
+        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'],
+        fontFamily           : 'inherit'    as CssKnownProps['fontFamily'],
+        fontWeight           : 'inherit'    as CssKnownProps['fontWeight'],
+        fontStyle            : 'inherit'    as CssKnownProps['fontStyle'],
+        textDecoration       : 'inherit'    as CssKnownProps['textDecoration'],
+        lineHeight           : 'inherit'    as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'bsc' });
