@@ -21,7 +21,7 @@ export type CssLength = CssComplexValueOf<CssKnownValueOf<'gap'>>
 
 
 //#region configs
-const [spacers, spacerValues, cssSpacerConfig] = createCssConfig(() => {
+export const [spacers, spacerValues, cssSpacerConfig] = createCssConfig(() => {
     const basics = {
         none    : '0rem'    as CssLength,
         md      : '1rem'    as CssLength,
@@ -43,17 +43,5 @@ const [spacers, spacerValues, cssSpacerConfig] = createCssConfig(() => {
         xl      : [['calc(', basics.md, '*', 3  , ')']] as CssLength,
     };
 }, { prefix: 'spc' });
-export {
-    spacers,
-    spacers as cssProps,
-    spacers as default,
-}
-export {
-    spacerValues,
-    spacerValues as cssVals,
-}
-export {
-    cssSpacerConfig,
-    cssSpacerConfig as cssConfig,
-}
+export { spacers as default }
 //#endregion configs
