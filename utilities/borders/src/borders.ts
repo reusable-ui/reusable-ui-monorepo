@@ -42,7 +42,7 @@ export type Border      = CssComplexValueOf<CssKnownValueOf<'border'>>
 
 
 //#region configs
-const [borders, borderValues, cssBorderConfig] = createCssConfig(() => {
+export const [borders, borderValues, cssBorderConfig] = createCssConfig(() => {
     const widths = {
         none  : '0px'          as BorderWidth,
         hair  : '1px'          as BorderWidth,
@@ -66,17 +66,5 @@ const [borders, borderValues, cssBorderConfig] = createCssConfig(() => {
         ...defaults,
     };
 }, { prefix: 'bd' });
-export {
-    borders,
-    borders as cssProps,
-    borders as default,
-}
-export {
-    borderValues,
-    borderValues as cssVals,
-}
-export {
-    cssBorderConfig,
-    cssBorderConfig as cssConfig,
-}
+export { borders as default }
 //#endregion configs
