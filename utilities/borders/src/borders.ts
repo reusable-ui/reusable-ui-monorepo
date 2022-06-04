@@ -9,7 +9,7 @@ import type {
     CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 import {
-    createCssConfig,
+    cssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // internals:
@@ -42,7 +42,7 @@ export type Border      = CssComplexValueOf<CssKnownValueOf<'border'>>
 
 
 //#region configs
-export const [borders, borderValues, cssBorderConfig] = createCssConfig(() => {
+export const [borders, borderValues, cssBorderConfig] = cssConfig(() => {
     const widths = {
         none  : '0px'          as BorderWidth,
         hair  : '1px'          as BorderWidth,
