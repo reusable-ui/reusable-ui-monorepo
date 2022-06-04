@@ -147,6 +147,7 @@ export const useTestSemantic = (props: SemanticProps, options: SemanticOptions):
 // react components:
 export interface GenericProps<TElement extends Element = Element>
     extends
+        // bases:
         React.DOMAttributes<TElement>,
         SemanticProps
 {
