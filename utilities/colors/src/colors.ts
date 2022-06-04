@@ -13,7 +13,7 @@ import type {
     CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 import {
-    createCssConfig,
+    cssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 // other libs:
@@ -382,7 +382,7 @@ const deleteColor   = (_object: object, colorName: keyof ColorList): boolean => 
 
 //#region configs
 export type CssColorConfigProps = { [ColorName in keyof ColorList]: CssColor };
-const [colors, colorValues, cssColorConfig] = createCssConfig<CssColorConfigProps>(() => {
+const [colors, colorValues, cssColorConfig] = cssConfig<CssColorConfigProps>(() => {
     // a proxy for converting `Color` to `CssColor`:
     return new Proxy<CssColorConfigProps>(colorList as unknown as CssColorConfigProps, {
         get : getCssColor,
