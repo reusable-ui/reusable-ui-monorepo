@@ -1297,7 +1297,9 @@ export interface TogglerExcitedProps
     onExcitedChange ?: (newExcited: boolean) => void
 }
 export const useExcitedState = (props: TogglerExcitedProps) => {
+    // props:
     const {
+        // accessibilities:
         excited,
         onExcitedChange,
     } = props;
@@ -1305,7 +1307,7 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     /*
-     * state is excited/normal based on [controllable excited]
+     * the state is excited/normal based on [controllable excited]
      */
     const excitedFn: boolean = (excited /*controllable*/ ?? false);
     
@@ -1314,7 +1316,8 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     // states:
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     /**
-     * `true` => was excited, `false` => was normal
+     * `true`  => was excited  
+     * `false` => was normal
      */
     const wasExcited = useRef(excitedFn);
     
@@ -1323,13 +1326,14 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     
-    if (wasExcited.current !== excitedFn) {
-        wasExcited.current = excitedFn; // update the state
+    if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
+        wasExcited.current = excitedFn; // remember the last change
         
         
         
-        if (excitedFn) {
-            // wait until the non-excited `<Basic>` has seen by browser ui, then re-render the excited `<Basic>`
+        const continueToRun = excitedFn;
+        if (continueToRun) {
+            // wait until the non-excited `<Basic>` has been applied by browser ui, then re-render the excited `<Basic>`
             setTimeout(() => {
                 triggerRender(); // re-render the excited `<Basic>`
             }, 0);
