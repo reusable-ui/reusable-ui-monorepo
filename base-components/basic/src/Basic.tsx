@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -1296,27 +1297,34 @@ export interface TogglerExcitedProps
     onExcitedChange ?: (newExcited: boolean) => void
 }
 export const useExcitedState = (props: TogglerExcitedProps) => {
+    const {
+        excited,
+        onExcitedChange,
+    } = props;
+    
+    
+    
     /*
      * state is excited/normal based on [controllable excited]
      */
-    const excitedFn: boolean = (props.excited /*controllable*/ ?? false);
+    const excitedFn: boolean = (excited /*controllable*/ ?? false);
     
     
     
     // states:
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     /**
-     * `true` => excited, `false` => normal
+     * `true` => was excited, `false` => was normal
      */
-    const excited = useRef(excitedFn);
+    const wasExcited = useRef(excitedFn);
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
     
     
-    if (excited.current !== excitedFn) {
-        excited.current = excitedFn; // update the state
+    if (wasExcited.current !== excitedFn) {
+        wasExcited.current = excitedFn; // update the state
         
         
         
@@ -1330,33 +1338,37 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     
-    const handleIdle = () => {
+    // handlers:
+    const handleIdle = useCallback(() => {
         // clean up finished animation
         
-        excited.current = false; // mark the animation was completed (stopped)
+        const continueToRun = wasExcited.current;
+        wasExcited.current = false; // mark the animation was completed (stopped)
         
-        props.onExcitedChange?.(false); // request to stop
-        if (excitedFn) {
+        onExcitedChange?.(false); // request to stop
+        if (continueToRun) {
             triggerRender(); // need to restart the animation
         } // if
-    }
+    }, [onExcitedChange, triggerRender]);
+    
+    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>) => {
+        if (e.target !== e.currentTarget) return; // ignores bubbling
+        
+        
+        
+        if (/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) {
+            handleIdle();
+        } // if
+    }, [handleIdle]);
+    
+    
+    
     return {
-        excited : excited.current,
+        excited : wasExcited.current,
         
-        class   : ((): string|null => {
-            // fully excited:
-            if (excited.current) return 'excited';
-            
-            // fully normal:
-            return null;
-        })(),
+        class   : wasExcited.current ? 'excited' : null,
         
-        handleAnimationEnd : (e: React.AnimationEvent<HTMLElement>) => {
-            if (e.target !== e.currentTarget) return; // no bubbling
-            if (/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) {
-                handleIdle();
-            }
-        },
+        handleAnimationEnd,
     };
 };
 //#endregion excited
