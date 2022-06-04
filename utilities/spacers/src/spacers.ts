@@ -9,7 +9,7 @@ import type {
     CssKnownValueOf,
 }                           from '@cssfn/css-types'     // cssfn css specific types
 import {
-    createCssConfig,
+    cssConfig,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
 
@@ -21,7 +21,7 @@ export type CssLength = CssComplexValueOf<CssKnownValueOf<'gap'>>
 
 
 //#region configs
-export const [spacers, spacerValues, cssSpacerConfig] = createCssConfig(() => {
+export const [spacers, spacerValues, cssSpacerConfig] = cssConfig(() => {
     const basics = {
         none    : '0rem'    as CssLength,
         md      : '1rem'    as CssLength,
