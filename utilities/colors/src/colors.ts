@@ -390,7 +390,6 @@ const [colors, colorValues, cssColorConfig] = createCssConfig<CssColorConfigProp
 }, { prefix: 'col' });
 export {
     cssColorConfig,
-    cssColorConfig as cssConfig,
 }
 
 
@@ -403,7 +402,6 @@ const colorsProxy = new Proxy<ColorRefs<ColorList>>(colors, {
 });
 export { 
     colorsProxy as colors,
-    colorsProxy as cssProps,
     colorsProxy as default,
 }
 
@@ -419,7 +417,6 @@ const colorValuesProxy = new Proxy<ColorVals<ColorList>>(colorValues as unknown 
 });
 export {
     colorValuesProxy as colorValues,
-    colorValuesProxy as cssVals,
 }
 
 
