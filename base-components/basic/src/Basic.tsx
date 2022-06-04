@@ -12,7 +12,7 @@ import {
 // cssfn:
 import type {
     // css values:
-    CssSimpleValue,
+    CssComplexBaseValueOf,
     
     
     
@@ -1240,10 +1240,11 @@ export const usesAnim = (): AnimMixin => {
 
 export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
 
-export const fallbackNoneBoxShadow = (boxShadow : (CssKnownProps['boxShadow'] & CssSimpleValue[])[number]): typeof boxShadow => isRef(boxShadow) ? fallbacks(boxShadow, anims.boxShadowNone) : boxShadow;
-export const fallbackNoneFilter    = (filter    : (CssKnownProps['filter'   ] & CssSimpleValue[])[number]): typeof filter    => isRef(filter   ) ? fallbacks(filter   , anims.filterNone   ) : filter;
-export const fallbackNoneTransf    = (transf    : (CssKnownProps['transf'   ] & CssSimpleValue[])[number]): typeof transf    => isRef(transf   ) ? fallbacks(transf   , anims.transfNone   ) : transf;
-export const fallbackNoneAnim      = (anim      : (CssKnownProps['anim'     ] & CssSimpleValue[])[number]): typeof anim      => isRef(anim     ) ? fallbacks(anim     , anims.animNone     ) : anim;
+type BaseTypeOf<TComplexValue> = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
+export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => isRef(item) ? fallbacks(item, anims.boxShadowNone) : item;
+export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => isRef(subItem) ? fallbacks(subItem, anims.filterNone) : subItem);
+export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transf'   ]>[]): typeof item => item.map((subItem) => isRef(subItem) ? fallbacks(subItem, anims.transfNone) : subItem);
+export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['anim'     ]>  ): typeof item => isRef(item) ? fallbacks(item, anims.animNone) : item;
 //#endregion animations
 
 //#region excited
@@ -1494,20 +1495,20 @@ export const [basics, cssBasicConfig] = createCssConfig(() => {
     
     
     //#region keyframes
-    const [keyframesExcitedRule, keyframesExcited] = keyframes('excited', {
+    const [keyframesExcitedRule, keyframesExcited] = keyframes({
         from : {
-            filter: [[ // double array => makes the JSS treat as space separated values
+            filter: [[
                 ...filters.filter((f) => (f !== filterExcited)),
                 
              // filterExcited, // missing the last => let's the browser interpolated it
-            ].map(fallbackNoneFilter)],
+            ]].map(fallbackNoneFilter),
         },
         to   : {
-            filter: [[ // double array => makes the JSS treat as space separated values
+            filter: [[
                 ...filters.filter((f) => (f !== filterExcited)),
                 
                 filterExcited, // existing the last => let's the browser interpolated it
-            ].map(fallbackNoneFilter)],
+            ]].map(fallbackNoneFilter),
         },
     });
     //#endregion keyframes
