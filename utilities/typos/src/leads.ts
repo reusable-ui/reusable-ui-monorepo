@@ -41,7 +41,7 @@ import {
 
 
 //#region configs
-const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
+export const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
     return {
         // foregrounds:
         foreg             : pargs.foreg             as CssKnownProps['foreg'],
@@ -65,19 +65,7 @@ const [leads, leadValues, cssLeadConfig] = createCssConfig(() => {
         lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'lead' });
-export {
-    leads,
-    leads as cssProps,
-    leads as default,
-}
-export {
-    leadValues,
-    leadValues as cssVals,
-}
-export {
-    cssLeadConfig,
-    cssLeadConfig as cssConfig,
-}
+export { leads as default }
 //#endregion configs
 
 

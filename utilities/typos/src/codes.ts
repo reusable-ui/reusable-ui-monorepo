@@ -46,7 +46,7 @@ import {
 
 
 //#region configs
-const [codes, codeValues, cssCodeConfig] = createCssConfig(() => {
+export const [codes, codeValues, cssCodeConfig] = createCssConfig(() => {
     return {
         // backgrounds:
         backg             : 'none'                    as CssKnownProps['backg'],
@@ -82,19 +82,7 @@ const [codes, codeValues, cssCodeConfig] = createCssConfig(() => {
         overflowWrap      : 'inherit'                 as CssKnownProps['overflowWrap'],
     };
 }, { prefix: 'code' });
-export {
-    codes,
-    codes as cssProps,
-    codes as default,
-}
-export {
-    codeValues,
-    codeValues as cssVals,
-}
-export {
-    cssCodeConfig,
-    cssCodeConfig as cssConfig,
-}
+export { codes as default }
 //#endregion configs
 
 

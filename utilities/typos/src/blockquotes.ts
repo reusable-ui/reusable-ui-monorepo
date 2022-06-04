@@ -37,7 +37,7 @@ import {
 
 
 //#region configs
-const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() => {
+export const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() => {
     return {
         // foregrounds:
         foreg             : 'inherit'        as CssKnownProps['foreg'],
@@ -61,19 +61,7 @@ const [blockquotes, blockquoteValues, cssBlockquoteConfig] = createCssConfig(() 
         lineHeight        : 'inherit'        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'bq' });
-export {
-    blockquotes,
-    blockquotes as cssProps,
-    blockquotes as default,
-}
-export {
-    blockquoteValues,
-    blockquoteValues as cssVals,
-}
-export {
-    cssBlockquoteConfig,
-    cssBlockquoteConfig as cssConfig,
-}
+export { blockquotes as default }
 //#endregion configs
 
 

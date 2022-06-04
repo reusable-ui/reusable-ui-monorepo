@@ -29,7 +29,7 @@ import {
 
 
 //#region configs
-const [secondaries, secondaryValues, cssSecondaryConfig] = createCssConfig(() => {
+export const [secondaries, secondaryValues, cssSecondaryConfig] = createCssConfig(() => {
     return {
         // appearances:
         opacity        : 0.65      as CssKnownProps['opacity'],
@@ -50,19 +50,7 @@ const [secondaries, secondaryValues, cssSecondaryConfig] = createCssConfig(() =>
         lineHeight     : 'inherit' as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'sec' });
-export {
-    secondaries,
-    secondaries as cssProps,
-    secondaries as default,
-}
-export {
-    secondaryValues,
-    secondaryValues as cssVals,
-}
-export {
-    cssSecondaryConfig,
-    cssSecondaryConfig as cssConfig,
-}
+export { secondaries as default }
 //#endregion configs
 
 

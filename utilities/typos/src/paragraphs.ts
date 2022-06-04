@@ -31,7 +31,7 @@ import {
 
 
 //#region configs
-const [paragraphs, paragraphValues, cssParagraphConfig] = createCssConfig(() => {
+export const [paragraphs, paragraphValues, cssParagraphConfig] = createCssConfig(() => {
     return {
         // foregrounds:
         foreg             : 'inherit' as CssKnownProps['foreg'],
@@ -55,19 +55,7 @@ const [paragraphs, paragraphValues, cssParagraphConfig] = createCssConfig(() => 
         lineHeight        : 'inherit' as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'p' });
-export {
-    paragraphs,
-    paragraphs as cssProps,
-    paragraphs as default,
-}
-export {
-    paragraphValues,
-    paragraphValues as cssVals,
-}
-export {
-    cssParagraphConfig,
-    cssParagraphConfig as cssConfig,
-}
+export { paragraphs as default }
 //#endregion configs
 
 

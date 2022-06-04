@@ -34,7 +34,7 @@ import {
 
 
 //#region configs
-const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
+export const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
     return {
         // appearances:
         subOpacity        : heads.subOpacity        as CssKnownProps['opacity'],
@@ -70,19 +70,7 @@ const [displays, displayValues, cssDisplayConfig] = createCssConfig(() => {
         lineHeight        : heads.lineHeight        as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'd' });
-export {
-    displays,
-    displays as cssProps,
-    displays as default,
-}
-export {
-    displayValues,
-    displayValues as cssVals,
-}
-export {
-    cssDisplayConfig,
-    cssDisplayConfig as cssConfig,
-}
+export { displays as default }
 //#endregion configs
 
 

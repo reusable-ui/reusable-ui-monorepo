@@ -55,7 +55,7 @@ import {
 
 
 //#region configs
-const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
+export const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
     return {
         // appearances:
         subOpacity        : 0.8       as CssKnownProps['opacity'],
@@ -91,19 +91,7 @@ const [headings, headingValues, cssHeadingConfig] = createCssConfig(() => {
         lineHeight        : 1.25      as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'h' });
-export {
-    headings,
-    headings as cssProps,
-    headings as default,
-}
-export {
-    headingValues,
-    headingValues as cssVals,
-}
-export {
-    cssHeadingConfig,
-    cssHeadingConfig as cssConfig,
-}
+export { headings as default }
 //#endregion configs
 
 

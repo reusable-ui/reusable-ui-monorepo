@@ -45,7 +45,7 @@ import {
 
 
 //#region configs
-const [kbds, kbdValues, cssKbdConfig] = createCssConfig(() => {
+export const [kbds, kbdValues, cssKbdConfig] = createCssConfig(() => {
     return {
         // backgrounds:
         backg             : colors.grayDark      as CssKnownProps['backg'],
@@ -79,19 +79,7 @@ const [kbds, kbdValues, cssKbdConfig] = createCssConfig(() => {
         overflowWrap      : codes.overflowWrap   as CssKnownProps['overflowWrap'],
     };
 }, { prefix: 'kbd' });
-export {
-    kbds,
-    kbds as cssProps,
-    kbds as default,
-}
-export {
-    kbdValues,
-    kbdValues as cssVals,
-}
-export {
-    cssKbdConfig,
-    cssKbdConfig as cssConfig,
-}
+export { kbds as default }
 //#endregion configs
 
 

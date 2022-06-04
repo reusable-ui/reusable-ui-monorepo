@@ -35,7 +35,7 @@ import {
 
 
 //#region configs
-const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
+export const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
     const basics = {
         // backgrounds:
         /**
@@ -118,19 +118,7 @@ const [typos, typoValues, cssTypoConfig] = createCssConfig(() => {
         lineHeight           : basics.lineHeightNm                              as CssKnownProps['lineHeight'],
     };
 }, { prefix: '' });
-export {
-    typos,
-    typos as cssProps,
-    typos as default,
-}
-export {
-    typoValues,
-    typoValues as cssVals,
-}
-export {
-    cssTypoConfig,
-    cssTypoConfig as cssConfig,
-}
+export { typos as default }
 //#endregion configs
 
 

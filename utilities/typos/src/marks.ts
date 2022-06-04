@@ -40,7 +40,7 @@ import {
 
 
 //#region configs
-const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
+export const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
     return {
         // backgrounds:
         backg             : colors.warningThin as CssKnownProps['backg'],
@@ -74,19 +74,7 @@ const [marks, markValues, cssMarkConfig] = createCssConfig(() => {
         overflowWrap      : 'inherit'          as CssKnownProps['overflowWrap'],
     };
 }, { prefix: 'mrk' });
-export {
-    marks,
-    marks as cssProps,
-    marks as default,
-}
-export {
-    markValues,
-    markValues as cssVals,
-}
-export {
-    cssMarkConfig,
-    cssMarkConfig as cssConfig,
-}
+export { marks as default }
 //#endregion configs
 
 

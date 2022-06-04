@@ -39,7 +39,7 @@ import {
 
 
 //#region configs
-const [horzRules, horzRuleValues, cssHorzRuleConfig] = createCssConfig(() => {
+export const [horzRules, horzRuleValues, cssHorzRuleConfig] = createCssConfig(() => {
     return {
         // appearances:
         opacity        : 0.25               as CssKnownProps['opacity'],
@@ -58,19 +58,7 @@ const [horzRules, horzRuleValues, cssHorzRuleConfig] = createCssConfig(() => {
         marginBlockEnd    : spacers.default as CssKnownProps['marginBlockEnd'],
     };
 }, { prefix: 'hr' });
-export {
-    horzRules,
-    horzRules as cssProps,
-    horzRules as default,
-}
-export {
-    horzRuleValues,
-    horzRuleValues as cssVals,
-}
-export {
-    cssHorzRuleConfig,
-    cssHorzRuleConfig as cssConfig,
-}
+export { horzRules as default }
 //#endregion configs
 
 
