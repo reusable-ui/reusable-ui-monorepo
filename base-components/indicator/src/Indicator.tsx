@@ -98,13 +98,13 @@ import {
     // react components:
     BasicProps,
     Basic,
-}                           from '@reusable-ui/basic'       // a base component
+}                           from '@reusable-ui/basic'           // a base component
 
 // other libs:
 import {
     default as triggerChange,
     // @ts-ignore
-}                           from 'react-trigger-change'     // a helper lib
+}                           from 'react-trigger-change'         // a helper lib
 
 
 
