@@ -117,6 +117,12 @@ import {
     Basic,
 }                           from '@reusable-ui/basic'       // a base component
 
+// other libs:
+import {
+    default as triggerChange,
+    // @ts-ignore
+}                           from 'react-trigger-change'     // a helper lib
+
 
 
 // hooks:
@@ -465,6 +471,29 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
      * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
      */
     const activeFn: boolean = propAccess.active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    const wasActive = useRef<boolean>(activeFn);
+    
+    if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
+        wasActive.current = activeFn;     // remember the last change
+        
+        
+        
+        // fire change synthetic event:
+        props.onActiveChange?.(activeFn);
+        
+        // fire change dom event:
+        if (changeEventTarget?.current) {
+            changeEventTarget.current.checked = activeFn;
+            triggerChange(changeEventTarget.current);
+        } // if
+    } // if
+    
+    
+    
+    return [
+        activeFn,
+        setActiveTg,
+    ];
 };
 //#endregion activePassive
 
