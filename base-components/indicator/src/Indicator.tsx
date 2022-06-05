@@ -112,6 +112,12 @@ import {
     
     
     
+    // styles:
+    usesBasicLayout,
+    usesBasicVariants,
+    
+    
+    
     // react components:
     BasicProps,
     Basic,
@@ -510,80 +516,14 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
 
 // styles:
 export const usesIndicatorLayout = () => {
-    // dependencies:
-    
-    // backgrounds:
-    const [backgRule   , backgs] = usesBackg();
-    
-    // foregrounds:
-    const [foregRule   , foregs] = usesForeg();
-    
-    // borders:
-    const [borderRule          ] = usesBorder();
-    
-    // animations:
-    const [animRule    , anims ] = usesAnim();
-    
-    // spacings:
-    const [paddingRule         ] = usesPadding();
-    
-    
-    
     return style({
         ...imports([
-            // colors:
-            usesThemeDefault(),
-            
-            // backgrounds:
-            backgRule,
-            
-            // foregrounds:
-            foregRule,
-            
-            // borders:
-            borderRule,
-            
-            // animations:
-            animRule,
-            
-            // spacings:
-            paddingRule,
+            // layouts:
+            usesBasicLayout(),
         ]),
         ...style({
-            // layouts:
-            display   : 'block',
-            
-            
-            
             // customize:
-            ...usesCssProps(basics), // apply config's cssProps
-            
-            
-            
-            // backgrounds:
-            backg     : backgs.backg,
-            
-            
-            
-            // foregrounds:
-            foreg     : foregs.foreg,
-            
-            
-            
-            // borders:
-            ...extendsBorder(basics), // extends border css vars
-            
-            
-            
-            // animations:
-            boxShadow : anims.boxShadow,
-            filter    : anims.filter,
-            anim      : anims.anim,
-            
-            
-            
-            // spacings:
-            ...extendsPadding(basics), // extends padding css vars
+            ...usesCssProps(indicators), // apply config's cssProps
         }),
     });
 };
@@ -591,28 +531,44 @@ export const usesIndicatorVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant();
-    const [nudeRule    ] = usesNudeVariant();
-    
-    // colors:
-    const [themesRule  ] = usesThemeVariant();
-    const [gradientRule] = usesGradientVariant();
-    const [outlinedRule] = usesOutlinedVariant();
-    const [mildRule    ] = usesMildVariant();
+    const [sizesRule   ] = usesSizeVariant((sizeName) => style({
+        // overwrites propName = propName{SizeName}:
+        ...overwriteProps(indicators, usesSuffixedProps(indicators, sizeName)),
+    }));
     
     
     
     return style({
         ...imports([
+            // variants:
+            usesBasicVariants(),
+            
             // layouts:
             sizesRule,
-            nudeRule,
-            
-            // colors:
-            themesRule,
-            gradientRule,
-            outlinedRule,
-            mildRule,
+        ]),
+    });
+};
+export const usesIndicatorStates = () => {
+    // dependencies:
+    
+    // states:
+    const [enableDisableRule] = usesEnableDisableState();
+    const [activePassiveRule] = usesActivePassiveState();
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            enableDisableRule,
+            activePassiveRule,
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
         ]),
     });
 };
@@ -624,6 +580,9 @@ export const useIndicatorStyleSheet = createUseStyleSheet(() => ({
         
         // variants:
         usesIndicatorVariants(),
+        
+        // states:
+        usesIndicatorStates(),
     ]),
 }), { id: '9i8stbnt0e' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
