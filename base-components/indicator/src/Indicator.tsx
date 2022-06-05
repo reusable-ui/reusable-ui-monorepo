@@ -85,6 +85,8 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    AccessibilityProps,
+    usePropAccessibility,
     usePropEnabled,
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
@@ -200,7 +202,7 @@ const htmlCtrls = [
 ];
 const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
 
-export const useEnableDisableState = (props: IndicationProps & SemanticProps) => {
+export const useEnableDisableState = (props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propEnabled = usePropEnabled(props);
     
@@ -364,7 +366,7 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
 
-export const useActivePassiveState = (props: IndicationProps & SemanticProps) => {
+export const useActivePassiveState = (props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propActive = usePropActive(props);
     
@@ -436,6 +438,33 @@ export const useActivePassiveState = (props: IndicationProps & SemanticProps) =>
         
         handleAnimationEnd,
     };
+};
+
+
+
+export interface TogglerActiveProps<TActiveChangeArg = unknown>
+    extends
+        AccessibilityProps
+{
+    // accessibilities:
+    defaultActive     ?: boolean
+    onActiveChange    ?: (newActive: boolean, arg?: TActiveChangeArg) => void
+}
+export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
+    // fn props:
+    const propAccess = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
+    
+    
+    
+    // states:
+    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
+    
+    
+    
+    /*
+     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     */
+    const activeFn: boolean = propAccess.active /*controllable*/ ?? activeTg /*uncontrollable*/;
 };
 //#endregion activePassive
 
