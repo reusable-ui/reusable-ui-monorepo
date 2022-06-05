@@ -595,120 +595,84 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
     const [, , animRegistry] = usesAnim();
     const filters = animRegistry.filters;
     
-    const [, {filter: filterExcited} ] = usesExcitedState();
+    const [, {filter: filterEnableDisable}] = usesEnableDisableState();
+    const [, {filter: filterActivePassive}] = usesActivePassiveState();
     
     
     
     // keyframes:
-    const [keyframesExcitedRule, keyframesExcited] = keyframes({
-        from : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-             // filterExcited, // missing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
-        to   : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-                filterExcited, // existing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
+    const frameEnabled  = style({
+        filter: [[
+            ...filters.filter((f) => (f !== filterEnableDisable)),
+            
+         // filterEnableDisable, // missing the last => let's the browser interpolated it
+        ]].map(fallbackNoneFilter),
+    });
+    const frameDisabled = style({
+        filter: [[
+            ...filters.filter((f) => (f !== filterEnableDisable)),
+            
+            filterEnableDisable, // existing the last => let's the browser interpolated it
+        ]].map(fallbackNoneFilter),
+    });
+    const [keyframesDisableRule, keyframesDisable] = keyframes({
+        from : frameEnabled,
+        to   : frameDisabled,
+    });
+    const [keyframesEnableRule , keyframesEnable ] = keyframes({
+        from : frameDisabled,
+        to   : frameEnabled,
+    });
+    
+    const framePassived = style({
+        filter: [[
+            ...filters.filter((f) => (f !== filterActivePassive)),
+            
+         // filterActivePassive, // missing the last => let's the browser interpolated it
+        ]].map(fallbackNoneFilter),
+    });
+    const frameActived  = style({
+        filter: [[
+            ...filters.filter((f) => (f !== filterActivePassive)),
+            
+            filterActivePassive, // existing the last => let's the browser interpolated it
+        ]].map(fallbackNoneFilter),
+    });
+    const [keyframesActiveRule , keyframesActive ] = keyframes({
+        from : framePassived,
+        to   : frameActived,
+    });
+    const [keyframesPassiveRule, keyframesPassive] = keyframes({
+        from : frameActived,
+        to   : framePassived,
     });
     
     
     
-    const transitionDuration = '300ms';
-    
     return {
-        // appearances:
-        opacity              : 1                            as CssKnownProps['opacity'],
-        
-        
-        
-        // backgrounds:
-        backg                : 'transparent'                as CssKnownProps['backg'],
-        backgGrad            : [
-            ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
-        ]                                                   as CssKnownProps['backgroundImage'],
-        
-        
-        
-        // foregrounds:
-        foreg                : 'currentColor'               as CssKnownProps['foreg'],
-        
-        
-        
-        // borders:
-        border               : [
-            [borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color],
-        ]                                                   as CssKnownProps['border'],
-        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth'],
-        borderColor          : borderStrokes.color          as CssKnownProps['borderColor'],
-        
-        borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
-        borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
-        borderRadiusLg       : borderRadiuses.lg            as CssKnownProps['borderRadius'],
-        
-        
-        
         // animations:
-        transitionDuration   : transitionDuration           as CssKnownProps['transitionDuration'],
-        transition           : [
-            // appearances:
-            ['opacity'    , transitionDuration, 'ease-out'],
-            
-            // sizes:
-            ['inline-size', transitionDuration, 'ease-out'],
-            ['block-size' , transitionDuration, 'ease-out'],
-            
-            // backgrounds:
-            ['background' , transitionDuration, 'ease-out'],
-            
-            // foregrounds:
-            ['color'      , transitionDuration, 'ease-out'],
-            
-            // borders:
-            ['border'     , transitionDuration, 'ease-out'],
-            
-            // spacings:
-         // ['padding'    , transitionDuration, 'ease-out'], // beautiful but uncomfortable
-            
-            // typos:
-            ['font-size'  , transitionDuration, 'ease-out'],
-        ]                                                   as CssKnownProps['transition'],
+        filterDisable : [[
+            'grayscale(50%)',
+            'contrast(50%)',
+        ]]                          as CssKnownProps['filter'],
+        filterActive  : 'initial'   as CssKnownProps['filter'],
         
-        filterExcited        : [[
-            'invert(80%)',
-        ]]                                                  as CssKnownProps['filter'],
-        
-        ...keyframesExcitedRule,
-        animExcited          : [
-            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited],
-        ]                                                   as CssKnownProps['anim'],
-        
-        
-        
-        // spacings:
-        paddingInline        : [['calc((', spacers.sm, '+', spacers.md, ')/2)']]    as CssKnownProps['paddingInline'],
-        paddingBlock         : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']]    as CssKnownProps['paddingBlock' ],
-        paddingInlineSm      : spacers.sm                                           as CssKnownProps['paddingInline'],
-        paddingBlockSm       : spacers.xs                                           as CssKnownProps['paddingBlock' ],
-        paddingInlineLg      : spacers.md                                           as CssKnownProps['paddingInline'],
-        paddingBlockLg       : spacers.sm                                           as CssKnownProps['paddingBlock' ],
-        
-        
-        
-        // typos:
-        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'],
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'],
-        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'],
-        fontFamily           : 'inherit'    as CssKnownProps['fontFamily'],
-        fontWeight           : 'inherit'    as CssKnownProps['fontWeight'],
-        fontStyle            : 'inherit'    as CssKnownProps['fontStyle'],
-        textDecoration       : 'inherit'    as CssKnownProps['textDecoration'],
-        lineHeight           : 'inherit'    as CssKnownProps['lineHeight'],
+        ...keyframesDisableRule,
+        ...keyframesEnableRule,
+        ...keyframesActiveRule,
+        ...keyframesPassiveRule,
+        animEnable    : [
+            ['300ms', 'ease-out', 'both', keyframesEnable ],
+        ]                           as CssKnownProps['anim'],
+        animDisable   : [
+            ['300ms', 'ease-out', 'both', keyframesDisable],
+        ]                           as CssKnownProps['anim'],
+        animActive    : [
+            ['150ms', 'ease-out', 'both', keyframesActive ],
+        ]                           as CssKnownProps['anim'],
+        animPassive   : [
+            ['300ms', 'ease-out', 'both', keyframesPassive],
+        ]                           as CssKnownProps['anim'],
     };
 }, { prefix: 'indi' });
 
