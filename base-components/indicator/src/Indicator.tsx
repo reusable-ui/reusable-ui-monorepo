@@ -6,6 +6,7 @@ import {
     
     
     // hooks:
+    useState,
     useRef,
     useCallback,
 }                           from 'react'
@@ -35,7 +36,7 @@ import type {
     CssStyleCollection,
     
     CssSelectorCollection,
-}                           from '@cssfn/css-types'         // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -55,11 +56,11 @@ import {
     // utilities:
     pascalCase,
     solidBackg,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'       // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
     ReadonlyCssCustomRefs,
@@ -69,7 +70,7 @@ import {
     // utilities:
     cssVar,
     fallbacks,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
+}                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
     
@@ -79,9 +80,17 @@ import {
     usesCssProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
+import {
+    // hooks:
+    usePropEnabled,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import type {
+    // types:
+    SemanticProps,
+}                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
     VariantMixin,
@@ -103,7 +112,7 @@ import {
     // react components:
     BasicProps,
     Basic,
-}                           from '@reusable-ui/basic'     // a base component
+}                           from '@reusable-ui/basic'       // a base component
 
 
 
@@ -127,11 +136,11 @@ const [enables] = cssVar<EnableDisableVars>();
 
 
 // if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enable, .disable, :disabled, .disabled))'
-// .enable will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  = '.enable'
-// .disable = styled disable, :disabled = real disable:
-const selectorIfDisabling = ':is(.disable, :disabled:not(.disabled))'
+const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled], .disabled))'
+// .enabling will be added after loosing disable and will be removed after enabling-animation done:
+const selectorIfEnabling  = '.enabling'
+// :disabled = real disable, [aria-disabled] = styled disable:
+const selectorIfDisabling = ':is(:disabled, [aria-disabled]):not(.disabled)'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
 
@@ -143,6 +152,127 @@ export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(s
 export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                      ], styles);
 export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                    selectorIfDisabling, selectorIfDisabled], styles);
 export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfDisabling, selectorIfDisabled], styles);
+
+
+
+/**
+ * Uses enable & disable states.
+ * @returns A `StateMixin<EnableDisableVars>` represents enable & disable state definitions.
+ */
+export const usesEnableDisableState = (): StateMixin<EnableDisableVars> => {
+    return [
+        () => style({
+            ...states([
+                ifEnabling({
+                    ...vars({
+                        [enables.filter] : indicators.filterDisable,
+                        [enables.anim  ] : indicators.animEnable,
+                    }),
+                }),
+                ifDisabling({
+                    ...vars({
+                        [enables.filter] : indicators.filterDisable,
+                        [enables.anim  ] : indicators.animDisable,
+                    }),
+                }),
+                ifDisabled({
+                    ...vars({
+                        [enables.filter] : indicators.filterDisable,
+                    }),
+                }),
+            ]),
+        }),
+        enables,
+    ];
+};
+
+
+
+const htmlCtrls   = [
+    'button',
+    'fieldset',
+    'input',
+    'select',
+    'optgroup',
+    'option',
+    'textarea',
+];
+const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
+
+export const useEnableDisableState = (props: IndicationProps & SemanticProps) => {
+    // fn props:
+    const propEnabled = usePropEnabled(props);
+    
+    
+    
+    // states:
+    const [enabled,   setEnabled  ] = useState<boolean>(propEnabled); // true => enabled, false => disabled
+    const [animating, setAnimating] = useState<boolean|null>(null);   // null => no-animation, true => enabling-animation, false => disabling-animation
+    
+    
+    
+    /*
+     * state is enabled/disabled based on [controllable enabled]
+     * [uncontrollable enabled] is not supported
+     */
+    const enabledFn: boolean = propEnabled /*controllable*/;
+    
+    if (enabled !== enabledFn) { // change detected => apply the change & start animating
+        setEnabled(enabledFn);   // remember the last change
+        setAnimating(enabledFn); // start enabling-animation/disabling-animation
+    } // if
+    
+    
+    
+    // handlers:
+    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+        // conditions:
+        if (e.target !== e.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
+        
+        
+        
+        // clean up finished animation
+        
+        setAnimating(null); // stop enabling-animation/disabling-animation
+    }, []);
+    
+    
+    
+    return {
+        enabled  : enabled,
+        disabled : !enabled,
+        
+        class    : ((): string|null => {
+            // enabling:
+            if (animating === true)  return 'enabling';
+            
+            // disabling:
+            if (animating === false) return null; // uses :disabled or [aria-disabled]
+            
+            // fully disabled:
+            if (!enabled) return 'disabled';
+            
+            // fully enabled:
+            return null;
+        })(),
+        
+        props : (
+            isCtrlElm(props)
+            ?
+            {
+                // a control_element uses pseudo :disabled for disabling
+                disabled        : !enabled,
+            }
+            :
+            {
+                'aria-disabled' : !enabled ? true : undefined,
+            }
+        ),
+        
+        handleAnimationEnd,
+    };
+};
 //#endregion enableDisable
 
 
