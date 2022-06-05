@@ -578,7 +578,7 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
     
     
     
-    // keyframes:
+    //#region keyframes
     const frameEnabled  = style({
         filter: [[
             ...filters.filter((f) => (f !== filterEnableDisable)),
@@ -604,6 +604,8 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
     });
     keyframesEnable.value = 'enable';
     
+    
+    
     const framePassived = style({
         filter: [[
             ...filters.filter((f) => (f !== filterActivePassive)),
@@ -628,6 +630,7 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
         to   : framePassived,
     });
     keyframesPassive.value = 'passive';
+    //#endregion keyframes
     
     
     
