@@ -127,14 +127,13 @@ const [enables] = cssVar<EnableDisableVars>();
 
 
 // if all below are not set => enabled:
-const selectorIfEnabled   =  ':not(:is(.enable, .disabled, .disable, :disabled))'
+const selectorIfEnabled   = ':not(:is(.enable, .disable, :disabled, .disabled))'
 // .enable will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  =  '.enable'
+const selectorIfEnabling  = '.enable'
 // .disable = styled disable, :disabled = real disable:
-const selectorIfDisabling = ['.disable',
-                             ':disabled:not(.disabled)']
+const selectorIfDisabling = ':is(.disable, :disabled:not(.disabled))'
 // .disabled will be added after disabling-animation done:
-const selectorIfDisabled  =  '.disabled'
+const selectorIfDisabled  = '.disabled'
 
 export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
 export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
