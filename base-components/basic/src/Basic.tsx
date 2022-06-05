@@ -1351,7 +1351,13 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     // handlers:
-    const handleIdle = useCallback(() => {
+    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+        // conditions:
+        if (e.target !== e.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
+        
+        
+        
         // clean up finished animation
         
         const continueToRun = wasExcited.current;
@@ -1362,16 +1368,6 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
             triggerRender(); // need to restart the animation
         } // if
     }, [onExcitedChange, triggerRender]);
-    
-    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>) => {
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        
-        
-        
-        if (/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) {
-            handleIdle();
-        } // if
-    }, [handleIdle]);
     
     
     
