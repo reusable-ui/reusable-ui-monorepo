@@ -275,6 +275,42 @@ export const useEnableDisableState = (props: IndicationProps & SemanticProps) =>
 };
 //#endregion enableDisable
 
+//#region activePassive
+export interface ActivePassiveVars {
+    filter : any
+    anim   : any
+}
+const [actives] = cssVar<ActivePassiveVars>();
+
+{
+    const [, , animRegistry] = usesAnim();
+    animRegistry.registerFilter(actives.filter);
+    animRegistry.registerAnim(actives.anim);
+}
+
+
+
+// .actived will be added after activating-animation done:
+const selectorIfActived     = '.actived'
+// :checked = real active, .active = styled active:
+const selectorIfActivating  = ':is(:checked, .active):not(.actived)'
+// .passivating will be added after loosing active and will be removed after deactivating-animation done:
+const selectorIfPassivating = '.passivating'
+// if all above are not set => passived:
+const selectorIfPassived    = ':not(:is(.actived, :checked, .active, .passivating))'
+
+
+
+export const ifActived           = (styles: CssStyleCollection): CssRule => rule(selectorIfActived    , styles);
+export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
+export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
+export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
+
+export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
+export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
+export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
+//#endregion activePassive
+
 
 
 // styles:
