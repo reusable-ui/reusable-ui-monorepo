@@ -89,6 +89,17 @@ import {
     
     
     
+    // hooks:
+    usesSizeVariant,
+    ThemeName,
+    usesThemeCond,
+    outlinedOf,
+    mildOf,
+    usesAnim,
+    fallbackNoneFilter,
+    
+    
+    
     // react components:
     BasicProps,
     Basic,
@@ -97,6 +108,43 @@ import {
 
 
 // hooks:
+
+// states:
+
+//#region enableDisable
+export interface EnableDisableVars {
+    filter : any
+    anim   : any
+}
+const [enables] = cssVar<EnableDisableVars>();
+
+{
+    const [, , animRegistry] = usesAnim();
+    animRegistry.registerFilter(enables.filter);
+    animRegistry.registerAnim(enables.anim);
+}
+
+
+
+// if all below are not set => enabled:
+const selectorIfEnabled   =  ':not(:is(.enable, .disabled, .disable, :disabled))'
+// .enable will be added after loosing disable and will be removed after enabling-animation done:
+const selectorIfEnabling  =  '.enable'
+// .disable = styled disable, :disabled = real disable:
+const selectorIfDisabling = ['.disable',
+                             ':disabled:not(.disabled)']
+// .disabled will be added after disabling-animation done:
+const selectorIfDisabled  =  '.disabled'
+
+export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
+export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
+export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
+export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
+
+export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                      ], styles);
+export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                    selectorIfDisabling, selectorIfDisabled], styles);
+export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfDisabling, selectorIfDisabled], styles);
+//#endregion enableDisable
 
 
 
