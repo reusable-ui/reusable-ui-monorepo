@@ -458,19 +458,28 @@ export interface TogglerActiveProps<TActiveChangeArg = unknown>
 }
 export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
     // fn props:
-    const propAccess = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
+    const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
     
     
     
     // states:
     const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
+    const setActiveEx: React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
+        // conditions:
+        if (!enabled) return; // control is disabled => no response required
+        if (readOnly) return; // control is readOnly => no response required
+        
+        
+        
+        setActiveTg(newActive);
+    }, [enabled, readOnly]);
     
     
     
     /*
      * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
      */
-    const activeFn: boolean = propAccess.active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    const activeFn: boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
     const wasActive = useRef<boolean>(activeFn);
     
     if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
@@ -492,7 +501,7 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
     
     return [
         activeFn,
-        setActiveTg,
+        setActiveEx,
     ];
 };
 //#endregion activePassive
