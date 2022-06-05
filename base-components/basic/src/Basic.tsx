@@ -543,9 +543,9 @@ const [gradients] = cssVar<GradientVars>();
 
 
 // grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':where(:not(.gradient)) :not(:is(.gradient&, &.gradient))', styles);
+export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(:is(.gradient &, .gradient&, &.gradient))', styles);
 // grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule([           '.gradient &',   ':is(.gradient&, &.gradient)'], styles);
+export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(     ':is(.gradient &, .gradient&, &.gradient)' , styles);
 
 
 
@@ -615,9 +615,9 @@ const [outlineds] = cssVar<OutlinedVars>();
 
 
 // grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':where(:not(.outlined)) :not(:is(.outlined&, &.outlined))', styles);
+export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(:is(.outlined &, .outlined&, &.outlined))', styles);
 // grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule([           '.outlined &',   ':is(.outlined&, &.outlined)'], styles);
+export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(     ':is(.outlined &, .outlined&, &.outlined)' , styles);
 
 
 
