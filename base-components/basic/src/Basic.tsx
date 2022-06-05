@@ -246,9 +246,10 @@ export interface NudeVars {
 const [nudes] = cssVar<NudeVars>();
 
 
-
-export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(.nude)', styles);
-export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     '.nude' , styles);
+// parent not `.nude` -and- current not `.nude`:
+export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(:is(.nude&, &.nude))', styles);
+// parent is  `.nude` -or-  current is  `.nude`:
+export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     ':is(.nude&, &.nude)' , styles);
 
 
 
