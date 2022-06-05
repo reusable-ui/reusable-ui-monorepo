@@ -1515,7 +1515,7 @@ export const [basics, cssBasicConfig] = cssConfig(() => {
     
     
     
-    // keyframes:
+    //#region keyframes
     const [keyframesExcitedRule, keyframesExcited] = keyframes({
         from : {
             filter: [[
@@ -1533,6 +1533,7 @@ export const [basics, cssBasicConfig] = cssConfig(() => {
         },
     });
     keyframesExcited.value = 'excited';
+    //#endregion keyframes
     
     
     
