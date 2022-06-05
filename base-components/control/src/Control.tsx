@@ -73,44 +73,73 @@ import type {
     SemanticProps,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
     ThemeName,
-    usesThemeCond,
-    outlinedOf,
-    mildOf,
+    usesThemeVariant,
+    usesThemeDefault as basicUsesThemeDefault,
     usesAnim,
+    fallbackNoneBoxShadow,
     fallbackNoneFilter,
+}                           from '@reusable-ui/basic'           // a base component
+import {
+    // hooks:
+    ifDisable,
+    ifActive,
+    markActive      as indicatorMarkActive,
+    usesThemeActive as indicatorUsesThemeActive,
     
     
     
     // styles:
-    usesBasicLayout,
-    usesBasicVariants,
+    usesIndicatorLayout,
+    usesIndicatorVariants,
+    usesIndicatorStates,
     
     
     
     // react components:
-    BasicProps,
-    Basic,
-}                           from '@reusable-ui/basic'       // a base component
+    IndicatorProps,
+    Indicator,
+}                           from '@reusable-ui/indicator'       // a base component
 
 // other libs:
 import {
     default as triggerChange,
     // @ts-ignore
-}                           from 'react-trigger-change'     // a helper lib
+}                           from 'react-trigger-change'         // a helper lib
 
 
 
 // hooks:
 
 // states:
+
+//#region activePassive
+export const markActive = (): CssRule => style({
+    ...imports([
+        indicatorMarkActive(),
+        
+        usesThemeActive(), // switch to active theme
+    ]),
+});
+
+/**
+ * Creates a default theme color definitions.
+ * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a default theme color definitions`.
+ */
+// change default parameter from `null` to 'secondary':
+export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRule => basicUsesThemeDefault(themeName);
+
+/**
+ * Creates conditional color definitions at active state.
+ * @param themeName The name of active theme.
+ * @returns A `CssRule` represents the conditional color definitions at active state.
+ */
+// change default parameter from 'secondary' to 'primary':
+export const usesThemeActive  = (themeName: ThemeName|null = 'primary'): CssRule => indicatorUsesThemeActive(themeName);
+//#endregion activePassive
 
 //#region enableDisable
 export interface EnableDisableVars {
@@ -335,7 +364,7 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
     ];
 };
 
-export const markActive = (): CssRule => style({
+export const __markActive = (): CssRule => style({
     ...imports([
         outlinedOf(false), // kill outlined variant
         mildOf(false),     // kill mild     variant
@@ -349,7 +378,7 @@ export const markActive = (): CssRule => style({
  * @param themeName The name of active theme.
  * @returns A `CssRule` represents the conditional color definitions at active state.
  */
-export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeCond(themeName);
+export const __usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeCond(themeName);
 
 
 
