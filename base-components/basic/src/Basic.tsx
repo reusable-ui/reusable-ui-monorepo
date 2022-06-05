@@ -136,7 +136,7 @@ export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule 
 
 
 /**
- * Uses `<Basic>` sizes.  
+ * Uses basic sizes.  
  * For example: `sm`, `lg`.
  * @param factory Customize the callback to create sizing definitions for each size in `options`.
  * @param options Customize the size options.
@@ -254,7 +254,7 @@ export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     ':is
 
 
 /**
- * Removes background, border & padding on `<Basic>`.  
+ * Uses toggleable nudeification (removes background, border & padding).
  * @returns A `VariantMixin<NudeVars>` represents nudeification definitions.
  */
 export const usesNudeVariant = (): VariantMixin<NudeVars> => {
@@ -423,7 +423,7 @@ export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRu
 
 
 /**
- * Uses `<Basic>` theme colors.  
+ * Uses theme colors.  
  * For example: `primary`, `secondary`, `danger`, `success`, etc.
  * @param factory Customize the callback to create theme color definitions for each theme in `options`.
  * @param options Customize the theme options.
@@ -551,7 +551,7 @@ export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(     
 
 
 /**
- * Uses `<Basic>` toggleable gradient.
+ * Uses toggleable gradient.
  * @param factory Customize the callback to create gradient definitions for each toggle state.
  * @returns A `VariantMixin<GradientVars>` represents toggleable gradient definitions.
  */
@@ -623,7 +623,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(     
 
 
 /**
- * Uses `<Basic>` toggleable outlining.
+ * Uses toggleable outlining.
  * @param factory Customize the callback to create outlining definitions for each toggle state.
  * @returns A `VariantMixin<OutlinedVars>` represents toggleable outlining definitions.
  */
@@ -720,7 +720,7 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is
 
 
 /**
- * Uses `<Basic>` toggleable mildification.
+ * Uses toggleable mildification.
  * @param factory Customize the callback to create mildification definitions for each toggle state.
  * @returns A `VariantMixin<MildVars>` represents toggleable mildification definitions.
  */
@@ -816,7 +816,7 @@ export interface BackgVars {
 const [backgs] = cssVar<BackgVars>();
 
 /**
- * Uses `<Basic>` background layer(s).
+ * Uses background layer(s).
  * @returns A `VariantMixin<BackgVars>` represents background layer(s) definitions.
  */
 export const usesBackg = (): VariantMixin<BackgVars> => {
@@ -885,7 +885,7 @@ export interface ForegVars {
 const [foregs] = cssVar<ForegVars>();
 
 /**
- * Uses `<Basic>` foreground color (text color).
+ * Uses foreground color (text color).
  * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
  */
 export const usesForeg = (): VariantMixin<ForegVars> => {
@@ -965,7 +965,7 @@ const [borders] = cssVar<BorderVars>();
 
 
 /**
- * Uses `<Basic>` border color.
+ * Uses border (strokes, colors, radiuses).
  * @returns A `VariantMixin<BorderVars>` represents border color definitions.
  */
 export const usesBorder = (): VariantMixin<BorderVars> => {
@@ -1072,7 +1072,7 @@ const [paddings] = cssVar<PaddingVars>();
 
 
 /**
- * Uses `<Basic>` paddings.
+ * Uses paddings.
  * @returns A `VariantMixin<PaddingVars>` represents paddings definitions.
  */
 export const usesPadding = (): VariantMixin<PaddingVars> => {
@@ -1186,7 +1186,7 @@ export type AnimRegistry = typeof animRegistry
 
 export type AnimMixin = readonly [() => CssRule, ReadonlyCssCustomRefs<AnimVars>, AnimRegistry]
 /**
- * Uses `<Basic>` animation.
+ * Uses animation.
  * @returns A `AnimMixin` represents animation definitions.
  */
 export const usesAnim = (): AnimMixin => {
@@ -1277,7 +1277,7 @@ export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(     '
 
 
 /**
- * Uses `<Basic>` excited states.
+ * Uses toggleable excited states.
  * @returns A `StateMixin<ExcitedVars>` represents excited state definitions.
  */
 export const usesExcitedState = (): StateMixin<ExcitedVars> => {
