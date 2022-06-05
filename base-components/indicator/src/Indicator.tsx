@@ -13,18 +13,6 @@ import {
 
 // cssfn:
 import type {
-    // css values:
-    CssComplexBaseValueOf,
-    
-    
-    
-    // css custom properties:
-    CssCustomSimpleRef,
-    CssCustomRef,
-    CssCustomValue,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
     
@@ -34,13 +22,10 @@ import type {
     CssRule,
     
     CssStyleCollection,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
-    variants,
     states,
     keyframes,
     
@@ -50,26 +35,14 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    pascalCase,
-    solidBackg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
-    // types:
-    ReadonlyCssCustomRefs,
-    
-    
-    
     // utilities:
     cssVar,
-    fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
@@ -85,10 +58,15 @@ import {
 // reusable-ui:
 import {
     // hooks:
-    AccessibilityProps,
     usePropAccessibility,
     usePropEnabled,
     usePropActive,
+    
+    
+    
+    // react components:
+    AccessibilityProps,
+    AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import type {
     // types:
@@ -96,7 +74,6 @@ import type {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
-    VariantMixin,
     StateMixin,
     
     
@@ -456,6 +433,7 @@ export const useActivePassiveState = (props: AccessibilityProps & SemanticProps)
 
 export interface TogglerActiveProps<TActiveChangeArg = unknown>
     extends
+        // accessibilities:
         AccessibilityProps
 {
     // accessibilities:
@@ -682,68 +660,99 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
 export interface IndicatorProps<TElement extends Element = Element>
     extends
         // bases:
-        BasicProps<TElement>
+        BasicProps<TElement>,
+        
+        // accessibilities:
+        AccessibilityProps
 {
 }
 const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useIndicatorStyleSheet();
+    const styleSheet         = useIndicatorStyleSheet();
     
     
     
-    // variants:
+    // states:
+    const enableDisableState = useEnableDisableState(props);
+    const activePassiveState = useActivePassiveState(props);
     
-    // layouts:
-    const sizeVariant     = useSizeVariant(props);
-    const nudeVariant     = useNudeVariant(props);
     
-    // colors:
-    const themeVariant    = useThemeVariant(props);
-    const gradientVariant = useGradientVariant(props);
-    const outlinedVariant = useOutlinedVariant(props);
-    const mildVariant     = useMildVariant(props);
+    
+    // fn props:
+    const propAccess         = usePropAccessibility(props);
     
     
     
     // rest props:
     const {
-        // remove variant props:
+        // remove states props:
         
-        // layouts:
-        size     : _size,
-        nude     : _nude,
+        // accessibilities:
+        enabled         : _enabled,
+        inheritEnabled  : _inheritEnabled,
         
-        // colors:
-        theme    : _theme,
-        gradient : _gradient,
-        outlined : _outlined,
-        mild     : _mild,
-    ...restGenericProps} = props;
+        readOnly        : _readOnly,
+        inheritReadOnly : _inheritReadOnly,
+        
+        active          : _active,
+        inheritActive   : _inheritActive,
+        
+        
+        
+        // children:
+        children,
+    ...restBasicProps} = props;
     
     
     
     // jsx:
     return (
-        <Generic<TElement>
+        <Basic<TElement>
             // other props:
-            {...restGenericProps}
+            {...restBasicProps}
+            
+            
+            
+            // variants:
+            mild={props.mild ?? true}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={[...(props.variantClasses ?? []),
-                // layouts:
-                sizeVariant.class,
-                nudeVariant.class,
-                
-                // colors:
-                themeVariant.class,
-                gradientVariant.class,
-                outlinedVariant.class,
-                mildVariant.class,
+            stateClasses={[...(props.stateClasses ?? []),
+                // accessibilities:
+                enableDisableState.class,
+                activePassiveState.class,
             ]}
-        />
+            
+            
+            
+            // :disabled | [aria-disabled]
+            {...enableDisableState.props}
+            
+            // :checked | [aria-selected]
+            {...activePassiveState.props}
+            
+            
+            
+            // events:
+            onAnimationEnd={(e) => {
+                props.onAnimationEnd?.(e); // preserves the original `onAnimationEnd`
+                
+                
+                
+                // states:
+                
+                // accessibilities:
+                enableDisableState.handleAnimationEnd(e);
+                activePassiveState.handleAnimationEnd(e);
+            }}
+        >
+            { children && <AccessibilityProvider {...propAccess}>
+                { children }
+            </AccessibilityProvider> }
+        </Basic>
     );
 };
 export {
