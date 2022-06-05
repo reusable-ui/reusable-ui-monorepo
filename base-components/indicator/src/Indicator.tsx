@@ -86,6 +86,7 @@ import {
 import {
     // hooks:
     usePropEnabled,
+    usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import type {
     // types:
@@ -136,11 +137,11 @@ const [enables] = cssVar<EnableDisableVars>();
 
 
 // if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled], .disabled))'
+const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled]:not([aria-disabled="false"]), .disabled))'
 // .enabling will be added after loosing disable and will be removed after enabling-animation done:
 const selectorIfEnabling  = '.enabling'
 // :disabled = real disable, [aria-disabled] = styled disable:
-const selectorIfDisabling = ':is(:disabled, [aria-disabled]):not(.disabled)'
+const selectorIfDisabling = ':is(:disabled, [aria-disabled]:not([aria-disabled="false"])):not(.disabled)'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
 
@@ -188,7 +189,7 @@ export const usesEnableDisableState = (): StateMixin<EnableDisableVars> => {
 
 
 
-const htmlCtrls   = [
+const htmlCtrls = [
     'button',
     'fieldset',
     'input',
@@ -292,12 +293,12 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// :checked = real active, .active = styled active:
-const selectorIfActivating  = ':is(:checked, .active):not(.actived)'
+// :checked = real active, [aria-selected],[aria-current] = styled active:
+const selectorIfActivating  = ':is(:checked, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
 // if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, :checked, .active, .passivating))'
+const selectorIfPassived    = ':not(:is(.actived, :checked, :is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])), .passivating))'
 
 
 
@@ -309,6 +310,133 @@ export const ifPassived          = (styles: CssStyleCollection): CssRule => rule
 export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
 export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
 export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
+
+
+
+/**
+ * Uses active & passive states.
+ * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ */
+export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+    return [
+        () => style({
+            ...states([
+                ifActived({
+                    ...vars({
+                        [actives.filter] : indicators.filterActive,
+                    }),
+                }),
+                ifActivating({
+                    ...vars({
+                        [actives.filter] : indicators.filterActive,
+                        [actives.anim  ] : indicators.animActive,
+                    }),
+                }),
+                ifPassivating({
+                    ...vars({
+                        [actives.filter] : indicators.filterActive,
+                        [actives.anim  ] : indicators.animPassive,
+                    }),
+                }),
+            ]),
+        }),
+        actives,
+    ];
+};
+
+export const markActive = (): CssRule => style({
+    ...imports([
+        outlinedOf(false), // kill outlined variant
+        mildOf(false),     // kill mild     variant
+        
+        usesThemeActive(), // switch to active theme
+    ]),
+});
+
+/**
+ * Creates conditional color definitions at active state.
+ * @param themeName The name of active theme.
+ * @returns A `CssRule` represents the conditional color definitions at active state.
+ */
+export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeCond(themeName);
+
+
+
+const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
+
+export const useActivePassiveState = (props: IndicationProps & SemanticProps) => {
+    // fn props:
+    const propActive = usePropActive(props);
+    
+    
+    
+    // states:
+    const [actived,   setActived  ] = useState<boolean>(propActive); // true => active, false => passive
+    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
+    
+    
+    
+    /*
+     * state is active/passive based on [controllable active]
+     * [uncontrollable active] is not supported
+     */
+    const activeFn: boolean = propActive /*controllable*/;
+    
+    if (actived !== activeFn) { // change detected => apply the change & start animating
+        setActived(activeFn);   // remember the last change
+        setAnimating(activeFn); // start activating-animation/deactivating-animation
+    } // if
+    
+    
+    
+    // handlers:
+    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+        // conditions:
+        if (e.target !== e.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
+        
+        
+        
+        // clean up finished animation
+        
+        setAnimating(null); // stop activating-animation/deactivating-animation
+    }, []);
+    
+    
+    
+    return {
+        active : actived,
+        
+        class  : ((): string|null => {
+            // activating:
+            if (animating === true) return null; // uses :checked or [aria-selected],[aria-current]
+            
+            // passivating:
+            if (animating === false) return 'passivating';
+            
+            // fully actived:
+            if (actived) return 'actived';
+            
+            // fully passived:
+            return null;
+        })(),
+        
+        props : (
+            isCheckbox(props)
+            ?
+            {
+                // a checkbox uses pseudo :checked for activating
+                checked: actived,
+            }
+            :
+            {
+                'aria-selected' : actived ? true : undefined,
+            }
+        ),
+        
+        handleAnimationEnd,
+    };
+};
 //#endregion activePassive
 
 
