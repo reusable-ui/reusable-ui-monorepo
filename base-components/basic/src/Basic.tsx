@@ -108,7 +108,7 @@ import {
     // react components:
     GenericProps,
     Generic,
-}                           from '@reusable-ui/generic'     // react helper hooks
+}                           from '@reusable-ui/generic'     // a base component
 
 
 
