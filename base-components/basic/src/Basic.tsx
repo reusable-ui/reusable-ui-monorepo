@@ -1532,6 +1532,7 @@ export const [basics, cssBasicConfig] = cssConfig(() => {
             ]].map(fallbackNoneFilter),
         },
     });
+    keyframesExcited.value = 'excited';
     
     
     
