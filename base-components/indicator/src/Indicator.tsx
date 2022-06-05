@@ -597,10 +597,12 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
         from : frameEnabled,
         to   : frameDisabled,
     });
+    keyframesDisable.value = 'disable';
     const [keyframesEnableRule , keyframesEnable ] = keyframes({
         from : frameDisabled,
         to   : frameEnabled,
     });
+    keyframesEnable.value = 'enable';
     
     const framePassived = style({
         filter: [[
@@ -620,10 +622,12 @@ export const [indicators, cssIndicatorConfig] = cssConfig(() => {
         from : framePassived,
         to   : frameActived,
     });
+    keyframesActive.value = 'active';
     const [keyframesPassiveRule, keyframesPassive] = keyframes({
         from : frameActived,
         to   : framePassived,
     });
+    keyframesPassive.value = 'passive';
     
     
     
