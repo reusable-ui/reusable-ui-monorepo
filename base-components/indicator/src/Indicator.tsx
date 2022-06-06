@@ -509,7 +509,7 @@ export const usesIndicatorVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant((sizeName) => style({
+    const [sizesRule] = usesSizeVariant((sizeName) => style({
         // overwrites propName = propName{SizeName}:
         ...overwriteProps(indicators, usesSuffixedProps(indicators, sizeName)),
     }));
