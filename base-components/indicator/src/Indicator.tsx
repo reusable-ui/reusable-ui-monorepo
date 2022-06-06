@@ -128,11 +128,11 @@ const [enables] = cssVar<EnableDisableVars>();
 
 
 // if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled]:not([aria-disabled="false"]), .disabled))'
+const selectorIfEnabled   = ':not(:is(.enabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
 // .enabling will be added after loosing disable and will be removed after enabling-animation done:
 const selectorIfEnabling  = '.enabling'
-// :disabled = native disable, [aria-disabled] = styled disable:
-const selectorIfDisabling = ':is(:disabled, [aria-disabled]:not([aria-disabled="false"])):not(.disabled)'
+// [aria-disabled] = styled disable, :disabled = native disable:
+const selectorIfDisabling = ':is([aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
 
@@ -284,12 +284,12 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// :checked = native active, [aria-selected],[aria-current] = styled active:
-const selectorIfActivating  = ':is(:checked, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])):not(.actived)'
+// [aria-selected],[aria-current] = styled active, :checked = native active:
+const selectorIfActivating  = ':is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
 // if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, :checked, :is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])), .passivating))'
+const selectorIfPassived    = ':not(:is(.actived, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked, .passivating))'
 
 
 
