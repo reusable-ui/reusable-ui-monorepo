@@ -302,6 +302,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     // handlers:
     const handleFocus = () => useCallback(() => {
+        // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
         
@@ -310,6 +311,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(true);
     }, [propEnabled, isControllableFocus]);
     const handleBlur = () => useCallback(() => {
+        // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
         
