@@ -141,38 +141,54 @@ export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRu
 export const usesThemeActive  = (themeName: ThemeName|null = 'primary'): CssRule => indicatorUsesThemeActive(themeName);
 //#endregion activePassive
 
-//#region enableDisable
-export interface EnableDisableVars {
-    filter : any
-    anim   : any
+//#region focusBlur
+export interface FocusBlurVars {
+    boxShadow        : any
+    anim             : any
+    
+    
+    
+    /**
+     * functional boxShadow color - at focus state.
+     */
+    boxShadowColorFn : any
+    /**
+     * final boxShadow color - at focus state.
+     */
+    boxShadowColor   : any
+    /**
+     * final boxShadow single layer - at focus state.
+     */
+    boxShadowLy      : any
 }
-const [enables] = cssVar<EnableDisableVars>();
+const [focuses] = cssVar<FocusBlurVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(enables.filter);
-    animRegistry.registerAnim(enables.anim);
+    animRegistry.registerFilter(focuses.boxShadow);
+    animRegistry.registerAnim(focuses.anim);
 }
 
 
 
-// if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled]:not([aria-disabled="false"]), .disabled))'
-// .enabling will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  = '.enabling'
-// :disabled = real disable, [aria-disabled] = styled disable:
-const selectorIfDisabling = ':is(:disabled, [aria-disabled]:not([aria-disabled="false"])):not(.disabled)'
-// .disabled will be added after disabling-animation done:
-const selectorIfDisabled  = '.disabled'
+// .focused will be added after focusing-animation done:
+const selectorIfFocused  = '.focused'
+// .focus = styled focus, :focus = native focus:
+// the .disabled,.disable are used to kill native :focus
+const selectorIfFocusing = ':is(.focus, :focus:not(:is(.disabled, .disable)))'
+// .blurring will be added after loosing focus and will be removed after blurring-animation done:
+const selectorIfBlurring = '.blurring'
+// if all above are not set => blurred:
+const selectorIfBlurred  = ':not(:is(.focused, .focus, :focus:not(:is(.disabled, .disable)), .blurring))'
 
-export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
-export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
-export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
-export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
+export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
+export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
+export const ifBlurring      = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurring, styles);
+export const ifBlurred       = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurred , styles);
 
-export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                      ], styles);
-export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                    selectorIfDisabling, selectorIfDisabled], styles);
-export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfDisabling, selectorIfDisabled], styles);
+export const ifFocus         = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused                    ], styles);
+export const ifBlur          = (styles: CssStyleCollection): CssRule => rule([                    selectorIfBlurring, selectorIfBlurred], styles);
+export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfBlurring, selectorIfBlurred], styles);
 
 
 
@@ -294,7 +310,7 @@ export const useEnableDisableState = (props: AccessibilityProps & SemanticProps)
         handleAnimationEnd,
     };
 };
-//#endregion enableDisable
+//#endregion focusBlur
 
 //#region activePassive
 export interface ActivePassiveVars {
@@ -313,7 +329,7 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// :checked = real active, [aria-selected],[aria-current] = styled active:
+// :checked = native active, [aria-selected],[aria-current] = styled active:
 const selectorIfActivating  = ':is(:checked, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
