@@ -1532,7 +1532,7 @@ export const [basics, cssBasicConfig] = cssConfig(() => {
             ]].map(fallbackNoneFilter),
         },
     });
-    keyframesExcited.value = 'excited';
+    keyframesExcited.value = 'excited'; // the @keyframes name should contain 'excited' in order to be recognized by `useExcitedState`
     //#endregion keyframes
     
     
