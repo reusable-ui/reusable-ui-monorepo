@@ -393,12 +393,12 @@ const selectorIfArrived  = '.arrived'
 // .arrive = styled arrive, :hover = native arrive:
 // the .disabled, .disable are used to kill native :hover
 // the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arrive, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
+const selectorIfArriving = ':is(.arrive, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))' // TODO combine with .focus,.focused,:focus
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
 // if all above are not set => left:
 // optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arrive, :hover:not(:is(.disabled, .disable)), .leaving)), .left)'
+const selectorIfLeft     = ':is(:not(:is(.arrived, .arrive, :hover:not(:is(.disabled, .disable)), .leaving)), .left)' // TODO combine with .focus,.focused,:focus
 
 
 
