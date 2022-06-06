@@ -274,9 +274,9 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     // states:
     const [focused,   setFocused  ] = useState<boolean>(props.focus ?? false); // true => focus, false => blur
-    const [animating, setAnimating] = useState<boolean|null>(null); // null => no-animation, true => focusing-animation, false => blurring-animation
+    const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => focusing-animation, false => blurring-animation
     
-    const [focusDn,   setFocusDn  ] = useState<boolean>(false);     // uncontrollable (dynamic) state: true => user focus, false => user blur
+    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user focus, false => user blur
     
     
     
@@ -446,77 +446,102 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 
 
-export const useActivePassiveState = (props: AccessibilityProps & SemanticProps) => {
+export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focus'>) => {
     // fn props:
-    const propActive = usePropActive(props);
+    const propEnabled          = usePropEnabled(props);
+    const isControllableArrive = (props.arrive !== undefined);
     
     
     
     // states:
-    const [actived,   setActived  ] = useState<boolean>(propActive); // true => active, false => passive
-    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
+    const [arrived,   setArrived  ] = useState<boolean>(props.arrive ?? false); // true => arrive, false => leave
+    const [animating, setAnimating] = useState<boolean|null>(null);             // null => no-animation, true => arriving-animation, false => leaving-animation
+    
+    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                 // uncontrollable (dynamic) state: true => user hover, false => user leave
+    
+    
+    
+    // resets:
+    if (!propEnabled && hoverDn) {
+        setHoverDn(false); // lost hover because the control is disabled, when the control is re-enabled => still lost hover
+    } // if
     
     
     
     /*
-     * state is active/passive based on [controllable active]
-     * [uncontrollable active] is not supported
+     * state is always leave if disabled
+     * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focus])
      */
-    const activeFn: boolean = propActive /*controllable*/;
+    const arriveFn: boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focus /*uncontrollable*/));
     
-    if (actived !== activeFn) { // change detected => apply the change & start animating
-        setActived(activeFn);   // remember the last change
-        setAnimating(activeFn); // start activating-animation/deactivating-animation
+    if (arrived !== arriveFn) { // change detected => apply the change & start animating
+        setArrived(arriveFn);   // remember the last change
+        setAnimating(arriveFn); // start arriving-animation/leaving-animation
     } // if
     
     
     
     // handlers:
-    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+    const handleHover  = useCallback(() => {
         // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
+        if (!propEnabled)         return; // control is disabled => no response required
+        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
         
         
         
+        setHoverDn(true);
+    }, [propEnabled, isControllableArrive]);
+    
+    const handleLeave  = useCallback(() => {
+        // conditions:
+        if (!propEnabled)         return; // control is disabled => no response required
+        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
+        
+        
+        
+        setHoverDn(false);
+    }, [propEnabled, isControllableArrive]);
+    
+    const handleIdle   = () => {
         // clean up finished animation
-        
-        setAnimating(null); // stop activating-animation/deactivating-animation
-    }, []);
-    
-    
-    
+
+        setAnimating(null); // stop arriving-animation/leaving-animation
+    }
     return {
-        active : actived,
-        
+        arrive : arrived,
+
         class  : ((): string|null => {
-            // activating:
-            if (animating === true) return null; // uses :checked or [aria-selected],[aria-current]
-            
-            // passivating:
-            if (animating === false) return 'passivating';
-            
-            // fully actived:
-            if (actived) return 'actived';
-            
-            // fully passived:
-            return null;
+            if (animating === true) {
+                // arriving by controllable prop => use class .arrive
+                if (isControllableArrive) return 'arrive';
+
+                // otherwise use a combination of :hover || (.focused || .focus || :focus)
+                return null;
+            } // if
+
+            // leaving:
+            if (animating === false) return 'leave';
+
+            // fully arrived:
+            if (arrived) return 'arrived';
+
+            // fully left:
+            if (isControllableArrive) {
+                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focus || :focus)]
+            }
+            else {
+                return null; // discard all classes above
+            } // if
         })(),
-        
-        props : (
-            isCheckbox(props)
-            ?
-            {
-                // a checkbox uses pseudo :checked for activating
-                checked: actived,
+
+        handleMouseEnter   : handleHover,
+        handleMouseLeave   : handleLeave,
+        handleAnimationEnd : (e: React.AnimationEvent<Element>) => {
+            if (e.target !== e.currentTarget) return; // no bubbling
+            if (/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) {
+                handleIdle();
             }
-            :
-            {
-                'aria-selected' : actived ? true : undefined,
-            }
-        ),
-        
-        handleAnimationEnd,
+        },
     };
 };
 
