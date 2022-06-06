@@ -183,15 +183,15 @@ const [focuses] = cssVar<FocusBlurVars>();
 
 // .focused will be added after focusing-animation done:
 const selectorIfFocused  = '.focused'
-// .focus = styled focus, :focus-within = native focus:
+// .focusing = styled focus, :focus-within = native focus:
 // the .disabled, .disable are used to kill native :focus-within
 // the .focused, .blurring, .blurred are used to overwrite native :focus-within
-const selectorIfFocusing = ':is(.focus, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
+const selectorIfFocusing = ':is(.focusing, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
 // optionally use .blurred to overwrite native :focus-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focus, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
+const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
@@ -341,11 +341,11 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         class : ((): string|null => {
             // focusing:
             if (animating === true) {
-                // focusing by controllable prop => use class .focus
-                if (isControllableFocus) return 'focus';
+                // focusing by controllable prop => use class .focusing
+                if (isControllableFocus) return 'focusing';
                 
-                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focus
-                if ((props.tabIndex ?? 0) < 0) return 'focus';
+                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
+                if ((props.tabIndex ?? 0) < 0) return 'focusing';
                 
                 // otherwise use pseudo :focus-within
                 return null;
@@ -390,15 +390,15 @@ const [arrives] = cssVar<ArriveLeaveVars>();
 
 // .arrived will be added after arriving-animation done:
 const selectorIfArrived  = '.arrived'
-// .arrive = styled arrive, :hover = native arrive:
+// .arriving = styled arrive, :hover = native arrive:
 // the .disabled, .disable are used to kill native :hover
 // the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arrive, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))' // TODO combine with .focus,.focused,:focus
+const selectorIfArriving = ':is(.arriving, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))' // TODO combine with .focusing,.focused,:focus
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
 // if all above are not set => left:
 // optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arrive, :hover:not(:is(.disabled, .disable)), .leaving)), .left)' // TODO combine with .focus,.focused,:focus
+const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :hover:not(:is(.disabled, .disable)), .leaving)), .left)' // TODO combine with .focusing,.focused,:focus
 
 
 
@@ -482,7 +482,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     
     // handlers:
-    const handleHover  = useCallback(() => {
+    const handleMouseEnter = useCallback(() => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
@@ -492,7 +492,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(true);
     }, [propEnabled, isControllableArrive]);
     
-    const handleLeave  = useCallback(() => {
+    const handleMouseLeave = useCallback(() => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
@@ -502,46 +502,51 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(false);
     }, [propEnabled, isControllableArrive]);
     
-    const handleIdle   = () => {
+    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+        // conditions:
+        if (e.target !== e.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
+        
+        
+        
         // clean up finished animation
-
+        
         setAnimating(null); // stop arriving-animation/leaving-animation
-    }
+    }, []);
+    
+    
+    
     return {
         arrive : arrived,
-
+        
         class  : ((): string|null => {
+            // arriving:
             if (animating === true) {
-                // arriving by controllable prop => use class .arrive
-                if (isControllableArrive) return 'arrive';
-
-                // otherwise use a combination of :hover || (.focused || .focus || :focus)
+                // arriving by controllable prop => use class .arriving
+                if (isControllableArrive) return 'arriving';
+                
+                // otherwise use a combination of :hover || (.focused || .focusing || :focus)
                 return null;
             } // if
-
+            
             // leaving:
-            if (animating === false) return 'leave';
-
+            if (animating === false) return 'leaving';
+            
             // fully arrived:
             if (arrived) return 'arrived';
-
+            
             // fully left:
             if (isControllableArrive) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focus || :focus)]
+                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus)]
             }
             else {
                 return null; // discard all classes above
             } // if
         })(),
-
-        handleMouseEnter   : handleHover,
-        handleMouseLeave   : handleLeave,
-        handleAnimationEnd : (e: React.AnimationEvent<Element>) => {
-            if (e.target !== e.currentTarget) return; // no bubbling
-            if (/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) {
-                handleIdle();
-            }
-        },
+        
+        handleMouseEnter,
+        handleMouseLeave,
+        handleAnimationEnd,
     };
 };
 
