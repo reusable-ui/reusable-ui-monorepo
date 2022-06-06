@@ -414,55 +414,37 @@ export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([se
 
 
 /**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ * Uses arrive (hover) & leave states.
+ * @returns A `StateMixin<ArriveLeaveVars>` represents arrive (hover) & leave state definitions.
  */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
     return [
         () => style({
             ...states([
-                ifActived({
+                ifArrived({
                     ...vars({
-                        [actives.filter] : controls.filterActive,
+                        [arrives.filter] : controls.filterArrive,
                     }),
                 }),
-                ifActivating({
+                ifArriving({
                     ...vars({
-                        [actives.filter] : controls.filterActive,
-                        [actives.anim  ] : controls.animActive,
+                        [arrives.filter] : controls.filterArrive,
+                        [arrives.anim  ] : controls.animArrive,
                     }),
                 }),
-                ifPassivating({
+                ifLeaving({
                     ...vars({
-                        [actives.filter] : controls.filterActive,
-                        [actives.anim  ] : controls.animPassive,
+                        [arrives.filter] : controls.filterArrive,
+                        [arrives.anim  ] : controls.animLeave,
                     }),
                 }),
             ]),
         }),
-        actives,
+        arrives,
     ];
 };
 
-export const __markActive = (): CssRule => style({
-    ...imports([
-        outlinedOf(false), // kill outlined variant
-        mildOf(false),     // kill mild     variant
-        
-        usesThemeActive(), // switch to active theme
-    ]),
-});
 
-/**
- * Creates conditional color definitions at active state.
- * @param themeName The name of active theme.
- * @returns A `CssRule` represents the conditional color definitions at active state.
- */
-export const __usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeCond(themeName);
-
-
-
-const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
 
 export const useActivePassiveState = (props: AccessibilityProps & SemanticProps) => {
     // fn props:
