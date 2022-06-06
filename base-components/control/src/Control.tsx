@@ -184,8 +184,8 @@ const [focuses] = cssVar<FocusBlurVars>();
 // .focused will be added after focusing-animation done:
 const selectorIfFocused  = '.focused'
 // .focus = styled focus, :focus-within = native focus:
-// the .disabled,.disable are used to kill native :focus-within
-// the .focused,.blurring,.blurred are used to overwrite native :focus-within
+// the .disabled, .disable are used to kill native :focus-within
+// the .focused, .blurring, .blurred are used to overwrite native :focus-within
 const selectorIfFocusing = ':is(.focus, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
@@ -373,29 +373,32 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
 };
 //#endregion focusBlur
 
-//#region activePassive
-export interface ActivePassiveVars {
+//#region arriveLeave
+export interface ArriveLeaveVars {
     filter : any
     anim   : any
 }
-const [actives] = cssVar<ActivePassiveVars>();
+const [arrives] = cssVar<ArriveLeaveVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(actives.filter);
-    animRegistry.registerAnim(actives.anim);
+    animRegistry.registerFilter(arrives.filter);
+    animRegistry.registerAnim(arrives.anim);
 }
 
 
 
-// .actived will be added after activating-animation done:
-const selectorIfActived     = '.actived'
-// :checked = native active, [aria-selected],[aria-current] = styled active:
-const selectorIfActivating  = ':is(:checked, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])):not(.actived)'
-// .passivating will be added after loosing active and will be removed after deactivating-animation done:
-const selectorIfPassivating = '.passivating'
-// if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, :checked, :is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])), .passivating))'
+// .arrived will be added after arriving-animation done:
+const selectorIfArrived  = '.arrived'
+// .arrive = styled arrive, :hover = native arrive:
+// the .disabled, .disable are used to kill native :hover
+// the .arrived, .leaving, .left are used to overwrite native :hover
+const selectorIfArriving = ':is(.arrive, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
+// .leaving will be added after loosing arrive and will be removed after leaving-animation done:
+const selectorIfLeaving  = '.leaving'
+// if all above are not set => left:
+// optionally use .left to overwrite native :hover
+const selectorIfLeft     = ':is(:not(:is(.arrived, .arrive, :hover:not(:is(.disabled, .disable)), .leaving)), .left)'
 
 
 
@@ -594,7 +597,7 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
         setActiveEx,
     ];
 };
-//#endregion activePassive
+//#endregion arriveLeave
 
 
 
