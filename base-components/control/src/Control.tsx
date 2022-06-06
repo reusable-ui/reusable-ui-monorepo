@@ -183,15 +183,15 @@ const [focuses] = cssVar<FocusBlurVars>();
 
 // .focused will be added after focusing-animation done:
 const selectorIfFocused  = '.focused'
-// .focus = styled focus, :focus = native focus:
-// the .disabled,.disable are used to kill native :focus
-// the .focused,.blurring,.blurred are used to overwrite native :focus
-const selectorIfFocusing = ':is(.focus, :focus:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
+// .focus = styled focus, :focus-within = native focus:
+// the .disabled,.disable are used to kill native :focus-within
+// the .focused,.blurring,.blurred are used to overwrite native :focus-within
+const selectorIfFocusing = ':is(.focus, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
-// optionally use .blurred to overwrite native :focus
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focus, :focus:not(:is(.disabled, .disable)), .blurring)), .blurred)'
+// optionally use .blurred to overwrite native :focus-within
+const selectorIfBlurred  = ':is(:not(:is(.focused, .focus, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
@@ -301,7 +301,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     
     // handlers:
-    const handleFocus = () => useCallback(() => {
+    const handleFocus = useCallback(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -310,7 +310,8 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         
         setFocusDn(true);
     }, [propEnabled, isControllableFocus]);
-    const handleBlur = () => useCallback(() => {
+    
+    const handleBlur  = useCallback(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -319,6 +320,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         
         setFocusDn(false);
     }, [propEnabled, isControllableFocus]);
+    
     const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
@@ -340,28 +342,24 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
             // focusing:
             if (animating === true) {
                 // focusing by controllable prop => use class .focus
-                if (props.focus !== undefined) return 'focus';
-
-                // negative [tabIndex] => can't be focused by user input => treats Control as *wrapper* element => use class .focus
-                if ((props.tabIndex ?? 0) < 0) return 'focus';
-
-                // use class .focus instead of pseudo :focus
-                // in case of child got focus, the parent is also marked as focus
-                return 'focus';
+                if (isControllableFocus) return 'focus';
                 
-                // otherwise use pseudo :focus
-                // return null;
+                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focus
+                if ((props.tabIndex ?? 0) < 0) return 'focus';
+                
+                // otherwise use pseudo :focus-within
+                return null;
             } // if
-
+            
             // blurring:
-            if (animating === false) return 'blur';
-
+            if (animating === false) return 'blurring';
+            
             // fully focused:
             if (focused) return 'focused';
-
+            
             // fully blurred:
-            if (props.focus !== undefined) {
-                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus
+            if (isControllableFocus) {
+                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-within
             }
             else {
                 return null; // discard all classes above
