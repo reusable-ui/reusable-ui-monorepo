@@ -402,14 +402,14 @@ const selectorIfLeft     = ':is(:not(:is(.arrived, .arrive, :hover:not(:is(.disa
 
 
 
-export const ifActived           = (styles: CssStyleCollection): CssRule => rule(selectorIfActived    , styles);
-export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
-export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
-export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
+export const ifArrived       = (styles: CssStyleCollection): CssRule => rule(selectorIfArrived , styles);
+export const ifArriving      = (styles: CssStyleCollection): CssRule => rule(selectorIfArriving, styles);
+export const ifLeaving       = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaving , styles);
+export const ifLeft          = (styles: CssStyleCollection): CssRule => rule(selectorIfLeft    , styles);
 
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
-export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
+export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                   ], styles);
+export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeft], styles);
+export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                ], styles);
 
 
 
