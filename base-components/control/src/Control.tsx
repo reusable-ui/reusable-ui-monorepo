@@ -43,6 +43,7 @@ import {
 import {
     // utilities:
     cssVar,
+    fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
@@ -56,6 +57,10 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
+import {
+    // configs:
+    colors,
+}                           from '@reusable-ui/colors'          // a color management system
 import {
     // hooks:
     usePropAccessibility,
@@ -73,6 +78,11 @@ import type {
     SemanticProps,
 }                           from '@reusable-ui/generic'         // a base component
 import {
+    // types:
+    StateMixin,
+    
+    
+    
     // hooks:
     usesSizeVariant,
     ThemeName,
@@ -195,120 +205,169 @@ export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([se
 
 
 /**
- * Uses enable & disable states.
- * @returns A `StateMixin<EnableDisableVars>` represents enable & disable state definitions.
+ * Uses focus & blur states.
+ * @returns A `StateMixin<FocusBlurVars>` represents focus & blur state definitions.
  */
-export const usesEnableDisableState = (): StateMixin<EnableDisableVars> => {
+export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
+    // dependencies:
+    const [, themes] = usesThemeVariant();
+    
+    
+    
     return [
         () => style({
+            ...vars({
+                [focuses.boxShadowColorFn] : fallbacks(
+                    themes.focusImpt,     // first  priority
+                    themes.focus,         // second priority
+                    themes.focusCond,     // third  priority
+                    
+                    colors.secondaryThin, // default => uses secondary theme, because its color is neutral
+                ),
+                [focuses.boxShadowColor  ] : fallbacks(
+                    // no toggle outlined nor toggle mild yet (might be added in the future)
+                    
+                    focuses.boxShadowColorFn, // default => uses our `boxShadowColorFn`
+                ),
+                [focuses.boxShadowLy     ] : [[
+                    // combining: pos width spread color ...
+                    
+                    // boxShadowFocus pos, width, spread, etc:
+                    controls.boxShadowFocus,
+                    
+                    // boxShadowFocus color:
+                    focuses.boxShadowColor,
+                ]],
+            }),
             ...states([
-                ifEnabling({
+                ifFocused({
                     ...vars({
-                        [enables.filter] : controls.filterDisable,
-                        [enables.anim  ] : controls.animEnable,
+                        [focuses.boxShadow] : focuses.boxShadowLy,
                     }),
                 }),
-                ifDisabling({
+                ifFocusing({
                     ...vars({
-                        [enables.filter] : controls.filterDisable,
-                        [enables.anim  ] : controls.animDisable,
+                        [focuses.boxShadow] : focuses.boxShadowLy,
+                        [focuses.anim     ] : controls.animFocus,
                     }),
                 }),
-                ifDisabled({
+                ifBlurring({
                     ...vars({
-                        [enables.filter] : controls.filterDisable,
+                        [focuses.boxShadow] : focuses.boxShadowLy,
+                        [focuses.anim     ] : controls.animBlur,
                     }),
                 }),
             ]),
         }),
-        enables,
+        focuses,
     ];
 };
 
 
 
-const htmlCtrls = [
-    'button',
-    'fieldset',
-    'input',
-    'select',
-    'optgroup',
-    'option',
-    'textarea',
-];
-const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
-
-export const useEnableDisableState = (props: AccessibilityProps & SemanticProps) => {
+export const useFocusBlurState  = <TElement extends Element = Element>(props: ControlProps<TElement>) => {
     // fn props:
-    const propEnabled = usePropEnabled(props);
+    const propEnabled         = usePropEnabled(props);
+    const isControllableFocus = (props.focus !== undefined);
     
     
     
     // states:
-    const [enabled,   setEnabled  ] = useState<boolean>(propEnabled); // true => enabled, false => disabled
-    const [animating, setAnimating] = useState<boolean|null>(null);   // null => no-animation, true => enabling-animation, false => disabling-animation
+    const [focused,   setFocused  ] = useState<boolean>(props.focus ?? false); // true => focus, false => blur
+    const [animating, setAnimating] = useState<boolean|null>(null); // null => no-animation, true => focusing-animation, false => blurring-animation
+    
+    const [focusDn,   setFocusDn  ] = useState<boolean>(false);     // uncontrollable (dynamic) state: true => user focus, false => user blur
+    
+    
+    
+    // resets:
+    if (!propEnabled && focusDn) {
+        setFocusDn(false); // lost focus because the control is disabled, when the control is re-enabled => still lost focus
+    } // if
     
     
     
     /*
-     * state is enabled/disabled based on [controllable enabled]
-     * [uncontrollable enabled] is not supported
+     * state is always blur if disabled
+     * state is focus/blur based on [controllable focus] (if set) and fallback to [uncontrollable focus]
      */
-    const enabledFn: boolean = propEnabled /*controllable*/;
+    const focusFn: boolean = propEnabled && (props.focus /*controllable*/ ?? focusDn /*uncontrollable*/);
     
-    if (enabled !== enabledFn) { // change detected => apply the change & start animating
-        setEnabled(enabledFn);   // remember the last change
-        setAnimating(enabledFn); // start enabling-animation/disabling-animation
+    if (focused !== focusFn) { // change detected => apply the change & start animating
+        setFocused(focusFn);   // remember the last change
+        setAnimating(focusFn); // start focusing-animation/blurring-animation
     } // if
     
     
     
     // handlers:
+    const handleFocus = () => useCallback(() => {
+        if (!propEnabled)        return; // control is disabled => no response required
+        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        
+        
+        
+        setFocusDn(true);
+    }, [propEnabled, isControllableFocus]);
+    const handleBlur = () => useCallback(() => {
+        if (!propEnabled)        return; // control is disabled => no response required
+        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        
+        
+        
+        setFocusDn(false);
+    }, [propEnabled, isControllableFocus]);
     const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
+        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
         
         
         
         // clean up finished animation
         
-        setAnimating(null); // stop enabling-animation/disabling-animation
+        setAnimating(null); // stop focusing-animation/blurring-animation
     }, []);
     
     
     
     return {
-        enabled  : enabled,
-        disabled : !enabled,
+        focus : focused,
         
-        class    : ((): string|null => {
-            // enabling:
-            if (animating === true)  return 'enabling';
-            
-            // disabling:
-            if (animating === false) return null; // uses :disabled or [aria-disabled]
-            
-            // fully disabled:
-            if (!enabled) return 'disabled';
-            
-            // fully enabled:
-            return null;
+        class : ((): string|null => {
+            // focusing:
+            if (animating === true) {
+                // focusing by controllable prop => use class .focus
+                if (props.focus !== undefined) return 'focus';
+
+                // negative [tabIndex] => can't be focused by user input => treats Control as *wrapper* element => use class .focus
+                if ((props.tabIndex ?? 0) < 0) return 'focus';
+
+                // use class .focus instead of pseudo :focus
+                // in case of child got focus, the parent is also marked as focus
+                return 'focus';
+                
+                // otherwise use pseudo :focus
+                // return null;
+            } // if
+
+            // blurring:
+            if (animating === false) return 'blur';
+
+            // fully focused:
+            if (focused) return 'focused';
+
+            // fully blurred:
+            if (props.focus !== undefined) {
+                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus
+            }
+            else {
+                return null; // discard all classes above
+            } // if
         })(),
         
-        props : (
-            isCtrlElm(props)
-            ?
-            {
-                // a control_element uses pseudo :disabled for disabling
-                disabled        : !enabled,
-            }
-            :
-            {
-                'aria-disabled' : !enabled ? true : undefined,
-            }
-        ),
-        
+        handleFocus,
+        handleBlur,
         handleAnimationEnd,
     };
 };
@@ -716,11 +775,13 @@ export const [controls, cssControlConfig] = cssConfig(() => {
 export interface ControlProps<TElement extends Element = Element>
     extends
         // bases:
-        BasicProps<TElement>,
-        
-        // accessibilities:
-        AccessibilityProps
+        IndicatorProps<TElement>
 {
+    // accessibilities:
+    focus    ?: boolean
+    tabIndex ?: number
+    
+    arrive   ?: boolean
 }
 const Control = <TElement extends Element = Element>(props: ControlProps<TElement>): JSX.Element|null => {
     // styles:
