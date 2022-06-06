@@ -73,10 +73,10 @@ import {
     AccessibilityProps,
     AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
-import type {
-    // types:
-    SemanticProps,
-}                           from '@reusable-ui/generic'         // a base component
+import {
+    // styles:
+    stripoutControl,
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // types:
     StateMixin,
@@ -557,10 +557,21 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
 export const usesControlLayout = () => {
     return style({
         ...imports([
+            // resets:
+            stripoutControl(), // clear browser's default styles
+            
             // layouts:
-            usesBasicLayout(),
+            usesIndicatorLayout(),
+            
+            // colors:
+            usesThemeDefault(),
         ]),
         ...style({
+            // positions:
+            position: 'relative', // supports for boxShadowFocus, prevents boxShadowFocus from clipping
+            
+            
+            
             // customize:
             ...usesCssProps(controls), // apply config's cssProps
         }),
@@ -570,7 +581,7 @@ export const usesControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant((sizeName) => style({
+    const [sizesRule] = usesSizeVariant((sizeName) => style({
         // overwrites propName = propName{SizeName}:
         ...overwriteProps(controls, usesSuffixedProps(controls, sizeName)),
     }));
@@ -580,7 +591,7 @@ export const usesControlVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesBasicVariants(),
+            usesIndicatorVariants(),
             
             // layouts:
             sizesRule,
@@ -591,22 +602,47 @@ export const usesControlStates = () => {
     // dependencies:
     
     // states:
-    const [enableDisableRule] = usesEnableDisableState();
-    const [activePassiveRule] = usesActivePassiveState();
+    const [focusBlurRule  ] = usesFocusBlurState();
+    const [arriveLeaveRule] = usesArriveLeaveState();
     
     
     
     return style({
         ...imports([
             // states:
-            enableDisableRule,
-            activePassiveRule,
+            usesIndicatorStates(),
+            focusBlurRule,
+            arriveLeaveRule,
         ]),
         ...states([
+            ifDisable({
+                // accessibilities:
+                cursor : controls.cursorDisable,
+            }),
+            
             ifActive({
                 ...imports([
                     markActive(),
                 ]),
+            }),
+            ifFocus({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifArrive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            
+            ifFocus({
+                // positions:
+                zIndex: 2, // prevents boxShadowFocus from clipping
+            }),
+            ifBlurring({
+                // positions:
+                zIndex: 1, // prevents boxShadowFocus from clipping but below the active one
             }),
         ]),
     });
