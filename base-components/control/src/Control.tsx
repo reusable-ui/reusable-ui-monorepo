@@ -175,11 +175,13 @@ const [focuses] = cssVar<FocusBlurVars>();
 const selectorIfFocused  = '.focused'
 // .focus = styled focus, :focus = native focus:
 // the .disabled,.disable are used to kill native :focus
-const selectorIfFocusing = ':is(.focus, :focus:not(:is(.disabled, .disable)))'
+// the .focused,.blurring,.blurred are used to overwrite native :focus
+const selectorIfFocusing = ':is(.focus, :focus:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
-const selectorIfBlurred  = ':not(:is(.focused, .focus, :focus:not(:is(.disabled, .disable)), .blurring))'
+// optionally use .blurred to overwrite native :focus
+const selectorIfBlurred  = ':is(:not(:is(.focused, .focus, :focus:not(:is(.disabled, .disable)), .blurring)), .blurred)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
