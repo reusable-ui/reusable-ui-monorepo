@@ -131,7 +131,7 @@ const [enables] = cssVar<EnableDisableVars>();
 const selectorIfEnabled   = ':not(:is(.enabling, :disabled, [aria-disabled]:not([aria-disabled="false"]), .disabled))'
 // .enabling will be added after loosing disable and will be removed after enabling-animation done:
 const selectorIfEnabling  = '.enabling'
-// :disabled = real disable, [aria-disabled] = styled disable:
+// :disabled = native disable, [aria-disabled] = styled disable:
 const selectorIfDisabling = ':is(:disabled, [aria-disabled]:not([aria-disabled="false"])):not(.disabled)'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
@@ -284,7 +284,7 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// :checked = real active, [aria-selected],[aria-current] = styled active:
+// :checked = native active, [aria-selected],[aria-current] = styled active:
 const selectorIfActivating  = ':is(:checked, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"])):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
