@@ -668,94 +668,100 @@ export const [controls, cssControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
+    const boxShadows = animRegistry.boxShadows;
+    const filters    = animRegistry.filters;
     
-    const [, {filter: filterEnableDisable}] = usesEnableDisableState();
-    const [, {filter: filterActivePassive}] = usesActivePassiveState();
+    const [, {boxShadow : boxShadowFocusBlur}] = usesFocusBlurState();
+    const [, {filter    : filterArriveLeave }] = usesArriveLeaveState();
     
     
     
     //#region keyframes
-    const frameEnabled  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
+    const frameBlurred  = style({
+        boxShadow: [
+            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
             
-         // filterEnableDisable, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+         // boxShadowFocusBlur, // missing the last => let's the browser interpolated it
+        ].map(fallbackNoneBoxShadow),
     });
-    const frameDisabled = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
+    const frameFocused = style({
+        boxShadow: [
+            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
             
-            filterEnableDisable, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+            boxShadowFocusBlur, // existing the last => let's the browser interpolated it
+        ].map(fallbackNoneBoxShadow),
     });
-    const [keyframesDisableRule, keyframesDisable] = keyframes({
-        from : frameEnabled,
-        to   : frameDisabled,
+    const [keyframesFocusRule, keyframesFocus] = keyframes({
+        from : frameBlurred,
+        to   : frameFocused,
     });
-    keyframesDisable.value = 'disable';
-    const [keyframesEnableRule , keyframesEnable ] = keyframes({
-        from : frameDisabled,
-        to   : frameEnabled,
+    keyframesFocus.value = 'focus'; // the @keyframes name should contain 'focus' in order to be recognized by `useFocusBlurState`
+    const [keyframesBlurRule , keyframesBlur ] = keyframes({
+        from : frameFocused,
+        to   : frameBlurred,
     });
-    keyframesEnable.value = 'enable';
+    keyframesBlur.value  = 'blur';  // the @keyframes name should contain 'blur'  in order to be recognized by `useFocusBlurState`
     
     
     
-    const framePassived = style({
+    const frameLeft = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
+            ...filters.filter((f) => (f !== filterArriveLeave)),
             
-         // filterActivePassive, // missing the last => let's the browser interpolated it
+         // filterArriveLeave, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
-    const frameActived  = style({
+    const frameArrived  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
+            ...filters.filter((f) => (f !== filterArriveLeave)),
             
-            filterActivePassive, // existing the last => let's the browser interpolated it
+            filterArriveLeave, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from : framePassived,
-        to   : frameActived,
+    const [keyframesArriveRule, keyframesArrive] = keyframes({
+        from : frameLeft,
+        to   : frameArrived,
     });
-    keyframesActive.value = 'active';
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from : frameActived,
-        to   : framePassived,
+    keyframesArrive.value = 'arrive'; // the @keyframes name should contain 'arrive' in order to be recognized by `useArriveLeaveState`
+    const [keyframesLeaveRule , keyframesLeave ] = keyframes({
+        from : frameArrived,
+        to   : frameLeft,
     });
-    keyframesPassive.value = 'passive';
+    keyframesLeave.value  = 'leave';  // the @keyframes name should contain 'leave'  in order to be recognized by `useArriveLeaveState`
     //#endregion keyframes
     
     
     
     return {
+        // accessibilities:
+        cursorDisable  : 'not-allowed',
+        
+        
+        
         // animations:
-        filterDisable : [[
-            'grayscale(50%)',
-            'contrast(50%)',
-        ]]                          as CssKnownProps['filter'],
-        filterActive  : [[
-            'brightness(100%)',
+        boxShadowFocus : [
+            [0, 0, 0, '0.25rem'],
+        ]                           as CssKnownProps['boxShadow'],
+        filterArrive   : [[
+            'brightness(85%)',
+            'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
         ]]                          as CssKnownProps['filter'],
         
-        ...keyframesDisableRule,
-        ...keyframesEnableRule,
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animEnable    : [
-            ['300ms', 'ease-out', 'both', keyframesEnable ],
+        ...keyframesFocusRule,
+        ...keyframesBlurRule,
+        ...keyframesArriveRule,
+        ...keyframesLeaveRule,
+        animFocus      : [
+            ['150ms', 'ease-out', 'both', keyframesFocus ],
         ]                           as CssKnownProps['anim'],
-        animDisable   : [
-            ['300ms', 'ease-out', 'both', keyframesDisable],
+        animBlur       : [
+            ['300ms', 'ease-out', 'both', keyframesBlur  ],
         ]                           as CssKnownProps['anim'],
-        animActive    : [
-            ['150ms', 'ease-out', 'both', keyframesActive ],
+        animArrive     : [
+            ['150ms', 'ease-out', 'both', keyframesArrive],
         ]                           as CssKnownProps['anim'],
-        animPassive   : [
-            ['300ms', 'ease-out', 'both', keyframesPassive],
+        animLeave      : [
+            ['300ms', 'ease-out', 'both', keyframesLeave ],
         ]                           as CssKnownProps['anim'],
     };
 }, { prefix: 'ctrl' });
