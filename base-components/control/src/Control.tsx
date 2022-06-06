@@ -734,18 +734,18 @@ export const [controls, cssControlConfig] = cssConfig(() => {
     
     return {
         // accessibilities:
-        cursorDisable  : 'not-allowed',
+        cursorDisable  : 'not-allowed'  as CssKnownProps['cursor'],
         
         
         
         // animations:
         boxShadowFocus : [
             [0, 0, 0, '0.25rem'],
-        ]                           as CssKnownProps['boxShadow'],
+        ]                               as CssKnownProps['boxShadow'],
         filterArrive   : [[
             'brightness(85%)',
             'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
-        ]]                          as CssKnownProps['filter'],
+        ]]                              as CssKnownProps['filter'],
         
         ...keyframesFocusRule,
         ...keyframesBlurRule,
@@ -753,16 +753,16 @@ export const [controls, cssControlConfig] = cssConfig(() => {
         ...keyframesLeaveRule,
         animFocus      : [
             ['150ms', 'ease-out', 'both', keyframesFocus ],
-        ]                           as CssKnownProps['anim'],
+        ]                               as CssKnownProps['anim'],
         animBlur       : [
             ['300ms', 'ease-out', 'both', keyframesBlur  ],
-        ]                           as CssKnownProps['anim'],
+        ]                               as CssKnownProps['anim'],
         animArrive     : [
             ['150ms', 'ease-out', 'both', keyframesArrive],
-        ]                           as CssKnownProps['anim'],
+        ]                               as CssKnownProps['anim'],
         animLeave      : [
             ['300ms', 'ease-out', 'both', keyframesLeave ],
-        ]                           as CssKnownProps['anim'],
+        ]                               as CssKnownProps['anim'],
     };
 }, { prefix: 'ctrl' });
 
