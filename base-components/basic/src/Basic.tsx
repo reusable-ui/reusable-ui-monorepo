@@ -1164,19 +1164,34 @@ const setsBoxShadow = new Set<CssCustomSimpleRef>();
 const setsFilter    = new Set<CssCustomSimpleRef>();
 const setsAnim      = new Set<CssCustomSimpleRef>();
 const animRegistry  = {
-    get boxShadows      ():    CssCustomSimpleRef[]      { return Array.from(setsBoxShadow) },
+    get boxShadows      ():    CssCustomSimpleRef[]      {
+        return [
+            anims.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
+            ...Array.from(setsBoxShadow)
+        ];
+    },
     registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)          },
     unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item)       },
     
     
     
-    get filters         ():    CssCustomSimpleRef[]      { return Array.from(setsFilter)    },
+    get filters         ():    CssCustomSimpleRef[]      {
+        return [
+            anims.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
+            ...Array.from(setsFilter)
+        ];
+    },
     registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)             },
     unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)          },
     
     
     
-    get anims           ():    CssCustomSimpleRef[]      { return Array.from(setsAnim)      },
+    get anims           ():    CssCustomSimpleRef[]      {
+        return [
+            anims.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
+            ...Array.from(setsAnim)
+        ];
+    },
     registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)               },
     unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)            },
 };
@@ -1198,7 +1213,6 @@ export const usesAnim = (): AnimMixin => {
                     // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
                     
                     // layers:
-                    anims.boxShadowNone,
                     ...animRegistry.boxShadows,
                 ],
                 
@@ -1209,7 +1223,6 @@ export const usesAnim = (): AnimMixin => {
                     // combining: filter1 * filter2 * filter3 ...
                     
                     // layers:
-                    anims.filterNone,
                     ...animRegistry.filters,
                 ]],
                 
@@ -1224,7 +1237,6 @@ export const usesAnim = (): AnimMixin => {
                     // layering: anim1 | anim2 | anim3 ...
                     
                     // layers:
-                    anims.animNone,
                     ...animRegistry.anims,
                 ],
             }),
@@ -1248,10 +1260,10 @@ export const usesAnim = (): AnimMixin => {
 export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
 
 type BaseTypeOf<TComplexValue> = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
-export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => isRef(item) ? fallbacks(item, anims.boxShadowNone) : item;
-export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => isRef(subItem) ? fallbacks(subItem, anims.filterNone) : subItem);
-export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transf'   ]>[]): typeof item => item.map((subItem) => isRef(subItem) ? fallbacks(subItem, anims.transfNone) : subItem);
-export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['anim'     ]>  ): typeof item => isRef(item) ? fallbacks(item, anims.animNone) : item;
+export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => (isRef(item) && (item !== anims.boxShadowNone)) ? fallbacks(item, anims.boxShadowNone) : item;
+export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.filterNone)) ? fallbacks(subItem, anims.filterNone) : subItem);
+export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transf'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.transfNone)) ? fallbacks(subItem, anims.transfNone) : subItem);
+export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['anim'     ]>  ): typeof item => (isRef(item) && (item !== anims.animNone)) ? fallbacks(item, anims.animNone) : item;
 //#endregion animations
 
 //#region excited
