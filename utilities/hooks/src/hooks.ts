@@ -51,7 +51,7 @@ export const useTriggerRender = () => {
 
 export { useCallback as useEvent };
 
-export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent> | (() => void)>[]): React.EventHandler<TEvent> => {
+export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent> => {
     return useCallback<React.EventHandler<TEvent>>((e) => {
         for (const event of events) {
             event?.(e);
