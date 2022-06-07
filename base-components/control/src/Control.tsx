@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useState,
-    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -61,13 +60,17 @@ import {
     colors,
 }                           from '@reusable-ui/colors'          // a color management system
 import {
-    // hooks:
-    usePropEnabled,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
     // styles:
     stripoutControl,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+import {
+    // hooks:
+    useEvent,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    usePropEnabled,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
     StateMixin,
@@ -286,7 +289,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     
     // handlers:
-    const handleFocus = useCallback(() => {
+    const handleFocus = useEvent(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -296,7 +299,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(true);
     }, [propEnabled, isControllableFocus]);
     
-    const handleBlur  = useCallback(() => {
+    const handleBlur  = useEvent(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -306,7 +309,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(false);
     }, [propEnabled, isControllableFocus]);
     
-    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
@@ -469,7 +472,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     
     // handlers:
-    const handleMouseEnter = useCallback(() => {
+    const handleMouseEnter = useEvent(() => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
@@ -479,7 +482,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(true);
     }, [propEnabled, isControllableArrive]);
     
-    const handleMouseLeave = useCallback(() => {
+    const handleMouseLeave = useEvent(() => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
@@ -489,7 +492,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(false);
     }, [propEnabled, isControllableArrive]);
     
-    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
