@@ -43,4 +43,4 @@ export const useTriggerRender = () => {
 
 
 
-export const useEvent = useCallback;
+export { useCallback as useEvent };
