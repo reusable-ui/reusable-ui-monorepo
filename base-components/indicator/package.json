@@ -39,6 +39,7 @@
     "@cssfn/css-var": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@types/react": "^18.0.10",
