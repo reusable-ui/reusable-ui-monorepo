@@ -4,6 +4,7 @@ import {
     useEffect,
     useLayoutEffect,
     useReducer,
+    useCallback,
 }                           from 'react'
 
 // other libs:
@@ -39,3 +40,7 @@ export const useTriggerRender = () => {
     const [generation, setState] = useReducer(triggerRenderReducer, {});
     return [setState, generation] as const;
 };
+
+
+
+export const useEvent = useCallback;
