@@ -373,6 +373,8 @@ const [arrives] = cssVar<ArriveLeaveVars>();
 
 
 
+// arrive = hover + focus
+
 // .arrived will be added after arriving-animation done:
 const selectorIfArrived  = '.arrived'
 // .arriving = styled arrive, :hover = native arrive:
