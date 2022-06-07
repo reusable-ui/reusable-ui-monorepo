@@ -160,7 +160,7 @@ const [focuses] = cssVar<FocusBlurVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(focuses.boxShadow);
+    animRegistry.registerBoxShadow(focuses.boxShadow);
     animRegistry.registerAnim(focuses.anim);
 }
 
