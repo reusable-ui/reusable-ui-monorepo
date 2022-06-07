@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -103,6 +102,7 @@ import {
 import {
     // hooks:
     useTriggerRender,
+    useEvent,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // react components:
@@ -1363,7 +1363,7 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     // handlers:
-    const handleAnimationEnd = useCallback((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
