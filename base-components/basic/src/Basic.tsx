@@ -1243,11 +1243,11 @@ export const usesAnim = (): AnimMixin => {
             
             
             
-            // declare default values at lowest specificity:
+            // declare default values at lowest specificity (except for **None):
             ...vars(Object.fromEntries([
-                ...animRegistry.boxShadows.map((ref) => [ ref, anims.boxShadowNone ]),
-                ...animRegistry.filters   .map((ref) => [ ref, anims.filterNone    ]),
-                ...animRegistry.anims     .map((ref) => [ ref, anims.animNone      ]),
+                ...animRegistry.boxShadows.filter((ref) => (ref !== anims.boxShadowNone)).map((ref) => [ ref, anims.boxShadowNone ]),
+                ...animRegistry.filters   .filter((ref) => (ref !== anims.filterNone   )).map((ref) => [ ref, anims.filterNone    ]),
+                ...animRegistry.anims     .filter((ref) => (ref !== anims.animNone     )).map((ref) => [ ref, anims.animNone      ]),
             ])),
         }),
         anims,
