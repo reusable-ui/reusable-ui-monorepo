@@ -59,6 +59,7 @@ import {
 import {
     // hooks:
     useEvent,
+    useMergeEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -718,6 +719,22 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     
+    // events:
+    const handleAnimationEnd = useMergeEvent(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        enableDisableState.handleAnimationEnd,
+        activePassiveState.handleAnimationEnd,
+    );
+    
+    
+    
     // jsx:
     return (
         <Basic<TElement>
@@ -750,17 +767,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
             
             
             // events:
-            onAnimationEnd={(e) => {
-                props.onAnimationEnd?.(e); // preserves the original `onAnimationEnd`
-                
-                
-                
-                // states:
-                
-                // accessibilities:
-                enableDisableState.handleAnimationEnd(e);
-                activePassiveState.handleAnimationEnd(e);
-            }}
+            onAnimationEnd={handleAnimationEnd}
         >
             { children && <AccessibilityProvider {...propAccess}>
                 { children }
