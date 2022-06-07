@@ -7,6 +7,12 @@ import {
     useCallback,
 }                           from 'react'
 
+// cssfn:
+import type {
+    // types:
+    Optional,
+}                           from '@cssfn/types'
+
 // other libs:
 import {
     // tests:
@@ -44,3 +50,12 @@ export const useTriggerRender = () => {
 
 
 export { useCallback as useEvent };
+
+export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent> => {
+    return useCallback<React.EventHandler<TEvent>>((e) => {
+        for (const event of events) {
+            event?.(e);
+        } // for
+        // eslint-disable-next-line
+    }, [...events]);
+};
