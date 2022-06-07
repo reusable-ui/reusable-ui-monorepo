@@ -58,6 +58,10 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    useEvent,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
     usePropAccessibility,
     usePropEnabled,
     usePropActive,
@@ -68,10 +72,6 @@ import {
     AccessibilityProps,
     AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
-    useEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // types:
     SemanticProps,
