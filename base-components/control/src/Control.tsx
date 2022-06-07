@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useState,
-    useRef,
     useCallback,
 }                           from 'react'
 
@@ -63,15 +62,7 @@ import {
 }                           from '@reusable-ui/colors'          // a color management system
 import {
     // hooks:
-    usePropAccessibility,
     usePropEnabled,
-    usePropActive,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-    AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // styles:
@@ -112,12 +103,6 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
-
-// other libs:
-import {
-    default as triggerChange,
-    // @ts-ignore
-}                           from 'react-trigger-change'         // a helper lib
 
 
 
@@ -782,18 +767,18 @@ export interface ControlProps<TElement extends Element = Element>
 }
 const Control = <TElement extends Element = Element>(props: ControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useControlStyleSheet();
+    const styleSheet       = useControlStyleSheet();
     
     
     
     // states:
-    const enableDisableState = useEnableDisableState(props);
-    const activePassiveState = useActivePassiveState(props);
+    const focusBlurState   = useFocusBlurState(props);
+    const arriveLeaveState = useArriveLeaveState(props, focusBlurState);
     
     
     
     // fn props:
-    const propAccess         = usePropAccessibility(props);
+    const propEnabled      = usePropEnabled(props);
     
     
     
@@ -802,33 +787,19 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // remove states props:
         
         // accessibilities:
-        enabled         : _enabled,
-        inheritEnabled  : _inheritEnabled,
+        focus    : _focus,
+        tabIndex : _tabIndex,
         
-        readOnly        : _readOnly,
-        inheritReadOnly : _inheritReadOnly,
-        
-        active          : _active,
-        inheritActive   : _inheritActive,
-        
-        
-        
-        // children:
-        children,
-    ...restBasicProps} = props;
+        arrive   : _arrive,
+    ...restIndicatorProps} = props;
     
     
     
     // jsx:
     return (
-        <Basic<TElement>
+        <Indicator<TElement>
             // other props:
-            {...restBasicProps}
-            
-            
-            
-            // variants:
-            mild={props.mild ?? true}
+            {...restIndicatorProps}
             
             
             
@@ -836,22 +807,26 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
             mainClass={props.mainClass ?? styleSheet.main}
             stateClasses={[...(props.stateClasses ?? []),
                 // accessibilities:
-                enableDisableState.class,
-                activePassiveState.class,
+                focusBlurState.class,
+                arriveLeaveState.class,
             ]}
             
             
             
-            // :disabled | [aria-disabled]
-            {...enableDisableState.props}
-            
-            // :checked | [aria-selected]
-            {...activePassiveState.props}
+            // Control props:
+            {...{
+                // accessibilities:
+                tabIndex : props.tabIndex ?? (propEnabled ? 0 : -1), // makes any element type focusable
+            }}
             
             
             
             // events:
-            onAnimationEnd={(e) => {
+            onFocus=        {(e) => { props.onFocus?.(e);      focusBlurState.handleFocus();        }}
+            onBlur=         {(e) => { props.onBlur?.(e);       focusBlurState.handleBlur();         }}
+            onMouseEnter=   {(e) => { props.onMouseEnter?.(e); arriveLeaveState.handleMouseEnter(); }}
+            onMouseLeave=   {(e) => { props.onMouseLeave?.(e); arriveLeaveState.handleMouseLeave(); }}
+            onAnimationEnd= {(e) => {
                 props.onAnimationEnd?.(e); // preserves the original `onAnimationEnd`
                 
                 
@@ -859,14 +834,10 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
                 // states:
                 
                 // accessibilities:
-                enableDisableState.handleAnimationEnd(e);
-                activePassiveState.handleAnimationEnd(e);
+                focusBlurState.handleAnimationEnd(e);
+                arriveLeaveState.handleAnimationEnd(e);
             }}
-        >
-            { children && <AccessibilityProvider {...propAccess}>
-                { children }
-            </AccessibilityProvider> }
-        </Basic>
+        />
     );
 };
 export {
