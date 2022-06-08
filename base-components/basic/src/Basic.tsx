@@ -103,6 +103,7 @@ import {
     // hooks:
     useTriggerRender,
     useEvent,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // react components:
@@ -1699,6 +1700,26 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
     
     
     
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // layouts:
+        sizeVariant.class,
+        nudeVariant.class,
+        
+        // colors:
+        themeVariant.class,
+        gradientVariant.class,
+        outlinedVariant.class,
+        mildVariant.class,
+    );
+    
+    
+    
     // jsx:
     return (
         <Generic<TElement>
@@ -1709,17 +1730,7 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={[...(props.variantClasses ?? []),
-                // layouts:
-                sizeVariant.class,
-                nudeVariant.class,
-                
-                // colors:
-                themeVariant.class,
-                gradientVariant.class,
-                outlinedVariant.class,
-                mildVariant.class,
-            ]}
+            variantClasses={variantClasses}
         />
     );
 };
