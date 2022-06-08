@@ -188,9 +188,9 @@ export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(sel
 export const ifBlurring      = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurring, styles);
 export const ifBlurred       = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurred , styles);
 
-export const ifFocus         = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused                    ], styles);
-export const ifBlur          = (styles: CssStyleCollection): CssRule => rule([                    selectorIfBlurring, selectorIfBlurred], styles);
-export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfBlurring, selectorIfBlurred], styles);
+export const ifFocus         = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused                                        ], styles);
+export const ifBlur          = (styles: CssStyleCollection): CssRule => rule([                                        selectorIfBlurring, selectorIfBlurred], styles);
+export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused , selectorIfBlurring                   ], styles);
 
 
 
