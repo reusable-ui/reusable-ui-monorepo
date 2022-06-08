@@ -101,7 +101,7 @@ export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Rea
             }
             else {
                 multiRefs = true;
-                break; // no need for testing more events
+                break; // no need for testing more refs
             } // if
         } // for
         if (!multiRefs) return firstRef;
