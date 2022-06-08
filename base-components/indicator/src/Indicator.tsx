@@ -59,7 +59,7 @@ import {
 import {
     // hooks:
     useEvent,
-    useMergeEvent,
+    useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -720,7 +720,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     // events:
-    const handleAnimationEnd = useMergeEvent(
+    const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
