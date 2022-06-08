@@ -18,9 +18,9 @@ import type {
 
 // reusable-ui:
 import {
-    // utilities:
-    setRef,
-}                           from '@reusable-ui/utilities'   // common utility functions
+    // hooks:
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'       // react helper hooks
 
 
 
@@ -217,18 +217,10 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
     
     
     // refs:
-    const ref = useMemo((): React.Ref<TElement>|undefined => {
-        if (!elmRef && !outerRef) return undefined; // both are undefined => undefined
-        
-        if (elmRef && outerRef) { // both are defined => merge them
-            return (elm: TElement): void => {
-                setRef(elmRef  , elm);
-                setRef(outerRef, elm);
-            };
-        } // if
-        
-        return elmRef ?? outerRef; // one of them is defined
-    }, [elmRef, outerRef]);
+    const ref = useMergeRefs(
+        elmRef,
+        outerRef,
+    );
     
     
     
