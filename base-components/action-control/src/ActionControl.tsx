@@ -7,6 +7,8 @@ import {
     
     // hooks:
     useState,
+    useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -72,6 +74,7 @@ import {
 import {
     // hooks:
     usePropEnabled,
+    usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
@@ -105,6 +108,12 @@ import {
     ControlProps,
     Control,
 }                           from '@reusable-ui/control'         // a base component
+
+
+
+// defaults:
+const defaultActionMouses : number[]|null = [0];       // left click
+const defaultActionKeys   : string[]|null = ['space']; // space key
 
 
 
@@ -186,7 +195,12 @@ export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
 export const usePressReleaseState  = <TElement extends Element = Element>(props: ActionControlProps<TElement>) => {
     // fn props:
     const propEnabled         = usePropEnabled(props);
+    const propReadOnly        = usePropReadOnly(props);
+    const propEditable        = propEnabled && !propReadOnly;
     const isControllablePress = (props.press !== undefined);
+    
+    const actionMouses        = (props.actionMouses !== undefined) ? props.actionMouses : defaultActionMouses;
+    const actionKeys          = (props.actionKeys   !== undefined) ? props.actionKeys   : defaultActionKeys;
     
     
     
@@ -199,17 +213,17 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     // resets:
-    if (!propEnabled && pressDn) {
-        setPressDn(false); // lost press because the control is disabled, when the control is re-enabled => still lost press
+    if (!propEditable && pressDn) {
+        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
     } // if
     
     
     
     /*
-     * state is always release if disabled
+     * state is always released if (disabled || readOnly)
      * state is press/release based on [controllable press] (if set) and fallback to [uncontrollable press]
      */
-    const pressFn: boolean = propEnabled && (props.press /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const pressFn: boolean = propEditable && (props.press /*controllable*/ ?? pressDn /*uncontrollable*/);
     
     if (pressed !== pressFn) { // change detected => apply the change & start animating
         setPressed(pressFn);   // remember the last change
@@ -218,26 +232,79 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     
-    // handlers:
-    const handlePress   = useEvent(() => {
+    /**
+     * `null`  : never loaded  
+     * `true`  : loaded (live)  
+     * `false` : unloaded (dead)  
+     */
+    const loaded = useRef<boolean|null>(null);
+    useEffect(() => {
+        // setups:
+        // mark the control as live:
+        loaded.current = true;
+        
+        
+        
+        // cleanups:
+        return () => {
+            // mark the control as dead:
+            loaded.current = false;
+        };
+    }, []); // runs once on startup
+    
+    useEffect(() => {
         // conditions:
-        if (!propEnabled)        return; // control is disabled => no response required
+        if (!propEditable)       return; // control is not editable => no response required
+        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
+        
+        
+        
+        // handlers:
+        const handleRelease = (): void => {
+            if (!loaded.current) return; // `setTimeout` fires after the control was dead => ignore
+            
+            setPressDn(false);
+        };
+        const handleReleaseLate = (): void => {
+            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `press` prop
+            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
+        };
+        
+        
+        
+        // setups:
+        window.addEventListener('mouseup', handleReleaseLate);
+        window.addEventListener('keyup',   handleRelease);
+        
+        
+        
+        // cleanups:
+        return () => {
+            window.removeEventListener('mouseup', handleReleaseLate);
+            window.removeEventListener('keyup',   handleRelease);
+        };
+    }, [propEditable, isControllablePress]);
+    
+    
+    
+    // handlers:
+    const handlePress     = useEvent((): void => {
+        // conditions:
+        if (!propEditable)       return; // control is not editable => no response required
         if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
         
         
         
         setPressDn(true);
-    }, [propEnabled, isControllablePress]);
+    }, [propEditable, isControllablePress]);
     
-    const handleRelease = useEvent(() => {
-        // conditions:
-        if (!propEnabled)        return; // control is disabled => no response required
-        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
-        
-        
-        
-        setPressDn(false);
-    }, [propEnabled, isControllablePress]);
+    const handleMouseDown = useEvent((e: React.MouseEvent<Element>): void => {
+        if (!actionMouses || actionMouses.includes(e.button)) handlePress();
+    }, [actionMouses, handlePress]);
+    
+    const handleKeyDown   = useEvent((e: React.KeyboardEvent<Element>): void => {
+        if (!actionKeys || actionKeys.includes(e.code.toLowerCase()) || actionKeys.includes(e.key.toLowerCase())) handlePress();
+    }, [actionKeys, handlePress]);
     
     const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
         // conditions:
@@ -259,14 +326,13 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         class : ((): string|null => {
             // pressing:
             if (animating === true) {
-                // pressing by controllable prop => use class .pressing
-                if (isControllablePress) return 'pressing';
-                
-                // negative [tabIndex] => can't be pressed by user input => treats <ActionControl> as *wrapper* element => use class .pressing
-                if ((props.tabIndex ?? 0) < 0) return 'pressing';
-                
-                // otherwise use pseudo :active
-                return null;
+                // // pressing by controllable prop => use class .pressing
+                // if (isControllablePress) return 'pressing';
+                //
+                // // otherwise use pseudo :active
+                // return null;
+                // support for pressing by [space key] that not triggering :active
+                return 'pressing';
             } // if
             
             // releasing:
@@ -276,16 +342,17 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
             if (pressed) return 'pressed';
             
             // fully released:
-            if (isControllablePress) {
-                return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            }
-            else {
-                return null; // discard all classes above
-            } // if
+            // if (isControllablePress) {
+            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
+            // }
+            // else {
+            //     return null; // discard all classes above
+            // } // if
+            return null; // discard all classes above
         })(),
         
-        handlePress,
-        handleRelease,
+        handleMouseDown,
+        handleKeyDown,
         handleAnimationEnd,
     };
 };
@@ -515,7 +582,13 @@ export interface ActionControlProps<TElement extends Element = Element>
         ControlProps<TElement>
 {
     // accessibilities:
-    press ?: boolean
+    press        ?: boolean
+    
+    
+    
+    // behaviors:
+    actionMouses ?: number[]|null
+    actionKeys   ?: string[]|null
 }
 const ActionControl = <TElement extends Element = Element>(props: ActionControlProps<TElement>): JSX.Element|null => {
     // styles:
