@@ -291,7 +291,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     
     // handlers:
-    const handleFocus = useEvent((): void => {
+    const handleFocus = useEvent((_e: React.FocusEvent<Element>): void => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -301,7 +301,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(true);
     }, [propEnabled, isControllableFocus]);
     
-    const handleBlur  = useEvent((): void => {
+    const handleBlur  = useEvent((_e: React.FocusEvent<Element>): void => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
         if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
@@ -474,7 +474,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     
     // handlers:
-    const handleMouseEnter = useEvent((): void => {
+    const handleMouseEnter = useEvent((_e: React.MouseEvent<Element>): void => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
@@ -484,7 +484,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(true);
     }, [propEnabled, isControllableArrive]);
     
-    const handleMouseLeave = useEvent((): void => {
+    const handleMouseLeave = useEvent((_e: React.MouseEvent<Element>): void => {
         // conditions:
         if (!propEnabled)         return; // control is disabled => no response required
         if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
