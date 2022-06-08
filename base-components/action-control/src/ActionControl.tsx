@@ -132,7 +132,6 @@ const [presses] = cssVar<PressReleaseVars>();
 
 // .pressed will be added after pressing-animation done:
 const selectorIfPressed   = '.pressed'
-/* we don't use :active because we cannot decide which mouse_button or keyboard_key to activate :active */
 // .pressing = styled press, :active = native press:
 // the .disabled, .disable are used to kill native :active
 // the .pressed, .releasing, .released are used to overwrite native :active
