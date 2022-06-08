@@ -5,6 +5,7 @@ import {
     useLayoutEffect,
     useReducer,
     useCallback,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -51,27 +52,71 @@ export const useTriggerRender = () => {
 
 export { useCallback as useEvent };
 
-export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent> => {
-    return useCallback<React.EventHandler<TEvent>>((e) => {
+export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
+    return useMemo<React.EventHandler<TEvent>|undefined>(() => {
+        // check if singular event:
+        let firstEvent : React.EventHandler<TEvent>|undefined = undefined;
+        let multiEvents = false;
         for (const event of events) {
-            event?.(e);
+            if (!event) continue; // ignores empty event
+            
+            
+            
+            if (!firstEvent) {
+                firstEvent = event;
+            }
+            else {
+                multiEvents = true;
+            } // if
         } // for
-        // eslint-disable-next-line
+        if (!multiEvents) return firstEvent;
+        
+        
+        
+        return (e) => {
+            // merge events:
+            for (const event of events) {
+                event?.(e);
+            } // for
+            // eslint-disable-next-line
+        }
     }, [...events]);
 };
 
 
 
-export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): React.Ref<TValue> => {
-    return useCallback<React.RefCallback<TValue>>((value) => {
+export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): React.Ref<TValue>|undefined => {
+    return useMemo<React.Ref<TValue>|undefined>(() => {
+        // check if singular ref:
+        let firstRef : React.Ref<TValue>|undefined = undefined;
+        let multiRefs = false;
         for (const ref of refs) {
-            if (typeof(ref) === 'function') {
-                ref?.(value);
+            if (!ref) continue; // ignores empty ref
+            
+            
+            
+            if (!firstRef) {
+                firstRef = ref;
             }
             else {
-                (ref as React.MutableRefObject<TValue|null>).current = value;
+                multiRefs = true;
             } // if
         } // for
-        // eslint-disable-next-line
+        if (!multiRefs) return firstRef;
+        
+        
+        
+        // merge refs:
+        return (value) => {
+            for (const ref of refs) {
+                if (typeof(ref) === 'function') {
+                    ref?.(value);
+                }
+                else {
+                    (ref as React.MutableRefObject<TValue|null>).current = value;
+                } // if
+            } // for
+            // eslint-disable-next-line
+        }
     }, [...refs]);
 };
