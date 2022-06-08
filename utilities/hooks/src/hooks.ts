@@ -12,6 +12,7 @@ import {
 import type {
     // types:
     Optional,
+    SingleOrArray,
 }                           from '@cssfn/types'
 
 // other libs:
@@ -125,8 +126,8 @@ export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Re
 
 
 
-export const useMergeClasses = <TValue>(...classes: Optional<string>[]): Optional<string>[] => {
+export const useMergeClasses = <TValue>(...classes: SingleOrArray<Optional<string>>[]): Optional<string>[] => {
     return useMemo<Optional<string>[]>(() => {
-        return classes;
+        return classes.flat();
     }, [...classes]);
 };
