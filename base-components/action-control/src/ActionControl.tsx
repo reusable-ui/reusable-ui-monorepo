@@ -143,14 +143,14 @@ const selectorIfReleasing = '.releasing'
 // optionally use .released to overwrite native :active
 const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 
-export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
-export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
-export const ifBlurring      = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurring, styles);
-export const ifBlurred       = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurred , styles);
+export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
+export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
+export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
+export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
 
-export const ifFocus         = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused                    ], styles);
-export const ifBlur          = (styles: CssStyleCollection): CssRule => rule([                    selectorIfBlurring, selectorIfBlurred], styles);
-export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfBlurring, selectorIfBlurred], styles);
+export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                      ], styles);
+export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                    selectorIfReleasing, selectorIfReleased], styles);
+export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfReleasing, selectorIfReleased], styles);
 
 
 
