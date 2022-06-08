@@ -147,9 +147,9 @@ export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(se
 export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
 export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
 
-export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                      ], styles);
-export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                    selectorIfReleasing, selectorIfReleased], styles);
-export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfReleasing, selectorIfReleased], styles);
+export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
+export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
+export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
 
 
 
