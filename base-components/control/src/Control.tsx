@@ -803,7 +803,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     // events:
-    const handleFocus = useMergeEvents(
+    const handleFocus        = useMergeEvents(
         // preserves the original `onFocus`:
         props.onFocus,
         
@@ -814,7 +814,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         focusBlurState.handleFocus,
     );
-    const handleBlur = useMergeEvents(
+    const handleBlur         = useMergeEvents(
         // preserves the original `onBlur`:
         props.onBlur,
         
@@ -825,7 +825,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         focusBlurState.handleBlur,
     );
-    const handleMouseEnter = useMergeEvents(
+    const handleMouseEnter   = useMergeEvents(
         // preserves the original `onMouseEnter`:
         props.onMouseEnter,
         
@@ -836,7 +836,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         arriveLeaveState.handleMouseEnter,
     );
-    const handleMouseLeave = useMergeEvents(
+    const handleMouseLeave   = useMergeEvents(
         // preserves the original `onMouseLeave`:
         props.onMouseLeave,
         
