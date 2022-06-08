@@ -90,24 +90,21 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    ifDisable,
-    ifActive,
-    markActive      as indicatorMarkActive,
-    usesThemeActive as indicatorUsesThemeActive,
+    markActive,
     
     
     
     // styles:
-    usesIndicatorLayout,
-    usesIndicatorVariants,
-    usesIndicatorStates,
+    usesControlLayout,
+    usesControlVariants,
+    usesControlStates,
     
     
     
     // react components:
-    IndicatorProps,
-    Indicator,
-}                           from '@reusable-ui/indicator'       // a base component
+    ControlProps,
+    Control,
+}                           from '@reusable-ui/control'         // a base component
 
 
 
@@ -186,86 +183,86 @@ export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
 
 
 
-export const useFocusBlurState  = <TElement extends Element = Element>(props: ControlProps<TElement>) => {
+export const usePressReleaseState  = <TElement extends Element = Element>(props: ActionControlProps<TElement>) => {
     // fn props:
     const propEnabled         = usePropEnabled(props);
-    const isControllableFocus = (props.focus !== undefined);
+    const isControllablePress = (props.press !== undefined);
     
     
     
     // states:
-    const [focused,   setFocused  ] = useState<boolean>(props.focus ?? false); // true => focus, false => blur
-    const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => focusing-animation, false => blurring-animation
+    const [pressed,   setPressed  ] = useState<boolean>(props.press ?? false); // true => press, false => release
+    const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => pressing-animation, false => releasing-animation
     
-    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user focus, false => user blur
+    const [pressDn,   setPressDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user press, false => user release
     
     
     
     // resets:
-    if (!propEnabled && focusDn) {
-        setFocusDn(false); // lost focus because the control is disabled, when the control is re-enabled => still lost focus
+    if (!propEnabled && pressDn) {
+        setPressDn(false); // lost press because the control is disabled, when the control is re-enabled => still lost press
     } // if
     
     
     
     /*
-     * state is always blur if disabled
-     * state is focus/blur based on [controllable focus] (if set) and fallback to [uncontrollable focus]
+     * state is always release if disabled
+     * state is press/release based on [controllable press] (if set) and fallback to [uncontrollable press]
      */
-    const focusFn: boolean = propEnabled && (props.focus /*controllable*/ ?? focusDn /*uncontrollable*/);
+    const pressFn: boolean = propEnabled && (props.press /*controllable*/ ?? pressDn /*uncontrollable*/);
     
-    if (focused !== focusFn) { // change detected => apply the change & start animating
-        setFocused(focusFn);   // remember the last change
-        setAnimating(focusFn); // start focusing-animation/blurring-animation
+    if (pressed !== pressFn) { // change detected => apply the change & start animating
+        setPressed(pressFn);   // remember the last change
+        setAnimating(pressFn); // start pressing-animation/releasing-animation
     } // if
     
     
     
     // handlers:
-    const handleFocus = useEvent(() => {
+    const handlePress   = useEvent(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
-        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
         
         
         
-        setFocusDn(true);
-    }, [propEnabled, isControllableFocus]);
+        setPressDn(true);
+    }, [propEnabled, isControllablePress]);
     
-    const handleBlur  = useEvent(() => {
+    const handleRelease = useEvent(() => {
         // conditions:
         if (!propEnabled)        return; // control is disabled => no response required
-        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
         
         
         
-        setFocusDn(false);
-    }, [propEnabled, isControllableFocus]);
+        setPressDn(false);
+    }, [propEnabled, isControllablePress]);
     
     const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
+        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
         
         
         
         // clean up finished animation
         
-        setAnimating(null); // stop focusing-animation/blurring-animation
+        setAnimating(null); // stop pressing-animation/releasing-animation
     }, []);
     
     
     
     return {
-        focus : focused,
+        press : pressed,
         
         class : ((): string|null => {
             // pressing:
             if (animating === true) {
                 // pressing by controllable prop => use class .pressing
-                if (isControllableFocus) return 'pressing';
+                if (isControllablePress) return 'pressing';
                 
-                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .pressing
+                // negative [tabIndex] => can't be pressed by user input => treats <ActionControl> as *wrapper* element => use class .pressing
                 if ((props.tabIndex ?? 0) < 0) return 'pressing';
                 
                 // otherwise use pseudo :active
@@ -275,11 +272,11 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
             // releasing:
             if (animating === false) return 'releasing';
             
-            // fully focused:
-            if (focused) return 'focused';
+            // fully pressed:
+            if (pressed) return 'pressed';
             
             // fully released:
-            if (isControllableFocus) {
+            if (isControllablePress) {
                 return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
             }
             else {
@@ -287,8 +284,8 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
             } // if
         })(),
         
-        handleFocus,
-        handleBlur,
+        handlePress,
+        handleRelease,
         handleAnimationEnd,
     };
 };
@@ -297,14 +294,14 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
 
 
 // styles:
-export const usesControlLayout = () => {
+export const usesActionControlLayout = () => {
     return style({
         ...imports([
             // resets:
             stripoutControl(), // clear browser's default styles
             
             // layouts:
-            usesIndicatorLayout(),
+            usesControlLayout(),
             
             // colors:
             usesThemeDefault(),
@@ -320,7 +317,7 @@ export const usesControlLayout = () => {
         }),
     });
 };
-export const usesControlVariants = () => {
+export const usesActionControlVariants = () => {
     // dependencies:
     
     // layouts:
@@ -334,14 +331,14 @@ export const usesControlVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesIndicatorVariants(),
+            usesControlVariants(),
             
             // layouts:
             sizesRule,
         ]),
     });
 };
-export const usesControlStates = () => {
+export const usesActionControlStates = () => {
     // dependencies:
     
     // states:
@@ -353,7 +350,7 @@ export const usesControlStates = () => {
     return style({
         ...imports([
             // states:
-            usesIndicatorStates(),
+            usesControlStates(),
             focusBlurRule,
             arriveLeaveRule,
         ]),
@@ -391,16 +388,16 @@ export const usesControlStates = () => {
     });
 };
 
-export const useControlStyleSheet = createUseStyleSheet(() => ({
+export const useActionControlStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesControlLayout(),
+        usesActionControlLayout(),
         
         // variants:
-        usesControlVariants(),
+        usesActionControlVariants(),
         
         // states:
-        usesControlStates(),
+        usesActionControlStates(),
     ]),
 }), { id: 'k8egfpu96l' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -512,18 +509,15 @@ export const [controls, cssControlConfig] = cssConfig(() => {
 
 
 // react components:
-export interface ControlProps<TElement extends Element = Element>
+export interface ActionControlProps<TElement extends Element = Element>
     extends
         // bases:
-        IndicatorProps<TElement>
+        ControlProps<TElement>
 {
     // accessibilities:
-    focus    ?: boolean
-    tabIndex ?: number
-    
-    arrive   ?: boolean
+    press ?: boolean
 }
-const Control = <TElement extends Element = Element>(props: ControlProps<TElement>): JSX.Element|null => {
+const ActionControl = <TElement extends Element = Element>(props: ActionControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet       = useControlStyleSheet();
     
@@ -545,11 +539,8 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // remove states props:
         
         // accessibilities:
-        focus    : _focus,
-        tabIndex : _tabIndex,
-        
-        arrive   : _arrive,
-    ...restIndicatorProps} = props;
+        press : _press,
+    ...restControlProps} = props;
     
     
     
@@ -629,9 +620,9 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     // jsx:
     return (
-        <Indicator<TElement>
+        <Control<TElement>
             // other props:
-            {...restIndicatorProps}
+            {...restControlProps}
             
             
             
@@ -641,7 +632,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
             
             
             
-            // Control props:
+            // ActionControl props:
             {...{
                 // accessibilities:
                 tabIndex : props.tabIndex ?? (propEnabled ? 0 : -1), // makes any element type focusable
@@ -659,6 +650,6 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     );
 };
 export {
-    Control,
-    Control as default,
+    ActionControl,
+    ActionControl as default,
 }
