@@ -115,73 +115,33 @@ import {
 
 // states:
 
-//#region activePassive
-export const markActive = (): CssRule => style({
-    ...imports([
-        indicatorMarkActive(),
-        
-        usesThemeActive(), // switch to active theme
-    ]),
-});
-
-/**
- * Creates a default theme color definitions.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color definitions`.
- */
-// change default parameter from `null` to 'secondary':
-export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRule => basicUsesThemeDefault(themeName);
-
-/**
- * Creates conditional color definitions at active state.
- * @param themeName The name of active theme.
- * @returns A `CssRule` represents the conditional color definitions at active state.
- */
-// change default parameter from 'secondary' to 'primary':
-export const usesThemeActive  = (themeName: ThemeName|null = 'primary'): CssRule => indicatorUsesThemeActive(themeName);
-//#endregion activePassive
-
 //#region focusBlur
-export interface FocusBlurVars {
-    boxShadow        : any
-    anim             : any
-    
-    
-    
-    /**
-     * functional boxShadow color - at focus state.
-     */
-    boxShadowColorFn : any
-    /**
-     * final boxShadow color - at focus state.
-     */
-    boxShadowColor   : any
-    /**
-     * final boxShadow single layer - at focus state.
-     */
-    boxShadowLy      : any
+export interface PressReleaseVars {
+    filter : any
+    anim   : any
 }
-const [focuses] = cssVar<FocusBlurVars>();
+const [presses] = cssVar<PressReleaseVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerBoxShadow(focuses.boxShadow);
-    animRegistry.registerAnim(focuses.anim);
+    animRegistry.registerFilter(presses.filter);
+    animRegistry.registerAnim(presses.anim);
 }
 
 
 
-// .focused will be added after focusing-animation done:
-const selectorIfFocused  = '.focused'
-// .focusing = styled focus, :focus-within = native focus:
-// the .disabled, .disable are used to kill native :focus-within
-// the .focused, .blurring, .blurred are used to overwrite native :focus-within
-const selectorIfFocusing = ':is(.focusing, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
-// .blurring will be added after loosing focus and will be removed after blurring-animation done:
-const selectorIfBlurring = '.blurring'
-// if all above are not set => blurred:
-// optionally use .blurred to overwrite native :focus-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
+// .pressed will be added after pressing-animation done:
+const selectorIfPressed   = '.pressed'
+/* we don't use :active because we cannot decide which mouse_button or keyboard_key to activate :active */
+// .pressing = styled press, :active = native press:
+// the .disabled, .disable are used to kill native :active
+// the .pressed, .releasing, .released are used to overwrite native :active
+const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
+// .releasing will be added after loosing press and will be removed after releasing-animation done:
+const selectorIfReleasing = '.releasing'
+// if all above are not set => released:
+// optionally use .released to overwrite native :active
+const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
@@ -196,9 +156,9 @@ export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([se
 
 /**
  * Uses focus & blur states.
- * @returns A `StateMixin<FocusBlurVars>` represents focus & blur state definitions.
+ * @returns A `StateMixin<PressReleaseVars>` represents focus & blur state definitions.
  */
-export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
+export const usesFocusBlurState = (): StateMixin<PressReleaseVars> => {
     // dependencies:
     const [, themes] = usesThemeVariant();
     
@@ -329,27 +289,27 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         focus : focused,
         
         class : ((): string|null => {
-            // focusing:
+            // pressing:
             if (animating === true) {
-                // focusing by controllable prop => use class .focusing
-                if (isControllableFocus) return 'focusing';
+                // pressing by controllable prop => use class .pressing
+                if (isControllableFocus) return 'pressing';
                 
-                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
-                if ((props.tabIndex ?? 0) < 0) return 'focusing';
+                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .pressing
+                if ((props.tabIndex ?? 0) < 0) return 'pressing';
                 
-                // otherwise use pseudo :focus-within
+                // otherwise use pseudo :active
                 return null;
             } // if
             
-            // blurring:
-            if (animating === false) return 'blurring';
+            // releasing:
+            if (animating === false) return 'releasing';
             
             // fully focused:
             if (focused) return 'focused';
             
-            // fully blurred:
+            // fully released:
             if (isControllableFocus) {
-                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-within
+                return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
             }
             else {
                 return null; // discard all classes above
@@ -362,186 +322,6 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     };
 };
 //#endregion focusBlur
-
-//#region arriveLeave
-export interface ArriveLeaveVars {
-    filter : any
-    anim   : any
-}
-const [arrives] = cssVar<ArriveLeaveVars>();
-
-{
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(arrives.filter);
-    animRegistry.registerAnim(arrives.anim);
-}
-
-
-
-/***  arriving = hover(ing) + focus(ing|ed)  ***/
-
-// .arrived will be added after arriving-animation done:
-const selectorIfArrived  = '.arrived'
-// .arriving = styled arrive, :hover = native arrive:
-// the .disabled, .disable are used to kill native :hover
-// the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arriving, :is(:hover, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
-// .leaving will be added after loosing arrive and will be removed after leaving-animation done:
-const selectorIfLeaving  = '.leaving'
-// if all above are not set => left:
-// optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
-
-
-
-export const ifArrived       = (styles: CssStyleCollection): CssRule => rule(selectorIfArrived , styles);
-export const ifArriving      = (styles: CssStyleCollection): CssRule => rule(selectorIfArriving, styles);
-export const ifLeaving       = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaving , styles);
-export const ifLeft          = (styles: CssStyleCollection): CssRule => rule(selectorIfLeft    , styles);
-
-export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                   ], styles);
-export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeft], styles);
-export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                ], styles);
-
-
-
-/**
- * Uses arrive (hover) & leave states.
- * @returns A `StateMixin<ArriveLeaveVars>` represents arrive (hover) & leave state definitions.
- */
-export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
-    return [
-        () => style({
-            ...states([
-                ifArrived({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                    }),
-                }),
-                ifArriving({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                        [arrives.anim  ] : controls.animArrive,
-                    }),
-                }),
-                ifLeaving({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                        [arrives.anim  ] : controls.animLeave,
-                    }),
-                }),
-            ]),
-        }),
-        arrives,
-    ];
-};
-
-
-
-export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focus'>) => {
-    // fn props:
-    const propEnabled          = usePropEnabled(props);
-    const isControllableArrive = (props.arrive !== undefined);
-    
-    
-    
-    // states:
-    const [arrived,   setArrived  ] = useState<boolean>(props.arrive ?? false); // true => arrive, false => leave
-    const [animating, setAnimating] = useState<boolean|null>(null);             // null => no-animation, true => arriving-animation, false => leaving-animation
-    
-    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                 // uncontrollable (dynamic) state: true => user hover, false => user leave
-    
-    
-    
-    // resets:
-    if (!propEnabled && hoverDn) {
-        setHoverDn(false); // lost hover because the control is disabled, when the control is re-enabled => still lost hover
-    } // if
-    
-    
-    
-    /*
-     * state is always leave if disabled
-     * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focus])
-     */
-    const arriveFn: boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focus /*uncontrollable*/));
-    
-    if (arrived !== arriveFn) { // change detected => apply the change & start animating
-        setArrived(arriveFn);   // remember the last change
-        setAnimating(arriveFn); // start arriving-animation/leaving-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleMouseEnter = useEvent(() => {
-        // conditions:
-        if (!propEnabled)         return; // control is disabled => no response required
-        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
-        
-        
-        
-        setHoverDn(true);
-    }, [propEnabled, isControllableArrive]);
-    
-    const handleMouseLeave = useEvent(() => {
-        // conditions:
-        if (!propEnabled)         return; // control is disabled => no response required
-        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
-        
-        
-        
-        setHoverDn(false);
-    }, [propEnabled, isControllableArrive]);
-    
-    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
-        // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop arriving-animation/leaving-animation
-    }, []);
-    
-    
-    
-    return {
-        arrive : arrived,
-        
-        class  : ((): string|null => {
-            // arriving:
-            if (animating === true) {
-                // arriving by controllable prop => use class .arriving
-                if (isControllableArrive) return 'arriving';
-                
-                // otherwise use a combination of :hover || (.focused || .focusing || :focus)
-                return null;
-            } // if
-            
-            // leaving:
-            if (animating === false) return 'leaving';
-            
-            // fully arrived:
-            if (arrived) return 'arrived';
-            
-            // fully left:
-            if (isControllableArrive) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus)]
-            }
-            else {
-                return null; // discard all classes above
-            } // if
-        })(),
-        
-        handleMouseEnter,
-        handleMouseLeave,
-        handleAnimationEnd,
-    };
-};
-//#endregion arriveLeave
 
 
 
