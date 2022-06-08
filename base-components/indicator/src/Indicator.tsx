@@ -60,6 +60,7 @@ import {
     // hooks:
     useEvent,
     useMergeEvents,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -735,6 +736,20 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        enableDisableState.class,
+        activePassiveState.class,
+    );
+    
+    
+    
     // jsx:
     return (
         <Basic<TElement>
@@ -750,11 +765,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={[...(props.stateClasses ?? []),
-                // accessibilities:
-                enableDisableState.class,
-                activePassiveState.class,
-            ]}
+            stateClasses={stateClasses}
             
             
             
