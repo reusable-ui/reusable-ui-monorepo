@@ -122,3 +122,11 @@ export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Re
         };
     }, [...refs]);
 };
+
+
+
+export const useMergeClasses = <TValue>(...classes: Optional<string>[]): Optional<string>[] => {
+    return useMemo<Optional<string>[]>(() => {
+        return classes;
+    }, [...classes]);
+};
