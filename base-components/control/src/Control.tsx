@@ -66,7 +66,7 @@ import {
 import {
     // hooks:
     useEvent,
-    useMergeEvent,
+    useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -802,7 +802,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     // events:
-    const handleFocus = useMergeEvent(
+    const handleFocus = useMergeEvents(
         // preserves the original `onFocus`:
         props.onFocus,
         
@@ -813,7 +813,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         focusBlurState.handleFocus,
     );
-    const handleBlur = useMergeEvent(
+    const handleBlur = useMergeEvents(
         // preserves the original `onBlur`:
         props.onBlur,
         
@@ -824,7 +824,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         focusBlurState.handleBlur,
     );
-    const handleMouseEnter = useMergeEvent(
+    const handleMouseEnter = useMergeEvents(
         // preserves the original `onMouseEnter`:
         props.onMouseEnter,
         
@@ -835,7 +835,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         arriveLeaveState.handleMouseEnter,
     );
-    const handleMouseLeave = useMergeEvent(
+    const handleMouseLeave = useMergeEvents(
         // preserves the original `onMouseLeave`:
         props.onMouseLeave,
         
@@ -846,7 +846,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         arriveLeaveState.handleMouseLeave,
     );
-    const handleAnimationEnd = useMergeEvent(
+    const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
