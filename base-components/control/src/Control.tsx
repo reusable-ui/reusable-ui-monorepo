@@ -67,6 +67,7 @@ import {
     // hooks:
     useEvent,
     useMergeEvents,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -861,6 +862,20 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        focusBlurState.class,
+        arriveLeaveState.class,
+    );
+    
+    
+    
     // jsx:
     return (
         <Indicator<TElement>
@@ -871,11 +886,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={[...(props.stateClasses ?? []),
-                // accessibilities:
-                focusBlurState.class,
-                arriveLeaveState.class,
-            ]}
+            stateClasses={stateClasses}
             
             
             
