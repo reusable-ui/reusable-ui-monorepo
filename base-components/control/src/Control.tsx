@@ -378,19 +378,19 @@ const [arrives] = cssVar<ArriveLeaveVars>();
 
 
 
-// arrive = hover + focus
+/***  arriving = hover(ing) + focus(ing|ed)  ***/
 
 // .arrived will be added after arriving-animation done:
 const selectorIfArrived  = '.arrived'
 // .arriving = styled arrive, :hover = native arrive:
 // the .disabled, .disable are used to kill native :hover
 // the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = [':is(.arriving, :hover:not(:is(.disabled, .disable, .arrived, .leaving, .left)))', selectorIfFocusing]
+const selectorIfArriving = ':is(.arriving, :is(:hover, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
 // if all above are not set => left:
 // optionally use .left to overwrite native :hover
-const selectorIfLeft     = `:is(:not(:is(.arrived, .arriving, :hover:not(:is(.disabled, .disable)), .leaving)), .left)${selectorIfBlurred}`
+const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
 
 
 
