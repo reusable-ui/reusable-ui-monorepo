@@ -147,9 +147,9 @@ export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(s
 export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
 export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
 
-export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                      ], styles);
-export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                    selectorIfDisabling, selectorIfDisabled], styles);
-export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfDisabling, selectorIfDisabled], styles);
+export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                                         ], styles);
+export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfDisabling, selectorIfDisabled], styles);
+export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling,                    selectorIfDisabling, selectorIfDisabled], styles);
 
 
 
