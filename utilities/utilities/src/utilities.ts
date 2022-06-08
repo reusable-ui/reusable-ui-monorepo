@@ -32,17 +32,6 @@ export const isTypeOf = <TProps>(element: React.ReactNode, funcComponent: React.
     );
 };
 
-export const setRef = <TValue>(ref: React.Ref<TValue>|undefined, value: TValue|null): void => {
-    if (ref) {
-        if (typeof(ref) === 'function') {
-            ref(value);
-        }
-        else {
-            (ref as React.MutableRefObject<TValue|null>).current = value;
-        } // if
-    } // if
-};
-
 const isSingleValue = (expression: string|ReadonlyArray<string>): expression is string => (typeof(expression) === 'string') || (Array.isArray(expression) && (expression.length === 1));
 export const parseNumber = (expression: number|string|ReadonlyArray<string>|null|undefined): number|null => {
     if (typeof(expression) === 'number') {
