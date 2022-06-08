@@ -382,7 +382,7 @@ export const usesActionControlLayout = () => {
             
             
             // customize:
-            ...usesCssProps(controls), // apply config's cssProps
+            ...usesCssProps(actionControls), // apply config's cssProps
         }),
     });
 };
@@ -392,7 +392,7 @@ export const usesActionControlVariants = () => {
     // layouts:
     const [sizesRule] = usesSizeVariant((sizeName) => style({
         // overwrites propName = propName{SizeName}:
-        ...overwriteProps(controls, usesSuffixedProps(controls, sizeName)),
+        ...overwriteProps(actionControls, usesSuffixedProps(actionControls, sizeName)),
     }));
     
     
@@ -426,7 +426,7 @@ export const usesActionControlStates = () => {
         ...states([
             ifDisable({
                 // accessibilities:
-                cursor : controls.cursorDisable,
+                cursor : actionControls.cursorDisable,
             }),
             
             ifActive({
@@ -468,12 +468,12 @@ export const useActionControlStyleSheet = createUseStyleSheet(() => ({
         // states:
         usesActionControlStates(),
     ]),
-}), { id: 'k8egfpu96l' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
 // configs:
-export const [controls, cssControlConfig] = cssConfig(() => {
+export const [actionControls, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();
@@ -573,7 +573,7 @@ export const [controls, cssControlConfig] = cssConfig(() => {
             ['300ms', 'ease-out', 'both', keyframesLeave ],
         ]                               as CssKnownProps['anim'],
     };
-}, { prefix: 'ctrl' });
+}, { prefix: 'act' });
 
 
 
