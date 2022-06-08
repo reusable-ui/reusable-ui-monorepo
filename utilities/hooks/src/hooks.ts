@@ -73,8 +73,8 @@ export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...event
         
         
         
+        // merge events:
         return (e) => {
-            // merge events:
             for (const event of events) {
                 event?.(e);
             } // for
