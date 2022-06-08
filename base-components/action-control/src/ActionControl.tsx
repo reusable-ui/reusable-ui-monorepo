@@ -154,61 +154,33 @@ export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([s
 
 
 /**
- * Uses focus & blur states.
- * @returns A `StateMixin<PressReleaseVars>` represents focus & blur state definitions.
+ * Uses press & release states.
+ * @returns A `StateMixin<PressReleaseVars>` represents press & release state definitions.
  */
-export const usesFocusBlurState = (): StateMixin<PressReleaseVars> => {
-    // dependencies:
-    const [, themes] = usesThemeVariant();
-    
-    
-    
+export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
     return [
         () => style({
-            ...vars({
-                [focuses.boxShadowColorFn] : fallbacks(
-                    themes.focusImpt,     // first  priority
-                    themes.focus,         // second priority
-                    themes.focusCond,     // third  priority
-                    
-                    colors.secondaryThin, // default => uses secondary theme, because its color is neutral
-                ),
-                [focuses.boxShadowColor  ] : fallbacks(
-                    // no toggle outlined nor toggle mild yet (might be added in the future)
-                    
-                    focuses.boxShadowColorFn, // default => uses our `boxShadowColorFn`
-                ),
-                [focuses.boxShadowLy     ] : [[
-                    // combining: pos width spread color ...
-                    
-                    // boxShadowFocus pos, width, spread, etc:
-                    controls.boxShadowFocus,
-                    
-                    // boxShadowFocus color:
-                    focuses.boxShadowColor,
-                ]],
-            }),
             ...states([
-                ifFocused({
+                ifPressed({
                     ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
+                        [presses.filter] : actionControls.filterPress,
                     }),
                 }),
-                ifFocusing({
+                ifPressing({
                     ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
-                        [focuses.anim     ] : controls.animFocus,
+                        [presses.filter] : actionControls.filterPress,
+                        [presses.anim  ] : actionControls.animPress,
                     }),
                 }),
-                ifBlurring({
+                ifReleasing({
                     ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
-                        [focuses.anim     ] : controls.animBlur,
+                        [presses.filter] : actionControls.filterPress,
+                        [presses.anim  ] : actionControls.animRelease,
                     }),
                 }),
             ]),
         }),
-        focuses,
+        presses,
     ];
 };
 
