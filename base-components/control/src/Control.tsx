@@ -66,6 +66,7 @@ import {
 import {
     // hooks:
     useEvent,
+    useMergeEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -800,6 +801,66 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     
+    // events:
+    const handleFocus = useMergeEvent(
+        // preserves the original `onFocus`:
+        props.onFocus,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        focusBlurState.handleFocus,
+    );
+    const handleBlur = useMergeEvent(
+        // preserves the original `onBlur`:
+        props.onBlur,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        focusBlurState.handleBlur,
+    );
+    const handleMouseEnter = useMergeEvent(
+        // preserves the original `onMouseEnter`:
+        props.onMouseEnter,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        arriveLeaveState.handleMouseEnter,
+    );
+    const handleMouseLeave = useMergeEvent(
+        // preserves the original `onMouseLeave`:
+        props.onMouseLeave,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        arriveLeaveState.handleMouseLeave,
+    );
+    const handleAnimationEnd = useMergeEvent(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        focusBlurState.handleAnimationEnd,
+        arriveLeaveState.handleAnimationEnd,
+    );
+    
+    
+    
     // jsx:
     return (
         <Indicator<TElement>
@@ -827,21 +888,11 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
             
             
             // events:
-            onFocus=        {(e) => { props.onFocus?.(e);      focusBlurState.handleFocus();        }}
-            onBlur=         {(e) => { props.onBlur?.(e);       focusBlurState.handleBlur();         }}
-            onMouseEnter=   {(e) => { props.onMouseEnter?.(e); arriveLeaveState.handleMouseEnter(); }}
-            onMouseLeave=   {(e) => { props.onMouseLeave?.(e); arriveLeaveState.handleMouseLeave(); }}
-            onAnimationEnd= {(e) => {
-                props.onAnimationEnd?.(e); // preserves the original `onAnimationEnd`
-                
-                
-                
-                // states:
-                
-                // accessibilities:
-                focusBlurState.handleAnimationEnd(e);
-                arriveLeaveState.handleAnimationEnd(e);
-            }}
+            onFocus        = {handleFocus       }
+            onBlur         = {handleBlur        }
+            onMouseEnter   = {handleMouseEnter  }
+            onMouseLeave   = {handleMouseLeave  }
+            onAnimationEnd = {handleAnimationEnd}
         />
     );
 };
