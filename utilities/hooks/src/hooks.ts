@@ -67,6 +67,7 @@ export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...event
             }
             else {
                 multiEvents = true;
+                break; // no need for testing more events
             } // if
         } // for
         if (!multiEvents) return firstEvent;
@@ -79,7 +80,7 @@ export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...event
                 event?.(e);
             } // for
             // eslint-disable-next-line
-        }
+        };
     }, [...events]);
 };
 
@@ -100,6 +101,7 @@ export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Rea
             }
             else {
                 multiRefs = true;
+                break; // no need for testing more events
             } // if
         } // for
         if (!multiRefs) return firstRef;
@@ -117,6 +119,6 @@ export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Rea
                 } // if
             } // for
             // eslint-disable-next-line
-        }
+        };
     }, [...refs]);
 };
