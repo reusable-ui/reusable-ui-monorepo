@@ -802,6 +802,20 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        focusBlurState.class,
+        arriveLeaveState.class,
+    );
+    
+    
+    
     // events:
     const handleFocus        = useMergeEvents(
         // preserves the original `onFocus`:
@@ -858,20 +872,6 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // accessibilities:
         focusBlurState.handleAnimationEnd,
         arriveLeaveState.handleAnimationEnd,
-    );
-    
-    
-    
-    // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
-        
-        
-        
-        // accessibilities:
-        focusBlurState.class,
-        arriveLeaveState.class,
     );
     
     
