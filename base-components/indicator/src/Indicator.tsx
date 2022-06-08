@@ -720,6 +720,20 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        enableDisableState.class,
+        activePassiveState.class,
+    );
+    
+    
+    
     // events:
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -732,20 +746,6 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
         // accessibilities:
         enableDisableState.handleAnimationEnd,
         activePassiveState.handleAnimationEnd,
-    );
-    
-    
-    
-    // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
-        
-        
-        
-        // accessibilities:
-        enableDisableState.class,
-        activePassiveState.class,
     );
     
     
