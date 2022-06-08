@@ -121,7 +121,7 @@ const defaultActionKeys   : string[]|null = ['space']; // space key
 
 // states:
 
-//#region focusBlur
+//#region pressRelease
 export interface PressReleaseVars {
     filter : any
     anim   : any
@@ -141,12 +141,14 @@ const selectorIfPressed   = '.pressed'
 // .pressing = styled press, :active = native press:
 // the .disabled, .disable are used to kill native :active
 // the .pressed, .releasing, .released are used to overwrite native :active
-const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
+// const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
+const selectorIfPressing  = '.pressing'
 // .releasing will be added after loosing press and will be removed after releasing-animation done:
 const selectorIfReleasing = '.releasing'
 // if all above are not set => released:
 // optionally use .released to overwrite native :active
-const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
+// const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
+const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
@@ -356,7 +358,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         handleAnimationEnd,
     };
 };
-//#endregion focusBlur
+//#endregion pressRelease
 
 
 
