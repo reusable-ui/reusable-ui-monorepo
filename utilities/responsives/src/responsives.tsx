@@ -34,11 +34,8 @@ import {
     // hooks:
     useIsomorphicLayoutEffect,
     useTriggerRender,
+    useMergeRefs as _useMergeRefs, // avoids eslint check
 }                           from '@reusable-ui/hooks'       // react helper hooks
-import {
-    // utilities:
-    setRef,
-}                           from '@reusable-ui/utilities'   // common utility functions
 
 
 
@@ -358,14 +355,16 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             
             
             
-            const childRef   = _useRef<Element>(null);
             const refName    = (typeof(child.type) !== 'function') ? 'ref' : 'outerRef'; // assumes all function components are valid reusable-ui_component
+            const originRef  = (child as any)[refName] as React.Ref<Element>|undefined;
+            const childRef   = _useRef<Element>(null);
+            const ref        = _useMergeRefs(
+                originRef, // preserves the original ref|outerRef
+                
+                childRef,  // append a new childRef
+            );
             const childModif = React.cloneElement(child, {
-                [refName]: (elm: Element) => {
-                    setRef((child as any)[refName], elm); // preserves the original ref|outerRef
-                    
-                    setRef(childRef               , elm); // append a new childRef
-                },
+                [refName]: ref,
             });
             
             return {
