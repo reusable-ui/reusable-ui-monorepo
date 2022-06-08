@@ -59,3 +59,19 @@ export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...event
         // eslint-disable-next-line
     }, [...events]);
 };
+
+
+
+export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): React.Ref<TValue> => {
+    return useCallback<React.RefCallback<TValue>>((value) => {
+        for (const ref of refs) {
+            if (typeof(ref) === 'function') {
+                ref?.(value);
+            }
+            else {
+                (ref as React.MutableRefObject<TValue|null>).current = value;
+            } // if
+        } // for
+        // eslint-disable-next-line
+    }, [...refs]);
+};
