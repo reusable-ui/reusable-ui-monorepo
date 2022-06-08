@@ -52,7 +52,7 @@ export const useTriggerRender = () => {
 
 export { useCallback as useEvent };
 
-export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
+export const useMergeEvents = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
     return useMemo<React.EventHandler<TEvent>|undefined>(() => {
         // check if singular event:
         let firstEvent : React.EventHandler<TEvent>|undefined = undefined;
@@ -86,7 +86,7 @@ export const useMergeEvent = <TEvent extends React.SyntheticEvent<any>>(...event
 
 
 
-export const useMergeRef = <TValue>(...refs: Optional<React.Ref<TValue>>[]): React.Ref<TValue>|undefined => {
+export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): React.Ref<TValue>|undefined => {
     return useMemo<React.Ref<TValue>|undefined>(() => {
         // check if singular ref:
         let firstRef : React.Ref<TValue>|undefined = undefined;
