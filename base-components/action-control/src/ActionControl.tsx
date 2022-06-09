@@ -74,10 +74,15 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
-import type {
+import {
     // types:
     DefaultTag,
     DefaultRole,
+    
+    
+    
+    // hooks:
+    useTestSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
@@ -714,17 +719,19 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     const clientSideLink = children.find(isClientSideLink);        // take the first <Link> (if any)
     if (!clientSideLink) return mainComponent;                     // if no contain <Link> => normal <ActionControl>
     
+    const { isSemanticTag: isSemanticLink } = useTestSemantic(mainComponent.props, { defaultTag: 'a', defaultRole: 'link' });
     return (
         <ClientSideLink
             component={clientSideLink}
         >
             {React.cloneElement(mainComponent,
                 // props:
-                {},
+                undefined, // keeps the original props
                 
                 
                 
                 // children:
+                // overwrite the children:
                 ...children.flatMap((child): React.ReactNode[] => {
                     // merge with <Link>'s neighbours:
                     if (child !== clientSideLink) return [child];
@@ -755,4 +762,5 @@ interface ClientSideLinkProps {
     children  ?: React.ReactNode
 }
 const ClientSideLink = <TElement extends Element = Element>(props: ClientSideLinkProps): JSX.Element|null => {
+    
 };
