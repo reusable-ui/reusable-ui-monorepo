@@ -714,10 +714,23 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             onAnimationEnd = {handleAnimationEnd}
         />
     );
-    const clientSideLink = isClientSideLink(props.children);
-    if (!clientSideLink) return mainComponent;
+    if (!isClientSideLink(props.children)) return mainComponent;
+    
+    return (
+        <ClientSideLink
+            component={props.children}
+        />
+    );
 };
 export {
     ActionControl,
     ActionControl as default,
 }
+
+
+
+interface ClientSideLinkProps {
+    component  : JsxClientSideLink
+}
+const ClientSideLink = <TElement extends Element = Element>(props: ClientSideLinkProps): JSX.Element|null => {
+};
