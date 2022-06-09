@@ -147,15 +147,15 @@ export interface FocusBlurVars {
     
     
     /**
-     * functional boxShadow color - at focus state.
+     * functional boxShadow color - at focused state.
      */
     boxShadowColorFn : any
     /**
-     * final boxShadow color - at focus state.
+     * final boxShadow color - at focused state.
      */
     boxShadowColor   : any
     /**
-     * final boxShadow single layer - at focus state.
+     * final boxShadow single layer - at focused state.
      */
     boxShadowLy      : any
 }
@@ -255,35 +255,35 @@ export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
 
 export const useFocusBlurState  = <TElement extends Element = Element>(props: ControlProps<TElement>) => {
     // fn props:
-    const propEnabled         = usePropEnabled(props);
-    const isControllableFocus = (props.focus !== undefined);
+    const propEnabled           = usePropEnabled(props);
+    const isControllableFocused = (props.focused !== undefined);
     
     
     
     // states:
-    const [focused,   setFocused  ] = useState<boolean>(props.focus ?? false); // true => focus, false => blur
-    const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => focusing-animation, false => blurring-animation
+    const [focused,   setFocused  ] = useState<boolean>(props.focused ?? false); // true => focused, false => blurred
+    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => focusing-animation, false => blurring-animation
     
-    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user focus, false => user blur
+    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user focused, false => user blurred
     
     
     
     // resets:
     if (!propEnabled && focusDn) {
-        setFocusDn(false); // lost focus because the control is disabled, when the control is re-enabled => still lost focus
+        setFocusDn(false); // lost focused because the control is disabled, when the control is re-enabled => still lost focused
     } // if
     
     
     
     /*
      * state is always blur if disabled
-     * state is focus/blur based on [controllable focus] (if set) and fallback to [uncontrollable focus]
+     * state is focused/blurred based on [controllable focused] (if set) and fallback to [uncontrollable focused]
      */
-    const focusFn : boolean = propEnabled && (props.focus /*controllable*/ ?? focusDn /*uncontrollable*/);
+    const focusedFn : boolean = propEnabled && (props.focused /*controllable*/ ?? focusDn /*uncontrollable*/);
     
-    if (focused !== focusFn) { // change detected => apply the change & start animating
-        setFocused(focusFn);   // remember the last change
-        setAnimating(focusFn); // start focusing-animation/blurring-animation
+    if (focused !== focusedFn) { // change detected => apply the change & start animating
+        setFocused(focusedFn);   // remember the last change
+        setAnimating(focusedFn); // start focusing-animation/blurring-animation
     } // if
     
     
@@ -291,23 +291,23 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     // handlers:
     const handleFocus = useEvent<React.FocusEventHandler<Element>>(() => {
         // conditions:
-        if (!propEnabled)        return; // control is disabled => no response required
-        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        if (!propEnabled)          return; // control is disabled => no response required
+        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
         
         
         
         setFocusDn(true);
-    }, [propEnabled, isControllableFocus]);
+    }, [propEnabled, isControllableFocused]);
     
     const handleBlur  = useEvent<React.FocusEventHandler<Element>>(() => {
         // conditions:
-        if (!propEnabled)        return; // control is disabled => no response required
-        if (isControllableFocus) return; // controllable [focus] is set => no uncontrollable required
+        if (!propEnabled)          return; // control is disabled => no response required
+        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
         
         
         
         setFocusDn(false);
-    }, [propEnabled, isControllableFocus]);
+    }, [propEnabled, isControllableFocused]);
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
         // conditions:
@@ -324,13 +324,13 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     
     return {
-        focus : focused,
+        focused,
         
         class : ((): string|null => {
             // focusing:
             if (animating === true) {
                 // focusing by controllable prop => use class .focusing
-                if (isControllableFocus) return 'focusing';
+                if (isControllableFocused) return 'focusing';
                 
                 // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
                 if ((props.tabIndex ?? 0) < 0) return 'focusing';
@@ -346,7 +346,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
             if (focused) return 'focused';
             
             // fully blurred:
-            if (isControllableFocus) {
+            if (isControllableFocused) {
                 return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-within
             }
             else {
@@ -436,7 +436,7 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 
 
-export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focus'>) => {
+export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focused'>) => {
     // fn props:
     const propEnabled          = usePropEnabled(props);
     const isControllableArrive = (props.arrive !== undefined);
@@ -460,9 +460,9 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     /*
      * state is always leave if disabled
-     * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focus])
+     * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focused])
      */
-    const arriveFn : boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focus /*uncontrollable*/));
+    const arriveFn : boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focused /*uncontrollable*/));
     
     if (arrived !== arriveFn) { // change detected => apply the change & start animating
         setArrived(arriveFn);   // remember the last change
@@ -762,7 +762,7 @@ export interface ControlProps<TElement extends Element = Element>
         IndicatorProps<TElement>
 {
     // accessibilities:
-    focus    ?: boolean
+    focused  ?: boolean
     tabIndex ?: number
     
     arrive   ?: boolean
@@ -789,7 +789,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         // remove states props:
         
         // accessibilities:
-        focus    : _focus,
+        focused  : _focused,
         tabIndex : _tabIndex,
         
         arrive   : _arrive,
