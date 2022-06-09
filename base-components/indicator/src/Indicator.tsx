@@ -51,8 +51,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -515,10 +513,7 @@ export const usesIndicatorVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant((sizeName) => style({
-        // overwrites propName = propName{SizeName}:
-        ...overwriteProps(indicators, usesSuffixedProps(indicators, sizeName)),
-    }));
+    const [sizesRule] = usesSizeVariant(indicators);
     
     
     
