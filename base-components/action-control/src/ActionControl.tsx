@@ -221,7 +221,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     // resets:
     if (!propEditable && pressDn) {
-        setPressDn(false); // lost pressed because the control is not editable, when the control is re-editable => still lost pressed
+        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
     } // if
     
     
