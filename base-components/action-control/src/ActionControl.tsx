@@ -107,6 +107,12 @@ import {
     Control,
 }                           from '@reusable-ui/control'         // a base component
 
+// other libs:
+import type {
+    // types:
+    To,
+}                           from 'history'                      // a helper lib
+
 
 
 // defaults:
@@ -497,6 +503,29 @@ export const [actionControls, cssActionControlConfig] = cssConfig(() => {
         ]                       as CssKnownProps['anim'],
     };
 }, { prefix: 'act' });
+
+
+
+// utilities:
+export type JsxReactRouterLink = React.ReactElement<{
+    to        ?: To
+    children  ?: React.ReactNode
+    passHref  ?: boolean
+    component ?: React.ReactElement
+}>
+export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
+    return (
+        React.isValidElement(node)
+        &&
+        (typeof(node.type) === 'object')
+        &&
+        (typeof((node.type as any).render) === 'function')
+     // &&
+     // ((node.type as any).render.name === 'LinkWithRef') // gone in production
+        &&
+        !!node.props.to
+    );
+};
 
 
 
