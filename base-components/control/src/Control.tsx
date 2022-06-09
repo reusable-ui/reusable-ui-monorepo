@@ -50,8 +50,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -573,10 +571,7 @@ export const usesControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant((sizeName) => style({
-        // overwrites propName = propName{SizeName}:
-        ...overwriteProps(controls, usesSuffixedProps(controls, sizeName)),
-    }));
+    const [sizesRule] = usesSizeVariant(controls);
     
     
     
