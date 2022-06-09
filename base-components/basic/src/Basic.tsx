@@ -70,6 +70,12 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'           // strongly typed of css variables
 import {
+    // types:
+    CssConfigProps,
+    Refs,
+    
+    
+    
     cssConfig,
     
     
@@ -139,34 +145,25 @@ export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule 
 /**
  * Uses basic sizes.  
  * For example: `sm`, `lg`.
- * @param factory Customize the callback to create sizing definitions for each size in `options`.
+ * @param configProps Customize the sizing definitions from configuration for each size in `options`.
  * @param options Customize the size options.
  * @returns A `VariantMixin<SizeVars>` represents sizing definitions for each size in `options`.
  */
-export const usesSizeVariant = (factory : ((sizeName: SizeName) => CssStyleCollection) = sizeOf, options = sizeOptions()): VariantMixin<SizeVars> => {
+export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => {
     return [
         () => style({
             ...variants([
                 options.map((sizeName) =>
-                    ifSize(sizeName,
-                        factory(sizeName)
-                    )
+                    ifSize(sizeName, {
+                        // overwrites propName = propName{SizeName}:
+                        ...overwriteProps(configProps, usesSuffixedProps(configProps, sizeName)),
+                    })
                 ),
             ]),
         }),
         sizes,
     ];
 };
-
-/**
- * Creates sizing definitions for the given `sizeName`.
- * @param sizeName The size name.
- * @returns A `CssRule` represents sizing definitions for the given `sizeName`.
- */
-export const sizeOf = (sizeName: SizeName): CssRule => style({
-    // overwrites propName = propName{SizeName}:
-    ...overwriteProps(sizes, usesSuffixedProps(sizes, sizeName)),
-});
 
 /**
  * Gets all available size options.
@@ -1479,7 +1476,7 @@ export const usesBasicVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant();
+    const [sizesRule   ] = usesSizeVariant(basics);
     const [nudeRule    ] = usesNudeVariant();
     
     // colors:
