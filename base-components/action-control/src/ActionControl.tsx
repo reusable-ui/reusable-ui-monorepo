@@ -440,101 +440,61 @@ export const [actionControls, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();
-    const boxShadows = animRegistry.boxShadows;
-    const filters    = animRegistry.filters;
+    const filters = animRegistry.filters;
     
-    const [, {boxShadow : boxShadowFocusBlur}] = usesFocusBlurState();
-    const [, {filter    : filterArriveLeave }] = usesArriveLeaveState();
+    const [, {filter: filterPressRelease}] = usesPressReleaseState();
     
     
     
     //#region keyframes
-    const frameBlurred  = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
-            
-         // boxShadowFocusBlur, // missing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
-    });
-    const frameFocused = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
-            
-            boxShadowFocusBlur, // existing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
-    });
-    const [keyframesFocusRule, keyframesFocus] = keyframes({
-        from : frameBlurred,
-        to   : frameFocused,
-    });
-    keyframesFocus.value = 'focus'; // the @keyframes name should contain 'focus' in order to be recognized by `useFocusBlurState`
-    const [keyframesBlurRule , keyframesBlur ] = keyframes({
-        from : frameFocused,
-        to   : frameBlurred,
-    });
-    keyframesBlur.value  = 'blur';  // the @keyframes name should contain 'blur'  in order to be recognized by `useFocusBlurState`
-    
-    
-    
-    const frameLeft = style({
+    const frameReleased = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
+            ...filters.filter((f) => (f !== filterPressRelease)),
             
-         // filterArriveLeave, // missing the last => let's the browser interpolated it
+         // filterPressRelease, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
-    const frameArrived  = style({
+    const framePressed  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
+            ...filters.filter((f) => (f !== filterPressRelease)),
             
-            filterArriveLeave, // existing the last => let's the browser interpolated it
+            filterPressRelease, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
-    const [keyframesArriveRule, keyframesArrive] = keyframes({
-        from : frameLeft,
-        to   : frameArrived,
+    const [keyframesPressRule  , keyframesPress  ] = keyframes({
+        from : frameReleased,
+        to   : framePressed,
     });
-    keyframesArrive.value = 'arrive'; // the @keyframes name should contain 'arrive' in order to be recognized by `useArriveLeaveState`
-    const [keyframesLeaveRule , keyframesLeave ] = keyframes({
-        from : frameArrived,
-        to   : frameLeft,
+    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useEnableDisableState`
+    const [keyframesReleaseRule, keyframesRelease] = keyframes({
+        from : framePressed,
+        to   : frameReleased,
     });
-    keyframesLeave.value  = 'leave';  // the @keyframes name should contain 'leave'  in order to be recognized by `useArriveLeaveState`
+    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useEnableDisableState`
     //#endregion keyframes
     
     
     
     return {
         // accessibilities:
-        cursorDisable  : 'not-allowed'  as CssKnownProps['cursor'],
+        cursor      : 'pointer' as CssKnownProps['cursor'],
         
         
         
         // animations:
-        boxShadowFocus : [
-            [0, 0, 0, '0.25rem'],
-        ]                               as CssKnownProps['boxShadow'],
-        filterArrive   : [[
-            'brightness(85%)',
-            'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
-        ]]                              as CssKnownProps['filter'],
+        filterPress : [[
+            'brightness(65%)',
+            'contrast(150%)',
+        ]]                      as CssKnownProps['filter'],
         
-        ...keyframesFocusRule,
-        ...keyframesBlurRule,
-        ...keyframesArriveRule,
-        ...keyframesLeaveRule,
-        animFocus      : [
-            ['150ms', 'ease-out', 'both', keyframesFocus ],
-        ]                               as CssKnownProps['anim'],
-        animBlur       : [
-            ['300ms', 'ease-out', 'both', keyframesBlur  ],
-        ]                               as CssKnownProps['anim'],
-        animArrive     : [
-            ['150ms', 'ease-out', 'both', keyframesArrive],
-        ]                               as CssKnownProps['anim'],
-        animLeave      : [
-            ['300ms', 'ease-out', 'both', keyframesLeave ],
-        ]                               as CssKnownProps['anim'],
+        ...keyframesPressRule,
+        ...keyframesReleaseRule,
+        animPress   : [
+            ['150ms', 'ease-out', 'both', keyframesPress ],
+        ]                       as CssKnownProps['anim'],
+        animRelease : [
+            ['300ms', 'ease-out', 'both', keyframesRelease],
+        ]                       as CssKnownProps['anim'],
     };
 }, { prefix: 'act' });
 
