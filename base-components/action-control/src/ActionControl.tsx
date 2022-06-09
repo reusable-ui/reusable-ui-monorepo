@@ -313,11 +313,11 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     }, [propEditable, isControllablePress]);
     
     const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((e) => {
-        if (!actionMouses || actionMouses.includes(e.button)) handlePress();
+        if (!actionMouses || actionMouses.includes(e.button)) handlePress(e);
     }, [actionMouses, handlePress]);
     
     const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((e) => {
-        if (!actionKeys || actionKeys.includes(e.code.toLowerCase()) || actionKeys.includes(e.key.toLowerCase())) handlePress();
+        if (!actionKeys || actionKeys.includes(e.code.toLowerCase()) || actionKeys.includes(e.key.toLowerCase())) handlePress(e);
     }, [actionKeys, handlePress]);
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
