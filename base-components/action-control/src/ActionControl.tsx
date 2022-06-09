@@ -43,7 +43,6 @@ import {
 import {
     // utilities:
     cssVar,
-    fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
@@ -55,14 +54,6 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
-import {
-    // configs:
-    colors,
-}                           from '@reusable-ui/colors'          // a color management system
-import {
-    // styles:
-    stripoutControl,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // hooks:
     useEvent,
@@ -92,11 +83,7 @@ import {
     
     // hooks:
     usesSizeVariant,
-    ThemeName,
-    usesThemeVariant,
-    usesThemeDefault as basicUsesThemeDefault,
     usesAnim,
-    fallbackNoneBoxShadow,
     fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -687,7 +674,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     
     
     // jsx:
-    const mainComponent = (
+    const actionControl = (
         <Control<TElement>
             // other props:
             {...restControlProps}
@@ -717,31 +704,22 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     // inspect if <ActionControl>'s children contain one/more <Link>:
     const children       = React.Children.toArray(props.children); // convert the children to array
     const clientSideLink = children.find(isClientSideLink);        // take the first <Link> (if any)
-    if (!clientSideLink) return mainComponent;                     // if no contain <Link> => normal <ActionControl>
+    if (!clientSideLink) return actionControl;                     // if no contain <Link> => normal <ActionControl>
     
-    const { isSemanticTag: isSemanticLink } = useTestSemantic(mainComponent.props, { defaultTag: 'a', defaultRole: 'link' });
     return (
         <ClientSideLink
-            component={clientSideLink}
+            outerComponent={clientSideLink}
+            innerComponent={actionControl}
         >
-            {React.cloneElement(mainComponent,
-                // props:
-                undefined, // keeps the original props
+            {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
+                // current <ActionControl>'s children:
+                if (child !== clientSideLink) return [child];
                 
                 
                 
-                // children:
-                // overwrite the children:
-                ...children.flatMap((child): React.ReactNode[] => {
-                    // merge with <Link>'s neighbours:
-                    if (child !== clientSideLink) return [child];
-                    
-                    
-                    
-                    // merge with <Link>'s children:
-                    return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
-                })
-            )}
+                // merge with <Link>'s children:
+                return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
+            })}
         </ClientSideLink>
     );
 };
@@ -754,13 +732,30 @@ export {
 
 interface ClientSideLinkProps {
     // components:
-    component  : JsxClientSideLink
+    outerComponent : JsxClientSideLink
+    innerComponent : React.ReactElement
     
     
     
     // children:
-    children  ?: React.ReactNode
+    children      ?: React.ReactNode
 }
-const ClientSideLink = <TElement extends Element = Element>(props: ClientSideLinkProps): JSX.Element|null => {
+const ClientSideLink = <TElement extends Element = Element>({ outerComponent, innerComponent, children }: ClientSideLinkProps): JSX.Element|null => {
+    const { isSemanticTag: isSemanticLink } = useTestSemantic(innerComponent.props, { defaultTag: 'a', defaultRole: 'link' });
     
+    
+    
+    // jsx:
+    return React.cloneElement(outerComponent,
+        // props:
+        {
+            component : innerComponent,
+            passHref  : isSemanticLink,
+        },
+        
+        
+        
+        // children,
+        children
+    );
 };
