@@ -1327,7 +1327,7 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     /*
      * the state is excited/normal based on [controllable excited]
      */
-    const excitedFn: boolean = (excited /*controllable*/ ?? false);
+    const excitedFn : boolean = (excited /*controllable*/ ?? false);
     
     
     
