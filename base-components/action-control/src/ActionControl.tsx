@@ -117,8 +117,8 @@ import type {
 const defaultActionMouses : number[]|null = [0];       // left click
 const defaultActionKeys   : string[]|null = ['space']; // space key
 
-const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div> if the `tag` was not specified
-const defaultRole : DefaultRole = [      'button', 'link'] // uses `role="button"` for `tag` other than `button|a`
+const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
+const defaultRole : DefaultRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
 
 
 
