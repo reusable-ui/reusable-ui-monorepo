@@ -52,8 +52,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -366,18 +364,12 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
 export const usesActionControlLayout = () => {
     return style({
         ...imports([
-            // resets:
-            stripoutControl(), // clear browser's default styles
-            
             // layouts:
             usesControlLayout(),
-            
-            // colors:
-            usesThemeDefault(),
         ]),
         ...style({
-            // positions:
-            position: 'relative', // supports for boxShadowFocus, prevents boxShadowFocus from clipping
+            // accessibilities:
+            userSelect : 'none', // disable selecting text (double clicking not causing selecting text)
             
             
             
@@ -390,10 +382,7 @@ export const usesActionControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant((sizeName) => style({
-        // overwrites propName = propName{SizeName}:
-        ...overwriteProps(actionControls, usesSuffixedProps(actionControls, sizeName)),
-    }));
+    const [sizesRule] = usesSizeVariant(actionControls);
     
     
     
