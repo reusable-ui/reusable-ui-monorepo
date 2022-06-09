@@ -532,16 +532,13 @@ export type JsxReactRouterLink = React.ReactElement<{
 }>
 export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
     return (
-        React.Children.toArray(node)
-        .some((child) =>
-            React.isValidElement(child)                         // JSX element
-            &&
-            (typeof(child.type) === 'object')                   // forwardRef
-            &&
-            (typeof((child.type as any).render) === 'function') // functional component
-            &&
-            !!child.props.to                                    // one of ReactRouter prop
-        )
+        React.isValidElement(node)                         // JSX element
+        &&
+        (typeof(node.type) === 'object')                   // forwardRef
+        &&
+        (typeof((node.type as any).render) === 'function') // functional component
+        &&
+        !!node.props.to                                    // one of ReactRouter prop
     );
 };
 
@@ -561,14 +558,11 @@ export type JsxNextLink = React.ReactElement<{
 }>
 export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
     return (
-        React.Children.toArray(node)
-        .some((child) =>
-            React.isValidElement(child)         // JSX element
-            &&
-            (typeof(child.type) === 'function') // functional component
-            &&
-            !!child.props.href                  // one of NextLink prop
-        )
+        React.isValidElement(node)         // JSX element
+        &&
+        (typeof(node.type) === 'function') // functional component
+        &&
+        !!node.props.href                  // one of NextLink prop
     );
 };
 
@@ -714,12 +708,26 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             onAnimationEnd = {handleAnimationEnd}
         />
     );
-    if (!isClientSideLink(props.children)) return mainComponent;
+    
+    // inspect if <ActionControl>'s children contain one/more <Link>:
+    const children       = React.Children.toArray(props.children); // convert the children to array
+    const clientSideLink = children.find(isClientSideLink);        // take the first <Link> (if any)
+    if (!clientSideLink) return mainComponent;                     // if no contain <Link> => normal <ActionControl>
     
     return (
         <ClientSideLink
-            component={props.children}
-        />
+            component={clientSideLink}
+        >
+            {children.flatMap((child): React.ReactNode[] => {
+                // merge with <Link>'s neighbours:
+                if (child !== clientSideLink) return [child];
+                
+                
+                
+                // merge with <Link>'s children:
+                return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
+            })}
+        </ClientSideLink>
     );
 };
 export {
@@ -730,7 +738,13 @@ export {
 
 
 interface ClientSideLinkProps {
+    // components:
     component  : JsxClientSideLink
+    
+    
+    
+    // children:
+    children  ?: React.ReactNode
 }
 const ClientSideLink = <TElement extends Element = Element>(props: ClientSideLinkProps): JSX.Element|null => {
 };
