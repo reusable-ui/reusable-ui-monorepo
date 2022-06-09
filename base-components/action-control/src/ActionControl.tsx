@@ -576,7 +576,7 @@ export const isClientSideLink = (node: React.ReactNode): node is JsxClientSideLi
 
 
 // handlers:
-const handleClickDisabled = (e: React.MouseEvent<Element>): void => {
+const handleClickDisabled : React.MouseEventHandler<Element> = (e) => {
     e.stopPropagation();
 };
 
