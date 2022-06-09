@@ -221,7 +221,7 @@ export const useEnableDisableState = (props: AccessibilityProps & SemanticProps)
     
     
     // handlers:
-    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
@@ -385,7 +385,7 @@ export const useActivePassiveState = (props: AccessibilityProps & SemanticProps)
     
     
     // handlers:
-    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
