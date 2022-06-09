@@ -438,35 +438,35 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focused'>) => {
     // fn props:
-    const propEnabled          = usePropEnabled(props);
-    const isControllableArrive = (props.arrive !== undefined);
+    const propEnabled           = usePropEnabled(props);
+    const isControllableArrived = (props.arrived !== undefined);
     
     
     
     // states:
-    const [arrived,   setArrived  ] = useState<boolean>(props.arrive ?? false); // true => arrive, false => leave
-    const [animating, setAnimating] = useState<boolean|null>(null);             // null => no-animation, true => arriving-animation, false => leaving-animation
+    const [arrived,   setArrived  ] = useState<boolean>(props.arrived ?? false); // true => arrived, false => left
+    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => arriving-animation, false => leaving-animation
     
-    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                 // uncontrollable (dynamic) state: true => user hover, false => user leave
+    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user hovered, false => user left
     
     
     
     // resets:
     if (!propEnabled && hoverDn) {
-        setHoverDn(false); // lost hover because the control is disabled, when the control is re-enabled => still lost hover
+        setHoverDn(false); // lost hovered because the control is disabled, when the control is re-enabled => still lost hovered
     } // if
     
     
     
     /*
-     * state is always leave if disabled
-     * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focused])
+     * state is always left if disabled
+     * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
      */
-    const arriveFn : boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focused /*uncontrollable*/));
+    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focused /*uncontrollable*/));
     
-    if (arrived !== arriveFn) { // change detected => apply the change & start animating
-        setArrived(arriveFn);   // remember the last change
-        setAnimating(arriveFn); // start arriving-animation/leaving-animation
+    if (arrived !== arrivedFn) { // change detected => apply the change & start animating
+        setArrived(arrivedFn);   // remember the last change
+        setAnimating(arrivedFn); // start arriving-animation/leaving-animation
     } // if
     
     
@@ -474,23 +474,23 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     // handlers:
     const handleMouseEnter = useEvent<React.MouseEventHandler<Element>>(() => {
         // conditions:
-        if (!propEnabled)         return; // control is disabled => no response required
-        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
+        if (!propEnabled)          return; // control is disabled => no response required
+        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
         
         
         
         setHoverDn(true);
-    }, [propEnabled, isControllableArrive]);
+    }, [propEnabled, isControllableArrived]);
     
     const handleMouseLeave = useEvent<React.MouseEventHandler<Element>>(() => {
         // conditions:
-        if (!propEnabled)         return; // control is disabled => no response required
-        if (isControllableArrive) return; // controllable [arrive] is set => no uncontrollable required
+        if (!propEnabled)          return; // control is disabled => no response required
+        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
         
         
         
         setHoverDn(false);
-    }, [propEnabled, isControllableArrive]);
+    }, [propEnabled, isControllableArrived]);
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
         // conditions:
@@ -507,13 +507,13 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     
     return {
-        arrive : arrived,
+        arrived,
         
         class  : ((): string|null => {
             // arriving:
             if (animating === true) {
                 // arriving by controllable prop => use class .arriving
-                if (isControllableArrive) return 'arriving';
+                if (isControllableArrived) return 'arriving';
                 
                 // otherwise use a combination of :hover || (.focused || .focusing || :focus)
                 return null;
@@ -526,7 +526,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
             if (arrived) return 'arrived';
             
             // fully left:
-            if (isControllableArrive) {
+            if (isControllableArrived) {
                 return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus)]
             }
             else {
@@ -765,7 +765,7 @@ export interface ControlProps<TElement extends Element = Element>
     focused  ?: boolean
     tabIndex ?: number
     
-    arrive   ?: boolean
+    arrived  ?: boolean
 }
 const Control = <TElement extends Element = Element>(props: ControlProps<TElement>): JSX.Element|null => {
     // styles:
@@ -792,7 +792,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
         focused  : _focused,
         tabIndex : _tabIndex,
         
-        arrive   : _arrive,
+        arrived  : _arrived,
     ...restIndicatorProps} = props;
     
     
