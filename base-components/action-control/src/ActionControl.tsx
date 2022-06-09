@@ -294,7 +294,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     // handlers:
-    const handlePress     = useEvent((): void => {
+    const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
         // conditions:
         if (!propEditable)       return; // control is not editable => no response required
         if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
@@ -304,15 +304,15 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         setPressDn(true);
     }, [propEditable, isControllablePress]);
     
-    const handleMouseDown = useEvent((e: React.MouseEvent<Element>): void => {
+    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((e) => {
         if (!actionMouses || actionMouses.includes(e.button)) handlePress();
     }, [actionMouses, handlePress]);
     
-    const handleKeyDown   = useEvent((e: React.KeyboardEvent<Element>): void => {
+    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((e) => {
         if (!actionKeys || actionKeys.includes(e.code.toLowerCase()) || actionKeys.includes(e.key.toLowerCase())) handlePress();
     }, [actionKeys, handlePress]);
     
-    const handleAnimationEnd = useEvent((e: React.AnimationEvent<Element>): void => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
         // conditions:
         if (e.target !== e.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
