@@ -714,6 +714,8 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             onAnimationEnd = {handleAnimationEnd}
         />
     );
+    const clientSideLink = isClientSideLink(props.children);
+    if (!clientSideLink) return mainComponent;
 };
 export {
     ActionControl,
