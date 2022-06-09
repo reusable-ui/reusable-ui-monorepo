@@ -508,22 +508,53 @@ export const [actionControls, cssActionControlConfig] = cssConfig(() => {
 
 // utilities:
 export type JsxReactRouterLink = React.ReactElement<{
+    // links:
     to        ?: To
-    children  ?: React.ReactNode
+    
+    
+    
+    // components:
     passHref  ?: boolean
     component ?: React.ReactElement
+    
+    
+    
+    // children:
+    children  ?: React.ReactNode
 }>
 export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
     return (
-        React.isValidElement(node)
+        React.isValidElement(node)                         // JSX element
         &&
-        (typeof(node.type) === 'object')
+        (typeof(node.type) === 'object')                   // forwardRef
         &&
-        (typeof((node.type as any).render) === 'function')
-     // &&
-     // ((node.type as any).render.name === 'LinkWithRef') // gone in production
+        (typeof((node.type as any).render) === 'function') // functional component
         &&
-        !!node.props.to
+        !!node.props.to                                    // one of ReactRouter prop
+    );
+};
+
+export type JsxNextLink = React.ReactElement<{
+    // links:
+    href      ?: To
+    
+    
+    
+    // components:
+    passHref  ?: boolean
+    
+    
+    
+    // children:
+    children  ?: React.ReactNode
+}>
+export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
+    return (
+        React.isValidElement(node)         // JSX element
+        &&
+        (typeof(node.type) === 'function') // functional component
+        &&
+        !!node.props.href                  // one of NextLink prop
     );
 };
 
