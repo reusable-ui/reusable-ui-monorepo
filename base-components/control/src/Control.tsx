@@ -279,7 +279,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
      * state is always blur if disabled
      * state is focus/blur based on [controllable focus] (if set) and fallback to [uncontrollable focus]
      */
-    const focusFn: boolean = propEnabled && (props.focus /*controllable*/ ?? focusDn /*uncontrollable*/);
+    const focusFn : boolean = propEnabled && (props.focus /*controllable*/ ?? focusDn /*uncontrollable*/);
     
     if (focused !== focusFn) { // change detected => apply the change & start animating
         setFocused(focusFn);   // remember the last change
@@ -462,7 +462,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
      * state is always leave if disabled
      * state is arrive/leave based on [controllable arrive] (if set) and fallback to ([uncontrollable hover] || [uncontrollable focus])
      */
-    const arriveFn: boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focus /*uncontrollable*/));
+    const arriveFn : boolean = propEnabled && (props.arrive /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focus /*uncontrollable*/));
     
     if (arrived !== arriveFn) { // change detected => apply the change & start animating
         setArrived(arriveFn);   // remember the last change
