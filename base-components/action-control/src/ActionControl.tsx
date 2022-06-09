@@ -400,8 +400,7 @@ export const usesActionControlStates = () => {
     // dependencies:
     
     // states:
-    const [focusBlurRule  ] = usesFocusBlurState();
-    const [arriveLeaveRule] = usesArriveLeaveState();
+    const [pressReleaseRule] = usesPressReleaseState();
     
     
     
@@ -409,38 +408,13 @@ export const usesActionControlStates = () => {
         ...imports([
             // states:
             usesControlStates(),
-            focusBlurRule,
-            arriveLeaveRule,
+            pressReleaseRule,
         ]),
         ...states([
-            ifDisable({
-                // accessibilities:
-                cursor : actionControls.cursorDisable,
-            }),
-            
-            ifActive({
+            ifPress({
                 ...imports([
                     markActive(),
                 ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            
-            ifFocus({
-                // positions:
-                zIndex: 2, // prevents boxShadowFocus from clipping
-            }),
-            ifBlurring({
-                // positions:
-                zIndex: 1, // prevents boxShadowFocus from clipping but below the active one
             }),
         ]),
     });
