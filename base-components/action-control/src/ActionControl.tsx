@@ -74,6 +74,11 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import type {
+    // types:
+    DefaultTag,
+    DefaultRole,
+}                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
     StateMixin,
@@ -118,6 +123,9 @@ import type {
 // defaults:
 const defaultActionMouses : number[]|null = [0];       // left click
 const defaultActionKeys   : string[]|null = ['space']; // space key
+
+const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div> if the `tag` was not specified
+const defaultRole : DefaultRole = [      'button', 'link'] // uses `role="button"` for `tag` other than `button|a`
 
 
 
@@ -599,18 +607,17 @@ export interface ActionControlProps<TElement extends Element = Element>
 }
 const ActionControl = <TElement extends Element = Element>(props: ActionControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useControlStyleSheet();
+    const styleSheet        = useActionControlStyleSheet();
     
     
     
     // states:
-    const focusBlurState   = useFocusBlurState(props);
-    const arriveLeaveState = useArriveLeaveState(props, focusBlurState);
+    const pressReleaseState = usePressReleaseState(props);
     
     
     
     // fn props:
-    const propEnabled      = usePropEnabled(props);
+    const propEnabled       = usePropEnabled(props);
     
     
     
@@ -620,6 +627,12 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
         
         // accessibilities:
         press : _press,
+        
+        
+        
+        // behaviors:
+        actionMouses : _actionMouses,
+        actionKeys   : _actionKeys,
     ...restControlProps} = props;
     
     
@@ -632,56 +645,33 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
         
         
         // accessibilities:
-        focusBlurState.class,
-        arriveLeaveState.class,
+        pressReleaseState.class,
     );
     
     
     
     // events:
-    const handleFocus        = useMergeEvents(
-        // preserves the original `onFocus`:
-        props.onFocus,
+    const handleMouseDown    = useMergeEvents(
+        // preserves the original `onMouseDown`:
+        props.onMouseDown,
         
         
         
         // states:
         
         // accessibilities:
-        focusBlurState.handleFocus,
+        pressReleaseState.handleMouseDown,
     );
-    const handleBlur         = useMergeEvents(
-        // preserves the original `onBlur`:
-        props.onBlur,
+    const handleKeyDown      = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
         
         
         
         // states:
         
         // accessibilities:
-        focusBlurState.handleBlur,
-    );
-    const handleMouseEnter   = useMergeEvents(
-        // preserves the original `onMouseEnter`:
-        props.onMouseEnter,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseEnter,
-    );
-    const handleMouseLeave   = useMergeEvents(
-        // preserves the original `onMouseLeave`:
-        props.onMouseLeave,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseLeave,
+        pressReleaseState.handleKeyDown,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -692,17 +682,22 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
         // states:
         
         // accessibilities:
-        focusBlurState.handleAnimationEnd,
-        arriveLeaveState.handleAnimationEnd,
+        pressReleaseState.handleAnimationEnd,
     );
     
     
     
     // jsx:
-    return (
+    const mainComponent = (
         <Control<TElement>
             // other props:
             {...restControlProps}
+            
+            
+            
+            // semantics:
+            defaultTag  = {props.defaultTag  ?? defaultTag }
+            defaultRole = {props.defaultRole ?? defaultRole}
             
             
             
@@ -712,19 +707,10 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             
             
             
-            // ActionControl props:
-            {...{
-                // accessibilities:
-                tabIndex : props.tabIndex ?? (propEnabled ? 0 : -1), // makes any element type focusable
-            }}
-            
-            
-            
             // events:
-            onFocus        = {handleFocus       }
-            onBlur         = {handleBlur        }
-            onMouseEnter   = {handleMouseEnter  }
-            onMouseLeave   = {handleMouseLeave  }
+            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
+            onMouseDown    = {handleMouseDown   }
+            onKeyDown      = {handleKeyDown     }
             onAnimationEnd = {handleAnimationEnd}
         />
     );
