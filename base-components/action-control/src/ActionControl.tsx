@@ -524,13 +524,16 @@ export type JsxReactRouterLink = React.ReactElement<{
 }>
 export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
     return (
-        React.isValidElement(node)                         // JSX element
-        &&
-        (typeof(node.type) === 'object')                   // forwardRef
-        &&
-        (typeof((node.type as any).render) === 'function') // functional component
-        &&
-        !!node.props.to                                    // one of ReactRouter prop
+        React.Children.toArray(node)
+        .some((child) =>
+            React.isValidElement(child)                         // JSX element
+            &&
+            (typeof(child.type) === 'object')                   // forwardRef
+            &&
+            (typeof((child.type as any).render) === 'function') // functional component
+            &&
+            !!child.props.to                                    // one of ReactRouter prop
+        )
     );
 };
 
@@ -550,11 +553,23 @@ export type JsxNextLink = React.ReactElement<{
 }>
 export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
     return (
-        React.isValidElement(node)         // JSX element
-        &&
-        (typeof(node.type) === 'function') // functional component
-        &&
-        !!node.props.href                  // one of NextLink prop
+        React.Children.toArray(node)
+        .some((child) =>
+            React.isValidElement(child)         // JSX element
+            &&
+            (typeof(child.type) === 'function') // functional component
+            &&
+            !!child.props.href                  // one of NextLink prop
+        )
+    );
+};
+
+export type JsxClientSideLink = JsxReactRouterLink & JsxNextLink
+export const isClientSideLink = (node: React.ReactNode): node is JsxClientSideLink => {
+    return (
+        isReactRouterLink(node)
+        ||
+        isNextLink(node)
     );
 };
 
