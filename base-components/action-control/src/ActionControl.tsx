@@ -718,15 +718,23 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
         <ClientSideLink
             component={clientSideLink}
         >
-            {children.flatMap((child): React.ReactNode[] => {
-                // merge with <Link>'s neighbours:
-                if (child !== clientSideLink) return [child];
+            {React.cloneElement(mainComponent,
+                // props:
+                {},
                 
                 
                 
-                // merge with <Link>'s children:
-                return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
-            })}
+                // children:
+                ...children.flatMap((child): React.ReactNode[] => {
+                    // merge with <Link>'s neighbours:
+                    if (child !== clientSideLink) return [child];
+                    
+                    
+                    
+                    // merge with <Link>'s children:
+                    return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
+                })
+            )}
         </ClientSideLink>
     );
 };
