@@ -201,18 +201,18 @@ export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
 
 export const usePressReleaseState  = <TElement extends Element = Element>(props: ActionControlProps<TElement>) => {
     // fn props:
-    const propEnabled         = usePropEnabled(props);
-    const propReadOnly        = usePropReadOnly(props);
-    const propEditable        = propEnabled && !propReadOnly;
-    const isControllablePress = (props.press !== undefined);
+    const propEnabled           = usePropEnabled(props);
+    const propReadOnly          = usePropReadOnly(props);
+    const propEditable          = propEnabled && !propReadOnly;
+    const isControllablePressed = (props.pressed !== undefined);
     
-    const actionMouses        = (props.actionMouses !== undefined) ? props.actionMouses : defaultActionMouses;
-    const actionKeys          = (props.actionKeys   !== undefined) ? props.actionKeys   : defaultActionKeys;
+    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : defaultActionMouses;
+    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : defaultActionKeys;
     
     
     
     // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.press ?? false); // true => press, false => release
+    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => press, false => release
     const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => pressing-animation, false => releasing-animation
     
     const [pressDn,   setPressDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user press, false => user release
@@ -230,7 +230,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
      * state is always released if (disabled || readOnly)
      * state is press/release based on [controllable press] (if set) and fallback to [uncontrollable press]
      */
-    const pressFn: boolean = propEditable && (props.press /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const pressFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
     
     if (pressed !== pressFn) { // change detected => apply the change & start animating
         setPressed(pressFn);   // remember the last change
@@ -261,8 +261,8 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     useEffect(() => {
         // conditions:
-        if (!propEditable)       return; // control is not editable => no response required
-        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
+        if (!propEditable)         return; // control is not editable => no response required
+        if (isControllablePressed) return; // controllable [press] is set => no uncontrollable required
         
         
         
@@ -290,20 +290,20 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
             window.removeEventListener('mouseup', handleReleaseLate);
             window.removeEventListener('keyup',   handleRelease);
         };
-    }, [propEditable, isControllablePress]);
+    }, [propEditable, isControllablePressed]);
     
     
     
     // handlers:
     const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
         // conditions:
-        if (!propEditable)       return; // control is not editable => no response required
-        if (isControllablePress) return; // controllable [press] is set => no uncontrollable required
+        if (!propEditable)         return; // control is not editable => no response required
+        if (isControllablePressed) return; // controllable [press] is set => no uncontrollable required
         
         
         
         setPressDn(true);
-    }, [propEditable, isControllablePress]);
+    }, [propEditable, isControllablePressed]);
     
     const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((e) => {
         if (!actionMouses || actionMouses.includes(e.button)) handlePress(e);
@@ -334,7 +334,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
             // pressing:
             if (animating === true) {
                 // // pressing by controllable prop => use class .pressing
-                // if (isControllablePress) return 'pressing';
+                // if (isControllablePressed) return 'pressing';
                 //
                 // // otherwise use pseudo :active
                 // return null;
@@ -349,7 +349,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
             if (pressed) return 'pressed';
             
             // fully released:
-            // if (isControllablePress) {
+            // if (isControllablePressed) {
             //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
             // }
             // else {
@@ -584,7 +584,7 @@ export interface ActionControlProps<TElement extends Element = Element>
         ControlProps<TElement>
 {
     // accessibilities:
-    press        ?: boolean
+    pressed      ?: boolean
     
     
     
@@ -613,7 +613,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
         // remove states props:
         
         // accessibilities:
-        press : _press,
+        pressed : _pressed,
         
         
         
