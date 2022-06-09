@@ -47,3 +47,8 @@ variantClasses
 stateClasses
 onAnimationEnd
 onClick
+
+
+(filter|boxShadow|anim|keyframes)(disable|focus|arrived|press)
+to
+(filter|boxShadow|anim|keyframes)(disabled|focused|arrived|pressed)
