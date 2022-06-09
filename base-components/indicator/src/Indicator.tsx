@@ -211,7 +211,7 @@ export const useEnableDisableState = (props: AccessibilityProps & SemanticProps)
      * state is enabled/disabled based on [controllable enabled]
      * [uncontrollable enabled] is not supported
      */
-    const enabledFn: boolean = propEnabled /*controllable*/;
+    const enabledFn : boolean = propEnabled /*controllable*/;
     
     if (enabled !== enabledFn) { // change detected => apply the change & start animating
         setEnabled(enabledFn);   // remember the last change
@@ -375,7 +375,7 @@ export const useActivePassiveState = (props: AccessibilityProps & SemanticProps)
      * state is active/passive based on [controllable active]
      * [uncontrollable active] is not supported
      */
-    const activeFn: boolean = propActive /*controllable*/;
+    const activeFn : boolean = propActive /*controllable*/;
     
     if (actived !== activeFn) { // change detected => apply the change & start animating
         setActived(activeFn);   // remember the last change
@@ -467,7 +467,7 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
     /*
      * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
      */
-    const activeFn: boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
     const wasActive = useRef<boolean>(activeFn);
     
     if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
