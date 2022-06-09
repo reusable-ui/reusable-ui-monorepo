@@ -212,29 +212,29 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => press, false => release
-    const [animating, setAnimating] = useState<boolean|null>(null);            // null => no-animation, true => pressing-animation, false => releasing-animation
+    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
+    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
     
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                // uncontrollable (dynamic) state: true => user press, false => user release
+    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
     
     
     
     // resets:
     if (!propEditable && pressDn) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
+        setPressDn(false); // lost pressed because the control is not editable, when the control is re-editable => still lost pressed
     } // if
     
     
     
     /*
      * state is always released if (disabled || readOnly)
-     * state is press/release based on [controllable press] (if set) and fallback to [uncontrollable press]
+     * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
      */
-    const pressFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
     
-    if (pressed !== pressFn) { // change detected => apply the change & start animating
-        setPressed(pressFn);   // remember the last change
-        setAnimating(pressFn); // start pressing-animation/releasing-animation
+    if (pressed !== pressedFn) { // change detected => apply the change & start animating
+        setPressed(pressedFn);   // remember the last change
+        setAnimating(pressedFn); // start pressing-animation/releasing-animation
     } // if
     
     
@@ -262,7 +262,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     useEffect(() => {
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [press] is set => no uncontrollable required
+        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
         
         
         
@@ -273,7 +273,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
             setPressDn(false);
         };
         const handleReleaseLate = (): void => {
-            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `press` prop
+            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
         
@@ -298,7 +298,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [press] is set => no uncontrollable required
+        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
         
         
         
@@ -328,7 +328,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     return {
-        press : pressed,
+        pressed,
         
         class : ((): string|null => {
             // pressing:
