@@ -73,6 +73,7 @@ import {
     
     
     // hooks:
+    SemanticProps,
     useTestSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
@@ -707,9 +708,9 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     if (!clientSideLink) return actionControl;                     // if no contain <Link> => normal <ActionControl>
     
     return (
-        <ClientSideLink
-            outerComponent={clientSideLink}
-            innerComponent={actionControl}
+        <ClientSideLinkWrapper
+            linkComponent={clientSideLink}
+            actionComponent={actionControl}
         >
             {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
                 // current <ActionControl>'s children:
@@ -720,7 +721,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
                 // merge with <Link>'s children:
                 return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
             })}
-        </ClientSideLink>
+        </ClientSideLinkWrapper>
     );
 };
 export {
@@ -730,26 +731,26 @@ export {
 
 
 
-interface ClientSideLinkProps {
+interface ClientSideLinkWrapperProps {
     // components:
-    outerComponent : JsxClientSideLink
-    innerComponent : React.ReactElement
+    linkComponent   : JsxClientSideLink
+    actionComponent : React.ReactElement<SemanticProps>
     
     
     
     // children:
-    children      ?: React.ReactNode
+    children       ?: React.ReactNode
 }
-const ClientSideLink = <TElement extends Element = Element>({ outerComponent, innerComponent, children }: ClientSideLinkProps): JSX.Element|null => {
-    const { isSemanticTag: isSemanticLink } = useTestSemantic(innerComponent.props, { defaultTag: 'a', defaultRole: 'link' });
+const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps): JSX.Element|null => {
+    const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { defaultTag: 'a', defaultRole: 'link' });
     
     
     
     // jsx:
-    return React.cloneElement(outerComponent,
+    return React.cloneElement(linkComponent,
         // props:
         {
-            component : innerComponent,
+            component : actionComponent,
             passHref  : isSemanticLink,
         },
         
