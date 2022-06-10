@@ -604,6 +604,44 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
     });
 };
 export const usesIconImageLayout = (img?: CssCustomRef) => {
+    return style({
+        // appearances:
+        maskSize      : 'contain',           // image's size is as big as possible without being cropped
+        maskRepeat    : 'no-repeat',         // just one image, no repetition
+        maskPosition  : 'center',            // place the image at the center
+        maskImage     : img ?? iconRefs.img, // set icon's image
+        
+        
+        
+        // sizes:
+        // a dummy element, for making the image's width
+        ...children('img', {
+            // layouts:
+            display    : 'inline-block', // use inline-block, so it takes the width & height as we set
+            
+            
+            
+            // appearances:
+            transition : 'inherit', // inherit transition for smooth sizing changes
+            visibility : 'hidden', // hide the element, but still consumes the dimension
+            
+            
+            
+            // sizes:
+            inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
+            blockSize  : '100%', // set icon's height as tall as container
+            
+            
+            
+            // accessibilities:
+            userSelect : 'none', // disable selecting icon's img
+        }),
+        
+        
+        
+        // backgrounds:
+        backg         : 'currentColor', // set background as icon's color
+    });
 };
 export const usesBasicVariants = () => {
     // dependencies:
