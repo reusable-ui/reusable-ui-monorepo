@@ -41,6 +41,12 @@ import {
     variants,
     states,
     keyframes,
+    fontFace,
+    
+    
+    
+    // combinators:
+    children,
     
     
     
@@ -105,6 +111,10 @@ import {
     // configs:
     typos,
 }                           from '@reusable-ui/typos'       // a typography management system
+import {
+    // styles:
+    fillTextLineHeightLayout,
+}                           from '@reusable-ui/layouts'     // common layouts
 import {
     // hooks:
     useTriggerRender,
@@ -457,83 +467,143 @@ export const formatOf = (fileName: string): string|null => {
 
 
 // styles:
-export const usesBasicLayout = () => {
+export interface IconVars {
+    /**
+     * Icon's image url or icon's name.
+     */
+    img : any
+}
+const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
+
+export const usesIconLayout = () => {
     // dependencies:
     
     // backgrounds:
-    const [backgRule   , backgs] = usesBackg();
-    
-    // foregrounds:
-    const [foregRule   , foregs] = usesForeg();
-    
-    // borders:
-    const [borderRule          ] = usesBorder();
-    
-    // animations:
-    const [animRule    , anims ] = usesAnim();
-    
-    // spacings:
-    const [paddingRule         ] = usesPadding();
+    const [backgRule, backgs] = usesBackg();
     
     
     
     return style({
         ...imports([
-            // colors:
-            usesThemeDefault(),
-            
             // backgrounds:
             backgRule,
-            
-            // foregrounds:
-            foregRule,
-            
-            // borders:
-            borderRule,
-            
-            // animations:
-            animRule,
-            
-            // spacings:
-            paddingRule,
         ]),
         ...style({
             // layouts:
-            display   : 'block',
+            display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
+            flexDirection  : 'row',         // flow to the document's writing flow
+            justifyContent : 'center',      // center items horizontally
+            alignItems     : 'center',      // center items vertically
+            flexWrap       : 'nowrap',      // no wrapping
+            
+            
+            
+            // positions:
+            verticalAlign  : 'baseline', // icon's text should be aligned with sibling text, so the icon behave like <span> wrapper
+            
+            
+            
+            // sizes:
+            blockSize      : icons.size, // set background_image's height
+            
+            
+            
+            // children:
+            ...children('::before', {
+                ...imports([
+                    fillTextLineHeightLayout(),
+                ]),
+            }),
             
             
             
             // customize:
-            ...usesCssProps(basics), // apply config's cssProps
+            ...usesCssProps(icons), // apply config's cssProps
             
             
             
             // backgrounds:
-            backg     : backgs.backg,
-            
-            
-            
-            // foregrounds:
-            foreg     : foregs.foreg,
-            
-            
-            
-            // borders:
-            ...extendsBorder(basics), // extends border css vars
-            
-            
-            
-            // animations:
-            boxShadow : anims.boxShadow,
-            filter    : anims.filter,
-            anim      : anims.anim,
-            
-            
-            
-            // spacings:
-            ...extendsPadding(basics), // extends padding css vars
+            backg          : backgs.backg,
         }),
     });
+};
+export const usesIconFontLayout  = (img?: CssCustomRef) => {
+    return style({
+        // load a custom font:
+        ...fontFace({
+            ...imports([
+                config.font.style, // define the font's properties
+            ]),
+            ...style({
+                src: [
+                    config.font.files
+                    .map((file) =>
+                        `url("${concatUrl(config.font.path, file)}") ${formatOf(file)}`
+                    )
+                ],
+            }),
+        }),
+        
+        
+        
+        // children:
+        ...children('::after', {
+            ...imports([
+                // use the loaded custom font:
+                config.font.style, // apply the defined font's properties
+            ]),
+            ...style({
+                // layouts:
+                content       : img ?? icons.img, // put the icon's name here, the font system will replace the name to the actual image
+                display       : 'inline',         // use inline, so it takes the width & height automatically
+                
+                
+                
+                // appearances:
+                transition    : 'inherit', // inherit transition for smooth sizing changes
+                
+                
+                
+                // sizes:
+                fontSize      : icons.size,       // set icon's size
+                overflowY     : 'hidden',         // a hack: hides the pseudo-inherited underline
+                
+                
+                
+                // accessibilities:
+                userSelect    : 'none',           // disable selecting icon's text
+                
+                
+                
+                // backgrounds:
+                backg         : 'transparent',    // set background as transparent
+                
+                
+                
+                // foregrounds:
+                foreg         : 'currentColor',   // set foreground as icon's color
+                
+                
+                
+                // typos:
+                lineHeight    : 1,
+                textTransform : 'none',
+                letterSpacing : 'normal',
+                overflowWrap  : 'normal',
+                whiteSpace    : 'nowrap',
+                direction     : 'ltr',
+                
+                //#region turn on available browser features
+                WebkitFontSmoothing : 'antialiased',        // support for all WebKit browsers
+                textRendering       : 'optimizeLegibility', // support for Safari and Chrome
+                MozOsxFontSmoothing : 'grayscale',          // support for Firefox
+                fontFeatureSettings : 'liga',               // support for IE
+                //#endregion turn on available browser features
+            }),
+        }),
+    });
+};
+export const usesIconImageLayout = (img?: CssCustomRef) => {
 };
 export const usesBasicVariants = () => {
     // dependencies:
@@ -702,6 +772,64 @@ export const [basics, cssBasicConfig] = cssConfig(() => {
         lineHeight           : 'inherit'    as CssKnownProps['lineHeight'],
     };
 }, { prefix: 'bsc' });
+
+export const config = {
+    font: {
+        /**
+         * A `url directory` pointing to the collection of the icon's fonts.  
+         * It's the `front-end url`, not the physical path on the server.
+         */
+        path  : '/fonts',
+        
+        /**
+         * A list of icon's fonts with extensions.  
+         * The order does matter. Place the most preferred file on the first.
+         */
+        files : [
+            'MaterialIcons-Regular.woff2',
+            'MaterialIcons-Regular.woff',
+            'MaterialIcons-Regular.ttf',
+        ],
+        
+        /**
+         * A list of valid icon-font's content.
+         */
+        items : fontItems as unknown as string[],
+        
+        /**
+         * The css style of icon-font to be loaded.
+         */
+        style : style({
+            fontFamily     : '"Material Icons"',
+            fontWeight     : 400,
+            fontStyle      : 'normal',
+            textDecoration : 'none',
+        }),
+    },
+    img: {
+        /**
+         * A `url directory` pointing to the collection of the icon's images.  
+         * It's the `front-end url`, not the physical path on the server.
+         */
+        path  : '/icons',
+        
+        /**
+         * A list of icon's images with extensions.  
+         * The order doesn't matter, but if there are any files with the same name but different extensions, the first one will be used.
+         */
+        files : [
+            'instagram.svg',
+            'whatsapp.svg',
+            'close.svg',
+            'busy.svg',
+            'prev.svg',
+            'next.svg',
+            'dropdown.svg',
+            'dropright.svg',
+            'dropleft.svg',
+        ],
+    },
+};
 
 
 
