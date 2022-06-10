@@ -666,16 +666,50 @@ export const usesIconVariants    = () => {
         ]),
     });
 };
-export const usesIconImage       = (img: CssCustomRef, foregOverwrite?: CssCustomRef, sizeOverwrite?: CssCustomRef) => {
+export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['color'], size?: CssKnownProps['inlineSize']) => {
+    // dependencies:
+    
+    // backgrounds:
+    const [backgRule, backgs] = usesBackg();
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            usesIconImageLayout(img),
+            
+            // backgrounds:
+            backgRule,
+        ]),
+        ...vars({
+            [backgs.backgColor] : color,
+            [icons.size       ] : size,
+        }),
+    });
 };
 
-export const useBasicStyleSheet = createUseStyleSheet(() => ({
+export const useIconStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesBasicLayout(),
+        usesIconLayout(),
         
         // variants:
-        usesBasicVariants(),
+        usesIconVariants(),
+    ]),
+    ...variants([
+        rule('.font', {
+            ...imports([
+                // layouts:
+                usesIconFontLayout(),
+            ]),
+        }),
+        rule('.img', {
+            ...imports([
+                // layouts:
+                usesIconImageLayout(),
+            ]),
+        }),
     ]),
 }), { id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
