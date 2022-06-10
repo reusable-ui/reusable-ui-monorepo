@@ -137,6 +137,8 @@ import {
     ThemeVariant,
     useThemeVariant,
     
+    usesOutlinedVariant,
+    
     MildVars,
     ifNotMild,
     ifMild,
@@ -355,6 +357,58 @@ export const usesBackg = (): VariantMixin<BackgVars> => {
     ];
 };
 //#endregion backg
+
+//#region iconForeg
+export interface IconForegVars {
+    /**
+     * toggles_on icon foreground color - at mild variant.
+     */
+    mildForegTg : any
+    /**
+     * final icon foreground color.
+     */
+    foreg       : any
+}
+const [iconForegs] = cssVar<IconForegVars>();
+
+/**
+ * Uses icon foreground color.
+ * @returns A `VariantMixin<IconForegVars>` represents icon foreground color definitions.
+ */
+export const usesIconForeg = (): VariantMixin<IconForegVars> => {
+    // dependencies:
+    const [, outlineds] = usesOutlinedVariant();
+    const [, backgs   ] = usesBackg();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [iconForegs.foreg] : fallbacks(
+                    outlineds.foregTg,      // toggle outlined (if `usesOutlinedVariant()` applied)
+                    iconForegs.mildForegTg, // toggle mild     (if `usesMildVariant()` applied)
+                    
+                    backgs.backgColorFn,    // default => uses our `backgColorFn`
+                ),
+            }),
+            ...variants([
+                ifNotMild({
+                    ...vars({
+                        [iconForegs.mildForegTg] : 'initial',
+                    }),
+                }),
+                ifMild({
+                    ...vars({
+                        [iconForegs.mildForegTg] : outlineds.foregFn,
+                    }),
+                }),
+            ]),
+        }),
+        iconForegs,
+    ];
+};
+//#endregion iconForeg
 
 
 
