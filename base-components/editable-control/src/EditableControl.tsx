@@ -135,17 +135,16 @@ const [valids] = cssVar<ValidInvalidVars>();
 
 
 
-// .pressed will be added after pressing-animation done:
-const selectorIfPressed   = '.pressed'
-// .pressing = styled press, :active = native press:
-// the .disabled, .disable are used to kill native :active
-// the .pressed, .releasing, .released are used to overwrite native :active
-const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
-// .releasing will be added after loosing press and will be removed after releasing-animation done:
-const selectorIfReleasing = '.releasing'
-// if all above are not set => released:
-// optionally use .released to overwrite native :active
-const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
+// .validated will be added after validating-animation done:
+const selectorIfValided      = '.validated'
+// .validating = styled valid, :valid = native valid:
+// the .validated, .unvalidating, .novalidation are used to overwrite native :valid
+const selectorIfValidating   = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation)))'
+// .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
+const selectorIfUnvalidating = '.unvalidating'
+// if all above are not set => unvalided:
+// optionally use .novalidation to overwrite native :valid
+const selectorIfUnvalided    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
