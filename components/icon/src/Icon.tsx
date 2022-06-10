@@ -6,7 +6,7 @@ import {
     
     
     // hooks:
-    useRef,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -164,6 +164,11 @@ import {
     // configs:
     basics as basicCssConfigs,
 }                           from '@reusable-ui/basic'       // a base component
+
+// internals:
+import {
+    default as fontItems,
+}                           from './icon-font-material.js'
 
 
 
@@ -771,7 +776,7 @@ export const [icons, cssIconConfig] = cssConfig(() => {
 }, { prefix: 'ico' });
 
 export const config = {
-    font: {
+    font : {
         /**
          * A `url directory` pointing to the collection of the icon's fonts.  
          * It's the `front-end url`, not the physical path on the server.
@@ -797,13 +802,14 @@ export const config = {
          * The css style of icon-font to be loaded.
          */
         style : style({
+            // typos:
             fontFamily     : '"Material Icons"',
             fontWeight     : 400,
             fontStyle      : 'normal',
             textDecoration : 'none',
         }),
     },
-    img: {
+    img  : {
         /**
          * A `url directory` pointing to the collection of the icon's images.  
          * It's the `front-end url`, not the physical path on the server.
@@ -831,26 +837,36 @@ export const config = {
 
 
 // react components:
-export interface BasicProps<TElement extends Element = Element>
+type CustomIconList  =
+|'instagram'
+|'whatsapp'
+|'close'
+|'busy'
+|'prev'
+|'next'
+|'dropdown'
+|'dropright'
+|'dropleft';
+export type IconList = CustomIconList | ((typeof fontItems)[number]) | (string & {})
+
+export interface IconProps<TElement extends Element = Element>
     extends
         // bases:
         GenericProps<TElement>,
         
         // layouts:
         SizeVariant,
-        // OrientationVariant, // not implemented yet
-        NudeVariant,
         
         // colors:
         ThemeVariant,
-        GradientVariant,
-        OutlinedVariant,
         MildVariant
 {
+    // appearances:
+    icon : IconList
 }
-const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>): JSX.Element|null => {
+const Icon = <TElement extends Element = Element>(props: IconProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useBasicStyleSheet();
+    const styleSheet      = useIconStyleSheet();
     
     
     
@@ -858,13 +874,15 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
     
     // layouts:
     const sizeVariant     = useSizeVariant(props);
-    const nudeVariant     = useNudeVariant(props);
     
     // colors:
     const themeVariant    = useThemeVariant(props);
-    const gradientVariant = useGradientVariant(props);
-    const outlinedVariant = useOutlinedVariant(props);
     const mildVariant     = useMildVariant(props);
+    
+    
+    
+    // appearances:
+    const icon            = useIcon(props);
     
     
     
@@ -874,13 +892,20 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
         
         // layouts:
         size     : _size,
-        nude     : _nude,
         
         // colors:
         theme    : _theme,
-        gradient : _gradient,
-        outlined : _outlined,
         mild     : _mild,
+        
+        
+        
+        // remove appearances:
+        icon     : _icon,
+        
+        
+        
+        // styles:
+        style,
     ...restGenericProps} = props;
     
     
@@ -894,14 +919,33 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
         
         // layouts:
         sizeVariant.class,
-        nudeVariant.class,
         
         // colors:
         themeVariant.class,
-        gradientVariant.class,
-        outlinedVariant.class,
         mildVariant.class,
     );
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // appearances:
+        icon.class,
+    );
+    
+    
+    
+    // styles:
+    const mergedStyle = useMemo(() => ({
+        // appearances:
+        ...icon.style,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `icon.style`):
+        ...(style ?? {}),
+    }), [style]);
     
     
     
@@ -913,13 +957,28 @@ const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>):
             
             
             
+            // semantics:
+            tag='span'
+            role='img'
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-        />
+            classes={classes}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
+        >
+            { icon.children }
+            { props.children }
+        </Generic>
     );
 };
 export {
-    Basic,
-    Basic as default,
+    Icon,
+    Icon as default,
 }
