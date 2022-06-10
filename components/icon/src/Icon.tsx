@@ -475,7 +475,7 @@ export interface IconVars {
 }
 const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
 
-export const usesIconLayout = () => {
+export const usesIconLayout      = () => {
     // dependencies:
     
     // backgrounds:
@@ -606,10 +606,10 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
 export const usesIconImageLayout = (img?: CssCustomRef) => {
     return style({
         // appearances:
-        maskSize      : 'contain',           // image's size is as big as possible without being cropped
-        maskRepeat    : 'no-repeat',         // just one image, no repetition
-        maskPosition  : 'center',            // place the image at the center
-        maskImage     : img ?? iconRefs.img, // set icon's image
+        maskSize      : 'contain',        // image's size is as big as possible without being cropped
+        maskRepeat    : 'no-repeat',      // just one image, no repetition
+        maskPosition  : 'center',         // place the image at the center
+        maskImage     : img ?? icons.img, // set icon's image
         
         
         
@@ -643,17 +643,14 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         backg         : 'currentColor', // set background as icon's color
     });
 };
-export const usesBasicVariants = () => {
+export const usesIconVariants    = () => {
     // dependencies:
     
     // layouts:
     const [sizesRule   ] = usesSizeVariant(basics);
-    const [nudeRule    ] = usesNudeVariant();
     
     // colors:
     const [themesRule  ] = usesThemeVariant();
-    const [gradientRule] = usesGradientVariant();
-    const [outlinedRule] = usesOutlinedVariant();
     const [mildRule    ] = usesMildVariant();
     
     
@@ -662,15 +659,14 @@ export const usesBasicVariants = () => {
         ...imports([
             // layouts:
             sizesRule,
-            nudeRule,
             
             // colors:
             themesRule,
-            gradientRule,
-            outlinedRule,
             mildRule,
         ]),
     });
+};
+export const usesIconImage       = (img: CssCustomRef, foregOverwrite?: CssCustomRef, sizeOverwrite?: CssCustomRef) => {
 };
 
 export const useBasicStyleSheet = createUseStyleSheet(() => ({
@@ -681,7 +677,7 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
         // variants:
         usesBasicVariants(),
     ]),
-}), { id: 'rbkpy0qh2b' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
