@@ -128,6 +128,14 @@ import {
     ifSize          as basicIfSize,
     usesSizeVariant as basicUsesSizeVariant,
     useSizeVariant  as basicUseSizeVariant,
+    
+    ThemeName,
+    ThemeVars,
+    ifTheme,
+    usesThemeVariant as basicUsesThemeVariant,
+    themeOptions,
+    ThemeVariant,
+    useThemeVariant,
 }                           from '@reusable-ui/basic'       // a base component
 
 
@@ -173,113 +181,14 @@ export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props)
 // colors:
 
 //#region themes
-export type ThemeName = (keyof typeof colorThemes) | (string & {})
-export interface ThemeVars {
-    /**
-     * themed background color.
-     */
-    backg             : any
-    /**
-     * themed foreground color.
-     */
-    foreg             : any
-    /**
-     * themed border color.
-     */
-    border            : any
-    
-    /**
-     * themed foreground color - at outlined variant.
-     */
-    foregOutlined     : any
-    
-    /**
-     * themed background color - at mild variant.
-     */
-    backgMild         : any
-    /**
-     * themed foreground color - at mild variant.
-     */
-    foregMild         : any
-    
-    /**
-     * themed focus color - at focused state.
-     */
-    focus             : any
-    
-    
-    
-    /**
-     * conditional background color.
-     */
-    backgCond         : any
-    /**
-     * conditional foreground color.
-     */
-    foregCond         : any
-    /**
-     * conditional border color.
-     */
-    borderCond        : any
-    
-    /**
-     * conditional foreground color - at outlined variant.
-     */
-    foregOutlinedCond : any
-    
-    /**
-     * conditional background color - at mild variant.
-     */
-    backgMildCond     : any
-    /**
-     * conditional foreground color - at mild variant.
-     */
-    foregMildCond     : any
-    
-    /**
-     * conditional focus color - at focused state.
-     */
-    focusCond         : any
-    
-    
-    
-    /**
-     * important conditional background color.
-     */
-    backgImpt         : any
-    /**
-     * important conditional foreground color.
-     */
-    foregImpt         : any
-    /**
-     * important conditional border color.
-     */
-    borderImpt        : any
-    
-    /**
-     * important conditional foreground color - at outlined variant.
-     */
-    foregOutlinedImpt : any
-    
-    /**
-     * important conditional background color - at mild variant.
-     */
-    backgMildImpt     : any
-    /**
-     * important conditional foreground color - at mild variant.
-     */
-    foregMildImpt     : any
-    
-    /**
-     * important conditional focus color - at focused state.
-     */
-    focusImpt         : any
+export {
+    ThemeName,
+    ThemeVars,
+    ifTheme,
+    themeOptions,
+    ThemeVariant,
+    useThemeVariant,
 }
-const [themes] = cssVar<ThemeVars>();
-
-
-
-export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
 
 
 
@@ -291,15 +200,21 @@ export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRu
  * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
  */
 export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => {
+    // dependencies:
+    const [themesRule, themes] = basicUsesThemeVariant(factory, options);
+    
+    
+    
     return [
         () => style({
-            ...variants([
-                options.map((themeName) =>
-                    ifTheme(themeName,
-                        factory(themeName)
-                    )
-                ),
+            ...imports([
+                themesRule,
             ]),
+            ...vars({
+                // prevents the theme from inheritance, so the <Icon> always use currentColor (by config's) if the theme was not set
+                [themes.backg    ] : 'initial',
+                [themes.backgMild] : 'initial',
+            }),
         }),
         themes,
     ];
@@ -310,241 +225,20 @@ export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCo
  * @param themeName The theme name.
  * @returns A `CssRule` represents theme color definitions for the given `themeName`.
  */
-export const themeOf = (themeName: ThemeName): CssRule => style({
-    ...vars({
-        [themes.backg            ] : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foreg            ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.border           ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        
-        [themes.foregOutlined    ] : themes.backg,
-        
-        [themes.backgMild        ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMild        ] : themes.border,
-        
-        [themes.focus            ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-/**
- * Gets all available theme options.
- * @returns A `ThemeName[]` represents all available theme options.
- */
-export const themeOptions = (): ThemeName[] => Object.keys(colorThemes) as ThemeName[];
-
-
-
-/**
- * Creates a default theme color definitions.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color definitions`.
- */
-export const usesThemeDefault = (themeName: ThemeName|null = null): CssRule => usesThemeCond(themeName);
-
-/**
- * Creates conditional color definitions for the given `themeName`.
- * @param themeName The theme name as the conditional color -or- `null` for undefining the conditional.
- * @returns A `CssRule` represents conditional color definitions for the given `themeName`.
- */
-export const usesThemeCond = (themeName: ThemeName|null): CssRule => style({
-    ...vars({
-        [themes.backgCond        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregCond        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderCond       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        
-        [themes.foregOutlinedCond] : !themeName ? null : themes.backgCond,
-        
-        [themes.backgMildCond    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildCond    ] : !themeName ? null : themes.borderCond,
-        
-        [themes.focusCond        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-/**
- * Creates important conditional color definitions for the given `themeName`.
- * @param themeName The theme name as the important conditional color -or- `null` for undefining the important conditional.
- * @returns A `CssRule` represents important conditional color definitions for the given `themeName`.
- */
-export const usesThemeImpt = (themeName: ThemeName|null): CssRule => style({
-    ...vars({
-        [themes.backgImpt        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderImpt       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        
-        [themes.foregOutlinedImpt] : !themeName ? null : themes.backgImpt,
-        
-        [themes.backgMildImpt    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildImpt    ] : !themeName ? null : themes.borderImpt,
-        
-        [themes.focusImpt        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-
-
-export interface ThemeVariant {
-    theme ?: ThemeName
-}
-export const useThemeVariant = ({theme}: ThemeVariant, themeDefault?: ThemeName) => {
-    const themeName = theme ?? themeDefault;
-    return {
-        class: themeName ? `th${pascalCase(themeName)}` : null,
-    };
+export const themeOf = (themeName: ThemeName): CssRule => {
+    // dependencies:
+    const [, themes] = basicUsesThemeVariant();
+    
+    
+    
+    return style({
+        ...vars({
+            [themes.backg    ] : colors[   themeName       as keyof typeof colors], // base color
+            [themes.backgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        }),
+    });
 };
 //#endregion themes
-
-//#region gradient
-export interface GradientVars {
-    /**
-     * toggles_on background gradient - at gradient variant.
-     */
-    backgGradTg : any
-}
-const [gradients] = cssVar<GradientVars>();
-
-
-
-// grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(:is(.gradient &, .gradient&, &.gradient))', styles);
-// grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(     ':is(.gradient &, .gradient&, &.gradient)' , styles);
-
-
-
-/**
- * Uses toggleable gradient.
- * @param factory Customize the callback to create gradient definitions for each toggle state.
- * @returns A `VariantMixin<GradientVars>` represents toggleable gradient definitions.
- */
-export const usesGradientVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = gradientOf): VariantMixin<GradientVars> => {
-    return [
-        () => style({
-            ...variants([
-                ifNotGradient(factory(false)),
-                ifGradient(factory(true)),
-            ]),
-        }),
-        gradients,
-    ];
-};
-
-/**
- * Creates gradient definitions for the given `toggle`.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
- * @returns A `CssRule` represents gradient definitions for the given `toggle`.
- */
-export const gradientOf = (toggle: (boolean|null) = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the background gradient prop:
-        [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
-
-
-
-export interface GradientVariant {
-    gradient ?: boolean
-}
-export const useGradientVariant = ({gradient}: GradientVariant) => ({
-    class: gradient ? 'gradient' : null,
-});
-//#endregion gradient
-
-//#region outlined
-export interface OutlinedVars {
-    /**
-     * functional background color - at outlined variant.
-     */
-    backgFn : any
-    /**
-     * toggles_on background color - at outlined variant.
-     */
-    backgTg : any
-    
-    
-    
-    /**
-     * functional foreground color - at outlined variant.
-     */
-    foregFn : any
-    /**
-     * toggles_on foreground color - at outlined variant.
-     */
-    foregTg : any
-}
-const [outlineds] = cssVar<OutlinedVars>();
-
-
-
-// grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(:is(.outlined &, .outlined&, &.outlined))', styles);
-// grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(     ':is(.outlined &, .outlined&, &.outlined)' , styles);
-
-
-
-/**
- * Uses toggleable outlining.
- * @param factory Customize the callback to create outlining definitions for each toggle state.
- * @returns A `VariantMixin<OutlinedVars>` represents toggleable outlining definitions.
- */
-export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
-    // dependencies:
-    const [themeRules, themes] = usesThemeVariant();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // makes   `usesOutlinedVariant()` implicitly `usesThemeVariant()`
-                // because `usesOutlinedVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeRules,
-            ]),
-            ...vars({
-                [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
-                
-                
-                
-                [outlineds.foregFn] : fallbacks(
-                    themes.foregOutlinedImpt,  // first  priority
-                    themes.foregOutlined,      // second priority
-                    themes.foregOutlinedCond,  // third  priority
-                    
-                    basics.foreg,              // default => uses config's foreground
-                ),
-            }),
-            ...variants([
-                ifNotOutlined(factory(false)),
-                ifOutlined(factory(true)),
-            ]),
-        }),
-        outlineds,
-    ];
-};
-
-/**
- * Creates outlining definitions for the given `toggle`.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
- * @returns A `CssRule` represents outlining definitions for the given `toggle`.
- */
-export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the outlined props:
-        [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
-
-
-
-export interface OutlinedVariant {
-    outlined ?: boolean
-}
-export const useOutlinedVariant = ({outlined}: OutlinedVariant) => ({
-    class: outlined ? 'outlined' : null,
-});
-//#endregion outlined
 
 //#region mild
 export interface MildVars {
