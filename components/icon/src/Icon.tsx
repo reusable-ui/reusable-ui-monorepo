@@ -144,8 +144,8 @@ import {
     MildVariant,
     useMildVariant,
     
-    ForegVars,
-    usesForeg as basicUsesForeg,
+    BackgVars,
+    usesBackg as basicUsesBackg,
 }                           from '@reusable-ui/basic'       // a base component
 
 
@@ -314,20 +314,20 @@ export const mildOf = (toggle: (boolean|null) = true): CssRule => {
 };
 //#endregion mild
 
-//#region foreg
+//#region backg
 export {
-    ForegVars,
+    BackgVars,
 }
 
 
 
 /**
- * Uses foreground color (icon color).
- * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
+ * Uses background color (icon color).
+ * @returns A `VariantMixin<BackgVars>` represents background color definitions.
  */
- export const usesForeg = (): VariantMixin<ForegVars> => {
+export const usesBackg = (): VariantMixin<BackgVars> => {
     // dependencies:
-    const [, foregs] = basicUsesForeg();
+    const [, backgs] = basicUsesBackg();
     const [, themes] = usesThemeVariant();
     const [, milds ] = usesMildVariant();
     
@@ -336,25 +336,25 @@ export {
     return [
         () => style({
             ...vars({
-                [foregs.foregFn] : fallbacks(
+                [backgs.backgColorFn] : fallbacks(
                  // themes.backgImpt,  // first  priority
                     themes.backg,      // second priority
                  // themes.backgCond,  // third  priority
                     
-                    icons.foreg,       // default => uses config's foreground
+                    icons.backg,       // default => uses config's background
                 ),
-                [foregs.foreg  ] : fallbacks(
+                [backgs.backgColor  ] : fallbacks(
                  // outlineds.backgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
                     milds.backgTg,       // toggle mild     (if `usesMildVariant()` applied)
                     
-                    foregs.foregFn,      // default => uses our `foregFn`
+                    backgs.backgColorFn, // default => uses our `backgColorFn`
                 ),
             }),
         }),
-        foregs,
+        backgs,
     ];
 };
-//#endregion foreg
+//#endregion backg
 
 
 
