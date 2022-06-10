@@ -39,12 +39,10 @@
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/css-var": "^2.0.4",
     "@reusable-ui/basic": "^5.0.0",
-    "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
-    "@reusable-ui/spacers": "^5.0.0",
-    "@reusable-ui/typos": "^5.0.0",
+    "@reusable-ui/layouts": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

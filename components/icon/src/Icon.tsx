@@ -125,7 +125,7 @@ import {
 }                           from '@reusable-ui/basic'       // a base component
 
 // internals:
-import {
+import type {
     default as fontItems,
 }                           from './icon-font-material.js'
 
@@ -417,7 +417,7 @@ export const useIcon = <TElement extends Element = Element>({ icon }: IconProps<
             return concatUrl(config.img.path, file);
         })();
         
-        const isIconFont : boolean = !!iconImg && config.font.items.includes(icon);
+        const isIconFont : boolean = !!iconImg; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
         
         
         
@@ -796,10 +796,10 @@ export const config = {
             'MaterialIcons-Regular.ttf',
         ],
         
-        /**
-         * A list of valid icon-font's content.
-         */
-        items : fontItems as unknown as string[],
+        // /**
+        //  * A list of valid icon-font's content.
+        //  */
+        // items : fontItems as unknown as string[],
         
         /**
          * The css style of icon-font to be loaded.
@@ -927,7 +927,7 @@ const Icon = <TElement extends Element = Element>(props: IconProps<TElement>): J
         themeVariant.class,
         mildVariant.class,
     );
-    const classes = useMergeClasses(
+    const classes        = useMergeClasses(
         // preserves the original `classes`:
         props.classes,
         
