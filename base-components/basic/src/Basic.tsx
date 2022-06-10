@@ -627,7 +627,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(     
  */
 export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
     // dependencies:
-    const [themeRules, themes] = usesThemeVariant();
+    const [themesRule, themes] = usesThemeVariant();
     
     
     
@@ -636,7 +636,7 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
             ...imports([
                 // makes   `usesOutlinedVariant()` implicitly `usesThemeVariant()`
                 // because `usesOutlinedVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeRules,
+                themesRule,
             ]),
             ...vars({
                 [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
@@ -724,7 +724,7 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [themeRules, themes] = usesThemeVariant();
+    const [themesRule, themes] = usesThemeVariant();
     
     
     
@@ -733,7 +733,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
             ...imports([
                 // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
                 // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeRules,
+                themesRule,
             ]),
             ...vars({
                 [milds.backgFn] : fallbacks(
