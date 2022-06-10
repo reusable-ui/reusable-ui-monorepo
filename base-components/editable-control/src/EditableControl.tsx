@@ -113,30 +113,24 @@ import type {
 
 
 
-// defaults:
-const defaultActionMouses : number[]|null = [0];       // left click
-const defaultActionKeys   : string[]|null = ['space']; // space key
-
-const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
-const defaultRole : DefaultRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-
-
-
 // hooks:
 
 // states:
 
-//#region pressRelease
-export interface PressReleaseVars {
-    filter : any
-    anim   : any
+//#region validInvalid
+export interface ValidInvalidVars {
+    animValid   : any
+    animInvalid : any
+    
+    foregStart  : any
+    backgStart  : any
 }
-const [presses] = cssVar<PressReleaseVars>();
+const [valids] = cssVar<ValidInvalidVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(presses.filter);
-    animRegistry.registerAnim(presses.anim);
+    animRegistry.registerAnim(valids.animValid);
+    animRegistry.registerAnim(valids.animInvalid);
 }
 
 
@@ -146,14 +140,12 @@ const selectorIfPressed   = '.pressed'
 // .pressing = styled press, :active = native press:
 // the .disabled, .disable are used to kill native :active
 // the .pressed, .releasing, .released are used to overwrite native :active
-// const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
-const selectorIfPressing  = '.pressing'
+const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
 // .releasing will be added after loosing press and will be removed after releasing-animation done:
 const selectorIfReleasing = '.releasing'
 // if all above are not set => released:
 // optionally use .released to overwrite native :active
-// const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
-const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
+const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
@@ -168,32 +160,32 @@ export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([s
 
 /**
  * Uses press & release states.
- * @returns A `StateMixin<PressReleaseVars>` represents press & release state definitions.
+ * @returns A `StateMixin<ValidInvalidVars>` represents press & release state definitions.
  */
-export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
+export const usesPressReleaseState = (): StateMixin<ValidInvalidVars> => {
     return [
         () => style({
             ...states([
                 ifPressed({
                     ...vars({
-                        [presses.filter] : editableControls.filterPress,
+                        [valids.filter] : editableControls.filterPress,
                     }),
                 }),
                 ifPressing({
                     ...vars({
-                        [presses.filter] : editableControls.filterPress,
-                        [presses.anim  ] : editableControls.animPress,
+                        [valids.filter] : editableControls.filterPress,
+                        [valids.anim  ] : editableControls.animPress,
                     }),
                 }),
                 ifReleasing({
                     ...vars({
-                        [presses.filter] : editableControls.filterPress,
-                        [presses.anim  ] : editableControls.animRelease,
+                        [valids.filter] : editableControls.filterPress,
+                        [valids.anim  ] : editableControls.animRelease,
                     }),
                 }),
             ]),
         }),
-        presses,
+        valids,
     ];
 };
 
@@ -363,7 +355,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         handleAnimationEnd,
     };
 };
-//#endregion pressRelease
+//#endregion validInvalid
 
 
 
@@ -438,7 +430,7 @@ export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
         // states:
         usesEditableControlStates(),
     ]),
-}), { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'rww4hy9rmx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
