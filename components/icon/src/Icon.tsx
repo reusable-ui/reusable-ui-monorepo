@@ -11,15 +11,8 @@ import {
 
 // cssfn:
 import type {
-    // css values:
-    CssComplexBaseValueOf,
-    
-    
-    
     // css custom properties:
-    CssCustomSimpleRef,
     CssCustomRef,
-    CssCustomValue,
     
     
     
@@ -32,15 +25,11 @@ import type {
     CssRule,
     
     CssStyleCollection,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'         // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
-    states,
-    keyframes,
     fontFace,
     
     
@@ -54,23 +43,12 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    pascalCase,
-    solidBackg,
 }                           from '@cssfn/cssfn'             // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'       // writes css in react hook
 import {
-    // types:
-    ReadonlyCssCustomRefs,
-    
-    
-    
     // utilities:
     cssVar,
     fallbacks,
@@ -88,37 +66,19 @@ import {
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // configs:
     colors,
-    themes as colorThemes,
 }                           from '@reusable-ui/colors'      // a color management system
-import {
-    // configs:
-    borders as borderStrokes,
-    borderRadiuses,
-}                           from '@reusable-ui/borders'     // a border (stroke) management system
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'     // a spacer (gap) management system
-import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'       // a typography management system
 import {
     // styles:
     fillTextLineHeightLayout,
 }                           from '@reusable-ui/layouts'     // common layouts
 import {
     // hooks:
-    useTriggerRender,
-    useEvent,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
@@ -129,7 +89,6 @@ import {
 import {
     // types:
     VariantMixin,
-    StateMixin,
     
     
     
@@ -441,9 +400,53 @@ const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make
 
 
 
-export const useIcon = <TElement extends Element = Element>({ icon }: IconProps<TElement>) => {
-
+const getFileNameWithoutExtension = (fileName: string): string|null => {
+    if (!fileName) return null;
+    
+    
+    
+    const lastDotIndex = fileName.lastIndexOf('.');
+    if (lastDotIndex < 0) return fileName; // extension is not found => it's a pure fileName without extension
+    return fileName.slice(0, lastDotIndex);
 }
+export const useIcon = <TElement extends Element = Element>({ icon }: IconProps<TElement>) => {
+    return useMemo(() => {
+        const iconImg    : string|null = (() => {
+            const file = config.img.files.find((file) => getFileNameWithoutExtension(file) === icon);
+            if (!file) return null;
+            return concatUrl(config.img.path, file);
+        })();
+        
+        const isIconFont : boolean = !!iconImg && config.font.items.includes(icon);
+        
+        
+        
+        return {
+            class: (() => {
+                if (iconImg)    return 'img';  // icon name is found in iconImg
+                
+                if (isIconFont) return 'font'; // icon name is found in iconFont
+                
+                return null; // icon name is not found in both iconImg & iconFont
+            })(),
+            
+            style: {
+                // appearances:
+                [iconVars.img]: (() => {
+                    if (iconImg)    return `url("${iconImg}")`; // the url of the icon's image
+                    
+                    if (isIconFont) return `"${icon}"`;         // the icon's name
+                    
+                    return undefined; // icon name is not found in both iconImg & iconFont
+                })(),
+            },
+            
+            children: (!!iconImg && (
+                <img key='ico-img' src={iconImg} alt='' />
+            )),
+        };
+    }, [icon]);
+};
 //#endregion icon
 
 
@@ -572,34 +575,34 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
             ]),
             ...style({
                 // layouts:
-                content       : img ?? icons.img, // put the icon's name here, the font system will replace the name to the actual image
-                display       : 'inline',         // use inline, so it takes the width & height automatically
+                content       : img ?? iconVars.img, // put the icon's name here, the font system will replace the name to the actual image
+                display       : 'inline',            // use inline, so it takes the width & height automatically
                 
                 
                 
                 // sizes:
-                fontSize      : icons.size,       // set icon's size
-                overflowY     : 'hidden',         // a hack: hides the pseudo-inherited underline
+                fontSize      : icons.size,          // set icon's size
+                overflowY     : 'hidden',            // a hack: hides the pseudo-inherited underline
                 
                 
                 
                 // accessibilities:
-                userSelect    : 'none',           // disable selecting icon's text
+                userSelect    : 'none',              // disable selecting icon's text
                 
                 
                 
                 // backgrounds:
-                backg         : 'transparent',    // set background as transparent
+                backg         : 'transparent',       // set background as transparent
                 
                 
                 
                 // foregrounds:
-                foreg         : 'currentColor',   // set foreground as icon's color
+                foreg         : 'currentColor',      // set foreground as icon's color
                 
                 
                 
                 // animations:
-                transition    : 'inherit',        // inherit transition for smooth sizing changes
+                transition    : 'inherit',           // inherit transition for smooth sizing changes
                 
                 
                 
@@ -624,10 +627,10 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
 export const usesIconImageLayout = (img?: CssCustomRef) => {
     return style({
         // appearances:
-        maskSize      : 'contain',        // image's size is as big as possible without being cropped
-        maskRepeat    : 'no-repeat',      // just one image, no repetition
-        maskPosition  : 'center',         // place the image at the center
-        maskImage     : img ?? icons.img, // set icon's image
+        maskSize      : 'contain',           // image's size is as big as possible without being cropped
+        maskRepeat    : 'no-repeat',         // just one image, no repetition
+        maskPosition  : 'center',            // place the image at the center
+        maskImage     : img ?? iconVars.img, // set icon's image
         
         
         
@@ -635,34 +638,34 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         // a dummy element, for making the image's width
         ...children('img', {
             // layouts:
-            display    : 'inline-block',  // use inline-block, so it takes the width & height as we set
+            display    : 'inline-block',     // use inline-block, so it takes the width & height as we set
             
             
             
             // appearances:
-            visibility : 'hidden',        // hide the element, but still consumes the dimension
+            visibility : 'hidden',           // hide the element, but still consumes the dimension
             
             
             
             // sizes:
-            inlineSize : 'auto',          // calculates the width by [blockSize * aspect_ratio]
-            blockSize  : '100%',          // set icon's height as tall as container
+            inlineSize : 'auto',             // calculates the width by [blockSize * aspect_ratio]
+            blockSize  : '100%',             // set icon's height as tall as container
             
             
             
             // accessibilities:
-            userSelect : 'none',          // disable selecting icon's img
+            userSelect : 'none',             // disable selecting icon's img
             
             
             
             // animations:
-            transition : 'inherit',       // inherit transition for smooth sizing changes
+            transition : 'inherit',          // inherit transition for smooth sizing changes
         }),
         
         
         
         // backgrounds:
-        backg         : 'currentColor',   // set background as icon's color
+        backg         : 'currentColor',      // set background as icon's color
     });
 };
 export const usesIconVariants    = () => {
