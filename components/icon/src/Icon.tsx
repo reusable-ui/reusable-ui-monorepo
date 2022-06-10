@@ -120,6 +120,17 @@ import {
     // types:
     VariantMixin,
     StateMixin,
+    
+    
+    
+    // hooks:
+    ifSize          as basicIfSize,
+    usesSizeVariant as basicUsesSizeVariant,
+    useSizeVariant  as basicUseSizeVariant,
+}                           from '@reusable-ui/basic'       // a base component
+export type {
+    // hooks:
+    SizeVars,
 }                           from '@reusable-ui/basic'       // a base component
 
 
@@ -129,181 +140,36 @@ import {
 // layouts:
 
 //#region sizes
-export type SizeName = 'sm'|'lg' | (string & {})
-export interface SizeVars {
-    // empty (may be added soon)
-}
-const [sizes] = cssVar<SizeVars>();
+export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em' | (string & {})
 
 
 
-export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
+export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => basicIfSize(sizeName, styles);
 
 
 
 /**
- * Uses basic sizes.  
- * For example: `sm`, `lg`.
+ * Uses icon sizes.  
+ * For example: `sm`, `nm`, `md`, `lg`, `1em`.
  * @param configProps Customize the sizing definitions from configuration for each size in `options`.
  * @param options Customize the size options.
  * @returns A `VariantMixin<SizeVars>` represents sizing definitions for each size in `options`.
  */
-export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => {
-    return [
-        () => style({
-            ...variants([
-                options.map((sizeName) =>
-                    ifSize(sizeName, {
-                        // overwrites propName = propName{SizeName}:
-                        ...overwriteProps(configProps, usesSuffixedProps(configProps, sizeName)),
-                    })
-                ),
-            ]),
-        }),
-        sizes,
-    ];
-};
+export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => basicUsesSizeVariant(configProps, options);
 
 /**
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
-export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
+export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 
 
 
 export interface SizeVariant {
     size ?: SizeName
 }
-export const useSizeVariant = ({size}: SizeVariant) => ({
-    class: size ? `sz${pascalCase(size)}` : null,
-});
+export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props);
 //#endregion sizes
-
-//#region orientation
-export type OrientationName = 'inline'|'block'
-
-
-
-export interface OrientationRuleOptions {
-    defaultOrientation        ?: OrientationName
-    orientationInlineSelector ?: CssSelectorCollection
-    orientationBlockSelector  ?: CssSelectorCollection
-}
-export const defaultInlineOrientationRuleOptions : OrientationRuleOptions = { defaultOrientation: 'inline' };
-export const defaultBlockOrientationRuleOptions  : OrientationRuleOptions = { defaultOrientation: 'block'  };
-export const normalizeOrientationRule = (options: OrientationRuleOptions|undefined, defaultOptions: OrientationRuleOptions): Required<OrientationRuleOptions> => {
-    const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
-    const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(.block)'  : '.inline');
-    const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(.inline)' : '.block' );
-    
-    
-    
-    return {
-        ...options, // preserves foreign props
-        
-        defaultOrientation,
-        orientationInlineSelector,
-        orientationBlockSelector,
-    };
-};
-
-
-
-export type OrientationMixin = readonly [CssSelectorCollection, CssSelectorCollection]
-export const usesOrientationRule = (options?: OrientationRuleOptions): OrientationMixin => {
-    // options:
-    const {
-        orientationInlineSelector,
-        orientationBlockSelector,
-    } = normalizeOrientationRule(options, defaultBlockOrientationRuleOptions);
-    
-    
-    
-    return [
-        orientationInlineSelector,
-        orientationBlockSelector,
-    ];
-};
-
-
-
-export interface OrientationVariant {
-    orientation ?: OrientationName
-}
-export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
-    class: orientation ?? null,
-});
-//#endregion orientation
-
-//#region nude
-export interface NudeVars {
-    // empty (may be added soon)
-}
-const [nudes] = cssVar<NudeVars>();
-
-
-// parent not `.nude` -and- current not `.nude`:
-export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(:is(.nude&, &.nude))', styles);
-// parent is  `.nude` -or-  current is  `.nude`:
-export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     ':is(.nude&, &.nude)' , styles);
-
-
-
-/**
- * Uses toggleable nudeification (removes background, border & padding).
- * @returns A `VariantMixin<NudeVars>` represents nudeification definitions.
- */
-export const usesNudeVariant = (): VariantMixin<NudeVars> => {
-    // dependencies:
-    
-    // borders:
-    const [, borders ] = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    
-    
-    return [
-        () => style({
-            ...variants([
-                ifNude({
-                    // backgrounds:
-                    backg : [['none'], '!important'], // discard background, no valid/invalid animation
-                    
-                    
-                    
-                    // borders:
-                    [borders.borderWidth           ] : '0px', // discard border
-                 // // remove rounded corners on top:
-                 // [borders.borderStartStartRadius] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // [borders.borderStartEndRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // // remove rounded corners on bottom:
-                 // [borders.borderEndStartRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // [borders.borderEndEndRadius    ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                    
-                    
-                    
-                    // spacings:
-                    [paddings.paddingInline] : '0px', // discard padding
-                    [paddings.paddingBlock ] : '0px', // discard padding
-                }),
-            ]),
-        }),
-        nudes,
-    ];
-};
-
-
-
-export interface NudeVariant {
-    nude ?: boolean
-}
-export const useNudeVariant = ({nude}: NudeVariant) => ({
-    class: nude ? 'nude' : null,
-});
-//#endregion nude
 
 
 // colors:
