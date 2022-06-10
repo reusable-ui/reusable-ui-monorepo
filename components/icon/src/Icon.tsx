@@ -158,6 +158,11 @@ import {
     
     BackgVars,
     usesBackg as basicUsesBackg,
+    
+    
+    
+    // configs:
+    basics as basicCssConfigs,
 }                           from '@reusable-ui/basic'       // a base component
 
 
@@ -420,6 +425,22 @@ export const usesIconForeg = (): VariantMixin<IconForegVars> => {
 };
 //#endregion iconForeg
 
+//#region icon
+export interface IconVars {
+    /**
+     * Icon's image url or icon's name.
+     */
+    img : any
+}
+const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
+
+
+
+export const useIcon = <TElement extends Element = Element>({ icon }: IconProps<TElement>) => {
+
+}
+//#endregion icon
+
 
 
 // utilities:
@@ -467,14 +488,6 @@ export const formatOf = (fileName: string): string|null => {
 
 
 // styles:
-export interface IconVars {
-    /**
-     * Icon's image url or icon's name.
-     */
-    img : any
-}
-const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
-
 export const usesIconLayout      = () => {
     // dependencies:
     
@@ -499,12 +512,12 @@ export const usesIconLayout      = () => {
             
             
             // positions:
-            verticalAlign  : 'baseline', // icon's text should be aligned with sibling text, so the icon behave like <span> wrapper
+            verticalAlign  : 'baseline',    // icon's text should be aligned with sibling text, so the icon behave like <span> wrapper
             
             
             
             // sizes:
-            blockSize      : icons.size, // set background_image's height
+            blockSize      : icons.size,    // set background_image's height
             
             
             
@@ -559,11 +572,6 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
                 
                 
                 
-                // appearances:
-                transition    : 'inherit', // inherit transition for smooth sizing changes
-                
-                
-                
                 // sizes:
                 fontSize      : icons.size,       // set icon's size
                 overflowY     : 'hidden',         // a hack: hides the pseudo-inherited underline
@@ -582,6 +590,11 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
                 
                 // foregrounds:
                 foreg         : 'currentColor',   // set foreground as icon's color
+                
+                
+                
+                // animations:
+                transition    : 'inherit',        // inherit transition for smooth sizing changes
                 
                 
                 
@@ -617,37 +630,41 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         // a dummy element, for making the image's width
         ...children('img', {
             // layouts:
-            display    : 'inline-block', // use inline-block, so it takes the width & height as we set
+            display    : 'inline-block',  // use inline-block, so it takes the width & height as we set
             
             
             
             // appearances:
-            transition : 'inherit', // inherit transition for smooth sizing changes
-            visibility : 'hidden', // hide the element, but still consumes the dimension
+            visibility : 'hidden',        // hide the element, but still consumes the dimension
             
             
             
             // sizes:
-            inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
-            blockSize  : '100%', // set icon's height as tall as container
+            inlineSize : 'auto',          // calculates the width by [blockSize * aspect_ratio]
+            blockSize  : '100%',          // set icon's height as tall as container
             
             
             
             // accessibilities:
-            userSelect : 'none', // disable selecting icon's img
+            userSelect : 'none',          // disable selecting icon's img
+            
+            
+            
+            // animations:
+            transition : 'inherit',       // inherit transition for smooth sizing changes
         }),
         
         
         
         // backgrounds:
-        backg         : 'currentColor', // set background as icon's color
+        backg         : 'currentColor',   // set background as icon's color
     });
 };
 export const usesIconVariants    = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant(basics);
+    const [sizesRule   ] = usesSizeVariant(icons);
     
     // colors:
     const [themesRule  ] = usesThemeVariant();
@@ -666,7 +683,7 @@ export const usesIconVariants    = () => {
         ]),
     });
 };
-export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['color'], size?: CssKnownProps['inlineSize']) => {
+export const usesIconImage       = (img: CssCustomRef, backg?: CssKnownProps['backgroundColor'], size?: CssKnownProps['inlineSize']) => {
     // dependencies:
     
     // backgrounds:
@@ -683,7 +700,12 @@ export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['co
             backgRule,
         ]),
         ...vars({
-            [backgs.backgColor] : color,
+            // backgrounds:
+            [backgs.backgColor] : backg,
+            
+            
+            
+            // sizes:
             [icons.size       ] : size,
         }),
     });
@@ -716,130 +738,37 @@ export const useIconStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [basics, cssBasicConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
-    
-    const [, {filter: filterExcited} ] = usesExcitedState();
-    
-    
-    
-    //#region keyframes
-    const [keyframesExcitedRule, keyframesExcited] = keyframes({
-        from : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-             // filterExcited, // missing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
-        to   : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-                filterExcited, // existing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
-    });
-    keyframesExcited.value = 'excited'; // the @keyframes name should contain 'excited' in order to be recognized by `useExcitedState`
-    //#endregion keyframes
+export const [icons, cssIconConfig] = cssConfig(() => {
+    const basics = {
+        // backgrounds:
+        backg  : 'currentColor'                                 as CssKnownProps['backgroundColor'],
+        
+        
+        
+        // sizes:
+        sizeNm : '24px'                                         as CssKnownProps['inlineSize'],
+    };
     
     
-    
-    const transitionDuration = '300ms';
     
     return {
-        // appearances:
-        opacity              : 1                            as CssKnownProps['opacity'],
+        ...basics,
         
         
         
-        // backgrounds:
-        backg                : 'transparent'                as CssKnownProps['backg'],
-        backgGrad            : [
-            ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
-        ]                                                   as CssKnownProps['backgroundImage'],
-        
-        
-        
-        // foregrounds:
-        foreg                : 'currentColor'               as CssKnownProps['foreg'],
-        
-        
-        
-        // borders:
-        border               : [
-            [borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color],
-        ]                                                   as CssKnownProps['border'],
-        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth'],
-        borderColor          : borderStrokes.color          as CssKnownProps['borderColor'],
-        
-        borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
-        borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
-        borderRadiusLg       : borderRadiuses.lg            as CssKnownProps['borderRadius'],
+        // sizes:
+        size    :            basics.sizeNm                      as CssKnownProps['inlineSize'],
+        sizeSm  : [['calc(', basics.sizeNm, '*', 0.75  , ')']]  as CssKnownProps['inlineSize'],
+        sizeMd  : [['calc(', basics.sizeNm, '*', 1.50  , ')']]  as CssKnownProps['inlineSize'],
+        sizeLg  : [['calc(', basics.sizeNm, '*', 2.00  , ')']]  as CssKnownProps['inlineSize'],
+        size1em : '1em'                                         as CssKnownProps['inlineSize'],
         
         
         
         // animations:
-        transitionDuration   : transitionDuration           as CssKnownProps['transitionDuration'],
-        transition           : [
-            // appearances:
-            ['opacity'    , transitionDuration, 'ease-out'],
-            
-            // sizes:
-            ['inline-size', transitionDuration, 'ease-out'],
-            ['block-size' , transitionDuration, 'ease-out'],
-            
-            // backgrounds:
-            ['background' , transitionDuration, 'ease-out'],
-            
-            // foregrounds:
-            ['color'      , transitionDuration, 'ease-out'],
-            
-            // borders:
-            ['border'     , transitionDuration, 'ease-out'],
-            
-            // spacings:
-         // ['padding'    , transitionDuration, 'ease-out'], // beautiful but uncomfortable
-            
-            // typos:
-            ['font-size'  , transitionDuration, 'ease-out'],
-        ]                                                   as CssKnownProps['transition'],
-        
-        filterExcited        : [[
-            'invert(80%)',
-        ]]                                                  as CssKnownProps['filter'],
-        
-        ...keyframesExcitedRule,
-        animExcited          : [
-            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited],
-        ]                                                   as CssKnownProps['anim'],
-        
-        
-        
-        // spacings:
-        paddingInline        : [['calc((', spacers.sm, '+', spacers.md, ')/2)']]    as CssKnownProps['paddingInline'],
-        paddingBlock         : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']]    as CssKnownProps['paddingBlock' ],
-        paddingInlineSm      : spacers.sm                                           as CssKnownProps['paddingInline'],
-        paddingBlockSm       : spacers.xs                                           as CssKnownProps['paddingBlock' ],
-        paddingInlineLg      : spacers.md                                           as CssKnownProps['paddingInline'],
-        paddingBlockLg       : spacers.sm                                           as CssKnownProps['paddingBlock' ],
-        
-        
-        
-        // typos:
-        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'],
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'],
-        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'],
-        fontFamily           : 'inherit'    as CssKnownProps['fontFamily'],
-        fontWeight           : 'inherit'    as CssKnownProps['fontWeight'],
-        fontStyle            : 'inherit'    as CssKnownProps['fontStyle'],
-        textDecoration       : 'inherit'    as CssKnownProps['textDecoration'],
-        lineHeight           : 'inherit'    as CssKnownProps['lineHeight'],
+        transition : basicCssConfigs.transition                 as CssKnownProps['transition'],
     };
-}, { prefix: 'bsc' });
+}, { prefix: 'ico' });
 
 export const config = {
     font: {
