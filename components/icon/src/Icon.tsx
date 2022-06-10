@@ -124,13 +124,10 @@ import {
     
     
     // hooks:
+    SizeVars,
     ifSize          as basicIfSize,
     usesSizeVariant as basicUsesSizeVariant,
     useSizeVariant  as basicUseSizeVariant,
-}                           from '@reusable-ui/basic'       // a base component
-export type {
-    // hooks:
-    SizeVars,
 }                           from '@reusable-ui/basic'       // a base component
 
 
@@ -141,6 +138,7 @@ export type {
 
 //#region sizes
 export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em' | (string & {})
+export type { SizeVars }
 
 
 
