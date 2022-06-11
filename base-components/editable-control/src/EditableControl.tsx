@@ -136,15 +136,15 @@ const [valids] = cssVar<ValidInvalidVars>();
 
 
 // .validated will be added after validating-animation done:
-const selectorIfValided      = '.validated'
+const selectorIfValidated    = '.validated'
 // .validating = styled valid, :valid = native valid:
 // the .validated, .unvalidating, .novalidation are used to overwrite native :valid
 const selectorIfValidating   = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
 const selectorIfUnvalidating = '.unvalidating'
-// if all above are not set => unvalided:
+// if all above are not set => unvalidated:
 // optionally use .novalidation to overwrite native :valid
-const selectorIfUnvalided    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
+const selectorIfUnvalidated  = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
