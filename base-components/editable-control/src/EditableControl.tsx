@@ -26,6 +26,7 @@ import type {
 import {
     // rules:
     rule,
+    variants,
     states,
     keyframes,
     
@@ -84,9 +85,18 @@ import {
     
     // hooks:
     usesSizeVariant,
+    ifOutlined,
+    ifMild,
+    usesMildVariant,
+    usesBackg,
+    usesForeg,
     usesAnim,
     fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // hooks:
+    ifActive,
+}                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
     markActive,
@@ -182,28 +192,68 @@ export const ifNoValidation    = (styles: CssStyleCollection): CssRule => rule(s
 
 
 /**
- * Uses press & release states.
- * @returns A `StateMixin<ValidInvalidVars>` represents press & release state definitions.
+ * Uses valid & invalid states.
+ * @returns A `StateMixin<ValidInvalidVars>` represents valid & invalid state definitions.
  */
-export const usesPressReleaseState = (): StateMixin<ValidInvalidVars> => {
+export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
+    // dependencies:
+    const [, milds ] = usesMildVariant();
+    const [, backgs] = usesBackg();
+    const [, foregs] = usesForeg();
+    
+    
+    
     return [
         () => style({
             ...states([
-                ifPressed({
+                ifValidating({
                     ...vars({
-                        [valids.filter] : editableControls.filterPress,
+                        [valids.animValid]   : editableControls.animValid,
                     }),
                 }),
-                ifPressing({
+                ifUnvalidating({
                     ...vars({
-                        [valids.filter] : editableControls.filterPress,
-                        [valids.anim  ] : editableControls.animPress,
+                        [valids.animValid]   : editableControls.animUnvalid,
                     }),
                 }),
-                ifReleasing({
+                
+                ifInvalidating({
                     ...vars({
-                        [valids.filter] : editableControls.filterPress,
-                        [valids.anim  ] : editableControls.animRelease,
+                        [valids.animInvalid] : editableControls.animInvalid,
+                    }),
+                }),
+                ifUninvalidating({
+                    ...vars({
+                        [valids.animInvalid] : editableControls.animUninvalid,
+                    }),
+                }),
+            ]),
+            
+            
+            
+            ...vars({
+                [valids.backgStart] : milds.backgFn,
+                [valids.foregStart] : milds.foregFn,
+            }),
+            ...variants([
+                ifOutlined({
+                    ...vars({
+                        [valids.backgStart] : backgs.backgColorFn,
+                        [valids.foregStart] : foregs.foregFn,
+                    }),
+                }),
+                ifMild({
+                    ...vars({
+                        [valids.backgStart] : backgs.backgColorFn,
+                        [valids.foregStart] : foregs.foregFn,
+                    }),
+                }),
+            ]),
+            ...states([
+                ifActive({
+                    ...vars({
+                        [valids.backgStart] : milds.backgFn,
+                        [valids.foregStart] : milds.foregFn,
                     }),
                 }),
             ]),
