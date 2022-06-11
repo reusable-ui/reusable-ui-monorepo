@@ -67,6 +67,16 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
+    // hooks:
+    Result as ValResult,
+    usePropValidation,
+    
+    
+    
+    // react components:
+    ValidationProps,
+}                           from '@reusable-ui/validations'     // a validation management system
+import {
     // types:
     DefaultTag,
     DefaultRole,
@@ -289,6 +299,19 @@ export const markInvalid = (): CssRule => style({
 export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
 
 
+
+export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
+export type ValidatorHandler       = () => ValResult
+export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
+
+export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
+    // states:
+    const isValid = useRef<ValResult>(null); // initially unchecked
+    
+    
+    
+    // handlers:
+};
 
 export const usePressReleaseState  = <TElement extends Element = Element>(props: EditableControlProps<TElement>) => {
     // fn props:
@@ -728,7 +751,7 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
     
     
     
-    // events:
+    // handlers:
     const handleMouseDown    = useMergeEvents(
         // preserves the original `onMouseDown`:
         props.onMouseDown,
@@ -785,7 +808,7 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
             
             
             
-            // events:
+            // handlers:
             onClick        = {propEnabled ? props.onClick : handleClickDisabled}
             onMouseDown    = {handleMouseDown   }
             onKeyDown      = {handleKeyDown     }
