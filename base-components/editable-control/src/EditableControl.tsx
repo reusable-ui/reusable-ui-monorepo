@@ -106,6 +106,12 @@ import {
     ifActive,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
+    // hooks:
+    ifFocus,
+    ifArrive,
+    
+    
+    
     // styles:
     usesControlLayout,
     usesControlVariants,
@@ -248,6 +254,18 @@ export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
             ]),
             ...states([
                 ifActive({
+                    ...vars({
+                        [valids.backgStart] : milds.backgFn,
+                        [valids.foregStart] : milds.foregFn,
+                    }),
+                }),
+                ifFocus({
+                    ...vars({
+                        [valids.backgStart] : milds.backgFn,
+                        [valids.foregStart] : milds.foregFn,
+                    }),
+                }),
+                ifArrive({
                     ...vars({
                         [valids.backgStart] : milds.backgFn,
                         [valids.foregStart] : milds.foregFn,
