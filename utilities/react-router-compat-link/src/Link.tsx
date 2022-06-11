@@ -67,9 +67,9 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     // handlers:
     const handleClientSideClick            = useLinkClickHandler(to, { replace, state, target });
-    const handleConditionalClientSideClick = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((e) => {
-        if (!e.defaultPrevented && !reloadDocument) {
-            handleClientSideClick(e);
+    const handleConditionalClientSideClick = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
+        if (!event.defaultPrevented && !reloadDocument) {
+            handleClientSideClick(event);
         } // if
     }, [handleClientSideClick, reloadDocument]);
     const handleClick = useMergeEvents(
