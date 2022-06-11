@@ -136,15 +136,26 @@ const [valids] = cssVar<ValidInvalidVars>();
 
 
 // .validated will be added after validating-animation done:
-const selectorIfValidated    = '.validated'
+const selectorIfValidated      = '.validated'
 // .validating = styled valid, :valid = native valid:
 // the .validated, .unvalidating, .novalidation are used to overwrite native :valid
-const selectorIfValidating   = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation)))'
+const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
-const selectorIfUnvalidating = '.unvalidating'
+const selectorIfUnvalidating   = '.unvalidating'
 // if all above are not set => unvalidated:
 // optionally use .novalidation to overwrite native :valid
-const selectorIfUnvalidated  = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
+const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
+
+// .invalidated will be added after invalidating-animation done:
+const selectorIfInvalidated    = '.invalidated'
+// .invalidating = styled invalid, :invalid = native invalid:
+// the .invalidated, .uninvalidating, .novalidation are used to overwrite native :invalid
+const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .novalidation)))'
+// .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
+const selectorIfUninvalidating = '.uninvalidating'
+// if all above are not set => uninvalidated:
+// optionally use .novalidation to overwrite native :invalid
+const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
