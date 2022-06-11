@@ -70,7 +70,7 @@ import {
 import {
     // hooks:
     Result as ValResult,
-    usePropValidation,
+    usePropIsValid,
     
     
     
@@ -307,7 +307,7 @@ export type CustomValidatorHandler = (state: ValidityState, value: string) => Va
 
 export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
     // states:
-    const isValid = useRef<ValResult>(null); // initially unchecked
+    const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
     
     
     
@@ -379,9 +379,12 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     const propReadOnly          = usePropReadOnly(props);
     const propEditable          = propEnabled && !propReadOnly;
     const isControllablePressed = (props.pressed !== undefined);
+    const propIsValid           = usePropIsValid(props);
     
-    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : defaultActionMouses;
-    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : defaultActionKeys;
+    
+    
+    // defaults:
+    const defaultIsValid        : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
     
     
     
