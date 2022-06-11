@@ -637,7 +637,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     
     
     
-    // events:
+    // handlers:
     const handleMouseDown    = useMergeEvents(
         // preserves the original `onMouseDown`:
         props.onMouseDown,
@@ -694,7 +694,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             
             
             
-            // events:
+            // handlers:
             onClick        = {propEnabled ? props.onClick : handleClickDisabled}
             onMouseDown    = {handleMouseDown   }
             onKeyDown      = {handleKeyDown     }
