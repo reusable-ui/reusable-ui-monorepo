@@ -107,6 +107,7 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
+    markActive as controlMarkActive,
     ifFocus,
     ifArrive,
     
@@ -129,6 +130,26 @@ import {
 // hooks:
 
 // states:
+
+//#region activePassive
+export const markActive = (): CssRule => {
+    // dependencies:
+    const [, milds ] = usesMildVariant();
+    const [, valids] = usesValidInvalidState();
+    
+    
+    
+    return style({
+        ...imports([
+            controlMarkActive(),
+        ]),
+        ...vars({
+            [valids.backgStart] : milds.backgFn,
+            [valids.foregStart] : milds.foregFn,
+        }),
+    });
+};
+//#endregion activePassive
 
 //#region validInvalid
 export interface ValidInvalidVars {
@@ -254,22 +275,19 @@ export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
             ]),
             ...states([
                 ifActive({
-                    ...vars({
-                        [valids.backgStart] : milds.backgFn,
-                        [valids.foregStart] : milds.foregFn,
-                    }),
+                    ...imports([
+                        markActive(),
+                    ]),
                 }),
                 ifFocus({
-                    ...vars({
-                        [valids.backgStart] : milds.backgFn,
-                        [valids.foregStart] : milds.foregFn,
-                    }),
+                    ...imports([
+                        markActive(),
+                    ]),
                 }),
                 ifArrive({
-                    ...vars({
-                        [valids.backgStart] : milds.backgFn,
-                        [valids.foregStart] : milds.foregFn,
-                    }),
+                    ...imports([
+                        markActive(),
+                    ]),
                 }),
             ]),
         }),
