@@ -305,18 +305,18 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         setPressDn(true);
     }, [propEditable, isControllablePressed]);
     
-    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((e) => {
-        if (!actionMouses || actionMouses.includes(e.button)) handlePress(e);
+    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((event) => {
+        if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
     }, [actionMouses, handlePress]);
     
-    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((e) => {
-        if (!actionKeys || actionKeys.includes(e.code.toLowerCase()) || actionKeys.includes(e.key.toLowerCase())) handlePress(e);
+    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((event) => {
+        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
     }, [actionKeys, handlePress]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
         // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
+        if (event.target !== event.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
         
         
         
@@ -571,8 +571,8 @@ export const isClientSideLink = (node: React.ReactNode): node is JsxClientSideLi
 
 
 // handlers:
-const handleClickDisabled : React.MouseEventHandler<Element> = (e) => {
-    e.stopPropagation();
+const handleClickDisabled : React.MouseEventHandler<Element> = (event) => {
+    event.stopPropagation();
 };
 
 
