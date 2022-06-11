@@ -86,7 +86,7 @@ import {
     // hooks:
     usesSizeVariant,
     ThemeName,
-    usesThemeImpt,
+    usesThemeImportant,
     ifOutlined,
     ifMild,
     usesMildVariant,
@@ -274,7 +274,7 @@ export const markValid   = (): CssRule => style({
  * @param themeName The name of valid theme.
  * @returns A `CssRule` represents the conditional color definitions at valid state.
  */
-export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImpt(themeName);
+export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImportant(themeName);
 
 export const markInvalid = (): CssRule => style({
     ...imports([
@@ -286,7 +286,7 @@ export const markInvalid = (): CssRule => style({
  * @param themeName The name of invalid theme.
  * @returns A `CssRule` represents the conditional color definitions at invalid state.
  */
-export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImpt(themeName);
+export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
 
 
 
