@@ -58,6 +58,7 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
     useMergeClasses,
@@ -373,12 +374,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     };
 };
 
-export const usePressReleaseState  = <TElement extends Element = Element>(props: EditableControlProps<TElement>) => {
+export const useValidInvalidState  = <TElement extends Element = Element>(props: EditableControlProps<TElement>, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
     const propEditable          = propEnabled && !propReadOnly;
-    const isControllablePressed = (props.pressed !== undefined);
     const propIsValid           = usePropIsValid(props);
     
     
@@ -389,30 +389,101 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
+    const [wasValid     , setWasValid     ] = useState<ValResult|undefined>((): (ValResult|undefined) => {
+        // if control is not editable => no validation
+        if (!propEditable)             return null;
+        
+        
+        
+        // if [isValid] was set => use [isValid] as the final result:
+        if (propIsValid !== undefined) return propIsValid;
+        
+        
+        
+        // if `validator` was provided, evaluate it at startup:
+        if (validator)                 return undefined; // undefined means => evaluate the validator *at startup*
+        
+        
+        
+        // use default value as fallback:
+        return defaultIsValid;
+    });
     
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
-    
-    
-    
-    // resets:
-    if (!propEditable && pressDn) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
-    } // if
+    const [succAnimating, setSuccAnimating] = useState<boolean|null>(null); // null => no-succ-animation, true => succ-animation, false => unsucc-animation
+    const [errAnimating , setErrAnimating ] = useState<boolean|null>(null); // null => no-err-animation,  true => err-animation,  false => unerr-animation
     
     
     
     /*
-     * state is always released if (disabled || readOnly)
-     * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
+     * state is  as <ValidationProvider> if it's [isValid] was set
+     * state is  as validator callback returned
+     * otherwise undefined (represents no change needed)
      */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const isValidFn = ((): (ValResult|undefined) => {
+        // if control is not editable => no validation
+        if (!propEditable)             return null;
+        
+        
+        
+        // if [isValid] was set => use [isValid] as the final result:
+        if (propIsValid !== undefined) return propIsValid;
+        
+        
+        
+        // if `validator` was provided, evaluate it:
+        if ((wasValid !== undefined))  return (validator ? validator() : defaultIsValid); // (wasValid !== undefined) means => the validator is ready => evaluate it *now*
+        
+        
+        
+        // no change needed:
+        return undefined;
+    })();
     
-    if (pressed !== pressedFn) { // change detected => apply the change & start animating
-        setPressed(pressedFn);   // remember the last change
-        setAnimating(pressedFn); // start pressing-animation/releasing-animation
+    if ((isValidFn !== undefined) && (wasValid !== isValidFn)) { // change detected => apply the change & start animating
+        setWasValid(isValidFn);                                  // remember the last change
+        
+        
+        
+        switch (isValidFn) {
+            case true: // success
+                // if was error => un-error:
+                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
+                
+                setSuccAnimating(true); // start succ-animation
+                break;
+            
+            case false: // error
+                // if was success => un-success:
+                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
+                
+                setErrAnimating(true);  // start err-animation
+                break;
+            
+            case null: // uncheck
+                // if was success => un-success:
+                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
+                
+                // if was error => un-error:
+                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
+                break;
+        } // switch
     } // if
+    
+    
+    
+    // dom effects:
+    
+    // watch the changes once (only at startup):
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (wasValid !== undefined) return; // the effect should only run once
+        
+        
+        
+        // now validator has been loaded => re-*set the initial* state of `wasValid` with any values other than `undefined`
+        // once set, this effect will never be executed again
+        setWasValid(validator ? validator() : defaultIsValid);
+    }, [wasValid, validator]); // the effect should only run once
     
     
     
