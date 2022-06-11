@@ -8,7 +8,6 @@ import {
     // hooks:
     useState,
     useRef,
-    useEffect,
     useCallback,
 }                           from 'react'
 
@@ -61,6 +60,7 @@ import {
     useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -80,17 +80,6 @@ import {
 }                           from '@reusable-ui/validations'     // a validation management system
 import {
     // types:
-    DefaultTag,
-    DefaultRole,
-    
-    
-    
-    // hooks:
-    SemanticProps,
-    useTestSemantic,
-}                           from '@reusable-ui/generic'         // a base component
-import {
-    // types:
     StateMixin,
     
     
@@ -105,18 +94,12 @@ import {
     usesBackg,
     usesForeg,
     usesAnim,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ifActive,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
-    // hooks:
-    markActive,
-    
-    
-    
     // styles:
     usesControlLayout,
     usesControlVariants,
@@ -128,12 +111,6 @@ import {
     ControlProps,
     Control,
 }                           from '@reusable-ui/control'         // a base component
-
-// other libs:
-import type {
-    // types:
-    To,
-}                           from 'history'                      // a helper lib
 
 
 
@@ -327,11 +304,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     
     // handlers:
-    const handleValidation = useCallback(({ target }: React.ChangeEvent<EditableControlElement>, immediately = false) => {
+    const handleValidation = useCallback((element: EditableControlElement, immediately = false) => {
         const performUpdate = (validity: ValidityState, prevValue?: string) => {
             // conditions:
             // make sure the <Control>'s value was not modified during delaying
-            const currentValue = target.value;
+            const currentValue = element.value;
             if ((prevValue !== undefined) && (prevValue !== currentValue)) return; // the value has been modified during delaying => abort further validating
             
             
@@ -344,11 +321,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         
         if (immediately) {
             // instant validating:
-            performUpdate(target.validity);
+            performUpdate(element.validity);
         }
         else {
-            const validity  = target.validity;
-            const prevValue = target.value;
+            const validity  = element.validity;
+            const prevValue = element.value;
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             setTimeout(
@@ -358,11 +335,13 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         } // if
     }, [customValidator]);
     
-    const handleInit       = useEvent<React.ChangeEventHandler<EditableControlElement>>((event) => {
-        handleValidation(event, /*immediately =*/true);
+    const handleInit       = useCallback((element: EditableControlElement) => {
+        handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     : React.ChangeEventHandler<EditableControlElement> = handleValidation;
+    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({target}) => {
+        handleValidation(target);
+    }, [handleValidation]);
     
     
     
@@ -762,6 +741,32 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
     
     
     
+    // refs:
+    const setInputRef = useCallback<React.RefCallback<TElement>>((elm) => {
+        // conditions:
+        if (!elm) return;
+        
+        
+        
+        if (elm.validity) {
+            inputValidator.handleInit(elm);
+        }
+        else {
+            const firstInput = elm.querySelector('input, select, textarea') as (EditableControlElement|null);
+            if (firstInput) inputValidator.handleInit(firstInput);
+        } // if
+    }, []);
+    const elmRef = useMergeRefs(
+        // preserves the original `elmRef`:
+        props.elmRef,
+        
+        
+        
+        setInputRef,
+    );
+    
+    
+    
     // classes:
     const stateClasses = useMergeClasses(
         // preserves the original `stateClasses`:
@@ -776,16 +781,16 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
     
     
     // handlers:
-    const handleKeyDown      = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
+    const handleChange       = useMergeEvents(
+        // preserves the original `onChange`:
+        props.onChange,
         
         
         
         // states:
         
-        // accessibilities:
-        pressReleaseState.handleKeyDown,
+        // validations:
+        inputValidator.handleChange,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -809,6 +814,11 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
             
             
             
+            // refs:
+            elmRef={elmRef}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             stateClasses={stateClasses}
@@ -816,9 +826,7 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
             
             
             // handlers:
-            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
-            onMouseDown    = {handleMouseDown   }
-            onKeyDown      = {handleKeyDown     }
+            onChange       = {handleChange      }
             onAnimationEnd = {handleAnimationEnd}
         />
     );
