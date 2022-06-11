@@ -811,7 +811,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     
-    // events:
+    // handlers:
     const handleFocus        = useMergeEvents(
         // preserves the original `onFocus`:
         props.onFocus,
@@ -893,7 +893,7 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
             
             
             
-            // events:
+            // handlers:
             onFocus        = {handleFocus       }
             onBlur         = {handleBlur        }
             onMouseEnter   = {handleMouseEnter  }
