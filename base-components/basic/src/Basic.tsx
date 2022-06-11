@@ -475,7 +475,7 @@ export const themeOptions = (): ThemeName[] => Object.keys(colorThemes) as Theme
  * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
  * @returns A `CssRule` represents a default theme color definitions`.
  */
-export const usesThemeDefault = (themeName: ThemeName|null = null): CssRule => usesThemeConditional(themeName);
+export const usesThemeDefault     = (themeName: ThemeName|null = null): CssRule => usesThemeConditional(themeName);
 
 /**
  * Creates conditional color definitions for the given `themeName`.
@@ -502,7 +502,7 @@ export const usesThemeConditional = (themeName: ThemeName|null): CssRule => styl
  * @param themeName The theme name as the important conditional color -or- `null` for undefining the important conditional.
  * @returns A `CssRule` represents important conditional color definitions for the given `themeName`.
  */
-export const usesThemeImportant = (themeName: ThemeName|null): CssRule => style({
+export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => style({
     ...vars({
         [themes.backgImpt        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
         [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
