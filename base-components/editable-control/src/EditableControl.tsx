@@ -157,14 +157,23 @@ const selectorIfUninvalidating = '.uninvalidating'
 // optionally use .novalidation to overwrite native :invalid
 const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
-export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
-export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
-export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
-export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
+export const ifValided        = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
+export const ifValidating     = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
+export const ifUnvalidating   = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidating   , styles);
+export const ifUnvalided      = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidated    , styles);
 
-export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
-export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
-export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
+export const ifValid          = (styles: CssStyleCollection): CssRule => rule([selectorIfValidating    , selectorIfValidated    ], styles);
+export const ifUnvalid        = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUnvalidated  ], styles);
+
+export const ifInvalided      = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidated    , styles);
+export const ifInvalidating   = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidating   , styles);
+export const ifUninvalidating = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidating , styles);
+export const ifUninvalided    = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidated  , styles);
+
+export const ifInvalid        = (styles: CssStyleCollection): CssRule => rule([selectorIfInvalidating  , selectorIfInvalidated  ], styles);
+export const ifUninvalid      = (styles: CssStyleCollection): CssRule => rule([selectorIfUninvalidating, selectorIfUninvalidated], styles);
+
+export const ifNoValidation   = (styles: CssStyleCollection): CssRule => rule(selectorIfNoValidation   , styles);
 
 
 
