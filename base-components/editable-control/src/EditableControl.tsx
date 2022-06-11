@@ -374,7 +374,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     };
 };
 
-export const useValidInvalidState  = <TElement extends Element = Element>(props: EditableControlProps<TElement>, validator?: ValidatorHandler) => {
+export const useValidInvalidState  = <TElement extends EditableControlElement = EditableControlElement>(props: EditableControlProps<TElement>, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
@@ -706,104 +706,46 @@ export const [editableControls, cssEditableControlConfig] = cssConfig(() => {
 
 
 
-// utilities:
-export type JsxReactRouterLink = React.ReactElement<{
-    // links:
-    to        ?: To
-    
-    
-    
-    // components:
-    passHref  ?: boolean
-    component ?: React.ReactElement
-    
-    
-    
-    // children:
-    children  ?: React.ReactNode
-}>
-export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
-    return (
-        React.isValidElement(node)                         // JSX element
-        &&
-        (typeof(node.type) === 'object')                   // forwardRef
-        &&
-        (typeof((node.type as any).render) === 'function') // functional component
-        &&
-        !!node.props.to                                    // one of ReactRouter prop
-    );
-};
-
-export type JsxNextLink = React.ReactElement<{
-    // links:
-    href      ?: To
-    
-    
-    
-    // components:
-    passHref  ?: boolean
-    
-    
-    
-    // children:
-    children  ?: React.ReactNode
-}>
-export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
-    return (
-        React.isValidElement(node)         // JSX element
-        &&
-        (typeof(node.type) === 'function') // functional component
-        &&
-        !!node.props.href                  // one of NextLink prop
-    );
-};
-
-export type JsxClientSideLink = JsxReactRouterLink & JsxNextLink
-export const isClientSideLink = (node: React.ReactNode): node is JsxClientSideLink => {
-    return (
-        isReactRouterLink(node)
-        ||
-        isNextLink(node)
-    );
-};
-
-
-
-// handlers:
-const handleClickDisabled : React.MouseEventHandler<Element> = (event) => {
-    event.stopPropagation();
-};
-
-
-
 // react components:
-export interface EditableControlProps<TElement extends Element = Element>
+export interface EditableControlProps<TElement extends EditableControlElement = EditableControlElement>
     extends
         // bases:
-        ControlProps<TElement>
+        ControlProps<TElement>,
+        
+        // validations:
+        ValidationProps
 {
     // accessibilities:
-    pressed      ?: boolean
+    autoFocus       ?: boolean
     
     
     
-    // behaviors:
-    actionMouses ?: number[]|null
-    actionKeys   ?: string[]|null
+    // validations:
+    customValidator ?: CustomValidatorHandler
+    required        ?: boolean
+    
+    
+    
+    // identifiers:
+    name            ?: string
+    form            ?: string
+    
+    
+    
+    // values:
+    defaultValue    ?: string | number | ReadonlyArray<string>
+    value           ?: string | number | ReadonlyArray<string>
+    onChange        ?: React.ChangeEventHandler<TElement>
 }
-const EditableControl = <TElement extends Element = Element>(props: EditableControlProps<TElement>): JSX.Element|null => {
+const EditableControl = <TElement extends EditableControlElement = EditableControlElement>(props: EditableControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableControlStyleSheet();
     
     
     
     // states:
-    const pressReleaseState = usePressReleaseState(props);
-    
-    
-    
-    // fn props:
-    const propEnabled       = usePropEnabled(props);
+    const inputValidator    = useInputValidator(props.customValidator);
+    const validInvalidState = useValidInvalidState(props, inputValidator.validator);
     
     
     
@@ -811,14 +753,11 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
     const {
         // remove states props:
         
-        // accessibilities:
-        pressed : _pressed,
-        
-        
-        
-        // behaviors:
-        actionMouses : _actionMouses,
-        actionKeys   : _actionKeys,
+        // validations:
+        enableValidation  : _enableValidation,
+        isValid           : _isValid,
+        inheritValidation : _inheritValidation,
+        customValidator   : _customValidator,
     ...restControlProps} = props;
     
     
@@ -830,24 +769,13 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
         
         
         
-        // accessibilities:
-        pressReleaseState.class,
+        // validations:
+        validInvalidState.class,
     );
     
     
     
     // handlers:
-    const handleMouseDown    = useMergeEvents(
-        // preserves the original `onMouseDown`:
-        props.onMouseDown,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        pressReleaseState.handleMouseDown,
-    );
     const handleKeyDown      = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -867,23 +795,17 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
         
         // states:
         
-        // accessibilities:
-        pressReleaseState.handleAnimationEnd,
+        // validations:
+        validInvalidState.handleAnimationEnd,
     );
     
     
     
     // jsx:
-    const editableControl = (
+    return (
         <Control<TElement>
             // other props:
             {...restControlProps}
-            
-            
-            
-            // semantics:
-            defaultTag  = {props.defaultTag  ?? defaultTag }
-            defaultRole = {props.defaultRole ?? defaultRole}
             
             
             
@@ -900,62 +822,8 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
             onAnimationEnd = {handleAnimationEnd}
         />
     );
-    
-    // inspect if <EditableControl>'s children contain one/more <Link>:
-    const children       = React.Children.toArray(props.children); // convert the children to array
-    const clientSideLink = children.find(isClientSideLink);        // take the first <Link> (if any)
-    if (!clientSideLink) return editableControl;                     // if no contain <Link> => normal <EditableControl>
-    
-    return (
-        <ClientSideLinkWrapper
-            linkComponent={clientSideLink}
-            actionComponent={editableControl}
-        >
-            {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <EditableControl>'s children:
-                // current <EditableControl>'s children:
-                if (child !== clientSideLink) return [child];
-                
-                
-                
-                // merge with <Link>'s children:
-                return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
-            })}
-        </ClientSideLinkWrapper>
-    );
 };
 export {
     EditableControl,
     EditableControl as default,
 }
-
-
-
-interface ClientSideLinkWrapperProps {
-    // components:
-    linkComponent   : JsxClientSideLink
-    actionComponent : React.ReactElement<SemanticProps>
-    
-    
-    
-    // children:
-    children       ?: React.ReactNode
-}
-const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps): JSX.Element|null => {
-    const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { defaultTag: 'a', defaultRole: 'link' });
-    
-    
-    
-    // jsx:
-    return React.cloneElement(linkComponent,
-        // props:
-        {
-            component : actionComponent,
-            passHref  : isSemanticLink,
-        },
-        
-        
-        
-        // children,
-        children
-    );
-};
