@@ -139,7 +139,7 @@ const [valids] = cssVar<ValidInvalidVars>();
 const selectorIfValidated      = '.validated'
 // .validating = styled valid, :valid = native valid:
 // the .validated, .unvalidating, .novalidation are used to overwrite native :valid
-const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation)))'
+const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation, .invalidated, .invalidating)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
 const selectorIfUnvalidating   = '.unvalidating'
 // if all above are not set => unvalidated:
@@ -150,30 +150,34 @@ const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, 
 const selectorIfInvalidated    = '.invalidated'
 // .invalidating = styled invalid, :invalid = native invalid:
 // the .invalidated, .uninvalidating, .novalidation are used to overwrite native :invalid
-const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .novalidation)))'
+const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .novalidation, .validated, .validating)))'
 // .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
 const selectorIfUninvalidating = '.uninvalidating'
 // if all above are not set => uninvalidated:
 // optionally use .novalidation to overwrite native :invalid
 const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
-export const ifValidated      = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
-export const ifValidating     = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
-export const ifUnvalidating   = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidating   , styles);
-export const ifUnvalidated    = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidated    , styles);
+// if all above are not set => noValidation
+// optionally use .noval to kill pseudo :valid & :invalid:
+const selectorIfNoValidation   = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
-export const ifValid          = (styles: CssStyleCollection): CssRule => rule([selectorIfValidating    , selectorIfValidated    ], styles);
-export const ifUnvalid        = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUnvalidated  ], styles);
+export const ifValidated       = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
+export const ifValidating      = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
+export const ifUnvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidating   , styles);
+export const ifUnvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidated    , styles);
 
-export const ifInvalidated    = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidated    , styles);
-export const ifInvalidating   = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidating   , styles);
-export const ifUninvalidating = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidating , styles);
-export const ifUninvalidated  = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidated  , styles);
+export const ifValid           = (styles: CssStyleCollection): CssRule => rule([selectorIfValidating    , selectorIfValidated    ], styles);
+export const ifUnvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUnvalidated  ], styles);
 
-export const ifInvalid        = (styles: CssStyleCollection): CssRule => rule([selectorIfInvalidating  , selectorIfInvalidated  ], styles);
-export const ifUninvalid      = (styles: CssStyleCollection): CssRule => rule([selectorIfUninvalidating, selectorIfUninvalidated], styles);
+export const ifInvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidated    , styles);
+export const ifInvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidating   , styles);
+export const ifUninvalidating  = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidating , styles);
+export const ifUninvalidated   = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidated  , styles);
 
-export const ifNoValidation   = (styles: CssStyleCollection): CssRule => rule(selectorIfNoValidation   , styles);
+export const ifInvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfInvalidating  , selectorIfInvalidated  ], styles);
+export const ifUninvalid       = (styles: CssStyleCollection): CssRule => rule([selectorIfUninvalidating, selectorIfUninvalidated], styles);
+
+export const ifNoValidation    = (styles: CssStyleCollection): CssRule => rule(selectorIfNoValidation   , styles);
 
 
 
