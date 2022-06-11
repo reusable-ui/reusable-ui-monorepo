@@ -85,7 +85,7 @@ import {
     // hooks:
     usesSizeVariant,
     ThemeName,
-    usesThemeCond,
+    usesThemeConditional,
     outlinedOf,
     mildOf,
     usesAnim,
@@ -353,7 +353,7 @@ export const markActive = (): CssRule => style({
  * @param themeName The name of active theme.
  * @returns A `CssRule` represents the conditional color definitions at active state.
  */
-export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeCond(themeName);
+export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeConditional(themeName);
 
 
 
