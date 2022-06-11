@@ -182,7 +182,7 @@ const selectorIfUninvalidating = '.uninvalidating'
 const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
 // if all above are not set => noValidation
-// optionally use .noval to kill pseudo :valid & :invalid:
+// optionally use .novalidation to kill pseudo :valid & :invalid:
 const selectorIfNoValidation   = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
 
 export const ifValidated       = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
@@ -487,127 +487,78 @@ export const useValidInvalidState  = <TElement extends Element = Element>(props:
     
     
     
-    /**
-     * `null`  : never loaded  
-     * `true`  : loaded (live)  
-     * `false` : unloaded (dead)  
-     */
-    const loaded = useRef<boolean|null>(null);
-    useEffect(() => {
-        // setups:
-        // mark the control as live:
-        loaded.current = true;
-        
-        
-        
-        // cleanups:
-        return () => {
-            // mark the control as dead:
-            loaded.current = false;
-        };
-    }, []); // runs once on startup
-    
-    useEffect(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        // handlers:
-        const handleRelease = (): void => {
-            if (!loaded.current) return; // `setTimeout` fires after the control was dead => ignore
-            
-            setPressDn(false);
-        };
-        const handleReleaseLate = (): void => {
-            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop
-            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
-        };
-        
-        
-        
-        // setups:
-        window.addEventListener('mouseup', handleReleaseLate);
-        window.addEventListener('keyup',   handleRelease);
-        
-        
-        
-        // cleanups:
-        return () => {
-            window.removeEventListener('mouseup', handleReleaseLate);
-            window.removeEventListener('keyup',   handleRelease);
-        };
-    }, [propEditable, isControllablePressed]);
-    
-    
-    
     // handlers:
-    const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        setPressDn(true);
-    }, [propEditable, isControllablePressed]);
-    
-    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((event) => {
-        if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
-    }, [actionMouses, handlePress]);
-    
-    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
-    }, [actionKeys, handlePress]);
-    
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
         
         
         
-        // clean up finished animation
-        
-        setAnimating(null); // stop pressing-animation/releasing-animation
+        if (!/((?<![a-z])(valid|unvalid)|(?<=[a-z])(Valid|Unvalid))(?![a-z])/.test(event.animationName)) { // if animation is (valid|unvalid)[Foo] or boo(Valid|Unvalid)[Foo]
+            // clean up finished animation
+            
+            setSuccAnimating(null); // stop succ-animation/unsucc-animation
+        }
+        else if (!/((?<![a-z])(invalid|uninvalid)|(?<=[a-z])(Invalid|Uninvalid))(?![a-z])/.test(event.animationName)) { // if animation is (invalid|uninvalid)[Foo] or boo(Invalid|Uninvalid)[Foo]
+            // clean up finished animation
+            
+            setErrAnimating(null);  // stop err-animation/unerr-animation
+        } // if
     }, []);
     
     
-    
+    const noValidation : boolean = (
+        !propEditable          // if control is not editable => no validation
+        ||
+        (propIsValid === null) // ([isValid] === null) => no validation
+        ||
+        !validator
+    );
     return {
-        pressed,
+        /**
+         * `true`  : validating/validated
+         * `false` : invalidating/invalidated
+         * `null`  : uncheck/unvalidating/uninvalidating
+        */
+        isValid : (wasValid ?? defaultIsValid) as ValResult,
+        noValidation,
         
-        class : ((): string|null => {
-            // pressing:
-            if (animating === true) {
-                // // pressing by controllable prop => use class .pressing
-                // if (isControllablePressed) return 'pressing';
-                //
-                // // otherwise use pseudo :active
-                // return null;
-                // support for pressing by [space key] that not triggering :active
-                return 'pressing';
-            } // if
+        class   : [
+            // valid classes:
+            ((): string|null => {
+                if (succAnimating === true)  return 'validating';
+                if (succAnimating === false) return 'unvalidating';
+                
+                if (wasValid === true)       return 'validated';
+                
+                return null;
+            })(),
             
-            // releasing:
-            if (animating === false) return 'releasing';
             
-            // fully pressed:
-            if (pressed) return 'pressed';
             
-            // fully released:
-            // if (isControllablePressed) {
-            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // }
-            // else {
-            //     return null; // discard all classes above
-            // } // if
-            return null; // discard all classes above
-        })(),
+            // invalid classes:
+            ((): string|null => {
+                if (errAnimating === true)   return 'invalidating';
+                if (errAnimating === false)  return 'uninvalidating';
+                
+                if (wasValid === false)      return 'invalidated';
+                
+                return null;
+            })(),
+            
+            
+            
+            // neutral classes:
+            ((): string|null => {
+                if (noValidation) {
+                    return 'novalidation';
+                }
+                else {
+                    return null; // discard all classes above
+                } // if
+            })(),
+        ].filter((c) => !!c).join(' ') || null,
         
-        handleMouseDown,
-        handleKeyDown,
         handleAnimationEnd,
     };
 };
