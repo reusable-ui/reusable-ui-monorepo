@@ -37,6 +37,7 @@
   "peerDependencies": {
     "react": "^18.1.0",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "@reusable-ui/hooks": "^5.0.0"
   }
 }

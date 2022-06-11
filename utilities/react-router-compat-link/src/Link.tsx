@@ -19,6 +19,13 @@ import {
     useLinkClickHandler,
 }                           from 'react-router-dom'
 
+// reusable-ui:
+import {
+    // hooks:
+    useEvent,
+    useMergeEvents,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
 
 
 export interface LinkProps extends BaseLinkProps
@@ -59,19 +66,40 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     
     // handlers:
-    const clientSideHandleClick = useLinkClickHandler(to, { replace, state, target });
-    const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-        props.onClick?.(e); // keeps the original onClick on <Link onClick={...} />
-        
+    const handleClientSideClick            = useLinkClickHandler(to, { replace, state, target });
+    const handleConditionalClientSideClick = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((e) => {
         if (!e.defaultPrevented && !reloadDocument) {
-            clientSideHandleClick(e);
+            handleClientSideClick(e);
         } // if
-    };
+    }, [handleClientSideClick, reloadDocument]);
+    const handleClick = useMergeEvents(
+        // preserves the original `onClick`:
+        props.onClick, // keeps the original onClick on <Link onClick={...} />
+        
+        
+        
+        // handlers:
+        handleConditionalClientSideClick,
+    );
     
     
     
     // jsx:
     if (component) {
+        // handlers:
+        const handleMergedClick = useMergeEvents(
+            // preserves the original `onClick`:
+            component.props.onClick, // keeps the original onClick on <FooComponent onClick={...} />
+            
+            
+            
+            // handlers:
+            handleClick,
+        );
+        
+        
+        
+        // jsx:
         return React.cloneElement(component, {
             // essentials:
             ref,
@@ -86,15 +114,12 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
             
             
             
-            // events:
-            onClick: ((e) => {
-                component.props.onClick?.(e); // keeps the original onClick on <FooComponent onClick={...} />
-                
-                handleClick(e);
-            }) as React.MouseEventHandler<HTMLAnchorElement>,
+            // handlers:
+            onClick: handleMergedClick,
         });
     }
     else {
+        // jsx:
         return (
             // eslint-disable-next-line jsx-a11y/anchor-has-content
             <a
@@ -114,7 +139,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
                 
                 
                 
-                // events:
+                // handlers:
                 onClick={handleClick}
             />
         );
