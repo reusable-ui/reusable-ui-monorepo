@@ -9,6 +9,11 @@ import {
     useState,
     useRef,
     useCallback,
+    
+    
+    
+    // utilities:
+    startTransition,
 }                           from 'react'
 
 // cssfn:
@@ -58,6 +63,7 @@ import {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
+    useTriggerRender,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -285,7 +291,11 @@ export type CustomValidatorHandler = (state: ValidityState, value: string) => Va
 
 export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
     // states:
+    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `validator` callback:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
+    
+    // manually controls the (re)render event:
+    const [triggerRender] = useTriggerRender();
     
     
     
@@ -314,7 +324,15 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
             
             
             // remember the validation result:
-            isValid.current = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+            const newIsValid = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+            if (isValid.current !== newIsValid) {
+                isValid.current = newIsValid;
+                
+                // lazy responsives => a bit delayed of responsives is ok:
+                startTransition(() => {
+                    triggerRender(); // notify to react runtime to re-render with a new validity state
+                });
+            } // if
         };
         
         
