@@ -742,20 +742,20 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
     
     
     // refs:
-    const setInputRef = useCallback<React.RefCallback<TElement>>((elm) => {
+    const setInputRef = useCallback<React.RefCallback<TElement>>((element) => {
         // conditions:
-        if (!elm) return;
+        if (!element) return;
         
         
         
-        if (elm.validity) {
-            inputValidator.handleInit(elm);
+        if (element.validity) {
+            inputValidator.handleInit(element);
         }
         else {
-            const firstInput = elm.querySelector('input, select, textarea') as (EditableControlElement|null);
+            const firstInput = element.querySelector('input, select, textarea') as (EditableControlElement|null);
             if (firstInput) inputValidator.handleInit(firstInput);
         } // if
-    }, []);
+    }, [inputValidator.handleInit]);
     const elmRef = useMergeRefs(
         // preserves the original `elmRef`:
         props.elmRef,
