@@ -53,36 +53,36 @@ export const useTriggerRender = () => {
 
 export { useCallback as useEvent };
 
-export const useMergeEvents = <TEvent extends React.SyntheticEvent<any>>(...events: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
+export const useMergeEvents = <TEvent extends React.SyntheticEvent<any>>(...eventHandlers: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
     return useMemo<React.EventHandler<TEvent>|undefined>(() => {
-        // check if singular event:
-        let firstEvent : React.EventHandler<TEvent>|undefined = undefined;
-        let multiEvents = false;
-        for (const event of events) {
-            if (!event) continue; // ignores empty event
+        // check if singular eventHandler:
+        let firstEventHandler : React.EventHandler<TEvent>|undefined = undefined;
+        let multiEventHandlers = false;
+        for (const eventHandler of eventHandlers) {
+            if (!eventHandler) continue; // ignores empty eventHandler
             
             
             
-            if (!firstEvent) {
-                firstEvent = event;
+            if (!firstEventHandler) {
+                firstEventHandler = eventHandler;
             }
             else {
-                multiEvents = true;
-                break; // no need for testing more events
+                multiEventHandlers = true;
+                break; // no need for testing more eventHandlers
             } // if
         } // for
-        if (!multiEvents) return firstEvent;
+        if (!multiEventHandlers) return firstEventHandler;
         
         
         
-        // merge events:
-        return (e) => {
-            for (const event of events) {
-                event?.(e);
+        // merge eventHandlers:
+        return (event) => {
+            for (const eventHandler of eventHandlers) {
+                eventHandler?.(event);
             } // for
             // eslint-disable-next-line
         };
-    }, [...events]);
+    }, [...eventHandlers]);
 };
 
 
