@@ -729,7 +729,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     
-    // events:
+    // handlers:
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -772,7 +772,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
             
             
             
-            // events:
+            // handlers:
             onAnimationEnd={handleAnimationEnd}
         >
             { children && <AccessibilityProvider {...propAccess}>
