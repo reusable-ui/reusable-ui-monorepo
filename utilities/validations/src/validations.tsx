@@ -126,6 +126,10 @@ export const usePropValidation = (props: ValidationProps): Validation & Validati
     };
 };
 
+export const usePropIsValid    = (props: ValidationProps): Result|undefined => {
+    return usePropValidation(props).isValid;
+};
+
 
 
 // react components:
