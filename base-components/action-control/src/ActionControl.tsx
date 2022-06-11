@@ -239,6 +239,8 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     
+    // dom effects:
+    
     /**
      * `null`  : never loaded  
      * `true`  : loaded (live)  
