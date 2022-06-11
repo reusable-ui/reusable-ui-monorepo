@@ -309,10 +309,10 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(false);
     }, [propEnabled, isControllableFocused]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
         // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
+        if (event.target !== event.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
         
         
         
@@ -492,10 +492,10 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(false);
     }, [propEnabled, isControllableArrived]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
         // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(e.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
+        if (event.target !== event.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
         
         
         
