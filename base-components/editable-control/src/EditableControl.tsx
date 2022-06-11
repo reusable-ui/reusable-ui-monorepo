@@ -574,11 +574,6 @@ export const usesEditableControlLayout = () => {
             usesControlLayout(),
         ]),
         ...style({
-            // accessibilities:
-            userSelect : 'none', // disable selecting text (double clicking not causing selecting text)
-            
-            
-            
             // customize:
             ...usesCssProps(editableControls), // apply config's cssProps
         }),
@@ -606,7 +601,7 @@ export const usesEditableControlStates = () => {
     // dependencies:
     
     // states:
-    const [pressReleaseRule] = usesPressReleaseState();
+    const [validInvalidRule] = usesValidInvalidState();
     
     
     
@@ -614,12 +609,17 @@ export const usesEditableControlStates = () => {
         ...imports([
             // states:
             usesControlStates(),
-            pressReleaseRule,
+            validInvalidRule,
         ]),
         ...states([
-            ifPress({
+            ifValid({
                 ...imports([
-                    markActive(),
+                    markValid(),
+                ]),
+            }),
+            ifInvalid({
+                ...imports([
+                    markInvalid(),
                 ]),
             }),
         ]),
@@ -645,64 +645,64 @@ export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
 export const [editableControls, cssEditableControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
-    
-    const [, {filter: filterPressRelease}] = usesPressReleaseState();
+    const [, {backg}] = usesBackg();
+    const [, {foreg}] = usesForeg();
+    const [, {foregStart: foregValidInvalidStart, backgStart: backgValidInvalidStart}] = usesValidInvalidState();
     
     
     
     //#region keyframes
-    const frameReleased = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
-            
-         // filterPressRelease, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+    const frameHighlighted = style({
+        backg : backgValidInvalidStart,
+        foreg : foregValidInvalidStart,
     });
-    const framePressed  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
-            
-            filterPressRelease, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+    const frameNormalized  = style({
+        backg : backg,
+        foreg : foreg,
     });
-    const [keyframesPressRule  , keyframesPress  ] = keyframes({
-        from : frameReleased,
-        to   : framePressed,
+    const [keyframesValidRule  , keyframesValid  ] = keyframes({
+        from : frameHighlighted,
+        to   : frameNormalized,
     });
-    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useEnableDisableState`
-    const [keyframesReleaseRule, keyframesRelease] = keyframes({
-        from : framePressed,
-        to   : frameReleased,
+    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useValidInvalidState`
+    const [keyframesInvalidRule, keyframesInvalid] = keyframes({
+        from : frameHighlighted,
+        to   : frameNormalized,
     });
-    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useEnableDisableState`
+    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useValidInvalidState`
+    
+    const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
+        /* no animation yet */
+    });
+    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useValidInvalidState`
+    const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
+        /* no animation yet */
+    });
+    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useValidInvalidState`
     //#endregion keyframes
     
     
     
     return {
-        // accessibilities:
-        cursor      : 'pointer' as CssKnownProps['cursor'],
-        
-        
-        
         // animations:
-        filterPress : [[
-            'brightness(65%)',
-            'contrast(150%)',
-        ]]                      as CssKnownProps['filter'],
-        
-        ...keyframesPressRule,
-        ...keyframesReleaseRule,
-        animPress   : [
-            ['150ms', 'ease-out', 'both', keyframesPress ],
+        ...keyframesValidRule,
+        ...keyframesInvalidRule,
+        ...keyframesUnvalidRule,
+        ...keyframesUninvalidRule,
+        animValid     : [
+            ['1000ms', 'ease-out', 'both', keyframesValid    ],
         ]                       as CssKnownProps['anim'],
-        animRelease : [
-            ['300ms', 'ease-out', 'both', keyframesRelease],
+        animInvalid   : [
+            ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
+        ]                       as CssKnownProps['anim'],
+        animUnvalid   : [
+            [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
+        ]                       as CssKnownProps['anim'],
+        animUninvalid : [
+            [ '100ms', 'ease-out', 'both', keyframesUninvalid],
         ]                       as CssKnownProps['anim'],
     };
-}, { prefix: 'act' });
+}, { prefix: 'edit' });
 
 
 
