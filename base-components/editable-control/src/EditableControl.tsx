@@ -357,11 +357,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         } // if
     }, [customValidator]);
     
-    const handleInit   = useEvent<React.ChangeEventHandler<EditableControlElement>>((event) => {
+    const handleInit       = useEvent<React.ChangeEventHandler<EditableControlElement>>((event) => {
         handleValidation(event, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange : React.ChangeEventHandler<EditableControlElement> = handleValidation;
+    const handleChange     : React.ChangeEventHandler<EditableControlElement> = handleValidation;
     
     
     
