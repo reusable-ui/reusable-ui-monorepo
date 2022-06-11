@@ -9,6 +9,7 @@ import {
     useState,
     useRef,
     useEffect,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -310,7 +311,66 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     
     
+    // callbacks:
+    /**
+     * Handles the validation result.
+     * @returns  
+     * `null`  = uncheck.  
+     * `true`  = valid.  
+     * `false` = invalid.
+     */
+    const validator = useCallback<ValidatorHandler>(() =>
+        isValid.current
+    , []);
+    
+    
+    
     // handlers:
+    const handleValidation = useCallback(({ target }: React.ChangeEvent<EditableControlElement>, immediately = false) => {
+        const performUpdate = (validity: ValidityState, prevValue?: string) => {
+            // conditions:
+            // make sure the <Control>'s value was not modified during delaying
+            const currentValue = target.value;
+            if ((prevValue !== undefined) && (prevValue !== currentValue)) return; // the value has been modified during delaying => abort further validating
+            
+            
+            
+            // remember the validation result:
+            isValid.current = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+        };
+        
+        
+        
+        if (immediately) {
+            // instant validating:
+            performUpdate(target.validity);
+        }
+        else {
+            const validity  = target.validity;
+            const prevValue = target.value;
+            
+            // delaying the validation, to avoid unpleasant splash effect during editing
+            setTimeout(
+                () => performUpdate(validity, prevValue),
+                (validity.valid !== false) ? 300 : 600
+            );
+        } // if
+    }, [customValidator]);
+    
+    const handleInit   = useEvent<React.ChangeEventHandler<EditableControlElement>>((event) => {
+        handleValidation(event, /*immediately =*/true);
+    }, [handleValidation]);
+    
+    const handleChange : React.ChangeEventHandler<EditableControlElement> = handleValidation;
+    
+    
+    
+    return {
+        validator,
+        
+        handleInit,
+        handleChange,
+    };
 };
 
 export const usePressReleaseState  = <TElement extends Element = Element>(props: EditableControlProps<TElement>) => {
