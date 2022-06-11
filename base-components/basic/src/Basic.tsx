@@ -1361,10 +1361,10 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((e) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
         // conditions:
-        if (e.target !== e.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(e.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
+        if (event.target !== event.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
         
         
         
