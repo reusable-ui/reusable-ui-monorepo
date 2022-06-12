@@ -315,102 +315,174 @@ export interface ThemeVars {
     /**
      * themed background color.
      */
-    backg             : any
+    backg                : any
     /**
      * themed foreground color.
      */
-    foreg             : any
+    foreg                : any
     /**
      * themed border color.
      */
-    border            : any
+    border               : any
+    /**
+     * themed alternate background color.
+     */
+    altBackg             : any
+    /**
+     * themed alternate foreground color.
+     */
+    altForeg             : any
     
     /**
      * themed foreground color - at outlined variant.
      */
-    foregOutlined     : any
+    foregOutlined        : any
+    /**
+     * themed alternate background color - at outlined variant.
+     */
+    altBackgOutlined     : any
+    /**
+     * themed alternate foreground color - at outlined variant.
+     */
+    altForegOutlined     : any
     
     /**
      * themed background color - at mild variant.
      */
-    backgMild         : any
+    backgMild            : any
     /**
      * themed foreground color - at mild variant.
      */
-    foregMild         : any
+    foregMild            : any
+    /**
+     * themed alternate background color - at mild variant.
+     */
+    altBackgMild         : any
+    /**
+     * themed alternate foreground color - at mild variant.
+     */
+    altForegMild         : any
     
     /**
      * themed focus color - at focused state.
      */
-    focus             : any
+    focus                : any
     
     
     
     /**
      * conditional background color.
      */
-    backgCond         : any
+    backgCond            : any
     /**
      * conditional foreground color.
      */
-    foregCond         : any
+    foregCond            : any
     /**
      * conditional border color.
      */
-    borderCond        : any
+    borderCond           : any
+    /**
+     * conditional alternate background color.
+     */
+    altBackgCond         : any
+    /**
+     * conditional alternate foreground color.
+     */
+    altForegCond         : any
     
     /**
      * conditional foreground color - at outlined variant.
      */
-    foregOutlinedCond : any
+    foregOutlinedCond    : any
+    /**
+     * conditional alternate background color - at outlined variant.
+     */
+    altBackgOutlinedCond : any
+    /**
+     * conditional alternate foreground color - at outlined variant.
+     */
+    altForegOutlinedCond : any
     
     /**
      * conditional background color - at mild variant.
      */
-    backgMildCond     : any
+    backgMildCond        : any
     /**
      * conditional foreground color - at mild variant.
      */
-    foregMildCond     : any
+    foregMildCond        : any
+    /**
+     * conditional alternate background color - at mild variant.
+     */
+    altBackgMildCond     : any
+    /**
+     * conditional alternate foreground color - at mild variant.
+     */
+    altForegMildCond     : any
     
     /**
      * conditional focus color - at focused state.
      */
-    focusCond         : any
+    focusCond            : any
     
     
     
     /**
      * important conditional background color.
      */
-    backgImpt         : any
+    backgImpt            : any
     /**
      * important conditional foreground color.
      */
-    foregImpt         : any
+    foregImpt            : any
     /**
      * important conditional border color.
      */
-    borderImpt        : any
+    borderImpt           : any
+    /**
+     * important conditional alternate background color.
+     */
+    altBackgImpt         : any
+    /**
+     * important conditional alternate foreground color.
+     */
+    altForegImpt         : any
     
     /**
      * important conditional foreground color - at outlined variant.
      */
-    foregOutlinedImpt : any
+    foregOutlinedImpt    : any
+    /**
+     * important conditional alternate background color - at outlined variant.
+     */
+    altBackgOutlinedImpt : any
+    /**
+     * important conditional alternate foreground color - at outlined variant.
+     */
+    altForegOutlinedImpt : any
     
     /**
      * important conditional background color - at mild variant.
      */
-    backgMildImpt     : any
+    backgMildImpt        : any
     /**
      * important conditional foreground color - at mild variant.
      */
-    foregMildImpt     : any
+    foregMildImpt        : any
+    /**
+     * important conditional alternate background color - at mild variant.
+     */
+    altBackgMildImpt     : any
+    /**
+     * important conditional alternate foreground color - at mild variant.
+     */
+    altForegMildImpt     : any
     
     /**
      * important conditional focus color - at focused state.
      */
-    focusImpt         : any
+    focusImpt            : any
 }
 const [themes] = cssVar<ThemeVars>();
 
@@ -449,16 +521,22 @@ export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCo
  */
 export const themeOf = (themeName: ThemeName): CssRule => style({
     ...vars({
-        [themes.backg            ] : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foreg            ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.border           ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.backg               ] : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.altBackg            ] : themes.backgMild,
+        [themes.altForeg            ] : themes.foregMild,
         
-        [themes.foregOutlined    ] : themes.backg,
+        [themes.foregOutlined       ] : themes.backg,
+        [themes.altBackgOutlined    ] : themes.backg,
+        [themes.altForegOutlined    ] : themes.foreg,
         
-        [themes.backgMild        ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMild        ] : themes.border,
+        [themes.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMild           ] : themes.border,
+        [themes.altBackgMild        ] : themes.backg,
+        [themes.altForegMild        ] : themes.foreg,
         
-        [themes.focus            ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.focus               ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
@@ -484,16 +562,22 @@ export const usesThemeDefault     = (themeName: ThemeName|null = null): CssRule 
  */
 export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themes.backgCond        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregCond        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderCond       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.altBackgCond        ] : themes.backgMildCond,
+        [themes.altForegCond        ] : themes.foregMildCond,
         
-        [themes.foregOutlinedCond] : !themeName ? null : themes.backgCond,
+        [themes.foregOutlinedCond   ] : !themeName ? null : themes.backgCond,
+        [themes.altBackgOutlinedCond] : themes.backgCond,
+        [themes.altForegOutlinedCond] : themes.foregCond,
         
-        [themes.backgMildCond    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildCond    ] : !themeName ? null : themes.borderCond,
+        [themes.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMildCond       ] : !themeName ? null : themes.borderCond,
+        [themes.altBackgMildCond    ] : themes.backgCond,
+        [themes.altForegMildCond    ] : themes.foregCond,
         
-        [themes.focusCond        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.focusCond           ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
@@ -504,16 +588,22 @@ export const usesThemeConditional = (themeName: ThemeName|null): CssRule => styl
  */
 export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themes.backgImpt        ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregImpt        ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderImpt       ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.backgImpt           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themes.foregImpt           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themes.borderImpt          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themes.altBackgImpt        ] : themes.backgMildImpt,
+        [themes.altForegImpt        ] : themes.foregMildImpt,
         
-        [themes.foregOutlinedImpt] : !themeName ? null : themes.backgImpt,
+        [themes.foregOutlinedImpt   ] : !themeName ? null : themes.backgImpt,
+        [themes.altBackgOutlinedImpt] : themes.backgImpt,
+        [themes.altForegOutlinedImpt] : themes.foregImpt,
         
-        [themes.backgMildImpt    ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildImpt    ] : !themeName ? null : themes.borderImpt,
+        [themes.backgMildImpt       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themes.foregMildImpt       ] : !themeName ? null : themes.borderImpt,
+        [themes.altBackgMildImpt    ] : themes.backgImpt,
+        [themes.altForegMildImpt    ] : themes.foregImpt,
         
-        [themes.focusImpt        ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.focusImpt           ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
