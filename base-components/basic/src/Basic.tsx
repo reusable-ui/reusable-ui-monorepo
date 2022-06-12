@@ -762,7 +762,7 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
                     themes.altBackgOutlined,     // second priority
                     themes.altBackgOutlinedCond, // third  priority
                     
-                    basics.backg,                // default => uses config's background
+                    colors.primary,              // default => uses primary text theme
                 ),
                 
                 [outlineds.altForegFn] : fallbacks(
@@ -770,7 +770,7 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
                     themes.altForegOutlined,     // second priority
                     themes.altForegOutlinedCond, // third  priority
                     
-                    basics.foreg,                // default => uses config's foreground
+                    colors.primaryText,          // default => uses primary text theme
                 ),
             }),
             ...variants([
@@ -900,7 +900,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                     themes.altBackgMild,     // second priority
                     themes.altBackgMildCond, // third  priority
                     
-                    basics.backg,            // default => uses config's background
+                    colors.primary,          // default => uses primary text theme
                 ),
                 
                 [milds.altForegFn] : fallbacks(
@@ -908,7 +908,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                     themes.altForegMild,     // second priority
                     themes.altForegMildCond, // third  priority
                     
-                    basics.foreg,            // default => uses config's foreground
+                    colors.primaryText,      // default => uses primary text theme
                 ),
             }),
             ...variants([
@@ -1019,7 +1019,7 @@ export const usesBackg = (): VariantMixin<BackgVars> => {
                     themes.altBackg,        // second priority
                     themes.altBackgCond,    // third  priority
                     
-                    basics.backg,           // default => uses config's background
+                    colors.primary,         // default => uses primary text theme
                 ),
                 [backgs.altBackgColor  ] : fallbacks(
                     outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
@@ -1104,7 +1104,7 @@ export const usesForeg = (): VariantMixin<ForegVars> => {
                     themes.altForeg,      // second priority
                     themes.altForegCond,  // third  priority
                     
-                    basics.foreg,         // default => uses config's foreground
+                    colors.primaryText,   // default => uses primary text theme
                 ),
                 [foregs.altForeg  ] : fallbacks(
                     outlineds.altForegTg, // toggle outlined (if `usesOutlinedVariant()` applied)
@@ -1644,6 +1644,19 @@ export const usesBasicLayout = () => {
             
             // customize:
             ...usesCssProps(basics), // apply config's cssProps
+            
+            
+            
+            // accessibilities:
+            ...rule('::selection', {
+                    // backgrounds:
+                backg     : backgs.altBackgColor,
+                
+                
+                
+                // foregrounds:
+                foreg     : foregs.altForeg,
+            }),
             
             
             
