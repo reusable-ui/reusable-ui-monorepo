@@ -71,13 +71,12 @@ import {
 }                           from '@reusable-ui/indicator'           // a base component
 import {
     // hooks:
+    markActive as controlMarkActive,
     ifFocus,
     ifArrive,
 }                           from '@reusable-ui/control'             // a base component
 import {
     // hooks:
-    markActive            as editableControlMarkActive,
-    
     ValidInvalidVars      as EditableControlValidInvalidVars,
     ifValid,
     ifInvalid,
@@ -116,7 +115,7 @@ import {
 //#region activePassive
 export const markActive = (): CssRule => style({
     ...imports([
-        editableControlMarkActive(),
+        controlMarkActive(),
         
         mildOf(null), // keeps mild variant
     ]),
