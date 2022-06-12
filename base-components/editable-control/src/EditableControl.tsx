@@ -31,7 +31,6 @@ import type {
 import {
     // rules:
     rule,
-    variants,
     states,
     keyframes,
     
@@ -94,25 +93,11 @@ import {
     usesSizeVariant,
     ThemeName,
     usesThemeImportant,
-    ifOutlined,
-    ifMild,
-    usesMildVariant,
     usesBackg,
     usesForeg,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // hooks:
-    ifActive,
-}                           from '@reusable-ui/indicator'       // a base component
-import {
-    // hooks:
-    markActive as controlMarkActive,
-    ifFocus,
-    ifArrive,
-    
-    
-    
     // styles:
     usesControlLayout,
     usesControlVariants,
@@ -131,36 +116,10 @@ import {
 
 // states:
 
-//#region activePassive
-export const markActive = (): CssRule => {
-    // dependencies:
-    const [, milds ] = usesMildVariant();
-    const [, valids] = usesValidInvalidState();
-    
-    
-    
-    return style({
-        ...imports([
-            controlMarkActive(),
-        ]),
-        ...vars({
-            // when [active=true] => mild/outlined is gone
-            
-            // (start) mild to normal transition:
-            [valids.backgStart] : milds.backgFn,
-            [valids.foregStart] : milds.foregFn,
-        }),
-    });
-};
-//#endregion activePassive
-
 //#region validInvalid
 export interface ValidInvalidVars {
     animValid   : any
     animInvalid : any
-    
-    foregStart  : any
-    backgStart  : any
 }
 const [valids] = cssVar<ValidInvalidVars>();
 
@@ -223,13 +182,6 @@ export const ifNoValidation    = (styles: CssStyleCollection): CssRule => rule(s
  * @returns A `StateMixin<ValidInvalidVars>` represents valid & invalid state definitions.
  */
 export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
-    // dependencies:
-    const [, milds ] = usesMildVariant();
-    const [, backgs] = usesBackg();
-    const [, foregs] = usesForeg();
-    
-    
-    
     return [
         () => style({
             ...states([
@@ -253,47 +205,6 @@ export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
                     ...vars({
                         [valids.animInvalid] : editableControls.animUninvalid,
                     }),
-                }),
-            ]),
-            
-            
-            
-            ...vars({
-                // (start) mild to normal transition:
-                [valids.backgStart] : milds.backgFn,
-                [valids.foregStart] : milds.foregFn,
-            }),
-            ...variants([
-                ifOutlined({
-                    ...vars({
-                        // (start) normal to mild transition:
-                        [valids.backgStart] : backgs.backgColorFn,
-                        [valids.foregStart] : foregs.foregFn,
-                    }),
-                }),
-                ifMild({
-                    ...vars({
-                        // (start) normal to mild transition:
-                        [valids.backgStart] : backgs.backgColorFn,
-                        [valids.foregStart] : foregs.foregFn,
-                    }),
-                }),
-            ]),
-            ...states([
-                ifActive({
-                    ...imports([
-                        markActive(),
-                    ]),
-                }),
-                ifFocus({
-                    ...imports([
-                        markActive(),
-                    ]),
-                }),
-                ifArrive({
-                    ...imports([
-                        markActive(),
-                    ]),
                 }),
             ]),
         }),
@@ -684,16 +595,15 @@ export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
 export const [editableControls, cssEditableControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, {backg}] = usesBackg();
-    const [, {foreg}] = usesForeg();
-    const [, {foregStart: foregValidInvalidStart, backgStart: backgValidInvalidStart}] = usesValidInvalidState();
+    const [, {backg, altBackgColor}] = usesBackg();
+    const [, {foreg, altForeg     }] = usesForeg();
     
     
     
     //#region keyframes
     const frameHighlighted = style({
-        backg : backgValidInvalidStart,
-        foreg : foregValidInvalidStart,
+        backg : altBackgColor,
+        foreg : altForeg,
     });
     const frameNormalized  = style({
         backg : backg,
