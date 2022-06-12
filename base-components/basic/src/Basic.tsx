@@ -682,22 +682,38 @@ export interface OutlinedVars {
     /**
      * functional background color - at outlined variant.
      */
-    backgFn : any
+    backgFn    : any
     /**
      * toggles_on background color - at outlined variant.
      */
-    backgTg : any
+    backgTg    : any
+    /**
+     * functional alternate background color - at outlined variant.
+     */
+    altBackgFn : any
+    /**
+     * toggles_on alternate background color - at outlined variant.
+     */
+    altBackgTg : any
     
     
     
     /**
      * functional foreground color - at outlined variant.
      */
-    foregFn : any
+    foregFn    : any
     /**
      * toggles_on foreground color - at outlined variant.
      */
-    foregTg : any
+    foregTg    : any
+    /**
+     * functional alternate foreground color - at outlined variant.
+     */
+    altForegFn : any
+    /**
+     * toggles_on alternate foreground color - at outlined variant.
+     */
+    altForegTg : any
 }
 const [outlineds] = cssVar<OutlinedVars>();
 
@@ -729,16 +745,32 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
                 themesRule,
             ]),
             ...vars({
-                [outlineds.backgFn] : 'transparent', // set background to transparent, regardless of the theme colors
+                [outlineds.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 
-                
-                
-                [outlineds.foregFn] : fallbacks(
-                    themes.foregOutlinedImpt,  // first  priority
-                    themes.foregOutlined,      // second priority
-                    themes.foregOutlinedCond,  // third  priority
+                [outlineds.foregFn   ] : fallbacks(
+                    themes.foregOutlinedImpt,    // first  priority
+                    themes.foregOutlined,        // second priority
+                    themes.foregOutlinedCond,    // third  priority
                     
-                    basics.foreg,              // default => uses config's foreground
+                    basics.foreg,                // default => uses config's foreground
+                ),
+                
+                
+                
+                [outlineds.altBackgFn] : fallbacks(
+                    themes.altBackgOutlinedImpt, // first  priority
+                    themes.altBackgOutlined,     // second priority
+                    themes.altBackgOutlinedCond, // third  priority
+                    
+                    basics.backg,                // default => uses config's background
+                ),
+                
+                [outlineds.altForegFn] : fallbacks(
+                    themes.altForegOutlinedImpt, // first  priority
+                    themes.altForegOutlined,     // second priority
+                    themes.altForegOutlinedCond, // third  priority
+                    
+                    basics.foreg,                // default => uses config's foreground
                 ),
             }),
             ...variants([
@@ -758,8 +790,11 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
 export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the outlined props:
-        [outlineds.backgTg] : toggle ? outlineds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineds.foregTg] : toggle ? outlineds.foregFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [outlineds.backgTg   ] : toggle ? outlineds.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [outlineds.foregTg   ] : toggle ? outlineds.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        
+        [outlineds.altBackgTg] : toggle ? outlineds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [outlineds.altForegTg] : toggle ? outlineds.altForegFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
@@ -778,22 +813,38 @@ export interface MildVars {
     /**
      * functional background color - at mild variant.
      */
-    backgFn : any
+    backgFn    : any
     /**
      * toggles_on background color - at mild variant.
      */
-    backgTg : any
+    backgTg    : any
+    /**
+     * functional alternate background color - at mild variant.
+     */
+    altBackgFn : any
+    /**
+     * toggles_on alternate background color - at mild variant.
+     */
+    altBackgTg : any
     
     
     
     /**
      * functional foreground color - at mild variant.
      */
-    foregFn : any
+    foregFn    : any
     /**
      * toggles_on foreground color - at mild variant.
      */
-    foregTg : any
+    foregTg    : any
+    /**
+     * functional alternate foreground color - at mild variant.
+     */
+    altForegFn : any
+    /**
+     * toggles_on alternate foreground color - at mild variant.
+     */
+    altForegTg : any
 }
 const [milds] = cssVar<MildVars>();
 
@@ -826,22 +877,38 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                 themesRule,
             ]),
             ...vars({
-                [milds.backgFn] : fallbacks(
-                    themes.backgMildImpt,  // first  priority
-                    themes.backgMild,      // second priority
-                    themes.backgMildCond,  // third  priority
+                [milds.backgFn   ] : fallbacks(
+                    themes.backgMildImpt,    // first  priority
+                    themes.backgMild,        // second priority
+                    themes.backgMildCond,    // third  priority
                     
-                    basics.backg,          // default => uses config's background
+                    basics.backg,            // default => uses config's background
+                ),
+                
+                [milds.foregFn   ] : fallbacks(
+                    themes.foregMildImpt,    // first  priority
+                    themes.foregMild,        // second priority
+                    themes.foregMildCond,    // third  priority
+                    
+                    basics.foreg,            // default => uses config's foreground
                 ),
                 
                 
                 
-                [milds.foregFn] : fallbacks(
-                    themes.foregMildImpt,  // first  priority
-                    themes.foregMild,      // second priority
-                    themes.foregMildCond,  // third  priority
+                [milds.altBackgFn] : fallbacks(
+                    themes.altBackgMildImpt, // first  priority
+                    themes.altBackgMild,     // second priority
+                    themes.altBackgMildCond, // third  priority
                     
-                    basics.foreg,          // default => uses config's foreground
+                    basics.backg,            // default => uses config's background
+                ),
+                
+                [milds.altForegFn] : fallbacks(
+                    themes.altForegMildImpt, // first  priority
+                    themes.altForegMild,     // second priority
+                    themes.altForegMildCond, // third  priority
+                    
+                    basics.foreg,            // default => uses config's foreground
                 ),
             }),
             ...variants([
@@ -861,8 +928,11 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
 export const mildOf = (toggle: (boolean|null) = true): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification props:
-        [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [milds.foregTg] : toggle ? milds.foregFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [milds.backgTg   ] : toggle ? milds.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [milds.foregTg   ] : toggle ? milds.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        
+        [milds.altBackgTg] : toggle ? milds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [milds.altForegTg] : toggle ? milds.altForegFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
