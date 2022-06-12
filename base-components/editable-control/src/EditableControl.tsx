@@ -144,6 +144,9 @@ export const markActive = (): CssRule => {
             controlMarkActive(),
         ]),
         ...vars({
+            // when [active=true] => mild/outlined is gone
+            
+            // (start) mild to normal transition:
             [valids.backgStart] : milds.backgFn,
             [valids.foregStart] : milds.foregFn,
         }),
@@ -256,18 +259,21 @@ export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
             
             
             ...vars({
+                // (start) mild to normal transition:
                 [valids.backgStart] : milds.backgFn,
                 [valids.foregStart] : milds.foregFn,
             }),
             ...variants([
                 ifOutlined({
                     ...vars({
+                        // (start) normal to mild transition:
                         [valids.backgStart] : backgs.backgColorFn,
                         [valids.foregStart] : foregs.foregFn,
                     }),
                 }),
                 ifMild({
                     ...vars({
+                        // (start) normal to mild transition:
                         [valids.backgStart] : backgs.backgColorFn,
                         [valids.foregStart] : foregs.foregFn,
                     }),
