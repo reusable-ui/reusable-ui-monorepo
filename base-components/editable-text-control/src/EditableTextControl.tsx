@@ -63,6 +63,8 @@ import {
     // hooks:
     usesSizeVariant,
     mildOf,
+    usesBackg,
+    usesForeg,
     usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
@@ -117,6 +119,8 @@ import {
 export const markActive = (): CssRule => {
     // dependencies:
     const [, valids] = usesValidInvalidState();
+    const [, backgs] = usesBackg();
+    const [, foregs] = usesForeg();
     
     
     
@@ -127,8 +131,11 @@ export const markActive = (): CssRule => {
             mildOf(null), // keeps mild variant
         ]),
         ...vars({
-            [valids.backgStart] : null, // keeps mild variant
-            [valids.foregStart] : null, // keeps mild variant
+            // when [active=true] => outlined is gone, mild is preserved
+            
+            // (start) normal to mild transition:
+            [valids.backgStart] : backgs.backgColorFn,
+            [valids.foregStart] : foregs.foregFn,
         }),
     });
 };
