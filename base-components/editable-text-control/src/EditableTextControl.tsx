@@ -63,8 +63,6 @@ import {
     // hooks:
     usesSizeVariant,
     mildOf,
-    usesBackg,
-    usesForeg,
     usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
@@ -116,29 +114,13 @@ import {
 // states:
 
 //#region activePassive
-export const markActive = (): CssRule => {
-    // dependencies:
-    const [, valids] = usesValidInvalidState();
-    const [, backgs] = usesBackg();
-    const [, foregs] = usesForeg();
-    
-    
-    
-    return style({
-        ...imports([
-            editableControlMarkActive(),
-            
-            mildOf(null), // keeps mild variant
-        ]),
-        ...vars({
-            // when [active=true] => outlined is gone, mild is preserved
-            
-            // (start) normal to mild transition:
-            [valids.backgStart] : backgs.backgColorFn,
-            [valids.foregStart] : foregs.foregFn,
-        }),
-    });
-};
+export const markActive = (): CssRule => style({
+    ...imports([
+        editableControlMarkActive(),
+        
+        mildOf(null), // keeps mild variant
+    ]),
+});
 //#endregion activePassive
 
 //#region validInvalid
