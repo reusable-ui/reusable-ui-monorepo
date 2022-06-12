@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@cssfn/cssfn-react": "^2.0.8",
-    "@cssfn/css-config": "^2.0.11",
+    "@cssfn/css-config": "^2.0.13",
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/css-var": "^2.0.4",
     "@reusable-ui/borders": "^5.0.0",
