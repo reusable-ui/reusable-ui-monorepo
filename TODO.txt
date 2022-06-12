@@ -1,4 +1,4 @@
-update css-config dep
+update color system in <Icon>
 
 
 inline then block
