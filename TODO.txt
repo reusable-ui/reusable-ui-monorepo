@@ -1,4 +1,4 @@
-update color system in <Icon>
+fix arrive when [focused=true]
 
 
 inline then block
