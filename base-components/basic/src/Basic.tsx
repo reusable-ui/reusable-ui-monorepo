@@ -120,7 +120,7 @@ import {
 
 
 // types:
-export type SimpleMixin <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
+export type FeatureMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 
@@ -986,7 +986,7 @@ const [backgs] = cssVar<BackgVars>();
  * Uses background layer(s).
  * @returns A `VariantMixin<BackgVars>` represents background layer(s) definitions.
  */
-export const usesBackg = (): SimpleMixin<BackgVars> => {
+export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, gradients] = usesGradientVariant();
@@ -1076,7 +1076,7 @@ const [foregs] = cssVar<ForegVars>();
  * Uses foreground color (text color).
  * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
  */
-export const usesForeg = (): SimpleMixin<ForegVars> => {
+export const usesForeg = (): FeatureMixin<ForegVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, outlineds] = usesOutlinedVariant();
@@ -1169,7 +1169,7 @@ const [borders] = cssVar<BorderVars>();
  * Uses border (strokes, colors, radiuses).
  * @returns A `VariantMixin<BorderVars>` represents border color definitions.
  */
-export const usesBorder = (): SimpleMixin<BorderVars> => {
+export const usesBorder = (): FeatureMixin<BorderVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, outlineds] = usesOutlinedVariant();
@@ -1276,7 +1276,7 @@ const [paddings] = cssVar<PaddingVars>();
  * Uses paddings.
  * @returns A `VariantMixin<PaddingVars>` represents paddings definitions.
  */
-export const usesPadding = (): SimpleMixin<PaddingVars> => {
+export const usesPadding = (): FeatureMixin<PaddingVars> => {
     return [
         () => style({
             ...vars({
