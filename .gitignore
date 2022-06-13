@@ -4,7 +4,14 @@ utilities/*/dist/
 
 base-components/*/dist/
 base-content-components/*/dist/
-components/*/dist/
+
+simple-components/*/dist/
+layout-components/*/dist/
+status-components/*/dist/
+notification-components/*/dist/
+menu-components/*/dist/
+composite-components/*/dist/
+dialog-components/*/dist/
 
 
 lerna-debug.log

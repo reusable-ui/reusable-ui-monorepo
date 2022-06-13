@@ -15,7 +15,14 @@
     
     "base-components/*",
     "base-content-components/*",
-    "components/*",
+    
+    "simple-components/*",
+    "layout-components/*",
+    "status-components/*",
+    "notification-components/*",
+    "menu-components/*",
+    "composite-components/*",
+    "dialog-components/*",
     
     "tests/*"
   ]

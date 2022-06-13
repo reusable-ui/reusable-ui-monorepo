@@ -7,8 +7,21 @@ base-components/*/src/
 base-components/*/__tests__/
 base-content-components/*/src/
 base-content-components/*/__tests__/
-components/*/src/
-components/*/__tests__/
+
+simple-components/*/src/
+simple-components/*/__tests__/
+layout-components/*/src/
+layout-components/*/__tests__/
+status-components/*/src/
+status-components/*/__tests__/
+notification-components/*/src/
+notification-components/*/__tests__/
+menu-components/*/src/
+menu-components/*/__tests__/
+composite-components/*/src/
+composite-components/*/__tests__/
+dialog-components/*/src/
+dialog-components/*/__tests__/
 
 
 lerna-debug.log
