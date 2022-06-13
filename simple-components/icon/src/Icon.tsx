@@ -88,6 +88,7 @@ import {
 }                           from '@reusable-ui/generic'     // a base component
 import {
     // types:
+    SimpleMixin,
     VariantMixin,
     
     
@@ -304,7 +305,7 @@ export {
  * Uses background color (icon color).
  * @returns A `VariantMixin<BackgVars>` represents background color definitions.
  */
-export const usesBackg = (): VariantMixin<BackgVars> => {
+export const usesBackg = (): SimpleMixin<BackgVars> => {
     // dependencies:
     const [, backgs] = basicUsesBackg();
     const [, themes] = usesThemeVariant();
