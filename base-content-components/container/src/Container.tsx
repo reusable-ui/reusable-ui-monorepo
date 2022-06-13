@@ -78,16 +78,20 @@ import type {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
+    FeatureMixin,
     StateMixin,
     
     
     
     // hooks:
     usesSizeVariant,
+    defaultBlockOrientationRuleOptions,
     ThemeName,
     usesThemeConditional,
     outlinedOf,
     mildOf,
+    usesBorder,
+    usesPadding,
     usesAnim,
     fallbackNoneFilter,
     
@@ -128,40 +132,74 @@ export const ifNotSecondVisibleChild = (styles: CssStyleCollection): CssRule => 
 
 // hooks:
 
+// layouts:
+
+//#region orientation
+export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
+//#endregion orientation
+
+//#region container
+export interface ContainerVars {
+    // borders:
+    borderWidth            : any
+    
+    borderStartStartRadius : any
+    borderStartEndRadius   : any
+    borderEndStartRadius   : any
+    borderEndEndRadius     : any
+    
+    
+    
+    // spacings:
+    paddingInline          : any
+    paddingBlock           : any
+}
+const [containerVars] = cssVar<ContainerVars>();
+
+
+
+/**
+ * Uses container.
+ * @returns A `FeatureMixin<containerVars>` represents container definitions.
+ */
+export const usesContainer = (): FeatureMixin<ContainerVars> => {
+    // dependencies:
+    
+    // borders:
+    const [, borders ] = usesBorder();
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                // borders:
+                [containerVars.borderWidth           ] : borders.borderWidth,
+                
+                [containerVars.borderStartStartRadius] : borders.borderStartStartRadius,
+                [containerVars.borderStartEndRadius  ] : borders.borderStartEndRadius,
+                [containerVars.borderEndStartRadius  ] : borders.borderEndStartRadius,
+                [containerVars.borderEndEndRadius    ] : borders.borderEndEndRadius,
+                
+                
+                
+                // spacings:
+                [containerVars.paddingInline         ] : paddings.paddingInline,
+                [containerVars.paddingBlock          ] : paddings.paddingBlock,
+            }),
+        }),
+        containerVars,
+    ];
+};
+//#endregion container
+
+
 // states:
 
 //#region enableDisable
-export interface EnableDisableVars {
-    filter : any
-    anim   : any
-}
-const [enables] = cssVar<EnableDisableVars>();
-
-{
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(enables.filter);
-    animRegistry.registerAnim(enables.anim);
-}
-
-
-
-// if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
-// .enabling will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  = '.enabling'
-// [aria-disabled] = styled disable, :disabled = native disable:
-const selectorIfDisabling = ':is([aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
-// .disabled will be added after disabling-animation done:
-const selectorIfDisabled  = '.disabled'
-
-export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
-export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
-export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
-export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
-
-export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                                         ], styles);
-export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfDisabling, selectorIfDisabled], styles);
-export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling,                    selectorIfDisabling, selectorIfDisabled], styles);
 
 
 
