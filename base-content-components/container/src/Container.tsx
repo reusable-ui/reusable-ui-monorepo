@@ -385,6 +385,10 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
 //#endregion border as container
 
 //#endregion border as separator
+export interface BorderAsSeparatorOptions {
+    itemsSelector ?: CssSelectorCollection
+    swapFirstItem ?: boolean
+}
 //#endregion border as separator
 
 // states:
