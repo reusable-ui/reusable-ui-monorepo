@@ -500,7 +500,7 @@ export const usesIconLayout      = () => {
     // dependencies:
     
     // backgrounds:
-    const [backgRule, backgs] = usesBackg();
+    const [backgRule] = usesBackg();
     
     
     
@@ -540,15 +540,17 @@ export const usesIconLayout      = () => {
             
             // customize:
             ...usesCssProps(icons), // apply config's cssProps
-            
-            
-            
-            // backgrounds:
-            backg          : backgs.backg,
         }),
     });
 };
 export const usesIconFontLayout  = (img?: CssCustomRef) => {
+    // dependencies:
+    
+    // backgrounds:
+    const [, backgs] = usesBackg();
+    
+    
+    
     return style({
         // load a custom font:
         ...fontFace({
@@ -597,7 +599,7 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
                 
                 
                 // foregrounds:
-                foreg         : 'currentColor',      // set foreground as icon's color
+                foreg         : backgs.backgColor,   // set icon's color
                 
                 
                 
@@ -625,6 +627,13 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
     });
 };
 export const usesIconImageLayout = (img?: CssCustomRef) => {
+    // dependencies:
+    
+    // backgrounds:
+    const [, backgs] = usesBackg();
+    
+    
+    
     return style({
         // appearances:
         maskSize      : 'contain',           // image's size is as big as possible without being cropped
@@ -665,7 +674,7 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         
         
         // backgrounds:
-        backg         : 'currentColor',      // set background as icon's color
+        backg         : backgs.backgColor,   // set icon's color
     });
 };
 export const usesIconVariants    = () => {
@@ -705,16 +714,16 @@ export const usesIconImage       = (img: CssCustomRef, backg?: CssKnownProps['ba
             usesIconImageLayout(img),
             
             // backgrounds:
-            backgRule,
+            ((backg !== undefined) && backgRule),
         ]),
         ...vars({
             // backgrounds:
-            [backgs.backgColor] : backg,
+            [backgs.backgColor] : backg, // overwrite icon's color
             
             
             
             // sizes:
-            [icons.size       ] : size,
+            [icons.size       ] : size,  // overwrite icon's size
         }),
     });
 };
