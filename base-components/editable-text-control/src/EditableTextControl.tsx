@@ -63,6 +63,7 @@ import {
     // hooks:
     usesSizeVariant,
     mildOf,
+    usesBackg,
     usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
@@ -97,11 +98,6 @@ import {
     EditableControl,
 }                           from '@reusable-ui/editable-control'    // a base component
 import {
-    // hooks:
-    usesIconForeg,
-    
-    
-    
     // styles:
     usesIconImage,
 }                           from '@reusable-ui/icon'                // an icon set
@@ -182,14 +178,14 @@ export const iconElm = '::after';
 export const usesEditableTextControlLayout = () => {
     // dependencies:
     
-    // foregrounds:
-    const [iconForegRule, iconForegs] = usesIconForeg();
+    // backgrounds:
+    const [, backgs  ] = usesBackg();
     
     // spacings:
-    const [             , paddings  ] = usesPadding();
+    const [, paddings] = usesPadding();
     
     // states:
-    const [             , valids    ] = usesValidInvalidState();
+    const [, valids  ] = usesValidInvalidState();
     
     
     
@@ -197,16 +193,13 @@ export const usesEditableTextControlLayout = () => {
         ...imports([
             // layouts:
             usesEditableControlLayout(),
-            
-            // foregrounds:
-            iconForegRule, // do not import `iconColor()` on pseudo `::after`
         ]),
         ...style({
             ...children(iconElm, {
                 ...imports([
                     usesIconImage(
                         /*img   : */valids.iconImg,
-                        /*backg : */iconForegs.foreg
+                        /*backg : */backgs.altBackgColor
                     ),
                 ]),
                 ...style({
