@@ -303,7 +303,7 @@ export {
 
 /**
  * Uses background color (icon color).
- * @returns A `VariantMixin<BackgVars>` represents background color definitions.
+ * @returns A `FeatureMixin<BackgVars>` represents background color definitions.
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
