@@ -22,12 +22,20 @@ import type {
     CssRule,
     
     CssStyleCollection,
+    
+    CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
+    rules,
     states,
     keyframes,
+    
+    
+    
+    // combinators:
+    children,
     
     
     
@@ -85,7 +93,10 @@ import {
     
     // hooks:
     usesSizeVariant,
+    OrientationRuleOptions,
     defaultBlockOrientationRuleOptions,
+    normalizeOrientationRule,
+    usesOrientationRule,
     ThemeName,
     usesThemeConditional,
     outlinedOf,
@@ -196,6 +207,185 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
 };
 //#endregion container
 
+
+//#endregion border as container
+export interface BorderAsContainerOptions extends OrientationRuleOptions {
+    itemsSelector ?: CssSelectorCollection
+}
+export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRule => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    const {
+        itemsSelector = '*',
+    } = options;
+    
+    
+    
+    // dependencies:
+    
+    // layouts:
+    const [containerRule, containerVars] = usesContainer();
+    
+    // borders:
+    const [             , borders      ] = usesBorder();
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            containerRule,
+        ]),
+        // ...style({
+        //     // borders:
+        //     overflow : 'hidden', // clip the children at the rounded corners // bad idea, causing child's focus boxShadow to be clipped off
+        // }),
+        ...rules([
+            (!!orientationInlineSelector && rule(orientationInlineSelector, {
+                // children:
+                ...children(itemsSelector, {
+                    ...ifFirstVisibleChild({
+                        ...vars({
+                            /*
+                                if the_current_element is a_child_of_container and also a_separator,
+                                the deleted `containerVars.borderWidth` in separator must be pointed to container,
+                                so we can calculate the correct inner_borderRadius.
+                                
+                                that's why we set `!important` to the `containerVars.borderWidth`.
+                            */
+                            [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                            
+                            [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                            [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                        }),
+                        ...style({
+                            // borders:
+                            // add rounded corners on left:
+                            [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            /* recursive calculation of borderRadius is not supported yet */
+                        }),
+                    }),
+                    ...ifLastVisibleChild({
+                        ...vars({
+                            /*
+                                if the_current_element is a_child_of_container and also a_separator,
+                                the deleted `containerVars.borderWidth` in separator must be pointed to container,
+                                so we can calculate the correct inner_borderRadius.
+                                
+                                that's why we set `!important` to the `containerVars.borderWidth`.
+                            */
+                            [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                            
+                            [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                            [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                        }),
+                        ...style({
+                            // borders:
+                            // add rounded corners on right:
+                            [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            /* recursive calculation of borderRadius is not supported yet */
+                        }),
+                    }),
+                }),
+            })),
+            (!!orientationBlockSelector  && rule(orientationBlockSelector,  {
+                // children:
+                ...children(itemsSelector, {
+                    ...ifFirstVisibleChild({
+                        ...vars({
+                            /*
+                                if the_current_element is a_child_of_container and also a_separator,
+                                the deleted `containerVars.borderWidth` in separator must be pointed to container,
+                                so we can calculate the correct inner_borderRadius.
+                                
+                                that's why we set `!important` to the `containerVars.borderWidth`.
+                            */
+                            [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                            
+                            [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                            [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                        }),
+                        ...style({
+                            // borders:
+                            // add rounded corners on top:
+                            [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            /* recursive calculation of borderRadius is not supported yet */
+                        }),
+                    }),
+                    ...ifLastVisibleChild({
+                        ...vars({
+                            /*
+                                if the_current_element is a_child_of_container and also a_separator,
+                                the deleted `containerVars.borderWidth` in separator must be pointed to container,
+                                so we can calculate the correct inner_borderRadius.
+                                
+                                that's why we set `!important` to the `containerVars.borderWidth`.
+                            */
+                            [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                            
+                            [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                            [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                        }),
+                        ...style({
+                            // borders:
+                            // add rounded corners on bottom:
+                            [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            /* recursive calculation of borderRadius is not supported yet */
+                        }),
+                    }),
+                }),
+            })),
+            ((!orientationInlineSelector && !orientationBlockSelector) && style({
+                // children:
+                ...children(itemsSelector, {
+                    ...ifVisibleChild({
+                        ...vars({
+                            /*
+                                if the_current_element is a_child_of_container and also a_separator,
+                                the deleted `containerVars.borderWidth` in separator must be pointed to container,
+                                so we can calculate the correct inner_borderRadius.
+                                
+                                that's why we set `!important` to the `containerVars.borderWidth`.
+                            */
+                            [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                            
+                            [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                            [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                            [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                            [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                        }),
+                        ...style({
+                            // borders:
+                            
+                            // add rounded corners on top:
+                            [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            // add rounded corners on bottom:
+                            [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                            
+                            /* recursive calculation of borderRadius is not supported yet */
+                        }),
+                    }),
+                }),
+            })),
+        ]),
+    });
+};
+//#endregion border as container
+
+//#endregion border as separator
+//#endregion border as separator
 
 // states:
 
