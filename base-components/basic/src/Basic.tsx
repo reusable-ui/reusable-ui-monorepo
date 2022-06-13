@@ -120,6 +120,7 @@ import {
 
 
 // types:
+export type SimpleMixin <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
 
@@ -985,7 +986,7 @@ const [backgs] = cssVar<BackgVars>();
  * Uses background layer(s).
  * @returns A `VariantMixin<BackgVars>` represents background layer(s) definitions.
  */
-export const usesBackg = (): VariantMixin<BackgVars> => {
+export const usesBackg = (): SimpleMixin<BackgVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, gradients] = usesGradientVariant();
@@ -1075,7 +1076,7 @@ const [foregs] = cssVar<ForegVars>();
  * Uses foreground color (text color).
  * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
  */
-export const usesForeg = (): VariantMixin<ForegVars> => {
+export const usesForeg = (): SimpleMixin<ForegVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, outlineds] = usesOutlinedVariant();
@@ -1168,7 +1169,7 @@ const [borders] = cssVar<BorderVars>();
  * Uses border (strokes, colors, radiuses).
  * @returns A `VariantMixin<BorderVars>` represents border color definitions.
  */
-export const usesBorder = (): VariantMixin<BorderVars> => {
+export const usesBorder = (): SimpleMixin<BorderVars> => {
     // dependencies:
     const [, themes   ] = usesThemeVariant();
     const [, outlineds] = usesOutlinedVariant();
@@ -1275,7 +1276,7 @@ const [paddings] = cssVar<PaddingVars>();
  * Uses paddings.
  * @returns A `VariantMixin<PaddingVars>` represents paddings definitions.
  */
-export const usesPadding = (): VariantMixin<PaddingVars> => {
+export const usesPadding = (): SimpleMixin<PaddingVars> => {
     return [
         () => style({
             ...vars({
