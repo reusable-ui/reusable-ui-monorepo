@@ -5,84 +5,50 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-}                           from '@cssfn/css-types'                 // cssfn css specific types
 import {
-    // rules:
-    states,
-    
-    
-    
-    //combinators:
-    children,
-    
-    
-    
     // styles:
     style,
-    vars,
     imports,
-    
-    
-    
-    // utilities:
-    escapeSvg,
 }                           from '@cssfn/cssfn'                     // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                   // strongly typed of css variables
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
 // reusable-ui:
 import {
-    // types:
-    StateMixin,
+    // hooks:
+    useMergeEvents,
+    useMergeClasses,
+}                           from '@reusable-ui/hooks'               // react helper hooks
+import {
+    // hooks:
+    usePropEnabled,
+}                           from '@reusable-ui/accessibilities'     // an accessibility management system
+import {
+    // hooks:
+    usePressReleaseState,
     
     
     
-    // hooks:
-    usesSizeVariant,
-    mildOf,
-    usesBackg,
-    usesPadding,
-}                           from '@reusable-ui/basic'               // a base component
+    // styles:
+    usesActionControlLayout,
+    usesActionControlVariants,
+    usesActionControlStates,
+    
+    
+    
+    // handlers:
+    handleClickDisabled,
+    
+    
+    
+    // react components:
+    ActionControlProps,
+}                           from '@reusable-ui/action-control'      // a base component
 import {
     // hooks:
-    ifActive,
-}                           from '@reusable-ui/indicator'           // a base component
-import {
-    // hooks:
-    markActive as controlMarkActive,
-    ifFocus,
-    ifArrive,
-}                           from '@reusable-ui/control'             // a base component
-import {
-    // hooks:
-    ValidInvalidVars      as EditableControlValidInvalidVars,
-    ifValid,
-    ifInvalid,
-    ifNoValidation,
-    usesValidInvalidState as editableControlUsesValidInvalidState,
+    EditableControlElement,
     
     
     
@@ -97,134 +63,34 @@ import {
     EditableControlProps,
     EditableControl,
 }                           from '@reusable-ui/editable-control'    // a base component
-import {
-    // styles:
-    usesIconImage,
-}                           from '@reusable-ui/icon'                // an icon set
 
 
 
 // styles:
 export const usesEditableActionControlLayout = () => {
-    // dependencies:
-    
-    // backgrounds:
-    const [, backgs  ] = usesBackg();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    // states:
-    const [, valids  ] = usesValidInvalidState();
-    
-    
-    
     return style({
         ...imports([
             // layouts:
             usesEditableControlLayout(),
+            usesActionControlLayout(),
         ]),
-        ...style({
-            ...children(iconElm, {
-                ...imports([
-                    usesIconImage(
-                        /*img   : */valids.iconImg,
-                        /*backg : */backgs.altBackgColor
-                    ),
-                ]),
-                ...style({
-                    // layouts:
-                    content         : '""',
-                    display         : 'inline-block', // use inline-block, so it takes the width & height as we set
-                    
-                    
-                    
-                    // positions:
-                    position        : 'absolute',
-                    insetInlineEnd  : paddings.paddingInline,
-                    insetBlockStart : `calc(50% - (${editableActionControls.iconSize} / 2))`,
-                    maskPosition    : 'right', // align icon to the right
-                    
-                    
-                    
-                    // sizes:
-                    boxSizing       : 'border-box', // the final size is including borders & paddings
-                    blockSize       : editableActionControls.iconSize,
-                    aspectRatio     : '3 / 2', // make sure the icon's image ratio is 1.5 or less
-                    
-                    
-                    
-                    // accessibilities:
-                    pointerEvents   : 'none', // just an overlay element (ghost), no mouse interaction, clicking on it will focus on the parent
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(editableActionControls, 'icon')), // apply config's cssProps starting with icon***
-                }),
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(editableActionControls), // apply config's cssProps
-        }),
     });
 };
 export const usesEditableActionControlVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizesRule] = usesSizeVariant(editableActionControls);
-    
-    
-    
     return style({
         ...imports([
             // variants:
             usesEditableControlVariants(),
-            
-            // layouts:
-            sizesRule,
+            usesActionControlVariants(),
         ]),
     });
 };
 export const usesEditableActionControlStates = () => {
-    // dependencies:
-    
-    // states:
-    const [validInvalidRule] = usesValidInvalidState();
-    
-    
-    
     return style({
         ...imports([
             // states:
             usesEditableControlStates(),
-            validInvalidRule,
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            
-            ifNoValidation({
-                ...children(iconElm, {
-                    display: 'none', // hides validation icon image
-                }),
-            }),
+            usesActionControlStates(),
         ]),
     });
 };
@@ -245,20 +111,92 @@ export const useEditableActionControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // react components:
-export type EditableActionControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
-
-export interface EditableActionControlProps<TElement extends EditableActionControlElement = EditableActionControlElement>
+export interface EditableActionControlProps<TElement extends EditableControlElement = EditableControlElement>
     extends
         // bases:
-        EditableControlProps<TElement>
+        EditableControlProps<TElement>,
+        Omit<ActionControlProps<TElement>, 'onChange'>
 {
-    // validations:
-    minLength ?: number
-    maxLength ?: number
 }
-const EditableActionControl = <TElement extends EditableActionControlElement = EditableActionControlElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
+const EditableActionControl = <TElement extends EditableControlElement = EditableControlElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableActionControlStyleSheet();
+    
+    
+    
+    // states:
+    const pressReleaseState = usePressReleaseState(props);
+    
+    
+    
+    // fn props:
+    const propEnabled       = usePropEnabled(props);
+    
+    
+    
+    // rest props:
+    const {
+        // remove states props:
+        
+        // accessibilities:
+        pressed : _pressed,
+        
+        
+        
+        // behaviors:
+        actionMouses : _actionMouses,
+        actionKeys   : _actionKeys,
+    ...restEditableControlProps} = props;
+    
+    
+    
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        pressReleaseState.class,
+    );
+    
+    
+    
+    // handlers:
+    const handleMouseDown    = useMergeEvents(
+        // preserves the original `onMouseDown`:
+        props.onMouseDown,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        pressReleaseState.handleMouseDown,
+    );
+    const handleKeyDown      = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        pressReleaseState.handleKeyDown,
+    );
+    const handleAnimationEnd = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        pressReleaseState.handleAnimationEnd,
+    );
     
     
     
@@ -266,17 +204,21 @@ const EditableActionControl = <TElement extends EditableActionControlElement = E
     return (
         <EditableControl<TElement>
             // other props:
-            {...props}
-            
-            
-            
-            // variants:
-            mild={props.mild ?? true}
+            {...restEditableControlProps}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            stateClasses={stateClasses}
+            
+            
+            
+            // handlers:
+            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
+            onMouseDown    = {handleMouseDown   }
+            onKeyDown      = {handleKeyDown     }
+            onAnimationEnd = {handleAnimationEnd}
         />
     );
 };
