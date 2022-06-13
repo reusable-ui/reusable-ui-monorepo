@@ -984,7 +984,7 @@ const [backgs] = cssVar<BackgVars>();
 
 /**
  * Uses background layer(s).
- * @returns A `VariantMixin<BackgVars>` represents background layer(s) definitions.
+ * @returns A `FeatureMixin<BackgVars>` represents background layer(s) definitions.
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
@@ -1074,7 +1074,7 @@ const [foregs] = cssVar<ForegVars>();
 
 /**
  * Uses foreground color (text color).
- * @returns A `VariantMixin<ForegVars>` represents foreground color definitions.
+ * @returns A `FeatureMixin<ForegVars>` represents foreground color definitions.
  */
 export const usesForeg = (): FeatureMixin<ForegVars> => {
     // dependencies:
@@ -1167,7 +1167,7 @@ const [borders] = cssVar<BorderVars>();
 
 /**
  * Uses border (strokes, colors, radiuses).
- * @returns A `VariantMixin<BorderVars>` represents border color definitions.
+ * @returns A `FeatureMixin<BorderVars>` represents border color definitions.
  */
 export const usesBorder = (): FeatureMixin<BorderVars> => {
     // dependencies:
@@ -1274,7 +1274,7 @@ const [paddings] = cssVar<PaddingVars>();
 
 /**
  * Uses paddings.
- * @returns A `VariantMixin<PaddingVars>` represents paddings definitions.
+ * @returns A `FeatureMixin<PaddingVars>` represents paddings definitions.
  */
 export const usesPadding = (): FeatureMixin<PaddingVars> => {
     return [
