@@ -258,7 +258,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                             
                             that's why we set `!important` to the `containerVars.borderWidth`.
                         */
-                        [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                         
                         [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
                         [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
@@ -281,7 +281,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                             
                             that's why we set `!important` to the `containerVars.borderWidth`.
                         */
-                        [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                         
                         [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
                         [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
@@ -309,7 +309,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                             
                             that's why we set `!important` to the `containerVars.borderWidth`.
                         */
-                        [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                         
                         [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
                         [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
@@ -332,7 +332,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                             
                             that's why we set `!important` to the `containerVars.borderWidth`.
                         */
-                        [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                         
                         [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
                         [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
@@ -360,7 +360,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                             
                             that's why we set `!important` to the `containerVars.borderWidth`.
                         */
-                        [containerVars.borderWidth           ] : 'inherit !important', // reads parent's prop
+                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                         
                         [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
                         [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
