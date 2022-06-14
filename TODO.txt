@@ -1,3 +1,4 @@
+fix [components, cssComponentConfig] to [components, componentValues, cssComponentConfig]
 fix arrive when [focused=true]
 
 
