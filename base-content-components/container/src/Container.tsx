@@ -686,23 +686,6 @@ export const useContainerStyleSheet = createUseStyleSheet(() => ({
     ]),
 }), { id: 'dmgepbofol' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
-styleSheet({
-    ...atGlobal({
-        ...atRoot({
-            ...rules([
-                // the <Container> size is determined by screen width:
-                Object.keys(breakpoints)
-                .map((breakpointName) =>
-                    ifScreenWidthAtLeast(breakpointName, {
-                        // overwrites propName = propName{BreakpointName}:
-                        ...overwriteProps(containers, usesSuffixedProps(containers, breakpointName)),
-                    }),
-                ),
-            ]),
-        }, { specificityWeight: 2 }), // increase the specificity to win with the specificity in cssConfig's :root
-    }),
-});
-
 
 
 // configs:
@@ -734,6 +717,24 @@ export const [containers, cssContainerConfig] = cssConfig(() => {
         paddingBlockXxl  : '54px'               as CssKnownProps['paddingBlock' ],
     };
 }, { prefix: 'con' });
+
+// configs adjusted by screen width:
+styleSheet({
+    ...atGlobal({
+        ...atRoot({
+            ...rules([
+                // the <Container> size is determined by screen width:
+                Object.keys(breakpoints)
+                .map((breakpointName) =>
+                    ifScreenWidthAtLeast(breakpointName, {
+                        // overwrites propName = propName{BreakpointName}:
+                        ...overwriteProps(containers, usesSuffixedProps(containers, breakpointName)),
+                    }),
+                ),
+            ]),
+        }, { specificityWeight: 2 }), // increase the specificity to win with the specificity in cssConfig's :root
+    }),
+});
 
 
 
