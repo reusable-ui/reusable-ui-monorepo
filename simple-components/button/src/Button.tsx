@@ -26,6 +26,7 @@ import type {
 import {
     // rules:
     rule,
+    variants,
     states,
     keyframes,
     
@@ -84,12 +85,22 @@ import {
     
     // hooks:
     usesSizeVariant,
+    defaultInlineOrientationRuleOptions,
+    ifNotOutlined,
+    ifOutlined,
+    outlinedOf,
+    usesBorder,
     usesAnim,
     fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    markActive,
+    ifActive,
+}                           from '@reusable-ui/indicator'       // a base component
+import {
+    // hooks:
+    ifFocus,
+    ifArrive,
     
     
     
@@ -104,6 +115,10 @@ import {
     ControlProps,
     Control,
 }                           from '@reusable-ui/control'         // a base component
+import {
+    // hooks:
+    ifPress,
+}                           from '@reusable-ui/action-control'  // a base component
 
 // other libs:
 import type {
@@ -114,254 +129,84 @@ import type {
 
 
 // defaults:
-const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
-const defaultRole : DefaultRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const defaultTag  : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
+const defaultRole : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
 
 
 
 // hooks:
 
-// states:
+// layouts:
 
-//#region pressRelease
-export interface PressReleaseVars {
-    filter : any
-    anim   : any
+//#region orientation
+export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
+//#endregion orientation
+
+
+// appearances:
+
+//#region button style
+export type ButtonStyle = 'link'|'icon'|'ghost' // might be added more styles in the future
+export interface ButtonVariant {
+    btnStyle ?: ButtonStyle
 }
-const [presses] = cssVar<PressReleaseVars>();
-
-{
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(presses.filter);
-    animRegistry.registerAnim(presses.anim);
-}
-
-
-
-// .pressed will be added after pressing-animation done:
-const selectorIfPressed   = '.pressed'
-// .pressing = styled press, :active = native press:
-// the .disabled, .disable are used to kill native :active
-// the .pressed, .releasing, .released are used to overwrite native :active
-// const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
-const selectorIfPressing  = '.pressing'
-// .releasing will be added after loosing press and will be removed after releasing-animation done:
-const selectorIfReleasing = '.releasing'
-// if all above are not set => released:
-// optionally use .released to overwrite native :active
-// const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
-const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
-
-export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
-export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
-export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
-export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
-
-export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
-export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
-export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
-
-
-
-/**
- * Uses press & release states.
- * @returns A `StateMixin<PressReleaseVars>` represents press & release state definitions.
- */
-export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
-    return [
-        () => style({
-            ...states([
-                ifPressed({
-                    ...vars({
-                        [presses.filter] : buttons.filterPress,
-                    }),
-                }),
-                ifPressing({
-                    ...vars({
-                        [presses.filter] : buttons.filterPress,
-                        [presses.anim  ] : buttons.animPress,
-                    }),
-                }),
-                ifReleasing({
-                    ...vars({
-                        [presses.filter] : buttons.filterPress,
-                        [presses.anim  ] : buttons.animRelease,
-                    }),
-                }),
-            ]),
-        }),
-        presses,
-    ];
-};
-
-
-
-export const usePressReleaseState  = <TElement extends Element = Element>(props: ButtonProps<TElement>) => {
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);
-    const propEditable          = propEnabled && !propReadOnly;
-    const isControllablePressed = (props.pressed !== undefined);
-    
-    
-    
-    // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
-    
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
-    
-    
-    
-    // resets:
-    if (!propEditable && pressDn) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
-    } // if
-    
-    
-    
-    /*
-     * state is always released if (disabled || readOnly)
-     * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
-     */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
-    
-    if (pressed !== pressedFn) { // change detected => apply the change & start animating
-        setPressed(pressedFn);   // remember the last change
-        setAnimating(pressedFn); // start pressing-animation/releasing-animation
-    } // if
-    
-    
-    
-    // dom effects:
-    
-    /**
-     * `null`  : never loaded  
-     * `true`  : loaded (live)  
-     * `false` : unloaded (dead)  
-     */
-    const loaded = useRef<boolean|null>(null);
-    useEffect(() => {
-        // setups:
-        // mark the control as live:
-        loaded.current = true;
-        
-        
-        
-        // cleanups:
-        return () => {
-            // mark the control as dead:
-            loaded.current = false;
-        };
-    }, []); // runs once on startup
-    
-    useEffect(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        // handlers:
-        const handleRelease = (): void => {
-            if (!loaded.current) return; // `setTimeout` fires after the control was dead => ignore
-            
-            setPressDn(false);
-        };
-        const handleReleaseLate = (): void => {
-            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop
-            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
-        };
-        
-        
-        
-        // setups:
-        window.addEventListener('mouseup', handleReleaseLate);
-        window.addEventListener('keyup',   handleRelease);
-        
-        
-        
-        // cleanups:
-        return () => {
-            window.removeEventListener('mouseup', handleReleaseLate);
-            window.removeEventListener('keyup',   handleRelease);
-        };
-    }, [propEditable, isControllablePressed]);
-    
-    
-    
-    // handlers:
-    const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        setPressDn(true);
-    }, [propEditable, isControllablePressed]);
-    
-    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((event) => {
-    }, [handlePress]);
-    
-    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((event) => {
-    }, [handlePress]);
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop pressing-animation/releasing-animation
-    }, []);
-    
-    
-    
+export const useButtonVariant = (props: ButtonVariant) => {
     return {
-        pressed,
-        
-        class : ((): string|null => {
-            // pressing:
-            if (animating === true) {
-                // // pressing by controllable prop => use class .pressing
-                // if (isControllablePressed) return 'pressing';
-                //
-                // // otherwise use pseudo :active
-                // return null;
-                // support for pressing by [space key] that not triggering :active
-                return 'pressing';
-            } // if
-            
-            // releasing:
-            if (animating === false) return 'releasing';
-            
-            // fully pressed:
-            if (pressed) return 'pressed';
-            
-            // fully released:
-            // if (isControllablePressed) {
-            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // }
-            // else {
-            //     return null; // discard all classes above
-            // } // if
-            return null; // discard all classes above
-        })(),
-        
-        handleMouseDown,
-        handleKeyDown,
-        handleAnimationEnd,
+        class: props.btnStyle ?? null,
     };
 };
-//#endregion pressRelease
+//#endregion button style
 
 
 
 // styles:
+export const noBackground = () => {
+    // dependencies:
+    
+    // borders:
+    const [, borders] = usesBorder();
+    
+    
+    
+    return style({
+        ...variants([
+            ifNotOutlined({
+                // borders:
+                [borders.borderWidth]: '0px', // no_border if not explicitly `.outlined`
+            }),
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    outlinedOf(true), // keeps outlined (no background) variant
+                ]),
+            }),
+            ifFocus({
+                ...imports([
+                    outlinedOf(true), // keeps outlined (no background) variant
+                ]),
+            }),
+            ifArrive({
+                ...imports([
+                    outlinedOf(true), // keeps outlined (no background) variant
+                ]),
+            }),
+            ifPress({
+                ...imports([
+                    outlinedOf(true), // keeps outlined (no background) variant
+                ]),
+            }),
+        ]),
+        ...variants([
+            ifNotOutlined({
+                ...imports([
+                    outlinedOf(true), // keeps outlined (no background) variant
+                ]),
+            }),
+        ], { minSpecificityWeight: 4 }), // force to win with states' specificity weight
+    });
+};
+
 export const usesButtonLayout = () => {
     return style({
         ...imports([
