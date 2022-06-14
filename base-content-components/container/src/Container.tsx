@@ -2,13 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
-    useRef,
-    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -28,9 +21,10 @@ import type {
 import {
     // rules:
     rule,
-    states,
-    keyframes,
+    rules,
     fallbacks,
+    atGlobal,
+    atRoot,
     
     
     
@@ -44,6 +38,11 @@ import {
     style,
     vars,
     imports,
+    
+    
+    
+    // style sheets:
+    styleSheet,
     
     
     
@@ -65,59 +64,40 @@ import {
     
     // utilities:
     usesCssProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // configs:
-    borders,
+    borders as borderStrokes,
     borderRadiuses,
 }                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
-    // hooks:
-    useEvent,
-    useMergeEvents,
-    useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
-    usePropAccessibility,
-    usePropEnabled,
-    usePropActive,
+    // configs:
+    breakpoints,
     
     
     
-    // react components:
-    AccessibilityProps,
-    AccessibilityProvider,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import type {
-    // types:
-    SemanticProps,
-}                           from '@reusable-ui/generic'         // a base component
+    // rules:
+    ifScreenWidthAtLeast,
+}                           from '@reusable-ui/breakpoints'     // a responsive management system
 import {
     // types:
     FeatureMixin,
-    StateMixin,
     
     
     
     // hooks:
-    usesSizeVariant,
     OrientationRuleOptions,
     defaultBlockOrientationRuleOptions,
     normalizeOrientationRule,
     usesOrientationRule,
-    ThemeName,
-    usesThemeConditional,
-    outlinedOf,
-    mildOf,
     usesBorder,
     extendsBorder,
     usesPadding,
     extendsPadding,
-    usesAnim,
-    fallbackNoneFilter,
     
     
     
@@ -132,15 +112,9 @@ import {
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
 
-// other libs:
-import {
-    default as triggerChange,
-    // @ts-ignore
-}                           from 'react-trigger-change'         // a helper lib
 
 
-
-// selectors:
+// rules:
 // :where(...) => zero specificity => easy to overwrite further:
 export const ifVisibleChild          = (styles: CssStyleCollection): CssRule => rule(':not(:where(.overlay, .foreign))'                                           , styles);
 
@@ -712,13 +686,30 @@ export const useContainerStyleSheet = createUseStyleSheet(() => ({
     ]),
 }), { id: 'dmgepbofol' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
+styleSheet({
+    ...atGlobal({
+        ...atRoot({
+            ...rules([
+                // the <Container> size is determined by screen width:
+                Object.keys(breakpoints)
+                .map((breakpointName) =>
+                    ifScreenWidthAtLeast(breakpointName, {
+                        // overwrites propName = propName{BreakpointName}:
+                        ...overwriteProps(containers, usesSuffixedProps(containers, breakpointName)),
+                    }),
+                ),
+            ]),
+        }, { specificityWeight: 2 }), // increase the specificity to win with the specificity in cssConfig's :root
+    }),
+});
+
 
 
 // configs:
 export const [containers, cssContainerConfig] = cssConfig(() => {
     return {
         // borders:
-        borderWidth      : borders.none         as CssKnownProps['borderWidth'  ], // strip out <Basic>'s border
+        borderWidth      : borderStrokes.none   as CssKnownProps['borderWidth'  ], // strip out <Basic>'s border
         borderRadius     : borderRadiuses.none  as CssKnownProps['borderRadius' ], // strip out <Basic>'s borderRadius
         
         
@@ -750,11 +741,10 @@ export const [containers, cssContainerConfig] = cssConfig(() => {
 export interface ContainerProps<TElement extends Element = Element>
     extends
         // bases:
-        BasicProps<TElement>,
-        
-        // accessibilities:
-        AccessibilityProps
+        BasicProps<TElement>
 {
+    // children:
+    children ?: React.ReactNode
 }
 const Container = <TElement extends Element = Element>(props: ContainerProps<TElement>): JSX.Element|null => {
     // styles:
@@ -762,74 +752,11 @@ const Container = <TElement extends Element = Element>(props: ContainerProps<TEl
     
     
     
-    // states:
-    const enableDisableState = useEnableDisableState(props);
-    const activePassiveState = useActivePassiveState(props);
-    
-    
-    
-    // fn props:
-    const propAccess         = usePropAccessibility(props);
-    
-    
-    
-    // rest props:
-    const {
-        // remove states props:
-        
-        // accessibilities:
-        enabled         : _enabled,
-        inheritEnabled  : _inheritEnabled,
-        
-        readOnly        : _readOnly,
-        inheritReadOnly : _inheritReadOnly,
-        
-        active          : _active,
-        inheritActive   : _inheritActive,
-        
-        
-        
-        // children:
-        children,
-    ...restBasicProps} = props;
-    
-    
-    
-    // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
-        
-        
-        
-        // accessibilities:
-        enableDisableState.class,
-        activePassiveState.class,
-    );
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        enableDisableState.handleAnimationEnd,
-        activePassiveState.handleAnimationEnd,
-    );
-    
-    
-    
     // jsx:
     return (
         <Basic<TElement>
             // other props:
-            {...restBasicProps}
+            {...props}
             
             
             
@@ -840,25 +767,7 @@ const Container = <TElement extends Element = Element>(props: ContainerProps<TEl
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
-            
-            
-            
-            // :disabled | [aria-disabled]
-            {...enableDisableState.props}
-            
-            // :checked | [aria-selected]
-            {...activePassiveState.props}
-            
-            
-            
-            // handlers:
-            onAnimationEnd={handleAnimationEnd}
-        >
-            { children && <AccessibilityProvider {...propAccess}>
-                { children }
-            </AccessibilityProvider> }
-        </Basic>
+        />
     );
 };
 export {
