@@ -52,9 +52,19 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
+    usesSuffixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
+import {
+    // configs:
+    borderRadiuses,
+}                           from '@reusable-ui/borders'         // a border (stroke) management system
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // hooks:
     useEvent,
@@ -85,11 +95,18 @@ import {
     
     // hooks:
     usesSizeVariant,
+    OrientationRuleOptions,
     defaultInlineOrientationRuleOptions,
+    normalizeOrientationRule,
+    usesOrientationRule,
+    gradientOf,
     ifNotOutlined,
     ifOutlined,
     outlinedOf,
     usesBorder,
+    extendsBorder,
+    usesPadding,
+    extendsPadding,
     usesAnim,
     fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
@@ -99,25 +116,27 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
+    usesThemeActive,
     ifFocus,
     ifArrive,
-    
-    
-    
-    // styles:
-    usesControlLayout,
-    usesControlVariants,
-    usesControlStates,
-    
-    
-    
-    // react components:
-    ControlProps,
-    Control,
+    ifLeave,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // hooks:
     ifPress,
+    
+    
+    
+    // styles:
+    usesActionControlLayout,
+    usesActionControlVariants,
+    usesActionControlStates,
+    
+    
+    
+    // react components:
+    ActionControlProps,
+    ActionControl,
 }                           from '@reusable-ui/action-control'  // a base component
 
 // other libs:
@@ -207,15 +226,40 @@ export const noBackground = () => {
     });
 };
 
-export const usesButtonLayout = () => {
+export const usesButtonLayout = (options?: OrientationRuleOptions) => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    
+    
+    
     return style({
         ...imports([
             // layouts:
-            usesControlLayout(),
+            usesActionControlLayout(),
         ]),
         ...style({
-            // accessibilities:
-            userSelect : 'none', // disable selecting text (double clicking not causing selecting text)
+            // layouts:
+            display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
+            ...rule(orientationInlineSelector, { // inline
+                flexDirection : 'row',         // items are stacked horizontally
+            }),
+            ...rule(orientationBlockSelector,  { // block
+                flexDirection : 'column',      // items are stacked vertically
+            }),
+            justifyContent    : 'center',      // center items (text, icon, etc) horizontally
+            alignItems        : 'center',      // center items (text, icon, etc) vertically
+            flexWrap          : 'wrap',        // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            
+            
+            
+            // positions:
+            verticalAlign     : 'baseline',    // button's text should be aligned with sibling text, so the button behave like <span> wrapper
+            
+            
+            
+            // typos:
+            textAlign         : 'center',
             
             
             
@@ -224,44 +268,144 @@ export const usesButtonLayout = () => {
         }),
     });
 };
+export const usesButtonLinkVariant = () => {
+    // dependencies:
+    
+    // borders:
+    const [, borders ] = usesBorder();
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
+    return style({
+        ...imports([
+            // colors:
+            usesThemeActive(), // set the active theme as the default theme
+            
+            // backgrounds:
+            noBackground(),
+        ]),
+        ...style({
+            // borders:
+            // small rounded corners on top:
+            [borders.borderStartStartRadius] : borderRadiuses.sm,
+            [borders.borderStartEndRadius  ] : borderRadiuses.sm,
+            // small rounded corners on bottom:
+            [borders.borderEndStartRadius  ] : borderRadiuses.sm,
+            [borders.borderEndEndRadius    ] : borderRadiuses.sm,
+            
+            
+            
+            // spacings:
+            [paddings.paddingInline] : spacers.xs,
+            [paddings.paddingBlock ] : spacers.xs,
+            
+            
+            
+            // typos:
+            textDecoration : 'underline',
+            lineHeight     : 1,
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(buttons, 'link')), // apply config's cssProps starting with link***
+        }),
+        ...variants([
+            ifNotOutlined({ // fully link style without `.outlined`:
+                ...imports([
+                    // backgrounds:
+                    gradientOf(false), // gradient is not supported if not `.outlined`
+                ]),
+            }),
+        ]),
+    });
+};
 export const usesButtonVariants = () => {
     // dependencies:
     
     // layouts:
     const [sizesRule] = usesSizeVariant(buttons);
     
+    // colors:
+    // const [, outlineds] = usesOutlinedVariant();
+    // const [, milds    ] = usesMildVariant();
+    // const [, foregs   ] = usesForeg();
+    
     
     
     return style({
         ...imports([
             // variants:
-            usesControlVariants(),
+            usesActionControlVariants(),
             
             // layouts:
             sizesRule,
         ]),
+        ...variants([
+            rule(['.link', '.icon', '.ghost'], {
+                ...imports([
+                    noBackground(),
+                ]),
+            }),
+            rule(['.link', '.icon'], {
+                ...imports([
+                    usesButtonLinkVariant(),
+                ]),
+            }),
+            // rule('.icon', {
+            //     ...variants([
+            //         ifNotOutlined({
+            //             ...vars({
+            //                 /*
+            //                     `noBackground()` is causing `.outlined` actived
+            //                     => currentColor = theme color
+            //                     so we fix it:
+            //                     => currentColor = foreg color at `.mild` variant
+            //                 */
+            //                 [foregs.foreg] : milds.foregFn,
+            //             }),
+            //         }),
+            //         ifOutlined({
+            //             ...vars({
+            //                 [foregs.foreg] : outlineds.foregFn,
+            //             }),
+            //         }),
+            //     ]),
+            // }),
+            rule('.ghost', {
+                ...style({
+                    // borders:
+                    boxShadow : ['none', '!important'], // no focus animation
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(buttons, 'ghost')), // apply config's cssProps starting with ghost***
+                }),
+                ...states([
+                    ifArrive({
+                        // appearances:
+                        opacity: buttons.ghostOpacityArrive, // increase the opacity to increase visibility
+                    }),
+                    ifLeave({
+                        ...imports([
+                            // backgrounds:
+                            gradientOf(false), // hides the gradient to increase invisibility
+                        ]),
+                    }),
+                ]),
+            }),
+        ]),
     });
 };
 export const usesButtonStates = () => {
-    // dependencies:
-    
-    // states:
-    const [pressReleaseRule] = usesPressReleaseState();
-    
-    
-    
     return style({
         ...imports([
             // states:
-            usesControlStates(),
-            pressReleaseRule,
-        ]),
-        ...states([
-            ifPress({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
+            usesActionControlStates(),
         ]),
     });
 };
@@ -283,64 +427,25 @@ export const useButtonStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [buttons, cssButtonConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
-    
-    const [, {filter: filterPressRelease}] = usesPressReleaseState();
-    
-    
-    
-    //#region keyframes
-    const frameReleased = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
-            
-         // filterPressRelease, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const framePressed  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
-            
-            filterPressRelease, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const [keyframesPressRule  , keyframesPress  ] = keyframes({
-        from : frameReleased,
-        to   : framePressed,
-    });
-    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useEnableDisableState`
-    const [keyframesReleaseRule, keyframesRelease] = keyframes({
-        from : framePressed,
-        to   : frameReleased,
-    });
-    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useEnableDisableState`
-    //#endregion keyframes
-    
-    
-    
     return {
-        // accessibilities:
-        cursor      : 'pointer' as CssKnownProps['cursor'],
+        // spacings:
+        gapInline          : spacers.sm as CssKnownProps['gapInline'],
+        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
+        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
+        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
+        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
+        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
         
         
         
-        // animations:
-        filterPress : [[
-            'brightness(65%)',
-            'contrast(150%)',
-        ]]                      as CssKnownProps['filter'],
+        // typos:
+        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
         
-        ...keyframesPressRule,
-        ...keyframesReleaseRule,
-        animPress   : [
-            ['150ms', 'ease-out', 'both', keyframesPress ],
-        ]                       as CssKnownProps['anim'],
-        animRelease : [
-            ['300ms', 'ease-out', 'both', keyframesRelease],
-        ]                       as CssKnownProps['anim'],
+        
+        
+        // ghost style:
+        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
+        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
     };
 }, { prefix: 'btn' });
 
