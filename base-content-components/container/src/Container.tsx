@@ -36,6 +36,7 @@ import {
     
     // combinators:
     children,
+    nextSiblings,
     
     
     
@@ -43,6 +44,11 @@ import {
     style,
     vars,
     imports,
+    
+    
+    
+    // utilities:
+    iif,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
@@ -235,7 +241,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
     return style({
         ...imports([
             // layouts:
-            containerRule,
+            containerRule, // define the container variables, so we can access them
         ]),
         // ...style({
         //     // borders:
@@ -389,356 +395,139 @@ export interface BorderAsSeparatorOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
+const usesBorderAsSeparator = (block: boolean, options: BorderAsSeparatorOptions = {}): CssRule => {
+    // options:
+    const {
+        itemsSelector = '*',
+        swapFirstItem = false,
+    } = options;
+    
+    
+    
+    // dependencies:
+    
+    // layouts:
+    const [, containerVars] = usesContainer();
+    
+    // borders:
+    const [, borders      ] = usesBorder();
+    
+    
+    
+    return style({
+        // the container variables are already defined on `usesBorderAsContainer`
+        // if the `usesBorderAsContainer` was not defined => the `usesBorderAsSeparator` is effectively unused
+        // ...imports([
+        //     // layouts:
+        //     containerRule,
+        // ]),
+        
+        
+        
+        ...vars({
+            /*
+                if the_current_element is a container,
+                the `containerVars.borderWidth` will be deleted (not follow `borderWidth` again),
+                because the_current_element becomes a separator.
+                
+                use `0px` instead of 0,
+                because the value will be calculated in `calc()` expression.
+            */
+            [containerVars.borderWidth] : '0px', // remove border
+        }),
+        ...style({
+            // borders:
+            boxShadow                   : null,  // remove shadow
+        }),
+        
+        
+        
+        // removes unecessary border stroke:
+        ...style({
+            // borders:
+            [`border${block ? 'Inline' : 'Block'}Width`         ] : 0, // remove (left|right)-border
+            
+            // remove top-border at the first-child, so that it wouldn't collide with the container's top-border
+            ...ifFirstVisibleChild({
+                // borders:
+                [`border${block ? 'Block' : 'Inline'}StartWidth`] : 0, // remove top-border
+            }),
+            
+            // remove bottom-border at the last-child, so that it wouldn't collide with the container's bottom-border
+            // *note : *special case* => move the first separator to the second child
+            ...ifLastVisibleChild({
+                // borders:
+                [`border${block ? 'Block' : 'Inline'}EndWidth`  ] : 0, // remove bottom-border
+            }),
+            ...iif(swapFirstItem, ifFirstVisibleChild({
+                // borders:
+                [`border${block ? 'Block' : 'Inline'}EndWidth`  ] : 0, // remove bottom-border
+            })),
+            
+            
+            
+            // children:
+            // remove double border by removing top-border at the subsequent sibling(s)
+            ...nextSiblings(itemsSelector, {
+                ...ifVisibleChild({
+                    ...iif(!swapFirstItem, style({
+                        // borders:
+                        [`border${block ? 'Block' : 'Inline'}StartWidth`] : 0, // remove top-border
+                    })),
+                    ...iif(swapFirstItem, ifNotSecondVisibleChild({ // *note : *special case* => move the first separator to the second child
+                        // borders:
+                        [`border${block ? 'Block' : 'Inline'}StartWidth`] : 0, // remove top-border
+                    })),
+                }),
+            }),
+        }),
+        
+        // removes unecessary border radius:
+        // although the border stroke was/not removed, it *affects* the children's border radius
+        // do not remove border radius at the parent's corners (:first-child & :last-child)
+        ...ifNotFirstVisibleChild({
+            ...(
+                block
+                ?
+                style({
+                    // borders:
+                    // remove rounded corners on top:
+                    [borders.borderStartStartRadius] : '0px',
+                    [borders.borderStartEndRadius  ] : '0px',
+                })
+                :
+                style({
+                    // borders:
+                    // remove rounded corners on left:
+                    [borders.borderStartStartRadius] : '0px',
+                    [borders.borderEndStartRadius  ] : '0px',
+                })
+            ),
+        }),
+        ...ifNotLastVisibleChild({
+            ...(
+                block
+                ?
+                style({
+                    // borders:
+                    // remove rounded corners on bottom:
+                    [borders.borderEndStartRadius  ] : '0px',
+                    [borders.borderEndEndRadius    ] : '0px',
+                })
+                :
+                style({
+                    // borders:
+                    // remove rounded corners on right:
+                    [borders.borderStartEndRadius  ] : '0px',
+                    [borders.borderEndEndRadius    ] : '0px',
+                })
+            ),
+        }),
+    });
+};
+export const usesBorderAsSeparatorBlock  = (options: BorderAsSeparatorOptions = {}) => usesBorderAsSeparator(true , options);
+export const usesBorderAsSeparatorInline = (options: BorderAsSeparatorOptions = {}) => usesBorderAsSeparator(false, options);
 //#endregion border as separator
-
-// states:
-
-//#region enableDisable
-
-
-
-/**
- * Uses enable & disable states.
- * @returns A `StateMixin<EnableDisableVars>` represents enable & disable state definitions.
- */
-export const usesEnableDisableState = (): StateMixin<EnableDisableVars> => {
-    return [
-        () => style({
-            ...states([
-                ifEnabling({
-                    ...vars({
-                        [enables.filter] : containers.filterDisable,
-                        [enables.anim  ] : containers.animEnable,
-                    }),
-                }),
-                ifDisabling({
-                    ...vars({
-                        [enables.filter] : containers.filterDisable,
-                        [enables.anim  ] : containers.animDisable,
-                    }),
-                }),
-                ifDisabled({
-                    ...vars({
-                        [enables.filter] : containers.filterDisable,
-                    }),
-                }),
-            ]),
-        }),
-        enables,
-    ];
-};
-
-
-
-const htmlCtrls = [
-    'button',
-    'fieldset',
-    'input',
-    'select',
-    'optgroup',
-    'option',
-    'textarea',
-];
-const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
-
-export const useEnableDisableState = (props: AccessibilityProps & SemanticProps) => {
-    // fn props:
-    const propEnabled = usePropEnabled(props);
-    
-    
-    
-    // states:
-    const [enabled,   setEnabled  ] = useState<boolean>(propEnabled); // true => enabled, false => disabled
-    const [animating, setAnimating] = useState<boolean|null>(null);   // null => no-animation, true => enabling-animation, false => disabling-animation
-    
-    
-    
-    /*
-     * state is enabled/disabled based on [controllable enabled]
-     * [uncontrollable enabled] is not supported
-     */
-    const enabledFn : boolean = propEnabled /*controllable*/;
-    
-    if (enabled !== enabledFn) { // change detected => apply the change & start animating
-        setEnabled(enabledFn);   // remember the last change
-        setAnimating(enabledFn); // start enabling-animation/disabling-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop enabling-animation/disabling-animation
-    }, []);
-    
-    
-    
-    return {
-        enabled  : enabled,
-        disabled : !enabled,
-        
-        class    : ((): string|null => {
-            // enabling:
-            if (animating === true)  return 'enabling';
-            
-            // disabling:
-            if (animating === false) return null; // uses :disabled or [aria-disabled]
-            
-            // fully disabled:
-            if (!enabled) return 'disabled';
-            
-            // fully enabled:
-            return null;
-        })(),
-        
-        props : (
-            isCtrlElm(props)
-            ?
-            {
-                // a control_element uses pseudo :disabled for disabling
-                disabled        : !enabled,
-            }
-            :
-            {
-                'aria-disabled' : !enabled ? true : undefined,
-            }
-        ),
-        
-        handleAnimationEnd,
-    };
-};
-//#endregion enableDisable
-
-//#region activePassive
-export interface ActivePassiveVars {
-    filter : any
-    anim   : any
-}
-const [actives] = cssVar<ActivePassiveVars>();
-
-{
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(actives.filter);
-    animRegistry.registerAnim(actives.anim);
-}
-
-
-
-// .actived will be added after activating-animation done:
-const selectorIfActived     = '.actived'
-// [aria-selected],[aria-current] = styled active, :checked = native active:
-const selectorIfActivating  = ':is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked):not(.actived)'
-// .passivating will be added after loosing active and will be removed after deactivating-animation done:
-const selectorIfPassivating = '.passivating'
-// if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked, .passivating))'
-
-
-
-export const ifActived           = (styles: CssStyleCollection): CssRule => rule(selectorIfActived    , styles);
-export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
-export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
-export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
-
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
-export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
-
-
-
-/**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
- */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
-    return [
-        () => style({
-            ...states([
-                ifActived({
-                    ...vars({
-                        [actives.filter] : containers.filterActive,
-                    }),
-                }),
-                ifActivating({
-                    ...vars({
-                        [actives.filter] : containers.filterActive,
-                        [actives.anim  ] : containers.animActive,
-                    }),
-                }),
-                ifPassivating({
-                    ...vars({
-                        [actives.filter] : containers.filterActive,
-                        [actives.anim  ] : containers.animPassive,
-                    }),
-                }),
-            ]),
-        }),
-        actives,
-    ];
-};
-
-export const markActive = (): CssRule => style({
-    ...imports([
-        outlinedOf(false), // kill outlined variant
-        mildOf(false),     // kill mild     variant
-        
-        usesThemeActive(), // switch to active theme
-    ]),
-});
-
-/**
- * Creates conditional color definitions at active state.
- * @param themeName The name of active theme.
- * @returns A `CssRule` represents the conditional color definitions at active state.
- */
-export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeConditional(themeName);
-
-
-
-const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
-
-export const useActivePassiveState = (props: AccessibilityProps & SemanticProps) => {
-    // fn props:
-    const propActive = usePropActive(props);
-    
-    
-    
-    // states:
-    const [actived,   setActived  ] = useState<boolean>(propActive); // true => active, false => passive
-    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
-    
-    
-    
-    /*
-     * state is active/passive based on [controllable active]
-     * [uncontrollable active] is not supported
-     */
-    const activeFn : boolean = propActive /*controllable*/;
-    
-    if (actived !== activeFn) { // change detected => apply the change & start animating
-        setActived(activeFn);   // remember the last change
-        setAnimating(activeFn); // start activating-animation/deactivating-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop activating-animation/deactivating-animation
-    }, []);
-    
-    
-    
-    return {
-        active : actived,
-        
-        class  : ((): string|null => {
-            // activating:
-            if (animating === true) return null; // uses :checked or [aria-selected],[aria-current]
-            
-            // passivating:
-            if (animating === false) return 'passivating';
-            
-            // fully actived:
-            if (actived) return 'actived';
-            
-            // fully passived:
-            return null;
-        })(),
-        
-        props : (
-            isCheckbox(props)
-            ?
-            {
-                // a checkbox uses pseudo :checked for activating
-                checked: actived,
-            }
-            :
-            {
-                'aria-selected' : actived ? true : undefined,
-            }
-        ),
-        
-        handleAnimationEnd,
-    };
-};
-
-
-
-export interface TogglerActiveProps<TActiveChangeArg = unknown>
-    extends
-        // accessibilities:
-        AccessibilityProps
-{
-    // accessibilities:
-    defaultActive     ?: boolean
-    onActiveChange    ?: (newActive: boolean, arg?: TActiveChangeArg) => void
-}
-export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
-    // fn props:
-    const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
-    
-    
-    
-    // states:
-    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
-    const setActiveEx: React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
-        // conditions:
-        if (!enabled) return; // control is disabled => no response required
-        if (readOnly) return; // control is readOnly => no response required
-        
-        
-        
-        setActiveTg(newActive);
-    }, [enabled, readOnly]);
-    
-    
-    
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
-    const wasActive = useRef<boolean>(activeFn);
-    
-    if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
-        wasActive.current = activeFn;     // remember the last change
-        
-        
-        
-        // fire change synthetic event:
-        props.onActiveChange?.(activeFn);
-        
-        // fire change dom event:
-        if (changeEventTarget?.current) {
-            changeEventTarget.current.checked = activeFn;
-            triggerChange(changeEventTarget.current);
-        } // if
-    } // if
-    
-    
-    
-    return [
-        activeFn,
-        setActiveEx,
-    ];
-};
-//#endregion activePassive
 
 
 
