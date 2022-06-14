@@ -2,49 +2,29 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
-    useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
     states,
-    keyframes,
     
     
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
     
@@ -53,7 +33,6 @@ import {
     // utilities:
     usesCssProps,
     usesPrefixedProps,
-    usesSuffixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -67,15 +46,8 @@ import {
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // hooks:
-    useEvent,
-    useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
     DefaultTag,
@@ -84,31 +56,23 @@ import {
     
     
     // hooks:
-    SemanticProps,
     useTestSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
+    OrientationName,
     OrientationRuleOptions,
     defaultInlineOrientationRuleOptions,
     normalizeOrientationRule,
     usesOrientationRule,
+    OrientationVariant,
+    useOrientationVariant,
     gradientOf,
     ifNotOutlined,
-    ifOutlined,
     outlinedOf,
     usesBorder,
-    extendsBorder,
     usesPadding,
-    extendsPadding,
-    usesAnim,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -124,6 +88,7 @@ import {
 import {
     // hooks:
     ifPress,
+    isClientSideLink,
     
     
     
@@ -139,17 +104,13 @@ import {
     ActionControl,
 }                           from '@reusable-ui/action-control'  // a base component
 
-// other libs:
-import type {
-    // types:
-    To,
-}                           from 'history'                      // a helper lib
-
 
 
 // defaults:
-const defaultTag  : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
-const defaultRole : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultTag      : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
+const _defaultRole     : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultOutlined = false;
+const _defaultMild     = false;
 
 
 
@@ -451,116 +412,200 @@ export const [buttons, cssButtonConfig] = cssConfig(() => {
 
 
 
-// react components:
-export interface ButtonProps<TElement extends Element = Element>
+// hooks:
+
+export type ButtonType = 'button'|'submit'|'reset'
+export interface SemanticButtonProps<TElement extends Element = Element>
     extends
         // bases:
-        ControlProps<TElement>
+        ActionControlProps<TElement>,
+        
+        // button:
+        Omit<React.ButtonHTMLAttributes<TElement>, 'type'|'role'>,
+        
+        // link:
+        Omit<React.AnchorHTMLAttributes<TElement>, 'type'|'role'>
+{
+    // actions:
+    type ?: ButtonType | (string & {})
+}
+export const useSemanticButton = <TElement extends Element = Element>(props: SemanticButtonProps<TElement>) => {
+    // fn props:
+    const isNativeLink = !!props.href; // assigning [href] will render the <Button> as <a>
+    const isClientLink = !isNativeLink && React.Children.toArray(props.children).some(isClientSideLink);
+    
+    const defaultTag   = props.defaultTag  ?? (isNativeLink ? 'a'    : _defaultTag );
+    const defaultRole  = props.defaultRole ?? (isNativeLink ? 'link' : _defaultRole);
+    const {
+        tag,
+        role,
+        isDesiredType : isBtnType,
+        isSemanticTag : isSemanticBtn,
+    } = useTestSemantic(
+        // test:
+        {
+            tag  : props.tag,
+            role : props.role,
+            defaultTag,
+            defaultRole,
+        },
+        
+        // expected:
+        {
+            defaultTag  : 'button',
+            defaultRole : 'button',
+        }
+    );
+    const type         = props.type ?? (isSemanticBtn ? 'button' : undefined);
+    
+    
+    
+    return {
+        isNativeLink,
+        isClientSideLink: isClientLink,
+        
+        defaultTag,
+        defaultRole,
+        
+        tag,
+        role,
+        isBtnType,
+        isSemanticBtn,
+        
+        type,
+    };
+};
+
+
+
+// react components:
+export interface ButtonProps
+    extends
+        // bases:
+        SemanticButtonProps<HTMLButtonElement>,
+        
+        // layouts:
+        OrientationVariant,
+        
+        // appearances:
+        ButtonVariant
 {
     // accessibilities:
-    pressed      ?: boolean
+    label    ?: string
+    
+    
+    
+    // children:
+    children ?: React.ReactNode
 }
-const Button = <TElement extends Element = Element>(props: ButtonProps<TElement>): JSX.Element|null => {
+const Button = (props: ButtonProps): JSX.Element|null => {
     // styles:
-    const styleSheet        = useButtonStyleSheet();
+    const styleSheet         = useButtonStyleSheet();
     
     
     
-    // states:
-    const pressReleaseState = usePressReleaseState(props);
-    
-    
-    
-    // fn props:
-    const propEnabled       = usePropEnabled(props);
+    // variants:
+    const orientationVariant = useOrientationVariant(props);
+    const buttonVariant      = useButtonVariant(props);
     
     
     
     // rest props:
     const {
-        // remove states props:
+        // remove props:
+        
+        // layouts:
+        orientation : _orientation,
+        
+        
+        
+        // appearances:
+        btnStyle    : _btnStyle,
+        
+        
         
         // accessibilities:
-        pressed : _pressed,
-    ...restControlProps} = props;
+        label,
+        pressed,
+        
+        
+        
+        // variants:
+        outlined = _defaultOutlined,
+        mild     = _defaultMild,
+    ...restActionControlProps} = props;
+    
+    
+    
+    // fn props:
+    const {
+        defaultTag,
+        defaultRole,
+        
+        tag,
+        role,
+        
+        type,
+    } = useSemanticButton(props);
+    
+    const pressedFn = pressed ?? ((!!props.active && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
     // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
         
         
         
-        // accessibilities:
-        pressReleaseState.class,
-    );
-    
-    
-    
-    // handlers:
-    const handleMouseDown    = useMergeEvents(
-        // preserves the original `onMouseDown`:
-        props.onMouseDown,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        pressReleaseState.handleMouseDown,
-    );
-    const handleKeyDown      = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        pressReleaseState.handleKeyDown,
-    );
-    const handleAnimationEnd = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
-        
-        
-        
-        // states:
-        
-        // accessibilities:
-        pressReleaseState.handleAnimationEnd,
+        // variants:
+        orientationVariant.class,
+        buttonVariant.class,
     );
     
     
     
     // jsx:
     return (
-        <Control<TElement>
+        <ActionControl<HTMLButtonElement>
             // other props:
-            {...restControlProps}
+            {...restActionControlProps}
             
             
             
             // semantics:
-            defaultTag  = {props.defaultTag  ?? defaultTag }
-            defaultRole = {props.defaultRole ?? defaultRole}
+            defaultTag  = {defaultTag }
+            defaultRole = {defaultRole}
+            tag         = {tag}
+            role        = {role}
+            aria-label  = {props['aria-label'] ?? label}
+            
+            
+            
+            // accessibilities:
+            enabled={props.enabled ?? !(props.disabled ?? false)}
+            pressed={pressedFn}
+            
+            
+            
+            // variants:
+            outlined={outlined}
+            mild={mild}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
+            variantClasses={variantClasses}
             
             
             
-            // handlers:
-            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
-            onMouseDown    = {handleMouseDown   }
-            onKeyDown      = {handleKeyDown     }
-            onAnimationEnd = {handleAnimationEnd}
+            // Button props:
+            {...{
+                // actions:
+                type,
+            }}
         />
     );
 };
@@ -568,3 +613,5 @@ export {
     Button,
     Button as default,
 }
+
+export type { OrientationName, OrientationVariant }
