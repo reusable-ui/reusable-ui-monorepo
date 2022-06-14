@@ -69,6 +69,11 @@ import {
 
 // reusable-ui:
 import {
+    // configs:
+    borders,
+    borderRadiuses,
+}                           from '@reusable-ui/borders'         // a border (stroke) management system
+import {
     // hooks:
     useEvent,
     useMergeEvents,
@@ -671,50 +676,25 @@ export const usesContainerLayout = () => {
             usesBasicLayout(),
         ]),
         ...style({
+            // layouts:
+            display: 'block',
+            
+            
+            
             // customize:
             ...usesCssProps(containers), // apply config's cssProps
         }),
+        ...imports([
+            // layouts:
+            usesResponsiveContainerLayout(), // must be placed at the last
+        ]),
     });
 };
 export const usesContainerVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizesRule] = usesSizeVariant(containers);
-    
-    
-    
     return style({
         ...imports([
             // variants:
             usesBasicVariants(),
-            
-            // layouts:
-            sizesRule,
-        ]),
-    });
-};
-export const usesContainerStates = () => {
-    // dependencies:
-    
-    // states:
-    const [enableDisableRule] = usesEnableDisableState();
-    const [activePassiveRule] = usesActivePassiveState();
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            enableDisableRule,
-            activePassiveRule,
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
         ]),
     });
 };
@@ -727,8 +707,8 @@ export const useContainerStyleSheet = createUseStyleSheet(() => ({
         // variants:
         usesContainerVariants(),
         
-        // states:
-        usesContainerStates(),
+        // children:
+        usesContainerChildren(),
     ]),
 }), { id: 'dmgepbofol' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -736,98 +716,31 @@ export const useContainerStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [containers, cssContainerConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
-    
-    const [, {filter: filterEnableDisable}] = usesEnableDisableState();
-    const [, {filter: filterActivePassive}] = usesActivePassiveState();
-    
-    
-    
-    //#region keyframes
-    const frameEnabled  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
-            
-         // filterEnableDisable, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const frameDisabled = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
-            
-            filterEnableDisable, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const [keyframesDisableRule, keyframesDisable] = keyframes({
-        from : frameEnabled,
-        to   : frameDisabled,
-    });
-    keyframesDisable.value = 'disable'; // the @keyframes name should contain 'disable' in order to be recognized by `useEnableDisableState`
-    const [keyframesEnableRule , keyframesEnable ] = keyframes({
-        from : frameDisabled,
-        to   : frameEnabled,
-    });
-    keyframesEnable.value  = 'enable';  // the @keyframes name should contain 'enable'  in order to be recognized by `useEnableDisableState`
-    
-    
-    
-    const framePassived = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
-            
-         // filterActivePassive, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const frameActived  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
-            
-            filterActivePassive, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from : framePassived,
-        to   : frameActived,
-    });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from : frameActived,
-        to   : framePassived,
-    });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
-    //#endregion keyframes
-    
-    
-    
     return {
-        // animations:
-        filterDisable : [[
-            'grayscale(50%)',
-            'contrast(50%)',
-        ]]                          as CssKnownProps['filter'],
-        filterActive  : [[
-            'brightness(100%)',
-        ]]                          as CssKnownProps['filter'],
+        // borders:
+        borderWidth      : borders.none         as CssKnownProps['borderWidth'  ], // strip out <Basic>'s border
+        borderRadius     : borderRadiuses.none  as CssKnownProps['borderRadius' ], // strip out <Basic>'s borderRadius
         
-        ...keyframesDisableRule,
-        ...keyframesEnableRule,
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animEnable    : [
-            ['300ms', 'ease-out', 'both', keyframesEnable ],
-        ]                           as CssKnownProps['anim'],
-        animDisable   : [
-            ['300ms', 'ease-out', 'both', keyframesDisable],
-        ]                           as CssKnownProps['anim'],
-        animActive    : [
-            ['150ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
-        animPassive   : [
-            ['300ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
+        
+        
+        // spacings:
+        paddingInline    : '12px'               as CssKnownProps['paddingInline'],
+        paddingBlock     :  '9px'               as CssKnownProps['paddingBlock' ],
+        
+        paddingInlineSm  : '24px'               as CssKnownProps['paddingInline'],
+        paddingBlockSm   : '18px'               as CssKnownProps['paddingBlock' ],
+        
+        paddingInlineMd  : '36px'               as CssKnownProps['paddingInline'],
+        paddingBlockMd   : '27px'               as CssKnownProps['paddingBlock' ],
+        
+        paddingInlineLg  : '48px'               as CssKnownProps['paddingInline'],
+        paddingBlockLg   : '36px'               as CssKnownProps['paddingBlock' ],
+        
+        paddingInlineXl  : '60px'               as CssKnownProps['paddingInline'],
+        paddingBlockXl   : '45px'               as CssKnownProps['paddingBlock' ],
+        
+        paddingInlineXxl : '72px'               as CssKnownProps['paddingInline'],
+        paddingBlockXxl  : '54px'               as CssKnownProps['paddingBlock' ],
     };
 }, { prefix: 'con' });
 
