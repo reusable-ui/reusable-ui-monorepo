@@ -30,6 +30,7 @@ import {
     rule,
     states,
     keyframes,
+    fallbacks,
     
     
     
@@ -107,7 +108,9 @@ import {
     outlinedOf,
     mildOf,
     usesBorder,
+    extendsBorder,
     usesPadding,
+    extendsPadding,
     usesAnim,
     fallbackNoneFilter,
     
@@ -212,6 +215,8 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
 };
 //#endregion container
 
+
+// borders:
 
 //#region border as container
 export interface BorderAsContainerOptions extends OrientationRuleOptions {
@@ -529,6 +534,136 @@ export const usesBorderAsSeparatorInline = (options: BorderAsSeparatorOptions = 
 
 
 // styles:
+/**
+ * Applies a responsive container layout.
+ * @returns A `CssRule` represents a responsive container layout.
+ */
+export const usesResponsiveContainerLayout = () => {
+    return style({
+        // borders:
+        ...extendsBorder(containers), // extends border css vars
+        
+        
+        
+        // spacings:
+        ...extendsPadding(containers), // extends padding css vars
+    });
+};
+/**
+ * Applies a responsive container using grid layout.
+ * @returns A `CssRule` represents a responsive container using grid layout.
+ */
+export const usesResponsiveContainerGridLayout = () => {
+    // dependencies:
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
+    return style({
+        // layouts:
+        display             : 'grid', // use css grid for layouting
+        // define our logical paddings:
+        gridTemplateRows    : [[paddings.paddingBlock,  'auto', paddings.paddingBlock ]], // the height of each row
+        gridTemplateColumns : [[paddings.paddingInline, 'auto', paddings.paddingInline]], // the width of each column
+        gridTemplateAreas   : [[
+            '"........... blockStart ........."',
+            '"inlineStart  content   inlineEnd"',
+            '"...........  blockEnd  ........."',
+        ]],
+        
+        
+        
+        // borders:
+        ...extendsBorder(containers), // extends border css vars
+        
+        
+        
+        // spacings:
+        ...extendsPadding(containers), // extends padding css vars
+        ...style({
+            // since we use grid as paddings, so the css paddings are no longer needed:
+            paddingInline : null, // turn off physical padding, use logical padding we've set above
+            paddingBlock  : null, // turn off physical padding, use logical padding we've set above
+        }),
+    });
+};
+
+export interface ContainerChildrenOptions {
+    fillSelector     ?: CssSelectorCollection
+    fillSelfSelector ?: CssSelectorCollection
+}
+export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}) => {
+    // options:
+    const {
+        fillSelector     = '.fill',
+        fillSelfSelector = '.fill-self',
+    } = options;
+    
+    
+    
+    // dependencies:
+    
+    // spacings:
+    const [, containerVars]     = usesContainer();
+    const positivePaddingInline = containerVars.paddingInline;
+    const positivePaddingBlock  = containerVars.paddingBlock;
+    const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
+    const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
+    
+    
+    
+    const fillSelectorAndSelf = [fillSelector, fillSelfSelector];
+    return style({
+        ...imports([
+            // borders:
+            usesBorderAsContainer({ itemsSelector: fillSelectorAndSelf }), // make a nicely rounded corners
+        ]),
+        ...style({
+            // children:
+            ...children(fillSelectorAndSelf, {
+                // sizes:
+                // span to maximum width including parent's paddings:
+                boxSizing      : 'border-box', // the final size is including borders & paddings
+                inlineSize     : 'fill-available',
+                ...fallbacks({
+                    inlineSize : `calc(100% + (${positivePaddingInline} * 2))`,
+                }),
+                
+                
+                
+                // spacings:
+                marginInline         : negativePaddingInline,  // cancel out parent's padding with negative margin
+                ...ifFirstVisibleChild({
+                    marginBlockStart : negativePaddingBlock,   // cancel out parent's padding with negative margin
+                }),
+                ...ifLastVisibleChild({
+                    marginBlockEnd   : negativePaddingBlock,   // cancel out parent's padding with negative margin
+                }),
+            }),
+            ...children(fillSelfSelector, {
+                // spacings:
+                paddingInline         : positivePaddingInline, // restore parent's padding with positive margin
+                ...ifFirstVisibleChild({
+                    paddingBlockStart : positivePaddingBlock,  // restore parent's padding with positive margin
+                }),
+                ...ifLastVisibleChild({
+                    paddingBlockEnd   : positivePaddingBlock,  // restore parent's padding with positive margin
+                }),
+            }),
+        }),
+    });
+};
+export const usesContainerChildren = (options: ContainerChildrenOptions = {}) => {
+    return style({
+        ...imports([
+            // spacings:
+            usesContainerChildrenFill(options), // must be placed at the last
+        ]),
+    });
+};
+
 export const usesContainerLayout = () => {
     return style({
         ...imports([
