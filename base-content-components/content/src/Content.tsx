@@ -414,6 +414,43 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
     });
 };
 
+export interface ContentChildrenLinksOptions {
+    linkSelector    ?: CssSelectorCollection
+    notLinkSelector ?: CssSelectorCollection
+}
+export const usesContentChildrenLinksOptions = (options: ContentChildrenLinksOptions = {}) => {
+    // options:
+    const {
+        linkSelector    : linkSelectorStr    = linksElm,
+        notLinkSelector : notLinkSelectorStr = notLinksElm,
+    } = options;
+    
+    const linkSelector                 : SelectorGroup|null       = parseSelectors(linkSelectorStr);
+    const notLinkSelector              : SelectorGroup|null       = parseSelectors(notLinkSelectorStr);
+    const notNotLinkSelector           : PseudoClassSelector|null = notLinkSelector && createPseudoClassSelector( // create pseudo_class `:not()`
+        'not',
+        groupSelectors(notLinkSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
+    );
+    
+    const linkSelectorWithExceptZero   : PureSelectorGroup|null   = linkSelector    && (
+        groupSelectors(linkSelector, { selectorName: 'where' })     // group multiple selectors with `:where()`, to suppress the specificity weight
+        .map((groupedLinkSelector: Selector): Selector =>
+            createSelector(
+                ...groupedLinkSelector,
+                notNotLinkSelector,                                 // :not(:where(...notLinkSelector))
+            )
+        )
+    );
+    
+    return {
+        linkSelectorWithExcept     : toSelectors(adjustChildSpecificity(linkSelectorWithExceptZero)),
+        linkSelectorWithExceptZero : toSelectors(linkSelectorWithExceptZero),
+        
+        linkSelector,
+        notNotLinkSelector,
+    };
+};
+
 /**
  * Applies a responsive content layout.
  * @returns A `CssRule` represents a responsive content layout.
