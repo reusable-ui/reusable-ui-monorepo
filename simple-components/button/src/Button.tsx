@@ -109,8 +109,8 @@ import {
 // defaults:
 const _defaultTag      : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
 const _defaultRole     : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-const _defaultOutlined = false;
-const _defaultMild     = false;
+const _defaultOutlined : boolean     = false;
+const _defaultMild     : boolean     = false;
 
 
 
@@ -316,26 +316,6 @@ export const usesButtonVariants = () => {
                     usesButtonLinkVariant(),
                 ]),
             }),
-            // rule('.icon', {
-            //     ...variants([
-            //         ifNotOutlined({
-            //             ...vars({
-            //                 /*
-            //                     `noBackground()` is causing `.outlined` actived
-            //                     => currentColor = theme color
-            //                     so we fix it:
-            //                     => currentColor = foreg color at `.mild` variant
-            //                 */
-            //                 [foregs.foreg] : milds.foregFn,
-            //             }),
-            //         }),
-            //         ifOutlined({
-            //             ...vars({
-            //                 [foregs.foreg] : outlineds.foregFn,
-            //             }),
-            //         }),
-            //     ]),
-            // }),
             rule('.ghost', {
                 ...style({
                     // borders:
