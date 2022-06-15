@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    OptionalOrBoolean,
+}                           from '@cssfn/types'
+import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -67,6 +71,39 @@ import {
     usesSuffixedProps,
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
+import {
+    // types:
+    PseudoClassSelector,
+    Selector,
+    SelectorGroup,
+    PureSelectorGroup,
+    
+    
+    
+    // parses:
+    parseSelectors,
+    
+    
+    
+    // creates & tests:
+    createElementSelector,
+    createPseudoClassSelector,
+    isElementSelectorOf,
+    createSelector,
+    createSelectorGroup,
+    isNotEmptySelectors,
+    
+    
+    
+    // renders:
+    selectorsToString,
+    
+    
+    
+    // transforms:
+    groupSelectors,
+    groupSelector,
+}                           from '@cssfn/css-selectors'         // manipulates css selectors
 
 // reusable-ui:
 import {
@@ -114,7 +151,137 @@ import {
 
 
 
+// utilities:
+const toSelectors            = (selectorGroup: PureSelectorGroup|null): CssSelectorCollection => selectorGroup && selectorsToString(selectorGroup);
+const childSelector          = createSelector( // the specificity weight including parent = 2.1 , is enough to overcome specificity `.FooMedia.FooVariant`
+    // specificity weight = 1
+    createPseudoClassSelector('nth-child', 'n'), // :nth-child(n)
+    
+    // specificity weight = 0.1
+    createPseudoClassSelector( // :not(_)
+        'not',
+        createSelectorGroup(
+            createSelector(
+                createElementSelector('_')
+            )
+        ),
+    ),
+);
+const adjustChildSpecificity = (selectorGroup: PureSelectorGroup|null): PureSelectorGroup|null => {
+    return selectorGroup && (
+        selectorGroup
+        .map((selector) => createSelector( // the specificity weight including parent = 2.1 , is enough to overcome specificity `.FooMedia.FooVariant`
+            ...selector,
+            ...childSelector, // add specificity weight 1.1
+        ))
+    );
+};
+
+
+
 // styles:
+const mediaElm    : CssSelectorCollection = ['figure', 'img', 'svg', 'video', 'picture', 'embed', 'object', '.media'];
+const notMediaElm : CssSelectorCollection = '.not-media';
+const linksElm    : CssSelectorCollection = ['a', '.link'];
+const notLinksElm : CssSelectorCollection = '.not-link';
+
+export interface ContentChildrenOptions {
+    mediaSelector    ?: CssSelectorCollection
+    notMediaSelector ?: CssSelectorCollection
+}
+export const usesContentChildrenOptions = (options: ContentChildrenOptions = {}) => {
+    // options:
+    const {
+        mediaSelector    : mediaSelectorStr    = mediaElm,
+        notMediaSelector : notMediaSelectorStr = notMediaElm,
+    } = options;
+    
+    const mediaSelector                : SelectorGroup|null       = parseSelectors(mediaSelectorStr);
+    const notMediaSelector             : SelectorGroup|null       = parseSelectors(notMediaSelectorStr);
+    const notNotMediaSelector          : PseudoClassSelector|null = notMediaSelector && createPseudoClassSelector( // create pseudo_class `:not()`
+        'not',
+        groupSelectors(notMediaSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
+    );
+    
+    const mediaSelectorWithExceptZero  : PureSelectorGroup|null   = mediaSelector && (
+        groupSelectors(mediaSelector, { selectorName: 'where' })     // group multiple selectors with `:where()`, to suppress the specificity weight
+        .map((groupedMediaSelector: Selector): Selector =>
+            createSelector(
+                ...groupedMediaSelector,
+                notNotMediaSelector,                                 // :not(:where(...notMediaSelector))
+            )
+        )
+    );
+    
+    return {
+        mediaSelectorWithExcept     : toSelectors(adjustChildSpecificity(mediaSelectorWithExceptZero)),
+        mediaSelectorWithExceptZero : toSelectors(mediaSelectorWithExceptZero),
+        
+        mediaSelector,
+        notNotMediaSelector,
+    };
+};
+export const usesContentChildrenFill    = (options: ContentChildrenOptions = {}) => {
+    // options:
+    const {
+        mediaSelectorWithExcept,
+        mediaSelectorWithExceptZero,
+    } = usesContentChildrenOptions(options);
+    
+    
+    
+    // dependencies:
+    
+    // spacings:
+    const [, containerRefs]     = usesContainer();
+    const positivePaddingInline = containerRefs.paddingInline;
+    const positivePaddingBlock  = containerRefs.paddingBlock;
+    const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
+    const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
+    
+    
+    
+    return style({
+        ...imports([
+            // borders:
+            usesBorderAsContainer({ itemsSelector: mediaSelectorWithExcept }), // make a nicely rounded corners
+        ]),
+        ...style({
+            // children:
+            ...children(mediaSelectorWithExcept, {
+                // sizes:
+                // span to maximum width including parent's paddings:
+                boxSizing      : 'border-box', // the final size is including borders & paddings
+                inlineSize     : 'fill-available',
+                ...fallbacks({
+                    inlineSize : `calc(100% + (${positivePaddingInline} * 2))`,
+                }),
+                
+                
+                
+                // spacings:
+                marginInline         : negativePaddingInline, // cancel out parent's padding with negative margin
+                marginBlockEnd       : positivePaddingBlock,  // add a spacing to the next sibling
+                ...rule(selectorIsFirstVisibleChild, {
+                    marginBlockStart : negativePaddingBlock,  // cancel out parent's padding with negative margin
+                }),
+                ...rule(selectorIsLastVisibleChild,  {
+                    marginBlockEnd   : negativePaddingBlock,  // cancel out parent's padding with negative margin
+                }),
+                
+                
+                
+                // children:
+                // make sibling <media> closer (cancel out prev sibling's spacing):
+                ...nextSiblings(mediaSelectorWithExceptZero, {
+                    // spacings:
+                    marginBlockStart : negativePaddingBlock, // cancel out prev sibling's spacing with negative margin
+                }),
+            }),
+        }),
+    });
+};
+
 /**
  * Applies a responsive content layout.
  * @returns A `CssRule` represents a responsive content layout.
@@ -171,71 +338,6 @@ export const usesResponsiveContentGridLayout = () => {
     });
 };
 
-export interface ContentChildrenOptions {
-    fillSelector     ?: CssSelectorCollection
-    fillSelfSelector ?: CssSelectorCollection
-}
-export const usesContentChildrenFill = (options: ContentChildrenOptions = {}) => {
-    // options:
-    const {
-        fillSelector     = '.fill',
-        fillSelfSelector = '.fill-self',
-    } = options;
-    
-    
-    
-    // dependencies:
-    
-    // spacings:
-    const [, contentVars]     = usesContent();
-    const positivePaddingInline = contentVars.paddingInline;
-    const positivePaddingBlock  = contentVars.paddingBlock;
-    const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
-    const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
-    
-    
-    
-    const fillSelectorAndSelf = [fillSelector, fillSelfSelector];
-    return style({
-        ...imports([
-            // borders:
-            usesBorderAsContent({ itemsSelector: fillSelectorAndSelf }), // make a nicely rounded corners
-        ]),
-        ...style({
-            // children:
-            ...children(fillSelectorAndSelf, {
-                // sizes:
-                // span to maximum width including parent's paddings:
-                boxSizing      : 'border-box', // the final size is including borders & paddings
-                inlineSize     : 'fill-available',
-                ...fallbacks({
-                    inlineSize : `calc(100% + (${positivePaddingInline} * 2))`,
-                }),
-                
-                
-                
-                // spacings:
-                marginInline         : negativePaddingInline,  // cancel out parent's padding with negative margin
-                ...ifFirstVisibleChild({
-                    marginBlockStart : negativePaddingBlock,   // cancel out parent's padding with negative margin
-                }),
-                ...ifLastVisibleChild({
-                    marginBlockEnd   : negativePaddingBlock,   // cancel out parent's padding with negative margin
-                }),
-            }),
-            ...children(fillSelfSelector, {
-                // spacings:
-                paddingInline         : positivePaddingInline, // restore parent's padding with positive margin
-                ...ifFirstVisibleChild({
-                    paddingBlockStart : positivePaddingBlock,  // restore parent's padding with positive margin
-                }),
-                ...ifLastVisibleChild({
-                    paddingBlockEnd   : positivePaddingBlock,  // restore parent's padding with positive margin
-                }),
-            }),
-        }),
-    });
-};
 export const usesContentChildren = (options: ContentChildrenOptions = {}) => {
     return style({
         ...imports([
