@@ -290,11 +290,6 @@ export const usesButtonVariants = () => {
     // layouts:
     const [sizesRule] = usesSizeVariant(buttons);
     
-    // colors:
-    // const [, outlineds] = usesOutlinedVariant();
-    // const [, milds    ] = usesMildVariant();
-    // const [, foregs   ] = usesForeg();
-    
     
     
     return style({
