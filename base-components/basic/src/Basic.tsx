@@ -633,9 +633,9 @@ const [gradients] = cssVar<GradientVars>();
 
 
 // grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(:is(.gradient &, .gradient&, &.gradient))', styles);
+export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(.gradient) :where(:not(.gradient)&:not(.gradient))', styles);
 // grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(     ':is(.gradient &, .gradient&, &.gradient)' , styles);
+export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(.gradient &, .gradient&, &.gradient)'               , styles);
 
 
 
@@ -721,9 +721,9 @@ const [outlineds] = cssVar<OutlinedVars>();
 
 
 // grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(:is(.outlined &, .outlined&, &.outlined))', styles);
+export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(.outlined) :where(:not(.outlined)&:not(.outlined))', styles);
 // grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(     ':is(.outlined &, .outlined&, &.outlined)' , styles);
+export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(.outlined &, .outlined&, &.outlined)'               , styles);
 
 
 
@@ -853,7 +853,7 @@ const [milds] = cssVar<MildVars>();
 
 // by design: grandpa's `.mild` does not affect current `.mild`
 // parent not `.mild` -and- current not `.mild`:
-export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(:is(.mild&, &.mild))', styles);
+export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(.mild)&:where(:not(.mild))', styles);
 // parent is  `.mild` -or-  current is  `.mild`:
 export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is(.mild&, &.mild)' , styles);
 
