@@ -148,6 +148,17 @@ import {
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // rules:
+    ifFirstVisibleChild,
+    ifLastVisibleChild,
+    
+    
+    
+    // hooks:
+    usesContainer,
+    usesBorderAsContainer,
+}                           from '@reusable-ui/container'       // a neighbor component
 
 
 
@@ -232,10 +243,12 @@ export const usesContentChildrenFill    = (options: ContentChildrenOptions = {})
     
     // dependencies:
     
+    // layouts:
+    const [, containerVars]     = usesContainer();
+    
     // spacings:
-    const [, containerRefs]     = usesContainer();
-    const positivePaddingInline = containerRefs.paddingInline;
-    const positivePaddingBlock  = containerRefs.paddingBlock;
+    const positivePaddingInline = containerVars.paddingInline;
+    const positivePaddingBlock  = containerVars.paddingBlock;
     const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
     const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
     
@@ -262,10 +275,10 @@ export const usesContentChildrenFill    = (options: ContentChildrenOptions = {})
                 // spacings:
                 marginInline         : negativePaddingInline, // cancel out parent's padding with negative margin
                 marginBlockEnd       : positivePaddingBlock,  // add a spacing to the next sibling
-                ...rule(selectorIsFirstVisibleChild, {
+                ...ifFirstVisibleChild({
                     marginBlockStart : negativePaddingBlock,  // cancel out parent's padding with negative margin
                 }),
-                ...rule(selectorIsLastVisibleChild,  {
+                ...ifLastVisibleChild({
                     marginBlockEnd   : negativePaddingBlock,  // cancel out parent's padding with negative margin
                 }),
                 
