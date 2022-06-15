@@ -91,6 +91,7 @@ import {
     isElementSelectorOf,
     createSelector,
     createSelectorGroup,
+    isNotEmptySelector,
     isNotEmptySelectors,
     
     
@@ -181,7 +182,7 @@ const childSelector          = createSelector( // the specificity weight includi
 const adjustChildSpecificity = (selectorGroup: PureSelectorGroup|null): PureSelectorGroup|null => {
     return selectorGroup && (
         selectorGroup
-        .map((selector) => createSelector( // the specificity weight including parent = 2.1 , is enough to overcome specificity `.FooMedia.FooVariant`
+        .map((selector: Selector): Selector => createSelector( // the specificity weight including parent = 2.1 , is enough to overcome specificity `.FooMedia.FooVariant`
             ...selector,
             ...childSelector, // add specificity weight 1.1
         ))
@@ -214,7 +215,7 @@ export const usesContentChildrenOptions = (options: ContentChildrenOptions = {})
         groupSelectors(notMediaSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
     );
     
-    const mediaSelectorWithExceptZero  : PureSelectorGroup|null   = mediaSelector && (
+    const mediaSelectorWithExceptZero  : PureSelectorGroup|null   = mediaSelector    && (
         groupSelectors(mediaSelector, { selectorName: 'where' })     // group multiple selectors with `:where()`, to suppress the specificity weight
         .map((groupedMediaSelector: Selector): Selector =>
             createSelector(
@@ -291,6 +292,135 @@ export const usesContentChildrenFill    = (options: ContentChildrenOptions = {})
                     marginBlockStart : negativePaddingBlock, // cancel out prev sibling's spacing with negative margin
                 }),
             }),
+        }),
+    });
+};
+export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {}) => {
+    // options:
+    const {
+        mediaSelectorWithExcept,
+        mediaSelectorWithExceptZero,
+        
+        mediaSelector,
+        notNotMediaSelector,
+    } = usesContentChildrenOptions(options);
+    const figureSelector               : Selector|null          = mediaSelector     && (mediaSelector.find(  (selector): selector is Selector => isNotEmptySelector(selector) && selector.some( (selectorEntry) =>  isElementSelectorOf(selectorEntry, 'figure'))) ?? null);
+    const nonFigureSelector            : PureSelectorGroup|null = mediaSelector     &&  mediaSelector.filter((selector): selector is Selector => isNotEmptySelector(selector) && selector.every((selectorEntry) => !isElementSelectorOf(selectorEntry, 'figure')));
+    
+    const figureSelectorWithExceptMod  : PureSelectorGroup|null = figureSelector    && (
+        groupSelector(figureSelector, { selectorName: 'where' }) // group multiple selectors with `:where()`, to suppress the specificity weight
+        .map((groupedFigureSelector: Selector): Selector =>
+            createSelector(
+                ...groupedFigureSelector,
+                notNotMediaSelector,                             // :not(:where(...notMediaSelector))
+            )
+        )
+    );
+    const figureSelectorWithExcept     : CssSelectorCollection  = toSelectors(adjustChildSpecificity(figureSelectorWithExceptMod));
+    const figureSelectorWithCombinator : PureSelectorGroup|null = figureSelectorWithExceptMod && (
+        figureSelectorWithExceptMod
+        .map((groupedFigureSelector: Selector): Selector =>
+            createSelector(
+                ...groupedFigureSelector,
+                '>',
+            )
+        )
+    );
+    const nonFigureSelectorWithExcept  : CssSelectorCollection = toSelectors(adjustChildSpecificity(nonFigureSelector && (
+        groupSelectors(nonFigureSelector, { selectorName: 'where' }) // group multiple selectors with `:where()`, to suppress the specificity weight
+        .flatMap((groupedNonFigureSelector: Selector): PureSelectorGroup => {
+            const nonFigureSelectorWithExcept : Selector = createSelector(
+                ...groupedNonFigureSelector,
+                notNotMediaSelector,                                 // :not(:where(...notMediaSelector))
+            );
+            return createSelectorGroup(
+                // media outside <figure>:
+                nonFigureSelectorWithExcept,
+                
+                // media inside <figure>:
+                ...(!isNotEmptySelectors(figureSelectorWithCombinator) ? [] : figureSelectorWithCombinator.map((selectorCombi: Selector): Selector =>
+                    createSelector(
+                        ...selectorCombi,
+                        ...nonFigureSelectorWithExcept,
+                    )
+                )),
+            );
+        })
+    )));
+    
+    
+    
+    // dependencies:
+    
+    // borders:
+    const [, borders] = usesBorder();
+    
+    
+    
+    return style({
+        // children:
+        
+        // first: reset top_level <figure>
+        ...children(figureSelectorWithExcept, {
+            ...imports([
+                stripoutFigure(), // clear browser's default styling on figure
+                
+                // borders:
+                usesBorderAsContainer(), // make a nicely rounded corners
+            ]),
+            ...style({
+                // layouts:
+                display        : 'flex',    // use block flexbox, so it takes the entire parent's width
+                flexDirection  : 'column',  // items are stacked vertically
+                justifyContent : 'start',   // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+                alignItems     : 'stretch', // items width are 100% of the parent
+                flexWrap       : 'nowrap',  // prevents the items to wrap to the next column
+                
+                
+                
+                // children:
+                ...children('*', {
+                    ...expandBorderRadius(), // expand borderRadius css vars
+                }),
+            }),
+        }),
+        
+        // then: styling top_level <figure>, top_level <media> & nested <media>:
+        ...children(nonFigureSelectorWithExcept, {
+            // layouts:
+            ...rule(':where(:not(.media))', { // all <media> except custom .media
+                ...imports([
+                    stripoutImage(), // clear browser's default styling on image
+                ]),
+                ...style({
+                    display : 'block', // fills the entire parent's width
+                }),
+            }),
+            
+            
+            
+            // customize:
+            ...usesGeneralProps(usesPrefixedProps(cssProps, 'media')), // apply general cssProps starting with img***
+        }),
+        
+        // finally: styling top_level <figure> & top_level <media> as separator:
+        ...children(mediaSelectorWithExcept, {
+            ...style({
+                // borders:
+                // let's Nodestrap system to manage borderStroke & borderRadius:
+                ...expandBorderStroke(), // expand borderStroke css vars
+                ...expandBorderRadius(), // expand borderRadius css vars
+                // remove rounded corners on top:
+                [borders.borderStartStartRadius] : '0px',
+                [borders.borderStartEndRadius  ] : '0px',
+                // remove rounded corners on bottom:
+                [borders.borderEndStartRadius  ] : '0px',
+                [borders.borderEndEndRadius    ] : '0px',
+            }),
+            ...imports([
+                // borders:
+                usesBorderAsSeparatorBlock({ itemsSelector: mediaSelectorWithExceptZero }), // must be placed at the last
+            ]),
         }),
     });
 };
