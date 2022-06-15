@@ -68,6 +68,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
     usesSuffixedProps,
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
@@ -113,14 +114,10 @@ import {
     borderRadiuses,
 }                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
-    // configs:
-    breakpoints,
-    
-    
-    
-    // rules:
-    ifScreenWidthAtLeast,
-}                           from '@reusable-ui/breakpoints'     // a responsive management system
+    // styles:
+    stripoutFigure,
+    stripoutImage,
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // types:
     FeatureMixin,
@@ -159,6 +156,7 @@ import {
     // hooks:
     usesContainer,
     usesBorderAsContainer,
+    usesBorderAsSeparatorBlock,
 }                           from '@reusable-ui/container'       // a neighbor component
 
 
@@ -350,22 +348,17 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
     
     
     
-    // dependencies:
-    
-    // borders:
-    const [, borders] = usesBorder();
-    
-    
-    
     return style({
         // children:
         
         // first: reset top_level <figure>
         ...children(figureSelectorWithExcept, {
             ...imports([
-                stripoutFigure(), // clear browser's default styling on figure
+                // resets:
+                stripoutFigure(),        // clear browser's default styling on `<figure>`
                 
                 // borders:
+                // making the <figure> as border_container => the inner media can have a separator between them
                 usesBorderAsContainer(), // make a nicely rounded corners
             ]),
             ...style({
@@ -380,19 +373,21 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
                 
                 // children:
                 ...children('*', {
-                    ...expandBorderRadius(), // expand borderRadius css vars
+                    // borders:
+                    ...extendsBorder(), // extends border css vars
                 }),
             }),
         }),
         
-        // then: styling top_level <figure>, top_level <media> & nested <media>:
+        // then: styling <media>:
         ...children(nonFigureSelectorWithExcept, {
-            // layouts:
-            ...rule(':where(:not(.media))', { // all <media> except custom .media
+            ...rule(':where(:not(.media))', { // styling all <media> except __custom__ .media
                 ...imports([
-                    stripoutImage(), // clear browser's default styling on image
+                    // resets:
+                    stripoutImage(),   // clear browser's default styling on `<img>`
                 ]),
                 ...style({
+                    // layouts:
                     display : 'block', // fills the entire parent's width
                 }),
             }),
@@ -400,22 +395,16 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
             
             
             // customize:
-            ...usesGeneralProps(usesPrefixedProps(cssProps, 'media')), // apply general cssProps starting with img***
+            ...usesCssProps(usesPrefixedProps(contents, 'media')), // apply config's cssProps starting with media***
         }),
         
         // finally: styling top_level <figure> & top_level <media> as separator:
         ...children(mediaSelectorWithExcept, {
             ...style({
                 // borders:
-                // let's Nodestrap system to manage borderStroke & borderRadius:
-                ...expandBorderStroke(), // expand borderStroke css vars
-                ...expandBorderRadius(), // expand borderRadius css vars
-                // remove rounded corners on top:
-                [borders.borderStartStartRadius] : '0px',
-                [borders.borderStartEndRadius  ] : '0px',
-                // remove rounded corners on bottom:
-                [borders.borderEndStartRadius  ] : '0px',
-                [borders.borderEndEndRadius    ] : '0px',
+                
+                // let's Reusable-UI system to manage borderStroke & borderRadius:
+                ...extendsBorder(), // extends border css vars
             }),
             ...imports([
                 // borders:
