@@ -701,8 +701,8 @@ export const useContainerStyleSheet = createUseStyleSheet(() => ({
 export const [containers, cssContainerConfig] = cssConfig(() => {
     return {
         // borders:
-        borderWidth      : borderStrokes.none   as CssKnownProps['borderWidth'  ], // strip out <Basic>'s border
-        borderRadius     : borderRadiuses.none  as CssKnownProps['borderRadius' ], // strip out <Basic>'s borderRadius
+        borderWidth      : borderStrokes.none   as CssKnownProps['borderWidth'  ], // override to <Basic>
+        borderRadius     : borderRadiuses.none  as CssKnownProps['borderRadius' ], // override to <Basic>
         
         
         
