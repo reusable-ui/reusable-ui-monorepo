@@ -195,11 +195,11 @@ const notMediaElm : CssSelectorCollection = '.not-media';
 const linksElm    : CssSelectorCollection = ['a', '.link'];
 const notLinksElm : CssSelectorCollection = '.not-link';
 
-export interface ContentChildrenOptions {
+export interface ContentChildrenMediaOptions {
     mediaSelector    ?: CssSelectorCollection
     notMediaSelector ?: CssSelectorCollection
 }
-export const usesContentChildrenOptions = (options: ContentChildrenOptions = {}) => {
+export const usesContentChildrenMediaOptions = (options: ContentChildrenMediaOptions = {}) => {
     // options:
     const {
         mediaSelector    : mediaSelectorStr    = mediaElm,
@@ -231,12 +231,12 @@ export const usesContentChildrenOptions = (options: ContentChildrenOptions = {})
         notNotMediaSelector,
     };
 };
-export const usesContentChildrenFill    = (options: ContentChildrenOptions = {}) => {
+export const usesContentChildrenFill         = (options: ContentChildrenMediaOptions = {}) => {
     // options:
     const {
         mediaSelectorWithExcept,
         mediaSelectorWithExceptZero,
-    } = usesContentChildrenOptions(options);
+    } = usesContentChildrenMediaOptions(options);
     
     
     
@@ -293,7 +293,7 @@ export const usesContentChildrenFill    = (options: ContentChildrenOptions = {})
         }),
     });
 };
-export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {}) => {
+export const usesContentChildrenMedia        = (options: ContentChildrenMediaOptions = {}) => {
     // options:
     const {
         mediaSelectorWithExcept,
@@ -301,7 +301,7 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
         
         mediaSelector,
         notNotMediaSelector,
-    } = usesContentChildrenOptions(options);
+    } = usesContentChildrenMediaOptions(options);
     const figureSelector               : Selector|null          = mediaSelector     && (mediaSelector.find(  (selector): selector is Selector => isNotEmptySelector(selector) && selector.some( (selectorEntry) =>  isElementSelectorOf(selectorEntry, 'figure'))) ?? null);
     const nonFigureSelector            : PureSelectorGroup|null = mediaSelector     &&  mediaSelector.filter((selector): selector is Selector => isNotEmptySelector(selector) && selector.every((selectorEntry) => !isElementSelectorOf(selectorEntry, 'figure')));
     
@@ -374,7 +374,9 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
                 // children:
                 ...children('*', {
                     // borders:
-                    ...extendsBorder(), // extends border css vars
+                    
+                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                    ...extendsBorder(),
                 }),
             }),
         }),
@@ -403,8 +405,8 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
             ...style({
                 // borders:
                 
-                // let's Reusable-UI system to manage borderStroke & borderRadius:
-                ...extendsBorder(), // extends border css vars
+                // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                ...extendsBorder(),
             }),
             ...imports([
                 // borders:
@@ -415,107 +417,97 @@ export const usesContentChildrenMedia   = (options: ContentChildrenOptions = {})
 };
 
 export interface ContentChildrenLinksOptions {
-    linkSelector    ?: CssSelectorCollection
-    notLinkSelector ?: CssSelectorCollection
+    linksSelector    ?: CssSelectorCollection
+    notLinksSelector ?: CssSelectorCollection
 }
 export const usesContentChildrenLinksOptions = (options: ContentChildrenLinksOptions = {}) => {
     // options:
     const {
-        linkSelector    : linkSelectorStr    = linksElm,
-        notLinkSelector : notLinkSelectorStr = notLinksElm,
+        linksSelector    : linksSelectorStr    = linksElm,
+        notLinksSelector : notLinksSelectorStr = notLinksElm,
     } = options;
     
-    const linkSelector                 : SelectorGroup|null       = parseSelectors(linkSelectorStr);
-    const notLinkSelector              : SelectorGroup|null       = parseSelectors(notLinkSelectorStr);
-    const notNotLinkSelector           : PseudoClassSelector|null = notLinkSelector && createPseudoClassSelector( // create pseudo_class `:not()`
+    const linksSelector                : SelectorGroup|null       = parseSelectors(linksSelectorStr);
+    const notLinksSelector             : SelectorGroup|null       = parseSelectors(notLinksSelectorStr);
+    const notNotLinksSelector          : PseudoClassSelector|null = notLinksSelector && createPseudoClassSelector( // create pseudo_class `:not()`
         'not',
-        groupSelectors(notLinkSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
+        groupSelectors(notLinksSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
     );
     
-    const linkSelectorWithExceptZero   : PureSelectorGroup|null   = linkSelector    && (
-        groupSelectors(linkSelector, { selectorName: 'where' })     // group multiple selectors with `:where()`, to suppress the specificity weight
-        .map((groupedLinkSelector: Selector): Selector =>
+    const linksSelectorWithExceptZero  : PureSelectorGroup|null   = linksSelector    && (
+        groupSelectors(linksSelector, { selectorName: 'where' })     // group multiple selectors with `:where()`, to suppress the specificity weight
+        .map((groupedLinksSelector: Selector): Selector =>
             createSelector(
-                ...groupedLinkSelector,
-                notNotLinkSelector,                                 // :not(:where(...notLinkSelector))
+                ...groupedLinksSelector,
+                notNotLinksSelector,                                 // :not(:where(...notLinksSelector))
             )
         )
     );
     
     return {
-        linkSelectorWithExcept     : toSelectors(adjustChildSpecificity(linkSelectorWithExceptZero)),
-        linkSelectorWithExceptZero : toSelectors(linkSelectorWithExceptZero),
+        linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
+        linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
-        linkSelector,
-        notNotLinkSelector,
+        linksSelector,
+        notNotLinksSelector,
     };
 };
-
-/**
- * Applies a responsive content layout.
- * @returns A `CssRule` represents a responsive content layout.
- */
-export const usesResponsiveContentLayout = () => {
-    return style({
-        // borders:
-        ...extendsBorder(contents), // extends border css vars
-        
-        
-        
-        // spacings:
-        ...extendsPadding(contents), // extends padding css vars
-    });
-};
-/**
- * Applies a responsive content using grid layout.
- * @returns A `CssRule` represents a responsive content using grid layout.
- */
-export const usesResponsiveContentGridLayout = () => {
-    // dependencies:
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+export const usesContentChildrenLinks        = (options: ContentChildrenLinksOptions = {}) => {
+    // options:
+    const {
+        linksSelectorWithExcept,
+        linksSelectorWithExceptZero,
+    } = usesContentChildrenLinksOptions(options);
     
     
     
     return style({
-        // layouts:
-        display             : 'grid', // use css grid for layouting
-        // define our logical paddings:
-        gridTemplateRows    : [[paddings.paddingBlock,  'auto', paddings.paddingBlock ]], // the height of each row
-        gridTemplateColumns : [[paddings.paddingInline, 'auto', paddings.paddingInline]], // the width of each column
-        gridTemplateAreas   : [[
-            '"........... blockStart ........."',
-            '"inlineStart  content   inlineEnd"',
-            '"...........  blockEnd  ........."',
-        ]],
-        
-        
-        
-        // borders:
-        ...extendsBorder(contents), // extends border css vars
-        
-        
-        
-        // spacings:
-        ...extendsPadding(contents), // extends padding css vars
-        ...style({
-            // since we use grid as paddings, so the css paddings are no longer needed:
-            paddingInline : null, // turn off physical padding, use logical padding we've set above
-            paddingBlock  : null, // turn off physical padding, use logical padding we've set above
+        // children:
+        ...children(linksSelectorWithExcept, {
+            // children:
+            // make a gap to sibling <a>:
+            ...nextSiblings(linksSelectorWithExceptZero, {
+                // spacings:
+                // add a space between links:
+                marginInlineStart: contents.linkSpacing,
+            }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(contents, 'link')), // apply config's cssProps starting with link***
         }),
     });
 };
 
-export const usesContentChildren = (options: ContentChildrenOptions = {}) => {
+export const usesContentChildren             = (options: (ContentChildrenMediaOptions & ContentChildrenLinksOptions) = {}) => {
     return style({
         ...imports([
+            // media:
+            usesContentChildrenMedia(options),
+            
+            // links:
+            usesContentChildrenLinks(options),
+            
             // spacings:
             usesContentChildrenFill(options), // must be placed at the last
         ]),
     });
 };
 
+export const usesContentBasicLayout = () => {
+    return style({
+        // customize:
+        ...usesCssProps(contents), // apply config's cssProps
+        
+        
+        
+        // spacings:
+        
+        // let's Reusable-UI system to manage paddingInline & paddingBlock:
+        ...extendsPadding(contents),
+    });
+};
 export const usesContentLayout = () => {
     return style({
         ...imports([
@@ -525,11 +517,6 @@ export const usesContentLayout = () => {
         ...style({
             // layouts:
             display: 'block',
-            
-            
-            
-            // customize:
-            ...usesCssProps(contents), // apply config's cssProps
         }),
         ...imports([
             // layouts:
