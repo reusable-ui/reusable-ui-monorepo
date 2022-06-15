@@ -855,7 +855,7 @@ const [milds] = cssVar<MildVars>();
 // parent not `.mild` -and- current not `.mild`:
 export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(.mild)&:where(:not(.mild))', styles);
 // parent is  `.mild` -or-  current is  `.mild`:
-export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is(.mild&, &.mild)' , styles);
+export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mild&, &.mild)'            , styles);
 
 
 
