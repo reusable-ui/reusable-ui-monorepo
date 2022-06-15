@@ -520,12 +520,16 @@ export const usesBorderAsSeparatorInline = (options: BorderAsSeparatorOptions = 
 export const usesResponsiveContainerLayout = () => {
     return style({
         // borders:
-        ...extendsBorder(containers), // extends border css vars
+        
+        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+        ...extendsBorder(containers),
         
         
         
         // spacings:
-        ...extendsPadding(containers), // extends padding css vars
+        
+        // let's Reusable-UI system to manage paddingInline & paddingBlock:
+        ...extendsPadding(containers),
     });
 };
 /**
@@ -555,14 +559,19 @@ export const usesResponsiveContainerGridLayout = () => {
         
         
         // borders:
-        ...extendsBorder(containers), // extends border css vars
+        
+        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+        ...extendsBorder(containers),
         
         
         
         // spacings:
-        ...extendsPadding(containers), // extends padding css vars
+        
+        // let's Reusable-UI system to manage paddingInline & paddingBlock:
+        ...extendsPadding(containers),
+        
+        // since we have delegated the (logical) paddings to the grid, so the (actual) css paddings are no longer needed:
         ...style({
-            // since we use grid as paddings, so the css paddings are no longer needed:
             paddingInline : null, // turn off physical padding, use logical padding we've set above
             paddingBlock  : null, // turn off physical padding, use logical padding we've set above
         }),
