@@ -1672,7 +1672,9 @@ export const usesBasicLayout = () => {
             
             
             // borders:
-            ...extendsBorder(basics), // extends border css vars
+            
+            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+            ...extendsBorder(basics),
             
             
             
@@ -1684,7 +1686,9 @@ export const usesBasicLayout = () => {
             
             
             // spacings:
-            ...extendsPadding(basics), // extends padding css vars
+            
+            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+            ...extendsPadding(basics),
         }),
     });
 };
