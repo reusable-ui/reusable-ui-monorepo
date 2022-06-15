@@ -110,9 +110,8 @@ import {
 // reusable-ui:
 import {
     // configs:
-    borders as borderStrokes,
-    borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // styles:
     stripoutFigure,
@@ -125,6 +124,7 @@ import {
     
     
     // hooks:
+    usesSizeVariant,
     OrientationRuleOptions,
     defaultBlockOrientationRuleOptions,
     normalizeOrientationRule,
@@ -158,6 +158,10 @@ import {
     usesBorderAsContainer,
     usesBorderAsSeparatorBlock,
 }                           from '@reusable-ui/container'       // a neighbor component
+import {
+    // react components:
+    Button,
+}                           from '@reusable-ui/button'          // a button component
 
 
 
@@ -502,6 +506,13 @@ export const usesContentBasicLayout = () => {
         
         
         
+        // borders:
+        
+        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+        ...extendsBorder(contents),
+        
+        
+        
         // spacings:
         
         // let's Reusable-UI system to manage paddingInline & paddingBlock:
@@ -513,14 +524,26 @@ export const usesContentLayout = () => {
         ...imports([
             // layouts:
             usesBasicLayout(),
+            usesContentBasicLayout(),
         ]),
         ...style({
             // layouts:
             display: 'block',
         }),
+    });
+};
+export const usesContentBasicVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizesRule] = usesSizeVariant(contents);
+    
+    
+    
+    return style({
         ...imports([
             // layouts:
-            usesResponsiveContentLayout(), // must be placed at the last
+            sizesRule,
         ]),
     });
 };
@@ -529,6 +552,7 @@ export const usesContentVariants = () => {
         ...imports([
             // variants:
             usesBasicVariants(),
+            usesContentBasicVariants(),
         ]),
     });
 };
@@ -551,30 +575,18 @@ export const useContentStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [contents, cssContentConfig] = cssConfig(() => {
     return {
-        // borders:
-        borderWidth      : borderStrokes.none   as CssKnownProps['borderWidth'  ], // strip out <Basic>'s border
-        borderRadius     : borderRadiuses.none  as CssKnownProps['borderRadius' ], // strip out <Basic>'s borderRadius
-        
-        
-        
         // spacings:
-        paddingInline    : '12px'               as CssKnownProps['paddingInline'],
-        paddingBlock     :  '9px'               as CssKnownProps['paddingBlock' ],
+        paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlock    : spacers.default   as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineSm : spacers.sm        as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockSm  : spacers.sm        as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineLg : spacers.lg        as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockLg  : spacers.lg        as CssKnownProps['paddingBlock' ], // override to <Basic>
         
-        paddingInlineSm  : '24px'               as CssKnownProps['paddingInline'],
-        paddingBlockSm   : '18px'               as CssKnownProps['paddingBlock' ],
         
-        paddingInlineMd  : '36px'               as CssKnownProps['paddingInline'],
-        paddingBlockMd   : '27px'               as CssKnownProps['paddingBlock' ],
         
-        paddingInlineLg  : '48px'               as CssKnownProps['paddingInline'],
-        paddingBlockLg   : '36px'               as CssKnownProps['paddingBlock' ],
-        
-        paddingInlineXl  : '60px'               as CssKnownProps['paddingInline'],
-        paddingBlockXl   : '45px'               as CssKnownProps['paddingBlock' ],
-        
-        paddingInlineXxl : '72px'               as CssKnownProps['paddingInline'],
-        paddingBlockXxl  : '54px'               as CssKnownProps['paddingBlock' ],
+        // links:
+        linkSpacing     : spacers.sm        as CssKnownProps['gapInline'],
     };
 }, { prefix: 'ct' });
 
@@ -595,11 +607,19 @@ const Content = <TElement extends Element = Element>(props: ContentProps<TElemen
     
     
     
+    // rest props:
+    const {
+        // children:
+        children,
+    ...restProps} = props;
+    
+    
+    
     // jsx:
     return (
         <Basic<TElement>
             // other props:
-            {...props}
+            {...restProps}
             
             
             
@@ -610,7 +630,53 @@ const Content = <TElement extends Element = Element>(props: ContentProps<TElemen
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-        />
+        >
+            {React.Children.map(children, (child) => {
+                // link:
+                if (
+                    React.isValidElement<React.AnchorHTMLAttributes<HTMLButtonElement>>(child)
+                    &&
+                    (
+                        (child.type === 'a')
+                        ||
+                        (
+                            (typeof(child.type) === 'string')
+                            &&
+                            (child.props.className ?? '').split(' ').some((className) => (className === 'link'))
+                        )
+                    )
+                    &&
+                    !(child.props.className ?? '').split(' ').some((className) => (className === 'not-link'))
+                ) {
+                    // rest props:
+                    const {
+                        type, // discard
+                    ...btnProps} = child.props;
+                    
+                    
+                    
+                    return (
+                        <Button
+                            // semantics:
+                            tag={(child.type ?? 'a') as any}
+                            
+                            
+                            // variants:
+                            btnStyle='link'
+                            
+                            
+                            // other props:
+                            {...btnProps}
+                        />
+                    );
+                } // if
+                
+                
+                
+                // other component:
+                return child;
+            })}
+        </Basic>
     );
 };
 export {
