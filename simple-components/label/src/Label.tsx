@@ -160,10 +160,16 @@ export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
 
 
 // react components:
-export interface LabelProps<TElement extends Element = Element>
+export interface LabelProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
         BasicProps<TElement>,
+        
+        // span:
+        Omit<React.HTMLAttributes<TElement>, 'role'>,
+        
+        // label:
+        Omit<React.LabelHTMLAttributes<TElement>, 'role'>,
         
         // appearances:
         LabelVariant
@@ -171,7 +177,7 @@ export interface LabelProps<TElement extends Element = Element>
     // children:
     children ?: React.ReactNode
 }
-const Label = <TElement extends Element = Element>(props: LabelProps<TElement>): JSX.Element|null => {
+const Label = <TElement extends Element = HTMLSpanElement>(props: LabelProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet   = useLabelStyleSheet();
     
