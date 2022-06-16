@@ -6,29 +6,18 @@ import {
 
 // cssfn:
 import type {
-    // types:
-    OptionalOrBoolean,
-}                           from '@cssfn/types'
-import type {
     // css known (standard) properties:
     CssKnownProps,
     
     
     
     // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-    
     CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
-    rules,
     fallbacks,
-    atGlobal,
-    atRoot,
     
     
     
@@ -40,27 +29,12 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
-    
-    
-    
-    // style sheets:
-    styleSheet,
-    
-    
-    
-    // utilities:
-    iif,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
     
@@ -69,8 +43,6 @@ import {
     // utilities:
     usesCssProps,
     usesPrefixedProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 import {
     // types:
@@ -118,20 +90,9 @@ import {
     stripoutImage,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
-    // types:
-    FeatureMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
-    OrientationRuleOptions,
-    defaultBlockOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
-    usesBorder,
     extendsBorder,
-    usesPadding,
     extendsPadding,
     
     
@@ -509,7 +470,7 @@ export const usesContentBasicLayout = () => {
         // borders:
         
         // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-        ...extendsBorder(contents),
+        ...extendsBorder(contents as any),
         
         
         

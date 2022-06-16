@@ -38,11 +38,12 @@
     "@cssfn/css-config": "^2.0.13",
     "@cssfn/css-selectors": "^2.0.2",
     "@cssfn/css-types": "^2.0.3",
-    "@cssfn/css-var": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.8",
-    "@reusable-ui/borders": "^5.0.0",
-    "@reusable-ui/breakpoints": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/button": "^5.0.0",
+    "@reusable-ui/container": "^5.0.0",
+    "@reusable-ui/spacers": "^5.0.0",
+    "@reusable-ui/stripouts": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
