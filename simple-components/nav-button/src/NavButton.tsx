@@ -100,83 +100,6 @@ import {
 
 
 
-// styles:
-export const usesNavButtonLayout = (options?: OrientationRuleOptions) => {
-    return style({
-        ...imports([
-            // layouts:
-            usesButtonLayout(),
-        ]),
-    });
-};
-export const usesNavButtonVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizesRule] = usesSizeVariant(navButtons);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesButtonVariants(),
-            
-            // layouts:
-            sizesRule,
-        ]),
-    });
-};
-export const usesNavButtonStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesButtonStates(),
-        ]),
-    });
-};
-
-export const useNavButtonStyleSheet = createUseStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesNavButtonLayout(),
-        
-        // variants:
-        usesNavButtonVariants(),
-        
-        // states:
-        usesNavButtonStates(),
-    ]),
-}), { id: '7rehb2h20q' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [navButtons, navButtonValues, cssNavButtonConfig] = cssConfig(() => {
-    return {
-        // spacings:
-        gapInline          : spacers.sm as CssKnownProps['gapInline'],
-        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
-        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
-        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
-        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
-        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
-        
-        
-        
-        // typos:
-        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
-        
-        
-        
-        // ghost style:
-        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
-        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
-    };
-}, { prefix: 'btn' });
-
-
-
 // react components:
 export interface NavButtonProps
     extends
@@ -192,11 +115,6 @@ export interface NavButtonProps
     children ?: React.ReactNode
 }
 const NavButton = (props: NavButtonProps): JSX.Element|null => {
-    // styles:
-    const styleSheet         = useNavButtonStyleSheet();
-    
-    
-    
     // rest props:
     const {
         // remove props:
@@ -241,11 +159,6 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             // variants:
             outlined={outlined}
             mild={mild}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
         />
     );
 };
