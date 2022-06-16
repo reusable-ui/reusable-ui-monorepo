@@ -89,6 +89,10 @@ import {
     stripoutFigure,
     stripoutImage,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+import type {
+    // types:
+    Tag,
+}                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
     usesSizeVariant,
@@ -122,6 +126,7 @@ import {
 import {
     // react components:
     Button,
+    ButtonProps,
 }                           from '@reusable-ui/button'          // a button component
 
 
@@ -595,11 +600,13 @@ const Content = <TElement extends Element = Element>(props: ContentProps<TElemen
             {React.Children.map(children, (child) => {
                 // link:
                 if (
-                    React.isValidElement<React.AnchorHTMLAttributes<HTMLButtonElement>>(child)
+                    React.isValidElement<ButtonProps>(child)
                     &&
                     (
+                        // native <a>:
                         (child.type === 'a')
                         ||
+                        // native <foo class="... link ...">:
                         (
                             (typeof(child.type) === 'string')
                             &&
@@ -607,27 +614,23 @@ const Content = <TElement extends Element = Element>(props: ContentProps<TElemen
                         )
                     )
                     &&
+                    // not <foo class="... not-link ...">:
                     !(child.props.className ?? '').split(' ').some((className) => (className === 'not-link'))
                 ) {
-                    // rest props:
-                    const {
-                        type, // discard
-                    ...btnProps} = child.props;
-                    
-                    
-                    
                     return (
                         <Button
                             // semantics:
-                            tag={(child.type ?? 'a') as any}
+                            tag={(child.type ?? 'a') as Tag} // copy the original <tag>
+                            
                             
                             
                             // variants:
-                            btnStyle='link'
+                            btnStyle='link' // style the <button> as <a>
+                            
                             
                             
                             // other props:
-                            {...btnProps}
+                            {...child.props}
                         />
                     );
                 } // if
