@@ -356,7 +356,7 @@ const getFileNameWithoutExtension = (fileName: string): string|null => {
     if (lastDotIndex < 0) return fileName; // extension is not found => it's a pure fileName without extension
     return fileName.slice(0, lastDotIndex);
 }
-export const useIcon = <TElement extends Element = Element>({ icon }: IconProps<TElement>) => {
+export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: IconProps<TElement>) => {
     return useMemo(() => {
         const iconImg    : string|null = (() => {
             const file = config.img.files.find((file) => getFileNameWithoutExtension(file) === icon);
@@ -808,7 +808,7 @@ type CustomIconList  =
 |'dropleft';
 export type IconList = CustomIconList | ((typeof fontItems)[number]) | (string & {})
 
-export interface IconProps<TElement extends Element = Element>
+export interface IconProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
         GenericProps<TElement>,
@@ -823,7 +823,7 @@ export interface IconProps<TElement extends Element = Element>
     // appearances:
     icon : IconList
 }
-const Icon = <TElement extends Element = Element>(props: IconProps<TElement>): JSX.Element|null => {
+const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet      = useIconStyleSheet();
     
