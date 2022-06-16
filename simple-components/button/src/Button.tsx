@@ -362,7 +362,7 @@ export const useButtonStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [buttons, cssButtonConfig] = cssConfig(() => {
+export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
     return {
         // spacings:
         gapInline          : spacers.sm as CssKnownProps['gapInline'],

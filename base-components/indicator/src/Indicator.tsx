@@ -568,7 +568,7 @@ export const useIndicatorStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [indicators, cssIndicatorConfig] = cssConfig(() => {
+export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();

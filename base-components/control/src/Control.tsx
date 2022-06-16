@@ -651,7 +651,7 @@ export const useControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [controls, cssControlConfig] = cssConfig(() => {
+export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();

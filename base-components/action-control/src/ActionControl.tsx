@@ -445,7 +445,7 @@ export const useActionControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [actionControls, cssActionControlConfig] = cssConfig(() => {
+export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();

@@ -702,7 +702,7 @@ export const useIconStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [icons, cssIconConfig] = cssConfig(() => {
+export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
     const basics = {
         // backgrounds:
         backg  : 'currentColor'                                 as CssKnownProps['backgroundColor'],

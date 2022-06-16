@@ -592,7 +592,7 @@ export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [editableControls, cssEditableControlConfig] = cssConfig(() => {
+export const [editableControls, editableControlValues, cssEditableControlConfig] = cssConfig(() => {
     // dependencies:
     
     const [, {backg, altBackgColor}] = usesBackg();

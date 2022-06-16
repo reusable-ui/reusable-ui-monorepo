@@ -315,7 +315,7 @@ export const useEditableTextControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [editableTextControls, cssEditableTextControlConfig] = cssConfig(() => {
+export const [editableTextControls, editableTextControlValues, cssEditableTextControlConfig] = cssConfig(() => {
     return {
         // accessibilities:
         cursor      : 'text' as CssKnownProps['cursor'],

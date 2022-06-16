@@ -1735,7 +1735,7 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [basics, cssBasicConfig] = cssConfig(() => {
+export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     // dependencies:
     
     const [, , animRegistry] = usesAnim();

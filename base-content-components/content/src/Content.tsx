@@ -539,7 +539,7 @@ export const useContentStyleSheet = createUseStyleSheet(() => ({
 
 
 // configs:
-export const [contents, cssContentConfig] = cssConfig(() => {
+export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
     return {
         // spacings:
         paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
