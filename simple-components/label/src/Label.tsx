@@ -220,7 +220,7 @@ const Label = <TElement extends Element = HTMLSpanElement>(props: LabelProps<TEl
             
             
             // semantics:
-            tag={props.tag ?? 'span'}
+            tag={props.tag ?? (props.htmlFor ? 'label' : 'span')}
             
             
             
