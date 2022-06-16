@@ -1649,7 +1649,7 @@ export const usesBasicLayout = () => {
             
             
             // accessibilities:
-            ...rule('::selection', {
+            ...rule(['&::selection', '& ::selection'], { // ::selection on self and descendants
                     // backgrounds:
                 backg     : backgs.altBackgColor,
                 
