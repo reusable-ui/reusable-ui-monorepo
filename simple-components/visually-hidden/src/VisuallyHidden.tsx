@@ -1,0 +1,107 @@
+// react:
+import {
+    // react:
+    default as React,
+}                           from 'react'
+
+// cssfn:
+import {
+    // styles:
+    style,
+    imports,
+}                           from '@cssfn/cssfn'             // writes css in javascript
+import {
+    // style sheets:
+    createUseStyleSheet,
+}                           from '@cssfn/cssfn-react'       // writes css in react hook
+
+// reusable-ui:
+import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'     // a base component
+
+
+
+// styles:
+export const usesVisuallyHiddenLayout = () => {
+    return style({
+        // layouts:
+        display    : ['inline-block',  '!important'], // use inline block, so it takes the width & height as we set
+        
+        
+        
+        // positions:
+        position   : ['absolute',      '!important'],
+        
+        
+        
+        // sizes:
+        width      : ['1px',           '!important'],
+        height     : ['1px',           '!important'],
+        overflow   : ['hidden',        '!important'],
+        clip       : ['rect(0,0,0,0)', '!important'],
+        
+        
+        
+        // borders:
+        border     : ['none',          '!important'],
+        
+        
+        
+        // spacings:
+        margin     : ['-1px',          '!important'], // fix for https://github.com/twbs/bootstrap/issues/25686
+        padding    : [0,               '!important'],
+        
+        
+        
+        // typos:
+        whiteSpace : ['nowrap',        '!important'],
+    });
+};
+
+export const useVisuallyHiddenStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesVisuallyHiddenLayout(),
+    ]),
+}), { id: 'zxyty1yae5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+// react components:
+export interface VisuallyHiddenProps<TElement extends Element = Element>
+    extends
+        // bases:
+        GenericProps<TElement>
+{
+}
+const VisuallyHidden = <TElement extends Element = Element>(props: VisuallyHiddenProps<TElement>): JSX.Element|null => {
+    // styles:
+    const styleSheet      = useVisuallyHiddenStyleSheet();
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // other props:
+            {...props}
+            
+            
+            
+            // semantics:
+            tag={props.tag ?? 'span'}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+        />
+    );
+};
+export {
+    VisuallyHidden,
+    VisuallyHidden as default,
+}
