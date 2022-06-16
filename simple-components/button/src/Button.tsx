@@ -390,7 +390,7 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
 // hooks:
 
 export type ButtonType = 'button'|'submit'|'reset'
-export interface SemanticButtonProps<TElement extends Element = Element>
+export interface SemanticButtonProps<TElement extends Element = HTMLButtonElement>
     extends
         // bases:
         ActionControlProps<TElement>,
@@ -404,7 +404,7 @@ export interface SemanticButtonProps<TElement extends Element = Element>
     // actions:
     type ?: ButtonType | (string & {})
 }
-export const useSemanticButton = <TElement extends Element = Element>(props: SemanticButtonProps<TElement>) => {
+export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(props: SemanticButtonProps<TElement>) => {
     // fn props:
     const isNativeLink = !!props.href; // assigning [href] will render the <Button> as <a>
     const isClientLink = !isNativeLink && React.Children.toArray(props.children).some(isClientSideLink);
