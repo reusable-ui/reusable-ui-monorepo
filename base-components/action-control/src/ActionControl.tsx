@@ -749,16 +749,31 @@ const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: Cli
     
     
     // jsx:
+    const isNextJsLink = !!linkComponent.props.href;
     return React.cloneElement(linkComponent,
         // props:
         {
-            component : actionComponent,
-            ...(isSemanticLink ? { passHref: true } : {}),
+            ...(!isNextJsLink  ? { component : actionComponent } : undefined),
+            ...(isSemanticLink ? { passHref  : true            } : undefined),
         },
         
         
         
         // children:
-        children
+        (
+            !isNextJsLink
+            ?
+            children
+            :
+            React.cloneElement(actionComponent,
+                // props:
+                undefined,
+                
+                
+                
+                // children:
+                children,
+            )
+        )
     );
 };
