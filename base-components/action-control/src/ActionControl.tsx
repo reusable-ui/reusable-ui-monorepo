@@ -753,7 +753,7 @@ const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: Cli
         // props:
         {
             component : actionComponent,
-            passHref  : isSemanticLink,
+            passHref  : isSemanticLink || undefined,
         },
         
         
