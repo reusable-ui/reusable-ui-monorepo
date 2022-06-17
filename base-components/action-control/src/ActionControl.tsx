@@ -771,30 +771,26 @@ const ClientSideLinkWrapper = <TElement extends Element = Element>({ linkCompone
             ?
             children
             :
-            <ForwardRefWrapper actionComponent={
-                React.cloneElement(actionComponent,
-                    // props:
-                    undefined,
-                    
-                    
-                    
-                    // children:
-                    children,
-                )
-            } />
+            <ForwardRefWrapper actionComponent={actionComponent} {...actionComponent.props}>
+                {children}
+            </ForwardRefWrapper>
         )
     );
 };
 
-interface ForwardRefWrapperProps<TElement extends Element = Element> {
+interface ForwardRefWrapperProps<TElement extends Element = Element>
+    extends
+        // forwards <ActionControl>:
+        ActionControlProps<TElement>
+{
     // components:
     actionComponent : React.ReactElement<ActionControlProps<TElement>>
 }
-const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>({ actionComponent }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>({ actionComponent, outerRef, ...restForwardProps }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // refs:
-    const outerRef = useMergeRefs(
+    const mergedouterRef = useMergeRefs(
         // preserves the original `outerRef`:
-        actionComponent.props.outerRef,
+        outerRef,
         
         
         
@@ -808,7 +804,12 @@ const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>(
         // props:
         {
             // refs:
-            outerRef,
+            outerRef: mergedouterRef,
+            
+            
+            
+            // other props:
+            ...restForwardProps,
         },
     );
 });
