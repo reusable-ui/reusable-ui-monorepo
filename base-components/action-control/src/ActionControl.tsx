@@ -555,7 +555,7 @@ export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
     return (
         React.isValidElement(node)         // JSX element
         &&
-        (typeof(node.type) === 'function') // functional component
+        (typeof(node.type) === 'object')   // forwardRef
         &&
         !!node.props.href                  // one of NextLink prop
     );
