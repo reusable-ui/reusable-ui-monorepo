@@ -56,6 +56,11 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         
         // links:
         target,
+        
+        
+        
+        // children:
+        children,
     ...restAnchorProps} = props;
     
     
@@ -100,23 +105,31 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         
         
         // jsx:
-        return React.cloneElement(component, {
-            // essentials:
-            ref,
+        return React.cloneElement(component,
+            // props:
+            {
+                // essentials:
+                ref,
+                
+                
+                
+                // links:
+                ...(passHref ? {
+                    href,
+                    target,
+                } : {}),
+                
+                
+                
+                // handlers:
+                onClick: handleMergedClick,
+            },
             
             
             
-            // links:
-            ...(passHref ? {
-                href,
-                target,
-            } : {}),
-            
-            
-            
-            // handlers:
-            onClick: handleMergedClick,
-        });
+            // children:
+            children
+        );
     }
     else {
         // jsx:
@@ -141,7 +154,9 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
                 
                 // handlers:
                 onClick={handleClick}
-            />
+            >
+                {children}
+            </a>
         );
     } // if
 });
