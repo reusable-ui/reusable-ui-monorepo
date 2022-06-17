@@ -109,6 +109,16 @@ const resolveRelativePath = (fromPathname: Pathname, relativePath: Pathname): Pa
 
 
 // hooks:
+type ReactRouterModule  = typeof import('react-router')
+let _useInRouterContext : ReactRouterModule['useInRouterContext']|undefined = undefined;
+let _useResolvedPath    : ReactRouterModule['useResolvedPath'   ]|undefined = undefined;
+try {
+    const { useInRouterContext, useResolvedPath } = await import(/* webpackChunkName: 'react-router' */ 'react-router');
+    _useInRouterContext = useInRouterContext;
+    _useResolvedPath    = useResolvedPath;
+}
+catch {}
+
 export interface CurrentActiveProps {
     // nav matches:
     caseSensitive ?: boolean
@@ -148,7 +158,7 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
     
     // let currentPathname = useLocation().pathname;            // only works in react-router
     let currentPathname = globalThis?.location?.pathname ?? ''; // works both in react-router & nextjs
-    let targetPathname = _useInRouterContext() ? _useResolvedPath(to).pathname : resolvePath(to, currentPathname);
+    let targetPathname  = ((_useInRouterContext?.() || undefined) && _useResolvedPath?.(to)?.pathname) ?? resolvePath(to, currentPathname);
     
     
     
@@ -157,9 +167,17 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
     
     
     
-    if (!(props.caseSensitive ?? false)) {
-        currentPathname = currentPathname.toLocaleLowerCase();
-        targetPathname  = targetPathname.toLocaleLowerCase();
+    const {
+        // nav matches:
+        caseSensitive = false,
+        end           = (targetPathname === '/'), // the default for home page is always exact match, otherwise sub match
+    } = props;
+    
+    
+    
+    if (!caseSensitive) {
+        currentPathname = currentPathname.toLowerCase();
+        targetPathname  = targetPathname.toLowerCase();
     } // if
     
     
@@ -168,13 +186,7 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
         (currentPathname === targetPathname) // exact match
         ||
         (
-            !(
-                // user defined:
-                props.end
-                ??
-                // default:
-                (targetPathname === '/') // for home page always exact match, otherwise sub match
-            ) // sub match
+            !end // sub match
             &&
             (
                 currentPathname.startsWith(targetPathname)
