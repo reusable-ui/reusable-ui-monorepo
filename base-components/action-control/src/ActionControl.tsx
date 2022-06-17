@@ -58,6 +58,7 @@ import {
     // hooks:
     useEvent,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -73,7 +74,6 @@ import {
     
     
     // hooks:
-    SemanticProps,
     useTestSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
@@ -710,7 +710,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     if (!clientSideLink) return actionControl;                     // if no contain <Link> => normal <ActionControl>
     
     return (
-        <ClientSideLinkWrapper
+        <ClientSideLinkWrapper<TElement>
             linkComponent={clientSideLink}
             actionComponent={actionControl}
         >
@@ -739,17 +739,17 @@ export {
 
 
 
-interface ClientSideLinkWrapperProps {
+interface ClientSideLinkWrapperProps<TElement extends Element = Element> {
     // components:
     linkComponent   : JsxClientSideLink
-    actionComponent : React.ReactElement<SemanticProps>
+    actionComponent : React.ReactElement<ActionControlProps<TElement>>
     
     
     
     // children:
     children       ?: React.ReactNode
 }
-const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps): JSX.Element|null => {
+const ClientSideLinkWrapper = <TElement extends Element = Element>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
     const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { defaultTag: 'a', defaultRole: 'link' });
     
     
@@ -771,15 +771,44 @@ const ClientSideLinkWrapper = ({ linkComponent, actionComponent, children }: Cli
             ?
             children
             :
-            React.cloneElement(actionComponent,
-                // props:
-                undefined,
-                
-                
-                
-                // children:
-                children,
-            )
+            <ForwardRefWrapper actionComponent={
+                React.cloneElement(actionComponent,
+                    // props:
+                    undefined,
+                    
+                    
+                    
+                    // children:
+                    children,
+                )
+            } />
         )
     );
 };
+
+interface ForwardRefWrapperProps<TElement extends Element = Element> {
+    // components:
+    actionComponent : React.ReactElement<ActionControlProps<TElement>>
+}
+const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>({ actionComponent }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+    // refs:
+    const outerRef = useMergeRefs(
+        // preserves the original `outerRef`:
+        actionComponent.props.outerRef,
+        
+        
+        
+        ref,
+    );
+    
+    
+    
+    // jsx:
+    return React.cloneElement(actionComponent,
+        // props:
+        {
+            // refs:
+            outerRef,
+        },
+    );
+});
