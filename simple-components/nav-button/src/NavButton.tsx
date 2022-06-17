@@ -30,11 +30,6 @@ import {
     To,
     parsePath,
 }                           from 'history'
-import {
-    // tests:
-    isBrowser,
-    isJsDom,
-}                           from 'is-in-browser'
 
 
 
@@ -203,14 +198,32 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
 export interface NavButtonProps
     extends
         // bases:
-        ButtonProps
+        ButtonProps,
+        
+        // nav:
+        CurrentActiveProps
 {
 }
 const NavButton = (props: NavButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // remove props:
+        
+        // nav matches:
+        caseSensitive : _caseSensitive,
+        end           : _end,
+        
+        
+        
+        // accessibilities:
+        active,
     ...restButtonProps} = props;
+    
+    
+    
+    // fn props:
+    const activeDn = useCurrentActive(props);
+    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
