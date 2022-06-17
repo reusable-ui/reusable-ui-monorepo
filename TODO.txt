@@ -1,5 +1,8 @@
-fix [components, cssComponentConfig] to [components, componentValues, cssComponentConfig]
+fix peer dependencies for colors, borders, spacers, etc...
 fix arrive when [focused=true]
+
+improve: change Element to TElement:
+(?<!JSX\.|TElement extends |TElement extends Element = )Element
 
 
 inline then block
