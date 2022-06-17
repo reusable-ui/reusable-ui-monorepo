@@ -12,9 +12,12 @@ import {
     HeadPortal,
 } from '@cssfn/cssfn-react'
 import {
-    Link,
+    // Link,
     Outlet,
 } from 'react-router-dom'
+import {
+    Link,
+} from '@reusable-ui/react-router-compat-link'
 
 
 
