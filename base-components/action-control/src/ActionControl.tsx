@@ -721,7 +721,13 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
                 
                 
                 // merge with <Link>'s children:
-                return React.Children.toArray(clientSideLink.props.children); // unwrap the <Link>
+                return (
+                    React.Children.toArray(clientSideLink.props.children) // unwrap the <Link>
+                    .map((grandChild) => { // fix the grandChild's key
+                        if (!React.isValidElement(grandChild)) return grandChild;
+                        return React.cloneElement(grandChild, { key: `${child.key}-${grandChild.key}` });
+                    })
+                );
             })}
         </ClientSideLinkWrapper>
     );
