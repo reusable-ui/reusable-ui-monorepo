@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Styles />
       </HeadPortal> */}
       <NavButton theme='primary'>
-          <Link href="/invoices">Invoices</Link>
+          <span>A</span>
+          <Link href="/invoices"><span>B</span>Invoices<span>C</span></Link>
+          <span>D</span>
       </NavButton>
       <NavButton theme='primary'>
           <Link href="/expenses">Expenses</Link>
