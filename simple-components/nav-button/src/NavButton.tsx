@@ -123,12 +123,14 @@ const resolveRelativePath = (fromPathname: Pathname, relativePath: Pathname): Pa
 type ReactRouterModule  = typeof import('react-router')
 let _useInRouterContext : ReactRouterModule['useInRouterContext']|undefined = undefined;
 let _useResolvedPath    : ReactRouterModule['useResolvedPath'   ]|undefined = undefined;
-try {
-    const { useInRouterContext, useResolvedPath } = await import(/* webpackChunkName: 'react-router' */ 'react-router');
-    _useInRouterContext = useInRouterContext;
-    _useResolvedPath    = useResolvedPath;
-}
-catch {}
+(async () => {
+    try {
+        const { useInRouterContext, useResolvedPath } = await import(/* webpackChunkName: 'react-router' */ 'react-router');
+        _useInRouterContext = useInRouterContext;
+        _useResolvedPath    = useResolvedPath;
+    }
+    catch {}
+})();
 
 export interface CurrentActiveProps {
     // nav matches:
