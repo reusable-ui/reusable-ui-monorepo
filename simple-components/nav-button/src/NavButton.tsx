@@ -14,6 +14,11 @@ import {
     // hooks:
     useIsomorphicLayoutEffect,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+export type {
+    // hooks:
+    OrientationName,
+    OrientationVariant,
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     isClientSideLink,
@@ -23,13 +28,24 @@ import {
     ButtonProps,
     Button,
 }                           from '@reusable-ui/button'          // a base component
+export {
+    // hooks:
+    ButtonStyle,
+    ButtonVariant,
+    ButtonType,
+}                           from '@reusable-ui/button'          // a base component
 
 // other libs:
 import {
+    // types:
     Pathname,
     To,
+    
+    
+    
+    // utilities:
     parsePath,
-}                           from 'history'
+}                           from 'history'                      // a helper lib
 
 
 
@@ -232,6 +248,16 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         <Button
             // other props:
             {...restButtonProps}
+            
+            
+            
+            // semantics:
+            aria-current={(activeFn || undefined) && (props['aria-current'] ?? 'page')}
+            
+            
+            
+            // accessibilities:
+            active={activeFn}
         />
     );
 };
