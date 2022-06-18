@@ -261,7 +261,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                     themes.backgMild,      // second priority
                  // themes.backgMildCond,  // third  priority
                     
-                    icons.backg,           // default => uses config's background
+                    icons.color,           // default => uses config's color
                 ),
                 
                 
@@ -321,7 +321,7 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
                     themes.backg,      // second priority
                  // themes.backgCond,  // third  priority
                     
-                    icons.backg,       // default => uses config's background
+                    icons.color,       // default => uses config's color
                 ),
                 [backgs.backgColor  ] : fallbacks(
                  // outlineds.backgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
@@ -339,12 +339,55 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
 //#region icon
 export interface IconVars {
     /**
-     * Icon's image url or icon's name.
+     * Icon image url or icon name.
      */
-    img : any
+    img   : any
+    
+    /**
+     * Icon color.
+     */
+    color : any
+    
+    /**
+     * Icon size.
+     */
+    size  : any
 }
 const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
 
+/**
+ * Uses icon image and icon color.
+ * @returns A `FeatureMixin<IconVars>` represents icon image and icon color definitions.
+ */
+export const usesIcon = (): FeatureMixin<IconVars> => {
+    // dependencies:
+    
+    // backgrounds:
+    const [backgRule, backgs] = usesBackg();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // backgrounds:
+                backgRule,
+            ]),
+            ...vars({
+                [iconVars.img  ] : 'initial',  // initially no image was defined
+                
+                [iconVars.color] : fallbacks(
+                    backgs.altBackgColor,      // first priority: uses nearest ancestor's alternate background theme
+                    
+                    icons.color,               // default => uses config's color
+                ),
+                
+                [iconVars.size ] : icons.size, // default => uses config's size
+            }),
+        }),
+        iconVars,
+    ];
+};
 
 
 const getFileNameWithoutExtension = (fileName: string): string|null => {
@@ -446,15 +489,15 @@ export const formatOf = (fileName: string): string|null => {
 export const usesIconLayout      = () => {
     // dependencies:
     
-    // backgrounds:
-    const [backgRule] = usesBackg();
+    // icon:
+    const [iconRule, iconVars] = usesIcon();
     
     
     
     return style({
         ...imports([
-            // backgrounds:
-            backgRule,
+            // icon:
+            iconRule,
         ]),
         ...style({
             // layouts:
@@ -472,7 +515,7 @@ export const usesIconLayout      = () => {
             
             
             // sizes:
-            blockSize      : icons.size,    // set background_image's height
+            blockSize      : iconVars.size, // set background_image's height
             
             
             
@@ -493,8 +536,8 @@ export const usesIconLayout      = () => {
 export const usesIconFontLayout  = (img?: CssCustomRef) => {
     // dependencies:
     
-    // backgrounds:
-    const [, backgs] = usesBackg();
+    // icon:
+    const [, iconVars] = usesIcon();
     
     
     
@@ -530,7 +573,7 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
                 
                 
                 // sizes:
-                fontSize      : icons.size,          // set icon's size
+                fontSize      : iconVars.size,       // set icon's size
                 overflowY     : 'hidden',            // a hack: hides the pseudo-inherited underline
                 
                 
@@ -546,7 +589,7 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
                 
                 
                 // foregrounds:
-                foreg         : backgs.backgColor,   // set icon's color
+                foreg         : iconVars.color,      // set icon's color
                 
                 
                 
@@ -576,8 +619,8 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
 export const usesIconImageLayout = (img?: CssCustomRef) => {
     // dependencies:
     
-    // backgrounds:
-    const [, backgs] = usesBackg();
+    // icon:
+    const [, iconVars] = usesIcon();
     
     
     
@@ -621,7 +664,7 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         
         
         // backgrounds:
-        backg         : backgs.backgColor,   // set icon's color
+        backg         : iconVars.color,      // set icon's color
     });
 };
 export const usesIconVariants    = () => {
@@ -647,11 +690,11 @@ export const usesIconVariants    = () => {
         ]),
     });
 };
-export const usesIconImage       = (img: CssCustomRef, backg?: CssKnownProps['backgroundColor'], size?: CssKnownProps['inlineSize']) => {
+export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['backgroundColor'], size?: CssKnownProps['inlineSize']) => {
     // dependencies:
     
-    // backgrounds:
-    const [backgRule, backgs] = usesBackg();
+    // icon:
+    const [iconRule, iconVars] = usesIcon();
     
     
     
@@ -660,17 +703,13 @@ export const usesIconImage       = (img: CssCustomRef, backg?: CssKnownProps['ba
             // layouts:
             usesIconImageLayout(img),
             
-            // backgrounds:
-            ((backg !== undefined) && backgRule),
+            // icon:
+            iconRule,
         ]),
         ...vars({
-            // backgrounds:
-            [backgs.backgColor] : backg, // overwrite icon's color
-            
-            
-            
-            // sizes:
-            [icons.size       ] : size,  // overwrite icon's size
+            // icon:
+            [iconVars.color] : color, // overwrite icon's color
+            [iconVars.size ] : size,  // overwrite icon's size
         }),
     });
 };
@@ -704,8 +743,8 @@ export const useIconStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
     const basics = {
-        // backgrounds:
-        backg  : 'currentColor'                                 as CssKnownProps['backgroundColor'],
+        // color:
+        color  : 'currentColor'                                 as CssKnownProps['backgroundColor'],
         
         
         
