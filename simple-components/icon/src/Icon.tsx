@@ -235,9 +235,9 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
             ]),
             ...vars({
                 [milds.altBackgFn] : fallbacks(
-                 // themes.altBackgMildImpt, // first  priority
+                    themes.altBackgMildImpt, // first  priority
                     themes.altBackgMild,     // second priority
-                 // themes.altBackgMildCond, // third  priority
+                    themes.altBackgMildCond, // third  priority
                     
                     icons.color,             // default => uses config's color
                 ),
@@ -294,9 +294,9 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
         () => style({
             ...vars({
                 [backgs.altBackgColorFn] : fallbacks(
-                 // themes.altBackgImpt,    // first  priority
+                    themes.altBackgImpt,    // first  priority
                     themes.altBackg,        // second priority
-                 // themes.altBackgCond,    // third  priority
+                    themes.altBackgCond,    // third  priority
                     
                     icons.color,            // default => uses config's color
                 ),
