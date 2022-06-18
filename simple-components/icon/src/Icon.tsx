@@ -107,6 +107,8 @@ import {
     ThemeVariant,
     useThemeVariant,
     
+    usesOutlinedVariant,
+    
     MildVars,
     ifNotMild,
     ifMild,
@@ -235,9 +237,9 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
             ]),
             ...vars({
                 [milds.altBackgFn] : fallbacks(
-                    themes.altBackgMildImpt, // first  priority
+                    themes.altBackgMildImpt, // first  priority // supports for validation on ancestor
                     themes.altBackgMild,     // second priority
-                    themes.altBackgMildCond, // third  priority
+                    themes.altBackgMildCond, // third  priority // supports for active state on ancestor
                     
                     icons.color,             // default => uses config's color
                 ),
@@ -284,9 +286,10 @@ export {
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
-    const [, backgs] = basicUsesBackg();
-    const [, themes] = usesThemeVariant();
-    const [, milds ] = usesMildVariant();
+    const [, backgs   ] = basicUsesBackg();
+    const [, themes   ] = usesThemeVariant();
+    const [, outlineds] = usesOutlinedVariant();
+    const [, milds    ] = usesMildVariant();
     
     
     
@@ -294,14 +297,14 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
         () => style({
             ...vars({
                 [backgs.altBackgColorFn] : fallbacks(
-                    themes.altBackgImpt,    // first  priority
+                    themes.altBackgImpt,    // first  priority // supports for validation on ancestor
                     themes.altBackg,        // second priority
-                    themes.altBackgCond,    // third  priority
+                    themes.altBackgCond,    // third  priority // supports for active state on ancestor
                     
                     icons.color,            // default => uses config's color
                 ),
                 [backgs.altBackgColor  ] : fallbacks(
-                 // outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
+                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
                     milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
                     
                     backgs.altBackgColorFn, // default => uses our `backgColorFn`
