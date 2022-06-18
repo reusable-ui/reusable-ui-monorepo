@@ -126,7 +126,7 @@ let reactRouterModule : PartialReactRouterModule|null|undefined = undefined;
 (async () => {
     try {
         const { useInRouterContext, useResolvedPath } = await import(/* webpackChunkName: 'react-router' */ 'react-router');
-        if (reactRouterModule === undefined) {
+        if (reactRouterModule === undefined) { // prevents conditionally run different hooks on re-render
             reactRouterModule = { useInRouterContext, useResolvedPath };
         } // if
     }
@@ -172,9 +172,9 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
     
     
     
-    // let currentPathname = useLocation().pathname;            // only works in react-router
-    let currentPathname = globalThis?.location?.pathname ?? ''; // works both in react-router & nextjs
-    if (reactRouterModule === undefined) reactRouterModule = null;
+    // let currentPathname = useLocation().pathname;               // only works in react-router
+    let currentPathname = globalThis?.location?.pathname ?? '';    // works both in react-router & nextjs
+    if (reactRouterModule === undefined) reactRouterModule = null; // prevents conditionally run different hooks on re-render
     let targetPathname  = (
         (
             reactRouterModule
