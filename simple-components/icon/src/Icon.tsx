@@ -102,7 +102,7 @@ import {
     ThemeName,
     ThemeVars,
     ifTheme,
-    usesThemeVariant as basicUsesThemeVariant,
+    usesThemeVariant,
     themeOptions,
     ThemeVariant,
     useThemeVariant,
@@ -175,6 +175,7 @@ export {
     ThemeName,
     ThemeVars,
     ifTheme,
+    usesThemeVariant,
     themeOptions,
     ThemeVariant,
     useThemeVariant,
@@ -183,48 +184,20 @@ export {
 
 
 /**
- * Uses theme colors.  
- * For example: `primary`, `secondary`, `danger`, `success`, etc.
- * @param factory Customize the callback to create theme color definitions for each theme in `options`.
- * @param options Customize the theme options.
- * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
- */
-export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => {
-    // dependencies:
-    const [themesRule, themes] = basicUsesThemeVariant(factory, options);
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                themesRule,
-            ]),
-            ...vars({
-                // prevents the theme from inheritance, so the <Icon> always use currentColor (by config's) if the theme was not set
-                [themes.backg    ] : 'initial',
-                [themes.backgMild] : 'initial',
-            }),
-        }),
-        themes,
-    ];
-};
-
-/**
  * Creates theme color definitions for the given `themeName`.
  * @param themeName The theme name.
  * @returns A `CssRule` represents theme color definitions for the given `themeName`.
  */
 export const themeOf = (themeName: ThemeName): CssRule => {
     // dependencies:
-    const [, themes] = basicUsesThemeVariant();
+    const [, themes] = usesThemeVariant();
     
     
     
     return style({
         ...vars({
-            [themes.backg    ] : colors[   themeName       as keyof typeof colors], // base color
-            [themes.backgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+            [themes.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
+            [themes.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
         }),
     });
 };
@@ -248,27 +221,31 @@ export {
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [, milds ] = basicUsesMildVariant(factory);
-    const [, themes] = basicUsesThemeVariant();
+    const [themesRule, themes] = usesThemeVariant();
+    const [          , milds ] = basicUsesMildVariant(factory);
     
     
     
     return [
         () => style({
+            ...imports([
+                // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
+                // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themesRule,
+            ]),
             ...vars({
-                [milds.backgFn] : fallbacks(
-                 // themes.backgMildImpt,  // first  priority
-                    themes.backgMild,      // second priority
-                 // themes.backgMildCond,  // third  priority
+                [milds.altBackgFn] : fallbacks(
+                 // themes.altBackgMildImpt, // first  priority
+                    themes.altBackgMild,     // second priority
+                 // themes.altBackgMildCond, // third  priority
                     
-                    icons.color,           // default => uses config's color
+                    icons.color,             // default => uses config's color
                 ),
-                
-                
-                
-                // delete unused imported vars:
-                [milds.foregFn] : null,
             }),
+            ...variants([
+                ifNotMild(factory(false)),
+                ifMild(factory(true)),
+            ]),
         }),
         milds,
     ];
@@ -288,7 +265,7 @@ export const mildOf = (toggle: (boolean|null) = true): CssRule => {
     return style({
         ...vars({
             // *toggle on/off* the mildification props:
-            [milds.backgTg] : toggle ? milds.backgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [milds.altBackgTg] : toggle ? milds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
         }),
     });
 };
@@ -316,18 +293,18 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     return [
         () => style({
             ...vars({
-                [backgs.backgColorFn] : fallbacks(
-                 // themes.backgImpt,  // first  priority
-                    themes.backg,      // second priority
-                 // themes.backgCond,  // third  priority
+                [backgs.altBackgColorFn] : fallbacks(
+                 // themes.altBackgImpt,    // first  priority
+                    themes.altBackg,        // second priority
+                 // themes.altBackgCond,    // third  priority
                     
-                    icons.color,       // default => uses config's color
+                    icons.color,            // default => uses config's color
                 ),
-                [backgs.backgColor  ] : fallbacks(
-                 // outlineds.backgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.backgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                [backgs.altBackgColor  ] : fallbacks(
+                 // outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
+                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
                     
-                    backgs.backgColorFn, // default => uses our `backgColorFn`
+                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
                 ),
             }),
         }),
@@ -375,17 +352,13 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
             ]),
             ...vars({
                 // appearances:
-                [iconVars.img  ] : 'initial',  // initially no image was defined
+                [iconVars.img  ] : 'initial',            // initially no image was defined
                 
                 // sizes:
-                [iconVars.size ] : icons.size, // default => uses config's size
+                [iconVars.size ] : icons.size,           // default => uses config's size
                 
                 // backgrounds:
-                [iconVars.color] : fallbacks(
-                    backgs.altBackgColor,      // first priority: uses nearest ancestor's alternate background theme
-                    
-                    icons.color,               // default => uses config's color
-                ),
+                [iconVars.color] : backgs.altBackgColor, // default => uses alternate background color
             }),
         }),
         iconVars,
