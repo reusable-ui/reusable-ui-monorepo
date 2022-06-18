@@ -344,14 +344,14 @@ export interface IconVars {
     img   : any
     
     /**
-     * Icon color.
-     */
-    color : any
-    
-    /**
      * Icon size.
      */
     size  : any
+    
+    /**
+     * Icon color.
+     */
+    color : any
 }
 const [iconVars] = cssVar<IconVars>({ minify: false }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
 
@@ -374,15 +374,18 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
                 backgRule,
             ]),
             ...vars({
+                // appearances:
                 [iconVars.img  ] : 'initial',  // initially no image was defined
                 
+                // sizes:
+                [iconVars.size ] : icons.size, // default => uses config's size
+                
+                // backgrounds:
                 [iconVars.color] : fallbacks(
                     backgs.altBackgColor,      // first priority: uses nearest ancestor's alternate background theme
                     
                     icons.color,               // default => uses config's color
                 ),
-                
-                [iconVars.size ] : icons.size, // default => uses config's size
             }),
         }),
         iconVars,
@@ -401,6 +404,13 @@ const getFileNameWithoutExtension = (fileName: string): string|null => {
 }
 export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: IconProps<TElement>) => {
     return useMemo(() => {
+        // dependencies:
+        
+        // icon:
+        const [, iconVars] = usesIcon();
+        
+        
+        
         const iconImg    : string|null = (() => {
             const file = config.img.files.find((file) => getFileNameWithoutExtension(file) === icon);
             if (!file) return null;
@@ -707,9 +717,13 @@ export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['ba
             iconRule,
         ]),
         ...vars({
-            // icon:
-            [iconVars.color] : color, // overwrite icon's color
+            // sizes:
             [iconVars.size ] : size,  // overwrite icon's size
+            
+            
+            
+            // backgrounds:
+            [iconVars.color] : color, // overwrite icon's color
         }),
     });
 };
