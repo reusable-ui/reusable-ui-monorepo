@@ -63,7 +63,6 @@ import {
     // hooks:
     usesSizeVariant,
     mildOf,
-    usesBackg,
     usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
@@ -178,9 +177,6 @@ export const iconElm = '::after';
 export const usesEditableTextControlLayout = () => {
     // dependencies:
     
-    // backgrounds:
-    const [, backgs  ] = usesBackg();
-    
     // spacings:
     const [, paddings] = usesPadding();
     
@@ -199,7 +195,6 @@ export const usesEditableTextControlLayout = () => {
                 ...imports([
                     usesIconImage(
                         /*img   : */valids.iconImg,
-                        /*backg : */backgs.altBackgColor
                     ),
                 ]),
                 ...style({
