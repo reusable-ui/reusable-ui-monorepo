@@ -1,8 +1,5 @@
 fix peer dependencies for colors, borders, spacers, etc...
-fix arrive when [focused=true]
 
-improve: change Element to TElement:
-(?<!JSX\.|TElement extends |TElement extends Element = )Element
 
 
 inline then block
@@ -44,18 +41,6 @@ group sequences:
 
 // customize:
 
-
-
-optimize event => useEvent()
-optimize props reference type like:
-defaultTag
-defaultRole
-style
-classes
-variantClasses
-stateClasses
-onAnimationEnd
-onClick
 
 
 (filter|boxShadow|anim|keyframes)(disable|focus|arrived|press)
