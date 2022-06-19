@@ -289,7 +289,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
     
     
     // handlers:
-    const handleFocus = useEvent<React.FocusEventHandler<Element>>(() => {
+    const handleFocus = useEvent<React.FocusEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
@@ -299,7 +299,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(true);
     }, [propEnabled, isControllableFocused]);
     
-    const handleBlur  = useEvent<React.FocusEventHandler<Element>>(() => {
+    const handleBlur  = useEvent<React.FocusEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
@@ -309,7 +309,7 @@ export const useFocusBlurState  = <TElement extends Element = Element>(props: Co
         setFocusDn(false);
     }, [propEnabled, isControllableFocused]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
@@ -436,7 +436,7 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 
 
-export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState>, 'focused'>) => {
+export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState<TElement>>, 'focused'>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableArrived = (props.arrived !== undefined);
@@ -472,7 +472,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
     
     
     // handlers:
-    const handleMouseEnter = useEvent<React.MouseEventHandler<Element>>(() => {
+    const handleMouseEnter = useEvent<React.MouseEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
@@ -482,7 +482,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(true);
     }, [propEnabled, isControllableArrived]);
     
-    const handleMouseLeave = useEvent<React.MouseEventHandler<Element>>(() => {
+    const handleMouseLeave = useEvent<React.MouseEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
@@ -492,7 +492,7 @@ export const useArriveLeaveState  = <TElement extends Element = Element>(props: 
         setHoverDn(false);
     }, [propEnabled, isControllableArrived]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
@@ -774,8 +774,8 @@ const Control = <TElement extends Element = Element>(props: ControlProps<TElemen
     
     
     // states:
-    const focusBlurState   = useFocusBlurState(props);
-    const arriveLeaveState = useArriveLeaveState(props, focusBlurState);
+    const focusBlurState   = useFocusBlurState<TElement>(props);
+    const arriveLeaveState = useArriveLeaveState<TElement>(props, focusBlurState);
     
     
     
