@@ -438,7 +438,7 @@ export const useValidInvalidState  = <TElement extends EditableControlElement = 
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         
@@ -694,7 +694,7 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
     
     // states:
     const inputValidator    = useInputValidator(props.customValidator);
-    const validInvalidState = useValidInvalidState(props, inputValidator.validator);
+    const validInvalidState = useValidInvalidState<TElement>(props, inputValidator.validator);
     
     
     
