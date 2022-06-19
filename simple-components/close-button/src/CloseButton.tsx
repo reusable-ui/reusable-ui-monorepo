@@ -42,6 +42,10 @@ const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
             
             // appearances:
             icon={props.icon ?? 'close'}
+            
+            
+            
+            // variants:
             btnStyle={props.btnStyle ?? 'icon'}
             
             
