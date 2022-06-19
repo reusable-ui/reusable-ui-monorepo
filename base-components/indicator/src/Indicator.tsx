@@ -195,7 +195,7 @@ const htmlCtrls = [
 ];
 const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
 
-export const useEnableDisableState = (props: AccessibilityProps & SemanticProps) => {
+export const useEnableDisableState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propEnabled = usePropEnabled(props);
     
@@ -221,7 +221,7 @@ export const useEnableDisableState = (props: AccessibilityProps & SemanticProps)
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
@@ -359,7 +359,7 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
 
-export const useActivePassiveState = (props: AccessibilityProps & SemanticProps) => {
+export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propActive = usePropActive(props);
     
@@ -385,7 +385,7 @@ export const useActivePassiveState = (props: AccessibilityProps & SemanticProps)
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
@@ -683,8 +683,8 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     // states:
-    const enableDisableState = useEnableDisableState(props);
-    const activePassiveState = useActivePassiveState(props);
+    const enableDisableState = useEnableDisableState<TElement>(props);
+    const activePassiveState = useActivePassiveState<TElement>(props);
     
     
     
