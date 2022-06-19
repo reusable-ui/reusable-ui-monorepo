@@ -1517,7 +1517,7 @@ export interface TogglerExcitedProps
     excited         ?: boolean
     onExcitedChange ?: (newExcited: boolean) => void
 }
-export const useExcitedState = (props: TogglerExcitedProps) => {
+export const useExcitedState = <TElement extends Element = Element>(props: TogglerExcitedProps) => {
     // props:
     const {
         // accessibilities:
@@ -1564,7 +1564,7 @@ export const useExcitedState = (props: TogglerExcitedProps) => {
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
