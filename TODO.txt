@@ -15,6 +15,12 @@ group sequences:
 
 // appearances:
 
+// variants:
+
+// classes:
+
+// styles:
+
 // sizes:
 
 // accessibilities:
