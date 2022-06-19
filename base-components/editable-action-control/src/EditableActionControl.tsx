@@ -125,7 +125,7 @@ const EditableActionControl = <TElement extends EditableControlElement = Editabl
     
     
     // states:
-    const pressReleaseState = usePressReleaseState(props);
+    const pressReleaseState = usePressReleaseState<TElement>(props);
     
     
     
