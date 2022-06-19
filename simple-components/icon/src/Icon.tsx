@@ -393,7 +393,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
             return concatUrl(config.img.path, file);
         })();
         
-        const isIconFont : boolean = !!iconImg; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
+        const isIconFont : boolean = !iconImg; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
         
         
         
