@@ -401,6 +401,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
         
         
         
+        // memorized a whole object:
         return {
             class: (() => {
                 if (iconImg)    return 'img';  // icon name is found in iconImg
@@ -410,7 +411,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                 return null; // icon name is not found in both iconImg & iconFont
             })(),
             
-            style: useMemo(() => ({
+            style: {
                 // appearances:
                 [
                     iconVars.img
@@ -422,11 +423,11 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                     
                     return undefined; // icon name is not found in both iconImg & iconFont
                 })(),
-            }), [iconVars.img, iconImg, isIconFont]),
+            },
             
-            children: useMemo(() => (!!iconImg && (
+            children: (!!iconImg && (
                 <img key='ico-img' src={iconImg} alt='' />
-            )), [iconImg]),
+            )),
         };
     }, [icon]);
 };
