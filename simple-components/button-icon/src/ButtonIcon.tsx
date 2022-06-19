@@ -111,6 +111,11 @@ import {
     
     
     
+    // configs:
+    icons,
+    
+    
+    
     // react components:
     IconProps as IconIconProps,
     Icon,
@@ -183,10 +188,24 @@ export const usesButtonIconLayout = (options?: OrientationRuleOptions) => {
                     // fills the entire parent text's height:
                     [iconVars.size       ] : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
                     
+                    
+                    
                     // backgrounds:
                     // a fix for mild+(active|focus|arrive):
                     [backgs.altBackgColor] : 'inherit',
                     [iconVars.color      ] : backgs.altBackgColor,
+                    
+                    
+                    
+                    // animations:
+                    [icons.transition    ] : [
+                        [icons.transition],
+                        
+                        // sizes:
+                        // fix the resizing transition to sync with <Button>
+                        ['inline-size', 0],
+                        ['block-size' , 0],
+                    ],
                     //#endregion <Icon>
                 }),
             }),
