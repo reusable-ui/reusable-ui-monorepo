@@ -357,8 +357,12 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
                 // appearances:
                 [iconVars.img  ] : 'initial',            // initially no image was defined
                 
+                
+                
                 // sizes:
                 [iconVars.size ] : icons.size,           // default => uses config's size
+                
+                
                 
                 // backgrounds:
                 [iconVars.color] : backgs.altBackgColor, // default => uses alternate background color
