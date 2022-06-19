@@ -539,9 +539,10 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
             ...style({
                 src: [
                     ...config.font.files
-                    .map((file) =>
-                        [`url("${concatUrl(config.font.path, file)}")`, formatOf(file) ?? '']
-                    )
+                    .map((file) => [
+                        `url("${concatUrl(config.font.path, file)}")`,
+                        formatOf(file) ?? '',
+                    ]),
                 ],
             }),
         }),
