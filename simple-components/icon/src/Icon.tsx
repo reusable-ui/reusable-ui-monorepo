@@ -408,7 +408,10 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
             
             style: {
                 // appearances:
-                [iconVars.img]: (() => {
+                [
+                    iconVars.img
+                    .slice(4, -1) // fix: var(--customProp) => --customProp
+                ]: (() => {
                     if (iconImg)    return `url("${iconImg}")`; // the url of the icon's image
                     
                     if (isIconFont) return `"${icon}"`;         // the icon's name
