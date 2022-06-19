@@ -410,7 +410,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                 return null; // icon name is not found in both iconImg & iconFont
             })(),
             
-            style: {
+            style: useMemo(() => ({
                 // appearances:
                 [
                     iconVars.img
@@ -422,11 +422,11 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                     
                     return undefined; // icon name is not found in both iconImg & iconFont
                 })(),
-            },
+            }), [iconVars.img, iconImg, isIconFont]),
             
-            children: (!!iconImg && (
+            children: useMemo(() => (!!iconImg && (
                 <img key='ico-img' src={iconImg} alt='' />
-            )),
+            )), [iconImg]),
         };
     }, [icon]);
 };
@@ -944,7 +944,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         // preserves the original `style` (can overwrite the `icon.style`):
         ...(style ?? {}),
-    }), [style]);
+    }), [icon.style, style]);
     
     
     
