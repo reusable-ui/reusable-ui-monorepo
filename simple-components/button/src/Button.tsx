@@ -126,7 +126,7 @@ export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions
 // appearances:
 
 //#region button style
-export type ButtonStyle = 'link'|'icon'|'ghost' // might be added more styles in the future
+export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
 export interface ButtonVariant {
     btnStyle ?: ButtonStyle
 }
@@ -301,12 +301,12 @@ export const usesButtonVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule(['.link', '.icon', '.ghost'], {
+            rule(['.link', '.ghost'], {
                 ...imports([
                     noBackground(),
                 ]),
             }),
-            rule(['.link', '.icon'], {
+            rule('.link', {
                 ...imports([
                     usesButtonLinkVariant(),
                 ]),
