@@ -499,15 +499,15 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         
         
         
-        // accessibilities:
-        label,
-        pressed,
-        
-        
-        
         // variants:
         outlined = _defaultOutlined,
         mild     = _defaultMild,
+        
+        
+        
+        // accessibilities:
+        label,
+        pressed,
     ...restActionControlProps} = props;
     
     
@@ -558,12 +558,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             
-            // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)}
-            pressed={pressedFn}
-            
-            
-            
             // variants:
             outlined={outlined}
             mild={mild}
@@ -573,6 +567,12 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            
+            
+            
+            // accessibilities:
+            enabled={props.enabled ?? !(props.disabled ?? false)}
+            pressed={pressedFn}
             
             
             
