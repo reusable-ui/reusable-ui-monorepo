@@ -17,6 +17,11 @@ import type {
     CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
+    // combinators:
+    children,
+    
+    
+    
     // styles:
     style,
     vars,
@@ -65,6 +70,9 @@ import {
     OrientationName,
     OrientationRuleOptions,
     OrientationVariant,
+    
+    usesBackg,
+    
     extendsBorder,
     extendsPadding,
     
@@ -98,8 +106,8 @@ import {
     Button,
 }                           from '@reusable-ui/button'          // a base component
 import {
-    // configs:
-    icons,
+    // hooks:
+    usesIcon,
     
     
     
@@ -151,12 +159,40 @@ export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props)
 
 // styles:
 export const usesButtonIconLayout = (options?: OrientationRuleOptions) => {
+    // dependencies:
+    
+    // icon:
+    const [, iconVars] = usesIcon();
+    
+    // backgrounds:
+    const [, backgs  ] = usesBackg();
+    
+    
+    
     return style({
         ...imports([
             // layouts:
             usesButtonLayout(options),
         ]),
         ...style({
+            // children:
+            ...children(':nth-child(n):not(_)', { // increase specificity by 1.1 to win with <Icon>
+                ...vars({
+                    //#region <Icon>
+                    // sizes:
+                    // fills the entire parent text's height:
+                    [iconVars.size       ] : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
+                    
+                    // backgrounds:
+                    // a fix for mild+(active|focus|arrive):
+                    [backgs.altBackgColor] : 'inherit',
+                    [iconVars.color      ] : backgs.altBackgColor,
+                    //#endregion <Icon>
+                }),
+            }),
+            
+            
+            
             // customize:
             ...usesCssProps(buttonIcons), // apply config's cssProps
             
@@ -173,13 +209,6 @@ export const usesButtonIconLayout = (options?: OrientationRuleOptions) => {
             
             // let's Reusable-UI system to manage paddingInline & paddingBlock:
             ...extendsPadding(buttonIcons),
-        }),
-        ...vars({
-            //#region <Icon>
-            // sizes:
-            // fills the entire parent text's height:
-            [icons.size]  : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
-            //#endregion <Icon>
         }),
     });
 };
