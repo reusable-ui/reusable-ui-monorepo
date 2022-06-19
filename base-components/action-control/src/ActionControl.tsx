@@ -297,7 +297,7 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     
     // handlers:
-    const handlePress     = useEvent<React.MouseEventHandler<Element> & React.KeyboardEventHandler<Element>>(() => {
+    const handlePress     = useEvent<React.MouseEventHandler<TElement> & React.KeyboardEventHandler<TElement>>(() => {
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
         if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
@@ -307,15 +307,15 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         setPressDn(true);
     }, [propEditable, isControllablePressed]);
     
-    const handleMouseDown = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleMouseDown = useEvent<React.MouseEventHandler<TElement>>((event) => {
         if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
     }, [actionMouses, handlePress]);
     
-    const handleKeyDown   = useEvent<React.KeyboardEventHandler<Element>>((event) => {
+    const handleKeyDown   = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
     }, [actionKeys, handlePress]);
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<Element>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
@@ -601,7 +601,7 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     
     
     // states:
-    const pressReleaseState = usePressReleaseState(props);
+    const pressReleaseState = usePressReleaseState<TElement>(props);
     
     
     
