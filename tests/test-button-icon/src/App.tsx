@@ -41,6 +41,9 @@ function App() {
                     <ButtonIcon theme='primary' icon='face'>
                         test &lt;Button&gt;
                     </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='whatsapp'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
                     <ButtonIcon theme='primary' pressed={pressed || undefined} onClick={handleTogglePressed} icon='elderly'>
                         toggle press
                     </ButtonIcon>
