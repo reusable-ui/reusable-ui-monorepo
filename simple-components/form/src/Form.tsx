@@ -6,7 +6,6 @@ import {
     
     
     // hooks:
-    useState,
     useRef,
     useCallback,
     
@@ -17,38 +16,20 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-}                           from '@cssfn/css-types'                 // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
-    keyframes,
     
     
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                     // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                   // strongly typed of css variables
 import {
     cssConfig,
     
@@ -61,7 +42,6 @@ import {
 // reusable-ui:
 import {
     // hooks:
-    useIsomorphicLayoutEffect,
     useTriggerRender,
     useEvent,
     useMergeEvents,
@@ -70,13 +50,7 @@ import {
 }                           from '@reusable-ui/hooks'               // react helper hooks
 import {
     // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-}                           from '@reusable-ui/accessibilities'     // an accessibility management system
-import {
-    // hooks:
     Result as ValResult,
-    usePropIsValid,
     
     
     
@@ -85,18 +59,8 @@ import {
     ValidationProvider,
 }                           from '@reusable-ui/validations'         // a validation management system
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
-    ThemeName,
-    usesThemeImportant,
-    usesBackg,
-    usesForeg,
-    usesAnim,
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // styles:
