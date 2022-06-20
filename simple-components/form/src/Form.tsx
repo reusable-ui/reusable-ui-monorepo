@@ -82,6 +82,7 @@ import {
     
     // react components:
     ValidationProps,
+    ValidationProvider,
 }                           from '@reusable-ui/validations'         // a validation management system
 import {
     // types:
@@ -201,8 +202,8 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
         handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     = useEvent<React.ChangeEventHandler<HTMLFormElement>>(({target}) => {
-        handleValidation(target);
+    const handleChange     = useEvent<React.FormEventHandler<HTMLFormElement>>(({currentTarget}) => {
+        handleValidation(currentTarget);
     }, [handleValidation]);
     
     
@@ -313,27 +314,13 @@ export interface FormProps
         // validations:
         ValidationProps
 {
-    // accessibilities:
-    autoFocus       ?: boolean
-    
-    
-    
     // validations:
     customValidator ?: CustomValidatorHandler
-    required        ?: boolean
     
     
     
-    // identifiers:
-    name            ?: string
-    form            ?: string
-    
-    
-    
-    // values:
-    defaultValue    ?: string | number | ReadonlyArray<string>
-    value           ?: string | number | ReadonlyArray<string>
-    onChange        ?: React.ChangeEventHandler<HTMLFormElement>
+    // children:
+    children        ?: React.ReactNode
 }
 const Form = (props: FormProps): JSX.Element|null => {
     // styles:
@@ -361,19 +348,13 @@ const Form = (props: FormProps): JSX.Element|null => {
     
     
     // refs:
-    const setInputRef = useCallback<React.RefCallback<HTMLFormElement>>((element) => {
+    const setFormRef = useCallback<React.RefCallback<HTMLFormElement>>((element) => {
         // conditions:
         if (!element) return;
         
         
         
-        if (element.validity) {
-            formValidator.handleInit(element);
-        }
-        else {
-            const firstInput = element.querySelector('input, select, textarea') as (HTMLFormElement|null);
-            if (firstInput) formValidator.handleInit(firstInput);
-        } // if
+        formValidator.handleInit(element);
     }, [formValidator.handleInit]);
     const elmRef = useMergeRefs(
         // preserves the original `elmRef`:
@@ -381,7 +362,7 @@ const Form = (props: FormProps): JSX.Element|null => {
         
         
         
-        setInputRef,
+        setFormRef,
     );
     
     
@@ -427,27 +408,35 @@ const Form = (props: FormProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <Content<HTMLFormElement>
-            // other props:
-            {...restContentProps}
-            
-            
-            
-            // refs:
-            elmRef={elmRef}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
-            
-            
-            
-            // handlers:
-            onChange       = {handleChange      }
-            onAnimationEnd = {handleAnimationEnd}
-        />
+        <ValidationProvider {...props}>
+            <Content<HTMLFormElement>
+                // other props:
+                {...restContentProps}
+                
+                
+                
+                // refs:
+                elmRef={elmRef}
+                
+                
+                
+                // semantics:
+                defaultTag ={props.defaultTag  ?? 'form'}
+                defaultRole={props.defaultRole ?? 'form'}
+                
+                
+                
+                // classes:
+                mainClass={props.mainClass ?? styleSheet.main}
+                stateClasses={stateClasses}
+                
+                
+                
+                // handlers:
+                onChange       = {handleChange      }
+                onAnimationEnd = {handleAnimationEnd}
+            />
+        </ValidationProvider>
     );
 };
 export {
