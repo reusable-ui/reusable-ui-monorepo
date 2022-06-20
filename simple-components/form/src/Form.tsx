@@ -156,13 +156,13 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            currentChangeToken = {}; // assign the token with a new object
-            const prevIsValid  = isFormValid(element);
+            currentChangeToken   = {}; // assign the token with a new object
+            const currentIsValid = isFormValid(element);
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             setTimeout(
                 () => performUpdate(currentChangeToken),
-                (prevIsValid !== false) ? 300 : 600
+                (currentIsValid !== false) ? 300 : 600
             );
         } // if
     }, [customValidator]);
