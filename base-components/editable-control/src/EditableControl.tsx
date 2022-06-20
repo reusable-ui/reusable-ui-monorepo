@@ -277,7 +277,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
             
             
             // remember the validation result:
-            const newIsValid = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+            const newIsValid : ValResult = (customValidator ? customValidator(validity, currentValue) : validity.valid);
             if (isValid.current !== newIsValid) {
                 isValid.current = newIsValid;
                 
