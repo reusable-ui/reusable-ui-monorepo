@@ -718,7 +718,7 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
         
         
         
-        if (element.validity) {
+        if (!!element.validity) { // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
             inputValidator.handleInit(element);
         }
         else {
