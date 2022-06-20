@@ -17,6 +17,7 @@ import type {
 import {
     // rules:
     states,
+    fallbacks,
     
     
     
@@ -55,15 +56,17 @@ import {
 
 // reusable-ui:
 import {
-    // types:
-    StateMixin,
-    
-    
-    
+    // styles:
+    stripoutTextbox,
+}                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
+import {
     // hooks:
     usesSizeVariant,
-    mildOf,
+    usesGradientVariant,
+    usesBorder,
+    extendsBorder,
     usesPadding,
+    extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
@@ -95,16 +98,13 @@ import {
 
 
 // styles:
-export const iconElm = '::after';
+export const inputElm = ':first-child';
 
 export const usesInputLayout = () => {
     // dependencies:
     
     // spacings:
     const [, paddings] = usesPadding();
-    
-    // states:
-    const [, valids  ] = usesValidInvalidState();
     
     
     
@@ -114,41 +114,60 @@ export const usesInputLayout = () => {
             usesEditableTextControlLayout(),
         ]),
         ...style({
-            ...children(iconElm, {
+            // layouts:
+            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
+            flexDirection  : 'row',    // flow to the document's writing flow
+            justifyContent : 'start',  // if input is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the input's first letter should be visible first
+            alignItems     : 'center', // default center items vertically (especially for the validation icon indicator)
+            flexWrap       : 'nowrap', // prevents the input & icon to wrap to the next row
+            
+            
+            
+            // positions:
+            verticalAlign  : 'baseline', // input's text should be aligned with sibling text, so the input behave like <span> wrapper
+            
+            
+            
+            // children:
+            ...children(inputElm, {
                 ...imports([
-                    usesIconImage(
-                        /*img   : */valids.iconImg,
-                    ),
+                    stripoutTextbox(), // clear browser's default styles
                 ]),
                 ...style({
                     // layouts:
-                    content         : '""',
-                    display         : 'inline-block', // use inline-block, so it takes the width & height as we set
-                    
-                    
-                    
-                    // positions:
-                    position        : 'absolute',
-                    insetInlineEnd  : paddings.paddingInline,
-                    insetBlockStart : `calc(50% - (${inputs.iconSize} / 2))`,
-                    maskPosition    : 'right', // align icon to the right
+                    display        : 'block', // fills the entire parent's width
                     
                     
                     
                     // sizes:
-                    boxSizing       : 'border-box', // the final size is including borders & paddings
-                    blockSize       : inputs.iconSize,
-                    aspectRatio     : '3 / 2', // make sure the icon's image ratio is 1.5 or less
+                    flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
+                    alignSelf      : 'stretch',        // follows parent's height
+                    // strip out the *weird input's prop [size]* so it can follow flex behavior:
+                    // span to maximum width including parent's paddings:
+                    boxSizing      : 'border-box', // the final size is including borders & paddings
+                    inlineSize     : 'fill-available',
+                    ...fallbacks({
+                        inlineSize : `calc(100% + (${paddings.paddingInline} * 2))`,
+                    }),
                     
                     
                     
-                    // accessibilities:
-                    pointerEvents   : 'none', // just an overlay element (ghost), no mouse interaction, clicking on it will focus on the parent
+                    // borders:
+                    // affects for :autofill
+                    
+                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                    ...extendsBorder(),
                     
                     
                     
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(inputs, 'icon')), // apply config's cssProps starting with icon***
+                    // spacings:
+                    // cancel-out parent's padding with negative margin:
+                    marginInline   : `calc(0px - ${paddings.paddingInline})`,
+                    marginBlock    : `calc(0px - ${paddings.paddingBlock })`,
+                    
+                    // copy parent's paddings:
+                    paddingInline  : paddings.paddingInline,
+                    paddingBlock   : paddings.paddingBlock,
                 }),
             }),
             
@@ -165,6 +184,14 @@ export const usesInputVariants = () => {
     // layouts:
     const [sizesRule] = usesSizeVariant(inputs);
     
+    // colors:
+    const [gradientRule, gradients] = usesGradientVariant((toggle) => style({
+        ...vars({
+            // *toggle on/off* the background gradient prop:
+            [gradients.backgGradTg] : toggle ? inputs.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        }),
+    }));
+    
     
     
     return style({
@@ -174,45 +201,17 @@ export const usesInputVariants = () => {
             
             // layouts:
             sizesRule,
+            
+            // colors:
+            gradientRule,
         ]),
     });
 };
 export const usesInputStates = () => {
-    // dependencies:
-    
-    // states:
-    const [validInvalidRule] = usesValidInvalidState();
-    
-    
-    
     return style({
         ...imports([
             // states:
             usesEditableTextControlStates(),
-            validInvalidRule,
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            
-            ifNoValidation({
-                ...children(iconElm, {
-                    display: 'none', // hides validation icon image
-                }),
-            }),
         ]),
     });
 };
@@ -235,35 +234,91 @@ export const useInputStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
     return {
-        // accessibilities:
-        cursor      : 'text' as CssKnownProps['cursor'],
-        
-        
-        
-        // animations:
-        iconSize    : '1em'  as CssKnownProps['inlineSize'],
-        iconValid   : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='#000' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/></svg>")}")`                        as CssKnownProps['maskImage'],
-        iconInvalid : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='#000' d='M7.3,6.31,5,4,7.28,1.71a.7.7,0,1,0-1-1L4,3,1.71.72a.7.7,0,1,0-1,1L3,4,.7,6.31a.7.7,0,0,0,1,1L4,5,6.31,7.3A.7.7,0,0,0,7.3,6.31Z'/></svg>")}")` as CssKnownProps['maskImage'],
+        // backgrounds:
+        backgGrad : [
+            ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
+        ] as CssKnownProps['backgroundImage'],
     };
 }, { prefix: 'inp' });
 
 
 
 // react components:
-export type InputElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
 
-export interface InputProps<TElement extends InputElement = InputElement>
+export type InputTextLike                 = 'text'|'search'|'password'|'email'|'tel'|'url'|'number'|'time'|'week'|'date'|'datetime-local'|'month'
+export type InputType                     = InputTextLike | 'color'|'file'|'range'
+export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElement>, 'size'|'src'|'alt'|'width'|'height'|'crossOrigin'|'checked'|'multiple'|'accept'|'capture'|'formAction'|'formEncType'|'formMethod'|'formNoValidate'|'formTarget'|keyof React.HTMLAttributes<TElement>>
+
+export interface InputProps
     extends
         // bases:
-        EditableTextControlProps<TElement>
+        EditableTextControlProps<HTMLInputElement>,
+        
+        // input:
+        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'>
 {
     // validations:
-    minLength ?: number
-    maxLength ?: number
+    min          ?: string | number
+    max          ?: string | number
+    step         ?: string | number
+    pattern      ?: string
+    
+    
+    
+    // formats:
+    type         ?: InputType
+    placeholder  ?: string
+    autoComplete ?: string
+    list         ?: string
 }
-const Input = <TElement extends InputElement = InputElement>(props: InputProps<TElement>): JSX.Element|null => {
+const Input = (props: InputProps): JSX.Element|null => {
     // styles:
-    const styleSheet        = useInputStyleSheet();
+    const styleSheet = useInputStyleSheet();
+    
+    
+    
+    // rest props:
+    const {
+        // essentials:
+        elmRef,
+        
+        
+        
+        // accessibilities:
+        autoFocus,
+        tabIndex,
+        enterKeyHint,
+        
+        
+        
+        // values:
+        name,
+        form,
+        defaultValue,
+        value,
+        onChange, // forwards to `input[type]`
+        
+        
+        
+        // validations:
+        required,
+        
+        minLength,
+        maxLength,
+        
+        min,
+        max,
+        step,
+        pattern,
+        
+        
+        
+        // formats:
+        type,
+        placeholder,
+        autoComplete,
+        list,
+    ...restProps}  = props;
     
     
     
