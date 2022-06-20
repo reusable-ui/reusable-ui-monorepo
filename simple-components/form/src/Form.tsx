@@ -101,7 +101,6 @@ import {
     // styles:
     usesContentLayout,
     usesContentVariants,
-    usesContentStates,
     
     
     
@@ -109,6 +108,10 @@ import {
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'             // a base component
+import {
+    // hooks:
+    ValidatorHandler,
+}                           from '@reusable-ui/editable-control'    // a base component
 
 
 
@@ -118,6 +121,12 @@ import {
 
 //#region validInvalid
 export type CustomValidatorHandler = (isValid: ValResult) => ValResult
+
+const isFormValid = (element: HTMLFormElement): ValResult => {
+    if (element.matches(':valid'  )) return true;  // valid
+    if (element.matches(':invalid')) return false; // invalid
+    return null; // uncheck
+};
 
 export const useFormValidator      = (customValidator?: CustomValidatorHandler) => {
     // states:
@@ -246,7 +255,7 @@ export const usesFormStates = () => {
     return style({
         ...imports([
             // states:
-            usesContentStates(),
+            // usesContentStates(),
             validInvalidRule,
         ]),
         ...states([
