@@ -99,16 +99,16 @@ import {
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // styles:
-    usesEditableControlLayout,
-    usesEditableControlVariants,
-    usesEditableControlStates,
+    usesContentLayout,
+    usesContentVariants,
+    usesContentStates,
     
     
     
     // react components:
-    EditableControlProps,
-    EditableControl,
-}                           from '@reusable-ui/editable-control'    // a base component
+    ContentProps,
+    Content,
+}                           from '@reusable-ui/content'             // a base component
 
 
 
@@ -117,129 +117,6 @@ import {
 // states:
 
 //#region validInvalid
-export interface ValidInvalidVars {
-    animValid   : any
-    animInvalid : any
-}
-const [valids] = cssVar<ValidInvalidVars>();
-
-{
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerAnim(valids.animValid);
-    animRegistry.registerAnim(valids.animInvalid);
-}
-
-
-
-// .validated will be added after validating-animation done:
-const selectorIfValidated      = '.validated'
-// .validating = styled valid, :valid = native valid:
-// the .validated, .unvalidating, .novalidation are used to overwrite native :valid
-const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .novalidation, .invalidated, .invalidating)))'
-// .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
-const selectorIfUnvalidating   = '.unvalidating'
-// if all above are not set => unvalidated:
-// optionally use .novalidation to overwrite native :valid
-const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .novalidation)'
-
-// .invalidated will be added after invalidating-animation done:
-const selectorIfInvalidated    = '.invalidated'
-// .invalidating = styled invalid, :invalid = native invalid:
-// the .invalidated, .uninvalidating, .novalidation are used to overwrite native :invalid
-const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .novalidation, .validated, .validating)))'
-// .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
-const selectorIfUninvalidating = '.uninvalidating'
-// if all above are not set => uninvalidated:
-// optionally use .novalidation to overwrite native :invalid
-const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
-
-// if all above are not set => noValidation
-// optionally use .novalidation to kill pseudo :valid & :invalid:
-const selectorIfNoValidation   = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .novalidation)'
-
-export const ifValidated       = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
-export const ifValidating      = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
-export const ifUnvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidating   , styles);
-export const ifUnvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidated    , styles);
-
-export const ifValid           = (styles: CssStyleCollection): CssRule => rule([selectorIfValidating    , selectorIfValidated    ], styles);
-export const ifUnvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUnvalidated  ], styles);
-
-export const ifInvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidated    , styles);
-export const ifInvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidating   , styles);
-export const ifUninvalidating  = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidating , styles);
-export const ifUninvalidated   = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidated  , styles);
-
-export const ifInvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfInvalidating  , selectorIfInvalidated  ], styles);
-export const ifUninvalid       = (styles: CssStyleCollection): CssRule => rule([selectorIfUninvalidating, selectorIfUninvalidated], styles);
-
-export const ifNoValidation    = (styles: CssStyleCollection): CssRule => rule(selectorIfNoValidation   , styles);
-
-
-
-/**
- * Uses valid & invalid states.
- * @returns A `StateMixin<ValidInvalidVars>` represents valid & invalid state definitions.
- */
-export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
-    return [
-        () => style({
-            ...states([
-                ifValidating({
-                    ...vars({
-                        [valids.animValid]   : forms.animValid,
-                    }),
-                }),
-                ifUnvalidating({
-                    ...vars({
-                        [valids.animValid]   : forms.animUnvalid,
-                    }),
-                }),
-                
-                ifInvalidating({
-                    ...vars({
-                        [valids.animInvalid] : forms.animInvalid,
-                    }),
-                }),
-                ifUninvalidating({
-                    ...vars({
-                        [valids.animInvalid] : forms.animUninvalid,
-                    }),
-                }),
-            ]),
-        }),
-        valids,
-    ];
-};
-
-export const markValid   = (): CssRule => style({
-    ...imports([
-        usesThemeValid(),   // switch to valid theme
-    ]),
-});
-/**
- * Creates a conditional color definitions at valid state.
- * @param themeName The name of valid theme.
- * @returns A `CssRule` represents the conditional color definitions at valid state.
- */
-export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImportant(themeName);
-
-export const markInvalid = (): CssRule => style({
-    ...imports([
-        usesThemeInvalid(), // switch to invalid theme
-    ]),
-});
-/**
- * Creates a conditional color definitions at invalid state.
- * @param themeName The name of invalid theme.
- * @returns A `CssRule` represents the conditional color definitions at invalid state.
- */
-export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
-
-
-
-export type FormElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
-export type ValidatorHandler       = () => ValResult
 export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
 
 export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
@@ -267,10 +144,10 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     
     // handlers:
-    const handleValidation = useCallback((element: FormElement, immediately = false) => {
+    const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
         const performUpdate = (validity: ValidityState, prevValue?: string) => {
             // conditions:
-            // make sure the <EditableControl>'s value was not modified during delaying
+            // make sure the <Form>'s value was not modified during delaying
             const currentValue = element.value;
             if ((prevValue !== undefined) && (prevValue !== currentValue)) return; // the value has been modified during delaying => abort further validating
             
@@ -306,11 +183,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         } // if
     }, [customValidator]);
     
-    const handleInit       = useCallback((element: FormElement) => {
+    const handleInit       = useCallback((element: HTMLFormElement) => {
         handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     = useEvent<React.ChangeEventHandler<FormElement>>(({target}) => {
+    const handleChange     = useEvent<React.ChangeEventHandler<HTMLFormElement>>(({target}) => {
         handleValidation(target);
     }, [handleValidation]);
     
@@ -324,7 +201,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     };
 };
 
-export const useValidInvalidState  = <TElement extends FormElement = FormElement>(props: FormProps<TElement>, validator?: ValidatorHandler) => {
+export const useValidInvalidState  = (props: FormProps, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
@@ -438,7 +315,7 @@ export const useValidInvalidState  = <TElement extends FormElement = FormElement
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationEnd = useEvent<React.AnimationEventHandler<HTMLFormElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         
@@ -521,7 +398,7 @@ export const usesFormLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesEditableControlLayout(),
+            usesContentLayout(),
         ]),
         ...style({
             // customize:
@@ -540,7 +417,7 @@ export const usesFormVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesEditableControlVariants(),
+            usesContentVariants(),
             
             // layouts:
             sizesRule,
@@ -558,7 +435,7 @@ export const usesFormStates = () => {
     return style({
         ...imports([
             // states:
-            usesEditableControlStates(),
+            usesContentStates(),
             validInvalidRule,
         ]),
         ...states([
@@ -656,10 +533,13 @@ export const [forms, formValues, cssFormConfig] = cssConfig(() => {
 
 
 // react components:
-export interface FormProps<TElement extends FormElement = FormElement>
+export interface FormProps
     extends
         // bases:
-        EditableControlProps<TElement>,
+        ContentProps<HTMLFormElement>,
+        
+        // form:
+        Omit<React.FormHTMLAttributes<HTMLFormElement>, 'role'>,
         
         // validations:
         ValidationProps
@@ -684,9 +564,9 @@ export interface FormProps<TElement extends FormElement = FormElement>
     // values:
     defaultValue    ?: string | number | ReadonlyArray<string>
     value           ?: string | number | ReadonlyArray<string>
-    onChange        ?: React.ChangeEventHandler<TElement>
+    onChange        ?: React.ChangeEventHandler<HTMLFormElement>
 }
-const Form = <TElement extends FormElement = FormElement>(props: FormProps<TElement>): JSX.Element|null => {
+const Form = (props: FormProps): JSX.Element|null => {
     // styles:
     const styleSheet        = useFormStyleSheet();
     
@@ -694,7 +574,7 @@ const Form = <TElement extends FormElement = FormElement>(props: FormProps<TElem
     
     // states:
     const inputValidator    = useInputValidator(props.customValidator);
-    const validInvalidState = useValidInvalidState<TElement>(props, inputValidator.validator);
+    const validInvalidState = useValidInvalidState<HTMLFormElement>(props, inputValidator.validator);
     
     
     
@@ -707,12 +587,12 @@ const Form = <TElement extends FormElement = FormElement>(props: FormProps<TElem
         isValid           : _isValid,
         inheritValidation : _inheritValidation,
         customValidator   : _customValidator,
-    ...restEditableControlProps} = props;
+    ...restContentProps} = props;
     
     
     
     // refs:
-    const setInputRef = useCallback<React.RefCallback<TElement>>((element) => {
+    const setInputRef = useCallback<React.RefCallback<HTMLFormElement>>((element) => {
         // conditions:
         if (!element) return;
         
@@ -722,7 +602,7 @@ const Form = <TElement extends FormElement = FormElement>(props: FormProps<TElem
             inputValidator.handleInit(element);
         }
         else {
-            const firstInput = element.querySelector('input, select, textarea') as (FormElement|null);
+            const firstInput = element.querySelector('input, select, textarea') as (HTMLFormElement|null);
             if (firstInput) inputValidator.handleInit(firstInput);
         } // if
     }, [inputValidator.handleInit]);
@@ -778,9 +658,9 @@ const Form = <TElement extends FormElement = FormElement>(props: FormProps<TElem
     
     // jsx:
     return (
-        <EditableControl<TElement>
+        <Content<HTMLFormElement>
             // other props:
-            {...restEditableControlProps}
+            {...restContentProps}
             
             
             
