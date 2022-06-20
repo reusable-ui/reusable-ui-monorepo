@@ -268,17 +268,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     // handlers:
     const handleValidation = useCallback((element: EditableControlElement, immediately = false) => {
-        let currentModifiedToken : object|undefined = undefined;
+        let prevPerformUpdate : ReturnType<typeof setTimeout>|undefined = undefined;
         
         
         
-        const performUpdate = (prevModifiedToken?: object) => {
-            // conditions:
-            // make sure the <Control> was not modified during delaying
-            if ((prevModifiedToken !== undefined) && (prevModifiedToken !== currentModifiedToken)) return; // the <Control> has been modified during delaying => abort further validating
-            
-            
-            
+        const performUpdate = () => {
             // remember the validation result:
             const currentValidity = element.validity;
             const newIsValid : ValResult = (customValidator ? customValidator(currentValidity, element.value) : currentValidity.valid);
@@ -299,12 +293,14 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            currentModifiedToken = {}; // assign the token with a new object
-            const currentIsValid = element.validity.valid;
+            if (prevPerformUpdate) clearTimeout(prevPerformUpdate); // cancel out previously performUpdate (if any)
+            
+            
             
             // delaying the validation, to avoid unpleasant splash effect during editing
-            setTimeout(
-                () => performUpdate(currentModifiedToken),
+            const currentIsValid = element.validity.valid;
+            prevPerformUpdate = setTimeout(
+                performUpdate,
                 (currentIsValid !== false) ? 300 : 600
             );
         } // if
