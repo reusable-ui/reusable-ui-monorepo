@@ -154,16 +154,16 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     // handlers:
     const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
-        const performUpdate = (validity: ValidityState, prevValue?: string) => {
+        const performUpdate = (prevIsValid?: ValResult) => {
             // conditions:
-            // make sure the <Form>'s value was not modified during delaying
-            const currentValue = element.value;
-            if ((prevValue !== undefined) && (prevValue !== currentValue)) return; // the value has been modified during delaying => abort further validating
+            // make sure the <Form>'s validity was not modified during delaying
+            const currentIsValid = isFormValid(element);
+            if ((prevIsValid !== undefined) && (prevIsValid !== currentIsValid)) return; // the validity has been modified during delaying => abort further validating
             
             
             
             // remember the validation result:
-            const newIsValid = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+            const newIsValid : ValResult = (customValidator ? customValidator(currentIsValid) : currentIsValid);
             if (isValid.current !== newIsValid) {
                 isValid.current = newIsValid;
                 
@@ -178,16 +178,15 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
         
         if (immediately) {
             // instant validating:
-            performUpdate(element.validity);
+            performUpdate();
         }
         else {
-            const validity  = element.validity;
-            const prevValue = element.value;
+            const prevIsValid = isFormValid(element);
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             setTimeout(
-                () => performUpdate(validity, prevValue),
-                (validity.valid !== false) ? 300 : 600
+                () => performUpdate(prevIsValid),
+                (prevIsValid !== false) ? 300 : 600
             );
         } // if
     }, [customValidator]);
