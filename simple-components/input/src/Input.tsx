@@ -8,15 +8,9 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
-    states,
     fallbacks,
     
     
@@ -30,20 +24,11 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    escapeSvg,
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
     
@@ -51,7 +36,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
@@ -61,23 +45,16 @@ import {
 }                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
 import {
     // hooks:
+    usePropEnabled,
+    usePropReadOnly,
+}                           from '@reusable-ui/accessibilities'         // an accessibility management system
+import {
+    // hooks:
     usesSizeVariant,
     usesGradientVariant,
-    usesBorder,
     extendsBorder,
     usesPadding,
-    extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
-import {
-    // hooks:
-    ifActive,
-}                           from '@reusable-ui/indicator'               // a base component
-import {
-    // hooks:
-    markActive as controlMarkActive,
-    ifFocus,
-    ifArrive,
-}                           from '@reusable-ui/control'                 // a base component
 import {
     // styles:
     usesEditableTextControlLayout,
@@ -90,10 +67,6 @@ import {
     EditableTextControlProps,
     EditableTextControl,
 }                           from '@reusable-ui/editable-text-control'   // a base component
-import {
-    // styles:
-    usesIconImage,
-}                           from '@reusable-ui/icon'                    // an icon set
 
 
 
@@ -279,7 +252,7 @@ const Input = (props: InputProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // essentials:
+        // refs:
         elmRef,
         
         
@@ -291,9 +264,13 @@ const Input = (props: InputProps): JSX.Element|null => {
         
         
         
-        // values:
+        // identifiers:
         name,
         form,
+        
+        
+        
+        // values:
         defaultValue,
         value,
         onChange, // forwards to `input[type]`
@@ -318,29 +295,131 @@ const Input = (props: InputProps): JSX.Element|null => {
         placeholder,
         autoComplete,
         list,
-    ...restProps}  = props;
+    ...restEditableTextControlProps}  = props;
+    
+    
+    
+    // fn props:
+    const propEnabled  = usePropEnabled(props);
+    const propReadOnly = usePropReadOnly(props);
     
     
     
     // jsx:
     return (
-        <EditableTextControl<TElement>
+        <EditableTextControl<HTMLInputElement>
             // other props:
-            {...props}
+            {...restEditableTextControlProps}
             
             
             
-            // variants:
-            mild={props.mild ?? true}
+            // semantics:
+            tag={props.tag ?? 'span'}
+            
+            
+            
+            // accessibilities:
+            tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-        />
+        >
+            <input
+                // refs:
+                ref={elmRef}
+                
+                
+                
+                // accessibilities:
+                {...{
+                    autoFocus,
+                    tabIndex,
+                    enterKeyHint,
+                }}
+                
+                disabled={!propEnabled} // do not submit the value if disabled
+                readOnly={propReadOnly} // locks the value if readOnly
+                
+                
+                
+                // identifiers:
+                {...{
+                    name,
+                    form,
+                }}
+                
+                
+                
+                // values:
+                {...{
+                    defaultValue,
+                    value,
+                    onChange,
+                }}
+                
+                
+                
+                // validations:
+                {...{
+                    required,
+                    
+                    minLength,
+                    maxLength,
+                    
+                    min,
+                    max,
+                    step,
+                    pattern,
+                }}
+                
+                
+                
+                // formats:
+                {...{
+                    type,
+                    placeholder,
+                    autoComplete,
+                    list,
+                }}
+            />
+        </EditableTextControl>
     );
 };
 export {
     Input,
     Input as default,
+}
+
+
+
+// shortcuts:
+export const TextInput     = (props: InputProps) => <Input type='text'           {...props} />
+export const SearchInput   = (props: InputProps) => <Input type='search'         {...props} />
+export const PasswordInput = (props: InputProps) => <Input type='password'       {...props} />
+export const EmailInput    = (props: InputProps) => <Input type='email'          {...props} />
+export const TelInput      = (props: InputProps) => <Input type='tel'            {...props} />
+export const UrlInput      = (props: InputProps) => <Input type='url'            {...props} />
+export const NumberInput   = (props: InputProps) => <Input type='number'         {...props} />
+export const TimeInput     = (props: InputProps) => <Input type='time'           {...props} />
+export const WeekInput     = (props: InputProps) => <Input type='week'           {...props} />
+export const DateInput     = (props: InputProps) => <Input type='date'           {...props} />
+export const DateTimeInput = (props: InputProps) => <Input type='datetime-local' {...props} />
+export const MonthInput    = (props: InputProps) => <Input type='month'          {...props} />
+
+export {
+    TextInput       as Text,
+    SearchInput     as Search,
+    PasswordInput   as Password,
+    EmailInput      as Email,
+    TelInput        as Tel,
+    UrlInput        as Url,
+    NumberInput     as Number,
+    TimeInput       as Time,
+    WeekInput       as Week,
+    DateInput       as Date,
+    DateTimeInput   as DateTime,
+    MonthInput      as Month,
 }
