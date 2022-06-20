@@ -241,23 +241,12 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     
     // dom effects:
     
-    /**
-     * `null`  : never loaded  
-     * `true`  : loaded (live)  
-     * `false` : unloaded (dead)  
-     */
-    const loaded = useRef<boolean|null>(null);
+    const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
     useEffect(() => {
-        // setups:
-        // mark the control as live:
-        loaded.current = true;
-        
-        
-        
         // cleanups:
         return () => {
-            // mark the control as dead:
-            loaded.current = false;
+            // cancel out previously handleReleaseLate (if any):
+            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
         };
     }, []); // runs once on startup
     
@@ -270,12 +259,16 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
         
         // handlers:
         const handleRelease = (): void => {
-            if (!loaded.current) return; // `setTimeout` fires after the control was dead => ignore
-            
             setPressDn(false);
         };
         const handleReleaseLate = (): void => {
-            setTimeout(handleRelease, 0); // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop
+            // cancel out previously handleReleaseLate (if any):
+            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
+            
+            
+            
+            // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
+            asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
         
