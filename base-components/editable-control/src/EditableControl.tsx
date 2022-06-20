@@ -310,8 +310,8 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({target}) => {
-        handleValidation(target);
+    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({currentTarget}) => {
+        handleValidation(currentTarget);
     }, [handleValidation]);
     
     
