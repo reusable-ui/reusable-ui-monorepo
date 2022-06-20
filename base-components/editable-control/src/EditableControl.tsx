@@ -9,6 +9,7 @@ import {
     useState,
     useRef,
     useCallback,
+    useEffect,
     
     
     
@@ -267,7 +268,15 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     
     // handlers:
-    const prevPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // cancel out previously performUpdate (if any):
+            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
+        };
+    }, []); // runs once on startup
+    
     const handleValidation = useCallback((element: EditableControlElement, immediately = false) => {
         const performUpdate = () => {
             // remember the validation result:
@@ -290,13 +299,14 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            if (prevPerformUpdate.current) clearTimeout(prevPerformUpdate.current); // cancel out previously performUpdate (if any)
+            // cancel out previously performUpdate (if any):
+            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
             
             
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             const currentIsValid = element.validity.valid;
-            prevPerformUpdate.current = setTimeout(
+            asyncPerformUpdate.current = setTimeout(
                 performUpdate,
                 (currentIsValid !== false) ? 300 : 600
             );
