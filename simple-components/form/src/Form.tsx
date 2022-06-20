@@ -125,17 +125,11 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     // handlers:
     const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
-        let currentModifiedToken : object|undefined = undefined;
+        let prevPerformUpdate : ReturnType<typeof setTimeout>|undefined = undefined;
         
         
         
-        const performUpdate = (prevModifiedToken?: object) => {
-            // conditions:
-            // make sure the <Form> was not modified during delaying
-            if ((prevModifiedToken !== undefined) && (prevModifiedToken !== currentModifiedToken)) return; // the <Form> has been modified during delaying => abort further validating
-            
-            
-            
+        const performUpdate = () => {
             // remember the validation result:
             const currentIsValid = isFormValid(element);
             const newIsValid : ValResult = (customValidator ? customValidator(currentIsValid) : currentIsValid);
@@ -156,12 +150,14 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            currentModifiedToken = {}; // assign the token with a new object
-            const currentIsValid = isFormValid(element);
+            if (prevPerformUpdate) clearTimeout(prevPerformUpdate); // cancel out previously performUpdate (if any)
+            
+            
             
             // delaying the validation, to avoid unpleasant splash effect during editing
-            setTimeout(
-                () => performUpdate(currentModifiedToken),
+            const currentIsValid = isFormValid(element);
+            prevPerformUpdate = setTimeout(
+                performUpdate,
                 (currentIsValid !== false) ? 300 : 600
             );
         } // if
