@@ -317,8 +317,8 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({currentTarget}) => {
-        handleValidation(currentTarget);
+    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({target}) => {
+        handleValidation(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
     }, [handleValidation]);
     
     
