@@ -341,7 +341,7 @@ export interface EditableTextControlProps<TElement extends EditableTextControlEl
 }
 const EditableTextControl = <TElement extends EditableTextControlElement = EditableTextControlElement>(props: EditableTextControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet        = useEditableTextControlStyleSheet();
+    const styleSheet = useEditableTextControlStyleSheet();
     
     
     
