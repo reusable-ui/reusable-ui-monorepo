@@ -110,7 +110,13 @@ import {
 }                           from '@reusable-ui/content'             // a base component
 import {
     // hooks:
+    ifValid,
+    ifInvalid,
+    usesValidInvalidState,
+    markValid,
+    markInvalid,
     ValidatorHandler,
+    useValidInvalidState,
 }                           from '@reusable-ui/editable-control'    // a base component
 
 
@@ -254,7 +260,6 @@ export const usesFormStates = () => {
     return style({
         ...imports([
             // states:
-            // usesContentStates(),
             validInvalidRule,
         ]),
         ...states([
@@ -289,63 +294,8 @@ export const useFormStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [forms, formValues, cssFormConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const [, {backg, altBackgColor}] = usesBackg();
-    const [, {foreg, altForeg     }] = usesForeg();
-    
-    
-    
-    //#region keyframes
-    const frameHighlighted = style({
-        backg : altBackgColor,
-        foreg : altForeg,
-    });
-    const frameNormalized  = style({
-        backg : backg,
-        foreg : foreg,
-    });
-    const [keyframesValidRule  , keyframesValid  ] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useValidInvalidState`
-    const [keyframesInvalidRule, keyframesInvalid] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useValidInvalidState`
-    
-    const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useValidInvalidState`
-    const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useValidInvalidState`
-    //#endregion keyframes
-    
-    
-    
     return {
-        // animations:
-        ...keyframesValidRule,
-        ...keyframesInvalidRule,
-        ...keyframesUnvalidRule,
-        ...keyframesUninvalidRule,
-        animValid     : [
-            ['1000ms', 'ease-out', 'both', keyframesValid    ],
-        ]                       as CssKnownProps['anim'],
-        animInvalid   : [
-            ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
-        ]                       as CssKnownProps['anim'],
-        animUnvalid   : [
-            [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
-        ]                       as CssKnownProps['anim'],
-        animUninvalid : [
-            [ '100ms', 'ease-out', 'both', keyframesUninvalid],
-        ]                       as CssKnownProps['anim'],
+        /* no config props yet */
     };
 }, { prefix: 'frm' });
 
