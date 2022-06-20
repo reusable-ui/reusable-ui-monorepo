@@ -287,6 +287,16 @@ export interface FormProps
     children        ?: React.ReactNode
 }
 const Form = (props: FormProps): JSX.Element|null => {
+    // jsx:
+    // wrap the actual <FormInternal> into <ValidationProvider>,
+    // so the hooks are controlled by <ValidationProvider>
+    return (
+        <ValidationProvider {...props}>
+            <FormInternal {...props} />
+        </ValidationProvider>
+    );
+};
+const FormInternal = (props: FormProps): JSX.Element|null => {
     // styles:
     const styleSheet        = useFormStyleSheet();
     
@@ -372,35 +382,33 @@ const Form = (props: FormProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <ValidationProvider {...props}>
-            <Content<HTMLFormElement>
-                // other props:
-                {...restContentProps}
-                
-                
-                
-                // refs:
-                elmRef={elmRef}
-                
-                
-                
-                // semantics:
-                defaultTag ={props.defaultTag  ?? 'form'}
-                defaultRole={props.defaultRole ?? 'form'}
-                
-                
-                
-                // classes:
-                mainClass={props.mainClass ?? styleSheet.main}
-                stateClasses={stateClasses}
-                
-                
-                
-                // handlers:
-                onChange       = {handleChange      }
-                onAnimationEnd = {handleAnimationEnd}
-            />
-        </ValidationProvider>
+        <Content<HTMLFormElement>
+            // other props:
+            {...restContentProps}
+            
+            
+            
+            // refs:
+            elmRef={elmRef}
+            
+            
+            
+            // semantics:
+            defaultTag ={props.defaultTag  ?? 'form'}
+            defaultRole={props.defaultRole ?? 'form'}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+            stateClasses={stateClasses}
+            
+            
+            
+            // handlers:
+            onChange       = {handleChange      }
+            onAnimationEnd = {handleAnimationEnd}
+        />
     );
 };
 export {
