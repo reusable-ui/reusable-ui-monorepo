@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -1547,6 +1548,17 @@ export const useExcitedState = <TElement extends Element = Element>(props: Toggl
     
     
     
+    const asyncTriggerRender = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // cancel out previously asyncTriggerRender (if any):
+            if (asyncTriggerRender.current) clearTimeout(asyncTriggerRender.current);
+        };
+    }, []); // runs once on startup
+    
+    
+    
     if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
         wasExcited.current = excitedFn; // remember the last change
         
@@ -1554,10 +1566,15 @@ export const useExcitedState = <TElement extends Element = Element>(props: Toggl
         
         const continueToRun = excitedFn;
         if (continueToRun) {
+            // cancel out previously asyncTriggerRender (if any):
+            if (asyncTriggerRender.current) clearTimeout(asyncTriggerRender.current);
+            
+            
+            
             // wait until the non-excited `<Basic>` has been applied by browser ui, then re-render the excited `<Basic>`
-            setTimeout(() => {
+            asyncTriggerRender.current = setTimeout(() => {
                 triggerRender(); // re-render the excited `<Basic>`
-            }, 0);
+            }, 0); // 0 = runs immediately after all micro tasks finished
         } // if
     } // if
     
