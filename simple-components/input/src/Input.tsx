@@ -130,6 +130,7 @@ export const usesInputLayout = () => {
                     
                     // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
                     ...extendsBorder(),
+                    border         : 'none', // only setup borderRadius, no borderStroke
                     
                     
                     
