@@ -268,16 +268,20 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     
     // handlers:
     const handleValidation = useCallback((element: EditableControlElement, immediately = false) => {
-        const performUpdate = (validity: ValidityState, prevValue?: string) => {
+        let currentModifiedToken : object|undefined = undefined;
+        
+        
+        
+        const performUpdate = (prevModifiedToken?: object) => {
             // conditions:
-            // make sure the <Control>'s value was not modified during delaying
-            const currentValue = element.value;
-            if ((prevValue !== undefined) && (prevValue !== currentValue)) return; // the value has been modified during delaying => abort further validating
+            // make sure the <Control> was not modified during delaying
+            if ((prevModifiedToken !== undefined) && (prevModifiedToken !== currentModifiedToken)) return; // the <Control> has been modified during delaying => abort further validating
             
             
             
             // remember the validation result:
-            const newIsValid : ValResult = (customValidator ? customValidator(validity, currentValue) : validity.valid);
+            const currentValidity = element.validity;
+            const newIsValid : ValResult = (customValidator ? customValidator(currentValidity, element.value) : currentValidity.valid);
             if (isValid.current !== newIsValid) {
                 isValid.current = newIsValid;
                 
@@ -292,16 +296,16 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         
         if (immediately) {
             // instant validating:
-            performUpdate(element.validity);
+            performUpdate();
         }
         else {
-            const validity  = element.validity;
-            const prevValue = element.value;
+            currentModifiedToken = {}; // assign the token with a new object
+            const currentIsValid = element.validity.valid;
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             setTimeout(
-                () => performUpdate(validity, prevValue),
-                (validity.valid !== false) ? 300 : 600
+                () => performUpdate(currentModifiedToken),
+                (currentIsValid !== false) ? 300 : 600
             );
         } // if
     }, [customValidator]);
