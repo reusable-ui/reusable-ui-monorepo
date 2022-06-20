@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useCallback,
+    useEffect,
     
     
     
@@ -124,7 +125,15 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     
     // handlers:
-    const prevPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // cancel out previously performUpdate (if any):
+            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
+        };
+    }, []); // runs once on startup
+    
     const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
         const performUpdate = () => {
             // remember the validation result:
@@ -147,13 +156,14 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            if (prevPerformUpdate.current) clearTimeout(prevPerformUpdate.current); // cancel out previously performUpdate (if any)
+            // cancel out previously performUpdate (if any):
+            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
             
             
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             const currentIsValid = isFormValid(element);
-            prevPerformUpdate.current = setTimeout(
+            asyncPerformUpdate.current = setTimeout(
                 performUpdate,
                 (currentIsValid !== false) ? 300 : 600
             );
