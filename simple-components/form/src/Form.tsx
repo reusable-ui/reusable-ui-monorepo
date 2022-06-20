@@ -124,11 +124,8 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     
     // handlers:
+    const prevPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
     const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
-        let prevPerformUpdate : ReturnType<typeof setTimeout>|undefined = undefined;
-        
-        
-        
         const performUpdate = () => {
             // remember the validation result:
             const currentIsValid = isFormValid(element);
@@ -150,13 +147,13 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
             performUpdate();
         }
         else {
-            if (prevPerformUpdate) clearTimeout(prevPerformUpdate); // cancel out previously performUpdate (if any)
+            if (prevPerformUpdate.current) clearTimeout(prevPerformUpdate.current); // cancel out previously performUpdate (if any)
             
             
             
             // delaying the validation, to avoid unpleasant splash effect during editing
             const currentIsValid = isFormValid(element);
-            prevPerformUpdate = setTimeout(
+            prevPerformUpdate.current = setTimeout(
                 performUpdate,
                 (currentIsValid !== false) ? 300 : 600
             );
