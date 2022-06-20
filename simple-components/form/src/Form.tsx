@@ -117,9 +117,9 @@ import {
 // states:
 
 //#region validInvalid
-export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
+export type CustomValidatorHandler = (isValid: ValResult) => ValResult
 
-export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
+export const useFormValidator      = (customValidator?: CustomValidatorHandler) => {
     // states:
     // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `validator` callback:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
@@ -198,195 +198,6 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         
         handleInit,
         handleChange,
-    };
-};
-
-export const useValidInvalidState  = (props: FormProps, validator?: ValidatorHandler) => {
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);
-    const propEditable          = propEnabled && !propReadOnly;
-    const propIsValid           = usePropIsValid(props);
-    
-    
-    
-    // defaults:
-    const defaultIsValid        : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
-    
-    
-    
-    // states:
-    const [wasValid     , setWasValid     ] = useState<ValResult|undefined>((): (ValResult|undefined) => {
-        // if control is not editable => no validation
-        if (!propEditable)             return null;
-        
-        
-        
-        // if [isValid] was set => use [isValid] as the final result:
-        if (propIsValid !== undefined) return propIsValid;
-        
-        
-        
-        // if `validator` was provided, evaluate it at startup:
-        if (validator)                 return undefined; // undefined means => evaluate the validator *at startup*
-        
-        
-        
-        // use default value as fallback:
-        return defaultIsValid;
-    });
-    
-    const [succAnimating, setSuccAnimating] = useState<boolean|null>(null); // null => no-succ-animation, true => succ-animation, false => unsucc-animation
-    const [errAnimating , setErrAnimating ] = useState<boolean|null>(null); // null => no-err-animation,  true => err-animation,  false => unerr-animation
-    
-    
-    
-    /*
-     * state is  as <ValidationProvider> if it's [isValid] was set
-     * state is  as validator callback returned
-     * otherwise undefined (represents no change needed)
-     */
-    const isValidFn = ((): (ValResult|undefined) => {
-        // if control is not editable => no validation
-        if (!propEditable)             return null;
-        
-        
-        
-        // if [isValid] was set => use [isValid] as the final result:
-        if (propIsValid !== undefined) return propIsValid;
-        
-        
-        
-        // if `validator` was provided, evaluate it:
-        if ((wasValid !== undefined))  return (validator ? validator() : defaultIsValid); // (wasValid !== undefined) means => the validator is ready => evaluate it *now*
-        
-        
-        
-        // no change needed:
-        return undefined;
-    })();
-    
-    if ((isValidFn !== undefined) && (wasValid !== isValidFn)) { // change detected => apply the change & start animating
-        setWasValid(isValidFn);                                  // remember the last change
-        
-        
-        
-        switch (isValidFn) {
-            case true: // success
-                // if was error => un-error:
-                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
-                
-                setSuccAnimating(true); // start succ-animation
-                break;
-            
-            case false: // error
-                // if was success => un-success:
-                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
-                
-                setErrAnimating(true);  // start err-animation
-                break;
-            
-            case null: // uncheck
-                // if was success => un-success:
-                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
-                
-                // if was error => un-error:
-                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
-                break;
-        } // switch
-    } // if
-    
-    
-    
-    // dom effects:
-    
-    // watch the changes once (only at startup):
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (wasValid !== undefined) return; // the effect should only run once
-        
-        
-        
-        // now validator has been loaded => re-*set the initial* state of `wasValid` with any values other than `undefined`
-        // once set, this effect will never be executed again
-        setWasValid(validator ? validator() : defaultIsValid);
-    }, [wasValid, validator]); // the effect should only run once
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<HTMLFormElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        
-        
-        
-        if (!/((?<![a-z])(valid|unvalid)|(?<=[a-z])(Valid|Unvalid))(?![a-z])/.test(event.animationName)) { // if animation is (valid|unvalid)[Foo] or boo(Valid|Unvalid)[Foo]
-            // clean up finished animation
-            
-            setSuccAnimating(null); // stop succ-animation/unsucc-animation
-        }
-        else if (!/((?<![a-z])(invalid|uninvalid)|(?<=[a-z])(Invalid|Uninvalid))(?![a-z])/.test(event.animationName)) { // if animation is (invalid|uninvalid)[Foo] or boo(Invalid|Uninvalid)[Foo]
-            // clean up finished animation
-            
-            setErrAnimating(null);  // stop err-animation/unerr-animation
-        } // if
-    }, []);
-    
-    
-    const noValidation : boolean = (
-        !propEditable          // if control is not editable => no validation
-        ||
-        (propIsValid === null) // ([isValid] === null) => no validation
-        ||
-        !validator
-    );
-    return {
-        /**
-         * `true`  : validating/validated
-         * `false` : invalidating/invalidated
-         * `null`  : uncheck/unvalidating/uninvalidating
-        */
-        isValid : (wasValid ?? defaultIsValid) as ValResult,
-        noValidation,
-        
-        class   : [
-            // valid classes:
-            ((): string|null => {
-                if (succAnimating === true)  return 'validating';
-                if (succAnimating === false) return 'unvalidating';
-                
-                if (wasValid === true)       return 'validated';
-                
-                return null;
-            })(),
-            
-            
-            
-            // invalid classes:
-            ((): string|null => {
-                if (errAnimating === true)   return 'invalidating';
-                if (errAnimating === false)  return 'uninvalidating';
-                
-                if (wasValid === false)      return 'invalidated';
-                
-                return null;
-            })(),
-            
-            
-            
-            // neutral classes:
-            ((): string|null => {
-                if (noValidation) {
-                    return 'novalidation';
-                }
-                else {
-                    return null; // discard all classes above
-                } // if
-            })(),
-        ].filter((c) => !!c).join(' ') || null,
-        
-        handleAnimationEnd,
     };
 };
 //#endregion validInvalid
@@ -573,8 +384,8 @@ const Form = (props: FormProps): JSX.Element|null => {
     
     
     // states:
-    const inputValidator    = useInputValidator(props.customValidator);
-    const validInvalidState = useValidInvalidState<HTMLFormElement>(props, inputValidator.validator);
+    const formValidator     = useFormValidator(props.customValidator);
+    const validInvalidState = useValidInvalidState<HTMLFormElement>(props, formValidator.validator);
     
     
     
@@ -599,13 +410,13 @@ const Form = (props: FormProps): JSX.Element|null => {
         
         
         if (element.validity) {
-            inputValidator.handleInit(element);
+            formValidator.handleInit(element);
         }
         else {
             const firstInput = element.querySelector('input, select, textarea') as (HTMLFormElement|null);
-            if (firstInput) inputValidator.handleInit(firstInput);
+            if (firstInput) formValidator.handleInit(firstInput);
         } // if
-    }, [inputValidator.handleInit]);
+    }, [formValidator.handleInit]);
     const elmRef = useMergeRefs(
         // preserves the original `elmRef`:
         props.elmRef,
@@ -640,7 +451,7 @@ const Form = (props: FormProps): JSX.Element|null => {
         // states:
         
         // validations:
-        inputValidator.handleChange,
+        formValidator.handleChange,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
