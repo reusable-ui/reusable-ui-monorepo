@@ -324,7 +324,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     };
 };
 
-export const useValidInvalidState  = <TElement extends EditableControlElement = EditableControlElement>(props: EditableControlProps<TElement>, validator?: ValidatorHandler) => {
+export const useValidInvalidState  = <TElement extends EditableControlElement|HTMLFormElement = EditableControlElement>(props: ValidationProps, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
