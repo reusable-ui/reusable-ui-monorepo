@@ -42,6 +42,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
     usesSuffixedProps,
     overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
@@ -81,7 +82,9 @@ import {
     outlinedOf,
     usesBackg,
     usesBorder,
+    extendsBorder,
     usesPadding,
+    extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // styles:
@@ -220,6 +223,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
             ...rule(orientationInlineSelector, { // inline
                 ...children('::before', {
                     ...imports([
+                        // layouts:
                         fillTextLineHeightLayout(), // adjust the <Range>'s height, the width is block (fills the entire parent's width)
                     ]),
                 }),
@@ -227,6 +231,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
             ...rule(orientationBlockSelector,  { // block
                 ...children('::before', {
                     ...imports([
+                        // layouts:
                         fillTextLineWidthLayout(), // adjust the <Range>'s width, the height is based on <Range>'s config
                     ]),
                 }),
@@ -239,11 +244,143 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
             
             ...children(trackElm, {
                 ...imports([
+                    // borders:
                     usesBorderAsContainer({ // make a nicely rounded corners
                         orientationInlineSelector : parentOrientationInlineSelector,
                         orientationBlockSelector  : parentOrientationBlockSelector,
                     }),
                 ]),
+                ...style({
+                    // layouts:
+                    display        : 'flex',    // use block flexbox, so it takes the entire Range's width
+                    flexDirection  : 'inherit', // customizable orientation // inherit to parent flexbox
+                    justifyContent : 'start',   // if thumb is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the thumb's first part should be visible first
+                    alignItems     : 'center',  // center thumb vertically
+                    flexWrap       : 'nowrap',  // no wrapping
+                    
+                    
+                    
+                    // sizes:
+                    boxSizing      : 'border-box',     // the final size is including borders & paddings
+                    flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
+                    
+                    
+                    
+                    // animations:
+                    boxShadow      : ['initial', '!important'], // no focus animation
+                    
+                    
+                    
+                    // children:
+                    ...children([trackLowerElm, trackUpperElm], {
+                        // layouts:
+                        display    : 'inline-block', // use inline-block, so it takes the width & height as we set
+                        
+                        
+                        
+                        // backgrounds:
+                        backg      : rangeVars.backg,
+                        
+                        
+                        
+                        // borders:
+                        
+                        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                        ...extendsBorder(),
+                        
+                        // remove rounded corners on top:
+                        [borders.borderStartStartRadius] : '0px',
+                        [borders.borderStartEndRadius  ] : '0px',
+                        // remove rounded corners on bottom:
+                        [borders.borderEndStartRadius  ] : '0px',
+                        [borders.borderEndEndRadius    ] : '0px',
+                        
+                        
+                        
+                        // sizes:
+                        alignSelf  : 'stretch', // follows parent's height
+                    }),
+                    ...children(trackLowerElm, {
+                        // sizes:
+                        flex       : [[rangeVars.valueRatio, rangeVars.valueRatio, 0]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(ranges, 'tracklower')), // apply config's cssProps starting with tracklower***
+                    }),
+                    ...children(trackUpperElm, {
+                        // sizes:
+                        flex       : [[`calc(1 - ${rangeVars.valueRatio})`, `calc(1 - ${rangeVars.valueRatio})`, 0]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(ranges, 'trackupper')), // apply config's cssProps starting with trackupper***
+                    }),
+                    
+                    ...children(['&', thumbElm], {
+                        // accessibilities:
+                        cursor: 'inherit',
+                    }),
+                    ...children(thumbElm, {
+                        // layouts:
+                        display   : 'inline-block', // use inline-block, so it takes the width & height as we set
+                        
+                        
+                        
+                        // sizes:
+                        boxSizing : 'border-box', // the final size is including borders & paddings
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(ranges, 'thumb')), // apply config's cssProps starting with thumb***
+                        
+                        
+                        
+                        // borders:
+                        
+                        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                        ...extendsBorder({
+                            borderRadius  : ranges.thumbBorderRadius,
+                        }),
+                        
+                        
+                        
+                        // spacings:
+                        
+                        // let's Reusable-UI system to manage paddingInline & paddingBlock:
+                        ...extendsPadding({
+                            paddingInline : ranges.thumbPaddingInline,
+                            paddingBlock  : ranges.thumbPaddingBlock,
+                        }),
+                    }),
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(ranges, 'track')), // apply config's cssProps starting with track***
+                    
+                    
+                    
+                    // borders:
+                    
+                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                    ...extendsBorder({
+                        borderRadius  : ranges.trackBorderRadius,
+                    }),
+                    
+                    
+                    
+                    // spacings:
+                    
+                    // let's Reusable-UI system to manage paddingInline & paddingBlock:
+                    ...extendsPadding({
+                        paddingInline : ranges.trackPaddingInline,
+                        paddingBlock  : ranges.trackPaddingBlock,
+                    }),
+                }),
             }),
             
             
