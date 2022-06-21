@@ -30,6 +30,11 @@ import {
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
+    // utilities:
+    cssVar,
+    fallbacks,
+}                           from '@cssfn/css-var'                       // strongly typed of css variables
+import {
     cssConfig,
     
     
@@ -49,10 +54,25 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 import {
+    // types:
+    FeatureMixin,
+    
+    
+    
     // hooks:
     usesSizeVariant,
-    usesGradientVariant,
-    extendsBorder,
+    OrientationName,
+    OrientationRuleOptions,
+    defaultInlineOrientationRuleOptions,
+    normalizeOrientationRule,
+    usesOrientationRule,
+    OrientationVariant,
+    useOrientationVariant,
+    gradientOf,
+    ifNotOutlined,
+    outlinedOf,
+    usesBackg,
+    usesBorder,
     usesPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
@@ -71,6 +91,53 @@ import type {
     // types:
     InputHTMLAttributes,
 }                           from '@reusable-ui/input'                   // a base component
+
+
+
+// hooks:
+
+// layouts:
+
+//#region orientation
+export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
+//#endregion orientation
+
+//#region range
+export interface RangeVars {
+    /**
+     * Range's thumb ratio.
+     */
+    valueRatio : any
+    
+    /**
+     * final background layers of the Range.
+     */
+    backg      : any
+}
+const [rangeVars] = cssVar<RangeVars>({ minify: false, prefix: 'range' }); // do not minify to make sure `style={{ --range-valueRatio: ... }}` is the same between in server (without `useRangeStyleSheet` rendered) & client (with `useRangeStyleSheet` rendered)
+
+/**
+ * Uses Range variables.
+ * @returns A `FeatureMixin<RangeVars>` represents Range variables definitions.
+ */
+export const usesRange = (): FeatureMixin<RangeVars> => {
+    // dependencies:
+    
+    // backgrounds:
+    const [, backgs] = usesBackg();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [rangeVars.backg] : backgs.backg,
+            }),
+        }),
+        rangeVars,
+    ];
+};
+//#endregion range
 
 
 
