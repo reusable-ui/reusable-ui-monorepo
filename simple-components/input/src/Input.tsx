@@ -223,6 +223,10 @@ export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
 
 export type InputTextLike                 = 'text'|'search'|'password'|'email'|'tel'|'url'|'number'|'time'|'week'|'date'|'datetime-local'|'month'
 export type InputType                     = InputTextLike | 'color'|'file'|'range'
+
+/**
+ * Removed support for `<input type="image">` and `<input type="submit">`
+ */
 export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElement>, 'size'|'src'|'alt'|'width'|'height'|'crossOrigin'|'checked'|'multiple'|'accept'|'capture'|'formAction'|'formEncType'|'formMethod'|'formNoValidate'|'formTarget'|keyof React.HTMLAttributes<TElement>>
 
 export interface InputProps
