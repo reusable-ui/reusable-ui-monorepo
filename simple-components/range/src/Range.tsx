@@ -49,6 +49,10 @@ import {
 
 // reusable-ui:
 import {
+    // configs:
+    borderRadiuses,
+}                           from '@reusable-ui/borders'                 // a border (stroke) management system
+import {
     // styles:
     stripoutTextbox,
 }                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
@@ -77,6 +81,7 @@ import {
     usesOrientationRule,
     OrientationVariant,
     useOrientationVariant,
+    ifNude,
     gradientOf,
     ifNotOutlined,
     outlinedOf,
@@ -404,14 +409,6 @@ export const usesRangeVariants = () => {
     // layouts:
     const [sizesRule] = usesSizeVariant(ranges);
     
-    // colors:
-    const [gradientRule, gradients] = usesGradientVariant((toggle) => style({
-        ...vars({
-            // *toggle on/off* the background gradient prop:
-            [gradients.backgGradTg] : toggle ? ranges.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        }),
-    }));
-    
     
     
     return style({
@@ -421,9 +418,12 @@ export const usesRangeVariants = () => {
             
             // layouts:
             sizesRule,
-            
-            // colors:
-            gradientRule,
+        ]),
+        ...variants([
+            ifNude({
+                // animations:
+                boxShadow : ['initial', '!important'], // no focus animation on slider, but has one in thumb
+            }),
         ]),
     });
 };
@@ -454,10 +454,47 @@ export const useRangeStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
     return {
-        // backgrounds:
-        backgGrad : [
-            ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
-        ] as CssKnownProps['backgroundImage'],
+        // sizes:
+        minInlineSize        : 'unset'              as CssKnownProps['minInlineSize'],
+        minBlockSize         : 'unset'              as CssKnownProps['minBlockSize' ],
+        
+        minInlineSizeBlock   : 'unset'              as CssKnownProps['minInlineSize'],
+        minBlockSizeBlock    : '8rem'               as CssKnownProps['minBlockSize' ],
+        
+        
+        
+        // accessibilities:
+        cursor               : 'col-resize'         as CssKnownProps['cursor'],
+        cursorBlock          : 'row-resize'         as CssKnownProps['cursor'],
+        
+        
+        
+        trackInlineSize      : 'auto'               as CssKnownProps['inlineSize'],
+        trackBlockSize       : '0.4em'              as CssKnownProps['blockSize' ],
+        trackBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius'],
+        trackPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
+        trackPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
+        
+        trackInlineSizeBlock : '0.4em'              as CssKnownProps['inlineSize'],
+        trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize' ],
+        
+        tracklowerFilter     : [[
+            'contrast(1.5)',
+            'saturate(0.75)',
+        ]]                                          as CssKnownProps['filter'],
+        trackupperFilter     : [[
+            'contrast(1.5)',
+            'invert(0.5)',
+            'saturate(0)',
+        ]]                                          as CssKnownProps['filter'],
+        
+        
+        
+        thumbInlineSize      : '1em'                as CssKnownProps['inlineSize'],
+        thumbBlockSize       : '1em'                as CssKnownProps['blockSize' ],
+        thumbBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius'],
+        thumbPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
+        thumbPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
     };
 }, { prefix: 'rnge' });
 
