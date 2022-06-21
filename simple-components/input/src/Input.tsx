@@ -271,7 +271,7 @@ const Input = (props: InputProps): JSX.Element|null => {
         
         
         
-        // identifiers:
+        // forms:
         name,
         form,
         
@@ -352,7 +352,7 @@ const Input = (props: InputProps): JSX.Element|null => {
                 
                 
                 
-                // identifiers:
+                // forms:
                 {...{
                     name,
                     form,
