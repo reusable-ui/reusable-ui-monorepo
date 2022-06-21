@@ -333,7 +333,7 @@ export interface IconVars {
      */
     color : any
 }
-const [iconVars] = cssVar<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --img: ... }}` is the same between in server (without `useIconSheet` rendered) & client (with `useIconSheet` rendered)
+const [iconVars] = cssVar<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-img: ... }}` is the same between in server (without `useIconStyleSheet` rendered) & client (with `useIconStyleSheet` rendered)
 
 /**
  * Uses icon image and icon color.
