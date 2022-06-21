@@ -8,6 +8,8 @@ import {
     // hooks:
     useCallback,
     useRef,
+    useReducer,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -71,6 +73,10 @@ import {
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
+import {
+    // hooks:
+    useEvent,
+}                           from '@reusable-ui/hooks'                   // react helper hooks
 import {
     // utilities:
     parseNumber,
@@ -147,6 +153,12 @@ import {
     usesBorderAsContainer,
     usesBorderAsSeparatorBlock,
 }                           from '@reusable-ui/container'               // a neighbor component
+
+// other libs:
+import {
+    default as triggerChange,
+    // @ts-ignore
+}                           from 'react-trigger-change'                 // a helper lib
 
 
 
@@ -661,12 +673,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const mild           = props.mild  ?? false;
     const mildAlternate  = nude ? mild : !mild;
     
-    const valueCtrl      : number|null = parseNumber(value);
     const minFn          : number      = parseNumber(min)  ?? 0;
     const maxFn          : number      = parseNumber(max)  ?? 100;
     const stepFn         : number      = (step === 'any') ? 0 : Math.abs(parseNumber(step) ?? 1);
     const negativeFn     : boolean     = (maxFn < minFn);
-    const defaultValueFn : number      = (minFn + ((maxFn - minFn) / 2));
     
     
     
@@ -694,6 +704,24 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         return value;
     }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
+    const trimValueOpt = (value: number|null|undefined): number|null => {
+        // conditions:
+        if ((value === null) || (value === undefined)) return null;
+        
+        
+        
+        return trimValue(value);
+    };
+    
+    
+    
+    // fn props:
+    const valueFn        : number|null = trimValueOpt(parseNumber(value));
+    const defaultValueFn : number      = (
+        trimValueOpt(parseNumber(defaultValue))
+        ??
+        (minFn + ((maxFn - minFn) / 2))
+    );
     
     
     
@@ -701,6 +729,173 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
     const trackRefInternal = useRef<HTMLElement|null>(null);
     const thumbRefInternal = useRef<HTMLElement|null>(null);
+    
+    
+    
+    // states:
+    interface ValueReducerAction {
+        type    : 'setValue'|'setValueRatio'|'decrease'|'increase'
+        payload : number
+    }
+    
+    const valueDnReducer = useCallback((value: number, action: ValueReducerAction): number => {
+        switch (action.type) {
+            case 'setValue': {
+                return trimValue(action.payload);
+            }
+            case 'setValueRatio': {
+                let valueRatio = action.payload;
+                
+                // make sure the valueRatio is between 0 & 1:
+                valueRatio     = Math.min(Math.max(
+                    valueRatio
+                , 0), 1);
+                
+                return trimValue(minFn + ((maxFn - minFn) * valueRatio));
+            }
+            
+            case 'decrease' : {
+                return trimValue(value - ((stepFn || 1) * (negativeFn ? -1 : 1) * (action.payload)));
+            }
+            case 'increase' : {
+                return trimValue(value + ((stepFn || 1) * (negativeFn ? -1 : 1) * (action.payload)));
+            }
+            
+            default:
+                return value; // no change
+        } // switch
+    }, [minFn, maxFn, stepFn, negativeFn, trimValue]); // (re)create the reducer function on every time the constraints changes
+    
+    const [valueDn, setValueDn] = useReducer(valueDnReducer, /*initialState: */valueFn ?? defaultValueFn);
+    
+    
+    
+    // fn props:
+    const valueNow   : number = valueFn /*controllable*/ ?? valueDn /*uncontrollable*/;
+    const valueRatio : number = (valueNow - minFn) / (maxFn - minFn);
+    
+    
+    
+    // dom effects:
+    // watchdog for slider change by user:
+    const prevValueDn = useRef<number>(valueDn);
+    useEffect(() => {
+        // conditions:
+        const inputElm = inputRefInternal.current;
+        if (!inputElm) return;
+        
+        if (prevValueDn.current === valueDn) return;
+        prevValueDn.current = valueDn;
+        
+        
+        
+        // sync the hidden <input type="range">'s value:
+        inputElm.valueAsNumber = valueDn;
+        triggerChange(inputElm);
+    }, [valueDn]);
+    
+    
+    
+    // handlers:
+    const handleMouseSlider    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (!propEnabled)           return; // control is disabled => no response required
+        if (propReadOnly)           return; // control is readOnly => no response required
+        
+        if (event.defaultPrevented) return;
+        if (event.buttons !== 1)    return; // only handle left_click only
+        
+        const track = trackRefInternal.current;
+        const thumb = thumbRefInternal.current;
+        if (!track)                 return;
+        if (!thumb)                 return;
+        
+        
+        
+        const style        = getComputedStyle(track);
+        const borderStart  = (Number.parseInt(isOrientationVertical ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
+        const paddingStart = (Number.parseInt(isOrientationVertical ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
+        const paddingEnd   = (Number.parseInt(isOrientationVertical ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
+        const thumbSize    =  (isOrientationVertical ? thumb.offsetHeight : thumb.offsetWidth);
+        const trackSize    = ((isOrientationVertical ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
+        
+        const rect         = track.getBoundingClientRect();
+        const cursorStart  = (isOrientationVertical ? event.clientY : event.clientX) - (isOrientationVertical ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
+        // if ((cursorStart < 0) || (cursorStart > trackSize)) return; // setValueRatio will take care of this
+        
+        let valueRatio     = cursorStart / trackSize;
+        if (isOrientationVertical || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
+        
+        setValueDn({ type: 'setValueRatio', payload: valueRatio });
+        
+        
+        
+        thumb.focus(); // turn on focus indicator on the thumb
+        pressReleaseState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
+        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
+    }, [propEnabled, propReadOnly, isOrientationVertical]);
+    
+    const handleTouchSlider    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (event.touches.length !== 1) return;
+        
+        
+        
+        // simulates the touch as sliding mouse:
+        handleMouseSlider({
+            defaultPrevented : event.defaultPrevented,
+            preventDefault   : event.preventDefault,
+            
+            currentTarget    : event.currentTarget,
+            
+            buttons          : 1, // simulate left_click
+            clientX          : event.touches[0].clientX,
+            clientY          : event.touches[0].clientY,
+        } as React.MouseEvent<HTMLInputElement, MouseEvent>);
+    }, [handleMouseSlider]);
+    
+    const handleKeyboardSlider = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (!propEnabled)           return; // control is disabled => no response required
+        if (propReadOnly)           return; // control is readOnly => no response required
+        
+        if (event.defaultPrevented) return;
+        
+        const thumb = thumbRefInternal.current;
+        if (!thumb)                 return;
+        
+        
+        
+        if (((): boolean => {
+            const isKeyOf = (keys: string[]): boolean => {
+                return (keys.includes(event.key.toLowerCase()) || keys.includes(event.code.toLowerCase()));
+            };
+            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
+            
+            
+            
+                 if (!isOrientationVertical && !isRtl && isKeyOf(['arrowleft' , 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationVertical && !isRtl && isKeyOf(['arrowright', 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+            
+            else if (!isOrientationVertical &&  isRtl && isKeyOf(['arrowright', 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationVertical &&  isRtl && isKeyOf(['arrowleft' , 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+            
+            else if ( isOrientationVertical &&           isKeyOf(['arrowdown' , 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
+            else if ( isOrientationVertical &&           isKeyOf(['arrowup'   , 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+            
+            else if (                                    isKeyOf(['home'                  ])) setValueDn({ type: 'setValue', payload: minFn });
+            else if (                                    isKeyOf(['end'                   ])) setValueDn({ type: 'setValue', payload: maxFn });
+            else return false; // not handled
+            
+            
+            
+            return true; // handled
+        })()) {
+            thumb.focus(); // turn on focus indicator on the thumb
+            pressReleaseState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
+            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
+        } // if
+    }, [propEnabled, propReadOnly]);
     
     
     
