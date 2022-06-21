@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Optional,
+}                           from '@cssfn/types'
+import type {
     // css known (standard) properties:
     CssKnownProps,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
@@ -103,10 +107,15 @@ import {
     EditableControlProps,
     EditableControl,
 }                           from '@reusable-ui/editable-control'        // a base component
+import {
+    // react components:
+    EditableActionControl,
+    EditableActionControlProps,
+}                           from '@reusable-ui/editable-action-control' // a base component
 import type {
     // types:
     InputHTMLAttributes,
-}                           from '@reusable-ui/input'                   // a base component
+}                           from '@reusable-ui/input'                   // a neighbor component
 import {
     // rules:
     ifFirstVisibleChild,
@@ -504,16 +513,42 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
 export interface RangeProps
     extends
         // bases:
-        EditableControlProps<HTMLInputElement>,
+        EditableActionControlProps<HTMLInputElement>,
         
         // input[type="range"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'>
+        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'|'pattern'|'type'|'placeholder'|'autoComplete'|'list'|'required'|'minLength'|'maxLength'>,
+        
+        // layouts:
+        OrientationVariant
 {
+    // refs:
+    trackRef          ?: React.Ref<HTMLElement> // setter ref
+    trackLowerRef     ?: React.Ref<HTMLElement> // setter ref
+    trackUpperRef     ?: React.Ref<HTMLElement> // setter ref
+    thumbRef          ?: React.Ref<HTMLElement> // setter ref
+    
+    
+    
+    // classes:
+    trackClasses      ?: Optional<string>[]
+    trackLowerClasses ?: Optional<string>[]
+    trackUpperClasses ?: Optional<string>[]
+    thumbClasses      ?: Optional<string>[]
+    
+    
+    
+    // styles:
+    trackStyle        ?: React.CSSProperties
+    trackLowerStyle   ?: React.CSSProperties
+    trackUpperStyle   ?: React.CSSProperties
+    thumbStyle        ?: React.CSSProperties
+    
+    
+    
     // validations:
-    min          ?: string | number
-    max          ?: string | number
-    step         ?: string | number
-    pattern      ?: string
+    min               ?: string | number
+    max               ?: string | number
+    step              ?: string | number
 }
 const Range = (props: RangeProps): JSX.Element|null => {
     // styles:
@@ -526,16 +561,38 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // refs:
         elmRef,
         
-        
-        
-        // accessibilities:
-        autoFocus,
-        tabIndex,
-        enterKeyHint,
+        trackRef,
+        trackLowerRef,
+        trackUpperRef,
+        thumbRef,
         
         
         
-        // identifiers:
+        // classes:
+        trackClasses,
+        trackLowerClasses,
+        trackUpperClasses,
+        thumbClasses,
+        
+        
+        
+        // styles:
+        trackStyle,
+        trackLowerStyle,
+        trackUpperStyle,
+        thumbStyle,
+        
+        
+        
+        // still on <EditableControl> element
+        // // accessibilities:
+        // autoFocus,
+        // tabIndex,
+        // enterKeyHint,
+        
+        
+        
+        // forms:
         name,
         form,
         
@@ -549,15 +606,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // validations:
-        required,
-        
-        minLength,
-        maxLength,
-        
         min,
         max,
         step,
-        pattern,
     ...restEditableControlProps}  = props;
     
     
@@ -608,7 +659,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 
-                // identifiers:
+                // forms:
                 {...{
                     name,
                     form,
@@ -627,15 +678,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // validations:
                 {...{
-                    required,
-                    
-                    minLength,
-                    maxLength,
-                    
                     min,
                     max,
                     step,
-                    pattern,
                 }}
             />
         </EditableControl>
@@ -645,3 +690,5 @@ export {
     Range,
     Range as default,
 }
+
+export type { OrientationName, OrientationVariant }
