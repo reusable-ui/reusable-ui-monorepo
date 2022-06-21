@@ -66,6 +66,10 @@ import {
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
 import {
+    // utilities:
+    parseNumber,
+}                           from '@reusable-ui/utilities'               // common utility functions
+import {
     // hooks:
     usePropEnabled,
     usePropReadOnly,
@@ -95,6 +99,15 @@ import {
     usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
+import {
+    // hooks:
+    useFocusBlurState,
+    useArriveLeaveState,
+}                           from '@reusable-ui/control'                 // a base component
+import {
+    // hooks:
+    usePressReleaseState,
+}                           from '@reusable-ui/action-control'          // a base component
 import {
     // styles:
     usesEditableControlLayout,
@@ -552,12 +565,32 @@ export interface RangeProps
 }
 const Range = (props: RangeProps): JSX.Element|null => {
     // styles:
-    const styleSheet = useRangeStyleSheet();
+    const styleSheet            = useRangeStyleSheet();
+    
+    
+    
+    // variants:
+    const orientationVariant    = useOrientationVariant(props);
+    const isOrientationVertical = (orientationVariant.class === 'block');
+    
+    
+    
+    // states:
+    const focusBlurState        = useFocusBlurState<HTMLInputElement>(props);
+    const arriveLeaveState      = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
+    const pressReleaseState     = usePressReleaseState<HTMLInputElement>(props);
     
     
     
     // rest props:
     const {
+        // remove props:
+        
+        // layouts:
+        orientation : _orientation,
+        
+        
+        
         // refs:
         elmRef,
         
@@ -614,8 +647,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // fn props:
-    const propEnabled  = usePropEnabled(props);
-    const propReadOnly = usePropReadOnly(props);
+    const propEnabled    = usePropEnabled(props);
+    const propReadOnly   = usePropReadOnly(props);
+    
+    const nude           = props.nude  ?? true;
+    const theme          = props.theme ?? 'primary';
+    const mild           = props.mild  ?? false;
+    const mildAlternate  = nude ? mild : !mild;
+    
+    const valueCtrl      : number|null = parseNumber(value);
+    const minFn          : number      = parseNumber(min)  ?? 0;
+    const maxFn          : number      = parseNumber(max)  ?? 100;
+    const stepFn         : number      = (step === 'any') ? 0 : Math.abs(parseNumber(step) ?? 1);
+    const negativeFn     : boolean     = (maxFn < minFn);
+    const defaultValueFn : number      = (minFn + ((maxFn - minFn) / 2));
     
     
     
