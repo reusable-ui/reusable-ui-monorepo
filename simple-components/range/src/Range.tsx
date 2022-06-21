@@ -11,7 +11,9 @@ import type {
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
-    fallbacks,
+    rule,
+    variants,
+    states,
     
     
     
@@ -32,7 +34,6 @@ import {
 import {
     // utilities:
     cssVar,
-    fallbacks,
 }                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
@@ -41,6 +42,8 @@ import {
     
     // utilities:
     usesCssProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
@@ -48,6 +51,11 @@ import {
     // styles:
     stripoutTextbox,
 }                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
+import {
+    // styles:
+    fillTextLineHeightLayout,
+    fillTextLineWidthLayout,
+}                           from '@reusable-ui/layouts'                 // reusable common layouts
 import {
     // hooks:
     usePropEnabled,
@@ -91,6 +99,18 @@ import type {
     // types:
     InputHTMLAttributes,
 }                           from '@reusable-ui/input'                   // a base component
+import {
+    // rules:
+    ifFirstVisibleChild,
+    ifLastVisibleChild,
+    
+    
+    
+    // hooks:
+    usesContainer,
+    usesBorderAsContainer,
+    usesBorderAsSeparatorBlock,
+}                           from '@reusable-ui/container'               // a neighbor component
 
 
 
@@ -142,13 +162,28 @@ export const usesRange = (): FeatureMixin<RangeVars> => {
 
 
 // styles:
-export const inputElm = ':first-child';
+export const inputElm      = ':first-child';
+export const trackElm      = '.track';
+export const trackLowerElm = '.tracklower';
+export const trackUpperElm = '.trackupper';
+export const thumbElm      = '.thumb';
 
-export const usesRangeLayout = () => {
+export const usesRangeLayout = (options?: OrientationRuleOptions) => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector}&`;
+    
+    
+    
     // dependencies:
     
-    // spacings:
-    const [, paddings] = usesPadding();
+    // borders:
+    const [         , borders  ] = usesBorder();
+    
+    // range:
+    const [rangeRule, rangeVars] = usesRange();
     
     
     
@@ -156,13 +191,73 @@ export const usesRangeLayout = () => {
         ...imports([
             // layouts:
             usesEditableControlLayout(),
+            
+            // range:
+            rangeRule,
         ]),
         ...style({
+            // layouts:
+            ...rule(orientationInlineSelector, { // inline
+                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
+                flexDirection : 'row',         // items are stacked horizontally
+            }),
+            ...rule(orientationBlockSelector,  { // block
+                display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
+                flexDirection : 'column',      // items are stacked vertically
+            }),
+            justifyContent    : 'start',  // if range is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the range's first part should be visible first
+            alignItems        : 'center', // default center items vertically
+            flexWrap          : 'nowrap', // prevents the range to wrap to the next row
+            
+            
+            
+            // positions:
+            verticalAlign     : 'baseline', // range's text should be aligned with sibling text, so the range behave like <span> wrapper
+            
+            
+            
+            // children:
+            ...rule(orientationInlineSelector, { // inline
+                ...children('::before', {
+                    ...imports([
+                        fillTextLineHeightLayout(), // adjust the <Range>'s height, the width is block (fills the entire parent's width)
+                    ]),
+                }),
+            }),
+            ...rule(orientationBlockSelector,  { // block
+                ...children('::before', {
+                    ...imports([
+                        fillTextLineWidthLayout(), // adjust the <Range>'s width, the height is based on <Range>'s config
+                    ]),
+                }),
+            }),
+            
+            ...children(inputElm, {
+                // layouts:
+                display: 'none', // hide the input
+            }),
+            
+            ...children(trackElm, {
+                ...imports([
+                    usesBorderAsContainer({ // make a nicely rounded corners
+                        orientationInlineSelector : parentOrientationInlineSelector,
+                        orientationBlockSelector  : parentOrientationBlockSelector,
+                    }),
+                ]),
+            }),
             
             
             
             // customize:
             ...usesCssProps(ranges), // apply config's cssProps
+            ...rule(orientationInlineSelector, { // inline
+                // overwrites propName = propName{Inline}:
+                ...overwriteProps(ranges, usesSuffixedProps(ranges, 'inline')),
+            }),
+            ...rule(orientationBlockSelector,  { // block
+                // overwrites propName = propName{Block}:
+                ...overwriteProps(ranges, usesSuffixedProps(ranges, 'block')),
+            }),
         }),
     });
 };
