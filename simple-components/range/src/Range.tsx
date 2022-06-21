@@ -2,6 +2,12 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useCallback,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -661,6 +667,40 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const stepFn         : number      = (step === 'any') ? 0 : Math.abs(parseNumber(step) ?? 1);
     const negativeFn     : boolean     = (maxFn < minFn);
     const defaultValueFn : number      = (minFn + ((maxFn - minFn) / 2));
+    
+    
+    
+    // utilities:
+    const trimValue = useCallback((value: number): number => {
+        // make sure the requested value is between the min value & max value:
+        value     = Math.min(Math.max(
+            value
+        , (negativeFn ? maxFn : minFn)), (negativeFn ? minFn : maxFn));
+        
+        // if step was specified => stepping the value starting from min value:
+        if (stepFn > 0) {
+            let steps    = Math.round((value - minFn) / stepFn); // get the_nearest_stepped_value
+            
+            // make sure the_nearest_stepped_value is not exceeded the max value:
+            let maxSteps = (maxFn - minFn) / stepFn;
+            maxSteps     = negativeFn ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
+            
+            // re-align the steps:
+            steps        = negativeFn ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
+            
+            // calculate the new value:
+            value        = minFn + (steps * stepFn);
+        } // if
+        
+        return value;
+    }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
+    
+    
+    
+    // refs:
+    const inputRefInternal = useRef<HTMLInputElement|null>(null);
+    const trackRefInternal = useRef<HTMLElement|null>(null);
+    const thumbRefInternal = useRef<HTMLElement|null>(null);
     
     
     
