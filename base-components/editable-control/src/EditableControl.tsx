@@ -682,7 +682,7 @@ export interface EditableControlProps<TElement extends EditableControlElement = 
     
     
     
-    // identifiers:
+    // forms:
     name            ?: string
     form            ?: string
     
