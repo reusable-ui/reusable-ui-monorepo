@@ -26,7 +26,6 @@ import {
     // rules:
     rule,
     variants,
-    states,
     
     
     
@@ -67,10 +66,6 @@ import {
 }                           from '@reusable-ui/borders'                 // a border (stroke) management system
 import {
     // styles:
-    stripoutTextbox,
-}                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
-import {
-    // styles:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
@@ -92,7 +87,6 @@ import {
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 import {
     // react components:
-    GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'                 // a complement component
 import {
@@ -111,24 +105,15 @@ import {
     OrientationVariant,
     useOrientationVariant,
     ifNude,
-    gradientOf,
-    ifNotOutlined,
-    outlinedOf,
     usesBackg,
     usesBorder,
     extendsBorder,
-    usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
     useFocusBlurState,
     useArriveLeaveState,
-    
-    
-    
-    // react components:
-    Control,
 }                           from '@reusable-ui/control'                 // a base component
 import {
     // hooks:
@@ -143,7 +128,6 @@ import {
     
     
     // react components:
-    EditableControlProps,
     EditableControl,
 }                           from '@reusable-ui/editable-control'        // a base component
 import {
@@ -156,16 +140,8 @@ import type {
     InputHTMLAttributes,
 }                           from '@reusable-ui/input'                   // a neighbor component
 import {
-    // rules:
-    ifFirstVisibleChild,
-    ifLastVisibleChild,
-    
-    
-    
     // hooks:
-    usesContainer,
     usesBorderAsContainer,
-    usesBorderAsSeparatorBlock,
 }                           from '@reusable-ui/container'               // a neighbor component
 
 // other libs:
@@ -834,7 +810,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // classes:
-    const variantClasses = useMergeClasses(
+    const variantClasses          = useMergeClasses(
         // preserves the original `variantClasses`:
         props.variantClasses,
         
@@ -843,7 +819,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // variants:
         orientationVariant.class,
     );
-    const stateClasses   = useMergeClasses(
+    const stateClasses            = useMergeClasses(
         // preserves the original `stateClasses`:
         props.stateClasses,
         
