@@ -1018,8 +1018,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             
-                 if (!isOrientationVertical &&           isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationVertical &&           isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
+                 if (                                    isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (                                    isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
+            
+            else if (                                    isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
+            else if (                                    isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
             
             else if ( isOrientationVertical &&           isKeyOf('arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
             else if ( isOrientationVertical &&           isKeyOf('arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
@@ -1029,9 +1032,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowright')) setValueDn({ type: 'decrease', payload: 1     });
             else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
-            
-            else if (                                    isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
-            else if (                                    isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
             else return false; // not handled
             
             
