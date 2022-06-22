@@ -872,7 +872,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const [, rangeVars] = usesRange();
     const mergedStyle = useMemo(() => ({
         // values:
-        [rangeVars.valueRatio] : valueRatio,
+        [
+            rangeVars.valueRatio
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : valueRatio,
         
         
         
