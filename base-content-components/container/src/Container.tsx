@@ -332,51 +332,16 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                 }),
             }),
         })),
-        ...iif((!orientationInlineSelector && !orientationBlockSelector), style({
-            // children:
-            ...children(itemsSelector, {
-                ...ifVisibleChild({
-                    ...vars({
-                        /*
-                            if the_current_element is a_child_of_container and also a_separator,
-                            the deleted `containerVars.borderWidth` in separator must be pointed to container,
-                            so we can calculate the correct inner_borderRadius.
-                            
-                            that's why we set `!important` to the `containerVars.borderWidth`.
-                        */
-                        [containerVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                        
-                        [containerVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                        [containerVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                        [containerVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                        [containerVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                    }),
-                    ...style({
-                        // borders:
-                        
-                        // add rounded corners on top:
-                        [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        
-                        // add rounded corners on bottom:
-                        [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        
-                        /* recursive calculation of borderRadius is not supported yet */
-                    }),
-                }),
-            }),
-        })),
     });
 };
 //#endregion border as container
 
 //#region border as separator
-export interface BorderAsSeparatorOptions {
+export interface BorderAsSeparatorOptions extends OrientationRuleOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
-const usesBorderAsSeparator = (block: boolean, options: BorderAsSeparatorOptions = {}): CssRule => {
+const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptions = {}): CssRule => {
     // options:
     const {
         itemsSelector = '*',
@@ -506,8 +471,22 @@ const usesBorderAsSeparator = (block: boolean, options: BorderAsSeparatorOptions
         }),
     });
 };
-export const usesBorderAsSeparatorBlock  = (options: BorderAsSeparatorOptions = {}) => usesBorderAsSeparator(true , options);
-export const usesBorderAsSeparatorInline = (options: BorderAsSeparatorOptions = {}) => usesBorderAsSeparator(false, options);
+export const usesBorderAsSeparator = (options: BorderAsSeparatorOptions = {}): CssRule => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    
+    
+    
+    return style({
+        ...iif(!!orientationInlineSelector, rule(orientationInlineSelector,
+            usesBorderAsSeparatorOf(false, options)
+        )),
+        ...iif(!!orientationBlockSelector , rule(orientationBlockSelector,
+            usesBorderAsSeparatorOf(true, options)
+        )),
+    });
+};
 //#endregion border as separator
 
 
