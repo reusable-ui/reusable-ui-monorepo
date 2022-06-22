@@ -210,6 +210,8 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
     // options:
     options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
     const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     
     
     
@@ -276,8 +278,8 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                 ...imports([
                     // borders:
                     usesBorderAsContainer({ // make a nicely rounded corners
-                        orientationInlineSelector : `${orientationInlineSelector}>&`,
-                        orientationBlockSelector  : `${orientationBlockSelector }>&`,
+                        orientationInlineSelector : parentOrientationInlineSelector,
+                        orientationBlockSelector  : parentOrientationBlockSelector,
                     }),
                 ]),
                 ...style({
@@ -330,8 +332,8 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                         ...imports([
                             // borders:
                             usesBorderAsSeparator({ // must be placed at the last
-                                orientationInlineSelector : `${orientationInlineSelector}>*>&`,
-                                orientationBlockSelector  : `${orientationBlockSelector }>*>&`,
+                                orientationInlineSelector : parentOrientationInlineSelector,
+                                orientationBlockSelector  : parentOrientationBlockSelector,
                                 itemsSelector             : [trackLowerElm, trackUpperElm],
                             }),
                         ]),
