@@ -735,13 +735,29 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const trackRefInternal = useRef<HTMLElement|null>(null);
     const thumbRefInternal = useRef<HTMLElement|null>(null);
     
-    const inputRef         = useMergeRefs(
+    const mergedInputRef   = useMergeRefs(
         // preserves the original `elmRef`:
         elmRef,
         
         
         
         inputRefInternal,
+    );
+    const mergedTrackRef   = useMergeRefs(
+        // preserves the original `trackRef`:
+        trackRef,
+        
+        
+        
+        trackRefInternal,
+    );
+    const mergedThumbRef   = useMergeRefs(
+        // preserves the original `thumbRef`:
+        thumbRef,
+        
+        
+        
+        thumbRefInternal,
     );
     
     
@@ -1169,7 +1185,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         >
             <input
                 // refs:
-                ref={inputRef}
+                ref={mergedInputRef}
                 
                 
                 
