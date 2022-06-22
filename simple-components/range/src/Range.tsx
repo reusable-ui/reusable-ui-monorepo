@@ -10,6 +10,7 @@ import {
     useRef,
     useReducer,
     useEffect,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -76,6 +77,8 @@ import {
 import {
     // hooks:
     useEvent,
+    useMergeEvents,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
 import {
     // utilities:
@@ -86,6 +89,11 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
+import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'                 // a complement component
 import {
     // types:
     FeatureMixin,
@@ -796,6 +804,61 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     
+    // classes:
+    const mergedTrackLowerClasses = useMergeClasses(
+        // preserves the original `trackLowerClasses`:
+        trackLowerClasses,
+        
+        
+        
+        // id:
+        'tracklower'
+    );
+    const mergedTrackUpperClasses = useMergeClasses(
+        // preserves the original `trackUpperClasses`:
+        trackUpperClasses,
+        
+        
+        
+        // id:
+        'trackupper'
+    );
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        orientationVariant.class,
+    );
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        focusBlurState.class,
+        arriveLeaveState.class,
+    );
+    
+    
+    
+    // styles:
+    const [, rangeVars] = usesRange();
+    const mergedStyle = useMemo(() => ({
+        // values:
+        [rangeVars.valueRatio] : valueRatio,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `[rangeVars.valueRatio]`):
+        ...(style ?? {}),
+    }), [rangeVars.valueRatio, valueRatio, style]);
+    
+    
+    
     // handlers:
     const handleMouseSlider    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         // conditions:
@@ -867,24 +930,27 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         if (((): boolean => {
-            const isKeyOf = (keys: string[]): boolean => {
-                return (keys.includes(event.key.toLowerCase()) || keys.includes(event.code.toLowerCase()));
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
             };
             const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
             
             
             
-                 if (!isOrientationVertical && !isRtl && isKeyOf(['arrowleft' , 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationVertical && !isRtl && isKeyOf(['arrowright', 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+                 if (!isOrientationVertical &&           isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationVertical &&           isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (!isOrientationVertical &&  isRtl && isKeyOf(['arrowright', 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationVertical &&  isRtl && isKeyOf(['arrowleft' , 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+            else if ( isOrientationVertical &&           isKeyOf('arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if ( isOrientationVertical &&           isKeyOf('arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if ( isOrientationVertical &&           isKeyOf(['arrowdown' , 'pagedown'])) setValueDn({ type: 'decrease', payload: 1     });
-            else if ( isOrientationVertical &&           isKeyOf(['arrowup'   , 'pageup'  ])) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationVertical && !isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationVertical && !isRtl && isKeyOf('arrowright')) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (                                    isKeyOf(['home'                  ])) setValueDn({ type: 'setValue', payload: minFn });
-            else if (                                    isKeyOf(['end'                   ])) setValueDn({ type: 'setValue', payload: maxFn });
+            else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowright')) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
+            
+            else if (                                    isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
+            else if (                                    isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
             else return false; // not handled
             
             
@@ -895,7 +961,43 @@ const Range = (props: RangeProps): JSX.Element|null => {
             pressReleaseState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [propEnabled, propReadOnly]);
+    }, [propEnabled, propReadOnly, isOrientationVertical, minFn, maxFn]);
+    
+    
+    
+    // jsx fn props:
+    const trackLower = (
+        <Generic<HTMLElement>
+            // refs:
+            elmRef={trackLowerRef}
+            
+            
+            
+            // classes:
+            classes={mergedTrackLowerClasses}
+            
+            
+            
+            // styles:
+            style={trackLowerStyle}
+        />
+    );
+    const trackUpper = (
+        <Generic<HTMLElement>
+            // refs:
+            elmRef={trackUpperRef}
+            
+            
+            
+            // classes:
+            classes={mergedTrackUpperClasses}
+            
+            
+            
+            // styles:
+            style={trackUpperStyle}
+        />
+    );
     
     
     
@@ -908,18 +1010,37 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             // semantics:
-            tag={props.tag ?? 'span'}
+            tag ={props.tag  ?? 'div'   }
+            role={props.role ?? 'slider'}
+            
+            aria-orientation={props['aria-orientation'] ?? (isOrientationVertical ? 'vertical' : 'horizontal')}
+            aria-valuenow   ={props['aria-valuenow'   ] ?? valueNow}
+            aria-valuemin   ={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
+            aria-valuemax   ={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
             
             
             
-            // accessibilities:
-            tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
+            // variants:
+            nude={nude}
+            theme={theme}
+            mild={mild}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            variantClasses={variantClasses}
+            stateClasses={stateClasses}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
+            
+            
+            
+            // accessibilities:
+            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
         >
             <input
                 // refs:
