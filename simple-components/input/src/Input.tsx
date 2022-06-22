@@ -325,14 +325,14 @@ const Input = (props: InputProps): JSX.Element|null => {
             
             
             
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+            
+            
+            
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
             enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
         >
             <input
                 // refs:
