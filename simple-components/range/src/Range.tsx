@@ -755,7 +755,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         trackRefInternal,
-    );
+    ) as React.Ref<HTMLInputElement>|undefined;
     const mergedThumbRef   = useMergeRefs(
         // preserves the original `thumbRef`:
         thumbRef,
@@ -763,7 +763,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         thumbRefInternal,
-    );
+    ) as React.Ref<HTMLInputElement>|undefined;
     
     
     
@@ -834,7 +834,26 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // classes:
-    const mergedTrackClasses = useMergeClasses(
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        orientationVariant.class,
+    );
+    const stateClasses   = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        focusBlurState.class,
+        arriveLeaveState.class,
+    );
+    const mergedTrackClasses      = useMergeClasses(
         // preserves the original `trackClasses`:
         trackClasses,
         
@@ -861,24 +880,14 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // id:
         'trackupper'
     );
-    const variantClasses = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
+    const mergedThumbClasses      = useMergeClasses(
+        // preserves the original `thumbClasses`:
+        thumbClasses,
         
         
         
-        // variants:
-        orientationVariant.class,
-    );
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
-        
-        
-        
-        // accessibilities:
-        focusBlurState.class,
-        arriveLeaveState.class,
+        // id:
+        'thumb'
     );
     
     
@@ -953,6 +962,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // accessibilities:
         focusBlurState.handleAnimationEnd,
         arriveLeaveState.handleAnimationEnd,
+        pressReleaseState.handleAnimationEnd,
     );
     
     const handleMouseSlide    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
@@ -988,7 +998,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        thumb.focus(); // turn on focus indicator on the thumb
         pressReleaseState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
         event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
     }, [propEnabled, propReadOnly, isOrientationVertical]);
@@ -1016,9 +1025,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         if (propReadOnly)           return; // control is readOnly => no response required
         
         if (event.defaultPrevented) return;
-        
-        const thumb = thumbRefInternal.current;
-        if (!thumb)                 return;
         
         
         
@@ -1050,7 +1056,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             return true; // handled
         })()) {
-            thumb.focus(); // turn on focus indicator on the thumb
             pressReleaseState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
@@ -1212,7 +1217,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     type : 'range',
                 }}
             />
-            <Control<HTMLElement>
+            <EditableControl<HTMLInputElement>
                 // refs:
                 elmRef={mergedTrackRef}
                 
@@ -1234,7 +1239,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 // accessibilities:
-                tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+                tabIndex={-1} // focus on the whole <Range>, not the <Track>
                 arrived={arriveLeaveState.arrived}
             >
                 <Generic<HTMLElement>
@@ -1251,6 +1256,34 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     // styles:
                     style={trackLowerStyle}
                 />
+                <EditableActionControl<HTMLInputElement>
+                    // refs:
+                    elmRef={mergedThumbRef}
+                    
+                    
+                    
+                    // variants:
+                    theme={theme}
+                    mild={mildAlternate}
+                    
+                    
+                    
+                    // classes:
+                    classes={mergedThumbClasses}
+                    
+                    
+                    
+                    // styles:
+                    style={thumbStyle}
+                    
+                    
+                    
+                    // accessibilities:
+                    tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
+                    focused={focusBlurState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
+                    arrived={arriveLeaveState.arrived}
+                    pressed={pressReleaseState.pressed}
+                />
                 <Generic<HTMLElement>
                     // refs:
                     elmRef={trackUpperRef}
@@ -1265,7 +1298,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     // styles:
                     style={trackUpperStyle}
                 />
-            </Control>
+            </EditableControl>
         </EditableControl>
     );
 };
