@@ -78,6 +78,7 @@ import {
     // hooks:
     useEvent,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
 import {
@@ -555,7 +556,7 @@ export interface RangeProps
         EditableActionControlProps<HTMLInputElement>,
         
         // input[type="range"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'|'pattern'|'type'|'placeholder'|'autoComplete'|'list'|'required'|'minLength'|'maxLength'>,
+        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'|'pattern'|'type'|'placeholder'|'autoComplete'|'list'|'required'|'minLength'|'maxLength'|'enterKeyHint'>,
         
         // layouts:
         OrientationVariant
@@ -725,11 +726,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     // fn props:
     const valueFn        : number|null = trimValueOpt(parseNumber(value));
-    const defaultValueFn : number      = (
-        trimValueOpt(parseNumber(defaultValue))
-        ??
-        (minFn + ((maxFn - minFn) / 2))
-    );
+    const defaultValueFn : number|null = trimValueOpt(parseNumber(defaultValue));
     
     
     
@@ -737,6 +734,15 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
     const trackRefInternal = useRef<HTMLElement|null>(null);
     const thumbRefInternal = useRef<HTMLElement|null>(null);
+    
+    const inputRef         = useMergeRefs(
+        // preserves the original `elmRef`:
+        elmRef,
+        
+        
+        
+        inputRefInternal,
+    );
     
     
     
@@ -774,7 +780,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         } // switch
     }, [minFn, maxFn, stepFn, negativeFn, trimValue]); // (re)create the reducer function on every time the constraints changes
     
-    const [valueDn, setValueDn] = useReducer(valueDnReducer, /*initialState: */valueFn ?? defaultValueFn);
+    const [valueDn, setValueDn] = useReducer(valueDnReducer, /*initialState: */valueFn ?? defaultValueFn ?? (minFn + ((maxFn - minFn) / 2)));
     
     
     
@@ -789,18 +795,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const prevValueDn = useRef<number>(valueDn);
     useEffect(() => {
         // conditions:
-        const inputElm = inputRefInternal.current;
-        if (!inputElm) return;
+        if (valueFn !== null)                return; // only for uncontrollable <Range> => ignore
         
-        if (prevValueDn.current === valueDn) return;
+        if (prevValueDn.current === valueDn) return; // no change detected => ignore
         prevValueDn.current = valueDn;
+        
+        const inputElm = inputRefInternal.current;
+        if (!inputElm)                       return; // the <input> element was not initialized => ignore
         
         
         
         // sync the hidden <input type="range">'s value:
         inputElm.valueAsNumber = valueDn;
         triggerChange(inputElm);
-    }, [valueDn]);
+    }, [valueFn, valueDn]);
     
     
     
@@ -1017,6 +1025,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     }, [propEnabled, propReadOnly, isOrientationVertical, minFn, maxFn]);
+    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => { /* nothing to do */ }, []);
     
     const handleMouseDown     = useMergeEvents(
         // preserves the original `onMouseDown`:
@@ -1160,16 +1169,18 @@ const Range = (props: RangeProps): JSX.Element|null => {
         >
             <input
                 // refs:
-                ref={elmRef}
+                ref={inputRef}
                 
                 
                 
                 // accessibilities:
-                {...{
-                    autoFocus,
-                    tabIndex,
-                    enterKeyHint,
-                }}
+                
+                // still on <EditableControl> element
+                // {...{
+                //     autoFocus,
+                //     tabIndex,
+                //     enterKeyHint,
+                // }}
                 
                 disabled={!propEnabled} // do not submit the value if disabled
                 readOnly={propReadOnly} // locks the value if readOnly
@@ -1186,18 +1197,25 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // values:
                 {...{
-                    defaultValue,
-                    value,
-                    onChange,
+                    // fully controllable by <Range>:
+                    value    : valueNow,
+                    onChange : handleChangeDummy, // just for satisfying React of controllable <input>
                 }}
                 
                 
                 
                 // validations:
                 {...{
-                    min,
-                    max,
-                    step,
+                    min  : negativeFn ? maxFn : minFn,
+                    max  : negativeFn ? minFn : maxFn,
+                    step : stepFn,
+                }}
+                
+                
+                
+                // formats:
+                {...{
+                    type : 'range',
                 }}
             />
         </EditableControl>
