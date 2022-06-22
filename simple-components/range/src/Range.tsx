@@ -106,7 +106,6 @@ import {
     useOrientationVariant,
     ifNude,
     usesBackg,
-    usesBorder,
     extendsBorder,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
@@ -142,6 +141,7 @@ import type {
 import {
     // hooks:
     usesBorderAsContainer,
+    usesBorderAsSeparator,
 }                           from '@reusable-ui/container'               // a neighbor component
 
 // other libs:
@@ -210,15 +210,10 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
     // options:
     options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
     const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector}&`;
     
     
     
     // dependencies:
-    
-    // borders:
-    const [         , borders  ] = usesBorder();
     
     // range:
     const [rangeRule, rangeVars] = usesRange();
@@ -281,8 +276,8 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                 ...imports([
                     // borders:
                     usesBorderAsContainer({ // make a nicely rounded corners
-                        orientationInlineSelector : parentOrientationInlineSelector,
-                        orientationBlockSelector  : parentOrientationBlockSelector,
+                        orientationInlineSelector : `${orientationInlineSelector}>&`,
+                        orientationBlockSelector  : `${orientationBlockSelector }>&`,
                     }),
                 ]),
                 ...style({
@@ -308,32 +303,38 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                     
                     // children:
                     ...children([trackLowerElm, trackUpperElm], {
-                        // layouts:
-                        display    : 'inline-block', // use inline-block, so it takes the width & height as we set
-                        
-                        
-                        
-                        // backgrounds:
-                        backg      : rangeVars.backg,
-                        
-                        
-                        
-                        // borders:
-                        
-                        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                        ...extendsBorder(),
-                        
-                        // remove rounded corners on top:
-                        [borders.borderStartStartRadius] : '0px',
-                        [borders.borderStartEndRadius  ] : '0px',
-                        // remove rounded corners on bottom:
-                        [borders.borderEndStartRadius  ] : '0px',
-                        [borders.borderEndEndRadius    ] : '0px',
-                        
-                        
-                        
-                        // sizes:
-                        alignSelf  : 'stretch', // follows parent's height
+                        ...style({
+                            // layouts:
+                            display    : 'inline-block', // use inline-block, so it takes the width & height as we set
+                            
+                            
+                            
+                            // backgrounds:
+                            backg      : rangeVars.backg,
+                            
+                            
+                            
+                            // borders:
+                            
+                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                            ...extendsBorder(),
+                            ...style({
+                                border : 'none', // only setup borderRadius, no borderStroke
+                            }),
+                            
+                            
+                            
+                            // sizes:
+                            alignSelf  : 'stretch', // follows parent's height
+                        }),
+                        ...imports([
+                            // borders:
+                            usesBorderAsSeparator({ // must be placed at the last
+                                orientationInlineSelector : `${orientationInlineSelector}>*>&`,
+                                orientationBlockSelector  : `${orientationBlockSelector }>*>&`,
+                                itemsSelector             : [trackLowerElm, trackUpperElm],
+                            }),
+                        ]),
                     }),
                     ...children(trackLowerElm, {
                         // sizes:
