@@ -1105,42 +1105,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     
-    // jsx fn props:
-    const trackLower = (
-        <Generic<HTMLElement>
-            // refs:
-            elmRef={trackLowerRef}
-            
-            
-            
-            // classes:
-            classes={mergedTrackLowerClasses}
-            
-            
-            
-            // styles:
-            style={trackLowerStyle}
-        />
-    );
-    const trackUpper = (
-        <Generic<HTMLElement>
-            // refs:
-            elmRef={trackUpperRef}
-            
-            
-            
-            // classes:
-            classes={mergedTrackUpperClasses}
-            
-            
-            
-            // styles:
-            style={trackUpperStyle}
-        />
-    );
-    
-    
-    
     // jsx:
     return (
         <EditableControl<HTMLInputElement>
@@ -1273,6 +1237,34 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
                 arrived={arriveLeaveState.arrived}
             >
+                <Generic<HTMLElement>
+                    // refs:
+                    elmRef={trackLowerRef}
+                    
+                    
+                    
+                    // classes:
+                    classes={mergedTrackLowerClasses}
+                    
+                    
+                    
+                    // styles:
+                    style={trackLowerStyle}
+                />
+                <Generic<HTMLElement>
+                    // refs:
+                    elmRef={trackUpperRef}
+                    
+                    
+                    
+                    // classes:
+                    classes={mergedTrackUpperClasses}
+                    
+                    
+                    
+                    // styles:
+                    style={trackUpperStyle}
+                />
             </Control>
         </EditableControl>
     );
