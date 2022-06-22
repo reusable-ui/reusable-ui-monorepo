@@ -124,6 +124,11 @@ import {
     // hooks:
     useFocusBlurState,
     useArriveLeaveState,
+    
+    
+    
+    // react components:
+    Control,
 }                           from '@reusable-ui/control'                 // a base component
 import {
     // hooks:
@@ -829,6 +834,15 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // classes:
+    const mergedTrackClasses = useMergeClasses(
+        // preserves the original `trackClasses`:
+        trackClasses,
+        
+        
+        
+        // id:
+        'track'
+    );
     const mergedTrackLowerClasses = useMergeClasses(
         // preserves the original `trackLowerClasses`:
         trackLowerClasses,
@@ -1234,6 +1248,32 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     type : 'range',
                 }}
             />
+            <Control<HTMLElement>
+                // refs:
+                elmRef={mergedTrackRef}
+                
+                
+                
+                // variants:
+                mild={mild}
+                
+                
+                
+                // classes:
+                classes={mergedTrackClasses}
+                
+                
+                
+                // styles:
+                style={trackStyle}
+                
+                
+                
+                // accessibilities:
+                tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+                arrived={arriveLeaveState.arrived}
+            >
+            </Control>
         </EditableControl>
     );
 };
