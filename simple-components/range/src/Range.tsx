@@ -233,12 +233,12 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
         ...style({
             // layouts:
             ...rule(orientationInlineSelector, { // inline
-                display       : 'flex',           // use block flexbox, so it takes the entire parent's width
-                flexDirection : 'row',            // items are stacked horizontally
+                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
+                flexDirection : 'row',         // items are stacked horizontally
             }),
             ...rule(orientationBlockSelector,  { // block
                 display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
-                flexDirection : 'column-reverse', // items are stacked vertically from bottom to top
+                flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'start',  // if range is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the range's first part should be visible first
             alignItems        : 'center', // default center items vertically
@@ -1093,6 +1093,40 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // jsx:
+    const trackLower = (
+        <Generic<HTMLElement>
+            // refs:
+            elmRef={trackLowerRef}
+            
+            
+            
+            // classes:
+            classes={mergedTrackLowerClasses}
+            
+            
+            
+            // styles:
+            style={trackLowerStyle}
+        />
+    );
+    
+    const trackUpper = (
+        <Generic<HTMLElement>
+            // refs:
+            elmRef={trackUpperRef}
+            
+            
+            
+            // classes:
+            classes={mergedTrackUpperClasses}
+            
+            
+            
+            // styles:
+            style={trackUpperStyle}
+        />
+    );
+    
     return (
         <EditableControl<HTMLInputElement>
             // other props:
@@ -1224,20 +1258,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 tabIndex={-1} // focus on the whole <Range>, not the <Track>
                 arrived={arriveLeaveState.arrived}
             >
-                <Generic<HTMLElement>
-                    // refs:
-                    elmRef={trackLowerRef}
-                    
-                    
-                    
-                    // classes:
-                    classes={mergedTrackLowerClasses}
-                    
-                    
-                    
-                    // styles:
-                    style={trackLowerStyle}
-                />
+                { isOrientationVertical ? trackUpper : trackLower }
                 <EditableActionControl<HTMLInputElement>
                     // refs:
                     elmRef={mergedThumbRef}
@@ -1266,20 +1287,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     arrived={arriveLeaveState.arrived}
                     pressed={pressReleaseState.pressed}
                 />
-                <Generic<HTMLElement>
-                    // refs:
-                    elmRef={trackUpperRef}
-                    
-                    
-                    
-                    // classes:
-                    classes={mergedTrackUpperClasses}
-                    
-                    
-                    
-                    // styles:
-                    style={trackUpperStyle}
-                />
+                { isOrientationVertical ? trackLower : trackUpper }
             </EditableControl>
         </EditableControl>
     );
