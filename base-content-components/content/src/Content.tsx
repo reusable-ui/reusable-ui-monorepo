@@ -121,7 +121,7 @@ import {
     // hooks:
     usesContainer,
     usesBorderAsContainer,
-    usesBorderAsSeparatorBlock,
+    usesBorderAsSeparator,
 }                           from '@reusable-ui/container'       // a neighbor component
 import {
     // react components:
@@ -380,7 +380,11 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
             }),
             ...imports([
                 // borders:
-                usesBorderAsSeparatorBlock({ itemsSelector: mediaSelectorWithExceptZero }), // must be placed at the last
+                usesBorderAsSeparator({ // must be placed at the last
+                    orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
+                    orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
+                    itemsSelector             : mediaSelectorWithExceptZero
+                }),
             ]),
         }),
     });
