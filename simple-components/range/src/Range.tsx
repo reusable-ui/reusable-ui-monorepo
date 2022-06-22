@@ -260,12 +260,12 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
         ...style({
             // layouts:
             ...rule(orientationInlineSelector, { // inline
-                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
-                flexDirection : 'row',         // items are stacked horizontally
+                display       : 'flex',           // use block flexbox, so it takes the entire parent's width
+                flexDirection : 'row',            // items are stacked horizontally
             }),
             ...rule(orientationBlockSelector,  { // block
                 display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
-                flexDirection : 'column',      // items are stacked vertically
+                flexDirection : 'column-reverse', // items are stacked vertically from bottom to top
             }),
             justifyContent    : 'start',  // if range is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the range's first part should be visible first
             alignItems        : 'center', // default center items vertically
