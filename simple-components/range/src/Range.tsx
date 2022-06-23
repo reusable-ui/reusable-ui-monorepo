@@ -367,6 +367,11 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                         
                         
                         
+                        // positions:
+                        zIndex    : 1, // the <thumb> should at the top of <trackLower> & <trackUpper>
+                        
+                        
+                        
                         // sizes:
                         boxSizing : 'border-box', // the final size is including borders & paddings
                         
@@ -393,6 +398,11 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                             paddingInline : ranges.thumbPaddingInline,
                             paddingBlock  : ranges.thumbPaddingBlock,
                         }),
+                        
+                        // cancel out <thumb>'s size with negative margin,
+                        // so the <trackLower> & <trackUpper> can meet on the middle of the <thumb>:
+                        marginInline : `calc(0px - (${ranges.thumbInlineSize}) / 2)`,
+                        marginBlock  : `calc(0px - (${ranges.thumbBlockSize }) / 2)`,
                     }),
                     
                     
