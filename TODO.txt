@@ -1,5 +1,9 @@
 fix peer dependencies for colors, borders, spacers, etc...
 
+fix touchStart/End on <ActionControl>
+fix press/release animation on keyboard press on <Range>
+fix transition of active/passive|arrive/leave|valid/invalid on <Range>
+
 
 
 inline then block
