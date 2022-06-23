@@ -340,7 +340,14 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                     }),
                     ...children(trackLowerElm, {
                         // sizes:
-                        flex       : [[rangeVars.valueRatio, rangeVars.valueRatio, 0]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
+                        // the size grows in proportion to the given ratio, starting from the 1/2 size of <thumb>
+                        // the size cannot shrink
+                        ...rule(parentOrientationInlineSelector, { // inline
+                            flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
+                        }),
+                        ...rule(parentOrientationBlockSelector,  { // block
+                            flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
+                        }),
                         
                         
                         
@@ -349,7 +356,14 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                     }),
                     ...children(trackUpperElm, {
                         // sizes:
-                        flex       : [[`calc(1 - ${rangeVars.valueRatio})`, `calc(1 - ${rangeVars.valueRatio})`, 0]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
+                        // the size grows in proportion to the given ratio, starting from the 1/2 size of <thumb>
+                        // the size cannot shrink
+                        ...rule(parentOrientationInlineSelector, { // inline
+                            flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
+                        }),
+                        ...rule(parentOrientationBlockSelector,  { // block
+                            flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
+                        }),
                         
                         
                         
