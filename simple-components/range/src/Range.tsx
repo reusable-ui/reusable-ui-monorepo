@@ -947,13 +947,50 @@ const Range = (props: RangeProps): JSX.Element|null => {
         pressReleaseState.handleAnimationEnd,
     );
     
-    const handleMouseSlide    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const isMouseActive       = useRef(false);
+    const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (!propEnabled)           return; // control is disabled => no response required
         if (propReadOnly)           return; // control is readOnly => no response required
         
-        if (event.defaultPrevented) return;
-        if (event.buttons !== 1)    return; // only handle left_click only
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        isMouseActive.current = ((event.buttons & 1) === 1); // only left button is pressed => true
+        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
+        event.currentTarget.focus(); // un-prevent to focus()
+    }, [propEnabled, propReadOnly]);
+    const handleMousePassive  = useEvent<React.MouseEventHandler<HTMLInputElement>>((_event) => {
+        isMouseActive.current = false;
+    }, []);
+    
+    const isTouchActive       = useRef(false);
+    const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (!propEnabled)           return; // control is disabled => no response required
+        if (propReadOnly)           return; // control is readOnly => no response required
+        
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        isTouchActive.current = (event.touches.length === 1); // only touched by single finger => true
+        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
+        event.currentTarget.focus(); // un-prevent to focus()
+    }, [propEnabled, propReadOnly]);
+    const handleTouchPassive  = useEvent<React.TouchEventHandler<HTMLInputElement>>((_event) => {
+        isTouchActive.current = false;
+    }, []);
+    
+    const handleMouseSlide    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        // one of the mouse or touch is active but not both are active:
+        if (
+            (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
+            ||
+            ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
+        ) return;
         
         const track = trackRefInternal.current;
         const thumb = thumbRefInternal.current;
@@ -981,24 +1018,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         pressReleaseState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
-        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
-    }, [propEnabled, propReadOnly, isOrientationVertical]);
+    }, [isOrientationVertical]);
     const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
-        if (event.touches.length !== 1) return;
+        if (event.touches.length !== 1) return; // only single touch
         
         
         
         // simulates the touch as sliding mouse:
         handleMouseSlide({
-            defaultPrevented : event.defaultPrevented,
-            preventDefault   : event.preventDefault,
-            
-            currentTarget    : event.currentTarget,
-            
-            buttons          : 1, // simulate left_click
-            clientX          : event.touches[0].clientX,
-            clientY          : event.touches[0].clientY,
+            clientX : event.touches[0].clientX,
+            clientY : event.touches[0].clientY,
         } as React.MouseEvent<HTMLInputElement, MouseEvent>);
     }, [handleMouseSlide]);
     const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
@@ -1006,7 +1036,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         if (!propEnabled)           return; // control is disabled => no response required
         if (propReadOnly)           return; // control is readOnly => no response required
         
-        if (event.defaultPrevented) return;
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
         
@@ -1042,7 +1072,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     }, [propEnabled, propReadOnly, isOrientationVertical, minFn, maxFn]);
-    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => { /* nothing to do */ }, []);
     
     const handleMouseDown     = useMergeEvents(
         // preserves the original `onMouseDown`:
@@ -1051,7 +1080,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // range handlers:
+        handleMouseActive,
         handleMouseSlide,
+    );
+    const handleMouseUp       = useMergeEvents(
+        // preserves the original `onMouseUp`:
+        props.onMouseUp,
+        
+        
+        
+        // range handlers:
+        handleMousePassive,
     );
     const handleMouseMove     = useMergeEvents(
         // preserves the original `onMouseMove`:
@@ -1062,6 +1101,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // range handlers:
         handleMouseSlide,
     );
+    
     const handleTouchStart    = useMergeEvents(
         // preserves the original `onTouchStart`:
         props.onTouchStart,
@@ -1069,7 +1109,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // range handlers:
+        handleTouchActive,
         handleTouchSlide,
+    );
+    const handleTouchEnd      = useMergeEvents(
+        // preserves the original `onTouchEnd`:
+        props.onTouchEnd,
+        
+        
+        
+        // range handlers:
+        handleTouchPassive,
     );
     const handleTouchMove     = useMergeEvents(
         // preserves the original `onTouchMove`:
@@ -1080,6 +1130,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // range handlers:
         handleTouchSlide,
     );
+    
     const handleKeyDown       = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -1089,6 +1140,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // range handlers:
         handleKeyboardSlide,
     );
+    
+    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
+        /* nothing to do */
+    }, []);
     
     
     
@@ -1177,9 +1232,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
             onAnimationEnd = {handleAnimationEnd}
             
             onMouseDown    = {handleMouseDown   }
+            onMouseUp      = {handleMouseUp     }
             onMouseMove    = {handleMouseMove   }
+            
             onTouchStart   = {handleTouchStart  }
+            onTouchEnd     = {handleTouchEnd    }
             onTouchMove    = {handleTouchMove   }
+            
             onKeyDown      = {handleKeyDown     }
         >
             <input
