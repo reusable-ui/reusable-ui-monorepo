@@ -328,12 +328,6 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                             
                             // sizes:
                             alignSelf  : 'stretch', // follows parent's height
-                            
-                            
-                            
-                            // animations:
-                            transition : 'inherit',
-                            animation  : 'inherit',
                         }),
                         ...imports([
                             // borders:
@@ -1382,6 +1376,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     arrived={arriveLeaveState.arrived}
                     
                     pressed={pressReleaseState.pressed}
+                    
+                    
+                    
+                    // validations:
+                    enableValidation={enableValidation}
+                    isValid={isValid}
+                    inheritValidation={inheritValidation}
                 />
                 { isOrientationVertical ? trackLower : trackUpper }
             </EditableControl>
