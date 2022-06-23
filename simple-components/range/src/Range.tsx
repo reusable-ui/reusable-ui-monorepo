@@ -1318,6 +1318,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 // accessibilities:
+                inheritEnabled={true}
+                inheritReadOnly={true}
+                inheritActive={true}
+                
                 tabIndex={-1} // focus on the whole <Range>, not the <Track>
                 arrived={arriveLeaveState.arrived}
             >
@@ -1345,9 +1349,14 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     
                     
                     // accessibilities:
-                    tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
+                    inheritEnabled={true}
+                    inheritReadOnly={true}
+                    inheritActive={true}
+                    
                     focused={focusBlurState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
+                    tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
                     arrived={arriveLeaveState.arrived}
+                    
                     pressed={pressReleaseState.pressed}
                 />
                 { isOrientationVertical ? trackLower : trackUpper }
