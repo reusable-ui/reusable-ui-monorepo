@@ -328,6 +328,12 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                             
                             // sizes:
                             alignSelf  : 'stretch', // follows parent's height
+                            
+                            
+                            
+                            // animations:
+                            transition : 'inherit',
+                            animation  : 'inherit',
                         }),
                         ...imports([
                             // borders:
@@ -650,6 +656,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // validations:
+        enableValidation,
+        isValid,
+        inheritValidation,
+        
         min,
         max,
         step,
@@ -1230,6 +1240,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             
+            // validations:
+            enableValidation={enableValidation}
+            isValid={isValid}
+            inheritValidation={inheritValidation}
+            
+            
+            
             // handlers:
             onFocus        = {handleFocus       }
             onBlur         = {handleBlur        }
@@ -1324,6 +1341,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 tabIndex={-1} // focus on the whole <Range>, not the <Track>
                 arrived={arriveLeaveState.arrived}
+                
+                
+                
+                // validations:
+                enableValidation={enableValidation}
+                isValid={isValid}
+                inheritValidation={inheritValidation}
             >
                 { isOrientationVertical ? trackUpper : trackLower }
                 <EditableActionControl<HTMLInputElement>
