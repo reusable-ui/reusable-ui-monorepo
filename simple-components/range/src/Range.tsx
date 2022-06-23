@@ -328,6 +328,11 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                             
                             // sizes:
                             alignSelf  : 'stretch', // follows parent's height
+                            
+                            
+                            
+                            // animations:
+                            transition : 'inherit',
                         }),
                         ...imports([
                             // borders:
