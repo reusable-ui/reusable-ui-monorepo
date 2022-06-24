@@ -38,6 +38,11 @@ import {
     
     
     
+    //combinators:
+    children,
+    
+    
+    
     // styles:
     style,
     vars,
@@ -77,6 +82,10 @@ import {
     spacers,
 }                           from '@reusable-ui/spacers'                 // a spacer (gap) management system
 import {
+    // styles:
+    fillTextLineHeightLayout,
+}                           from '@reusable-ui/layouts'                 // reusable common layouts
+import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
@@ -91,6 +100,11 @@ import {
     useTestSemantic,
 }                           from '@reusable-ui/generic'                 // a base component
 import {
+    // types:
+    StateMixin,
+    
+    
+    
     // hooks:
     usesSizeVariant,
     OrientationName,
@@ -103,13 +117,17 @@ import {
     gradientOf,
     ifNotOutlined,
     outlinedOf,
+    usesForeg,
     usesBorder,
     usesPadding,
     usesAnim,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
-    ifActive,
+    ifActived,
+    ifActivating,
+    ifPassivating,
+    ifPassived,
 }                           from '@reusable-ui/indicator'               // a base component
 import {
     // hooks:
@@ -122,15 +140,15 @@ import {
     // hooks:
     ifPress,
     isClientSideLink,
-    
-    
-    
-    // styles:
-    usesActionControlLayout,
-    usesActionControlVariants,
-    usesActionControlStates,
 }                           from '@reusable-ui/action-control'          // a base component
 import {
+    // styles:
+    usesEditableActionControlLayout,
+    usesEditableActionControlVariants,
+    usesEditableActionControlStates,
+    
+    
+    
     // react components:
     EditableActionControlProps,
     EditableActionControl,
@@ -289,10 +307,86 @@ export const usesCheckAnim = (): CheckAnimMixin => {
 //#endregion check animations
 
 
+// states:
+
+//#region checkClear
+export interface CheckClearVars {
+    filterIn  : any
+    filterOut : any
+    transfIn  : any
+    transfOut : any
+    anim      : any
+}
+const [checkVars] = cssVar<CheckClearVars>();
+
+{
+    const [, , checkAnimRegistry] = usesCheckAnim();
+    checkAnimRegistry.registerFilter(checkVars.filterIn);
+    checkAnimRegistry.registerFilter(checkVars.filterOut);
+    checkAnimRegistry.registerTransf(checkVars.transfIn);
+    checkAnimRegistry.registerTransf(checkVars.transfOut);
+    checkAnimRegistry.registerAnim(checkVars.anim);
+}
+
+
+
+/**
+ * Uses check & clear states.
+ * @returns A `StateMixin<CheckClearVars>` represents check & clear state definitions.
+ */
+export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
+    return [
+        () => style({
+            ...states([
+                ifActived({
+                    ...vars({
+                        [checkVars.filterIn ] : checks.filterCheck,
+                        
+                        [checkVars.transfIn ] : checks.transfCheck,
+                    }),
+                }),
+                ifActivating({
+                    ...vars({
+                        [checkVars.filterIn ] : checks.filterCheck,
+                        [checkVars.filterOut] : checks.filterClear,
+                        
+                        [checkVars.transfIn ] : checks.transfCheck,
+                        [checkVars.transfOut] : checks.transfClear,
+                        
+                        [checkVars.anim     ] : checks.animCheck,
+                    }),
+                }),
+                
+                ifPassivating({
+                    ...vars({
+                        [checkVars.filterIn ] : checks.filterCheck,
+                        [checkVars.filterOut] : checks.filterClear,
+                        
+                        [checkVars.transfIn ] : checks.transfCheck,
+                        [checkVars.transfOut] : checks.transfClear,
+                        
+                        [checkVars.anim     ] : checks.animClear,
+                    }),
+                }),
+                ifPassived({
+                    ...vars({
+                        [checkVars.filterOut] : checks.filterClear,
+                        
+                        [checkVars.transfOut] : checks.transfClear,
+                    }),
+                }),
+            ]),
+        }),
+        checkVars,
+    ];
+};
+//#endregion checkClear
+
+
 // appearances:
 
 //#region check style
-export type CheckStyle = 'link'|'ghost' // might be added more styles in the future
+export type CheckStyle = 'btn'|'togglerBtn'|'switch' // might be added more styles in the future
 export interface CheckVariant {
     checkStyle ?: CheckStyle
 }
@@ -306,45 +400,135 @@ export const useCheckVariant = (props: CheckVariant) => {
 
 
 // styles:
-export const usesCheckLayout = (options?: OrientationRuleOptions) => {
-    // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+export const inputElm = ':first-child';
+export const checkElm = '::before';
+export const labelElm = ':nth-child(1n+2)';
+
+export const usesCheckLayout = () => {
+    // dependencies:
+    
+    // foregrounds:
+    const [             , foregs    ] = usesForeg();
+    
+    // animations:
+    const [checkAnimRule, checkAnims] = usesCheckAnim();
+    
+    // spacings:
+    const [             , paddings  ] = usesPadding();
     
     
     
     return style({
         ...imports([
             // layouts:
-            usesActionControlLayout(),
+            usesEditableActionControlLayout(),
+            
+            // animations:
+            checkAnimRule,
         ]),
         ...style({
             // layouts:
-            display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
-            ...rule(orientationInlineSelector, { // inline
-                flexDirection : 'row',         // items are stacked horizontally
-            }),
-            ...rule(orientationBlockSelector,  { // block
-                flexDirection : 'column',      // items are stacked vertically
-            }),
-            justifyContent    : 'center',      // center items (text, icon, etc) horizontally
-            alignItems        : 'center',      // center items (text, icon, etc) vertically
-            flexWrap          : 'wrap',        // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
+            flexDirection  : 'row',         // flow to the document's writing flow
+            justifyContent : 'center',      // items are placed starting from the center (in case of input & label are wrapped, each placed at the center)
+            alignItems     : 'center',      // center items vertically (indicator & label are always at center no matter how tall is the wrapper)
+            flexWrap       : 'wrap',        // allows the label to wrap to the next row if no sufficient width available
             
             
             
             // positions:
-            verticalAlign     : 'baseline',    // check's text should be aligned with sibling text, so the check behave like <span> wrapper
+            verticalAlign  : 'baseline',    // check's text should be aligned with sibling text, so the check behave like <span> wrapper
             
             
             
-            // typos:
-            textAlign         : 'center',
-            
-            
-            
-            // customize:
-            ...usesCssProps(checks), // apply config's cssProps
+            // children:
+            ...children('::before', {
+                ...imports([
+                    fillTextLineHeightLayout(),
+                ]),
+            }),
+            ...children(inputElm, {
+                ...imports([
+                    // layouts:
+                    usesEditableActionControlLayout(),
+                ]),
+                ...style({
+                    // layouts:
+                    display       : 'inline-block', // use inline-block, so it takes the width & height as we set
+                    
+                    
+                    
+                    // sizes:
+                    boxSizing     : 'border-box', // the final size is including borders & paddings
+                    // the size is exactly the same as current font size:
+                    inlineSize    : '1em',
+                    blockSize     : '1em',
+                    
+                    flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's width
+                    
+                    
+                    
+                    // accessibilities:
+                    pointerEvents : 'none', // just an overlay element (ghost), no mouse interaction, clicking on it will focus on the parent
+                    
+                    
+                    
+                    // borders:
+                    overflow      : 'hidden', // clip the icon at borderRadius
+                    
+                    
+                    
+                    // animations:
+                    filter        : ['initial', '!important'], // uses parent filter
+                    
+                    
+                    
+                    // spacings:
+                    [paddings.paddingInline] : '0px', // discard padding
+                    [paddings.paddingBlock ] : '0px', // discard padding
+                    ...ifNotLastChild({
+                        // spacing between input & label:
+                        marginInlineEnd : checks.spacing,
+                    }),
+                    
+                    
+                    
+                    // children:
+                    ...children(checkElm, {
+                        ...imports([
+                            // check indicator:
+                            usesIconImage(
+                                /*iconImage: */checks.img,
+                                /*iconColor: */foregRefs.foreg,
+                            ),
+                        ]),
+                        ...style({
+                            // layouts:
+                            content   : '""',
+                            display   : 'block', // fills the entire parent's width
+                            
+                            
+                            
+                            // sizes:
+                            // fills the entire parent:
+                            boxSizing : 'border-box', // the final size is including borders & paddings
+                            blockSize : '100%', // fills the entire parent's height
+                            
+                            
+                            
+                            // animations:
+                            filter    : checkAnimRefs.filter,
+                            transf    : checkAnimRefs.transf,
+                            anim      : checkAnimRefs.anim,
+                        }),
+                    }),
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(editableControls), // apply config's cssProps
+                }),
+            }),
         }),
     });
 };
@@ -359,7 +543,7 @@ export const usesCheckVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesActionControlVariants(),
+            usesEditableActionControlVariants(),
             
             // layouts:
             sizesRule,
@@ -395,7 +579,7 @@ export const usesCheckStates = () => {
     return style({
         ...imports([
             // states:
-            usesActionControlStates(),
+            usesEditableActionControlStates(),
         ]),
     });
 };
@@ -516,7 +700,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // accessibilities:
         label,
         pressed,
-    ...restActionControlProps} = props;
+    ...restEditableActionControlProps} = props;
     
     
     
@@ -537,7 +721,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     return (
         <EditableActionControl<HTMLInputElement>
             // other props:
-            {...restActionControlProps}
+            {...restEditableActionControlProps}
             
             
             
