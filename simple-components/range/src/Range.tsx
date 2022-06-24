@@ -579,11 +579,11 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
         trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize' ],
         
         tracklowerFilter     : [[
-            'brightness(100%)',
+            'brightness(0.9)',
         ]]                                          as CssKnownProps['filter'],
         trackupperFilter     : [[
-            'contrast(1.5)',
-            'invert(0.5)',
+            'brightness(0.85)',
+            'contrast(0.5)',
             'saturate(0)',
         ]]                                          as CssKnownProps['filter'],
         
