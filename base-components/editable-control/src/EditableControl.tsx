@@ -243,6 +243,11 @@ export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLText
 export type ValidatorHandler       = () => ValResult
 export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
 
+export const isEditableControlElement = (element: Element): element is EditableControlElement => {
+    // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
+    return !!(element as unknown as EditableControlElement).validity;
+};
+
 export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler) => {
     // states:
     // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `validator` callback:
@@ -700,7 +705,7 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
     
     
     // states:
-    const inputValidator    = useInputValidator(props.customValidator);
+    const inputValidator    = useInputValidator<EditableControlElement>(props.customValidator);
     const validInvalidState = useValidInvalidState<TElement>(props, inputValidator.validator);
     
     
@@ -725,8 +730,8 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
         
         
         
-        if (!!(element as unknown as EditableControlElement).validity) { // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
-            inputValidator.handleInit(element as unknown as EditableControlElement);
+        if (isEditableControlElement(element)) {
+            inputValidator.handleInit(element);
         }
         else {
             const firstInput = element.querySelector('input, select, textarea') as (EditableControlElement|null);
