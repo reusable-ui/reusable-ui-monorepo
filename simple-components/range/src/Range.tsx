@@ -875,8 +875,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // sync the hidden <input type="range">'s value:
-        inputElm.valueAsNumber = valueDn;
+        // sync the hidden <input type="hidden">'s value:
+        inputElm.value = valueDn.toString();
         triggerChange(inputElm);
     }, [valueFn, valueDn]);
     
