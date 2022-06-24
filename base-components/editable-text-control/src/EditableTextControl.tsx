@@ -195,7 +195,7 @@ export const usesEditableTextControlLayout = () => {
             ...children(iconElm, {
                 ...imports([
                     usesIconImage(
-                        /*img   : */valids.iconImg,
+                        /*img : */valids.iconImg,
                     ),
                 ]),
                 ...style({
