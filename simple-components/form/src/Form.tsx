@@ -281,7 +281,10 @@ export interface FormProps
         ContentProps<HTMLFormElement>,
         
         // form:
-        Omit<React.FormHTMLAttributes<HTMLFormElement>, 'role'>,
+        Omit<React.FormHTMLAttributes<HTMLFormElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
         
         // validations:
         ValidationProps

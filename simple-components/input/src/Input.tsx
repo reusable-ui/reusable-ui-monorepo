@@ -235,7 +235,13 @@ export interface InputProps
         EditableTextControlProps<HTMLInputElement>,
         
         // input:
-        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'>
+        Omit<InputHTMLAttributes<HTMLInputElement>,
+            // semantics:
+            |'role'                  // we redefined [role] in <Generic>
+            
+            // layouts:
+            |'size'                  // we use css way to resize
+        >
 {
     // validations:
     min          ?: string | number

@@ -166,10 +166,16 @@ export interface LabelProps<TElement extends Element = HTMLSpanElement>
         BasicProps<TElement>,
         
         // span:
-        Omit<React.HTMLAttributes<TElement>, 'role'>,
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
         
         // label:
-        Omit<React.LabelHTMLAttributes<TElement>, 'role'>,
+        Omit<React.LabelHTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
         
         // appearances:
         LabelVariant

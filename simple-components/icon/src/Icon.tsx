@@ -852,7 +852,10 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
         GenericProps<TElement>,
         
         // span:
-        Omit<React.HTMLAttributes<TElement>, 'role'>,
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
         
         // layouts:
         SizeVariant,
