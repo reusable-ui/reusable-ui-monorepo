@@ -189,7 +189,7 @@ export const usesRange = (): FeatureMixin<RangeVars> => {
     return [
         () => style({
             ...vars({
-                [rangeVars.backg] : backgs.backg,
+                [rangeVars.backg] : backgs.backgColor,
             }),
         }),
         rangeVars,
@@ -536,8 +536,7 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
         trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize' ],
         
         tracklowerFilter     : [[
-            'contrast(1.5)',
-            'saturate(0.75)',
+            'brightness(100%)',
         ]]                                          as CssKnownProps['filter'],
         trackupperFilter     : [[
             'contrast(1.5)',
@@ -692,7 +691,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const nude           = props.nude  ?? true;
     const theme          = props.theme ?? 'primary';
     const mild           = props.mild  ?? false;
-    const mildAlternate  = nude ? mild : !mild;
+    const mildAlternate  = !mild;
     
     const minFn          : number      = parseNumber(min)  ?? 0;
     const maxFn          : number      = parseNumber(max)  ?? 100;
