@@ -6,8 +6,29 @@ import {
 
 // cssfn:
 import type {
+    // css values:
+    CssComplexBaseValueOf,
+    
+    
+    
+    // css custom properties:
+    CssCustomSimpleRef,
+    CssCustomRef,
+    CssCustomValue,
+    
+    
+    
     // css known (standard) properties:
     CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
+    
+    CssStyleCollection,
+    
+    CssSelectorCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -19,12 +40,23 @@ import {
     
     // styles:
     style,
+    vars,
     imports,
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
+import {
+    // types:
+    ReadonlyCssCustomRefs,
+    
+    
+    
+    // utilities:
+    cssVar,
+    fallbacks,
+}                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
     
@@ -73,6 +105,7 @@ import {
     outlinedOf,
     usesBorder,
     usesPadding,
+    usesAnim,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
@@ -111,11 +144,149 @@ import type {
 
 // hooks:
 
-// layouts:
+// animations:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
-//#endregion orientation
+//#region check animations
+export interface CheckAnimVars {
+    /**
+     * final filter of the checkbox.
+     */
+    filter : any
+    
+    
+    
+    /**
+     * final transform of the checkbox.
+     */
+    transf : any
+    
+    
+    
+    /**
+     * final animation of the checkbox.
+     */
+    anim   : any
+}
+const [checkAnims] = cssVar<CheckAnimVars>();
+
+
+
+const setsFilter        = new Set<CssCustomSimpleRef>();
+const setsTransf        = new Set<CssCustomSimpleRef>();
+const setsAnim          = new Set<CssCustomSimpleRef>();
+const checkAnimRegistry = {
+    get filters         ():    CssCustomSimpleRef[]      {
+        // dependencies:
+        
+        // animations:
+        const [, anims ] = usesAnim();
+        
+        
+        
+        return [
+            anims.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
+            ...Array.from(setsFilter)
+        ];
+    },
+    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)    },
+    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item) },
+    
+    
+    
+    get transfs         ():    CssCustomSimpleRef[]      {
+        // dependencies:
+        
+        // animations:
+        const [, anims ] = usesAnim();
+        
+        
+        
+        return [
+            anims.transfNone, // the transform collection must contain at least 1 of *none* transform, so when rendered it produces a valid css value of transform property
+            ...Array.from(setsTransf)
+        ];
+    },
+    registerTransf      (item: CssCustomSimpleRef): void { setsTransf.add(item)    },
+    unregisterTransf    (item: CssCustomSimpleRef): void { setsTransf.delete(item) },
+    
+    
+    
+    get anims           ():    CssCustomSimpleRef[]      {
+        // dependencies:
+        
+        // animations:
+        const [, anims ] = usesAnim();
+        
+        
+        
+        return [
+            anims.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
+            ...Array.from(setsAnim)
+        ];
+    },
+    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)      },
+    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)   },
+};
+export type CheckAnimRegistry = typeof checkAnimRegistry
+
+
+
+export type CheckAnimMixin = readonly [() => CssRule, ReadonlyCssCustomRefs<CheckAnimVars>, CheckAnimRegistry]
+/**
+ * Uses check animation.
+ * @returns A `CheckAnimMixin` represents check animation definitions.
+ */
+export const usesCheckAnim = (): CheckAnimMixin => {
+    // dependencies:
+    
+    // animations:
+    const [, anims ] = usesAnim();
+    
+    
+    
+    return [
+        () => style({
+            ...vars({
+                [checkAnims.filter       ] : [[
+                    // combining: filter1 * filter2 * filter3 ...
+                    
+                    // layers:
+                    ...checkAnimRegistry.filters,
+                ]],
+                
+                
+                
+                [checkAnims.transf       ] : [[
+                    // combining: transf1 * transf2 * transf3 ...
+                    
+                    // layers:
+                    ...checkAnimRegistry.transfs,
+                ]],
+                
+                
+                
+                [checkAnims.anim         ] : [
+                    // layering: anim1 | anim2 | anim3 ...
+                    
+                    // layers:
+                    ...checkAnimRegistry.anims,
+                ],
+            }),
+            
+            
+            
+            // declare default values at lowest specificity (except for **None):
+            ...vars(Object.fromEntries([
+                ...checkAnimRegistry.filters   .filter((ref) => (ref !== anims.filterNone   )).map((ref) => [ ref, anims.filterNone    ]),
+                ...checkAnimRegistry.transfs   .filter((ref) => (ref !== anims.transfNone   )).map((ref) => [ ref, anims.transfNone    ]),
+                ...checkAnimRegistry.anims     .filter((ref) => (ref !== anims.animNone     )).map((ref) => [ ref, anims.animNone      ]),
+            ])),
+        }),
+        checkAnims,
+        checkAnimRegistry,
+    ];
+};
+//#endregion check animations
 
 
 // appearances:
@@ -297,11 +468,11 @@ export interface CheckProps
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
         >,
         
-        // layouts:
-        OrientationVariant,
-        
         // appearances:
-        CheckVariant
+        CheckVariant,
+        
+        // behaviors:
+        TogglerActiveProps
 {
     // accessibilities:
     label    ?: string
@@ -318,7 +489,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
     const checkVariant       = useCheckVariant(props);
     
     
@@ -358,7 +528,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         
         // variants:
-        orientationVariant.class,
         checkVariant.class,
     );
     
