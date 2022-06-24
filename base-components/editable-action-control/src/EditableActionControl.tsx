@@ -47,11 +47,6 @@ import {
     ActionControlProps,
 }                           from '@reusable-ui/action-control'      // a base component
 import {
-    // hooks:
-    EditableControlElement,
-    
-    
-    
     // styles:
     usesEditableControlLayout,
     usesEditableControlVariants,
@@ -111,14 +106,14 @@ export const useEditableActionControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // react components:
-export interface EditableActionControlProps<TElement extends EditableControlElement = EditableControlElement>
+export interface EditableActionControlProps<TElement extends Element = Element>
     extends
         // bases:
         EditableControlProps<TElement>,
         Omit<ActionControlProps<TElement>, 'onChange'>
 {
 }
-const EditableActionControl = <TElement extends EditableControlElement = EditableControlElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
+const EditableActionControl = <TElement extends Element = Element>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableActionControlStyleSheet();
     
