@@ -107,16 +107,12 @@ import {
     
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationRuleOptions,
-    defaultInlineOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
-    OrientationVariant,
-    useOrientationVariant,
+    ifNotNude,
+    ifNude,
     gradientOf,
     ifNotOutlined,
     outlinedOf,
+    usesMildVariant,
     usesForeg,
     usesBorder,
     usesPadding,
@@ -157,6 +153,10 @@ import type {
     // types:
     InputHTMLAttributes,
 }                           from '@reusable-ui/input'                   // a neighbor component
+import {
+    // styles:
+    usesIconImage,
+}                           from '@reusable-ui/icon'                    // an icon set
 
 
 
@@ -498,8 +498,8 @@ export const usesCheckLayout = () => {
                         ...imports([
                             // check indicator:
                             usesIconImage(
-                                /*iconImage: */checks.img,
-                                /*iconColor: */foregRefs.foreg,
+                                /*img   : */checks.img,
+                                /*color : */foregs.foreg,
                             ),
                         ]),
                         ...style({
@@ -517,17 +517,36 @@ export const usesCheckLayout = () => {
                             
                             
                             // animations:
-                            filter    : checkAnimRefs.filter,
-                            transf    : checkAnimRefs.transf,
-                            anim      : checkAnimRefs.anim,
+                            filter    : checkAnims.filter,
+                            transf    : checkAnims.transf,
+                            anim      : checkAnims.anim,
                         }),
                     }),
                     
                     
                     
                     // customize:
-                    ...usesCssProps(editableControls), // apply config's cssProps
+                    ...usesCssProps(checks), // apply config's cssProps
                 }),
+            }),
+            ...children(labelElm, {
+                // layouts:
+                display       : 'inline', // use inline, so it takes the width & height automatically
+                
+                
+                
+                // positions:
+                verticalAlign : 'baseline', // label's text should be aligned with sibling text, so the label behave like <span> wrapper
+                
+                
+                
+                // sizes:
+                flex          : [[1, 1, 0]], // growable, shrinkable, initial from 0 width (setting initial to `auto`, when wrapped to next line, causing the text is not centered)
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(checks, 'label')), // apply config's cssProps starting with label***
             }),
         }),
     });
@@ -537,6 +556,13 @@ export const usesCheckVariants = () => {
     
     // layouts:
     const [sizesRule] = usesSizeVariant(checks);
+    
+    // foregrounds:
+    const [, milds  ] = usesMildVariant();
+    const [, foregs ] = usesForeg();
+    
+    // borders:
+    const [, borders] = usesBorder();
     
     
     
@@ -549,30 +575,25 @@ export const usesCheckVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule('.ghost', {
-                ...style({
+        ], { specificityWeight: 1 }),
+        ...variants([
+            ifNotNude({
+                // children:
+                ...children(inputElm, {
                     // borders:
-                    boxShadow : ['none', '!important'], // no focus animation
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(checks, 'ghost')), // apply config's cssProps starting with ghost***
+                    [borders.borderColor] : foregs.foreg,  // make a contrast border between indicator & filler
                 }),
-                ...states([
-                    ifArrive({
-                        // appearances:
-                        opacity: checks.ghostOpacityArrive, // increase the opacity to increase visibility
-                    }),
-                    ifLeave({
-                        ...imports([
-                            // backgrounds:
-                            gradientOf(false), // hides the gradient to increase invisibility
-                        ]),
-                    }),
-                ]),
             }),
-        ]),
+            ifNude({
+                // foregrounds:
+                foreg     : [milds.foregFn, '!important'], // no valid/invalid animation
+                
+                
+                
+                // animations:
+                boxShadow : ['initial'    , '!important'], // no focus animation
+            }),
+        ], { specificityWeight: 2 }),
     });
 };
 export const usesCheckStates = () => {
