@@ -611,7 +611,7 @@ export interface RangeProps
         EditableActionControlProps<HTMLInputElement>,
         
         // input[type="range"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'size'|'pattern'|'type'|'placeholder'|'autoComplete'|'list'|'required'|'minLength'|'maxLength'|'enterKeyHint'>,
+        Omit<InputHTMLAttributes<HTMLInputElement>, 'role'|'type'|'size'|'pattern'|'placeholder'|'autoComplete'|'list'|'required'|'minLength'|'maxLength'|'enterKeyHint'>,
         
         // layouts:
         OrientationVariant
