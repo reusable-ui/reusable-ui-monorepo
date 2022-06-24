@@ -328,9 +328,7 @@ export const [editableTextControls, editableTextControlValues, cssEditableTextCo
 
 
 // react components:
-export type EditableTextControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
-
-export interface EditableTextControlProps<TElement extends EditableTextControlElement = EditableTextControlElement>
+export interface EditableTextControlProps<TElement extends Element = Element>
     extends
         // bases:
         EditableControlProps<TElement>
@@ -339,7 +337,7 @@ export interface EditableTextControlProps<TElement extends EditableTextControlEl
     minLength ?: number
     maxLength ?: number
 }
-const EditableTextControl = <TElement extends EditableTextControlElement = EditableTextControlElement>(props: EditableTextControlProps<TElement>): JSX.Element|null => {
+const EditableTextControl = <TElement extends Element = Element>(props: EditableTextControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet = useEditableTextControlStyleSheet();
     
