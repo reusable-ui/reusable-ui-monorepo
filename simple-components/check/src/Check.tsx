@@ -102,6 +102,10 @@ import {
     EditableActionControlProps,
     EditableActionControl,
 }                           from '@reusable-ui/editable-action-control' // a base component
+import type {
+    // types:
+    InputHTMLAttributes,
+}                           from '@reusable-ui/input'                   // a neighbor component
 
 
 
@@ -272,8 +276,26 @@ export interface CheckProps
         // bases:
         EditableActionControlProps<HTMLInputElement>,
         
-        // check:
-        Omit<React.InputHTMLAttributes<HTMLInputElement>, 'role'|'type'|'size'>,
+        // input[type="checkbox"]:
+        Omit<InputHTMLAttributes<HTMLInputElement>,
+            // semantics:
+            |'role'                  // we redefined [role] in <Generic>
+            
+            // layouts:
+            |'size'                  // we use css way to resize
+            
+            // accessibilities:
+            |'enterKeyHint'          // no special [enter] keyboard
+            
+            // validations:
+            |'minLength'|'maxLength' // text length constraint is not supported
+            |'min'|'max'|'step'      // range & step are not supported
+            |'pattern'               // text regex is not supported
+            
+            // formats:
+            |'type'                              // always [type="checkbox"] or [type="radio"]
+            |'placeholder'|'autoComplete'|'list' // text hints are not supported
+        >,
         
         // layouts:
         OrientationVariant,
