@@ -804,7 +804,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         trackRefInternal,
-    ) as React.Ref<HTMLInputElement>|undefined;
+    );
     const mergedThumbRef   = useMergeRefs(
         // preserves the original `thumbRef`:
         thumbRef,
@@ -812,7 +812,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         thumbRefInternal,
-    ) as React.Ref<HTMLInputElement>|undefined;
+    );
     
     
     
@@ -1217,10 +1217,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         handleKeyboardSlide,
     );
     
-    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
-        /* nothing to do */
-    }, []);
-    
     
     
     // jsx:
@@ -1329,16 +1325,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 // accessibilities:
-                
-                // still on <EditableControl> element
-                // {...{
-                //     autoFocus,
-                //     tabIndex,
-                //     enterKeyHint,
-                // }}
-                
                 disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value if readOnly
                 
                 
                 
@@ -1354,26 +1341,16 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 {...{
                     // fully controllable by <Range>:
                     value    : valueNow,
-                    onChange : handleChangeDummy, // just for satisfying React of controllable <input>
-                }}
-                
-                
-                
-                // validations:
-                {...{
-                    min  : negativeFn ? maxFn : minFn,
-                    max  : negativeFn ? minFn : maxFn,
-                    step : stepFn,
                 }}
                 
                 
                 
                 // formats:
                 {...{
-                    type : 'range',
+                    type : 'hidden',
                 }}
             />
-            <EditableControl<HTMLInputElement>
+            <EditableControl<HTMLElement>
                 // refs:
                 elmRef={mergedTrackRef}
                 
@@ -1410,7 +1387,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 inheritValidation={inheritValidation}
             >
                 { isOrientationVertical ? trackUpper : trackLower }
-                <EditableActionControl<HTMLInputElement>
+                <EditableActionControl<HTMLElement>
                     // refs:
                     elmRef={mergedThumbRef}
                     
