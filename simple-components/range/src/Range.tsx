@@ -277,6 +277,11 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
             
             
             
+            // accessibilities:
+            touchAction       : 'pinch-zoom', // prevents scrolling by touch, but allows to zoom_in/out
+            
+            
+            
             // children:
             ...rule(orientationInlineSelector, { // inline
                 ...children('::before', {
@@ -1028,8 +1033,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         isMouseActive.current = ((event.buttons & 1) === 1); // only left button is pressed => true
-        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
-        event.currentTarget.focus(); // un-prevent to focus()
     }, [propEnabled, propReadOnly]);
     
     const isTouchActive       = useRef(false);
@@ -1043,8 +1046,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         isTouchActive.current = (event.touches.length === 1); // only touched by single finger => true
-        event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
-        event.currentTarget.focus(); // un-prevent to focus()
+        // already handled by css `touch-action: pinch-zoom`
+        // event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
+        // event.currentTarget.focus(); // un-prevent to focus()
     }, [propEnabled, propReadOnly]);
     
     useEffect(() => {
