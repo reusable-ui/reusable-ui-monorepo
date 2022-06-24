@@ -51,6 +51,7 @@
     "@reusable-ui/editable-action-control": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/indicator": "^5.0.0",
     "@reusable-ui/input": "^5.0.0",
     "@reusable-ui/layouts": "^5.0.0",
     "@reusable-ui/utilities": "^5.0.0",

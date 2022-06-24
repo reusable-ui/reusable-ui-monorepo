@@ -21,11 +21,17 @@ import type {
 import type {
     // css known (standard) properties:
     CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
+    states,
     
     
     
@@ -105,13 +111,21 @@ import {
     OrientationVariant,
     useOrientationVariant,
     ifNude,
+    mildOf,
     usesBackg,
     extendsBorder,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
+    ifActive,
+}                           from '@reusable-ui/indicator'               // a base component
+import {
+    // hooks:
+    markActive as controlMarkActive,
+    ifFocus,
     useFocusBlurState,
+    ifArrive,
     useArriveLeaveState,
 }                           from '@reusable-ui/control'                 // a base component
 import {
@@ -196,6 +210,18 @@ export const usesRange = (): FeatureMixin<RangeVars> => {
     ];
 };
 //#endregion range
+
+// states:
+
+//#region activePassive
+export const markActive = (): CssRule => style({
+    ...imports([
+        controlMarkActive(),
+        
+        mildOf(null), // keeps mild variant
+    ]),
+});
+//#endregion activePassive
 
 
 
@@ -489,6 +515,23 @@ export const usesRangeStates = () => {
         ...imports([
             // states:
             usesEditableControlStates(),
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifFocus({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifArrive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
         ]),
     });
 };
