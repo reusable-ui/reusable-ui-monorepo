@@ -273,7 +273,7 @@ export interface CheckProps
         EditableActionControlProps<HTMLInputElement>,
         
         // check:
-        Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'|'role'>,
+        Omit<React.InputHTMLAttributes<HTMLInputElement>, 'role'|'type'|'size'>,
         
         // layouts:
         OrientationVariant,
