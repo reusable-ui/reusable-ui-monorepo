@@ -1372,8 +1372,8 @@ const animRegistry  = {
             ...Array.from(setsBoxShadow)
         ];
     },
-    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)          },
-    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item)       },
+    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    },
+    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) },
     
     
     
@@ -1383,8 +1383,8 @@ const animRegistry  = {
             ...Array.from(setsFilter)
         ];
     },
-    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)             },
-    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)          },
+    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       },
+    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    },
     
     
     
@@ -1394,8 +1394,8 @@ const animRegistry  = {
             ...Array.from(setsAnim)
         ];
     },
-    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)               },
-    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)            },
+    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         },
+    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      },
 };
 export type AnimRegistry = typeof animRegistry
 
