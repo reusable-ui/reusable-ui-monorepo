@@ -243,7 +243,7 @@ export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLText
 export type ValidatorHandler       = () => ValResult
 export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
 
-export const useInputValidator     = (customValidator?: CustomValidatorHandler) => {
+export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler) => {
     // states:
     // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `validator` callback:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
@@ -277,7 +277,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         };
     }, []); // runs once on startup
     
-    const handleValidation = useCallback((element: EditableControlElement, immediately = false) => {
+    const handleValidation = useCallback((element: TElement, immediately = false) => {
         const performUpdate = () => {
             // remember the validation result:
             const currentValidity = element.validity;
@@ -313,11 +313,11 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
         } // if
     }, [customValidator]);
     
-    const handleInit       = useCallback((element: EditableControlElement) => {
+    const handleInit       = useCallback((element: TElement) => {
         handleValidation(element, /*immediately =*/true);
     }, [handleValidation]);
     
-    const handleChange     = useEvent<React.ChangeEventHandler<EditableControlElement>>(({target}) => {
+    const handleChange     = useEvent<React.ChangeEventHandler<TElement>>(({target}) => {
         handleValidation(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
     }, [handleValidation]);
     
@@ -331,7 +331,7 @@ export const useInputValidator     = (customValidator?: CustomValidatorHandler) 
     };
 };
 
-export const useValidInvalidState  = <TElement extends EditableControlElement|HTMLFormElement = EditableControlElement>(props: ValidationProps, validator?: ValidatorHandler) => {
+export const useValidInvalidState  = <TElement extends Element = Element>(props: ValidationProps, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
@@ -663,7 +663,7 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
 
 
 // react components:
-export interface EditableControlProps<TElement extends EditableControlElement = EditableControlElement>
+export interface EditableControlProps<TElement extends Element = Element>
     extends
         // bases:
         ControlProps<TElement>,
@@ -693,7 +693,7 @@ export interface EditableControlProps<TElement extends EditableControlElement = 
     value           ?: string | number | ReadonlyArray<string>
     onChange        ?: React.ChangeEventHandler<TElement>
 }
-const EditableControl = <TElement extends EditableControlElement = EditableControlElement>(props: EditableControlProps<TElement>): JSX.Element|null => {
+const EditableControl = <TElement extends Element = Element>(props: EditableControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableControlStyleSheet();
     
@@ -725,8 +725,8 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
         
         
         
-        if (!!element.validity) { // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
-            inputValidator.handleInit(element);
+        if (!!(element as unknown as EditableControlElement).validity) { // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
+            inputValidator.handleInit(element as unknown as EditableControlElement);
         }
         else {
             const firstInput = element.querySelector('input, select, textarea') as (EditableControlElement|null);
@@ -767,7 +767,7 @@ const EditableControl = <TElement extends EditableControlElement = EditableContr
         // states:
         
         // validations:
-        inputValidator.handleChange,
+        inputValidator.handleChange as unknown as React.ChangeEventHandler<TElement>,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
