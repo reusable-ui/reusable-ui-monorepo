@@ -396,10 +396,10 @@ export interface SemanticButtonProps<TElement extends Element = HTMLButtonElemen
         ActionControlProps<TElement>,
         
         // button:
-        Omit<React.ButtonHTMLAttributes<TElement>, 'type'|'role'>,
+        Omit<React.ButtonHTMLAttributes<TElement>, 'role'|'type'>,
         
         // link:
-        Omit<React.AnchorHTMLAttributes<TElement>, 'type'|'role'>
+        Omit<React.AnchorHTMLAttributes<TElement>, 'role'|'type'>
 {
     // actions:
     type ?: ButtonType | (string & {})
