@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -133,6 +138,8 @@ import {
     ifActivating,
     ifPassivating,
     ifPassived,
+    TogglerActiveProps,
+    useTogglerActive,
 }                           from '@reusable-ui/indicator'               // a base component
 import {
     // hooks:
@@ -885,21 +892,32 @@ export interface CheckProps
         TogglerActiveProps
 {
     // accessibilities:
-    label    ?: string
+    label          ?: string
+    
+    
+    
+    // formats:
+    type           ?: 'checkbox' | 'radio'
+    
+    
+    
+    // values:
+    defaultChecked ?: boolean
+    checked        ?: boolean
     
     
     
     // children:
-    children ?: React.ReactNode
+    children       ?: React.ReactNode
 }
 const Check = (props: CheckProps): JSX.Element|null => {
     // styles:
-    const styleSheet         = useCheckStyleSheet();
+    const styleSheet   = useCheckStyleSheet();
     
     
     
     // variants:
-    const checkVariant       = useCheckVariant(props);
+    const checkVariant = useCheckVariant(props);
     
     
     
@@ -907,26 +925,71 @@ const Check = (props: CheckProps): JSX.Element|null => {
     const {
         // remove props:
         
-        // layouts:
-        orientation : _orientation,
-        
-        
-        
         // appearances:
         checkStyle  : _checkStyle,
         
         
         
-        // variants:
-        outlined = _defaultOutlined,
-        mild     = _defaultMild,
+        // refs:
+        elmRef,
         
         
         
         // accessibilities:
+        
+        // still on <EditableActionControl> element
+        // autoFocus,
+        // tabIndex,
+        // enterKeyHint,
+        
+        defaultActive,                    // take,     to be handled by `useTogglerActive`
+        active,                           // take,     to be handled by `useTogglerActive`
+        onActiveChange : _onActiveChange, // delete, already handled by `useTogglerActive`
+        
         label,
-        pressed,
+        
+        
+        
+        // validations:
+        required,
+        
+        
+        
+        // formats:
+        type = 'checkbox',
+        
+        
+        
+        // forms:
+        name,
+        form,
+        
+        
+        
+        // values:
+        defaultValue,
+        value,
+        onChange, // forwards to `input[type]`
+        
+        defaultChecked, // take, to be aliased to `defaultActive`
+        checked,        // take, to be aliased to `active`
+        
+        
+        
+        // children:
+        children,
     ...restEditableActionControlProps} = props;
+    
+    
+    
+    // states:
+    const inputRefInternal = useRef<HTMLInputElement|null>(null);
+    const [isActive, setActive] = useTogglerActive({
+        ...props,
+        
+        defaultActive : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
+        active        : active        ?? checked,        // aliased `checked`        to `active`
+    }, /*changeEventTarget :*/inputRefInternal);
     
     
     
@@ -985,5 +1048,3 @@ export {
     Check,
     Check as default,
 }
-
-export type { OrientationName, OrientationVariant }
