@@ -63,8 +63,8 @@ import {
 
 
 // defaults:
-const defaultElementResizeOptions : ResizeObserverOptions = { box: 'border-box'  };
-const defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box' };
+const defaultElementResizeOptions : ResizeObserverOptions = { box: 'border-box'  }
+const defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box' }
 
 
 
