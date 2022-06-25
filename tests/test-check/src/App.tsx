@@ -36,10 +36,10 @@ function App() {
                     <Check theme='primary'>
                         test &lt;Check&gt;
                     </Check>
-                    <Check theme='success' checkStyle='btn'>
+                    <Check theme='success' checkStyle='btn' nude={false}>
                         test &lt;Check&gt;
                     </Check>
-                    <Check theme='danger' checkStyle='togglerBtn'>
+                    <Check theme='danger' checkStyle='togglerBtn' nude={false}>
                         test &lt;Check&gt;
                     </Check>
                 </article>
