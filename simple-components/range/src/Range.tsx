@@ -1370,9 +1370,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // values:
                 {...{
-                    // fully controllable by <Range>:
-                    value    : valueNow,
-                    // onChange : handleChangeDummy, // just for satisfying React of controllable <input>
+                    // defaultValue : defaultValueFn, // fully controllable, no defaultValue
+                    value    : valueNow,              // fully controllable
+                    // onChange : handleChangeDummy,  // just for satisfying React of controllable <input>
                 }}
                 
                 
