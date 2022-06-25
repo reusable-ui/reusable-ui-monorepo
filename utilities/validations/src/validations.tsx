@@ -13,12 +13,12 @@ import {
 
 
 // defaults:
-const _defaultEnableRootValidation = false; // no validation at root level
-const _defaultEnableValidation     = true;  // perform validation at <ValidationProvider>
+const _defaultEnableRootValidation = false // no validation at root level
+const _defaultEnableValidation     = true  // perform validation at <ValidationProvider>
 
-const _defaultIsValid              = undefined as (Result|undefined); // all descendants are independent valid/invalid/uncheck
+const _defaultIsValid              = undefined as (Result|undefined) // all descendants are independent valid/invalid/uncheck
 
-const _defaultInheritValidation    = true;  // if ancestor is valid/invalid/uncheck => all descendants are forced to valid/invalid/uncheck
+const _defaultInheritValidation    = true  // if ancestor is valid/invalid/uncheck => all descendants are forced to valid/invalid/uncheck
 
 
 
