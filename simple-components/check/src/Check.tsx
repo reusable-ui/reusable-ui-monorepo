@@ -942,9 +942,9 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // tabIndex,
         // enterKeyHint,
         
-        defaultActive,                    // take,     to be handled by `useTogglerActive`
-        active,                           // take,     to be handled by `useTogglerActive`
-        onActiveChange : _onActiveChange, // delete, already handled by `useTogglerActive`
+        defaultActive,  // take, to be handled by `useTogglerActive`
+        active,         // take, to be handled by `useTogglerActive`
+        onActiveChange, // take, to be handled by `useTogglerActive`
         
         label,
         
@@ -985,10 +985,16 @@ const Check = (props: CheckProps): JSX.Element|null => {
     // states:
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
     const [isActive, setActive] = useTogglerActive({
-        ...props,
+        enabled         : props.enabled,
+        inheritEnabled  : props.inheritEnabled,
         
-        defaultActive : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
-        active        : active        ?? checked,        // aliased `checked`        to `active`
+        readOnly        : props.readOnly,
+        inheritReadOnly : props.inheritReadOnly,
+        
+        defaultActive   : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
+        active          : active        ?? checked,        // aliased `checked`        to `active`
+        inheritActive   : props.inheritActive,
+        onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
     
     
