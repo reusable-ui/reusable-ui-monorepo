@@ -470,11 +470,11 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
     const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
     const wasActive = useRef<boolean>(activeFn);
     
-    if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
-        wasActive.current = activeFn;     // remember the last change
-        
-        
-        if (active === null) { // if uncontrollable [active]
+    if (active === null) { // only for uncontrollable [active]
+        if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
+            wasActive.current = activeFn;     // remember the last change
+            
+            
             // fire change synthetic event:
             props.onActiveChange?.(activeFn);
             
