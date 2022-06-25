@@ -13,13 +13,13 @@ import {
 
 
 // defaults:
-const _defaultEnabled         = true;  // enabled
-const _defaultReadOnly        = false; // mutable
-const _defaultActive          = false; // normal state
+const _defaultEnabled         = true  // enabled
+const _defaultReadOnly        = false // mutable
+const _defaultActive          = false // normal state
 
-const _defaultInheritEnabled  = true;  // if ancestor is disabled => all descendants are forced to disabled
-const _defaultInheritReadOnly = true;  // if ancestor is readonly => all descendants are forced to readonly
-const _defaultInheritActive   = false; // all descendants are independent normal/active state
+const _defaultInheritEnabled  = true  // if ancestor is disabled => all descendants are forced to disabled
+const _defaultInheritReadOnly = true  // if ancestor is readonly => all descendants are forced to readonly
+const _defaultInheritActive   = false // all descendants are independent normal/active state
 
 
 
