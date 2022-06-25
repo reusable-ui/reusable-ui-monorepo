@@ -35,6 +35,7 @@ import {
     rule,
     variants,
     states,
+    keyframes,
     
     
     
@@ -47,6 +48,11 @@ import {
     style,
     vars,
     imports,
+    
+    
+    
+    // utilities:
+    escapeSvg,
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
@@ -70,6 +76,7 @@ import {
     // utilities:
     usesCssProps,
     usesPrefixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
@@ -117,6 +124,8 @@ import {
     usesBorder,
     usesPadding,
     usesAnim,
+    fallbackNoneFilter,
+    fallbackNoneTransf,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
@@ -127,10 +136,7 @@ import {
 }                           from '@reusable-ui/indicator'               // a base component
 import {
     // hooks:
-    usesThemeActive,
-    ifFocus,
-    ifArrive,
-    ifLeave,
+    usesFocusBlurState,
 }                           from '@reusable-ui/control'                 // a base component
 import {
     // hooks:
@@ -157,6 +163,10 @@ import {
     // styles:
     usesIconImage,
 }                           from '@reusable-ui/icon'                    // an icon set
+import {
+    // styles:
+    usesButtonLayout,
+}                           from '@reusable-ui/button'                  // a button ui
 
 
 
@@ -400,6 +410,7 @@ export const useCheckVariant = (props: CheckVariant) => {
 
 
 // styles:
+export const dummyElm = '::before';
 export const inputElm = ':first-child';
 export const checkElm = '::before';
 export const labelElm = ':nth-child(1n+2)';
@@ -442,7 +453,7 @@ export const usesCheckLayout = () => {
             
             
             // children:
-            ...children('::before', {
+            ...children(dummyElm, {
                 ...imports([
                     fillTextLineHeightLayout(),
                 ]),
@@ -575,6 +586,64 @@ export const usesCheckVariants = () => {
             sizesRule,
         ]),
         ...variants([
+            rule(['.btn', '.togglerBtn'], {
+                ...imports([
+                    // layouts:
+                    usesButtonLayout(),
+                ]),
+                ...style({
+                    // children:
+                    // hides the <dummy> & <Check>'s indicator:
+                    ...children([dummyElm, inputElm], {
+                        // layouts:
+                        display : 'none',
+                    }),
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(checks, 'btn')), // apply config's cssProps starting with btn***
+                    
+                    // overwrites propName = {btn}propName:
+                    ...overwriteProps(checks, usesPrefixedProps(checks, 'btn')),
+                }),
+            }),
+            rule('.togglerBtn', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(checks, 'togglerBtn')), // apply config's cssProps starting with togglerBtn***
+                
+                // overwrites propName = {togglerBtn}propName:
+                ...overwriteProps(checks, usesPrefixedProps(checks, 'togglerBtn')),
+            }),
+            
+            rule('.switch', {
+                // children:
+                ...children(inputElm, {
+                    // sizes:
+                    aspectRatio : '2 / 1', // make the width twice the height
+                    inlineSize : 'auto',   // make the width twice the height
+                    
+                    
+                    
+                    // borders:
+                    // circle corners on top:
+                    [borders.borderStartStartRadius] : borderRadiuses.pill,
+                    [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                    // circle corners on bottom:
+                    [borders.borderEndStartRadius  ] : borderRadiuses.pill,
+                    [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(checks, 'switch')), // apply config's cssProps starting with switch***
+                }),
+                
+                
+                
+                // overwrites propName = {switch}propName:
+                ...overwriteProps(checks, usesPrefixedProps(checks, 'switch')),
+            }),
         ], { specificityWeight: 1 }),
         ...variants([
             ifNotNude({
@@ -597,11 +666,30 @@ export const usesCheckVariants = () => {
     });
 };
 export const usesCheckStates = () => {
+    // dependencies:
+    
+    // states:
+    const [         , focuses] = usesFocusBlurState();
+    const [checkRule         ] = usesCheckClearState();
+    
+    
+    
     return style({
         ...imports([
             // states:
             usesEditableActionControlStates(),
+            checkRule,
         ]),
+        ...style({
+            // children:
+            ...children(inputElm, {
+                ...vars({
+                    // copy focus effect from parent:
+                    [focuses.boxShadow] : 'inherit',
+                    [focuses.anim     ] : 'inherit',
+                }),
+            }),
+        }),
     });
 };
 
@@ -622,25 +710,142 @@ export const useCheckStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
+    // dependencies:
+    
+    const [, , checkAnimRegistry] = usesCheckAnim();
+    const filters = checkAnimRegistry.filters;
+    const transfs = checkAnimRegistry.transfs;
+    
+    const [, {filterIn: filterCheckClearIn, filterOut: filterCheckClearOut, transfIn: transfCheckClearIn, transfOut: transfCheckClearOut}] = usesCheckClearState();
+    
+    
+    
+    //#region keyframes
+    const frameCleared = style({
+        filter: [[
+            ...filters.filter((f) => ![filterCheckClearIn, filterCheckClearOut].includes(f)),
+            
+            filterCheckClearOut,
+        ]].map(fallbackNoneFilter),
+        
+        transf: [[
+            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+            
+            transfCheckClearOut,
+        ]].map(fallbackNoneTransf),
+    });
+    const frameChecked = style({
+        filter: [[
+            ...filters.filter((f) => ![filterCheckClearIn, filterCheckClearOut].includes(f)),
+            
+            filterCheckClearIn,
+        ]].map(fallbackNoneFilter),
+        
+        transf: [[
+            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+            
+            transfCheckClearIn,
+        ]].map(fallbackNoneTransf),
+    });
+    const [keyframesCheckRule, keyframesCheck] = keyframes({
+        from  : frameCleared,
+        to    : frameChecked,
+    });
+    keyframesCheck.value = 'check'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckClearState`
+    const [keyframesClearRule, keyframesClear] = keyframes({
+        from  : frameChecked,
+        to    : frameCleared,
+    });
+    keyframesClear.value = 'clear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckClearState`
+    
+    
+    
+    const frameClearing = style({
+        transformOrigin: 'right',
+        transf: [[
+            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+            
+            transfCheckClearOut,
+            'scaleX(1.2)', // add a bumpy effect
+        ]].map(fallbackNoneTransf),
+    });
+    const frameChecking = style({
+        transformOrigin: 'left', 
+        transf: [[
+            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+            
+            transfCheckClearIn,
+            'scaleX(1.2)', // add a bumpy effect
+        ]].map(fallbackNoneTransf),
+    });
+    const [keyframesSwitchCheckRule, keyframesSwitchCheck] = keyframes({
+        from  : frameCleared,
+        '75%' : frameChecking,
+        to    : frameChecked,
+    });
+    keyframesSwitchCheck.value = 'switchCheck'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckClearState`
+    const [keyframesSwitchClearRule, keyframesSwitchClear] = keyframes({
+        from  : frameChecked,
+        '75%' : frameClearing,
+        to    : frameCleared,
+    });
+    keyframesSwitchClear.value = 'switchClear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckClearState`
+    //#endregion keyframes
+    
+    
+    
     return {
         // spacings:
-        gapInline          : spacers.sm as CssKnownProps['gapInline'],
-        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
-        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
-        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
-        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
-        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
+        spacing           : '0.3em'   as CssKnownProps['gapInline'],
         
         
         
-        // typos:
-        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
+        // animations:
+        // forked from Bootstrap 5:
+        img               : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
+        switchImg         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
         
         
+        filterCheck       : [[
+            'opacity(100%)',
+        ]]                            as CssKnownProps['filter'],
+        filterClear       : [[
+            'opacity(0%)',
+        ]]                            as CssKnownProps['filter'],
+        transfCheck       : 'initial' as CssKnownProps['transform'],
+        transfClear       : 'initial' as CssKnownProps['transform'],
         
-        // ghost style:
-        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
-        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
+        ...keyframesCheckRule,
+        ...keyframesClearRule,
+        animCheck         : [
+            ['150ms', 'ease-out', 'both', keyframesCheck      ],
+        ]                             as CssKnownProps['anim'],
+        animClear         : [
+            ['150ms', 'ease-out', 'both', keyframesClear      ],
+        ]                             as CssKnownProps['anim'],
+        
+        
+        switchFilterCheck : [[
+            'opacity(100%)',
+        ]]                            as CssKnownProps['filter'],
+        switchFilterClear : [[
+            'opacity(50%)',
+        ]]                            as CssKnownProps['filter'],
+        switchTransfCheck : [[
+            'translateX(0.5em)',
+        ]]                            as CssKnownProps['transform'],
+        switchTransfClear : [[
+            'translateX(-0.5em)',
+        ]]                            as CssKnownProps['transform'],
+        
+        ...keyframesSwitchCheckRule,
+        ...keyframesSwitchClearRule,
+        switchAnimCheck   : [
+            ['200ms', 'ease-out', 'both', keyframesSwitchCheck],
+        ]                             as CssKnownProps['anim'],
+        switchAnimClear   : [
+            ['200ms', 'ease-out', 'both', keyframesSwitchClear],
+        ]                             as CssKnownProps['anim'],
     };
 }, { prefix: 'chk' });
 
