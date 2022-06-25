@@ -1347,7 +1347,16 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 // accessibilities:
+                
+                // still on <EditableControl> element
+                // {...{
+                //     autoFocus,
+                //     tabIndex,
+                //     enterKeyHint,
+                // }}
+                
                 disabled={!propEnabled} // do not submit the value if disabled
+                // readOnly={propReadOnly} // locks the value if readOnly
                 
                 
                 
@@ -1363,7 +1372,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 {...{
                     // fully controllable by <Range>:
                     value    : valueNow,
+                    // onChange : handleChangeDummy, // just for satisfying React of controllable <input>
                 }}
+                
+                
+                
+                // // validations:
+                // {...{
+                //     min  : negativeFn ? maxFn : minFn,
+                //     max  : negativeFn ? minFn : maxFn,
+                //     step : stepFn,
+                // }}
                 
                 
                 
