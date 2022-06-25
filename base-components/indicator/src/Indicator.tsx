@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useState,
+    useReducer,
     useRef,
     useCallback,
 }                           from 'react'
@@ -435,6 +436,23 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
 
 
 
+interface ActiveReducerAction {
+    type     : 'set'|'toggle'
+    payload ?: React.SetStateAction<boolean>
+}
+const activeReducer = (oldActive: boolean, action: ActiveReducerAction): boolean => {
+    switch (action.type) {
+        case 'set':
+            return ((typeof(action.payload) === 'function') ? action.payload(oldActive) : action.payload) ?? oldActive;
+        
+        case 'toggle':
+            return !oldActive;
+        
+        default:
+            return oldActive;
+    } // switch
+};
+
 export interface TogglerActiveProps<TActiveChangeArg = unknown>
     extends
         // accessibilities:
@@ -444,22 +462,31 @@ export interface TogglerActiveProps<TActiveChangeArg = unknown>
     defaultActive     ?: boolean
     onActiveChange    ?: (newActive: boolean, arg?: TActiveChangeArg) => void
 }
-export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
+export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // fn props:
     const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
     
     
     
     // states:
-    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
-    const setActiveEx: React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
+    const [activeTg, dispatchActiveTg] = useReducer(activeReducer, /*initialState: */props.defaultActive ?? false);
+    const setActive: React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
         // conditions:
         if (!enabled) return; // control is disabled => no response required
         if (readOnly) return; // control is readOnly => no response required
         
         
         
-        setActiveTg(newActive);
+        dispatchActiveTg({ type: 'set', payload: newActive});
+    }, [enabled, readOnly]);
+    const toggleActive: React.Dispatch<void> = useCallback((): void => {
+        // conditions:
+        if (!enabled) return; // control is disabled => no response required
+        if (readOnly) return; // control is readOnly => no response required
+        
+        
+        
+        dispatchActiveTg({ type: 'toggle'});
     }, [enabled, readOnly]);
     
     
@@ -490,7 +517,8 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
     
     return [
         activeFn,
-        setActiveEx,
+        setActive,
+        toggleActive,
     ];
 };
 //#endregion activePassive
