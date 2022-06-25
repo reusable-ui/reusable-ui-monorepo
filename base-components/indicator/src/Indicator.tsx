@@ -474,14 +474,15 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
         wasActive.current = activeFn;     // remember the last change
         
         
-        
-        // fire change synthetic event:
-        props.onActiveChange?.(activeFn);
-        
-        // fire change dom event:
-        if (changeEventTarget?.current) {
-            changeEventTarget.current.checked = activeFn;
-            triggerChange(changeEventTarget.current);
+        if (active === null) { // if uncontrollable [active]
+            // fire change synthetic event:
+            props.onActiveChange?.(activeFn);
+            
+            // fire change dom event:
+            if (changeEventTarget?.current) {
+                changeEventTarget.current.checked = activeFn;
+                triggerChange(changeEventTarget.current);
+            } // if
         } // if
     } // if
     
