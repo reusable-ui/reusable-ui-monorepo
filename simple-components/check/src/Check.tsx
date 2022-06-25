@@ -944,6 +944,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         defaultActive,  // take, to be handled by `useTogglerActive`
         active,         // take, to be handled by `useTogglerActive`
+        inheritActive,  // take, to be handled by `useTogglerActive`
         onActiveChange, // take, to be handled by `useTogglerActive`
         
         label,
@@ -993,7 +994,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         defaultActive   : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
         active          : active        ?? checked,        // aliased `checked`        to `active`
-        inheritActive   : props.inheritActive,
+        inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
     
