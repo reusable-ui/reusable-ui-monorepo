@@ -99,8 +99,16 @@ import {
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
 import {
     // hooks:
+    useEvent,
+    useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
+import {
+    // hooks:
+    usePropEnabled,
+    usePropReadOnly,
+}                           from '@reusable-ui/accessibilities'         // an accessibility management system
 import {
     // types:
     DefaultTag,
@@ -985,7 +993,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     // states:
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
-    const [isActive, setActive] = useTogglerActive({
+    const [isActive, , toggleActive] = useTogglerActive({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
@@ -997,6 +1005,21 @@ const Check = (props: CheckProps): JSX.Element|null => {
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
+    
+    
+    
+    // handlers:
+    const handleToggleActive = toggleActive;
+    
+    
+    
+    // fn props:
+    const propEnabled       = usePropEnabled(props);
+    const propReadOnly      = usePropReadOnly(props);
+    
+    const isButton          = !!props.checkStyle && ['btn', 'togglerBtn'].includes(props.checkStyle);
+    const isToggler         = (props.checkStyle === 'togglerBtn');
+    const pressedFn         = props.pressed ?? ((isActive && isToggler) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
