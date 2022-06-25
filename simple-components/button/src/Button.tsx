@@ -583,7 +583,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)}
+            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             pressed={pressedFn}
             
             
