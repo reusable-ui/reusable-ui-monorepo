@@ -1239,6 +1239,19 @@ const Range = (props: RangeProps): JSX.Element|null => {
         handleKeyboardSlide,
     );
     
+    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
+        /* nothing to do */
+    }, []);
+    const handleChange        = useMergeEvents(
+        // preserves the original `onChange`:
+        onChange,
+        
+        
+        
+        // dummy:
+        handleChangeDummy, // just for satisfying React of controllable <input>
+    );
+    
     
     
     // jsx:
@@ -1372,7 +1385,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 {...{
                     // defaultValue : defaultValueFn, // fully controllable, no defaultValue
                     value    : valueNow,              // fully controllable
-                    // onChange : handleChangeDummy,  // just for satisfying React of controllable <input>
+                    onChange : handleChange,
                 }}
                 
                 
