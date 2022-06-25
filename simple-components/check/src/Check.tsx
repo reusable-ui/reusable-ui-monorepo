@@ -11,15 +11,8 @@ import {
 
 // cssfn:
 import type {
-    // css values:
-    CssComplexBaseValueOf,
-    
-    
-    
     // css custom properties:
     CssCustomSimpleRef,
-    CssCustomRef,
-    CssCustomValue,
     
     
     
@@ -30,10 +23,6 @@ import type {
     
     // cssfn properties:
     CssRule,
-    
-    CssStyleCollection,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -41,6 +30,7 @@ import {
     variants,
     states,
     keyframes,
+    ifNotLastChild,
     
     
     
@@ -71,7 +61,6 @@ import {
     
     // utilities:
     cssVar,
-    fallbacks,
 }                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
@@ -89,10 +78,6 @@ import {
     // configs:
     borderRadiuses,
 }                           from '@reusable-ui/borders'                 // a border (stroke) management system
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'                 // a spacer (gap) management system
 import {
     // styles:
     fillTextLineHeightLayout,
@@ -129,9 +114,6 @@ import {
     usesSizeVariant,
     ifNotNude,
     ifNude,
-    gradientOf,
-    ifNotOutlined,
-    outlinedOf,
     usesMildVariant,
     usesForeg,
     usesBorder,
@@ -153,11 +135,6 @@ import {
     // hooks:
     usesFocusBlurState,
 }                           from '@reusable-ui/control'                 // a base component
-import {
-    // hooks:
-    ifPress,
-    isClientSideLink,
-}                           from '@reusable-ui/action-control'          // a base component
 import {
     // styles:
     usesEditableActionControlLayout,
@@ -1002,8 +979,20 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     
-    // states:
+    // refs:
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
+    const mergedInputRef   = useMergeRefs(
+        // preserves the original `elmRef`:
+        elmRef,
+        
+        
+        
+        inputRefInternal,
+    );
+    
+    
+    
+    // states:
     const [isActive, , toggleActive] = useTogglerActive({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
@@ -1016,11 +1005,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
-    
-    
-    
-    // handlers:
-    const handleToggleActive = toggleActive;
     
     
     
@@ -1084,6 +1068,85 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     
+    // handlers:
+    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        toggleActive();         // handle click as toggle [active]
+        event.preventDefault(); // handled
+    }, [toggleActive]);
+    const handleClick           = useMergeEvents(
+        // preserves the original `onClick`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickInternal,
+    );
+    
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        if ((event.key === ' ') || (event.code === 'Space')) {
+            event.preventDefault(); // prevents pressing space for scrolling page
+        } // if
+    }, []);
+    const handleKeyDown         = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // actions:
+        handleKeyDownInternal,
+    );
+    
+    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        if ((event.key === ' ') || (event.code === 'Space')) {
+            toggleActive();         // handle click as toggle [active]
+            event.preventDefault(); // handled
+        } // if
+    }, [toggleActive]);
+    const handleKeyUp           = useMergeEvents(
+        // preserves the original `onKeyUp`:
+        props.onKeyUp,
+        
+        
+        
+        // actions:
+        handleKeyUpInternal,
+    );
+    
+    const handleChangeDummy     = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
+        /* nothing to do */
+    }, []);
+    const handleChange          = useMergeEvents(
+        // preserves the original `onChange`:
+        onChange,
+        
+        
+        
+        // dummy:
+        handleChangeDummy, // just for satisfying React of controllable <input>
+    );
+    
+    
+    
     // jsx:
     return (
         <EditableActionControl<HTMLInputElement>
@@ -1123,13 +1186,73 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             
+            // handlers:
+            onClick   = {handleClick}
+            onKeyDown = {handleKeyDown}
+            onKeyUp   = {handleKeyUp}
+            
+            
+            
             // Check props:
             {...{
                 // actions:
                 // type,
             }}
         >
-            //
+            <input
+                // refs:
+                ref={mergedInputRef}
+                
+                
+                
+                // accessibilities:
+                
+                {...{
+                    // autoFocus,    // still on <EditableControl> element
+                    tabIndex : -1,   // non focusable
+                    // enterKeyHint, // not supported
+                }}
+                
+                disabled={!propEnabled} // do not submit the value if disabled
+                readOnly={propReadOnly} // locks the value if readOnly
+                
+                
+                
+                // forms:
+                {...{
+                    name,
+                    form,
+                }}
+                
+                
+                
+                // values:
+                {...{
+                    defaultValue,
+                    value,
+                    
+                    // defaultChecked,   // fully controllable, no defaultValue
+                    checked  : isActive, // fully controllable
+                    onChange : handleChange,
+                }}
+                
+                
+                
+                // validations:
+                {...{
+                    required,
+                }}
+                
+                
+                
+                // formats:
+                {...{
+                    type,
+                }}
+            />
+            { !!children && <span>
+                { children }
+            </span> }
         </EditableActionControl>
     );
 };
