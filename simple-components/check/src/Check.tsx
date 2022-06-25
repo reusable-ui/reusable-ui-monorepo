@@ -854,6 +854,13 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
 
 
 
+// handlers:
+export const handleInputClickTriggersChange : React.MouseEventHandler<Element> = (event) => {
+    event.stopPropagation(); // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
+};
+
+
+
 // react components:
 export interface CheckProps
     extends
@@ -1249,6 +1256,11 @@ const Check = (props: CheckProps): JSX.Element|null => {
                 {...{
                     type,
                 }}
+                
+                
+                
+                // handlers:
+                onClick={handleInputClickTriggersChange} // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
             />
             { !!children && <span>
                 { children }
