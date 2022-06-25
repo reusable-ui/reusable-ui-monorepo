@@ -109,8 +109,8 @@ import {
 // defaults:
 const _defaultTag      : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
 const _defaultRole     : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-const _defaultOutlined : boolean     = false;
-const _defaultMild     : boolean     = false;
+const _defaultOutlined : boolean     = false
+const _defaultMild     : boolean     = false
 
 
 
