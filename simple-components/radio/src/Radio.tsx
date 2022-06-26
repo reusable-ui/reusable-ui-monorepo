@@ -7,33 +7,15 @@ import {
     
     // hooks:
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomSimpleRef,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
-    // rules:
-    rule,
-    variants,
-    states,
-    keyframes,
-    ifNotLastChild,
-    
-    
-    
     //combinators:
     children,
     
@@ -54,23 +36,12 @@ import {
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
-    // types:
-    ReadonlyCssCustomRefs,
-    
-    
-    
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                       // strongly typed of css variables
-import {
     cssConfig,
     
     
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
@@ -79,62 +50,25 @@ import {
     borderRadiuses,
 }                           from '@reusable-ui/borders'                 // a border (stroke) management system
 import {
-    // styles:
-    fillTextLineHeightLayout,
-}                           from '@reusable-ui/layouts'                 // reusable common layouts
-import {
     // hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
-import {
-    // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-}                           from '@reusable-ui/accessibilities'         // an accessibility management system
 import {
     // types:
     DefaultTag,
     DefaultRole,
-    
-    
-    
-    // hooks:
-    useTestSemantic,
 }                           from '@reusable-ui/generic'                 // a base component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
-    ifNotNude,
-    ifNude,
-    usesMildVariant,
-    usesForeg,
     usesBorder,
-    usesPadding,
-    usesAnim,
-    fallbackNoneFilter,
-    fallbackNoneTransf,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
-    ifActived,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
-    TogglerActiveProps,
     useTogglerActive,
 }                           from '@reusable-ui/indicator'               // a base component
-import {
-    // hooks:
-    usesFocusBlurState,
-}                           from '@reusable-ui/control'                 // a base component
 import {
     // hooks:
     CheckStyle,
@@ -160,14 +94,6 @@ import {
     CheckProps,
     Check,
 }                           from '@reusable-ui/check'                   // a base component
-import {
-    // styles:
-    usesIconImage,
-}                           from '@reusable-ui/icon'                    // an icon set
-import {
-    // styles:
-    usesButtonLayout,
-}                           from '@reusable-ui/button'                  // a button ui
 
 
 
@@ -351,7 +277,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         // actions:
         setActive(true);        // handle click as selecting [active]
         event.preventDefault(); // handled
-    }, [setActive]);
+    }, []);
     const handleClick           = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
@@ -373,7 +299,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             setActive(true);        // handle click as selecting [active]
             event.preventDefault(); // handled
         } // if
-    }, [setActive]);
+    }, []);
     const handleKeyUp           = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
@@ -439,6 +365,34 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     
+    // dom effects:
+    useEffect(() => {
+        // conditions:
+        const currentRadio = inputRefInternal.current;
+        if (!currentRadio) return; // radio was unloaded => nothing to do
+        
+        
+        
+        // handlers:
+        const handleClear = (): void => {
+            setActive(false); // handle clear as de-selecting [active]
+        };
+        
+        
+        
+        // setups:
+        currentRadio.addEventListener('clear', handleClear);
+        
+        
+        
+        // cleanups:
+        return () => {
+            currentRadio.removeEventListener('clear', handleClear);
+        };
+    }, []); // runs once on startup
+    
+    
+    
     // jsx:
     return (
         <Check
@@ -447,21 +401,14 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             
             
             
+            // refs:
+            elmRef={mergedInputRef}
+            
+            
+            
             // semantics:
-            tag          = {tag}
-            role         = {role}
             defaultTag   = {defaultTag}
             defaultRole  = {defaultRole}
-            
-            aria-checked = {ariaChecked}
-            aria-pressed = {ariaPressed}
-            aria-label   = {props['aria-label'] ?? label}
-            
-            
-            
-            // variants:
-            nude={props.nude ?? true}
-            mild={props.mild ?? false}
             
             
             
@@ -471,9 +418,12 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             active={isActive}
-            pressed={pressedFn}
+            
+            
+            
+            // formats:
+            type={props.type ?? 'radio'}
             
             
             
@@ -481,14 +431,6 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             onClick   = {handleClick}
             onKeyUp   = {handleKeyUp}
             onChange  = {handleChange}
-            
-            
-            
-            // Radio props:
-            {...{
-                // actions:
-                // type,
-            }}
         />
     );
 };
