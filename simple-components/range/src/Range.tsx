@@ -158,12 +158,6 @@ import {
     usesBorderAsSeparator,
 }                           from '@reusable-ui/container'               // a neighbor component
 
-// other libs:
-import {
-    default as triggerChange,
-    // @ts-ignore
-}                           from 'react-trigger-change'                 // a helper lib
-
 
 
 // hooks:
@@ -898,9 +892,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // sync the hidden <input type="hidden">'s value:
-        inputElm.value = valueDn.toString();
-        triggerChange(inputElm);
+        // *hack*: controllable:
+        inputElm.valueAsNumber = valueDn;
+        
+        // *hack*: trigger `onChange` event:
+        inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
     }, [valueFn, valueDn]);
     
     
@@ -1383,8 +1379,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // values:
                 {...{
-                    // defaultValue : defaultValueFn, // fully controllable, no defaultValue
-                    value    : valueNow,              // fully controllable
+                    // defaultValue : defaultValueFn,                     // fully controllable, no defaultValue
+                    value    : (valueFn !== null) ? valueNow : undefined, // fully controllable -or- *hack*ed controllable
                     onChange : handleChange,
                 }}
                 

@@ -55,8 +55,7 @@
     "@reusable-ui/input": "^5.0.0",
     "@reusable-ui/layouts": "^5.0.0",
     "@reusable-ui/utilities": "^5.0.0",
-    "@types/react": "^18.0.10",
-    "react-trigger-change": "^1.0.2"
+    "@types/react": "^18.0.10"
   },
   "peerDependencies": {
     "@cssfn/cssfn": "^2.0.6",
