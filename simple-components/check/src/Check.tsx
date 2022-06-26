@@ -1091,7 +1091,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // actions:
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
-    }, [toggleActive]);
+    }, []);
     const handleClick           = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
@@ -1134,7 +1134,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
             toggleActive();         // handle click as toggle [active]
             event.preventDefault(); // handled
         } // if
-    }, [toggleActive]);
+    }, []);
     const handleKeyUp           = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
