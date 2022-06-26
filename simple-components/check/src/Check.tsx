@@ -1222,12 +1222,12 @@ const Check = (props: CheckProps): JSX.Element|null => {
                 
                 {...{
                     // autoFocus,    // still on <EditableControl> element
-                    tabIndex : -1,   // non focusable
+                    tabIndex : -1,   // not focusable
                     // enterKeyHint, // not supported
                 }}
                 
                 disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value if readOnly
+                readOnly={propReadOnly} // locks the value & no validation if readOnly
                 
                 
                 
@@ -1244,7 +1244,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
                     defaultValue,
                     value,
                     
-                    // defaultChecked,   // fully controllable, no defaultValue
+                    // defaultChecked,   // fully controllable, no defaultChecked
                     checked  : isActive, // fully controllable
                     onChange : handleChange,
                 }}
