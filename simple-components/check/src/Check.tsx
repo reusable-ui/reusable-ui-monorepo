@@ -493,7 +493,8 @@ export const usesCheckLayout = () => {
                     
                     
                     // animations:
-                    filter        : ['initial', '!important'], // uses parent filter
+                    filter        : 'none',    // (pseudo) inherit parent filter
+                    anim          : 'inherit', //          inherit parent animation
                     
                     
                     
@@ -654,6 +655,11 @@ export const usesCheckVariants = () => {
                 ...children(inputElm, {
                     // borders:
                     [borders.borderColor] : foregs.foreg,  // make a contrast border between indicator & filler
+                    
+                    
+                    
+                    // animations:
+                    boxShadow : ['none', '!important'], // remove double focus indicator animation to the wrapper
                 }),
             }),
             ifNude({
