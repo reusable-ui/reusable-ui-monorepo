@@ -14,6 +14,12 @@ import {
 
 
 
+const handleChange : React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    console.log('value = ', event.target.value);
+}
+
+
+
 function App() {
     const [value, setValue] = useState(0);
     const handleTriggerRerender = () => {
@@ -34,7 +40,7 @@ function App() {
                 </article>
                 <article className='actions'>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
-                    <Range theme='primary' nude={false} />
+                    <Range theme='primary' nude={false} onChange={handleChange} />
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
