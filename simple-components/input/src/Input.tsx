@@ -355,7 +355,7 @@ const Input = (props: InputProps): JSX.Element|null => {
                 }}
                 
                 disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value if readOnly
+                readOnly={propReadOnly} // locks the value & no validation if readOnly
                 
                 
                 
