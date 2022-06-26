@@ -1363,13 +1363,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // still on <EditableControl> element
                 // {...{
-                //     autoFocus,
-                //     tabIndex,
-                //     enterKeyHint,
+                //     autoFocus,    // the input is hidden => not focusable
+                //     tabIndex,     // the input is hidden => not focusable
+                //     enterKeyHint, // not supported
                 // }}
                 
                 disabled={!propEnabled} // do not submit the value if disabled
-                // readOnly={propReadOnly} // locks the value if readOnly
+                readOnly={propReadOnly} // locks the value & no validation if readOnly
                 
                 
                 
@@ -1390,18 +1390,18 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 
                 
-                // // validations:
-                // {...{
-                //     min  : negativeFn ? maxFn : minFn,
-                //     max  : negativeFn ? minFn : maxFn,
-                //     step : stepFn,
-                // }}
+                // validations:
+                {...{
+                    min  : negativeFn ? maxFn : minFn,
+                    max  : negativeFn ? minFn : maxFn,
+                    step : stepFn,
+                }}
                 
                 
                 
                 // formats:
                 {...{
-                    type : 'hidden',
+                    type : 'range',
                 }}
             />
             <EditableControl<HTMLElement>
