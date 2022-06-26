@@ -388,17 +388,18 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        const name = props.name;
+        const currentRadio = event.target;
+        const name = currentRadio.name;
         if (!name)                  return; // the <Radio> must have a name
         
-        const isChecked = event.target.checked;
+        const isChecked = currentRadio.checked;
         if (!isChecked)             return; // the <Radio> is checked not cleared
         
         
         
         // actions:
         
-        let parentGroup = event.target.parentElement;
+        let parentGroup = currentRadio.parentElement;
         //#region find nearest <form> or <grandGrandParent>
         while (parentGroup) {
             if (parentGroup.tagName === 'FORM') break; // found nearest <form>
@@ -413,7 +414,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         if (parentGroup) {
             for (const radio of (Array.from(parentGroup.querySelectorAll('input[type="radio"]')) as HTMLInputElement[])) {
-                if (radio === event.target) continue; // <radio> is self => skip
+                if (radio === currentRadio) continue; // <radio> is self => skip
                 if (radio.name !== name)    continue; // <radio>'s name is different to us => skip
                 
                 
@@ -425,7 +426,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         event.preventDefault(); // handled
-    }, [props.name]);
+    }, []);
     const handleChange          = useMergeEvents(
         // preserves the original `onChange`:
         props.onChange,
