@@ -502,7 +502,7 @@ export const usesCheckLayout = () => {
                     [paddings.paddingBlock ] : '0px', // discard padding
                     ...ifNotLastChild({
                         // spacing between input & label:
-                        marginInlineEnd : checks.spacing,
+                        marginInlineEnd : checks.spacing, // we cannot place a `gap` on the parent flex because the existance of <dummyElm>
                     }),
                     
                     
