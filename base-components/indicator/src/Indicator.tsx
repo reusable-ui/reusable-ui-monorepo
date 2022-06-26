@@ -105,12 +105,6 @@ import {
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
 
-// other libs:
-import {
-    default as triggerChange,
-    // @ts-ignore
-}                           from 'react-trigger-change'         // a helper lib
-
 
 
 // hooks:
@@ -507,8 +501,12 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
             
             // fire change dom event:
             if (changeEventTarget?.current) {
-                changeEventTarget.current.checked = activeFn;
-                triggerChange(changeEventTarget.current);
+                // do not set the [checked] prop in order to the `onChange` can be triggered:
+                // changeEventTarget.current.checked = activeFn;
+                
+                // *hack*: trigger `onChange` event:
+                // side effect: toggles the [checked] prop:
+                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
         } // if
     } // if
