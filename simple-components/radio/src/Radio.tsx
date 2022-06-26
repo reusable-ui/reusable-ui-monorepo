@@ -136,10 +136,23 @@ import {
     usesFocusBlurState,
 }                           from '@reusable-ui/control'                 // a base component
 import {
+    // hooks:
+    CheckStyle,
+    CheckVariant,
+    
+    
+    
     // styles:
+    inputElm,
+    
     usesCheckLayout,
     usesCheckVariants,
     usesCheckStates,
+    
+    
+    
+    // configs:
+    checks,
     
     
     
@@ -147,10 +160,6 @@ import {
     CheckProps,
     Check,
 }                           from '@reusable-ui/check'                   // a base component
-import type {
-    // types:
-    InputHTMLAttributes,
-}                           from '@reusable-ui/input'                   // a neighbor component
 import {
     // styles:
     usesIconImage,
@@ -169,19 +178,11 @@ const _defaultRadioRole : DefaultRole = 'radio'
 
 
 // styles:
-export const dummyElm = '::before';
-export const inputElm = ':first-child';
-export const checkElm = '::before';
-export const labelElm = ':nth-child(1n+2)';
-
 export const usesRadioLayout = () => {
     // dependencies:
     
-    // foregrounds:
-    const [             , foregs    ] = usesForeg();
-    
-    // spacings:
-    const [             , paddings  ] = usesPadding();
+    // borders:
+    const [, borders] = usesBorder();
     
     
     
@@ -191,194 +192,9 @@ export const usesRadioLayout = () => {
             usesCheckLayout(),
         ]),
         ...style({
-            // layouts:
-            display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
-            flexDirection  : 'row',         // flow to the document's writing flow
-            justifyContent : 'center',      // items are placed starting from the center (in case of input & label are wrapped, each placed at the center)
-            alignItems     : 'center',      // center items vertically (indicator & label are always at center no matter how tall is the wrapper)
-            flexWrap       : 'wrap',        // allows the label to wrap to the next row if no sufficient width available
-            
-            
-            
-            // positions:
-            verticalAlign  : 'baseline',    // radio's text should be aligned with sibling text, so the radio behave like <span> wrapper
-            
-            
-            
             // children:
-            ...children(dummyElm, {
-                ...imports([
-                    fillTextLineHeightLayout(),
-                ]),
-            }),
             ...children(inputElm, {
-                ...imports([
-                    // layouts:
-                    usesCheckLayout(),
-                ]),
                 ...style({
-                    // layouts:
-                    display       : 'inline-block', // use inline-block, so it takes the width & height as we set
-                    
-                    
-                    
-                    // sizes:
-                    boxSizing     : 'border-box', // the final size is including borders & paddings
-                    // the size is exactly the same as current font size:
-                    inlineSize    : '1em',
-                    blockSize     : '1em',
-                    
-                    flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's width
-                    
-                    
-                    
-                    // accessibilities:
-                    pointerEvents : 'none', // just an overlay element (ghost), no mouse interaction, clicking on it will focus on the parent
-                    
-                    
-                    
-                    // borders:
-                    overflow      : 'hidden', // clip the icon at borderRadius
-                    
-                    
-                    
-                    // animations:
-                    filter        : 'none',    // (pseudo) inherit parent filter
-                    anim          : 'inherit', //          inherit parent animation
-                    
-                    
-                    
-                    // spacings:
-                    [paddings.paddingInline] : '0px', // discard padding
-                    [paddings.paddingBlock ] : '0px', // discard padding
-                    ...ifNotLastChild({
-                        // spacing between input & label:
-                        marginInlineEnd : radios.spacing, // we cannot place a `gap` on the parent flex because the existance of <dummyElm>
-                    }),
-                    
-                    
-                    
-                    // children:
-                    ...children(checkElm, {
-                        ...imports([
-                            // radio indicator:
-                            usesIconImage(
-                                /*img   : */radios.img,
-                                /*color : */foregs.foreg,
-                            ),
-                        ]),
-                        ...style({
-                            // layouts:
-                            content   : '""',
-                            display   : 'block', // fills the entire parent's width
-                            
-                            
-                            
-                            // sizes:
-                            // fills the entire parent:
-                            boxSizing : 'border-box', // the final size is including borders & paddings
-                            blockSize : '100%', // fills the entire parent's height
-                            
-                            
-                            
-                            // animations:
-                            filter    : checkAnims.filter,
-                            transf    : checkAnims.transf,
-                            anim      : checkAnims.anim,
-                        }),
-                    }),
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(radios), // apply config's cssProps
-                }),
-            }),
-            ...children(labelElm, {
-                // layouts:
-                display       : 'inline', // use inline, so it takes the width & height automatically
-                
-                
-                
-                // positions:
-                verticalAlign : 'baseline', // label's text should be aligned with sibling text, so the label behave like <span> wrapper
-                
-                
-                
-                // sizes:
-                flex          : [[1, 1, 0]], // growable, shrinkable, initial from 0 width (setting initial to `auto`, when wrapped to next line, causing the text is not centered)
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(radios, 'label')), // apply config's cssProps starting with label***
-            }),
-        }),
-    });
-};
-export const usesRadioVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizesRule] = usesSizeVariant(radios);
-    
-    // foregrounds:
-    const [, milds  ] = usesMildVariant();
-    const [, foregs ] = usesForeg();
-    
-    // borders:
-    const [, borders] = usesBorder();
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesCheckVariants(),
-            
-            // layouts:
-            sizesRule,
-        ]),
-        ...variants([
-            rule(['.btn', '.togglerBtn'], {
-                ...imports([
-                    // layouts:
-                    usesButtonLayout(),
-                ]),
-                ...style({
-                    // children:
-                    // hides the <dummy> & <Radio>'s indicator:
-                    ...children([dummyElm, inputElm], {
-                        // layouts:
-                        display : 'none',
-                    }),
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(radios, 'btn')), // apply config's cssProps starting with btn***
-                    
-                    // overwrites propName = {btn}propName:
-                    ...overwriteProps(radios, usesPrefixedProps(radios, 'btn')),
-                }),
-            }),
-            rule('.togglerBtn', {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(radios, 'togglerBtn')), // apply config's cssProps starting with togglerBtn***
-                
-                // overwrites propName = {togglerBtn}propName:
-                ...overwriteProps(radios, usesPrefixedProps(radios, 'togglerBtn')),
-            }),
-            
-            rule('.switch', {
-                // children:
-                ...children(inputElm, {
-                    // sizes:
-                    aspectRatio : '2 / 1', // make the width twice the height
-                    inlineSize : 'auto',   // make the width twice the height
-                    
-                    
-                    
                     // borders:
                     // circle corners on top:
                     [borders.borderStartStartRadius] : borderRadiuses.pill,
@@ -390,63 +206,40 @@ export const usesRadioVariants = () => {
                     
                     
                     // customize:
-                    ...usesCssProps(usesPrefixedProps(radios, 'switch')), // apply config's cssProps starting with switch***
-                }),
-                
-                
-                
-                // overwrites propName = {switch}propName:
-                ...overwriteProps(radios, usesPrefixedProps(radios, 'switch')),
-            }),
-        ], { specificityWeight: 1 }),
-        ...variants([
-            ifNotNude({
-                // children:
-                ...children(inputElm, {
-                    // borders:
-                    [borders.borderColor] : foregs.foreg,  // make a contrast border between indicator & filler
-                    
-                    
-                    
-                    // animations:
-                    boxShadow : ['none', '!important'], // remove double focus indicator animation to the wrapper
+                    ...usesCssProps(radios), // apply config's cssProps
                 }),
             }),
-            ifNude({
-                // foregrounds:
-                foreg     : [milds.foregFn, '!important'], // no valid/invalid animation
-                
-                
-                
-                // animations:
-                boxShadow : ['initial'    , '!important'], // no focus animation
-            }),
-        ], { specificityWeight: 2 }),
+        }),
+        ...vars({
+            // overwrite <Check>'s selected indicator:
+            [checks.img] : radios.img,
+        }),
     });
 };
-export const usesRadioStates = () => {
+export const usesRadioVariants = () => {
     // dependencies:
     
-    // states:
-    const [         , focuses] = usesFocusBlurState();
+    // layouts:
+    const [sizesRule] = usesSizeVariant(radios);
     
     
     
     return style({
         ...imports([
+            // variants:
+            usesCheckVariants(),
+            
+            // layouts:
+            sizesRule,
+        ]),
+    });
+};
+export const usesRadioStates = () => {
+    return style({
+        ...imports([
             // states:
             usesCheckStates(),
         ]),
-        ...style({
-            // children:
-            ...children(inputElm, {
-                ...vars({
-                    // copy focus effect from parent:
-                    [focuses.boxShadow] : 'inherit',
-                    [focuses.anim     ] : 'inherit',
-                }),
-            }),
-        }),
     });
 };
 
@@ -468,15 +261,9 @@ export const useRadioStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [radios, radioValues, cssRadioConfig] = cssConfig(() => {
     return {
-        // spacings:
-        spacing           : '0.3em'   as CssKnownProps['gapInline'],
-        
-        
-        
         // animations:
         // forked from Bootstrap 5:
-        img               : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
-        switchImg         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
+        img : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
     };
 }, { prefix: 'rad' });
 
@@ -488,24 +275,6 @@ export interface RadioProps
         // bases:
         CheckProps
 {
-    // accessibilities:
-    label          ?: string
-    
-    
-    
-    // formats:
-    type           ?: 'checkbox' | 'radio'
-    
-    
-    
-    // values:
-    defaultChecked ?: boolean
-    checked        ?: boolean
-    
-    
-    
-    // children:
-    children       ?: React.ReactNode
 }
 const Radio = (props: RadioProps): JSX.Element|null => {
     // styles:
@@ -521,49 +290,16 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         // accessibilities:
-        
-        // still on <Check> element
-        // autoFocus,
-        // tabIndex,
-        // enterKeyHint,
-        
         defaultActive,  // take, to be handled by `useTogglerActive`
         active,         // take, to be handled by `useTogglerActive`
         inheritActive,  // take, to be handled by `useTogglerActive`
         onActiveChange, // take, to be handled by `useTogglerActive`
         
-        label,
-        
-        
-        
-        // validations:
-        required,
-        
-        
-        
-        // formats:
-        type = 'radio',
-        
-        
-        
-        // forms:
-        name,
-        form,
-        
         
         
         // values:
-        defaultValue,
-        value,
-        onChange, // forwards to `input[type]`
-        
         defaultChecked, // take, to be aliased to `defaultActive`
         checked,        // take, to be aliased to `active`
-        
-        
-        
-        // children:
-        children,
     ...restCheckProps} = props;
     
     
@@ -582,7 +318,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     // states:
-    const [isActive, , toggleActive] = useTogglerActive({
+    const [isActive, setActive] = useTogglerActive({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
@@ -598,49 +334,10 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     // fn props:
-    const propEnabled       = usePropEnabled(props);
-    const propReadOnly      = usePropReadOnly(props);
-    
     const isButton          = !!props.checkStyle && ['btn', 'togglerBtn'].includes(props.checkStyle);
-    const isToggler         = (props.checkStyle === 'togglerBtn');
-    const pressedFn         = props.pressed ?? ((isActive && isToggler) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
-    const tag               = props.tag         ?? (isButton ? undefined : 'span');
-    const role              = props.role;
-    const defaultTag        = props.defaultTag  ?? (isButton ? _defaultButtonTag  : _defaultRadioTag );
-    const defaultRole       = props.defaultRole ?? (isButton ? _defaultButtonRole : _defaultRadioRole);
-    const { isDesiredType : isSemanticCheckOrRadio } = useTestSemantic(
-        // test:
-        {
-            tag,
-            role,
-            defaultTag,
-            defaultRole,
-        },
-        
-        // expected:
-        {
-            defaultTag  : null, // any tag
-            defaultRole : _defaultCheckOrRadioRole,
-        }
-    );
-    const { isDesiredType : isSemanticButton       } = useTestSemantic(
-        // test:
-        {
-            tag,
-            role,
-            defaultTag,
-            defaultRole,
-        },
-        
-        // expected:
-        {
-            defaultTag  : null, // any tag
-            defaultRole : _defaultButtonRole,
-        }
-    );
-    const ariaChecked       = props['aria-checked'] ??  (isSemanticCheckOrRadio         ? isActive : undefined);
-    const ariaPressed       = props['aria-pressed'] ?? ((isSemanticButton && isToggler) ? isActive : undefined);
+    const defaultTag        = props.defaultTag  ?? (isButton ? undefined : _defaultRadioTag );
+    const defaultRole       = props.defaultRole ?? (isButton ? undefined : _defaultRadioRole);
     
     
     
@@ -652,9 +349,9 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         // actions:
-        toggleActive();         // handle click as toggle [active]
+        setActive(true);        // handle click as selecting [active]
         event.preventDefault(); // handled
-    }, [toggleActive]);
+    }, [setActive]);
     const handleClick           = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
@@ -665,27 +362,6 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         handleClickInternal,
     );
     
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // actions:
-        if ((event.key === ' ') || (event.code === 'Space')) {
-            event.preventDefault(); // prevents pressing space for scrolling page
-        } // if
-    }, []);
-    const handleKeyDown         = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
-        
-        
-        
-        // actions:
-        handleKeyDownInternal,
-    );
-    
     const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -694,10 +370,10 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         // actions:
         if ((event.key === ' ') || (event.code === 'Space')) {
-            toggleActive();         // handle click as toggle [active]
+            setActive(true);        // handle click as selecting [active]
             event.preventDefault(); // handled
         } // if
-    }, [toggleActive]);
+    }, [setActive]);
     const handleKeyUp           = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
@@ -708,17 +384,56 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         handleKeyUpInternal,
     );
     
-    const handleChangeDummy     = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
-        /* nothing to do */
-    }, []);
+    const handleChangeInternal  = useEvent<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        const name = props.name;
+        if (!name)                  return; // the <Radio> must have a name
+        
+        const isChecked = event.target.checked;
+        if (!isChecked)             return; // the <Radio> is checked not cleared
+        
+        
+        
+        // actions:
+        
+        let parentGroup = event.target.parentElement;
+        //#region find nearest <form> or <grandGrandParent>
+        while (parentGroup) {
+            if (parentGroup.tagName === 'FORM') break; // found nearest <form>
+            
+            // find next:
+            const grandParent = parentGroup.parentElement;
+            if (!grandParent) break; // nothing more to search
+            parentGroup = grandParent;
+        } // while
+        //#endregion find nearest <form> or <grandGrandParent>
+        
+        
+        if (parentGroup) {
+            for (const radio of (Array.from(parentGroup.querySelectorAll('input[type="radio"]')) as HTMLInputElement[])) {
+                if (radio === event.target) continue; // <radio> is self => skip
+                if (radio.name !== name)    continue; // <radio>'s name is different to us => skip
+                
+                
+                
+                // fire a custom `onClear` event:
+                radio.dispatchEvent(new Event('clear', { bubbles: false }));
+            } // for
+        } // if
+        
+        
+        event.preventDefault(); // handled
+    }, [props.name]);
     const handleChange          = useMergeEvents(
         // preserves the original `onChange`:
-        onChange,
+        props.onChange,
         
         
         
-        // dummy:
-        handleChangeDummy, // just for satisfying React of controllable <input>
+        // actions:
+        handleChangeInternal,
     );
     
     
@@ -763,8 +478,8 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             
             // handlers:
             onClick   = {handleClick}
-            onKeyDown = {handleKeyDown}
             onKeyUp   = {handleKeyUp}
+            onChange  = {handleChange}
             
             
             
@@ -773,65 +488,12 @@ const Radio = (props: RadioProps): JSX.Element|null => {
                 // actions:
                 // type,
             }}
-        >
-            <input
-                // refs:
-                ref={mergedInputRef}
-                
-                
-                
-                // accessibilities:
-                
-                {...{
-                    // autoFocus,    // still on <EditableControl> element
-                    tabIndex : -1,   // not focusable
-                    // enterKeyHint, // not supported
-                }}
-                
-                disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value & no validation if readOnly
-                
-                
-                
-                // forms:
-                {...{
-                    name,
-                    form,
-                }}
-                
-                
-                
-                // values:
-                {...{
-                    defaultValue,
-                    value,
-                    
-                    // defaultChecked,   // fully controllable, no defaultChecked
-                    checked  : isActive, // fully controllable
-                    onChange : handleChange,
-                }}
-                
-                
-                
-                // validations:
-                {...{
-                    required,
-                }}
-                
-                
-                
-                // formats:
-                {...{
-                    type,
-                }}
-            />
-            { !!children && <span>
-                { children }
-            </span> }
-        </Check>
+        />
     );
 };
 export {
     Radio,
     Radio as default,
 }
+
+export type { CheckStyle, CheckVariant }
