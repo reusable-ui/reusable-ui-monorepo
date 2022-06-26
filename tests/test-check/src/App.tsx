@@ -14,6 +14,12 @@ import {
 
 
 
+const handleChange : React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    console.log('checked = ', event.target.checked);
+}
+
+
+
 function App() {
     const [value, setValue] = useState(0);
     const handleTriggerRerender = () => {
@@ -33,7 +39,7 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <Check theme='primary'>
+                    <Check theme='primary' onChange={handleChange}>
                         test &lt;Check&gt;
                     </Check>
                     <Check theme='success' checkStyle='btn' nude={false}>
