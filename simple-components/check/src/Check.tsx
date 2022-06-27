@@ -152,6 +152,13 @@ import {
 
 
 
+// defaults:
+const _defaultNude     : boolean = true
+const _defaultOutlined : boolean = false
+const _defaultMild     : boolean = false
+
+
+
 // hooks:
 
 // animations:
@@ -923,6 +930,13 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         
         
+        // variants:
+        nude     = _defaultNude,
+        outlined = _defaultOutlined,
+        mild     = _defaultMild,
+        
+        
+        
         // accessibilities:
         
         // still on <EditableActionControl> element
@@ -936,6 +950,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         onActiveChange, // take, to be handled by `useTogglerActive`
         
         label,
+        pressed,
         
         
         
@@ -1005,7 +1020,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     const propReadOnly = usePropReadOnly(props);
     
     const isToggler    = (props.checkStyle === 'togglerBtn');
-    const pressedFn    = props.pressed ?? ((isActive && isToggler) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    const pressedFn    = pressed ?? (((isActive && isToggler) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
@@ -1119,8 +1134,9 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // variants:
-            nude={props.nude ?? true}
-            mild={props.mild ?? false}
+            nude={nude}
+            outlined={outlined}
+            mild={mild}
             
             
             
