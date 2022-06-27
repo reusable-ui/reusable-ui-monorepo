@@ -249,7 +249,7 @@ export const useEnableDisableState = <TElement extends Element = Element>(props:
             return null;
         })(),
         
-        props: (() => {
+        props    : (() => {
             if (enabled) return null;
             
             // use [disabled] if <control>:
@@ -413,7 +413,7 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
             return null;
         })(),
         
-        props: (() => {
+        props  : (() => {
             if (!actived) return null;
             
             // use [checked] if <input type="checkbox|radio">:
