@@ -1514,13 +1514,13 @@ export const usesExcitedState = (): StateMixin<ExcitedVars> => {
 
 
 
-export interface TogglerExcitedProps
+export interface ToggleExcitedProps
 {
     // accessibilities:
     excited         ?: boolean
     onExcitedChange ?: (newExcited: boolean) => void
 }
-export const useExcitedState = <TElement extends Element = Element>(props: TogglerExcitedProps) => {
+export const useExcitedState = <TElement extends Element = Element>(props: ToggleExcitedProps) => {
     // props:
     const {
         // accessibilities:
