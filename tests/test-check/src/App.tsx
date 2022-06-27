@@ -45,7 +45,7 @@ function App() {
                     <Check theme='success' checkStyle='btn' nude={false}>
                         test &lt;Check&gt;
                     </Check>
-                    <Check theme='danger' checkStyle='togglerBtn' nude={false}>
+                    <Check theme='danger' checkStyle='toggleBtn' nude={false}>
                         test &lt;Check&gt;
                     </Check>
                 </article>

@@ -118,8 +118,8 @@ import {
     ifActivating,
     ifPassivating,
     ifPassived,
-    TogglerActiveProps,
-    useTogglerActive,
+    ToggleActiveProps,
+    useToggleActive,
 }                           from '@reusable-ui/indicator'               // a base component
 import {
     // hooks:
@@ -385,7 +385,7 @@ export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
 // appearances:
 
 //#region check style
-export type CheckStyle = 'btn'|'togglerBtn'|'switch' // might be added more styles in the future
+export type CheckStyle = 'btn'|'toggleBtn'|'switch' // might be added more styles in the future
 export interface CheckVariant {
     checkStyle ?: CheckStyle
 }
@@ -576,7 +576,7 @@ export const usesCheckVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule(['.btn', '.togglerBtn'], {
+            rule(['.btn', '.toggleBtn'], {
                 ...imports([
                     // layouts:
                     usesButtonLayout(),
@@ -598,12 +598,12 @@ export const usesCheckVariants = () => {
                     ...overwriteProps(checks, usesPrefixedProps(checks, 'btn')),
                 }),
             }),
-            rule('.togglerBtn', {
+            rule('.toggleBtn', {
                 // customize:
-                ...usesCssProps(usesPrefixedProps(checks, 'togglerBtn')), // apply config's cssProps starting with togglerBtn***
+                ...usesCssProps(usesPrefixedProps(checks, 'toggleBtn')), // apply config's cssProps starting with toggleBtn***
                 
-                // overwrites propName = {togglerBtn}propName:
-                ...overwriteProps(checks, usesPrefixedProps(checks, 'togglerBtn')),
+                // overwrites propName = {toggleBtn}propName:
+                ...overwriteProps(checks, usesPrefixedProps(checks, 'toggleBtn')),
             }),
             
             rule('.switch', {
@@ -884,7 +884,7 @@ export interface CheckProps
         CheckVariant,
         
         // behaviors:
-        TogglerActiveProps
+        ToggleActiveProps
 {
     // accessibilities:
     label          ?: string
@@ -944,10 +944,10 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // tabIndex,
         // enterKeyHint,
         
-        defaultActive,  // take, to be handled by `useTogglerActive`
-        active,         // take, to be handled by `useTogglerActive`
-        inheritActive,  // take, to be handled by `useTogglerActive`
-        onActiveChange, // take, to be handled by `useTogglerActive`
+        defaultActive,  // take, to be handled by `useToggleActive`
+        active,         // take, to be handled by `useToggleActive`
+        inheritActive,  // take, to be handled by `useToggleActive`
+        onActiveChange, // take, to be handled by `useToggleActive`
         
         label,
         pressed,
@@ -1000,7 +1000,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // states:
-    const [isActive, , toggleActive] = useTogglerActive({
+    const [isActive, , toggleActive] = useToggleActive({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
@@ -1019,7 +1019,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     const propEnabled  = usePropEnabled(props);
     const propReadOnly = usePropReadOnly(props);
     
-    const isToggler    = (props.checkStyle === 'togglerBtn');
+    const isToggler    = (props.checkStyle === 'toggleBtn');
     const pressedFn    = pressed ?? (((isActive && isToggler) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
