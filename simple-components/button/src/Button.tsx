@@ -49,6 +49,10 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // hooks:
+    usePropActive,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
     // types:
     DefaultTag,
     DefaultRole,
@@ -525,6 +529,9 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     
     // fn props:
+    const propActive = usePropActive(props);
+    const pressedFn  = pressed ?? ((propActive && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    
     const {
         defaultTag,
         defaultRole,
@@ -534,8 +541,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         
         type,
     } = useSemanticButton(props);
-    
-    const pressedFn = pressed ?? ((!!props.active && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
