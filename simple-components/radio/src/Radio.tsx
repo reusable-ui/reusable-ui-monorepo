@@ -56,18 +56,13 @@ import {
     useMergeRefs,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
 import {
-    // types:
-    DefaultTag,
-    DefaultRole,
-}                           from '@reusable-ui/generic'                 // a base component
-import {
     // hooks:
     usesSizeVariant,
     usesBorder,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
-    useTogglerActive,
+    useToggleActive,
 }                           from '@reusable-ui/indicator'               // a base component
 import {
     // hooks:
@@ -94,12 +89,6 @@ import {
     CheckProps,
     Check,
 }                           from '@reusable-ui/check'                   // a base component
-
-
-
-// defaults:
-const _defaultRadioTag  : DefaultTag  = [null]
-const _defaultRadioRole : DefaultRole = 'radio'
 
 
 
@@ -216,10 +205,10 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         // accessibilities:
-        defaultActive,  // take, to be handled by `useTogglerActive`
-        active,         // take, to be handled by `useTogglerActive`
-        inheritActive,  // take, to be handled by `useTogglerActive`
-        onActiveChange, // take, to be handled by `useTogglerActive`
+        defaultActive,  // take, to be handled by `useToggleActive`
+        active,         // take, to be handled by `useToggleActive`
+        inheritActive,  // take, to be handled by `useToggleActive`
+        onActiveChange, // take, to be handled by `useToggleActive`
         
         
         
@@ -244,7 +233,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     // states:
-    const [isActive, setActive] = useTogglerActive({
+    const [isActive, setActive] = useToggleActive({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
@@ -256,14 +245,6 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
-    
-    
-    
-    // fn props:
-    const isButton          = !!props.checkStyle && ['btn', 'togglerBtn'].includes(props.checkStyle);
-    
-    const defaultTag        = props.defaultTag  ?? (isButton ? undefined : _defaultRadioTag );
-    const defaultRole       = props.defaultRole ?? (isButton ? undefined : _defaultRadioRole);
     
     
     
@@ -410,8 +391,8 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             
             
             // semantics:
-            defaultTag   = {defaultTag}
-            defaultRole  = {defaultRole}
+            defaultTag   = {props.defaultTag  ??   ''   }
+            defaultRole  = {props.defaultRole ?? 'radio'}
             
             
             
