@@ -17,8 +17,8 @@ export type {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    TogglerActiveProps,
-    useTogglerActive,
+    ToggleActiveProps,
+    useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // react components:
@@ -41,12 +41,12 @@ export interface ToggleButtonProps
         ButtonProps,
         
         // behaviors:
-        TogglerActiveProps
+        ToggleActiveProps
 {
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     // states:
-    const [isActive, , toggleActive] = useTogglerActive(props);
+    const [isActive, , toggleActive] = useToggleActive(props);
     
     
     
