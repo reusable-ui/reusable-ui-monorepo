@@ -800,7 +800,7 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
             // :disabled | [aria-disabled]
             {...enableDisableState.props}
             
-            // :checked | [aria-selected]
+            // :checked | [aria-checked] | [aria-pressed] | [aria-selected]
             {...activePassiveState.props}
             
             
