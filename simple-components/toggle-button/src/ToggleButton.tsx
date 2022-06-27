@@ -47,10 +47,6 @@ export interface ToggleButtonProps
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     // rest props:
     const {
-        // remove props:
-        
-        
-        
         // accessibilities:
         defaultActive,  // take, to be handled by `useTogglerActive`
         active,         // take, to be handled by `useTogglerActive`
@@ -113,7 +109,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // handlers:
-            onClick   = {handleClick}
+            onClick={handleClick}
         />
     );
 };
