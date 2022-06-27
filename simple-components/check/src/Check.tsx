@@ -98,11 +98,6 @@ import {
     // types:
     DefaultTag,
     DefaultRole,
-    
-    
-    
-    // hooks:
-    useTestSemantic,
 }                           from '@reusable-ui/generic'                 // a base component
 import {
     // types:
@@ -163,13 +158,8 @@ import {
 
 
 // defaults:
-const _defaultCheckTag         : DefaultTag  = [null]
-const _defaultCheckRole        : DefaultRole = 'checkbox'
-
-const _defaultButtonTag        : DefaultTag  = 'button'
-const _defaultButtonRole       : DefaultRole = 'button'
-
-const _defaultCheckOrRadioRole : DefaultRole = ['checkbox', 'radio']
+const _defaultCheckTag  : DefaultTag  = [null]
+const _defaultCheckRole : DefaultRole = 'checkbox'
 
 
 
@@ -1022,49 +1012,11 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // fn props:
-    const propEnabled       = usePropEnabled(props);
-    const propReadOnly      = usePropReadOnly(props);
+    const propEnabled  = usePropEnabled(props);
+    const propReadOnly = usePropReadOnly(props);
     
-    const isButton          = !!props.checkStyle && ['btn', 'togglerBtn'].includes(props.checkStyle);
-    const isToggler         = (props.checkStyle === 'togglerBtn');
-    const pressedFn         = props.pressed ?? ((isActive && isToggler) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
-    
-    const tag               = props.tag         ?? (isButton ? undefined : 'span');
-    const role              = props.role;
-    const defaultTag        = props.defaultTag  ?? (isButton ? _defaultButtonTag  : _defaultCheckTag );
-    const defaultRole       = props.defaultRole ?? (isButton ? _defaultButtonRole : _defaultCheckRole);
-    const { isDesiredType : isSemanticCheckOrRadio } = useTestSemantic(
-        // test:
-        {
-            tag,
-            role,
-            defaultTag,
-            defaultRole,
-        },
-        
-        // expected:
-        {
-            defaultTag  : null, // any tag
-            defaultRole : _defaultCheckOrRadioRole,
-        }
-    );
-    const { isDesiredType : isSemanticButton       } = useTestSemantic(
-        // test:
-        {
-            tag,
-            role,
-            defaultTag,
-            defaultRole,
-        },
-        
-        // expected:
-        {
-            defaultTag  : null, // any tag
-            defaultRole : _defaultButtonRole,
-        }
-    );
-    const ariaChecked       = props['aria-checked'] ??  (isSemanticCheckOrRadio         ? isActive : undefined);
-    const ariaPressed       = props['aria-pressed'] ?? ((isSemanticButton && isToggler) ? isActive : undefined);
+    const isToggler    = (props.checkStyle === 'togglerBtn');
+    const pressedFn    = props.pressed ?? ((isActive && isToggler) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
@@ -1169,13 +1121,10 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // semantics:
-            tag          = {tag}
-            role         = {role}
-            defaultTag   = {defaultTag}
-            defaultRole  = {defaultRole}
+            tag          = {props.tag ?? 'span'}
+            defaultTag   = {props.defaultTag  ?? _defaultCheckTag }
+            defaultRole  = {props.defaultRole ?? _defaultCheckRole}
             
-            aria-checked = {ariaChecked}
-            aria-pressed = {ariaPressed}
             aria-label   = {props['aria-label'] ?? label}
             
             
