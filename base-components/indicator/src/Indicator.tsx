@@ -73,9 +73,10 @@ import {
     AccessibilityProps,
     AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
-import type {
+import {
     // types:
     SemanticProps,
+    useSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
@@ -352,11 +353,10 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 
 
-const isCheckOrRadio = (props: SemanticProps) => ['checkbox', 'radio'].includes((props as any).type);
-
 export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
-    const propActive = usePropActive(props);
+    const propActive    = usePropActive(props);
+    const { tag, role } = useSemantic(props);
     
     
     
@@ -411,18 +411,20 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
             return null;
         })(),
         
-        props : (
-            isCheckOrRadio(props)
-            ?
-            {
-                // a checkbox/radio uses pseudo :checked for activating
-                checked: actived,
-            }
-            :
-            {
-                'aria-selected' : actived ? true : undefined,
-            }
-        ),
+        props: (() => {
+            if (tag) {
+                if (!actived) return null;
+                
+                // use [checked] if <input type="checkbox|radio">:
+                if ((tag === 'input') && ['checkbox', 'radio'].includes((props as any).type)) return { checked: true };
+                
+                // use [aria-pressed] if <button> or [role="button"]:
+                if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
+                
+                // else, use [aria-selected]:
+                return { 'aria-selected' : true };
+            } // if
+        })(),
         
         handleAnimationEnd,
     };
