@@ -2,17 +2,13 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
 }                           from 'react'
 
 // reusable-ui:
 import {
     // hooks:
-    useIsomorphicLayoutEffect,
+    useEvent,
+    useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 export type {
     // hooks:
@@ -21,8 +17,9 @@ export type {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    isClientSideLink,
-}                           from '@reusable-ui/action-control'  // a base component
+    TogglerActiveProps,
+    useTogglerActive,
+}                           from '@reusable-ui/indicator'       // a base component
 import {
     // react components:
     ButtonProps,
@@ -41,7 +38,10 @@ export {
 export interface ToggleButtonProps
     extends
         // bases:
-        ButtonProps
+        ButtonProps,
+        
+        // behaviors:
+        TogglerActiveProps
 {
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
@@ -52,14 +52,50 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         
         
         // accessibilities:
-        active,
+        defaultActive,  // take, to be handled by `useTogglerActive`
+        active,         // take, to be handled by `useTogglerActive`
+        inheritActive,  // take, to be handled by `useTogglerActive`
+        onActiveChange, // take, to be handled by `useTogglerActive`
     ...restButtonProps} = props;
     
     
     
-    // fn props:
-    const activeDn = useCurrentActive(props);
-    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
+    // states:
+    const [isActive, , toggleActive] = useTogglerActive({
+        enabled         : props.enabled,
+        inheritEnabled  : props.inheritEnabled,
+        
+        readOnly        : props.readOnly,
+        inheritReadOnly : props.inheritReadOnly,
+        
+        defaultActive,
+        active,
+        inheritActive,
+        onActiveChange,
+    });
+    
+    
+    
+    // handlers:
+    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        toggleActive();         // handle click as toggle [active]
+        event.preventDefault(); // handled
+    }, []);
+    const handleClick           = useMergeEvents(
+        // preserves the original `onClick`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickInternal,
+    );
     
     
     
@@ -71,13 +107,13 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             
-            // semantics:
-            aria-current={(activeFn || undefined) && (props['aria-current'] ?? 'page')}
-            
-            
-            
             // accessibilities:
-            active={activeFn}
+            active={isActive}
+            
+            
+            
+            // handlers:
+            onClick   = {handleClick}
         />
     );
 };
