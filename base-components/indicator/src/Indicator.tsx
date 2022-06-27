@@ -189,11 +189,11 @@ const htmlCtrls = [
     'option',
     'textarea',
 ];
-const isCtrlElm = ({tag}: SemanticProps) => tag && htmlCtrls.includes(tag as string);
 
 export const useEnableDisableState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propEnabled = usePropEnabled(props);
+    const { tag }     = useSemantic(props);
     
     
     
@@ -249,18 +249,15 @@ export const useEnableDisableState = <TElement extends Element = Element>(props:
             return null;
         })(),
         
-        props : (
-            isCtrlElm(props)
-            ?
-            {
-                // a control_element uses pseudo :disabled for disabling
-                disabled        : !enabled,
-            }
-            :
-            {
-                'aria-disabled' : !enabled ? true : undefined,
-            }
-        ),
+        props: (() => {
+            if (enabled) return null;
+            
+            // use [disabled] if <control>:
+            if (tag && htmlCtrls.includes(tag)) return { disabled: true };
+            
+            // else, use [aria-disabled]:
+            return { 'aria-disabled' : true };
+        })(),
         
         handleAnimationEnd,
     };
@@ -353,6 +350,11 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 
 
+const checkableCtrls = [
+    'checkbox',
+    'radio',
+];
+
 export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propActive    = usePropActive(props);
@@ -412,18 +414,16 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
         })(),
         
         props: (() => {
-            if (tag) {
-                if (!actived) return null;
-                
-                // use [checked] if <input type="checkbox|radio">:
-                if ((tag === 'input') && ['checkbox', 'radio'].includes((props as any).type)) return { checked: true };
-                
-                // use [aria-pressed] if <button> or [role="button"]:
-                if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
-                
-                // else, use [aria-selected]:
-                return { 'aria-selected' : true };
-            } // if
+            if (!actived) return null;
+            
+            // use [checked] if <input type="checkbox|radio">:
+            if ((tag === 'input') && checkableCtrls.includes((props as any).type)) return { checked: true };
+            
+            // use [aria-pressed] if <button> or [role="button"]:
+            if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
+            
+            // else, use [aria-selected]:
+            return { 'aria-selected' : true };
         })(),
         
         handleAnimationEnd,
