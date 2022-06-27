@@ -501,8 +501,8 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
             
             // fire change dom event:
             if (changeEventTarget?.current) {
-                // do not set the [checked] prop in order to the `onChange` can be triggered:
-                // changeEventTarget.current.checked = activeFn;
+                // *reverse* the [checked] prop in order to the `onChange` event can be triggered *correctly*:
+                changeEventTarget.current.checked = !activeFn;
                 
                 // *hack*: trigger `onChange` event:
                 // side effect: toggles the [checked] prop:
