@@ -466,24 +466,6 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
     
     // states:
     const [activeTg, dispatchActiveTg] = useReducer(activeReducer, /*initialState: */props.defaultActive ?? false);
-    const setActive: React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
-        // conditions:
-        if (!enabled) return; // control is disabled => no response required
-        if (readOnly) return; // control is readOnly => no response required
-        
-        
-        
-        dispatchActiveTg({ type: 'set', payload: newActive});
-    }, [enabled, readOnly]);
-    const toggleActive: React.Dispatch<void> = useCallback((): void => {
-        // conditions:
-        if (!enabled) return; // control is disabled => no response required
-        if (readOnly) return; // control is readOnly => no response required
-        
-        
-        
-        dispatchActiveTg({ type: 'toggle'});
-    }, [enabled, readOnly]);
     
     
     
@@ -509,6 +491,28 @@ export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(pro
             } // if
         } // if
     } // if
+    
+    
+    
+    // callbacks:
+    const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
+        // conditions:
+        if (!enabled) return; // control is disabled => no response required
+        if (readOnly) return; // control is readOnly => no response required
+        
+        
+        
+        dispatchActiveTg({ type: 'set', payload: newActive});
+    }, [enabled, readOnly]);
+    const toggleActive : React.Dispatch<void> = useCallback((): void => {
+        // conditions:
+        if (!enabled) return; // control is disabled => no response required
+        if (readOnly) return; // control is readOnly => no response required
+        
+        
+        
+        dispatchActiveTg({ type: 'toggle'});
+    }, [enabled, readOnly]);
     
     
     
