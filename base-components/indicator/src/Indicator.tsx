@@ -452,7 +452,7 @@ const activeReducer = (oldActive: boolean, action: ActiveReducerAction): boolean
     } // switch
 };
 
-export interface TogglerActiveProps<TActiveChangeArg = unknown>
+export interface ToggleActiveProps<TActiveChangeArg = unknown>
     extends
         // accessibilities:
         AccessibilityProps
@@ -461,7 +461,7 @@ export interface TogglerActiveProps<TActiveChangeArg = unknown>
     defaultActive     ?: boolean
     onActiveChange    ?: (newActive: boolean, arg?: TActiveChangeArg) => void
 }
-export const useTogglerActive = <TActiveChangeArg extends unknown = unknown>(props: TogglerActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export const useToggleActive = <TActiveChangeArg extends unknown = unknown>(props: ToggleActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // fn props:
     const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
     
