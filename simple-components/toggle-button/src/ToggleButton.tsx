@@ -45,30 +45,8 @@ export interface ToggleButtonProps
 {
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
-    // rest props:
-    const {
-        // accessibilities:
-        defaultActive,  // take, to be handled by `useTogglerActive`
-        active,         // take, to be handled by `useTogglerActive`
-        inheritActive,  // take, to be handled by `useTogglerActive`
-        onActiveChange, // take, to be handled by `useTogglerActive`
-    ...restButtonProps} = props;
-    
-    
-    
     // states:
-    const [isActive, , toggleActive] = useTogglerActive({
-        enabled         : props.enabled,
-        inheritEnabled  : props.inheritEnabled,
-        
-        readOnly        : props.readOnly,
-        inheritReadOnly : props.inheritReadOnly,
-        
-        defaultActive,
-        active,
-        inheritActive,
-        onActiveChange,
-    });
+    const [isActive, , toggleActive] = useTogglerActive(props);
     
     
     
@@ -99,7 +77,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     return (
         <Button
             // other props:
-            {...restButtonProps}
+            {...props}
             
             
             
