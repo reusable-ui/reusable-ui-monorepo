@@ -96,11 +96,6 @@ import {
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 import {
     // types:
-    DefaultTag,
-    DefaultRole,
-}                           from '@reusable-ui/generic'                 // a base component
-import {
-    // types:
     StateMixin,
     
     
@@ -154,12 +149,6 @@ import {
     // styles:
     usesButtonLayout,
 }                           from '@reusable-ui/button'                  // a button ui
-
-
-
-// defaults:
-const _defaultCheckTag  : DefaultTag  = [null]
-const _defaultCheckRole : DefaultRole = 'checkbox'
 
 
 
@@ -1121,9 +1110,9 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // semantics:
-            tag          = {props.tag ?? 'span'}
-            defaultTag   = {props.defaultTag  ?? _defaultCheckTag }
-            defaultRole  = {props.defaultRole ?? _defaultCheckRole}
+            tag          = {props.tag         ??   'span'  }
+            defaultTag   = {props.defaultTag  ??     ''    }
+            defaultRole  = {props.defaultRole ?? 'checkbox'}
             
             aria-label   = {props['aria-label'] ?? label}
             
