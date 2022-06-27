@@ -352,7 +352,7 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 
 
-const isCheckbox = (props: SemanticProps) => (props.tag === 'input') && ((props as any).type === 'checkbox');
+const isCheckOrRadio = (props: SemanticProps) => ['checkbox', 'radio'].includes((props as any).type);
 
 export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
@@ -412,10 +412,10 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
         })(),
         
         props : (
-            isCheckbox(props)
+            isCheckOrRadio(props)
             ?
             {
-                // a checkbox uses pseudo :checked for activating
+                // a checkbox/radio uses pseudo :checked for activating
                 checked: actived,
             }
             :
