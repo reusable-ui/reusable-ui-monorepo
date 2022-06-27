@@ -252,7 +252,7 @@ export const useEnableDisableState = <TElement extends Element = Element>(props:
         props    : (() => {
             if (enabled) return null;
             
-            // use [disabled] if <control>:
+            // use :disabled if <control>:
             if (tag && htmlCtrls.includes(tag)) return { disabled: true };
             
             // else, use [aria-disabled]:
@@ -401,7 +401,7 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
         
         class  : ((): string|null => {
             // activating:
-            if (animating === true) return null; // uses :checked or [aria-selected],[aria-current]
+            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
             
             // passivating:
             if (animating === false) return 'passivating';
@@ -416,8 +416,11 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
         props  : (() => {
             if (!actived) return null;
             
-            // use [checked] if <input type="checkbox|radio">:
+            // use :checked if <input type="checkbox|radio">:
             if ((tag === 'input') && checkableCtrls.includes((props as any).type)) return { checked: true };
+            
+            // use [aria-checked] if [role="checkbox|radio"]:
+            if (role && checkableCtrls.includes(role)) return { 'aria-checked': true };
             
             // use [aria-pressed] if <button> or [role="button"]:
             if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
