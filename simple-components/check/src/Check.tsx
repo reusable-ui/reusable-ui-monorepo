@@ -1019,8 +1019,8 @@ const Check = (props: CheckProps): JSX.Element|null => {
     const propEnabled  = usePropEnabled(props);
     const propReadOnly = usePropReadOnly(props);
     
-    const isToggler    = (props.checkStyle === 'toggleBtn');
-    const pressedFn    = pressed ?? (((isActive && isToggler) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    const isToggleBtn  = (props.checkStyle === 'toggleBtn');
+    const pressedFn    = pressed ?? (((isActive && isToggleBtn) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
