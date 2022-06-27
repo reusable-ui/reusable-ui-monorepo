@@ -281,12 +281,12 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// [aria-selected],[aria-current] = styled active, :checked = native active:
-const selectorIfActivating  = ':is([aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked):not(.actived)'
+// [aria-checked],[aria-pressed],[aria-selected] = styled active, :checked = native active:
+const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
 // if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, [aria-selected]:not([aria-selected="false"]), [aria-current]:not([aria-current="false"]), :checked, .passivating))'
+const selectorIfPassived    = ':not(:is(.actived, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
 
 
 
