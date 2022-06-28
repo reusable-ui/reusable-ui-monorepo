@@ -33,6 +33,13 @@ export {
     ButtonStyle,
     ButtonVariant,
     ButtonType,
+    
+    
+    
+    // styles:
+    usesButtonLayout   as usesNavButtonLayout,
+    usesButtonVariants as usesNavButtonVariants,
+    usesButtonStates   as usesNavButtonStates,
 }                           from '@reusable-ui/button'          // a base component
 
 // other libs:
