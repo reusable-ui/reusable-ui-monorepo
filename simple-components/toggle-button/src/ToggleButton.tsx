@@ -20,11 +20,6 @@ import {
     ToggleActiveProps,
     useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base component
-import {
-    // react components:
-    ButtonProps,
-    Button,
-}                           from '@reusable-ui/button'          // a base component
 export {
     // hooks:
     ButtonStyle,
@@ -37,6 +32,11 @@ export {
     usesButtonLayout   as usesToggleButtonLayout,
     usesButtonVariants as usesToggleButtonVariants,
     usesButtonStates   as usesToggleButtonStates,
+}                           from '@reusable-ui/button'          // a base component
+import {
+    // react components:
+    ButtonProps,
+    Button,
 }                           from '@reusable-ui/button'          // a base component
 
 
