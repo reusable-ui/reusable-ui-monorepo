@@ -1,0 +1,46 @@
+import {
+    default as React,
+    useState,
+} from 'react';
+// import logo from './logo.svg';
+import './App.css';
+import {
+    HamburgerMenuButton,
+} from '@reusable-ui/hamburger-menu-button'
+import {
+    Styles,
+    HeadPortal,
+} from '@cssfn/cssfn-react'
+
+
+
+function App() {
+    const [value, setValue] = useState(0);
+    const handleTriggerRerender = () => {
+        setValue(value + 1);
+    };
+    
+    
+    return (
+        <>
+            <HeadPortal>
+                <Styles />
+            </HeadPortal>
+            <div className="App">
+                <article className='actions'>
+                    <button onClick={handleTriggerRerender}>
+                        Trigger re-render whole app
+                    </button>
+                </article>
+                <article className='actions'>
+                    <HamburgerMenuButton theme='primary' />
+                    <HamburgerMenuButton theme='danger' />
+                    <HamburgerMenuButton theme='success' mild={true} />
+                    <HamburgerMenuButton theme='danger' outlined={true} />
+                </article>
+            </div>
+        </>
+    );
+}
+
+export default App;
