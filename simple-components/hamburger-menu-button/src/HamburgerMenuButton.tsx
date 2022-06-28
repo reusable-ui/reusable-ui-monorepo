@@ -25,7 +25,7 @@ import {
     variants,
     states,
     keyframes,
-    ifNotLastChild,
+    ifNthChild,
     
     
     
@@ -87,6 +87,8 @@ import {
     
     // hooks:
     usesSizeVariant,
+    ThemeName,
+    mildOf,
     usesAnim,
     fallbackNoneFilter,
     
@@ -101,7 +103,18 @@ import {
     ifActivating,
     ifPassivating,
     ifPassived,
+    
+    
+    
+    // configs:
+    indicators,
 }                           from '@reusable-ui/indicator'       // a base component
+import {
+    // hooks:
+    markActive       as controlMarkActive,
+    usesThemeDefault as controlUsesThemeDefault,
+    usesThemeActive  as controlUsesThemeActive,
+}                           from '@reusable-ui/control'         // a base component
 export {
     // hooks:
     ButtonStyle,
@@ -109,6 +122,13 @@ export {
     ButtonType,
 }                           from '@reusable-ui/button'          // a base component
 import {
+    // styles:
+    usesToggleButtonLayout,
+    usesToggleButtonVariants,
+    usesToggleButtonStates,
+    
+    
+    
     // react components:
     ToggleButtonProps,
     ToggleButton,
@@ -117,6 +137,37 @@ import {
 
 
 // hooks:
+
+// states:
+
+//#region activePassive
+export const markActive = (): CssRule => style({
+    ...imports([
+        controlMarkActive(),
+        
+        mildOf(null), // keeps mild variant
+        
+        usesThemeActive(), // switch to active theme
+    ]),
+});
+
+/**
+ * Creates a default theme color definitions.
+ * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a default theme color definitions`.
+ */
+// change default parameter from 'secondary' to `null`:
+export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => controlUsesThemeDefault(themeName);
+
+/**
+ * Creates conditional color definitions at active state.
+ * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents the conditional color definitions at active state.
+ */
+// change default parameter from 'primary' to 'secondary':
+export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRule => controlUsesThemeActive(themeName);
+//#endregion activePassive
+
 
 // animations:
 
@@ -290,6 +341,11 @@ export const usesHamburgerLayout = () => {
     
     
     return style({
+        // appearances:
+        overflow   : 'visible', // allows the <polyline> to overflow the <svg>
+        
+        
+        
         // sizes:
         // fills the entire parent text's height:
         inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
@@ -298,29 +354,56 @@ export const usesHamburgerLayout = () => {
         
         
         // children:
-        overflow: 'visible', // allows graphics to overflow the canvas
         ...children('polyline', {
             // appearances:
             stroke        : 'currentColor', // set menu color as parent's font color
-            strokeWidth   : 4,              // set menu thickness, 4 of 24 might enough
+            strokeWidth   : '4',            // set menu thickness, 4 of 24 might enough
             strokeLinecap : 'square',       // set menu edges square
             
             
             
             // animations:
             transformOrigin : '50% 50%',
-            ...isNthChild(0, 1, {
+            ...ifNthChild(0, 1, {
                 transf : hamburgerAnims.topTransf,
                 anim   : hamburgerAnims.topAnim,
             }),
-            ...isNthChild(0, 2, {
+            ...ifNthChild(0, 2, {
                 transf : hamburgerAnims.midTransf,
                 anim   : hamburgerAnims.midAnim,
             }),
-            ...isNthChild(0, 3, {
+            ...ifNthChild(0, 3, {
                 transf : hamburgerAnims.btmTransf,
                 anim   : hamburgerAnims.btmAnim,
             }),
+        }),
+    });
+};
+export const usesHamburgerMenuButtonLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesToggleButtonLayout(),
+            
+            // colors:
+            usesThemeDefault(),
+        ]),
+        ...style({
+            // children:
+            ...children(svgElm, {
+                ...imports([
+                    usesHamburgerLayout(),
+                ]),
+            }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(hamburgerMenuButtons), // apply config's cssProps
+        }),
+        ...vars({
+            [indicators.animActive ] : cssProps.animActive,
+            [indicators.animPassive] : cssProps.animPassive,
         }),
     });
 };
