@@ -56,6 +56,7 @@ import {
     
     // utilities:
     cssVar,
+    fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
@@ -69,6 +70,10 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
+import {
+    // configs:
+    typos,
+}                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
     useEvent,
@@ -84,6 +89,11 @@ import {
     usesSizeVariant,
     usesAnim,
     fallbackNoneFilter,
+    
+    
+    
+    // configs:
+    basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -266,6 +276,54 @@ export const usesHamburgerAnim = (): StateMixin<HamburgerAnimVars> => {
     ];
 };
 //#endregion hamburger animations
+
+
+
+// styles:
+const svgElm = 'svg';
+export const usesHamburgerLayout = () => {
+    // dependencies:
+    
+    // animations:
+    const [, hamburgerAnims] = usesHamburgerAnim();
+    
+    
+    
+    return style({
+        // sizes:
+        // fills the entire parent text's height:
+        inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
+        blockSize  : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
+        
+        
+        
+        // children:
+        overflow: 'visible', // allows graphics to overflow the canvas
+        ...children('polyline', {
+            // appearances:
+            stroke        : 'currentColor', // set menu color as parent's font color
+            strokeWidth   : 4,              // set menu thickness, 4 of 24 might enough
+            strokeLinecap : 'square',       // set menu edges square
+            
+            
+            
+            // animations:
+            transformOrigin : '50% 50%',
+            ...isNthChild(0, 1, {
+                transf : hamburgerAnims.topTransf,
+                anim   : hamburgerAnims.topAnim,
+            }),
+            ...isNthChild(0, 2, {
+                transf : hamburgerAnims.midTransf,
+                anim   : hamburgerAnims.midAnim,
+            }),
+            ...isNthChild(0, 3, {
+                transf : hamburgerAnims.btmTransf,
+                anim   : hamburgerAnims.btmAnim,
+            }),
+        }),
+    });
+};
 
 
 
