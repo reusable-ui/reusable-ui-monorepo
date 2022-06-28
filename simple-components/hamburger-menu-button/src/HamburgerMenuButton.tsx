@@ -476,6 +476,44 @@ export const usesHamburgerMenuButtonStates = () => {
     });
 };
 
+export const useHamburgerMenuButtonStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesHamburgerMenuButtonLayout(),
+        
+        // variants:
+        usesHamburgerMenuButtonVariants(),
+        
+        // states:
+        usesHamburgerMenuButtonStates(),
+    ]),
+}), { id: '5sj70x1zsf' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+// configs:
+export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuButtonConfig] = cssConfig(() => {
+    // dependencies:
+    
+    // animations:
+    const [, , hamburgerAnims] = usesHamburgerAnim();
+    
+    
+    
+    //#region keyframes
+    const transfTopHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const transfTopHamburgerOver : CssKnownProps['transf'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',     ]];
+    
+    const transfTopCrossed       : CssKnownProps['transf'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const transfTopCrossedOver   : CssKnownProps['transf'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    //#endregion keyframes
+    
+    
+    
+    return {
+    };
+}, { prefix: 'hbmn' });
+
 
 
 // react components:
