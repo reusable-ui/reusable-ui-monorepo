@@ -30,6 +30,13 @@ export {
     ButtonStyle,
     ButtonVariant,
     ButtonType,
+    
+    
+    
+    // styles:
+    usesButtonLayout   as usesToggleButtonLayout,
+    usesButtonVariants as usesToggleButtonVariants,
+    usesButtonStates   as usesToggleButtonStates,
 }                           from '@reusable-ui/button'          // a base component
 
 
