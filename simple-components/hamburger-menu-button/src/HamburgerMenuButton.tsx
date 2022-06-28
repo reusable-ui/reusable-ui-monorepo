@@ -247,10 +247,6 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
             ...imports([
                 // animations:
                 animRule,
-                
-                // css vars:
-                transfNoneVars(),
-                animNoneVars(),
             ]),
             ...vars({
                 [hamburgerAnims.topTransf] : [[
@@ -274,6 +270,11 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
             }),
         }),
         () => style({
+            ...imports([
+                // css vars:
+                transfNoneVars(),
+                animNoneVars(),
+            ]),
             ...states([
                 ifActived({
                     ...imports([
