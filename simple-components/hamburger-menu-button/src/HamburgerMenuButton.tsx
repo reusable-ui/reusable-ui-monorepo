@@ -35,13 +35,13 @@ import {
 
 
 // react components:
-export interface ToggleMenuButtonProps
+export interface HamburgerMenuButtonProps
     extends
         // bases:
         ToggleButtonProps
 {
 }
-const ToggleMenuButton = (props: ToggleMenuButtonProps): JSX.Element|null => {
+const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null => {
     // jsx:
     return (
         <ToggleButton
@@ -51,6 +51,6 @@ const ToggleMenuButton = (props: ToggleMenuButtonProps): JSX.Element|null => {
     );
 };
 export {
-    ToggleMenuButton,
-    ToggleMenuButton as default,
+    HamburgerMenuButton,
+    HamburgerMenuButton as default,
 }

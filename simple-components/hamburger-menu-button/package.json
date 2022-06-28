@@ -1,9 +1,10 @@
 {
-  "name": "@reusable-ui/toggle-menu-button",
+  "name": "@reusable-ui/hamburger-menu-button",
   "version": "5.0.0",
-  "description": "A toggleable button for showing/hiding menu in Navbar.",
+  "description": "A toggleable hamburger button for showing/hiding menu in Navbar.",
   "keywords": [
     "toggle",
+    "hamburger",
     "menu",
     "navigation",
     "clickable",
@@ -21,8 +22,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/ToggleMenuButton.js",
-  "types": "dist/ToggleMenuButton.d.ts",
+  "main": "dist/HamburgerMenuButton.js",
+  "types": "dist/HamburgerMenuButton.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
