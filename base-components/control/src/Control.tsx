@@ -132,7 +132,7 @@ export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRu
 
 /**
  * Creates conditional color definitions at active state.
- * @param themeName The name of active theme.
+ * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
  * @returns A `CssRule` represents the conditional color definitions at active state.
  */
 // change default parameter from 'secondary' to 'primary':
