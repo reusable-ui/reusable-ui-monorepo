@@ -103,6 +103,7 @@ import {
     ifActivating,
     ifPassivating,
     ifPassived,
+    ifActive,
     
     
     
@@ -114,7 +115,13 @@ import {
     markActive       as controlMarkActive,
     usesThemeDefault as controlUsesThemeDefault,
     usesThemeActive  as controlUsesThemeActive,
+    ifFocus,
+    ifArrive,
 }                           from '@reusable-ui/control'         // a base component
+import {
+    // hooks:
+    ifPress,
+}                           from '@reusable-ui/action-control'  // a base component
 export {
     // hooks:
     ButtonStyle,
@@ -213,11 +220,12 @@ const [hamburgerAnims] = cssVar<HamburgerAnimVars>();
 
 
 
+export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, ReadonlyCssCustomRefs<HamburgerAnimVars>]
 /**
  * Uses hamburger animation.
  * @returns A `StateMixin<HamburgerAnimVars>` represents hamburger animation definitions.
  */
-export const usesHamburgerAnim = (): StateMixin<HamburgerAnimVars> => {
+export const usesHamburgerAnim = (): HamburgerAnimMixin => {
     // dependencies:
     
     // animations:
@@ -274,6 +282,28 @@ export const usesHamburgerAnim = (): StateMixin<HamburgerAnimVars> => {
                 transfNoneVars(),
                 animNoneVars(),
             ]),
+            ...vars({
+                [hamburgerAnims.topTransf] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerAnims.topTransfIn,
+                    hamburgerAnims.topTransfOut,
+                ]],
+                [hamburgerAnims.midTransf] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerAnims.midTransfIn,
+                    hamburgerAnims.midTransfOut,
+                ]],
+                [hamburgerAnims.btmTransf] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerAnims.btmTransfIn,
+                    hamburgerAnims.btmTransfOut,
+                ]],
+            }),
+        }),
+        () => style({
             ...states([
                 ifActived({
                     ...imports([
@@ -302,26 +332,6 @@ export const usesHamburgerAnim = (): StateMixin<HamburgerAnimVars> => {
                     ]),
                 }),
             ]),
-            ...vars({
-                [hamburgerAnims.topTransf] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerAnims.topTransfIn,
-                    hamburgerAnims.topTransfOut,
-                ]],
-                [hamburgerAnims.midTransf] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerAnims.midTransfIn,
-                    hamburgerAnims.midTransfOut,
-                ]],
-                [hamburgerAnims.btmTransf] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerAnims.btmTransfIn,
-                    hamburgerAnims.btmTransfOut,
-                ]],
-            }),
         }),
         hamburgerAnims,
     ];
@@ -336,45 +346,51 @@ export const usesHamburgerLayout = () => {
     // dependencies:
     
     // animations:
-    const [, hamburgerAnims] = usesHamburgerAnim();
+    const [hamburgerAnimRule, , hamburgerAnims] = usesHamburgerAnim();
     
     
     
     return style({
-        // appearances:
-        overflow   : 'visible', // allows the <polyline> to overflow the <svg>
-        
-        
-        
-        // sizes:
-        // fills the entire parent text's height:
-        inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
-        blockSize  : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
-        
-        
-        
-        // children:
-        ...children('polyline', {
-            // appearances:
-            stroke        : 'currentColor', // set menu color as parent's font color
-            strokeWidth   : '4',            // set menu thickness, 4 of 24 might enough
-            strokeLinecap : 'square',       // set menu edges square
-            
-            
-            
+        ...imports([
             // animations:
-            transformOrigin : '50% 50%',
-            ...ifNthChild(0, 1, {
-                transf : hamburgerAnims.topTransf,
-                anim   : hamburgerAnims.topAnim,
-            }),
-            ...ifNthChild(0, 2, {
-                transf : hamburgerAnims.midTransf,
-                anim   : hamburgerAnims.midAnim,
-            }),
-            ...ifNthChild(0, 3, {
-                transf : hamburgerAnims.btmTransf,
-                anim   : hamburgerAnims.btmAnim,
+            hamburgerAnimRule,
+        ]),
+        ...style({
+            // appearances:
+            overflow   : 'visible', // allows the <polyline> to overflow the <svg>
+            
+            
+            
+            // sizes:
+            // fills the entire parent text's height:
+            inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
+            blockSize  : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
+            
+            
+            
+            // children:
+            ...children('polyline', {
+                // appearances:
+                stroke        : 'currentColor', // set menu color as parent's font color
+                strokeWidth   : '4',            // set menu thickness, 4 of 24 might enough
+                strokeLinecap : 'square',       // set menu edges square
+                
+                
+                
+                // animations:
+                transformOrigin : '50% 50%',
+                ...ifNthChild(0, 1, {
+                    transf : hamburgerAnims.topTransf,
+                    anim   : hamburgerAnims.topAnim,
+                }),
+                ...ifNthChild(0, 2, {
+                    transf : hamburgerAnims.midTransf,
+                    anim   : hamburgerAnims.midAnim,
+                }),
+                ...ifNthChild(0, 3, {
+                    transf : hamburgerAnims.btmTransf,
+                    anim   : hamburgerAnims.btmAnim,
+                }),
             }),
         }),
     });
@@ -401,10 +417,62 @@ export const usesHamburgerMenuButtonLayout = () => {
             // customize:
             ...usesCssProps(hamburgerMenuButtons), // apply config's cssProps
         }),
-        ...vars({
-            [indicators.animActive ] : cssProps.animActive,
-            [indicators.animPassive] : cssProps.animPassive,
-        }),
+    });
+};
+export const usesHamburgerMenuButtonVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizesRule] = usesSizeVariant(hamburgerMenuButtons);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesToggleButtonVariants(),
+            
+            // layouts:
+            sizesRule,
+        ]),
+    });
+};
+export const usesHamburgerMenuButtonStates = () => {
+    // dependencies:
+    
+    // animations:
+    const [, hamburgerAnimStateRule] = usesHamburgerAnim();
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            usesToggleButtonStates(),
+            hamburgerAnimStateRule,
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifFocus({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifArrive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifPress({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+        ]),
     });
 };
 
