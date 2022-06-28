@@ -23,11 +23,6 @@ import {
     // hooks:
     isClientSideLink,
 }                           from '@reusable-ui/action-control'  // a base component
-import {
-    // react components:
-    ButtonProps,
-    Button,
-}                           from '@reusable-ui/button'          // a base component
 export {
     // hooks:
     ButtonStyle,
@@ -40,6 +35,11 @@ export {
     usesButtonLayout   as usesNavButtonLayout,
     usesButtonVariants as usesNavButtonVariants,
     usesButtonStates   as usesNavButtonStates,
+}                           from '@reusable-ui/button'          // a base component
+import {
+    // react components:
+    ButtonProps,
+    Button,
 }                           from '@reusable-ui/button'          // a base component
 
 // other libs:
