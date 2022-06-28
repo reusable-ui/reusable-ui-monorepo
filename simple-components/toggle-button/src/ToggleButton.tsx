@@ -88,6 +88,11 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             
+            // semantics:
+            aria-expanded={(isActive || undefined) && props['aria-expanded']}
+            
+            
+            
             // accessibilities:
             active={isActive}
             
