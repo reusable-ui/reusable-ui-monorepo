@@ -6,11 +6,6 @@ import {
 
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomSimpleRef,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
     
@@ -21,8 +16,6 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
-    variants,
     states,
     keyframes,
     ifNthChild,
@@ -38,11 +31,6 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    escapeSvg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
@@ -65,8 +53,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -76,21 +62,10 @@ import {
 }                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
-    useEvent,
-    useMergeEvents,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // types:
-    StateMixin,
-    
-    
-    
-    // hooks:
     usesSizeVariant,
     ThemeName,
     mildOf,
     usesAnim,
-    fallbackNoneFilter,
     
     
     
@@ -104,11 +79,6 @@ import {
     ifPassivating,
     ifPassived,
     ifActive,
-    
-    
-    
-    // configs:
-    indicators,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
@@ -127,7 +97,7 @@ export {
     ButtonStyle,
     ButtonVariant,
     ButtonType,
-}                           from '@reusable-ui/button'          // a base component
+}                           from '@reusable-ui/toggle-button'   // a base component
 import {
     // styles:
     usesToggleButtonLayout,
@@ -244,14 +214,14 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
         [hamburgerAnims.btmTransfOut] : anims.transfNone,
     });
     const transfInVars   = () => vars({
-        [hamburgerAnims.topTransfIn ] : hamburgerMenuButtons.svgTopTransfIn,
-        [hamburgerAnims.midTransfIn ] : hamburgerMenuButtons.svgMidTransfIn,
-        [hamburgerAnims.btmTransfIn ] : hamburgerMenuButtons.svgBtmTransfIn,
+        [hamburgerAnims.topTransfIn ] : hamburgerMenuButtons.hamburgerTopTransfIn,
+        [hamburgerAnims.midTransfIn ] : hamburgerMenuButtons.hamburgerMidTransfIn,
+        [hamburgerAnims.btmTransfIn ] : hamburgerMenuButtons.hamburgerBtmTransfIn,
     });
     const transfOutVars  = () => vars({
-        [hamburgerAnims.topTransfOut] : hamburgerMenuButtons.svgTopTransfOut,
-        [hamburgerAnims.midTransfOut] : hamburgerMenuButtons.svgMidTransfOut,
-        [hamburgerAnims.btmTransfOut] : hamburgerMenuButtons.svgBtmTransfOut,
+        [hamburgerAnims.topTransfOut] : hamburgerMenuButtons.hamburgerTopTransfOut,
+        [hamburgerAnims.midTransfOut] : hamburgerMenuButtons.hamburgerMidTransfOut,
+        [hamburgerAnims.btmTransfOut] : hamburgerMenuButtons.hamburgerBtmTransfOut,
     });
     
     const animNoneVars   = () => vars({
@@ -260,14 +230,14 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
         [hamburgerAnims.btmAnim     ] : anims.animNone,
     });
     const animInVars     = () => vars({
-        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.svgTopAnimIn,
-        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.svgMidAnimIn,
-        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.svgBtmAnimIn,
+        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.hamburgerTopAnimIn,
+        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.hamburgerMidAnimIn,
+        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
     });
     const animOutVars    = () => vars({
-        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.svgTopAnimOut,
-        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.svgMidAnimOut,
-        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.svgBtmAnimOut,
+        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.hamburgerTopAnimOut,
+        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.hamburgerMidAnimOut,
+        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
     });
     
     
@@ -493,26 +463,123 @@ export const useHamburgerMenuButtonStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuButtonConfig] = cssConfig(() => {
-    // dependencies:
-    
-    // animations:
-    const [, , hamburgerAnims] = usesHamburgerAnim();
-    
-    
-    
     //#region keyframes
-    const transfTopHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
-    const transfTopHamburgerOver : CssKnownProps['transf'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',     ]];
+    const topTransfHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const topTransfHamburgerOver : CssKnownProps['transf'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const transfTopCrossed       : CssKnownProps['transf'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    const transfTopCrossedOver   : CssKnownProps['transf'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const topTransfCrossed       : CssKnownProps['transf'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const topTransfCrossedOver   : CssKnownProps['transf'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    
+    
+    const midTransfHamburger     : CssKnownProps['transf'] = [[                  'scaleX(1)'   ,                       ]];
+    const midTransfHamburgerOver : CssKnownProps['transf'] = [[                  'scaleX(1.35)'                        ]];
+    
+    const midTransfCrossed       : CssKnownProps['transf'] = [[                  'scaleX(0)'   ,                       ]];
+    const midTransfCrossedOver   : CssKnownProps['transf'] = [[                  'scaleX(1.35)'                        ]];
+    
+    
+    const btmTransfHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const btmTransfHamburgerOver : CssKnownProps['transf'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    
+    const btmTransfCrossed       : CssKnownProps['transf'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const btmTransfCrossedOver   : CssKnownProps['transf'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    
+    
+    
+    // hamburger => crossed:
+    const [keyframesCrossingTopRule    , keyframesCrossingTop    ] = keyframes({
+        from  : { transform: topTransfHamburger     },
+        '43%' : { transform: topTransfCrossed       },
+        '71%' : { transform: topTransfCrossedOver   },
+        to    : { transform: topTransfCrossed       },
+    });
+    
+    // crossed => hamburger:
+    const [keyframesHamburgeringTopRule, keyframesHamburgeringTop] = keyframes({
+        from  : { transform: topTransfCrossed       },
+        '43%' : { transform: topTransfHamburger     },
+        '71%' : { transform: topTransfHamburgerOver, transformOrigin : [['91.7%', '12.5%']] },
+        to    : { transform: topTransfHamburger     },
+    });
+    
+    
+    // hamburger => crossed:
+    const [keyframesCrossingMidRule    , keyframesCrossingMid    ] = keyframes({
+        from  : { transform: midTransfHamburger     },
+        '19%' : { transform: midTransfCrossedOver   },
+        to    : { transform: midTransfCrossed       },
+    });
+    
+    // crossed => hamburger:
+    const [keyframesHamburgeringMidRule, keyframesHamburgeringMid] = keyframes({
+        from  : { transform: midTransfCrossed       },
+        '81%' : { transform: midTransfHamburgerOver },
+        to    : { transform: midTransfHamburger     },
+    });
+    
+    
+    // hamburger => crossed:
+    const [keyframesCrossingBtmRule    , keyframesCrossingBtm    ] = keyframes({
+        from  : { transform: btmTransfHamburger     },
+        '43%' : { transform: btmTransfCrossed       },
+        '71%' : { transform: btmTransfCrossedOver   },
+        to    : { transform: btmTransfCrossed       },
+    });
+    
+    // crossed => hamburger:
+    const [keyframesHamburgeringBtmRule, keyframesHamburgeringBtm] = keyframes({
+        from  : { transform: btmTransfCrossed       },
+        '43%' : { transform: btmTransfHamburger     },
+        '71%' : { transform: btmTransfHamburgerOver, transformOrigin : [['91.7%', '87.5%']] },
+        to    : { transform: btmTransfHamburger     },
+    });
     //#endregion keyframes
     
     
     
+    const hamburgerAnimDuration = '300ms';
+    
     return {
+        // animations:
+        hamburgerTopTransfIn  : topTransfCrossed        as CssKnownProps['transf'],
+        hamburgerMidTransfIn  : midTransfCrossed        as CssKnownProps['transf'],
+        hamburgerBtmTransfIn  : btmTransfCrossed        as CssKnownProps['transf'],
+        
+        hamburgerTopTransfOut : topTransfHamburger      as CssKnownProps['transf'],
+        hamburgerMidTransfOut : midTransfHamburger      as CssKnownProps['transf'],
+        hamburgerBtmTransfOut : btmTransfHamburger      as CssKnownProps['transf'],
+        
+        
+        
+        ...keyframesCrossingTopRule,
+        ...keyframesHamburgeringTopRule,
+        ...keyframesCrossingMidRule,
+        ...keyframesHamburgeringMidRule,
+        ...keyframesCrossingBtmRule,
+        ...keyframesHamburgeringBtmRule,
+        
+        hamburgerAnimDuration : hamburgerAnimDuration   as CssKnownProps['animationDuration'],
+        
+        hamburgerTopAnimIn    : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingTop    ],
+        ]                                               as CssKnownProps['anim'],
+        hamburgerMidAnimIn    : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingMid    ],
+        ]                                               as CssKnownProps['anim'],
+        hamburgerBtmAnimIn    : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingBtm    ],
+        ]                                               as CssKnownProps['anim'],
+        hamburgerTopAnimOut   : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringTop],
+        ]                                               as CssKnownProps['anim'],
+        hamburgerMidAnimOut   : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringMid],
+        ]                                               as CssKnownProps['anim'],
+        hamburgerBtmAnimOut   : [
+            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringBtm],
+        ]                                               as CssKnownProps['anim'],
     };
-}, { prefix: 'hbmn' });
+}, { prefix: 'hbgmn' });
 
 
 
@@ -524,12 +591,38 @@ export interface HamburgerMenuButtonProps
 {
 }
 const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null => {
+    // styles:
+    const styleSheet = useHamburgerMenuButtonStyleSheet();
+    
+    
+    
     // jsx:
     return (
         <ToggleButton
             // other props:
             {...props}
-        />
+            
+            
+            
+            // semantics:
+            aria-expanded={true} // the <ToggleButton> will automatically remove [aria-expanded] if not [active]
+            
+            
+            
+            // accessibilities:
+            label={props.label ?? 'Toggle navigation'}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+        >
+            <svg viewBox='0 0 24 24'>
+                <polyline points='2,3 22,3' />
+                <polyline points='2,12 22,12' />
+                <polyline points='2,21 22,21' />
+            </svg>
+        </ToggleButton>
     );
 };
 export {
