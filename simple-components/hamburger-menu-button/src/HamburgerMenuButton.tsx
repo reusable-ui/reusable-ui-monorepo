@@ -122,7 +122,7 @@ export const markActive = (): CssRule => style({
     ...imports([
         controlMarkActive(),
         
-        mildOf(null), // keeps mild variant
+        mildOf(null),      // keeps mild variant
         
         usesThemeActive(), // switch to active theme
     ]),
