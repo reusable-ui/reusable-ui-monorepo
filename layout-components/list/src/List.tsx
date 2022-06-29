@@ -67,7 +67,7 @@ import {
     usesSizeVariant,
     OrientationName,
     OrientationRuleOptions,
-    defaultInlineOrientationRuleOptions,
+    defaultBlockOrientationRuleOptions,
     normalizeOrientationRule,
     usesOrientationRule,
     OrientationVariant,
@@ -90,31 +90,26 @@ import {
     ifLeave,
 }                           from '@reusable-ui/control'         // a base component
 import {
-    // hooks:
-    ifPress,
-    isClientSideLink,
-    
-    
-    
     // styles:
-    usesActionControlLayout,
-    usesActionControlVariants,
-    usesActionControlStates,
+    usesIndicatorLayout,
+    usesIndicatorVariants,
+    usesIndicatorStates,
     
     
     
     // react components:
-    ActionControlProps,
-    ActionControl,
-}                           from '@reusable-ui/action-control'  // a base component
+    IndicatorProps,
+    Indicator,
+}                           from '@reusable-ui/indicator'       // a base component
 
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag  = ['list', 'a'   ] // uses <list>        as the default semantic, fallbacks to <a>
-const _defaultSemanticRole : SemanticRole = ['list', 'link'] // uses [role="list"] as the default semantic, fallbacks to [role="link"]
+const _defaultSemanticTag  : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticRole : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
 const _defaultOutlined     : boolean      = false
-const _defaultMild         : boolean      = false
+const _defaultMild         : boolean      = true
+const _defaultActionCtrl   : boolean      = false;
 
 
 
@@ -123,7 +118,7 @@ const _defaultMild         : boolean      = false
 // layouts:
 
 //#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
+export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
 //#endregion orientation
 
 
@@ -154,7 +149,7 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
     return style({
         ...imports([
             // layouts:
-            usesActionControlLayout(),
+            usesIndicatorLayout(),
         ]),
         ...style({
             // layouts:
@@ -197,7 +192,7 @@ export const usesListVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesActionControlVariants(),
+            usesIndicatorVariants(),
             
             // layouts:
             sizesRule,
@@ -233,7 +228,7 @@ export const usesListStates = () => {
     return style({
         ...imports([
             // states:
-            usesActionControlStates(),
+            usesIndicatorStates(),
         ]),
     });
 };
@@ -280,10 +275,10 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
 
 
 // react components:
-export interface ListProps
+export interface ListProps<TElement extends Element = Element>
     extends
         // bases:
-        ActionControlProps<TElement>,
+        IndicatorProps<TElement>,
         
         // list:
         Omit<React.ListHTMLAttributes<TElement>,
@@ -305,15 +300,17 @@ export interface ListProps
     // children:
     children ?: React.ReactNode
 }
-const List = (props: ListProps): JSX.Element|null => {
+const List = <TElement extends Element = Element>(props: ListProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useListStyleSheet();
+    const styleSheet            = useListStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const listVariant        = useListVariant(props);
+    const orientationVariant    = useOrientationVariant(props);
+    const isOrientationVertical = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === defaultOrientationRuleOptions.defaultOrientation);
+    
+    const listVariant           = useListVariant(props);
     
     
     
@@ -340,13 +337,34 @@ const List = (props: ListProps): JSX.Element|null => {
         // accessibilities:
         label,
         pressed,
-    ...restActionControlProps} = props;
+    ...restIndicatorProps} = props;
     
     
     
     // fn props:
-    const propActive = usePropActive(props);
-    const pressedFn  = pressed ?? ((propActive && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    const semanticTag  = props.semanticTag  ?? _defaultSemanticTag ;
+    const semanticRole = props.semanticRole ?? _defaultSemanticRole;
+    const {
+        isDesiredType : isListType,
+        isSemanticTag : isSemanticList,
+    } = useTestSemantic(
+        // test:
+        {
+            tag  : props.tag,
+            role : props.role,
+            semanticTag,
+            semanticRole,
+        },
+        
+        // expected:
+        {
+            semanticTag  : _defaultSemanticTag,
+            semanticRole : _defaultSemanticRole,
+        }
+    );
+    
+    const wrapperSemanticTag  : SemanticTag  = (isSemanticList ? 'li'       : '');
+    const wrapperSemanticRole : SemanticRole = (isListType     ? 'listitem' : '');
     
     
     
@@ -366,18 +384,17 @@ const List = (props: ListProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <ActionControl<HTMLListElement>
+        <Indicator<TElement>
             // other props:
-            {...restActionControlProps}
+            {...restIndicatorProps}
             
             
             
             // semantics:
             semanticTag  = {semanticTag }
             semanticRole = {semanticRole}
-            tag          = {tag}
-            role         = {role}
-            aria-label   = {props['aria-label'] ?? label}
+            
+            aria-orientation={props['aria-orientation'] ?? (isOrientationVertical ? 'vertical' : 'horizontal')}
             
             
             
