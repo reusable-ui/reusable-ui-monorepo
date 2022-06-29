@@ -54,7 +54,7 @@ import {
     // styles:
     usesContentBasicLayout,
     usesContentBasicVariants,
-}                           from '@reusable-ui/content'         // a base component
+}                           from '@reusable-ui/content'         // a neighbor component
 
 
 
