@@ -6,8 +6,17 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    SingleOrArray,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -72,11 +81,14 @@ import {
     usesOrientationRule,
     OrientationVariant,
     useOrientationVariant,
+    ThemeName,
     gradientOf,
     ifNotOutlined,
     outlinedOf,
+    mildOf,
     usesBorder,
     usesPadding,
+    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -84,10 +96,11 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
-    usesThemeActive,
+    markActive       as controlMarkActive,
+    usesThemeDefault as controlUsesThemeDefault,
+    usesThemeActive  as controlUsesThemeActive,
     ifFocus,
     ifArrive,
-    ifLeave,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // styles:
@@ -125,16 +138,60 @@ export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
 // appearances:
 
 //#region list style
-export type ListStyle = 'link'|'ghost' // might be added more styles in the future
+export type ListBasicStyle = 'flat'|'flush'|'joined';
+export type ListStyle = ListBasicStyle|'content'|'btn'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
 export interface ListVariant {
-    listStyle ?: ListStyle
+    listStyle ?: SingleOrArray<ListStyle>
 }
-export const useListVariant = (props: ListVariant) => {
+export const useListVariant = ({ listStyle }: ListVariant) => {
     return {
-        class: props.listStyle ?? null,
+        class: (
+            (Array.isArray(listStyle) ? listStyle : [listStyle])
+            .filter((style) => !!style).join(' ')
+            ||
+            null
+        ),
     };
 };
 //#endregion list style
+
+
+// states:
+
+//#region activePassive
+export const markActive = (): CssRule => style({
+    ...imports([
+        outlinedOf(null),      // keeps outlined variant
+        mildOf(null),          // keeps mild     variant
+        
+        usesThemeActive(),     // switch to active theme
+    ]),
+});
+export const dontMarkActive = (): CssRule => style({
+    ...imports([
+        outlinedOf(null),      // keeps outlined variant
+        mildOf(null),          // keeps mild     variant
+        
+        usesThemeActive(null), // keeps current theme
+    ]),
+});
+
+/**
+ * Creates a default theme color definitions.
+ * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a default theme color definitions`.
+ */
+// change default parameter from 'secondary' to `null`:
+export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => controlUsesThemeDefault(themeName);
+
+/**
+ * Creates conditional color definitions at active state.
+ * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents the conditional color definitions at active state.
+ */
+// change default parameter from 'primary' to 'secondary':
+export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRule => controlUsesThemeActive(themeName);
+//#endregion activePassive
 
 
 
