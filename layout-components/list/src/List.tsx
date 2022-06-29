@@ -17,6 +17,10 @@ import type {
     
     // cssfn properties:
     CssRule,
+    
+    CssStyleCollection,
+    
+    CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -47,6 +51,8 @@ import {
     // utilities:
     usesCssProps,
     usesPrefixedProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -96,6 +102,7 @@ import {
     ifNotOutlined,
     outlinedOf,
     mildOf,
+    usesBackg,
     usesBorder,
     extendsBorder,
     usesPadding,
@@ -108,6 +115,7 @@ import {
     ifPassivating,
     ifPassived,
     ifActive,
+    ifPassive,
     
     
     
@@ -153,6 +161,8 @@ import {
     // rules:
     ifFirstVisibleChild,
     ifLastVisibleChild,
+    ifNotFirstVisibleChild,
+    ifNotLastVisibleChild,
     
     
     
@@ -161,6 +171,20 @@ import {
     usesBorderAsContainer,
     usesBorderAsSeparator,
 }                           from '@reusable-ui/container'       // a neighbor component
+import {
+    // styles:
+    usesContentBasicLayout,
+    usesContentBasicVariants,
+    usesContentChildren,
+}                           from '@reusable-ui/content'         // a neighbor component
+import {
+    // styles:
+    usesIconImage,
+}                           from '@reusable-ui/icon'            // an icon set
+import {
+    // styles:
+    usesButtonLayout,
+}                           from '@reusable-ui/button'          // a button ui
 
 
 
@@ -690,11 +714,74 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
         }),
     });
 };
-export const usesListVariants = () => {
+export interface ListBasicVariantOptions {
+    additionRemoveBorderSelector    ?: CssSelectorCollection
+    additionRemoveSeparatorSelector ?: CssSelectorCollection
+    
+    specificityWeight               ?: number
+}
+export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
+    // options:
+    const {
+        additionRemoveBorderSelector,
+        additionRemoveSeparatorSelector,
+        specificityWeight,
+    } = options ?? {};
+    
+    
+    
+    // dependencies:
+    
+    // borders:
+    const [, borders] = usesBorder();
+    
+    
+    
+    return style({
+        ...variants([
+            rule(['.flat', '.flush', additionRemoveBorderSelector], {
+                // borders:
+                
+                // kill borders surrounding List:
+                [borders.borderWidth           ] : '0px',
+                
+                // remove rounded corners on top:
+                [borders.borderStartStartRadius] : '0px',
+                [borders.borderStartEndRadius  ] : '0px',
+                // remove rounded corners on bottom:
+                [borders.borderEndStartRadius  ] : '0px',
+                [borders.borderEndEndRadius    ] : '0px',
+            }),
+            rule(['.flat', '.joined', additionRemoveSeparatorSelector], {
+                // children:
+                ...children(wrapperElm, {
+                    // borders:
+                    // kill separator between items:
+                    [borders.borderWidth] : '0px',
+                }),
+            }),
+        ], { specificityWeight }),
+    });
+};
+export const usesListVariants = (options?: OrientationRuleOptions) => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    
+    
+    
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(lists);
+    const [sizesRule          ] = usesSizeVariant(lists);
+    
+    // backgrounds:
+    const [          , backgs ] = usesBackg();
+    
+    // borders:
+    const [borderRule, borders] = usesBorder();
     
     
     
@@ -707,30 +794,304 @@ export const usesListVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule('.ghost', {
-                ...style({
-                    // borders:
-                    boxShadow : ['none', '!important'], // no focus animation
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(lists, 'ghost')), // apply config's cssProps starting with ghost***
-                }),
-                ...states([
-                    ifArrive({
-                        // appearances:
-                        opacity: lists.ghostOpacityArrive, // increase the opacity to increase visibility
-                    }),
-                    ifLeave({
+            rule('.content', { // content
+                ...imports([
+                    // variants:
+                    usesContentBasicVariants(),
+                ]),
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // children:
+                    ...children('*', { // <Accordion> support, both for <listItem> and <secondListItem>
                         ...imports([
-                            // backgrounds:
-                            gradientOf(false), // hides the gradient to increase invisibility
+                            // layouts:
+                            usesContentBasicLayout(),
+                            
+                            // children:
+                            usesContentChildren(),
                         ]),
                     }),
-                ]),
+                }),
             }),
         ]),
+        ...imports([
+            usesListBasicVariants({
+                additionRemoveBorderSelector    : ['.btn', '.tab', '.breadcrumb', '.bullet'],
+                additionRemoveSeparatorSelector : ['.btn', '.tab', '.breadcrumb', '.bullet'],
+                // specificityWeight            : 1, // not needed
+            }),
+        ]),
+        ...variants([ 
+            rule('.btn', {
+                // spacings:
+                // add space between buttons:
+                gap : lists.btnSpacing,
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // children:
+                    ...children(listItemElm, {
+                        ...imports([
+                            // layouts:
+                            usesButtonLayout(),
+                        ]),
+                        ...style({
+                            // accessibilities:
+                            // undef cursor:
+                            cursor : null,
+                            
+                            
+                            
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(lists, 'btn')), // apply config's cssProps starting with btn***
+                        }),
+                    }),
+                }),
+            }),
+            rule('.tab', {
+                // layouts:
+                ...rule(orientationInlineSelector, { // inline
+                    // tab directions are inline (right) but <List> direction are block (down):
+                    display                : 'flex',        // use block flexbox, so it takes the entire parent's width
+                    
+                    
+                    
+                    // borders:
+                    // kill border [left, top, right] surrounding tab:
+                    borderInlineWidth      : 0,
+                    borderBlockStartWidth  : 0,
+                }),
+                ...rule(orientationBlockSelector , { // block
+                    // tab directions are block (down) but <List> direction are inline (right):
+                    display                : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
+                    
+                    
+                    
+                    // borders:
+                    // kill border [top, left, bottom] surrounding tab:
+                    borderBlockWidth       : 0,
+                    borderInlineStartWidth : 0,
+                }),
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // spacings:
+                    ...rule(parentOrientationInlineSelector, { // inline
+                        // shift the items to bottom a bit, so the `active item` can hide the `borderBottom`:
+                        marginBlockEnd : `calc(0px - ${borders.borderWidth})`,
+                    }),
+                    ...rule(parentOrientationBlockSelector , { // block
+                        // shift the items to right a bit, so the `active item` can hide the `borderRight`:
+                        marginInlineEnd : `calc(0px - ${borders.borderWidth})`,
+                    }),
+                    
+                    
+                    
+                    // children:
+                    ...children(listItemElm, {
+                        ...imports([
+                            // borders:
+                            borderRule,
+                        ]),
+                        ...style({
+                            // borders:
+                            
+                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                            ...extendsBorder(),
+                            
+                            [borders.borderColor] : 'inherit', // change borderColor independent to child's theme color
+                            backgroundClip        : 'padding-box',
+                            
+                            
+                            
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(lists, 'tab')), // apply config's cssProps starting with tab***
+                            borderRadius: null, // tab borderRadius has been handled
+                        }),
+                        ...states([
+                            ifPassive({
+                                ...rule(parentOrientationInlineSelector, { // inline
+                                    // borders:
+                                    // show parent border bottom:
+                                    borderInlineWidth      : 0,
+                                    borderBlockStartColor  : 'transparent',
+                                }),
+                                ...rule(parentOrientationBlockSelector , { // block
+                                    // borders:
+                                    // show parent border right:
+                                    borderBlockWidth       : 0,
+                                    borderInlineStartColor : 'transparent',
+                                }),
+                            }),
+                            ifActive({
+                                ...rule(parentOrientationInlineSelector, { // inline
+                                    // borders:
+                                    // hide parent border bottom:
+                                    borderBlockEndWidth    : 0,
+                                    // add rounded corners on top:
+                                    [borders.borderStartStartRadius] : lists.tabBorderRadius,
+                                    [borders.borderStartEndRadius  ] : lists.tabBorderRadius,
+                                }),
+                                ...rule(parentOrientationBlockSelector , { // block
+                                    // borders:
+                                    // hide parent border right:
+                                    borderInlineEndWidth   : 0,
+                                    // add rounded corners on left:
+                                    [borders.borderStartStartRadius] : lists.tabBorderRadius,
+                                    [borders.borderEndStartRadius  ] : lists.tabBorderRadius,
+                                }),
+                            }),
+                        ]),
+                    }),
+                }),
+            }),
+            rule('.breadcrumb', {
+                // children:
+                ...children(wrapperElm, {
+                    // children:
+                    ...ifNotFirstVisibleChild({
+                        // children:
+                        ...children('::before', {
+                            ...imports([
+                                usesIconImage(
+                                    /*img   : */lists.breadcrumbSeparatorImg,
+                                    /*color : */backgs.altBackgColor,
+                                ),
+                            ]),
+                            ...style({
+                                // layouts:
+                                display    : 'block', // fills the entire wrapper's width
+                                content    : '""',
+                                
+                                
+                                
+                                // sizes:
+                                flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                                
+                                
+                                
+                                // customize:
+                                ...usesCssProps(usesPrefixedProps(lists, 'breadcrumbSeparator')), // apply config's cssProps starting with breadcrumbSeparator***
+                                ...rule(parentOrientationBlockSelector , { // block
+                                    // overwrites propName = {breadcrumbSeparator}PropName{Block}:
+                                    ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
+                                }),
+                            }),
+                        }),
+                    }),
+                    ...children(listItemElm, {
+                        // typos:
+                        lineHeight : 1,
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(lists, 'breadcrumb')), // apply config's cssProps starting with breadcrumb***
+                    }),
+                }),
+            }),
+            rule('.bullet', {
+                // layouts:
+                justifyContent : 'space-between', // separates each bullet as far as possible
+                alignItems     : 'center',        // each bullet might have different size, so center it instead of stretch it
+                
+                
+                
+                // spacings:
+                // add space between bullets:
+                gap            : lists.bulletSpacing,
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // sizes:
+                    flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                    
+                    
+                    
+                    // children:
+                    ...children(listItemElm, {
+                        ...imports([
+                            // borders:
+                            borderRule,
+                        ]),
+                        ...style({
+                            // layouts:
+                            display        : 'flex',    // use block flexbox, so it takes the entire List's width
+                            flexDirection  : 'inherit', // copy wrapper's stack direction
+                            justifyContent : 'inherit', // copy wrapper's justifyContent
+                            alignItems     : 'inherit', // copy wrapper's justifyContent
+                            flexWrap       : 'inherit', // copy wrapper's flexWrap
+                            
+                            
+                            
+                            // sizes:
+                            flex           : 'inherit', // copy wrapper's flex
+                            
+                            
+                            
+                            // borders:
+                            
+                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                            ...extendsBorder(),
+                            
+                            // big rounded corners on top:
+                            [borders.borderStartStartRadius] : borderRadiuses.pill,
+                            [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                            // big rounded corners on bottom:
+                            [borders.borderEndStartRadius  ] : borderRadiuses.pill,
+                            [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                            
+                            overflow       : 'hidden', // clip the children at the rounded corners
+                            
+                            
+                            
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(lists, 'bullet')), // apply config's cssProps starting with bullet***
+                        }),
+                    }),
+                }),
+            }),
+            rule('.numbered', {
+                // behaviors:
+                counterReset: 'ListNumber',
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // children:
+                    ...children(listItemElm, {
+                        ...rule(':not(.void)', { // skip separator
+                            // children:
+                            ...children('::before', {
+                                // behaviors:
+                                counterIncrement : 'ListNumber',
+                                
+                                
+                                
+                                // customize:
+                                ...usesCssProps(usesPrefixedProps(lists, 'numbered')), // apply config's cssProps starting with numbered***
+                            }),
+                        }),
+                    }),
+                }),
+            }),
+        ], { specificityWeight: 2 }),
+        /*
+            the total selector combined with parent is something like this: `.list.btn.btn`, the specificity weight = 3
+            the specificity of 3 is a bit higher than:
+            *      `:not(.inline)>*>.listItem:not(_)`           , the specificity weight = 2.1 (<listItem>'s borderSeparator)
+            * `:not(.inline).list>*>:not(_):where(:first-child)`, the specificity weight = 2.1 (<listItem>'s borderRadius)
+        */
     });
 };
 export const usesListStates = () => {
