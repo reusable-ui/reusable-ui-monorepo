@@ -14,7 +14,7 @@ import type {
     // types:
     Optional,
     SingleOrArray,
-}                           from '@cssfn/types'
+}                           from '@cssfn/types'             // cssfn general types
 
 // reusable-ui:
 import {
