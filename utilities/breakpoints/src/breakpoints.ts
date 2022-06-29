@@ -2,7 +2,7 @@
 import type {
     // types:
     Optional,
-}                           from '@cssfn/types'
+}                           from '@cssfn/types'         // cssfn general types
 import type {
     // cssfn properties:
     CssRule,
