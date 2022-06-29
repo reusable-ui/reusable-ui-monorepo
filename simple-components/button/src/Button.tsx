@@ -209,7 +209,7 @@ export const usesButtonLayout = (options?: OrientationRuleOptions) => {
             ...rule(orientationInlineSelector, { // inline
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector,  { // block
+            ...rule(orientationBlockSelector , { // block
                 flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'center',      // center items (text, icon, etc) horizontally
