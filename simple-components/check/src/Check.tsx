@@ -1125,9 +1125,9 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // semantics:
-            tag          = {props.tag         ??   'span'  }
-            defaultTag   = {props.defaultTag  ??     ''    }
-            defaultRole  = {props.defaultRole ?? 'checkbox'}
+            tag          = {props.tag           ??   'span'  }
+            semanticTag  = {props.semanticTag   ??     ''    }
+            semanticRole = {props.semanticRole  ?? 'checkbox'}
             
             aria-label   = {props['aria-label'] ?? label}
             

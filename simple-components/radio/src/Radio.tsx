@@ -391,8 +391,8 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             
             
             // semantics:
-            defaultTag   = {props.defaultTag  ??   ''   }
-            defaultRole  = {props.defaultRole ?? 'radio'}
+            semanticTag  = {props.semanticTag   ??   ''   }
+            semanticRole = {props.semanticRole  ?? 'radio'}
             
             
             

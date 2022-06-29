@@ -405,8 +405,8 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
             
             
             // semantics:
-            defaultTag ={props.defaultTag  ?? 'form'}
-            defaultRole={props.defaultRole ?? 'form'}
+            semanticTag ={props.semanticTag  ?? 'form'}
+            semanticRole={props.semanticRole ?? 'form'}
             
             
             

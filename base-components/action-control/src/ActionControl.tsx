@@ -68,8 +68,8 @@ import {
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
-    DefaultTag,
-    DefaultRole,
+    SemanticTag,
+    SemanticRole,
     
     
     
@@ -114,11 +114,11 @@ import type {
 
 
 // defaults:
-const defaultActionMouses : number[]|null = [0]       // left click
-const defaultActionKeys   : string[]|null = ['space'] // space key
+const _defaultActionMouses : number[]|null = [0]       // left click
+const _defaultActionKeys   : string[]|null = ['space'] // space key
 
-const defaultTag  : DefaultTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
-const defaultRole : DefaultRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
+const _defaultSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
 
 
 
@@ -206,8 +206,8 @@ export const usePressReleaseState  = <TElement extends Element = Element>(props:
     const propEditable          = propEnabled && !propReadOnly;
     const isControllablePressed = (props.pressed !== undefined);
     
-    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : defaultActionMouses;
-    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : defaultActionKeys;
+    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : _defaultActionMouses;
+    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : _defaultActionKeys;
     
     
     
@@ -678,8 +678,8 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
             
             
             // semantics:
-            defaultTag  = {props.defaultTag  ?? defaultTag }
-            defaultRole = {props.defaultRole ?? defaultRole}
+            semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
+            semanticRole = {props.semanticRole ?? _defaultSemanticRole}
             
             
             
@@ -743,7 +743,7 @@ interface ClientSideLinkWrapperProps<TElement extends Element = Element> {
     children       ?: React.ReactNode
 }
 const ClientSideLinkWrapper = <TElement extends Element = Element>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
-    const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { defaultTag: 'a', defaultRole: 'link' });
+    const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
     
     
     

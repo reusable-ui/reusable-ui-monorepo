@@ -54,8 +54,8 @@ import {
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
-    DefaultTag,
-    DefaultRole,
+    SemanticTag,
+    SemanticRole,
     
     
     
@@ -111,10 +111,10 @@ import {
 
 
 // defaults:
-const _defaultTag      : DefaultTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
-const _defaultRole     : DefaultRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-const _defaultOutlined : boolean     = false
-const _defaultMild     : boolean     = false
+const _defaultSemanticTag  : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
+const _defaultSemanticRole : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultOutlined     : boolean      = false
+const _defaultMild         : boolean      = false
 
 
 
@@ -422,11 +422,11 @@ export interface SemanticButtonProps<TElement extends Element = HTMLButtonElemen
 }
 export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(props: SemanticButtonProps<TElement>) => {
     // fn props:
-    const isNativeLink = !!props.href; // assigning [href] will render the <Button> as <a>
-    const isClientLink = !isNativeLink && React.Children.toArray(props.children).some(isClientSideLink);
+    const isNativeLink  = !!props.href; // assigning [href] will render the <Button> as <a>
+    const isClientLink  = !isNativeLink && React.Children.toArray(props.children).some(isClientSideLink);
     
-    const defaultTag   = props.defaultTag  ?? (isNativeLink ? 'a'    : _defaultTag );
-    const defaultRole  = props.defaultRole ?? (isNativeLink ? 'link' : _defaultRole);
+    const semanticTag   = props.semanticTag  ?? (isNativeLink ? 'a'    : _defaultSemanticTag );
+    const semanticRole  = props.semanticRole ?? (isNativeLink ? 'link' : _defaultSemanticRole);
     const {
         tag,
         role,
@@ -437,14 +437,14 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         {
             tag  : props.tag,
             role : props.role,
-            defaultTag,
-            defaultRole,
+            semanticTag,
+            semanticRole,
         },
         
         // expected:
         {
-            defaultTag  : 'button',
-            defaultRole : 'button',
+            semanticTag  : 'button',
+            semanticRole : 'button',
         }
     );
     const type         = props.type ?? (isSemanticBtn ? 'button' : undefined);
@@ -455,8 +455,8 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         isNativeLink,
         isClientSideLink: isClientLink,
         
-        defaultTag,
-        defaultRole,
+        semanticTag,
+        semanticRole,
         
         tag,
         role,
@@ -533,8 +533,8 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     const pressedFn  = pressed ?? ((propActive && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     const {
-        defaultTag,
-        defaultRole,
+        semanticTag,
+        semanticRole,
         
         tag,
         role,
@@ -567,11 +567,11 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             // semantics:
-            defaultTag  = {defaultTag }
-            defaultRole = {defaultRole}
-            tag         = {tag}
-            role        = {role}
-            aria-label  = {props['aria-label'] ?? label}
+            semanticTag  = {semanticTag }
+            semanticRole = {semanticRole}
+            tag          = {tag}
+            role         = {role}
+            aria-label   = {props['aria-label'] ?? label}
             
             
             

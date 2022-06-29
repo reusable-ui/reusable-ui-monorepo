@@ -27,10 +27,10 @@ import {
 // types:
 
 // semantics:
-export type Tag         = keyof JSX.IntrinsicElements | ''
-export type Role        = React.AriaRole | '' | (string & {})
-export type DefaultTag  = SingleOrArray<Optional<Tag>>
-export type DefaultRole = SingleOrArray<Optional<Role>>
+export type Tag          = keyof JSX.IntrinsicElements | ''
+export type Role         = React.AriaRole | '' | (string & {})
+export type SemanticTag  = SingleOrArray<Optional<Tag>>
+export type SemanticRole = SingleOrArray<Optional<Role>>
 
 
 
@@ -38,8 +38,8 @@ export type DefaultRole = SingleOrArray<Optional<Role>>
 export interface SemanticOptions
 {
     // semantics:
-    defaultTag  ?: DefaultTag
-    defaultRole ?: DefaultRole
+    semanticTag  ?: SemanticTag
+    semanticRole ?: SemanticRole
 }
 
 export interface SemanticProps
@@ -48,8 +48,8 @@ export interface SemanticProps
         React.AriaAttributes
 {
     // semantics:
-    tag         ?: Tag
-    role        ?: Role
+    tag          ?: Tag
+    role         ?: Role
 }
 
 export interface SemanticData {
@@ -68,16 +68,16 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
     } = props;
     
     const {
-        defaultTag,
-        defaultRole,
+        semanticTag,
+        semanticRole,
     } = options;
     
     return useMemo((): SemanticData => {
-        const autoRole      : Role|undefined = preferredRole ??                  ([defaultRole].flat()?.[0] ??  undefined); // take the first item of `defaultRole` (if any)
-        const isDesiredType : boolean        = !!autoRole    &&                  ([defaultRole].flat().includes(autoRole)); // the `autoRole` is in `defaultRole`
+        const autoRole      : Role|undefined = preferredRole ??                  ([semanticRole].flat()?.[0] ??  undefined); // take the first item of `semanticRole` (if any)
+        const isDesiredType : boolean        = !!autoRole    &&                  ([semanticRole].flat().includes(autoRole)); // the `autoRole` is in `semanticRole`
         
-        const tag           : Tag|undefined  = preferredTag  ?? (isDesiredType ? ([defaultTag ].flat()?.[0] ??  undefined) : undefined); // if `isDesiredType` --> take the first item of `defaultTag` (if any)
-        const isSemanticTag : boolean        = !!tag         &&                  ([defaultTag ].flat().includes(tag     )); // the `tag` is in `defaultTag`
+        const tag           : Tag|undefined  = preferredTag  ?? (isDesiredType ? ([semanticTag ].flat()?.[0] ??  undefined) : undefined); // if `isDesiredType` --> take the first item of `semanticTag` (if any)
+        const isSemanticTag : boolean        = !!tag         &&                  ([semanticTag ].flat().includes(tag     )); // the `tag` is in `semanticTag`
         
         const role          : Role|undefined =                   isDesiredType ? (isSemanticTag ? '' : autoRole) : autoRole; // `''` --> has implicit role in `(semantic)tag` --> do not render role attribute, `undefined` --> lets the BaseComponent decide the appropriate role
         
@@ -90,52 +90,52 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
             isSemanticTag,
         };
         // eslint-disable-next-line
-    }, [preferredTag, separatorSym, preferredRole, separatorSym, defaultTag, separatorSym, defaultRole].flat());
+    }, [preferredTag, separatorSym, preferredRole, separatorSym, semanticTag, separatorSym, semanticRole].flat());
 };
 export const useTestSemantic = (props: SemanticProps, options: SemanticOptions): SemanticData => {
     const {
-        defaultTag  : props_defaultTag,
-        defaultRole : props_defaultRole,
+        semanticTag  : props_semanticTag,
+        semanticRole : props_semanticRole,
     } = props;
     
     const {
-        defaultTag  : options_defaultTag,
-        defaultRole : options_defaultRole,
+        semanticTag  : options_semanticTag,
+        semanticRole : options_semanticRole,
     } = options;
     
     const newOptions = useMemo((): SemanticOptions => {
-        const defaultTag = ((): DefaultTag => {
-            if (!props_defaultTag) return options_defaultTag;
+        const semanticTag = ((): SemanticTag => {
+            if (!props_semanticTag) return options_semanticTag;
             
             
             
-            if (props_defaultTag === options_defaultTag) return options_defaultTag;
+            if (props_semanticTag === options_semanticTag) return options_semanticTag;
             
-            const defaultTag1  = [props_defaultTag  ].flat();
-            const defaultTag2  = [options_defaultTag].flat();
-            const intersectTag = defaultTag1.filter((item) => defaultTag2.includes(item));
+            const semanticTag1  = [  props_semanticTag].flat();
+            const semanticTag2  = [options_semanticTag].flat();
+            const intersectTag = semanticTag1.filter((item) => semanticTag2.includes(item));
             return intersectTag.length ? intersectTag : null;
         })();
         
-        const defaultRole = ((): DefaultRole => {
-            if (!props_defaultRole) return options_defaultRole;
+        const semanticRole = ((): SemanticRole => {
+            if (!props_semanticRole) return options_semanticRole;
             
             
             
-            if (props_defaultRole === options_defaultRole) return options_defaultRole;
+            if (props_semanticRole === options_semanticRole) return options_semanticRole;
             
-            const defaultRole1  = [props_defaultRole  ].flat();
-            const defaultRole2  = [options_defaultRole].flat();
-            const intersectRole =  defaultRole1.filter((item) => defaultRole2.includes(item));
+            const semanticRole1  = [  props_semanticRole].flat();
+            const semanticRole2  = [options_semanticRole].flat();
+            const intersectRole =  semanticRole1.filter((item) => semanticRole2.includes(item));
             return intersectRole.length ? intersectRole : null;
         })();
         
         return {
-            defaultTag,
-            defaultRole,
+            semanticTag,
+            semanticRole,
         };
         // eslint-disable-next-line
-    }, [props_defaultTag, separatorSym, props_defaultRole, separatorSym, options_defaultTag, separatorSym, options_defaultRole].flat());
+    }, [props_semanticTag, separatorSym, props_semanticRole, separatorSym, options_semanticTag, separatorSym, options_semanticRole].flat());
     
     
     
@@ -177,10 +177,10 @@ const Generic = <TElement extends Element = Element>(props: GenericProps<TElemen
     // rest props:
     const {
         // semantics:
-        defaultTag  : _defaultTag,
-        defaultRole : _defaultRole,
-        tag         : _tag,
-        role        : _role,
+        semanticTag  : _semanticTag,
+        semanticRole : _semanticRole,
+        tag          : _tag,
+        role         : _role,
         
         
         
