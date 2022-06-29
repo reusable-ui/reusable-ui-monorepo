@@ -97,17 +97,14 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
+    ifActived,
+    ifActivating,
+    ifPassivating,
+    ifPassived,
     ifActive,
-}                           from '@reusable-ui/indicator'       // a base component
-import {
-    // hooks:
-    markActive       as controlMarkActive,
-    usesThemeDefault as controlUsesThemeDefault,
-    usesThemeActive  as controlUsesThemeActive,
-    ifFocus,
-    ifArrive,
-}                           from '@reusable-ui/control'         // a base component
-import {
+    
+    
+    
     // styles:
     usesIndicatorLayout,
     usesIndicatorVariants,
@@ -119,6 +116,33 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
+import {
+    // hooks:
+    markActive       as controlMarkActive,
+    usesThemeDefault as controlUsesThemeDefault,
+    usesThemeActive  as controlUsesThemeActive,
+    ifFocus,
+    ifArrive,
+    ifLeave,
+}                           from '@reusable-ui/control'         // a base component
+import {
+    // hooks:
+    ifPress,
+    isClientSideLink,
+    
+    
+    
+    // styles:
+    usesActionControlLayout,
+    usesActionControlVariants,
+    usesActionControlStates,
+    
+    
+    
+    // react components:
+    ActionControlProps,
+    ActionControl,
+}                           from '@reusable-ui/action-control'  // a base component
 import {
     // rules:
     ifFirstVisibleChild,
@@ -443,9 +467,78 @@ export const useListSeparatorItemSheet = createUseStyleSheet(() => ({
         usesListSeparatorItemLayout(),
     ]),
 }), {
-    specificityWeight : 2,            // makes `.ListSeparatorItem` is more specific than `.ListItem`
+    specificityWeight : 2,            // makes <ListSeparatorItem> more specific than <ListItem>
     id                : 'n8qnfmo0ja', // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 });
+
+
+
+export const usesListActionItemLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesActionControlLayout(),
+            
+            // resets:
+            stripoutCommonBasicLayout(),
+            
+            // colors:
+            usesThemeDefault(),
+        ]),
+    });
+};
+export const usesListActionItemVariants = () => {
+    return style({
+        ...imports([
+            // variants:
+            usesActionControlVariants(),
+            usesListItemInheritMildVariant(),
+        ]),
+    });
+};
+export const usesListActionItemStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesActionControlStates(),
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+            ifFocus({
+                ...imports([
+                    dontMarkActive(),
+                ]),
+            }),
+            ifArrive({
+                ...imports([
+                    dontMarkActive(),
+                ]),
+            }),
+            ifPress({
+                ...imports([
+                    dontMarkActive(),
+                ]),
+            }),
+        ]),
+    });
+};
+
+export const useListActionItemSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesListActionItemLayout(),
+        
+        // variants:
+        usesListActionItemVariants(),
+        
+        // states:
+        usesListActionItemStates(),
+    ]),
+}), { id: '1jdx2owh1e' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
