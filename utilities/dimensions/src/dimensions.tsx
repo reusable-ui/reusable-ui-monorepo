@@ -63,8 +63,8 @@ import {
 
 
 // defaults:
-const defaultElementResizeOptions : ResizeObserverOptions = { box: 'border-box'  }
-const defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box' }
+const _defaultElementResizeOptions : ResizeObserverOptions = { box: 'border-box'  }
+const _defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box' }
 
 
 
@@ -84,7 +84,7 @@ const getElement = <TElement extends Element = Element>(elementRef: TElement|Rea
 
 // hooks:
 export type ElementResizeCallback<TElement extends Element = Element> = (element: TElement, size: ResizeObserverSize) => void
-export const useElementResizeObserver = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = defaultElementResizeOptions) => {
+export const useElementResizeObserver = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = _defaultElementResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
@@ -131,7 +131,7 @@ export const useElementResizeObserver = <TElement extends Element = Element>(ele
 
 
 export type WindowResizeCallback = (size: ResizeObserverSize) => void
-export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallback, options = defaultWindowResizeOptions) => {
+export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallback, options = _defaultWindowResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
