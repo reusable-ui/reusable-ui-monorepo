@@ -59,6 +59,11 @@ import {
     spacers,
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
+    // styles:
+    stripoutFocusableElement,
+    stripoutList,
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
@@ -92,6 +97,7 @@ import {
     outlinedOf,
     mildOf,
     usesBorder,
+    extendsBorder,
     usesPadding,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
@@ -285,11 +291,11 @@ export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
         a hack with :not(_)
         the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
         the specificity of 2.1 is a bit higher than:
-        * `.list.content`             , the specificity weight = 2
-        * `.someComponent.togglerBtn` , the specificity weight = 2
+        * `.list.content`            , the specificity weight = 2
+        * `.someComponent.toggleBtn` , the specificity weight = 2
         but can be easily overriden by specificity weight >= 3, like:
-        * `.list.btn.btn`             , the specificity weight = 3
-        * `.someComponent.boo.foo`    , the specificity weight = 3
+        * `.list.btn.btn`            , the specificity weight = 3
+        * `.someComponent.boo.foo`   , the specificity weight = 3
     */
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&:not(_)`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&:not(_)`;
@@ -546,41 +552,141 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
     // options:
     options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
     const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    
+    
+    
+    // dependencies:
+    
+    // borders:
+    const [borderRule, borders] = usesBorder();
     
     
     
     return style({
         ...imports([
-            // layouts:
-            usesIndicatorLayout(),
+            // resets:
+            stripoutFocusableElement(),     // clear browser's default styles
+            stripoutList(),                 // clear browser's default styles
+            
+            // borders:
+            // borderRule,                  // moved out to dedicated border stroke for each list & wrapper
+            usesBorderAsContainer(options), // make a nicely rounded corners
         ]),
         ...style({
             // layouts:
-            display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
             ...rule(orientationInlineSelector, { // inline
+                display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection : 'row',         // items are stacked horizontally
             }),
             ...rule(orientationBlockSelector , { // block
+                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection : 'column',      // items are stacked vertically
             }),
-            justifyContent    : 'center',      // center items (text, icon, etc) horizontally
-            alignItems        : 'center',      // center items (text, icon, etc) vertically
-            flexWrap          : 'wrap',        // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            justifyContent    : 'start',       // if wrappers are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first wrapper should be visible first
+            alignItems        : 'stretch',     // wrappers width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            flexWrap          : 'nowrap',      // no wrapping
             
             
             
-            // positions:
-            verticalAlign     : 'baseline',    // list's text should be aligned with sibling text, so the list behave like <span> wrapper
+            // sizes:
+            // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+            minInlineSize     : 0,
             
             
             
-            // typos:
-            textAlign         : 'center',
+            // borders:
+            ...children(['&', wrapperElm], {
+                ...imports([
+                    // borders:
+                    borderRule, // dedicated border stroke for each <List> & <wrapper>s
+                ]),
+            }),
+            /*
+                A separator between ListItems.
+                Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
+            */
+            ...children(wrapperElm, {
+                ...imports([
+                    // borders:
+                    usesBorderAsSeparator({ // must be placed at the last
+                        orientationInlineSelector : parentOrientationInlineSelector,
+                        orientationBlockSelector  : parentOrientationBlockSelector,
+                    }),
+                ]),
+            }),
+            
+            
+            
+            // children:
+            ...children(wrapperElm, {
+                // layouts:
+                display        : 'flex',    // use block flexbox, so it takes the entire <List>'s width
+                flexDirection  : 'inherit', // copy <List>'s stack direction
+                justifyContent : 'inherit', // copy <List>'s justifyContent
+                alignItems     : 'inherit', // copy <List>'s justifyContent
+                flexWrap       : 'inherit', // copy <List>'s flexWrap
+                
+                
+                
+                // sizes:
+                flex           : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                
+                
+                
+                // children:
+                /*
+                    a hack with :not(_)
+                    the total selector combined with parent is something like this: `:not(.inline).list>*>:not(_):where(:first-child)`, the specificity weight = 2.1
+                    the specificity of 2.1 is a bit higher than:
+                    * `.list.content`            , the specificity weight = 2
+                    * `.someComponent.toggleBtn` , the specificity weight = 2
+                    but can be easily overriden by specificity weight >= 3, like:
+                    * `.list.btn.btn`            , the specificity weight = 3
+                    * `.someComponent.boo.foo`   , the specificity weight = 3
+                */
+                ...children(':not(_)', {
+                    // borders:
+                    ...rule(parentOrientationInlineSelector, { // inline
+                        ...ifFirstVisibleChild({
+                            // add rounded corners on left:
+                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
+                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
+                        }),
+                        ...ifLastVisibleChild({
+                            // add rounded corners on right:
+                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
+                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
+                        }),
+                    }),
+                    ...rule(parentOrientationBlockSelector , { // block
+                        ...ifFirstVisibleChild({
+                            // add rounded corners on top:
+                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
+                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
+                        }),
+                        ...ifLastVisibleChild({
+                            // add rounded corners on bottom:
+                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
+                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
+                        }),
+                    }),
+                }),
+            }),
             
             
             
             // customize:
             ...usesCssProps(lists), // apply config's cssProps
+            
+            
+            
+            // borders:
+            ...children(['&', wrapperElm], {
+                // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+                ...extendsBorder(),
+            }),
         }),
     });
 };
