@@ -26,6 +26,11 @@ import {
     
     
     
+    // combinators:
+    children,
+    
+    
+    
     // styles:
     style,
     imports,
@@ -114,6 +119,18 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
+import {
+    // rules:
+    ifFirstVisibleChild,
+    ifLastVisibleChild,
+    
+    
+    
+    // hooks:
+    usesContainer,
+    usesBorderAsContainer,
+    usesBorderAsSeparator,
+}                           from '@reusable-ui/container'       // a neighbor component
 
 
 
@@ -196,6 +213,242 @@ export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRu
 
 
 // styles:
+export const wrapperElm  = '*';                    // zero specificity
+export const listItemElm = ':where(:first-child)'; // zero specificity
+
+
+
+export const stripoutCommonBasicLayout = () => {
+    // dependencies:
+    
+    // borders:
+    const [, borders] = usesBorder();
+    
+    
+    
+    return style({
+        // borders:
+        // undef border stroke:
+        [borders.border                ] : null,
+        [borders.borderWidth           ] : null,
+        
+        // undef border radius:
+        [borders.borderStartStartRadius] : null,
+        [borders.borderStartEndRadius  ] : null,
+        [borders.borderEndStartRadius  ] : null,
+        [borders.borderEndEndRadius    ] : null,
+    });
+};
+export const usesListItemInheritMildVariant = () => {
+    return style({
+        ...variants([
+            rule('.mild>*>&', { // .mild>*>.listItem => the specificity weight including parent = 2
+                ...imports([
+                    mildOf(true),
+                ]),
+            }),
+        ]),
+    });
+};
+
+
+
+export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    /*
+        a hack with :not(_)
+        the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
+        the specificity of 2.1 is a bit higher than:
+        * `.list.content`             , the specificity weight = 2
+        * `.someComponent.togglerBtn` , the specificity weight = 2
+        but can be easily overriden by specificity weight >= 3, like:
+        * `.list.btn.btn`             , the specificity weight = 3
+        * `.someComponent.boo.foo`    , the specificity weight = 3
+    */
+    const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&:not(_)`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&:not(_)`;
+    
+    
+    
+    return style({
+        // spacings:
+        margin: 0, // a fix for marginBlockEnd of <h1>...<h6>
+        
+        
+        
+        // borders:
+        ...imports([
+            /*
+                Accordion supports: a separator between Accordion's header & body.
+                Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
+            */
+            usesBorderAsSeparator({ // must be placed at the last
+                orientationInlineSelector : parentOrientationInlineSelector,
+                orientationBlockSelector  : parentOrientationBlockSelector,
+            }),
+        ]),
+    });
+};
+export const usesListItemLayout = (options?: OrientationRuleOptions) => {
+    // options:
+    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            usesIndicatorLayout(),
+            
+            // resets:
+            stripoutCommonBasicLayout(),
+            
+            // layouts:
+            usesListItemBaseLayout(options), // must be placed at the last
+        ]),
+        ...style({
+            // layouts:
+            display   : 'block',  // fills the entire wrapper's width
+            
+            
+            
+            // sizes:
+            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(lists, 'item')), // apply config's cssProps starting with item***
+        }),
+    });
+};
+export const usesListItemVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizesRule] = usesSizeVariant(lists);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesIndicatorVariants(),
+            usesListItemInheritMildVariant(),
+            
+            // layouts:
+            sizesRule,
+        ]),
+    });
+};
+export const usesListItemStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesIndicatorStates(),
+        ]),
+    });
+};
+
+export const useListItemSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesListItemLayout(),
+        
+        // variants:
+        usesListItemVariants(),
+        
+        // states:
+        usesListItemStates(),
+    ]),
+}), { id: '2vajf0sgc2' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export const usesListSeparatorItemLayout = () => {
+    // options:
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(defaultOrientationRuleOptions);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&`;
+    
+    
+    
+    // dependencies:
+    
+    // borders:
+    const [, borders ] = usesBorder();
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
+    return style({
+        // layouts:
+        display           : 'flex',   // use block flexbox, so it takes the entire wrapper's width
+        ...rule(parentOrientationInlineSelector, { // inline
+            flexDirection : 'column', // items are stacked vertically
+        }),
+        ...rule(parentOrientationBlockSelector , { // block
+            flexDirection : 'row',    // items are stacked horizontally
+        }),
+        justifyContent    : 'center', // center items (text, icon, etc) horizontally
+        alignItems        : 'center', // center items (text, icon, etc) vertically
+        flexWrap          : 'nowrap', // no wrapping
+        
+        
+        
+        // spacings:
+        [paddings.paddingInline] : '0px', // discard padding
+        [paddings.paddingBlock ] : '0px', // discard padding
+        
+        
+        
+        // children:
+        ...children('hr', {
+            // appearances:
+            opacity       : 'unset',
+            
+            
+            
+            // sizes:
+            flex          : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+            
+            
+            
+            // foregrounds:
+            foreg         : borders.borderColor,
+            
+            
+            
+            // spacings:
+            margin        : 0,
+        }),
+        ...rule(parentOrientationInlineSelector, { // inline
+            // children:
+            ...children('hr', {
+                // appearances:
+                // rotate the <hr> 90 deg:
+                writingMode: 'vertical-lr',
+            }),
+        }),
+    });
+};
+
+export const useListSeparatorItemSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesListSeparatorItemLayout(),
+    ]),
+}), {
+    specificityWeight : 2,            // makes `.ListSeparatorItem` is more specific than `.ListItem`
+    id                : 'n8qnfmo0ja', // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+});
+
+
+
 export const usesListLayout = (options?: OrientationRuleOptions) => {
     // options:
     options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
@@ -214,7 +467,7 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
             ...rule(orientationInlineSelector, { // inline
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector,  { // block
+            ...rule(orientationBlockSelector , { // block
                 flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'center',      // center items (text, icon, etc) horizontally
