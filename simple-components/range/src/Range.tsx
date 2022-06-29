@@ -665,7 +665,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     // variants:
     const orientationVariant    = useOrientationVariant(props);
-    const isOrientationVertical = (orientationVariant.class === 'block');
+    const isOrientationVertical = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === defaultOrientationRuleOptions.defaultOrientation);
     
     
     
