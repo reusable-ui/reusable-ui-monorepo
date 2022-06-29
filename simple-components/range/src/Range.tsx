@@ -256,7 +256,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                 display       : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector,  { // block
+            ...rule(orientationBlockSelector , { // block
                 display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection : 'column',      // items are stacked vertically
             }),
@@ -285,7 +285,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                     ]),
                 }),
             }),
-            ...rule(orientationBlockSelector,  { // block
+            ...rule(orientationBlockSelector , { // block
                 ...children('::before', {
                     ...imports([
                         // layouts:
@@ -370,7 +370,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                         ...rule(parentOrientationInlineSelector, { // inline
                             flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
                         }),
-                        ...rule(parentOrientationBlockSelector,  { // block
+                        ...rule(parentOrientationBlockSelector , { // block
                             flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
                         }),
                         
@@ -386,7 +386,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                         ...rule(parentOrientationInlineSelector, { // inline
                             flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
                         }),
-                        ...rule(parentOrientationBlockSelector,  { // block
+                        ...rule(parentOrientationBlockSelector , { // block
                             flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
                         }),
                         
@@ -478,7 +478,7 @@ export const usesRangeLayout = (options?: OrientationRuleOptions) => {
                 // overwrites propName = propName{Inline}:
                 ...overwriteProps(ranges, usesSuffixedProps(ranges, 'inline')),
             }),
-            ...rule(orientationBlockSelector,  { // block
+            ...rule(orientationBlockSelector , { // block
                 // overwrites propName = propName{Block}:
                 ...overwriteProps(ranges, usesSuffixedProps(ranges, 'block')),
             }),
