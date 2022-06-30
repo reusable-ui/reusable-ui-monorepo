@@ -91,6 +91,11 @@ import {
     
     // hooks:
     useTestSemantic,
+    
+    
+    
+    // react components:
+    Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
@@ -1449,9 +1454,13 @@ const List = <TElement extends Element = Element>(props: ListProps<TElement>): J
         
         
         
-        // accessibilities:
-        label,
-        pressed,
+        // behaviors:
+        actionCtrl = _defaultActionCtrl,
+        
+        
+        
+        // children:
+        children,
     ...restIndicatorProps} = props;
     
     
@@ -1522,21 +1531,14 @@ const List = <TElement extends Element = Element>(props: ListProps<TElement>): J
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-            
-            
-            
-            // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
-            pressed={pressedFn}
-            
-            
-            
-            // List props:
-            {...{
-                // actions:
-                type,
-            }}
-        />
+        >
+            {React.Children.map(children, (child) =>
+                <Generic<HTMLLIElement>
+                >
+                    { child }
+                </Generic>
+            )}
+        </Indicator>
     );
 };
 export {
