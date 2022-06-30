@@ -977,11 +977,21 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     // borders:
                                     // hide parent border bottom:
                                     borderBlockEndWidth    : 0,
+                                    
+                                    
+                                    
+                                    // spacings:
+                                    marginBlockStart       : borders.borderWidth,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
                                     // hide parent border right:
                                     borderInlineEndWidth   : 0,
+                                    
+                                    
+                                    
+                                    // spacings:
+                                    marginInlineStart      : borders.borderWidth,
                                 }),
                             }),
                         ]),
