@@ -629,7 +629,7 @@ const Content = <TElement extends Element = Element>(props: ContentProps<TElemen
                             
                             
                             // variants:
-                            btnStyle='link' // style the <button> as <a>
+                            buttonStyle='link' // style the <button> as <a>
                             
                             
                             
