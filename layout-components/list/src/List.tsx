@@ -192,6 +192,12 @@ import {
     usesIconImage,
 }                           from '@reusable-ui/icon'            // an icon set
 import {
+    // hooks:
+    SemanticButtonProps,
+    useSemanticButton,
+    
+    
+    
     // styles:
     usesButtonLayout,
 }                           from '@reusable-ui/button'          // a button ui
@@ -199,11 +205,16 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
-const _defaultSemanticRole : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
-const _defaultOutlined     : boolean      = false
-const _defaultMild         : boolean      = true
-const _defaultActionCtrl   : boolean      = false;
+const _defaultSemanticTag    : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticRole   : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
+
+const _defaultOutlined       : boolean      = false
+const _defaultMild           : boolean      = true
+const _defaultActionCtrl     : boolean      = false
+
+const _defaultItemOutlined   : boolean      = false
+const _defaultItemMild       : boolean      = false
+const _defaultItemActionCtrl : boolean      = false
 
 
 
@@ -416,7 +427,7 @@ export const usesListItemStates = () => {
     });
 };
 
-export const useListItemSheet = createUseStyleSheet(() => ({
+export const useListItemStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListItemLayout(),
@@ -501,7 +512,7 @@ export const usesListSeparatorItemLayout = () => {
     });
 };
 
-export const useListSeparatorItemSheet = createUseStyleSheet(() => ({
+export const useListSeparatorItemStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListSeparatorItemLayout(),
@@ -567,7 +578,7 @@ export const usesListActionItemStates = () => {
     });
 };
 
-export const useListActionItemSheet = createUseStyleSheet(() => ({
+export const useListActionItemStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListActionItemLayout(),
@@ -1191,6 +1202,163 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
 
 
 // react components:
+interface ListItemProps<TElement extends Element = Element>
+    extends
+        // bases:
+        SemanticButtonProps<TElement>
+{
+    // accessibilities:
+    // change default value to `true`
+    /**
+     * `undefined` : same as `true`.  
+     * `true`      : inherits `active` from `List`.  
+     * `false`     : independent `active`.
+     */
+    inheritActive ?: boolean
+    
+    
+    
+    // behaviors:
+    actionCtrl    ?: boolean
+    
+    
+    
+    // children:
+    children      ?: React.ReactNode
+}
+const ListItem = <TElement extends Element = Element>(props: ListItemProps<TElement>): JSX.Element|null => {
+    // styles:
+    const styleSheet            = useListItemStyleSheet();
+    const actionStyleSheet      = useListActionItemStyleSheet();
+    
+    
+    
+    // rest props:
+    const {
+        // variants:
+        outlined = _defaultItemOutlined,
+        mild     = _defaultItemMild,
+        
+        
+        
+        // accessibilities:
+        pressed,
+        
+        
+        
+        // behaviors:
+        actionCtrl = _defaultItemActionCtrl,
+    ...restActionControlProps} = props;
+    
+    
+    
+    // fn props:
+    const propActive = usePropActive(props);
+    const pressedFn  = pressed ?? (((propActive && actionCtrl) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    
+    const {
+        semanticTag,
+        semanticRole,
+        
+        tag  : buttonTag,
+        role,
+        isSemanticBtn,
+        
+        type : buttonType,
+    } = useSemanticButton(props);
+    
+    // prevents for defaulting [tag] to <button>:
+    const isDefaultButton = isSemanticBtn && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
+    const tag  = (isDefaultButton ? (props.tag ?? '') : buttonTag );
+    const type = (isDefaultButton ?  props.type       : buttonType);
+    
+    
+    
+    // jsx:
+    return (
+        actionCtrl
+        ?
+        <ActionControl<TElement>
+            // other props:
+            {...restActionControlProps}
+            
+            
+            
+            // semantics:
+            semanticTag  = {semanticTag }
+            semanticRole = {semanticRole}
+            tag          = {tag}
+            role         = {role}
+            
+            
+            
+            // variants:
+            outlined={outlined}
+            mild={mild}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? [styleSheet.main, actionStyleSheet.main].join(' ')}
+            
+            
+            
+            // accessibilities:
+            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
+            inheritActive={props.inheritActive ?? true} // change default value to `true`
+            pressed={pressedFn}
+            
+            
+            
+            // Button props:
+            {...{
+                // actions:
+                type,
+            }}
+        />
+        :
+        <Indicator<TElement>
+            // other props:
+            {...restActionControlProps}
+            
+            
+            
+            // semantics:
+            semanticTag  = {semanticTag }
+            semanticRole = {semanticRole}
+            tag          = {tag}
+            role         = {role}
+            
+            
+            
+            // variants:
+            outlined={outlined}
+            mild={mild}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+            
+            
+            
+            // accessibilities:
+            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
+            inheritActive={props.inheritActive ?? true} // change default value to `true`
+        />
+    );
+};
+export {
+    ListItemProps,
+    ListItemProps as ItemProps,
+}
+export {
+    ListItem,
+    ListItem as Item,
+}
+
+
+
 export interface ListProps<TElement extends Element = Element>
     extends
         // bases:
