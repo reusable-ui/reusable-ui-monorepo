@@ -18,8 +18,6 @@ import type {
     // cssfn properties:
     CssRule,
     
-    CssStyleCollection,
-    
     CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
@@ -76,6 +74,7 @@ import {
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // hooks:
+    useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -108,15 +107,12 @@ import {
     OrientationVariant,
     useOrientationVariant,
     ThemeName,
-    gradientOf,
-    ifNotOutlined,
     outlinedOf,
     mildOf,
     usesBackg,
     usesBorder,
     extendsBorder,
     usesPadding,
-    usesAnim,
     
     
     
@@ -125,10 +121,6 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    ifActived,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
     ifActive,
     ifPassive,
     
@@ -147,17 +139,14 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
-    markActive       as controlMarkActive,
     usesThemeDefault as controlUsesThemeDefault,
     usesThemeActive  as controlUsesThemeActive,
     ifFocus,
     ifArrive,
-    ifLeave,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // hooks:
     ifPress,
-    isClientSideLink,
     
     
     
@@ -169,7 +158,6 @@ import {
     
     
     // react components:
-    ActionControlProps,
     ActionControl,
 }                           from '@reusable-ui/action-control'  // a base component
 import {
@@ -177,12 +165,10 @@ import {
     ifFirstVisibleChild,
     ifLastVisibleChild,
     ifNotFirstVisibleChild,
-    ifNotLastVisibleChild,
     
     
     
     // hooks:
-    usesContainer,
     usesBorderAsContainer,
     usesBorderAsSeparator,
 }                           from '@reusable-ui/container'       // a neighbor component
@@ -1206,6 +1192,29 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
 
 
 
+// handlers:
+export const handleAnimationEndForward : React.AnimationEventHandler<Element> = (event) => {
+    /**
+     * because the `usesListLayout` is neither inherit from `usesIndicatorLayout` nor applies `anim: ...`,
+     * so the `onAnimationEnd` will __never__ triggered directly (non_bubbled).
+     * 
+     * the `useEnableDisableState() => handleAnimationEnd` only perform non_bubbled `onAnimationEnd`.
+     * 
+     * thus we need to trigger `onAnimationEnd` at <List> level by forwarding `onAnimationEnd` bubbled from <ListItem>
+     * 
+     * <List>
+     *     <wrapper>
+     *         <ListItem onAnimationEnd={...} />
+     *     </wrapper>
+     * </List>
+     */
+    if ((event.target as Element)?.parentElement?.parentElement === event.currentTarget) {
+        event.currentTarget.dispatchEvent(new AnimationEvent('animationend', { animationName: event.animationName, bubbles: false, composed: true }));
+    } // if
+};
+
+
+
 // react components:
 interface ListItemProps<TElement extends Element = Element>
     extends
@@ -1506,6 +1515,19 @@ const List = <TElement extends Element = Element>(props: ListProps<TElement>): J
     
     
     
+    // handlers:
+    const handleAnimationEnd = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // hack:
+        handleAnimationEndForward,
+    );
+    
+    
+    
     // jsx:
     return (
         <Indicator<TElement>
@@ -1531,11 +1553,36 @@ const List = <TElement extends Element = Element>(props: ListProps<TElement>): J
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            
+            
+            
+            // handlers:
+            onAnimationEnd={handleAnimationEnd}
         >
-            {React.Children.map(children, (child) =>
+            {React.Children.map(children, (child, index) =>
                 <Generic<HTMLLIElement>
+                    // identifiers:
+                    key={index}
+                    
+                    
+                    
+                    // semantics:
+                    semanticTag ={wrapperSemanticTag }
+                    semanticRole={wrapperSemanticRole}
                 >
-                    { child }
+                    {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
+                        // props:
+                        {
+                            // variants:
+                            outlined : (outlined || undefined) ?? child.props.outlined, // if `true` => force apply to <ListItem>s, otherwise independent by <ListItem>s
+                            mild     : (mild     || undefined) ?? child.props.mild,     // if `true` => force apply to <ListItem>s, otherwise independent by <ListItem>s
+                            
+                            
+                            
+                            // behaviors:
+                            actionCtrl : child.props.actionCtrl ?? actionCtrl, // the default <ListItem>'s actionCtrl value, if not assigned
+                        },
+                    )}
                 </Generic>
             )}
         </Indicator>
