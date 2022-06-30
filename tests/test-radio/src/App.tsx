@@ -42,7 +42,7 @@ function App() {
                     <Radio name='the-value' theme='primary' onChange={handleChange}>
                         test &lt;Radio&gt;
                     </Radio>
-                    <Radio name='the-value' theme='success' checkStyle='btn' nude={false}>
+                    <Radio name='the-value' theme='success' checkStyle='button' nude={false}>
                         test &lt;Radio&gt;
                     </Radio>
                     <Radio name='the-value' theme='danger' checkStyle='switch' nude={false}>
