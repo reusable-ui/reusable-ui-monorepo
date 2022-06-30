@@ -430,8 +430,8 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
     const {
         tag,
         role,
-        isDesiredType : isBtnType,
-        isSemanticTag : isSemanticBtn,
+        isDesiredType : isButtonType,
+        isSemanticTag : isSemanticButton,
     } = useTestSemantic(
         // test:
         {
@@ -447,7 +447,7 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
             semanticRole : 'button',
         }
     );
-    const type         = props.type ?? (isSemanticBtn ? 'button' : undefined);
+    const type         = props.type ?? (isSemanticButton ? 'button' : undefined);
     
     
     
@@ -460,8 +460,8 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         
         tag,
         role,
-        isBtnType,
-        isSemanticBtn,
+        isButtonType,
+        isSemanticButton,
         
         type,
     };
