@@ -895,7 +895,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                     // spacings:
                     ...rule(parentOrientationInlineSelector, { // inline
                         // shift the items to bottom a bit, so the `active item` can hide the `borderBottom`:
-                        marginBlockEnd : `calc(0px - ${borders.borderWidth})`,
+                        marginBlockEnd  : `calc(0px - ${borders.borderWidth})`,
                     }),
                     ...rule(parentOrientationBlockSelector , { // block
                         // shift the items to right a bit, so the `active item` can hide the `borderRight`:
@@ -927,7 +927,6 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             
                             
                             // borders:
-                            // spacings:
                             ...rule(parentOrientationInlineSelector, { // inline
                                 // remove rounded corners on bottom:
                                 [borders.borderEndStartRadius] : '0px',
