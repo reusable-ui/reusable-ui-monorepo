@@ -971,8 +971,8 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInline      : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
-                                    paddingBlockStart  : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    paddingInline          : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    paddingBlockStart      : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
@@ -988,8 +988,8 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlock       : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
-                                    paddingInlineStart : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    paddingBlock           : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    paddingInlineStart     : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
                                 }),
                             }),
                             ifActive({
@@ -1002,12 +1002,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlockEnd    : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
-                                    
-                                    
-                                    
-                                    // // spacings:
-                                    // marginBlockStart       : borders.borderWidth,
+                                    paddingBlockEnd        : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
@@ -1018,12 +1013,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInlineEnd   : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
-                                    
-                                    
-                                    
-                                    // // spacings:
-                                    // marginInlineStart      : borders.borderWidth,
+                                    paddingInlineEnd       : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
                                 }),
                             }),
                         ]),
