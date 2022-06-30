@@ -850,12 +850,21 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                     ...children(listItemElm, {
                         ...imports([
                             // layouts:
-                            usesButtonLayout(),
+                            usesButtonLayout({
+                                orientationInlineSelector : '&',  // always => the <button> is always stacked in horizontal regradless the orientation of the <List>
+                                orientationBlockSelector  : null, // never  => the <button> is never  stacked in vertical   regradless the orientation of the <List>
+                            }),
                         ]),
                         ...style({
+                            // layouts:
+                            // tweak from `usesButtonLayout` : `inline-flex` => `flex`
+                            display : 'flex', // use block flexbox, so it takes the entire parent's width
+                            
+                            
+                            
                             // accessibilities:
                             // undef cursor:
-                            cursor : null,
+                            cursor  : null,
                             
                             
                             
@@ -925,7 +934,20 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             
                             // customize:
                             ...usesCssProps(usesPrefixedProps(lists, 'tab')), // apply config's cssProps starting with tab***
-                            borderRadius: null, // tab borderRadius has been handled
+                            
+                            
+                            
+                            // borders:
+                            ...rule(parentOrientationInlineSelector, { // inline
+                                // remove rounded corners on bottom:
+                                [borders.borderEndStartRadius] : '0px',
+                                [borders.borderEndEndRadius  ] : '0px',
+                            }),
+                            ...rule(parentOrientationBlockSelector , { // block
+                                // remove rounded corners on right:
+                                [borders.borderStartEndRadius] : '0px',
+                                [borders.borderEndEndRadius  ] : '0px',
+                            }),
                         }),
                         ...states([
                             ifPassive({
@@ -934,12 +956,20 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     // show parent border bottom:
                                     borderInlineWidth      : 0,
                                     borderBlockStartColor  : 'transparent',
+                                    
+                                    // remove rounded corners on top:
+                                    [borders.borderStartStartRadius] : '0px',
+                                    [borders.borderStartEndRadius  ] : '0px',
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
                                     // show parent border right:
                                     borderBlockWidth       : 0,
                                     borderInlineStartColor : 'transparent',
+                                    
+                                    // remove rounded corners on left:
+                                    [borders.borderStartStartRadius] : '0px',
+                                    [borders.borderEndStartRadius  ] : '0px',
                                 }),
                             }),
                             ifActive({
@@ -947,17 +977,11 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                     // borders:
                                     // hide parent border bottom:
                                     borderBlockEndWidth    : 0,
-                                    // add rounded corners on top:
-                                    [borders.borderStartStartRadius] : lists.tabBorderRadius,
-                                    [borders.borderStartEndRadius  ] : lists.tabBorderRadius,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
                                     // hide parent border right:
                                     borderInlineEndWidth   : 0,
-                                    // add rounded corners on left:
-                                    [borders.borderStartStartRadius] : lists.tabBorderRadius,
-                                    [borders.borderEndStartRadius  ] : lists.tabBorderRadius,
                                 }),
                             }),
                         ]),
@@ -1140,9 +1164,6 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         
         
         tabTextAlign      : 'center'                                    as CssKnownProps['textAlign'],
-        tabBorderRadius   : basics.borderRadius                         as CssKnownProps['borderRadius'],
-        tabBorderRadiusSm : basics.borderRadiusSm                       as CssKnownProps['borderRadius'],
-        tabBorderRadiusLg : basics.borderRadiusLg                       as CssKnownProps['borderRadius'],
         
         
         
@@ -1209,7 +1230,7 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
      * </List>
      */
     if ((event.target as Element)?.parentElement?.parentElement === event.currentTarget) {
-        event.currentTarget.dispatchEvent(new AnimationEvent('animationend', { animationName: event.animationName, bubbles: false, composed: true }));
+        event.currentTarget.dispatchEvent(new AnimationEvent('animationend', { animationName: event.animationName, bubbles: true, composed: true }));
     } // if
 };
 
