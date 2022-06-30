@@ -1228,8 +1228,8 @@ interface ListItemProps<TElement extends Element = Element>
 }
 const ListItem = <TElement extends Element = Element>(props: ListItemProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet            = useListItemStyleSheet();
-    const actionStyleSheet      = useListActionItemStyleSheet();
+    const styleSheet           = useListItemStyleSheet();
+    const actionStyleSheet     = useListActionItemStyleSheet();
     
     
     
@@ -1355,6 +1355,45 @@ export {
 export {
     ListItem,
     ListItem as Item,
+}
+
+
+
+interface ListSeparatorItemProps<TElement extends Element = Element>
+    extends
+        // bases:
+        Pick<ListItemProps<TElement>, keyof IndicatorProps> // [actionCtrl] & related props are not supported
+{
+}
+const ListSeparatorItem = <TElement extends Element = Element>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
+    // styles:
+    const styleSheet           = useListItemStyleSheet();
+    const separatorStyleSheet  = useListSeparatorItemStyleSheet();
+    
+    
+    
+    // jsx:
+    return (
+        <ListItem<TElement>
+            // other props:
+            {...props}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? [styleSheet.main, separatorStyleSheet.main, 'void'].join(' ')}
+        >
+            <hr />
+        </ListItem>
+    );
+};
+export {
+    ListSeparatorItemProps,
+    ListSeparatorItemProps as SeparatorItemProps,
+}
+export {
+    ListSeparatorItem,
+    ListSeparatorItem as SeparatorItem,
 }
 
 
