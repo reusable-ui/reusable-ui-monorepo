@@ -46,7 +46,7 @@ const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
             
             
             // variants:
-            btnStyle={props.btnStyle ?? 'link'}
+            buttonStyle={props.buttonStyle ?? 'link'}
             
             
             
