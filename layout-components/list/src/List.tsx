@@ -327,11 +327,11 @@ export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
         a hack with :not(_)
         the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
         the specificity of 2.1 is a bit higher than:
-        * `.list.content`            , the specificity weight = 2
-        * `.someComponent.toggleBtn` , the specificity weight = 2
+        * `.list.content`               , the specificity weight = 2
+        * `.someComponent.toggleButton` , the specificity weight = 2
         but can be easily overriden by specificity weight >= 3, like:
-        * `.list.btn.btn`            , the specificity weight = 3
-        * `.someComponent.boo.foo`   , the specificity weight = 3
+        * `.list.btn.btn`               , the specificity weight = 3
+        * `.someComponent.boo.foo`      , the specificity weight = 3
     */
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&:not(_)`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&:not(_)`;
@@ -676,11 +676,11 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
                     a hack with :not(_)
                     the total selector combined with parent is something like this: `:not(.inline).list>*>:not(_):where(:first-child)`, the specificity weight = 2.1
                     the specificity of 2.1 is a bit higher than:
-                    * `.list.content`            , the specificity weight = 2
-                    * `.someComponent.toggleBtn` , the specificity weight = 2
+                    * `.list.content`               , the specificity weight = 2
+                    * `.someComponent.toggleButton` , the specificity weight = 2
                     but can be easily overriden by specificity weight >= 3, like:
-                    * `.list.btn.btn`            , the specificity weight = 3
-                    * `.someComponent.boo.foo`   , the specificity weight = 3
+                    * `.list.btn.btn`               , the specificity weight = 3
+                    * `.someComponent.boo.foo`      , the specificity weight = 3
                 */
                 ...children(':not(_)', {
                     // borders:
