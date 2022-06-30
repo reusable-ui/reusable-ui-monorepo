@@ -193,7 +193,7 @@ export const stripoutList = () => style({
     
     
     // children:
-    ...children('li', {
+    ...children(':where(li)', {
         // layouts:
         display        : unset,
         
