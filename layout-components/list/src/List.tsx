@@ -1333,13 +1333,13 @@ const ListItem = <TElement extends Element = Element>(props: ListItemProps<TElem
         
         tag  : buttonTag,
         role,
-        isSemanticBtn,
+        isSemanticButton,
         
         type : buttonType,
     } = useSemanticButton(props);
     
     // prevents for defaulting [tag] to <button>:
-    const isDefaultButton = isSemanticBtn && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
+    const isDefaultButton = isSemanticButton && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
     const tag  = (isDefaultButton ? (props.tag ?? '') : buttonTag );
     const type = (isDefaultButton ?  props.type       : buttonType);
     
