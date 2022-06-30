@@ -1824,26 +1824,27 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         transitionDuration   : transitionDuration           as CssKnownProps['transitionDuration'],
         transition           : [
             // appearances:
-            ['opacity'    , transitionDuration, 'ease-out'],
+            ['opacity'      , transitionDuration, 'ease-out'],
             
             // sizes:
-            ['inline-size', transitionDuration, 'ease-out'],
-            ['block-size' , transitionDuration, 'ease-out'],
+            ['inline-size'  , transitionDuration, 'ease-out'],
+            ['block-size'   , transitionDuration, 'ease-out'],
             
             // backgrounds:
-            ['background' , transitionDuration, 'ease-out'],
+            ['background'   , transitionDuration, 'ease-out'],
             
             // foregrounds:
-            ['color'      , transitionDuration, 'ease-out'],
+            ['color'        , transitionDuration, 'ease-out'],
             
             // borders:
-            ['border'     , transitionDuration, 'ease-out'],
+            ['border'       , transitionDuration, 'ease-out'],
+            ['border-radius', transitionDuration, 'ease-out'],
             
             // spacings:
-         // ['padding'    , transitionDuration, 'ease-out'], // beautiful but uncomfortable
+         // ['padding'      , transitionDuration, 'ease-out'], // beautiful but uncomfortable
             
             // typos:
-            ['font-size'  , transitionDuration, 'ease-out'],
+            ['font-size'    , transitionDuration, 'ease-out'],
         ]                                                   as CssKnownProps['transition'],
         
         filterExcited        : [[
