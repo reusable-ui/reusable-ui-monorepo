@@ -385,7 +385,7 @@ export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
 // appearances:
 
 //#region check style
-export type CheckStyle = 'btn'|'toggleButton'|'switch' // might be added more styles in the future
+export type CheckStyle = 'button'|'toggleButton'|'switch' // might be added more styles in the future
 export interface CheckVariant {
     checkStyle ?: CheckStyle
 }
@@ -576,7 +576,7 @@ export const usesCheckVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule(['.btn', '.toggleButton'], {
+            rule(['.button', '.toggleButton'], {
                 ...imports([
                     // layouts:
                     usesButtonLayout(),
@@ -592,10 +592,10 @@ export const usesCheckVariants = () => {
                     
                     
                     // customize:
-                    ...usesCssProps(usesPrefixedProps(checks, 'btn')), // apply config's cssProps starting with btn***
+                    ...usesCssProps(usesPrefixedProps(checks, 'button')), // apply config's cssProps starting with button***
                     
-                    // overwrites propName = {btn}propName:
-                    ...overwriteProps(checks, usesPrefixedProps(checks, 'btn')),
+                    // overwrites propName = {button}propName:
+                    ...overwriteProps(checks, usesPrefixedProps(checks, 'button')),
                 }),
             }),
             rule('.toggleButton', {

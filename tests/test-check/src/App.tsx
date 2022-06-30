@@ -42,10 +42,10 @@ function App() {
                     <Check theme='primary' onChange={handleChange}>
                         test &lt;Check&gt;
                     </Check>
-                    <Check theme='success' checkStyle='btn' nude={false}>
+                    <Check theme='success' checkStyle='button' nude={false}>
                         test &lt;Check&gt;
                     </Check>
-                    <Check theme='danger' checkStyle='toggleBtn' nude={false}>
+                    <Check theme='danger' checkStyle='toggleButton' nude={false}>
                         test &lt;Check&gt;
                     </Check>
                 </article>
