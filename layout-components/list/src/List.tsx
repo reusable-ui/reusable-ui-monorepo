@@ -1403,23 +1403,15 @@ export interface ListProps<TElement extends Element = Element>
         // bases:
         IndicatorProps<TElement>,
         
-        // list:
-        Omit<React.ListHTMLAttributes<TElement>,
-            // semantics:
-            |'role' // we redefined [role] in <Generic>
-        >,
-        
         // layouts:
         OrientationVariant,
         
         // appearances:
-        ListVariant
+        ListVariant,
+        
+        // behaviors:
+        Pick<ListItemProps<TElement>, 'actionCtrl'>
 {
-    // accessibilities:
-    label    ?: string
-    
-    
-    
     // children:
     children ?: React.ReactNode
 }
