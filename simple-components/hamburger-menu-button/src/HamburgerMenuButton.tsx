@@ -589,7 +589,10 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
 export interface HamburgerMenuButtonProps
     extends
         // bases:
-        ToggleButtonProps
+        Omit<ToggleButtonProps,
+            // children:
+            |'children' // children is not supported
+        >
 {
 }
 const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null => {
