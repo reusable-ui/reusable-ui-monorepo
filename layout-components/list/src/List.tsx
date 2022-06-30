@@ -787,13 +787,16 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
     // dependencies:
     
     // layouts:
-    const [sizesRule          ] = usesSizeVariant(lists);
+    const [sizesRule           ] = usesSizeVariant(lists);
     
     // backgrounds:
-    const [          , backgs ] = usesBackg();
+    const [          , backgs  ] = usesBackg();
     
     // borders:
-    const [borderRule, borders] = usesBorder();
+    const [borderRule, borders ] = usesBorder();
+    
+    // spacings:
+    const [          , paddings] = usesPadding();
     
     
     
@@ -879,24 +882,10 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                 ...rule(orientationInlineSelector, { // inline
                     // tab directions are inline (right) but <List> direction are block (down):
                     display                : 'flex',        // use block flexbox, so it takes the entire parent's width
-                    
-                    
-                    
-                    // borders:
-                    // kill border [left, top, right] surrounding tab:
-                    borderInlineWidth      : 0,
-                    borderBlockStartWidth  : 0,
                 }),
                 ...rule(orientationBlockSelector , { // block
                     // tab directions are block (down) but <List> direction are inline (right):
                     display                : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
-                    
-                    
-                    
-                    // borders:
-                    // kill border [top, left, bottom] surrounding tab:
-                    borderBlockWidth       : 0,
-                    borderInlineStartWidth : 0,
                 }),
                 
                 
@@ -919,13 +908,13 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                     ...children(listItemElm, {
                         ...imports([
                             // borders:
-                            borderRule,
+                            borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
                         ]),
                         ...style({
                             // borders:
                             
                             // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                            ...extendsBorder(),
+                            ...extendsBorder(), // restore border stripped out by `stripoutCommonBasicLayout`
                             
                             [borders.borderColor] : 'inherit', // change borderColor independent to child's theme color
                             backgroundClip        : 'padding-box',
@@ -938,6 +927,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             
                             
                             // borders:
+                            // spacings:
                             ...rule(parentOrientationInlineSelector, { // inline
                                 // remove rounded corners on bottom:
                                 [borders.borderEndStartRadius] : '0px',
@@ -953,45 +943,71 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             ifPassive({
                                 ...rule(parentOrientationInlineSelector, { // inline
                                     // borders:
-                                    // show parent border bottom:
+                                    // kill border [left, top, right] surrounding tab:
                                     borderInlineWidth      : 0,
-                                    borderBlockStartColor  : 'transparent',
+                                    borderBlockStartWidth  : 0,
                                     
                                     // remove rounded corners on top:
                                     [borders.borderStartStartRadius] : '0px',
                                     [borders.borderStartEndRadius  ] : '0px',
+                                    
+                                    
+                                    
+                                    // spacings:
+                                    // compensates the missing borders:
+                                    paddingInline      : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    paddingBlockStart  : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
-                                    // show parent border right:
+                                    // kill border [top, left, bottom] surrounding tab:
                                     borderBlockWidth       : 0,
-                                    borderInlineStartColor : 'transparent',
+                                    borderInlineStartWidth : 0,
                                     
                                     // remove rounded corners on left:
                                     [borders.borderStartStartRadius] : '0px',
                                     [borders.borderEndStartRadius  ] : '0px',
+                                    
+                                    
+                                    
+                                    // spacings:
+                                    // compensates the missing borders:
+                                    paddingBlock       : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    paddingInlineStart : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
                                 }),
                             }),
                             ifActive({
                                 ...rule(parentOrientationInlineSelector, { // inline
                                     // borders:
-                                    // hide parent border bottom:
+                                    // kill border on bottom:
                                     borderBlockEndWidth    : 0,
                                     
                                     
                                     
                                     // spacings:
-                                    marginBlockStart       : borders.borderWidth,
+                                    // compensates the missing borders:
+                                    paddingBlockEnd    : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    
+                                    
+                                    
+                                    // // spacings:
+                                    // marginBlockStart       : borders.borderWidth,
                                 }),
                                 ...rule(parentOrientationBlockSelector , { // block
                                     // borders:
-                                    // hide parent border right:
+                                    // kill border on right:
                                     borderInlineEndWidth   : 0,
                                     
                                     
                                     
                                     // spacings:
-                                    marginInlineStart      : borders.borderWidth,
+                                    // compensates the missing borders:
+                                    paddingInlineEnd   : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    
+                                    
+                                    
+                                    // // spacings:
+                                    // marginInlineStart      : borders.borderWidth,
                                 }),
                             }),
                         ]),
@@ -1067,7 +1083,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                     ...children(listItemElm, {
                         ...imports([
                             // borders:
-                            borderRule,
+                            borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
                         ]),
                         ...style({
                             // layouts:
@@ -1087,7 +1103,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             // borders:
                             
                             // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                            ...extendsBorder(),
+                            ...extendsBorder(), // restore border stripped out by `stripoutCommonBasicLayout`
                             
                             // big rounded corners on top:
                             [borders.borderStartStartRadius] : borderRadiuses.pill,
