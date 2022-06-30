@@ -222,7 +222,7 @@ export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
 
 //#region list style
 export type ListBasicStyle = 'flat'|'flush'|'joined';
-export type ListStyle = ListBasicStyle|'content'|'btn'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
 export interface ListVariant {
     listStyle ?: SingleOrArray<ListStyle>
 }
@@ -330,7 +330,7 @@ export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
         * `.list.content`               , the specificity weight = 2
         * `.someComponent.toggleButton` , the specificity weight = 2
         but can be easily overriden by specificity weight >= 3, like:
-        * `.list.btn.btn`               , the specificity weight = 3
+        * `.list.button.button`         , the specificity weight = 3
         * `.someComponent.boo.foo`      , the specificity weight = 3
     */
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&:not(_)`;
@@ -679,7 +679,7 @@ export const usesListLayout = (options?: OrientationRuleOptions) => {
                     * `.list.content`               , the specificity weight = 2
                     * `.someComponent.toggleButton` , the specificity weight = 2
                     but can be easily overriden by specificity weight >= 3, like:
-                    * `.list.btn.btn`               , the specificity weight = 3
+                    * `.list.button.button`         , the specificity weight = 3
                     * `.someComponent.boo.foo`      , the specificity weight = 3
                 */
                 ...children(':not(_)', {
@@ -834,16 +834,16 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
         ]),
         ...imports([
             usesListBasicVariants({
-                additionRemoveBorderSelector    : ['.btn', '.tab', '.breadcrumb', '.bullet'],
-                additionRemoveSeparatorSelector : ['.btn', '.tab', '.breadcrumb', '.bullet'],
+                additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
+                additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet'],
                 // specificityWeight            : 1, // not needed
             }),
         ]),
         ...variants([ 
-            rule('.btn', {
+            rule('.button', {
                 // spacings:
                 // add space between buttons:
-                gap : lists.btnSpacing,
+                gap : lists.buttonSpacing,
                 
                 
                 
@@ -872,7 +872,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                             
                             
                             // customize:
-                            ...usesCssProps(usesPrefixedProps(lists, 'btn')), // apply config's cssProps starting with btn***
+                            ...usesCssProps(usesPrefixedProps(lists, 'button')), // apply config's cssProps starting with button***
                         }),
                     }),
                 }),
@@ -1158,7 +1158,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
             }),
         ], { specificityWeight: 2 }),
         /*
-            the total selector combined with parent is something like this: `.list.btn.btn`, the specificity weight = 3
+            the total selector combined with parent is something like this: `.list.button.button`, the specificity weight = 3
             the specificity of 3 is a bit higher than:
             *      `:not(.inline)>*>.listItem:not(_)`           , the specificity weight = 2.1 (<listItem>'s borderSeparator)
             * `:not(.inline).list>*>:not(_):where(:first-child)`, the specificity weight = 2.1 (<listItem>'s borderRadius)
@@ -1192,9 +1192,9 @@ export const useListStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [lists, listValues, cssListConfig] = cssConfig(() => {
     return {
-        btnSpacing        : spacers.sm                                  as CssKnownProps['gapInline'],
-        btnSpacingSm      : spacers.xs                                  as CssKnownProps['gapInline'],
-        btnSpacingLg      : spacers.md                                  as CssKnownProps['gapInline'],
+        buttonSpacing     : spacers.sm                                  as CssKnownProps['gapInline'],
+        buttonSpacingSm   : spacers.xs                                  as CssKnownProps['gapInline'],
+        buttonSpacingLg   : spacers.md                                  as CssKnownProps['gapInline'],
         
         
         
