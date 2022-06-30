@@ -1046,10 +1046,6 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                 
                                 // customize:
                                 ...usesCssProps(usesPrefixedProps(lists, 'breadcrumbSeparator')), // apply config's cssProps starting with breadcrumbSeparator***
-                                ...rule(parentOrientationBlockSelector , { // block
-                                    // overwrites propName = {breadcrumbSeparator}PropName{Block}:
-                                    ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
-                                }),
                             }),
                         }),
                     }),
@@ -1061,6 +1057,14 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                         
                         // customize:
                         ...usesCssProps(usesPrefixedProps(lists, 'breadcrumb')), // apply config's cssProps starting with breadcrumb***
+                    }),
+                    
+                    
+                    
+                    // customize:
+                    ...rule(parentOrientationBlockSelector , { // block
+                        // overwrites propName = {breadcrumbSeparator}PropName{Block}:
+                        ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
                     }),
                 }),
             }),
