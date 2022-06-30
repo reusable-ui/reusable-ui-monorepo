@@ -938,6 +938,22 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
                                 [borders.borderStartEndRadius] : '0px',
                                 [borders.borderEndEndRadius  ] : '0px',
                             }),
+                            
+                            
+                            
+                            // animations:
+                            transition : [
+                                // original:
+                                [lists.tabTransition],
+                                
+                                // overwrites:
+                                
+                                // borders:
+                                ['border-width', '0s'], // does not support transition on border width, because we use [border-width & padding] to maintain size
+                                
+                                // spacings:
+                                ['padding'     , '0s'], // does not support transition on padding     , because we use [border-width & padding] to maintain size
+                            ],
                         }),
                         ...states([
                             ifPassive({
@@ -1190,6 +1206,7 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         
         
         tabTextAlign      : 'center'                                    as CssKnownProps['textAlign'],
+        tabTransition     : basics.transition                           as CssKnownProps['transition'],
         
         
         
