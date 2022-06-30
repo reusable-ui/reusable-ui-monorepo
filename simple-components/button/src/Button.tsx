@@ -132,11 +132,11 @@ export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions
 //#region button style
 export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
 export interface ButtonVariant {
-    btnStyle ?: ButtonStyle
+    buttonStyle ?: ButtonStyle
 }
 export const useButtonVariant = (props: ButtonVariant) => {
     return {
-        class: props.btnStyle ?? null,
+        class: props.buttonStyle ?? null,
     };
 };
 //#endregion button style
@@ -511,7 +511,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         
         
         // appearances:
-        btnStyle    : _btnStyle,
+        buttonStyle : _buttonStyle,
         
         
         
