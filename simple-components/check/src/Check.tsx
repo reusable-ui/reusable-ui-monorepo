@@ -385,7 +385,7 @@ export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
 // appearances:
 
 //#region check style
-export type CheckStyle = 'btn'|'toggleBtn'|'switch' // might be added more styles in the future
+export type CheckStyle = 'btn'|'toggleButton'|'switch' // might be added more styles in the future
 export interface CheckVariant {
     checkStyle ?: CheckStyle
 }
@@ -576,7 +576,7 @@ export const usesCheckVariants = () => {
             sizesRule,
         ]),
         ...variants([
-            rule(['.btn', '.toggleBtn'], {
+            rule(['.btn', '.toggleButton'], {
                 ...imports([
                     // layouts:
                     usesButtonLayout(),
@@ -598,12 +598,12 @@ export const usesCheckVariants = () => {
                     ...overwriteProps(checks, usesPrefixedProps(checks, 'btn')),
                 }),
             }),
-            rule('.toggleBtn', {
+            rule('.toggleButton', {
                 // customize:
-                ...usesCssProps(usesPrefixedProps(checks, 'toggleBtn')), // apply config's cssProps starting with toggleBtn***
+                ...usesCssProps(usesPrefixedProps(checks, 'toggleButton')), // apply config's cssProps starting with toggleButton***
                 
-                // overwrites propName = {toggleBtn}propName:
-                ...overwriteProps(checks, usesPrefixedProps(checks, 'toggleBtn')),
+                // overwrites propName = {toggleButton}propName:
+                ...overwriteProps(checks, usesPrefixedProps(checks, 'toggleButton')),
             }),
             
             rule('.switch', {
@@ -1016,11 +1016,11 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // fn props:
-    const propEnabled  = usePropEnabled(props);
-    const propReadOnly = usePropReadOnly(props);
+    const propEnabled    = usePropEnabled(props);
+    const propReadOnly   = usePropReadOnly(props);
     
-    const isToggleBtn  = (props.checkStyle === 'toggleBtn');
-    const pressedFn    = pressed ?? (((isActive && isToggleBtn) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
+    const isToggleButton = (props.checkStyle === 'toggleButton');
+    const pressedFn      = pressed ?? (((isActive && isToggleButton) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     
     
