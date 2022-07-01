@@ -3,6 +3,9 @@ fix peer dependencies for colors, borders, spacers, etc...
 fix touchStart/End on <ActionControl>
 fix press/release animation on keyboard press on <Range>
 
+fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
+fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
+
 
 
 inline then block
