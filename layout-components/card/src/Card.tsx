@@ -174,8 +174,8 @@ import {
 }                           from '@reusable-ui/container'       // a neighbor component
 import {
     // styles:
-    usesContentBasicLayout,
-    usesContentBasicVariants,
+    usesContentLayout,
+    usesContentVariants,
     usesContentChildren,
 }                           from '@reusable-ui/content'         // a neighbor component
 import {
@@ -196,16 +196,8 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag    : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
-const _defaultSemanticRole   : SemanticRole = ['card'    ] // uses [role="card"] as the default semantic
-
-const _defaultOutlined       : boolean      = false
-const _defaultMild           : boolean      = true
-const _defaultActionCtrl     : boolean      = false
-
-const _defaultItemOutlined   : boolean      = false
-const _defaultItemMild       : boolean      = false
-const _defaultItemActionCtrl : boolean      = false
+const _defaultSemanticTag    : SemanticTag  = 'article' // uses <article>        as the default semantic
+const _defaultSemanticRole   : SemanticRole = 'article' // uses [role="article"] as the default semantic
 
 
 
@@ -221,19 +213,13 @@ export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptio
 // appearances:
 
 //#region card style
-export type CardBasicStyle = 'flat'|'flush'|'joined';
-export type CardStyle = CardBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
 export interface CardVariant {
-    cardStyle ?: SingleOrArray<CardStyle>
+    cardStyle ?: CardStyle
 }
-export const useCardVariant = ({ cardStyle }: CardVariant) => {
+export const useCardVariant = (props: CardVariant) => {
     return {
-        class: (
-            (Array.isArray(cardStyle) ? cardStyle : [cardStyle])
-            .filter((style) => !!style).join(' ')
-            ||
-            null
-        ),
+        class: props.cardStyle ?? null,
     };
 };
 //#endregion card style
@@ -241,8 +227,74 @@ export const useCardVariant = ({ cardStyle }: CardVariant) => {
 
 
 // styles:
-export const wrapperElm  = '*';                    // zero specificity
-export const cardItemElm = ':where(:first-child)'; // zero specificity
+const headerElm = ':is(.header, :where(header))'; // one_weight specificity
+const footerElm = ':is(.footer, :where(footer))'; // one_weight specificity
+const bodyElm   = '.body';                        // one_weight specificity
+
+
+
+export const usesCardItemLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesIndicatorLayout(),
+            usesContentLayout(),
+            
+            // children:
+            usesContentChildren(),
+        ]),
+        ...style({
+            // layouts:
+            display : 'block', // fills the entire parent's width
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(cards, 'item')), // apply config's cssProps starting with item***
+        }),
+    });
+};
+export const usesCardCaptionLayout = () => {
+    return style({
+        // sizes:
+        // default <Card>'s items height are unresizeable (excepts for the <Card>'s body):
+        flex : [[0, 1, 'auto']], // ungrowable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(cards, 'caption')), // apply config's cssProps starting with caption***
+    });
+};
+export const usesCardHeaderLayout = () => {
+    return style({
+        // customize:
+        ...usesCssProps(usesPrefixedProps(cards, 'header')), // apply config's cssProps starting with header***
+    });
+};
+export const usesCardFooterLayout = () => {
+    return style({
+        // customize:
+        ...usesCssProps(usesPrefixedProps(cards, 'footer')), // apply config's cssProps starting with footer***
+    });
+};
+export const usesCardBodyLayout = () => {
+    return style({
+        // sizes:
+        // default <Card>'s body height is resizeable, ensuring footers are aligned to the bottom:
+        flex     : [[1, 1, 'auto']], // growable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
+        
+        
+        
+        // scrolls:
+        overflow : 'auto', // enable horz & vert scrolling
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(cards, 'body')), // apply config's cssProps starting with body***
+    });
+};
 
 
 
