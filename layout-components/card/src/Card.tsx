@@ -176,7 +176,7 @@ export const usesCardItemLayout    = () => {
             // animations:
             transition : [
                 // original:
-                [basics.transition],
+                [cards.itemTransition],
                 
                 // overwrites:
                 
@@ -428,21 +428,26 @@ export const useCardStyleSheet = createUseStyleSheet(() => ({
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
     return {
         // sizes:
-        boxSizing     : 'border-box'    as CssKnownProps['boxSizing'], // the final size is including borders & paddings
-        blockSize     : '100%'          as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
-        
-        
-        
-        // captions:
-        captionFilter : [[
-            'brightness(70%)',
-            'contrast(140%)',
-        ]]                              as CssKnownProps['filter'],
+        boxSizing      : 'border-box'       as CssKnownProps['boxSizing'], // the final size is including borders & paddings
+        blockSize      : '100%'             as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
         
         
         
         // typos:
-        overflowWrap  : 'break-word'    as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
+        overflowWrap   : 'break-word'       as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
+        
+        
+        
+        // animations:
+        itemTransition : basics.transition  as CssKnownProps['transition'],
+        
+        
+        
+        // captions:
+        captionFilter  : [[
+            'brightness(70%)',
+            'contrast(140%)',
+        ]]                                  as CssKnownProps['filter'],
     };
 }, { prefix: 'card' });
 
