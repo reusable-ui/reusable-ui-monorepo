@@ -111,7 +111,7 @@ import {
 
 // hooks:
 
-// states:
+// accessibilities:
 
 //#region activePassive
 export const markActive = (): CssRule => style({
@@ -571,7 +571,7 @@ export const usesControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(controls);
+    const [sizeVariantRule] = usesSizeVariant(controls);
     
     
     
@@ -581,7 +581,7 @@ export const usesControlVariants = () => {
             usesIndicatorVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -589,8 +589,8 @@ export const usesControlStates = () => {
     // dependencies:
     
     // states:
-    const [focusBlurRule  ] = usesFocusBlurState();
-    const [arriveLeaveRule] = usesArriveLeaveState();
+    const [focusBlurStateRule  ] = usesFocusBlurState();
+    const [arriveLeaveStateRule] = usesArriveLeaveState();
     
     
     
@@ -598,8 +598,10 @@ export const usesControlStates = () => {
         ...imports([
             // states:
             usesIndicatorStates(),
-            focusBlurRule,
-            arriveLeaveRule,
+            
+            // accessibilities:
+            focusBlurStateRule,
+            arriveLeaveStateRule,
         ]),
         ...states([
             ifDisable({
