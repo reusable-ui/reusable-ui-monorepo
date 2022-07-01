@@ -546,7 +546,7 @@ export const usesIndicatorVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(indicators);
+    const [sizeVariantRule] = usesSizeVariant(indicators);
     
     
     
@@ -556,7 +556,7 @@ export const usesIndicatorVariants = () => {
             usesBasicVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -564,16 +564,16 @@ export const usesIndicatorStates = () => {
     // dependencies:
     
     // states:
-    const [enableDisableRule] = usesEnableDisableState();
-    const [activePassiveRule] = usesActivePassiveState();
+    const [enableDisableStateRule] = usesEnableDisableState();
+    const [activePassiveStateRule] = usesActivePassiveState();
     
     
     
     return style({
         ...imports([
             // states:
-            enableDisableRule,
-            activePassiveRule,
+            enableDisableStateRule,
+            activePassiveStateRule,
         ]),
         ...states([
             ifActive({
