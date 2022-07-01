@@ -395,7 +395,7 @@ export const usesHamburgerMenuButtonVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(hamburgerMenuButtons);
+    const [sizeVariantRule] = usesSizeVariant(hamburgerMenuButtons);
     
     
     
@@ -405,7 +405,7 @@ export const usesHamburgerMenuButtonVariants = () => {
             usesToggleButtonVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -421,6 +421,8 @@ export const usesHamburgerMenuButtonStates = () => {
         ...imports([
             // states:
             usesToggleButtonStates(),
+            
+            // animations:
             hamburgerAnimStateRule,
         ]),
         ...states([
