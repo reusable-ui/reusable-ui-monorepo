@@ -223,8 +223,8 @@ export {
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [themesRule, themes] = usesThemeVariant();
-    const [          , milds ] = basicUsesMildVariant(factory);
+    const [themeVariantRule, themes] = usesThemeVariant();
+    const [                , milds ] = basicUsesMildVariant(factory);
     
     
     
@@ -233,7 +233,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
             ...imports([
                 // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
                 // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themesRule,
+                themeVariantRule,
             ]),
             ...vars({
                 [milds.altBackgFn] : fallbacks(
@@ -666,22 +666,22 @@ export const usesIconVariants    = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant(icons);
+    const [sizeVariantRule    ] = usesSizeVariant(icons);
     
     // colors:
-    const [themesRule  ] = usesThemeVariant();
-    const [mildRule    ] = usesMildVariant();
+    const [themeVariantRule   ] = usesThemeVariant();
+    const [mildVariantRule    ] = usesMildVariant();
     
     
     
     return style({
         ...imports([
             // layouts:
-            sizesRule,
+            sizeVariantRule,
             
             // colors:
-            themesRule,
-            mildRule,
+            themeVariantRule,
+            mildVariantRule,
         ]),
     });
 };
