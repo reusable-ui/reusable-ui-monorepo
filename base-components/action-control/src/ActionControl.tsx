@@ -124,7 +124,7 @@ const _defaultSemanticRole : SemanticRole = [      'button', 'link'] // uses [ro
 
 // hooks:
 
-// states:
+// accessibilities:
 
 //#region pressRelease
 export interface PressReleaseVars {
@@ -384,7 +384,7 @@ export const usesActionControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(actionControls);
+    const [sizeVariantRule] = usesSizeVariant(actionControls);
     
     
     
@@ -394,7 +394,7 @@ export const usesActionControlVariants = () => {
             usesControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -402,7 +402,7 @@ export const usesActionControlStates = () => {
     // dependencies:
     
     // states:
-    const [pressReleaseRule] = usesPressReleaseState();
+    const [pressReleaseStateRule] = usesPressReleaseState();
     
     
     
@@ -410,7 +410,9 @@ export const usesActionControlStates = () => {
         ...imports([
             // states:
             usesControlStates(),
-            pressReleaseRule,
+            
+            // accessibilities:
+            pressReleaseStateRule,
         ]),
         ...states([
             ifPress({
@@ -594,6 +596,8 @@ const ActionControl = <TElement extends Element = Element>(props: ActionControlP
     
     
     // states:
+    
+    // accessibilities:
     const pressReleaseState = usePressReleaseState<TElement>(props);
     
     
