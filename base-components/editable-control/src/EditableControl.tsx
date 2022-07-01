@@ -115,7 +115,7 @@ import {
 
 // hooks:
 
-// states:
+// validations:
 
 //#region validInvalid
 export interface ValidInvalidVars {
@@ -545,7 +545,7 @@ export const usesEditableControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(editableControls);
+    const [sizeVariantRule] = usesSizeVariant(editableControls);
     
     
     
@@ -555,7 +555,7 @@ export const usesEditableControlVariants = () => {
             usesControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -563,7 +563,7 @@ export const usesEditableControlStates = () => {
     // dependencies:
     
     // states:
-    const [validInvalidRule] = usesValidInvalidState();
+    const [validInvalidStateRule] = usesValidInvalidState();
     
     
     
@@ -571,7 +571,9 @@ export const usesEditableControlStates = () => {
         ...imports([
             // states:
             usesControlStates(),
-            validInvalidRule,
+            
+            // validations:
+            validInvalidStateRule,
         ]),
         ...states([
             ifValid({
@@ -705,6 +707,8 @@ const EditableControl = <TElement extends Element = Element>(props: EditableCont
     
     
     // states:
+    
+    // validations:
     const inputValidator    = useInputValidator<EditableControlElement>(props.customValidator);
     const validInvalidState = useValidInvalidState<TElement>(props, inputValidator.validator);
     
