@@ -1474,6 +1474,12 @@ export interface ListProps<TElement extends Element = Element>
         // bases:
         IndicatorProps<TElement>,
         
+        // <ul>|<ol>:
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
+        
         // layouts:
         OrientationVariant,
         
