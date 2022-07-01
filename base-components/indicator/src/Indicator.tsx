@@ -716,6 +716,8 @@ const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TEl
     
     
     // states:
+    
+    // accessibilities:
     const enableDisableState = useEnableDisableState<TElement>(props);
     const activePassiveState = useActivePassiveState<TElement>(props);
     
