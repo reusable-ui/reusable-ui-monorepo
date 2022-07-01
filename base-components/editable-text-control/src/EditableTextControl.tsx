@@ -134,14 +134,14 @@ const [valids] = cssVar<ValidInvalidVars>();
  */
 export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
     // dependencies:
-    const [validInvalidRule] = editableControlUsesValidInvalidState();
+    const [validInvalidStateRule] = editableControlUsesValidInvalidState();
     
     
     
     return [
         () => style({
             ...imports([
-                validInvalidRule,
+                validInvalidStateRule,
             ]),
             
             
@@ -241,7 +241,7 @@ export const usesEditableTextControlVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(editableTextControls);
+    const [sizeVariantRule] = usesSizeVariant(editableTextControls);
     
     
     
@@ -251,7 +251,7 @@ export const usesEditableTextControlVariants = () => {
             usesEditableControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -259,7 +259,7 @@ export const usesEditableTextControlStates = () => {
     // dependencies:
     
     // states:
-    const [validInvalidRule] = usesValidInvalidState();
+    const [validInvalidStateRule] = usesValidInvalidState();
     
     
     
@@ -267,7 +267,9 @@ export const usesEditableTextControlStates = () => {
         ...imports([
             // states:
             usesEditableControlStates(),
-            validInvalidRule,
+            
+            // validations:
+            validInvalidStateRule,
         ]),
         ...states([
             ifActive({
