@@ -659,20 +659,20 @@ export interface RangeProps
 }
 const Range = (props: RangeProps): JSX.Element|null => {
     // styles:
-    const styleSheet            = useRangeStyleSheet();
+    const styleSheet         = useRangeStyleSheet();
     
     
     
     // variants:
-    const orientationVariant    = useOrientationVariant(props);
-    const isOrientationVertical = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
     // states:
-    const focusBlurState        = useFocusBlurState<HTMLInputElement>(props);
-    const arriveLeaveState      = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
-    const pressReleaseState     = usePressReleaseState<HTMLInputElement>(props);
+    const focusBlurState     = useFocusBlurState<HTMLInputElement>(props);
+    const arriveLeaveState   = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
+    const pressReleaseState  = usePressReleaseState<HTMLInputElement>(props);
     
     
     
@@ -1112,25 +1112,25 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         const style        = getComputedStyle(track);
-        const borderStart  = (Number.parseInt(isOrientationVertical ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
-        const paddingStart = (Number.parseInt(isOrientationVertical ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
-        const paddingEnd   = (Number.parseInt(isOrientationVertical ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
-        const thumbSize    =  (isOrientationVertical ? thumb.offsetHeight : thumb.offsetWidth);
-        const trackSize    = ((isOrientationVertical ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
+        const borderStart  = (Number.parseInt(isOrientationBlock ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
+        const paddingStart = (Number.parseInt(isOrientationBlock ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
+        const paddingEnd   = (Number.parseInt(isOrientationBlock ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
+        const thumbSize    =  (isOrientationBlock ? thumb.offsetHeight : thumb.offsetWidth);
+        const trackSize    = ((isOrientationBlock ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
         
         const rect         = track.getBoundingClientRect();
-        const cursorStart  = (isOrientationVertical ? event.clientY : event.clientX) - (isOrientationVertical ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
+        const cursorStart  = (isOrientationBlock ? event.clientY : event.clientX) - (isOrientationBlock ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
         // if ((cursorStart < 0) || (cursorStart > trackSize)) return; // setValueRatio will take care of this
         
         let valueRatio     = cursorStart / trackSize;
-        if (isOrientationVertical || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
+        if (isOrientationBlock || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
         
         setValueDn({ type: 'setValueRatio', payload: valueRatio });
         
         
         
         pressReleaseState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
-    }, [isOrientationVertical]);
+    }, [isOrientationBlock]);
     const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (event.touches.length !== 1) return; // only single touch
@@ -1160,20 +1160,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             
-                 if (                                    isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (                                    isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
+                 if (                                 isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (                                 isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (                                    isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
-            else if (                                    isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
+            else if (                                 isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
+            else if (                                 isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
             
-            else if ( isOrientationVertical &&           isKeyOf('arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if ( isOrientationVertical &&           isKeyOf('arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
+            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (!isOrientationVertical && !isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationVertical && !isRtl && isKeyOf('arrowright')) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowright')) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationVertical &&  isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
             else return false; // not handled
             
             
@@ -1183,7 +1183,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             pressReleaseState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [propEnabled, propReadOnly, isOrientationVertical, minFn, maxFn]);
+    }, [propEnabled, propReadOnly, isOrientationBlock, minFn, maxFn]);
     
     const handleMouseDown     = useMergeEvents(
         // preserves the original `onMouseDown`:
@@ -1296,7 +1296,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             tag ={props.tag  ?? 'div'   }
             role={props.role ?? 'slider'}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationVertical ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
             aria-valuenow   ={props['aria-valuenow'   ] ?? valueNow}
             aria-valuemin   ={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
             aria-valuemax   ={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
@@ -1436,7 +1436,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 isValid={isValid}
                 inheritValidation={inheritValidation}
             >
-                { isOrientationVertical ? trackUpper : trackLower }
+                { isOrientationBlock ? trackUpper : trackLower }
                 <EditableActionControl<HTMLElement>
                     // refs:
                     elmRef={mergedThumbRef}
@@ -1477,7 +1477,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     isValid={isValid}
                     inheritValidation={inheritValidation}
                 />
-                { isOrientationVertical ? trackLower : trackUpper }
+                { isOrientationBlock ? trackLower : trackUpper }
             </EditableControl>
         </EditableControl>
     );
