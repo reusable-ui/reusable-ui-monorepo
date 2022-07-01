@@ -506,14 +506,14 @@ export const usesContentBasicVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(contents);
+    const [sizeVariantRule] = usesSizeVariant(contents);
     
     
     
     return style({
         ...imports([
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
