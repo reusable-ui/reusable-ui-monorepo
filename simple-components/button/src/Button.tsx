@@ -292,7 +292,7 @@ export const usesButtonVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(buttons);
+    const [sizeVariantRule] = usesSizeVariant(buttons);
     
     
     
@@ -302,7 +302,7 @@ export const usesButtonVariants = () => {
             usesActionControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
         ...variants([
             rule(['.link', '.ghost'], {
