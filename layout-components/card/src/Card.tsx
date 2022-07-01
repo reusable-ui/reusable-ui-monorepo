@@ -455,7 +455,7 @@ export interface CardItemProps<TElement extends Element = HTMLElement>
         // bases:
         GenericProps<TElement>,
         
-        // link:
+        // <div>:
         Omit<React.HTMLAttributes<TElement>,
             // semantics:
             |'role' // we redefined [role] in <Generic>
@@ -592,6 +592,12 @@ export interface CardProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         IndicatorProps<TElement>,
+        
+        // <div>:
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
         
         // layouts:
         OrientationVariant,
