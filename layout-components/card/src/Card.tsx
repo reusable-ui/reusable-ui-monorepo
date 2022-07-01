@@ -113,6 +113,7 @@ import {
     usesBorder,
     extendsBorder,
     usesPadding,
+    usesAnim,
     
     
     
@@ -233,7 +234,7 @@ const bodyElm   = '.body';                        // one_weight specificity
 
 
 
-export const usesCardItemLayout = () => {
+export const usesCardItemLayout    = () => {
     return style({
         ...imports([
             // layouts:
@@ -257,7 +258,7 @@ export const usesCardItemLayout = () => {
 export const usesCardCaptionLayout = () => {
     return style({
         // sizes:
-        // default <Card>'s items height are unresizeable (excepts for the <Card>'s body):
+        // the default <Card>'s items height are unresizeable (excepts for the <Card>'s body):
         flex : [[0, 1, 'auto']], // ungrowable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
         
         
@@ -266,22 +267,22 @@ export const usesCardCaptionLayout = () => {
         ...usesCssProps(usesPrefixedProps(cards, 'caption')), // apply config's cssProps starting with caption***
     });
 };
-export const usesCardHeaderLayout = () => {
+export const usesCardHeaderLayout  = () => {
     return style({
         // customize:
         ...usesCssProps(usesPrefixedProps(cards, 'header')), // apply config's cssProps starting with header***
     });
 };
-export const usesCardFooterLayout = () => {
+export const usesCardFooterLayout  = () => {
     return style({
         // customize:
         ...usesCssProps(usesPrefixedProps(cards, 'footer')), // apply config's cssProps starting with footer***
     });
 };
-export const usesCardBodyLayout = () => {
+export const usesCardBodyLayout    = () => {
     return style({
         // sizes:
-        // default <Card>'s body height is resizeable, ensuring footers are aligned to the bottom:
+        // the default <Card>'s body height is resizeable, ensuring footers are aligned to the bottom:
         flex     : [[1, 1, 'auto']], // growable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
         
         
@@ -302,15 +303,16 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
     // options:
     options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
     const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     
     
     
     // dependencies:
     
     // borders:
-    const [borderRule, borders] = usesBorder();
+    const [borderRule       ] = usesBorder();
+    
+    // animations:
+    const [animRule  , anims] = usesAnim();
     
     
     
@@ -318,25 +320,29 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
         ...imports([
             // resets:
             stripoutFocusableElement(),     // clear browser's default styles
-            stripoutCard(),                 // clear browser's default styles
             
             // borders:
-            // borderRule,                  // moved out to dedicated border stroke for each card & wrapper
+            borderRule,
             usesBorderAsContainer(options), // make a nicely rounded corners
+            
+            // animations:
+            animRule,
         ]),
         ...style({
             // layouts:
             ...rule(orientationInlineSelector, { // inline
-                display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
-                flexDirection : 'row',         // items are stacked horizontally
+                // layouts:
+                display        : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
+                flexDirection  : 'row',         // items are stacked horizontally
             }),
             ...rule(orientationBlockSelector , { // block
-                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
-                flexDirection : 'column',      // items are stacked vertically
+                // layouts:
+                display        : 'flex',        // use block flexbox, so it takes the entire parent's width
+                flexDirection  : 'column',      // items are stacked vertically
             }),
-            justifyContent    : 'start',       // if wrappers are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first wrapper should be visible first
-            alignItems        : 'stretch',     // wrappers width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
-            flexWrap          : 'nowrap',      // no wrapping
+            justifyContent : 'start',           // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems     : 'stretch',         // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            flexWrap       : 'nowrap',          // no wrapping
             
             
             
@@ -347,69 +353,60 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
             
             
             // borders:
-            ...children(['&', wrapperElm], {
+            /*
+                A separator between CardItems.
+                Exploits the borders as a horizontal/vertical separator depending on the Card's orientation.
+            */
+            ...children([headerElm, footerElm, bodyElm], {
                 ...imports([
                     // borders:
-                    borderRule, // dedicated border stroke for each <Card> & <wrapper>s
+                    usesBorderAsSeparator({ // must be placed at the last
+                        orientationInlineSelector,
+                        orientationBlockSelector,
+                        swapFirstItem : true,
+                    }),
                 ]),
             }),
             
             
             
+            // animations:
+            boxShadow : anims.boxShadow,
+            filter    : anims.filter,
+            anim      : anims.anim,
+            
+            
+            
             // children:
-            ...children(wrapperElm, {
-                // layouts:
-                display        : 'flex',    // use block flexbox, so it takes the entire <Card>'s width
-                flexDirection  : 'inherit', // copy <Card>'s stack direction
-                justifyContent : 'inherit', // copy <Card>'s justifyContent
-                alignItems     : 'inherit', // copy <Card>'s justifyContent
-                flexWrap       : 'inherit', // copy <Card>'s flexWrap
-                
-                
-                
-                // sizes:
-                flex           : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
-                
-                
-                
-                // children:
-                /*
-                    a hack with :not(_)
-                    the total selector combined with parent is something like this: `:not(.inline).card>*>:not(_):where(:first-child)`, the specificity weight = 2.1
-                    the specificity of 2.1 is a bit higher than:
-                    * `.card.content`               , the specificity weight = 2
-                    * `.someComponent.toggleButton` , the specificity weight = 2
-                    but can be easily overriden by specificity weight >= 3, like:
-                    * `.card.button.button`         , the specificity weight = 3
-                    * `.someComponent.boo.foo`      , the specificity weight = 3
-                */
-                ...children(':not(_)', {
-                    // borders:
-                    ...rule(parentOrientationInlineSelector, { // inline
-                        ...ifFirstVisibleChild({
-                            // add rounded corners on left:
-                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
-                        }),
-                        ...ifLastVisibleChild({
-                            // add rounded corners on right:
-                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
-                        }),
-                    }),
-                    ...rule(parentOrientationBlockSelector , { // block
-                        ...ifFirstVisibleChild({
-                            // add rounded corners on top:
-                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
-                        }),
-                        ...ifLastVisibleChild({
-                            // add rounded corners on bottom:
-                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
-                        }),
-                    }),
-                }),
+            ...children([headerElm, footerElm, bodyElm], {
+                ...imports([
+                    // layouts:
+                    usesCardItemLayout(),
+                ]),
+            }),
+            ...children([headerElm, footerElm], {
+                ...imports([
+                    // layouts:
+                    usesCardCaptionLayout(),
+                ]),
+            }),
+            ...children(headerElm, {
+                ...imports([
+                    // layouts:
+                    usesCardHeaderLayout(),
+                ]),
+            }),
+            ...children(footerElm, {
+                ...imports([
+                    // layouts:
+                    usesCardFooterLayout(),
+                ]),
+            }),
+            ...children(bodyElm, {
+                ...imports([
+                    // layouts:
+                    usesCardBodyLayout(),
+                ]),
             }),
             
             
@@ -420,41 +417,35 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
             
             
             // borders:
-            ...children(['&', wrapperElm], {
-                // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                ...extendsBorder(),
-            }),
+            
+            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
+            ...extendsBorder(),
         }),
     });
 };
-export interface CardBasicVariantOptions {
-    additionRemoveBorderSelector    ?: CssSelectorCollection
-    additionRemoveSeparatorSelector ?: CssSelectorCollection
-    
-    specificityWeight               ?: number
-}
-export const usesCardBasicVariants = (options?: CardBasicVariantOptions) => {
-    // options:
-    const {
-        additionRemoveBorderSelector,
-        additionRemoveSeparatorSelector,
-        specificityWeight,
-    } = options ?? {};
-    
-    
-    
+export const usesCardVariants = () => {
     // dependencies:
     
+    // layouts:
+    const [sizeVariantRule] = usesSizeVariant(cards);
+    
     // borders:
-    const [, borders] = usesBorder();
+    const [, borders      ] = usesBorder();
     
     
     
     return style({
+        ...imports([
+            // variants:
+            usesIndicatorVariants(),
+            usesContentVariants(),
+            
+            // layouts:
+            sizeVariantRule,
+        ]),
         ...variants([
-            rule(['.flat', '.flush', additionRemoveBorderSelector], {
+            rule(['.flat', '.flush'], {
                 // borders:
-                
                 // kill borders surrounding Card:
                 [borders.borderWidth           ] : '0px',
                 
@@ -465,75 +456,15 @@ export const usesCardBasicVariants = (options?: CardBasicVariantOptions) => {
                 [borders.borderEndStartRadius  ] : '0px',
                 [borders.borderEndEndRadius    ] : '0px',
             }),
-            rule(['.flat', '.joined', additionRemoveSeparatorSelector], {
+            rule(['.flat', '.joined'], {
                 // children:
-                ...children(wrapperElm, {
+                ...children([headerElm, footerElm, bodyElm], {
                     // borders:
                     // kill separator between items:
                     [borders.borderWidth] : '0px',
                 }),
             }),
-        ], { specificityWeight }),
-    });
-};
-export const usesCardVariants = (options?: OrientationVariantOptions) => {
-    // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    
-    
-    
-    // dependencies:
-    
-    // layouts:
-    const [sizeVariantRule     ] = usesSizeVariant(cards);
-    
-    // backgrounds:
-    const [          , backgs  ] = usesBackg();
-    
-    // borders:
-    const [borderRule, borders ] = usesBorder();
-    
-    // spacings:
-    const [          , paddings] = usesPadding();
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            
-            // layouts:
-            sizeVariantRule,
         ]),
-        ...variants([
-            rule('.content', { // content
-                ...imports([
-                    // variants:
-                    usesContentBasicVariants(),
-                ]),
-                
-                
-                
-                // children:
-            }),
-        ]),
-        ...imports([
-            usesCardBasicVariants({
-                additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
-                additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet'],
-                // specificityWeight            : 1, // not needed
-            }),
-        ]),
-        /*
-            the total selector combined with parent is something like this: `.card.button.button`, the specificity weight = 3
-            the specificity of 3 is a bit higher than:
-            *      `:not(.inline)>*>.cardItem:not(_)`           , the specificity weight = 2.1 (<cardItem>'s borderSeparator)
-            * `:not(.inline).card>*>:not(_):where(:first-child)`, the specificity weight = 2.1 (<cardItem>'s borderRadius)
-        */
     });
 };
 export const usesCardStates = () => {
@@ -563,6 +494,22 @@ export const useCardStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
     return {
+        // sizes:
+        boxSizing     : 'border-box'    as CssKnownProps['boxSizing'], // the final size is including borders & paddings
+        blockSize     : '100%'          as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
+        
+        
+        
+        // captions:
+        captionFilter : [[
+            'brightness(70%)',
+            'contrast(140%)',
+        ]]                              as CssKnownProps['filter'],
+        
+        
+        
+        // typos:
+        overflowWrap  : 'break-word'    as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
     };
 }, { prefix: 'card' });
 
