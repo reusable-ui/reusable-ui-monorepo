@@ -739,7 +739,7 @@ export {
 interface ClientSideLinkWrapperProps<TElement extends Element = Element> {
     // components:
     linkComponent   : JsxClientSideLink
-    actionComponent : React.ReactElement<ActionControlProps<TElement>>
+    actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
     
     
     
@@ -781,7 +781,7 @@ interface ForwardRefWrapperProps<TElement extends Element = Element>
         ActionControlProps<TElement>
 {
     // components:
-    actionComponent : React.ReactElement<ActionControlProps<TElement>>
+    actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
 }
 const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>({ actionComponent, outerRef, ...restForwardProps }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // refs:
