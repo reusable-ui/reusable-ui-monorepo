@@ -394,7 +394,7 @@ export const usesListItemVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(lists);
+    const [sizeVariantRule] = usesSizeVariant(lists);
     
     
     
@@ -405,7 +405,7 @@ export const usesListItemVariants = () => {
             usesListItemInheritMildVariant(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -787,7 +787,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
     // dependencies:
     
     // layouts:
-    const [sizesRule           ] = usesSizeVariant(lists);
+    const [sizeVariantRule     ] = usesSizeVariant(lists);
     
     // backgrounds:
     const [          , backgs  ] = usesBackg();
@@ -806,7 +806,7 @@ export const usesListVariants = (options?: OrientationRuleOptions) => {
             usesIndicatorVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
         ...variants([
             rule('.content', { // content
