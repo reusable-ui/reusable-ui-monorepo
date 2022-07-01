@@ -73,6 +73,11 @@ import {
     usesBorder,
     extendsBorder,
     usesAnim,
+    
+    
+    
+    // configs:
+    basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
@@ -165,6 +170,19 @@ export const usesCardItemLayout    = () => {
             
             // customize:
             ...usesCssProps(usesPrefixedProps(cards, 'item')), // apply config's cssProps starting with item***
+            
+            
+            
+            // animations:
+            transition : [
+                // original:
+                [basics.transition],
+                
+                // overwrites:
+                
+                // borders:
+                ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+            ],
         }),
     });
 };
