@@ -100,10 +100,10 @@ import {
     // hooks:
     usesSizeVariant,
     OrientationName,
-    OrientationRuleOptions,
-    defaultBlockOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
+    OrientationVariantOptions,
+    defaultBlockOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
     ThemeName,
@@ -214,7 +214,7 @@ const _defaultItemActionCtrl : boolean      = false
 // layouts:
 
 //#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
+export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
 //#endregion orientation
 
 
@@ -319,10 +319,10 @@ export const usesListItemInheritMildVariant = () => {
 
 
 
-export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
+export const usesListItemBaseLayout = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     /*
         a hack with :not(_)
         the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
@@ -357,9 +357,9 @@ export const usesListItemBaseLayout = (options?: OrientationRuleOptions) => {
         ]),
     });
 };
-export const usesListItemLayout = (options?: OrientationRuleOptions) => {
+export const usesListItemLayout = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
     
     
     
@@ -435,7 +435,7 @@ export const useListItemStyleSheet = createUseStyleSheet(() => ({
 
 export const usesListSeparatorItemLayout = () => {
     // options:
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(defaultOrientationRuleOptions);
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&`;
     
@@ -584,10 +584,10 @@ export const useListActionItemStyleSheet = createUseStyleSheet(() => ({
 
 
 
-export const usesListLayout = (options?: OrientationRuleOptions) => {
+export const usesListLayout = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     
@@ -775,10 +775,10 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
         ], { specificityWeight }),
     });
 };
-export const usesListVariants = (options?: OrientationRuleOptions) => {
+export const usesListVariants = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     

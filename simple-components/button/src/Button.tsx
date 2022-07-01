@@ -66,10 +66,10 @@ import {
     // hooks:
     usesSizeVariant,
     OrientationName,
-    OrientationRuleOptions,
-    defaultInlineOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
+    OrientationVariantOptions,
+    defaultInlineOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
     gradientOf,
@@ -123,7 +123,7 @@ const _defaultMild         : boolean      = false
 // layouts:
 
 //#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
+export const defaultOrientationRuleOptions = defaultInlineOrientationVariantOptions;
 //#endregion orientation
 
 
@@ -191,10 +191,10 @@ export const noBackground = () => {
     });
 };
 
-export const usesButtonLayout = (options?: OrientationRuleOptions) => {
+export const usesButtonLayout = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     
     
     

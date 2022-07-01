@@ -68,7 +68,7 @@ import {
     useSizeVariant  as basicUseSizeVariant,
     
     OrientationName,
-    OrientationRuleOptions,
+    OrientationVariantOptions,
     OrientationVariant,
     
     usesBackg,
@@ -163,7 +163,7 @@ export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props)
 
 
 // styles:
-export const usesButtonIconLayout = (options?: OrientationRuleOptions) => {
+export const usesButtonIconLayout = (options?: OrientationVariantOptions) => {
     // dependencies:
     
     // icon:

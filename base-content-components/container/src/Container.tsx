@@ -90,10 +90,10 @@ import {
     
     
     // hooks:
-    OrientationRuleOptions,
-    defaultBlockOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
+    OrientationVariantOptions,
+    defaultBlockOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
     usesBorder,
     extendsBorder,
     usesPadding,
@@ -133,7 +133,7 @@ export const ifNotSecondVisibleChild = (styles: CssStyleCollection): CssRule => 
 // layouts:
 
 //#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationRuleOptions;
+export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
 //#endregion orientation
 
 //#region container
@@ -198,13 +198,13 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
 // borders:
 
 //#region border as container
-export interface BorderAsContainerOptions extends OrientationRuleOptions {
+export interface BorderAsContainerOptions extends OrientationVariantOptions {
     itemsSelector ?: CssSelectorCollection
 }
 export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRule => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     const {
         itemsSelector = '*',
     } = options;
@@ -337,7 +337,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
 //#endregion border as container
 
 //#region border as separator
-export interface BorderAsSeparatorOptions extends OrientationRuleOptions {
+export interface BorderAsSeparatorOptions extends OrientationVariantOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
@@ -473,8 +473,8 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
 };
 export const usesBorderAsSeparator = (options: BorderAsSeparatorOptions = {}): CssRule => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     
     
     

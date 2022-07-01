@@ -104,10 +104,10 @@ import {
     // hooks:
     usesSizeVariant,
     OrientationName,
-    OrientationRuleOptions,
-    defaultInlineOrientationRuleOptions,
-    normalizeOrientationRule,
-    usesOrientationRule,
+    OrientationVariantOptions,
+    defaultInlineOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
     ifNude,
@@ -165,7 +165,7 @@ import {
 // layouts:
 
 //#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationRuleOptions;
+export const defaultOrientationRuleOptions = defaultInlineOrientationVariantOptions;
 //#endregion orientation
 
 //#region range
@@ -226,10 +226,10 @@ export const trackLowerElm = '.tracklower';
 export const trackUpperElm = '.trackupper';
 export const thumbElm      = '.thumb';
 
-export const usesRangeLayout = (options?: OrientationRuleOptions) => {
+export const usesRangeLayout = (options?: OrientationVariantOptions) => {
     // options:
-    options = normalizeOrientationRule(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationRule(options);
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     
