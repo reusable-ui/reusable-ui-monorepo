@@ -110,7 +110,7 @@ import {
 
 // hooks:
 
-// states:
+// accessibilities:
 
 //#region enableDisable
 export interface EnableDisableVars {
@@ -571,7 +571,7 @@ export const usesIndicatorStates = () => {
     
     return style({
         ...imports([
-            // states:
+            // accessibilities:
             enableDisableStateRule,
             activePassiveStateRule,
         ]),
