@@ -7,7 +7,7 @@ import {
 // cssfn:
 import type {
     // types:
-    SingleOrArray,
+    Optional,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
     // css known (standard) properties:
@@ -94,6 +94,7 @@ import {
     
     
     // react components:
+    GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
@@ -550,8 +551,38 @@ export interface CardProps<TElement extends Element = Element>
         // appearances:
         CardVariant
 {
+    // refs:
+    headerRef       ?: React.Ref<TElement> // setter ref
+    bodyRef         ?: React.Ref<TElement> // setter ref
+    footerRef       ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // classes:
+    headerClasses   ?: Optional<string>[]
+    bodyClasses     ?: Optional<string>[]
+    footerClasses   ?: Optional<string>[]
+    
+    
+    
+    // styles:
+    headerStyle     ?: React.CSSProperties
+    bodyStyle       ?: React.CSSProperties
+    footerStyle     ?: React.CSSProperties
+    
+    
+    
+    // components:
+    headerComponent ?: React.ReactComponentElement<any, GenericProps>
+    bodyComponent   ?: React.ReactComponentElement<any, GenericProps>
+    footerComponent ?: React.ReactComponentElement<any, GenericProps>
+    
+    
+    
     // children:
-    children ?: React.ReactNode
+    header          ?: React.ReactNode
+    children        ?: React.ReactNode
+    footer          ?: React.ReactNode
 }
 const Card = <TElement extends Element = Element>(props: CardProps<TElement>): JSX.Element|null => {
     // styles:
