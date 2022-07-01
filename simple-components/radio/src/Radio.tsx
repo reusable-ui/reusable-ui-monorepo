@@ -135,7 +135,7 @@ export const usesRadioVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(radios);
+    const [sizeVariantRule] = usesSizeVariant(radios);
     
     
     
@@ -145,7 +145,7 @@ export const usesRadioVariants = () => {
             usesCheckVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
