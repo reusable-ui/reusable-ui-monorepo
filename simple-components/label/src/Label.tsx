@@ -112,7 +112,7 @@ export const usesLabelVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(labels);
+    const [sizeVariantRule] = usesSizeVariant(labels);
     
     
     
@@ -122,7 +122,7 @@ export const usesLabelVariants = () => {
             usesBasicVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
         ...variants([
             rule('.content', { // content
