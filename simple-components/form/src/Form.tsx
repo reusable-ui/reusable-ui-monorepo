@@ -89,7 +89,7 @@ import {
 
 // hooks:
 
-// states:
+// validations:
 
 //#region validInvalid
 export type CustomValidatorHandler = (isValid: ValResult) => ValResult
@@ -208,7 +208,7 @@ export const usesFormVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(forms);
+    const [sizeVariantRule] = usesSizeVariant(forms);
     
     
     
@@ -218,7 +218,7 @@ export const usesFormVariants = () => {
             usesContentVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
@@ -226,14 +226,14 @@ export const usesFormStates = () => {
     // dependencies:
     
     // states:
-    const [validInvalidRule] = usesValidInvalidState();
+    const [validInvalidStateRule] = usesValidInvalidState();
     
     
     
     return style({
         ...imports([
-            // states:
-            validInvalidRule,
+            // validations:
+            validInvalidStateRule,
         ]),
         ...states([
             ifValid({
@@ -314,6 +314,8 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     
     // states:
+    
+    // validations:
     const formValidator     = useFormValidator(props.customValidator);
     const validInvalidState = useValidInvalidState<HTMLFormElement>(props, formValidator.validator);
     
