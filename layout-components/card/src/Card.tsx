@@ -216,6 +216,8 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
     // options:
     options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
     const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     
     
     
@@ -274,8 +276,8 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
                 ...imports([
                     // borders:
                     usesBorderAsSeparator({ // must be placed at the last
-                        orientationInlineSelector,
-                        orientationBlockSelector,
+                        orientationInlineSelector : parentOrientationInlineSelector,
+                        orientationBlockSelector  : parentOrientationBlockSelector,
                         swapFirstItem : true,
                     }),
                 ]),
