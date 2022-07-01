@@ -1488,15 +1488,15 @@ export interface ListProps<TElement extends Element = Element>
 }
 const List = <TElement extends Element = Element>(props: ListProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet            = useListStyleSheet();
+    const styleSheet         = useListStyleSheet();
     
     
     
     // variants:
-    const orientationVariant    = useOrientationVariant(props);
-    const isOrientationVertical = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === defaultOrientationRuleOptions.defaultOrientation);
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
-    const listVariant           = useListVariant(props);
+    const listVariant        = useListVariant(props);
     
     
     
@@ -1597,7 +1597,7 @@ const List = <TElement extends Element = Element>(props: ListProps<TElement>): J
             semanticTag  = {semanticTag }
             semanticRole = {semanticRole}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationVertical ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
             
             
             
