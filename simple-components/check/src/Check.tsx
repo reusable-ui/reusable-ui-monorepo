@@ -306,7 +306,7 @@ export const usesCheckAnim = (): CheckAnimMixin => {
 //#endregion check animations
 
 
-// states:
+// checks:
 
 //#region checkClear
 export interface CheckClearVars {
@@ -556,14 +556,14 @@ export const usesCheckVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(checks);
+    const [sizeVariantRule] = usesSizeVariant(checks);
     
     // foregrounds:
-    const [, milds  ] = usesMildVariant();
-    const [, foregs ] = usesForeg();
+    const [, milds        ] = usesMildVariant();
+    const [, foregs       ] = usesForeg();
     
     // borders:
-    const [, borders] = usesBorder();
+    const [, borders      ] = usesBorder();
     
     
     
@@ -573,7 +573,7 @@ export const usesCheckVariants = () => {
             usesEditableActionControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
         ...variants([
             rule(['.button', '.toggleButton'], {
@@ -664,8 +664,8 @@ export const usesCheckStates = () => {
     // dependencies:
     
     // states:
-    const [         , focuses] = usesFocusBlurState();
-    const [checkRule         ] = usesCheckClearState();
+    const [              , focuses] = usesFocusBlurState();
+    const [checkStateRule         ] = usesCheckClearState();
     
     
     
@@ -673,7 +673,9 @@ export const usesCheckStates = () => {
         ...imports([
             // states:
             usesEditableActionControlStates(),
-            checkRule,
+            
+            // checks:
+            checkStateRule,
         ]),
         ...style({
             // children:
