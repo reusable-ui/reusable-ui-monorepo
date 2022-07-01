@@ -235,7 +235,7 @@ export const usesButtonIconVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(buttonIcons);
+    const [sizeVariantRule] = usesSizeVariant(buttonIcons);
     
     
     
@@ -245,7 +245,7 @@ export const usesButtonIconVariants = () => {
             usesButtonVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
     });
 };
