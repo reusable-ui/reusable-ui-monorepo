@@ -737,7 +737,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
  */
 export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
     // dependencies:
-    const [themesRule, themes] = usesThemeVariant();
+    const [themeVariantRule, themes] = usesThemeVariant();
     
     
     
@@ -746,7 +746,7 @@ export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssS
             ...imports([
                 // makes   `usesOutlinedVariant()` implicitly `usesThemeVariant()`
                 // because `usesOutlinedVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themesRule,
+                themeVariantRule,
             ]),
             ...vars({
                 [outlineds.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
@@ -869,7 +869,7 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [themesRule, themes] = usesThemeVariant();
+    const [themeVariantRule, themes] = usesThemeVariant();
     
     
     
@@ -878,7 +878,7 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
             ...imports([
                 // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
                 // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themesRule,
+                themeVariantRule,
             ]),
             ...vars({
                 [milds.backgFn   ] : fallbacks(
@@ -1715,28 +1715,28 @@ export const usesBasicVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule   ] = usesSizeVariant(basics);
-    const [nudeRule    ] = usesNudeVariant();
+    const [sizeVariantRule    ] = usesSizeVariant(basics);
+    const [nudeVariantRule    ] = usesNudeVariant();
     
     // colors:
-    const [themesRule  ] = usesThemeVariant();
-    const [gradientRule] = usesGradientVariant();
-    const [outlinedRule] = usesOutlinedVariant();
-    const [mildRule    ] = usesMildVariant();
+    const [themeVariantRule   ] = usesThemeVariant();
+    const [gradientVariantRule] = usesGradientVariant();
+    const [outlinedVariantRule] = usesOutlinedVariant();
+    const [mildVariantRule    ] = usesMildVariant();
     
     
     
     return style({
         ...imports([
             // layouts:
-            sizesRule,
-            nudeRule,
+            sizeVariantRule,
+            nudeVariantRule,
             
             // colors:
-            themesRule,
-            gradientRule,
-            outlinedRule,
-            mildRule,
+            themeVariantRule,
+            gradientVariantRule,
+            outlinedVariantRule,
+            mildVariantRule,
         ]),
     });
 };
