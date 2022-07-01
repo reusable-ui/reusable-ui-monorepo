@@ -159,10 +159,10 @@ export const usesInputVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(inputs);
+    const [sizeVariantRule] = usesSizeVariant(inputs);
     
     // colors:
-    const [gradientRule, gradients] = usesGradientVariant((toggle) => style({
+    const [gradientVariantRule, gradients] = usesGradientVariant((toggle) => style({
         ...vars({
             // *toggle on/off* the background gradient prop:
             [gradients.backgGradTg] : toggle ? inputs.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
@@ -177,10 +177,10 @@ export const usesInputVariants = () => {
             usesEditableTextControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
             
             // colors:
-            gradientRule,
+            gradientVariantRule,
         ]),
     });
 };
