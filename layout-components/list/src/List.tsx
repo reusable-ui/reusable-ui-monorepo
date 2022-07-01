@@ -1273,7 +1273,7 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
 
 
 // react components:
-interface ListItemProps<TElement extends Element = Element>
+interface ListItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         SemanticButtonProps<TElement>
@@ -1297,7 +1297,7 @@ interface ListItemProps<TElement extends Element = Element>
     // children:
     children      ?: React.ReactNode
 }
-const ListItem = <TElement extends Element = Element>(props: ListItemProps<TElement>): JSX.Element|null => {
+const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet           = useListItemStyleSheet();
     const actionStyleSheet     = useListActionItemStyleSheet();
@@ -1430,13 +1430,13 @@ export {
 
 
 
-interface ListSeparatorItemProps<TElement extends Element = Element>
+interface ListSeparatorItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         Pick<ListItemProps<TElement>, keyof IndicatorProps> // [actionCtrl] & related props are not supported
 {
 }
-const ListSeparatorItem = <TElement extends Element = Element>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
+const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet           = useListItemStyleSheet();
     const separatorStyleSheet  = useListSeparatorItemStyleSheet();
@@ -1469,7 +1469,7 @@ export {
 
 
 
-export interface ListProps<TElement extends Element = Element>
+export interface ListProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         IndicatorProps<TElement>,
@@ -1492,7 +1492,7 @@ export interface ListProps<TElement extends Element = Element>
     // children:
     children ?: React.ReactNode
 }
-const List = <TElement extends Element = Element>(props: ListProps<TElement>): JSX.Element|null => {
+const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet         = useListStyleSheet();
     
