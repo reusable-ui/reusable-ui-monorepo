@@ -105,7 +105,7 @@ import {
 
 // hooks:
 
-// states:
+// accessibilities:
 
 //#region activePassive
 export const markActive = (): CssRule => style({
@@ -116,6 +116,9 @@ export const markActive = (): CssRule => style({
     ]),
 });
 //#endregion activePassive
+
+
+// validations:
 
 //#region validInvalid
 export interface ValidInvalidVars extends EditableControlValidInvalidVars {
