@@ -6,25 +6,13 @@ import {
 
 // cssfn:
 import type {
-    // types:
-    Optional,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
-    states,
     
     
     
@@ -36,11 +24,6 @@ import {
     // styles:
     style,
     imports,
-    
-    
-    
-    // utilities:
-    escapeSvg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
@@ -54,23 +37,12 @@ import {
     // utilities:
     usesCssProps,
     usesPrefixedProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
-    // configs:
-    borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-import {
     // styles:
     stripoutFocusableElement,
-    stripoutCard,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // hooks:
@@ -78,18 +50,9 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
-    // hooks:
-    usePropActive,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
     // types:
     SemanticTag,
     SemanticRole,
-    
-    
-    
-    // hooks:
-    useTestSemantic,
     
     
     
@@ -107,27 +70,11 @@ import {
     usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
-    ThemeName,
-    outlinedOf,
-    mildOf,
-    usesBackg,
     usesBorder,
     extendsBorder,
-    usesPadding,
     usesAnim,
-    
-    
-    
-    // configs:
-    basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // hooks:
-    ifActive,
-    ifPassive,
-    
-    
-    
     // styles:
     usesIndicatorLayout,
     usesIndicatorVariants,
@@ -141,36 +88,6 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
-    usesThemeDefault as controlUsesThemeDefault,
-    usesThemeActive  as controlUsesThemeActive,
-    ifFocus,
-    ifArrive,
-}                           from '@reusable-ui/control'         // a base component
-import {
-    // hooks:
-    ifPress,
-    
-    
-    
-    // styles:
-    usesActionControlLayout,
-    usesActionControlVariants,
-    usesActionControlStates,
-    
-    
-    
-    // react components:
-    ActionControl,
-}                           from '@reusable-ui/action-control'  // a base component
-import {
-    // rules:
-    ifFirstVisibleChild,
-    ifLastVisibleChild,
-    ifNotFirstVisibleChild,
-    
-    
-    
-    // hooks:
     usesBorderAsContainer,
     usesBorderAsSeparator,
 }                           from '@reusable-ui/container'       // a neighbor component
@@ -180,26 +97,21 @@ import {
     usesContentVariants,
     usesContentChildren,
 }                           from '@reusable-ui/content'         // a neighbor component
-import {
-    // styles:
-    usesIconImage,
-}                           from '@reusable-ui/icon'            // an icon set
-import {
-    // hooks:
-    SemanticButtonProps,
-    useSemanticButton,
-    
-    
-    
-    // styles:
-    usesButtonLayout,
-}                           from '@reusable-ui/button'          // a button ui
 
 
 
 // defaults:
-const _defaultSemanticTag    : SemanticTag  = 'article' // uses <article>        as the default semantic
-const _defaultSemanticRole   : SemanticRole = 'article' // uses [role="article"] as the default semantic
+const _defaultSemanticTag        : SemanticTag  = 'article' // uses <article>        as the default semantic
+const _defaultSemanticRole       : SemanticRole = 'article' // uses [role="article"] as the default semantic
+
+const _defaultHeaderSemanticTag  : SemanticTag  = 'header'  // uses <header>         as the default semantic
+const _defaultHeaderSemanticRole : SemanticRole = ''        // no corresponding role
+
+const _defaultFooterSemanticTag  : SemanticTag  = 'footer'  // uses <footer>         as the default semantic
+const _defaultFooterSemanticRole : SemanticRole = ''        // no corresponding role
+
+const _defaultBodySemanticTag    : SemanticTag  = 'div'     // uses <div>         as the default semantic
+const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding role
 
 
 
@@ -229,9 +141,9 @@ export const useCardVariant = (props: CardVariant) => {
 
 
 // styles:
-const headerElm = ':is(.header, :where(header))'; // one_weight specificity
-const footerElm = ':is(.footer, :where(footer))'; // one_weight specificity
-const bodyElm   = '.body';                        // one_weight specificity
+const headerElm = '.header'; // one_weight specificity
+const footerElm = '.footer'; // one_weight specificity
+const bodyElm   = '.body';   // one_weight specificity
 
 
 
@@ -524,15 +436,13 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
      * 
      * the `useEnableDisableState() => handleAnimationEnd` only perform non_bubbled `onAnimationEnd`.
      * 
-     * thus we need to trigger `onAnimationEnd` at <Card> level by forwarding `onAnimationEnd` bubbled from <CardItem>
+     * thus we need to trigger `onAnimationEnd` at <Card> level by forwarding `onAnimationEnd` bubbled from <CardHeader>|<CardBody>|<CardFooter>.
      * 
      * <Card>
-     *     <wrapper>
-     *         <CardItem onAnimationEnd={...} />
-     *     </wrapper>
+     *     <Card(Header|Body|Footer) onAnimationEnd={...} />
      * </Card>
      */
-    if ((event.target as Element)?.parentElement?.parentElement === event.currentTarget) {
+    if ((event.target as Element)?.parentElement === event.currentTarget) {
         event.currentTarget.dispatchEvent(new AnimationEvent('animationend', { animationName: event.animationName, bubbles: true, composed: true }));
     } // if
 };
@@ -540,7 +450,145 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
 
 
 // react components:
-export interface CardProps<TElement extends Element = Element>
+export interface CardItemProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        GenericProps<TElement>,
+        
+        // link:
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >
+{
+}
+export interface CardCaptionProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        CardItemProps<TElement>
+{
+}
+export interface CardHeaderProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        CardCaptionProps<TElement>
+{
+}
+export interface CardFooterProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        CardCaptionProps<TElement>
+{
+}
+export interface CardBodyProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        CardItemProps<TElement>
+{
+}
+export const CardHeader = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        'header',
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // other props:
+            {...props}
+            
+            
+            
+            // semantics:
+            semanticTag  = {props.semanticTag  ?? _defaultHeaderSemanticTag }
+            semanticRole = {props.semanticRole ?? _defaultHeaderSemanticRole}
+            
+            
+            
+            // classes:
+            classes={classes}
+        />
+    );
+};
+export const CardFooter = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        'footer',
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // other props:
+            {...props}
+            
+            
+            
+            // semantics:
+            semanticTag  = {props.semanticTag  ?? _defaultFooterSemanticTag }
+            semanticRole = {props.semanticRole ?? _defaultFooterSemanticRole}
+            
+            
+            
+            // classes:
+            classes={classes}
+        />
+    );
+};
+export const CardBody   = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        'body',
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // other props:
+            {...props}
+            
+            
+            
+            // semantics:
+            semanticTag  = {props.semanticTag  ?? _defaultBodySemanticTag }
+            semanticRole = {props.semanticRole ?? _defaultBodySemanticRole}
+            
+            
+            
+            // classes:
+            classes={classes}
+        />
+    );
+};
+
+
+
+export interface CardProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         IndicatorProps<TElement>,
@@ -551,40 +599,10 @@ export interface CardProps<TElement extends Element = Element>
         // appearances:
         CardVariant
 {
-    // refs:
-    headerRef       ?: React.Ref<TElement> // setter ref
-    bodyRef         ?: React.Ref<TElement> // setter ref
-    footerRef       ?: React.Ref<TElement> // setter ref
-    
-    
-    
-    // classes:
-    headerClasses   ?: Optional<string>[]
-    bodyClasses     ?: Optional<string>[]
-    footerClasses   ?: Optional<string>[]
-    
-    
-    
-    // styles:
-    headerStyle     ?: React.CSSProperties
-    bodyStyle       ?: React.CSSProperties
-    footerStyle     ?: React.CSSProperties
-    
-    
-    
-    // components:
-    headerComponent ?: React.ReactComponentElement<any, GenericProps>
-    bodyComponent   ?: React.ReactComponentElement<any, GenericProps>
-    footerComponent ?: React.ReactComponentElement<any, GenericProps>
-    
-    
-    
     // children:
-    header          ?: React.ReactNode
-    children        ?: React.ReactNode
-    footer          ?: React.ReactNode
+    children ?: React.ReactNode
 }
-const Card = <TElement extends Element = Element>(props: CardProps<TElement>): JSX.Element|null => {
+const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet         = useCardStyleSheet();
     
@@ -595,64 +613,6 @@ const Card = <TElement extends Element = Element>(props: CardProps<TElement>): J
     const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     const cardVariant        = useCardVariant(props);
-    
-    
-    
-    // rest props:
-    const {
-        // remove props:
-        
-        // layouts:
-        orientation : _orientation,
-        
-        
-        
-        // appearances:
-        cardStyle    : _cardStyle,
-        
-        
-        
-        // variants:
-        outlined = _defaultOutlined,
-        mild     = _defaultMild,
-        
-        
-        
-        // behaviors:
-        actionCtrl = _defaultActionCtrl,
-        
-        
-        
-        // children:
-        children,
-    ...restIndicatorProps} = props;
-    
-    
-    
-    // fn props:
-    const semanticTag  = props.semanticTag  ?? _defaultSemanticTag ;
-    const semanticRole = props.semanticRole ?? _defaultSemanticRole;
-    const {
-        isDesiredType : isCardType,
-        isSemanticTag : isSemanticCard,
-    } = useTestSemantic(
-        // test:
-        {
-            tag  : props.tag,
-            role : props.role,
-            semanticTag,
-            semanticRole,
-        },
-        
-        // expected:
-        {
-            semanticTag  : _defaultSemanticTag,
-            semanticRole : _defaultSemanticRole,
-        }
-    );
-    
-    const wrapperSemanticTag  : SemanticTag  = (isSemanticCard ? 'li'       : '');
-    const wrapperSemanticRole : SemanticRole = (isCardType     ? 'carditem' : '');
     
     
     
@@ -687,21 +647,15 @@ const Card = <TElement extends Element = Element>(props: CardProps<TElement>): J
     return (
         <Indicator<TElement>
             // other props:
-            {...restIndicatorProps}
+            {...props}
             
             
             
             // semantics:
-            semanticTag  = {semanticTag }
-            semanticRole = {semanticRole}
+            semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
+            semanticRole = {props.semanticRole ?? _defaultSemanticRole}
             
             aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
-            
-            
-            
-            // variants:
-            outlined={outlined}
-            mild={mild}
             
             
             
@@ -713,34 +667,7 @@ const Card = <TElement extends Element = Element>(props: CardProps<TElement>): J
             
             // handlers:
             onAnimationEnd={handleAnimationEnd}
-        >
-            {React.Children.map(children, (child, index) =>
-                <Generic<HTMLLIElement>
-                    // identifiers:
-                    key={index}
-                    
-                    
-                    
-                    // semantics:
-                    semanticTag ={wrapperSemanticTag }
-                    semanticRole={wrapperSemanticRole}
-                >
-                    {!React.isValidElement<CardItemProps<Element>>(child) ? child : React.cloneElement(child,
-                        // props:
-                        {
-                            // variants:
-                            outlined : (outlined || undefined) ?? child.props.outlined, // if `true` => force apply to <CardItem>s, otherwise independent by <CardItem>s
-                            mild     : (mild     || undefined) ?? child.props.mild,     // if `true` => force apply to <CardItem>s, otherwise independent by <CardItem>s
-                            
-                            
-                            
-                            // behaviors:
-                            actionCtrl : child.props.actionCtrl ?? actionCtrl, // the default <CardItem>'s actionCtrl value, if not assigned
-                        },
-                    )}
-                </Generic>
-            )}
-        </Indicator>
+        />
     );
 };
 export {
