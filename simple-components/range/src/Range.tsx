@@ -489,7 +489,7 @@ export const usesRangeVariants = () => {
     // dependencies:
     
     // layouts:
-    const [sizesRule] = usesSizeVariant(ranges);
+    const [sizeVariantRule] = usesSizeVariant(ranges);
     
     
     
@@ -499,7 +499,7 @@ export const usesRangeVariants = () => {
             usesEditableControlVariants(),
             
             // layouts:
-            sizesRule,
+            sizeVariantRule,
         ]),
         ...variants([
             ifNude({
