@@ -62,6 +62,18 @@ import {
 import {
     // hooks:
     usesSizeVariant,
+    OrientationName,
+    OrientationVariantOptions,
+    defaultBlockOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
+    OrientationVariant,
+    useOrientationVariant,
+    gradientOf,
+    ifNotOutlined,
+    outlinedOf,
+    usesBorder,
+    usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // styles:
@@ -88,6 +100,12 @@ import {
 
 
 // hooks:
+
+// layouts:
+
+//#region orientation
+export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
+//#endregion orientation
 
 
 
@@ -175,54 +193,97 @@ export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
 
 
 // react components:
-export interface MasonryProps
+export interface MasonryProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        ContentProps<HTMLMasonryElement>
+        ContentProps<TElement>,
+        
+        // <div>:
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
+        
+        // layouts:
+        OrientationVariant
 {
     // children:
     children        ?: React.ReactNode
 }
-const Masonry = (props: MasonryProps): JSX.Element|null => {
+const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useMasonryStyleSheet();
     
     
     
+    // variants:
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    
+    
+    
     // rest props:
     const {
-        // remove states props:
+        // remove props:
         
-        // validations:
-        enableValidation  : _enableValidation,
-        isValid           : _isValid,
-        inheritValidation : _inheritValidation,
-        customValidator   : _customValidator,
+        // layouts:
+        orientation : _orientation,
+        
+        
+        
+        // refs:
+        elmRef,
     ...restContentProps} = props;
+    
+    
+    
+    // refs:
+    const masonryRefInternal = useRef<TElement|null>(null);
+    const mergedElmRef       = useMergeRefs(
+        // preserves the original `elmRef`:
+        elmRef,
+        
+        
+        
+        masonryRefInternal,
+    );
+    
+    
+    
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        orientationVariant.class,
+    );
     
     
     
     // jsx:
     return (
-        <Content<HTMLMasonryElement>
+        <Content<TElement>
             // other props:
             {...restContentProps}
             
             
             
             // refs:
-            elmRef={elmRef}
+            elmRef={mergedElmRef}
             
             
             
             // semantics:
-            semanticTag ={props.semanticTag  ?? 'masonry'}
-            semanticRole={props.semanticRole ?? 'masonry'}
+            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            variantClasses={variantClasses}
         />
     );
 };
@@ -230,3 +291,5 @@ export {
     Masonry,
     Masonry as default,
 }
+
+export type { OrientationName, OrientationVariant }
