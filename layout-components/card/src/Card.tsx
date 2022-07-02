@@ -174,15 +174,17 @@ export const usesCardItemLayout    = () => {
             
             
             // animations:
-            transition : [
-                // original:
-                [cards.itemTransition],
-                
-                // overwrites:
-                
-                // borders:
-                ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
-            ],
+            ...style({
+                transition : [
+                    // original:
+                    [cards.itemTransition],
+                    
+                    // overwrites:
+                    
+                    // borders:
+                    ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+                ],
+            }),
         }),
     });
 };
@@ -427,6 +429,12 @@ export const useCardStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
     return {
+        // animations:
+        transition     : basics.transition  as CssKnownProps['transition'],
+        itemTransition : basics.transition  as CssKnownProps['transition'],
+        
+        
+        
         // sizes:
         boxSizing      : 'border-box'       as CssKnownProps['boxSizing'], // the final size is including borders & paddings
         blockSize      : '100%'             as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
@@ -435,11 +443,6 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         
         // typos:
         overflowWrap   : 'break-word'       as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
-        
-        
-        
-        // animations:
-        itemTransition : basics.transition  as CssKnownProps['transition'],
         
         
         
