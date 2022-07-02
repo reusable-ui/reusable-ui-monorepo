@@ -290,25 +290,7 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
             
             // sizes:
             // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
-            minInlineSize     : 0,
-            
-            
-            
-            // borders:
-            /*
-                A separator between CardItems.
-                Exploits the borders as a horizontal/vertical separator depending on the Card's orientation.
-            */
-            ...children([headerElm, footerElm, bodyElm], {
-                ...imports([
-                    // borders:
-                    usesBorderAsSeparator({ // must be placed at the last
-                        orientationInlineSelector : parentOrientationInlineSelector,
-                        orientationBlockSelector  : parentOrientationBlockSelector,
-                        swapFirstItem : true,
-                    }),
-                ]),
-            }),
+            minInlineSize  : 0,
             
             
             
@@ -324,6 +306,18 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
                 ...imports([
                     // layouts:
                     usesCardItemLayout(),
+                ]),
+                ...imports([
+                    // borders:
+                    /*
+                        A separator between CardItems.
+                        Exploits the borders as a horizontal/vertical separator depending on the Card's orientation.
+                    */
+                    usesBorderAsSeparator({ // must be placed at the last
+                        orientationInlineSelector : parentOrientationInlineSelector,
+                        orientationBlockSelector  : parentOrientationBlockSelector,
+                        swapFirstItem : true,
+                    }),
                 ]),
             }),
             ...children([headerElm, footerElm], {
