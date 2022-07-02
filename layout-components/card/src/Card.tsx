@@ -192,6 +192,7 @@ export const usesCardItemLayout    = () => {
                 ],
             }),
             ...vars({
+                // for <Content>'s media:
                 [contents.mediaTransition] : cards.itemTransition,
             }),
         }),
