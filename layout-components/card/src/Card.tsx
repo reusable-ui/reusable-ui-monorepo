@@ -23,6 +23,7 @@ import {
     
     // styles:
     style,
+    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -189,7 +190,8 @@ export const usesCardItemLayout    = () => {
                     // borders:
                     ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
                 ],
-                
+            }),
+            ...vars({
                 [contents.mediaTransition] : cards.itemTransition,
             }),
         }),
