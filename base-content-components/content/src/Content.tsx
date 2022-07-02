@@ -566,8 +566,8 @@ export const useContentStyleSheet = createUseStyleSheet(() => ({
 export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
     return {
         // animations:
-        transition      : basics.transition                           as CssKnownProps['transition'],
-        mediaTransition : basics.transition                           as CssKnownProps['transition'],
+        transition      : basics.transition as CssKnownProps['transition'],
+        mediaTransition : basics.transition as CssKnownProps['transition'],
         
         
         
