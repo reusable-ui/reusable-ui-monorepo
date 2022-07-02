@@ -1,0 +1,50 @@
+{
+  "name": "@reusable-ui/masonry",
+  "version": "5.0.0",
+  "description": "A container in which the items are laid out one after the other in the inline (or block) direction.",
+  "keywords": [
+    "masonry",
+    "container",
+    "layout",
+    "gallery",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Masonry.js",
+  "types": "dist/Masonry.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.13",
+    "@cssfn/cssfn-react": "^2.0.8",
+    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/content": "^5.0.0",
+    "@reusable-ui/editable-control": "^5.0.0",
+    "@reusable-ui/validations": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.6",
+    "react": "^18.1.0"
+  }
+}
