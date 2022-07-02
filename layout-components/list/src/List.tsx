@@ -866,11 +866,22 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                             // children:
                             usesContentChildren(),
                         ]),
-                        ...style({
+                        ...vars({
                             // animations:
-                            ...vars({
-                                [contents.mediaTransition] : lists.contentTransition,
-                            }),
+                            
+                            // a tweak for <Content> itself:
+                            [contents.transition     ] : [
+                                // original:
+                                [lists.contentTransition],
+                                
+                                // overwrites:
+                                
+                                // borders:
+                                ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+                            ],
+                            
+                            // a tweak for <Content>'s media:
+                            [contents.mediaTransition] : contents.transition,
                         }),
                     }),
                 }),
