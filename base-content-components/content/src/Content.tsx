@@ -110,6 +110,11 @@ import {
     // react components:
     BasicProps,
     Basic,
+    
+    
+    
+    // configs:
+    basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // rules:
@@ -368,6 +373,21 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
             
             // customize:
             ...usesCssProps(usesPrefixedProps(contents, 'media')), // apply config's cssProps starting with media***
+            
+            
+            
+            // animations:
+            ...style({
+                transition : [
+                    // original:
+                    [contents.mediaTransition],
+                    
+                    // overwrites:
+                    
+                    // borders:
+                    ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+                ],
+            }),
         }),
         
         // finally: styling top_level <figure> & top_level <media> as separator:
@@ -545,6 +565,12 @@ export const useContentStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
     return {
+        // animations:
+        transition      : basics.transition                           as CssKnownProps['transition'],
+        mediaTransition : basics.transition                           as CssKnownProps['transition'],
+        
+        
+        
         // spacings:
         paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
         paddingBlock    : spacers.default   as CssKnownProps['paddingBlock' ], // override to <Basic>
