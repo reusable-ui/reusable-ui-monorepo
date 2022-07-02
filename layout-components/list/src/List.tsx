@@ -1254,6 +1254,7 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         itemTransition    : basics.transition                           as CssKnownProps['transition'],
         contentTransition : basics.transition                           as CssKnownProps['transition'],
         tabTransition     : basics.transition                           as CssKnownProps['transition'],
+        bulletTransition  : basics.transition                           as CssKnownProps['transition'],
         
         
         
