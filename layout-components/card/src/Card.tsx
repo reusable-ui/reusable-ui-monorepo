@@ -179,9 +179,11 @@ export const usesCardItemLayout    = () => {
             
             
             
-            // animations:
-            ...style({
-                transition : [
+            ...vars({
+                // animations:
+                
+                // a tweak for <Content> itself:
+                [contents.transition     ] : [
                     // original:
                     [cards.itemTransition],
                     
@@ -190,10 +192,15 @@ export const usesCardItemLayout    = () => {
                     // borders:
                     ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
                 ],
+                
+                // a tweak for <Content>'s media:
+                [contents.mediaTransition] : contents.transition,
             }),
-            ...vars({
-                // for <Content>'s media:
-                [contents.mediaTransition] : cards.itemTransition,
+            ...style({
+                // animations:
+                
+                // a tweak for <Header>|<Body>|<Footer>:
+                transition                 : contents.transition,
             }),
         }),
     });
