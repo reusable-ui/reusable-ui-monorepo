@@ -35,6 +35,7 @@ import {
     
     // styles:
     style,
+    vars,
     imports,
     
     
@@ -177,6 +178,11 @@ import {
     usesContentBasicLayout,
     usesContentBasicVariants,
     usesContentChildren,
+    
+    
+    
+    // configs:
+    contents,
 }                           from '@reusable-ui/content'         // a neighbor component
 import {
     // styles:
@@ -860,6 +866,12 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                             // children:
                             usesContentChildren(),
                         ]),
+                        ...style({
+                            // animations:
+                            ...vars({
+                                [contents.mediaTransition] : lists.contentTransition,
+                            }),
+                        }),
                     }),
                 }),
             }),
@@ -1229,6 +1241,7 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         // animations:
         transition        : basics.transition                           as CssKnownProps['transition'],
         itemTransition    : basics.transition                           as CssKnownProps['transition'],
+        contentTransition : basics.transition                           as CssKnownProps['transition'],
         tabTransition     : basics.transition                           as CssKnownProps['transition'],
         
         
