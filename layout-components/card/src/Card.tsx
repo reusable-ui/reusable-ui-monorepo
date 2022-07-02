@@ -101,6 +101,11 @@ import {
     usesContentLayout,
     usesContentVariants,
     usesContentChildren,
+    
+    
+    
+    // configs:
+    contents,
 }                           from '@reusable-ui/content'         // a neighbor component
 
 
@@ -184,6 +189,8 @@ export const usesCardItemLayout    = () => {
                     // borders:
                     ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
                 ],
+                
+                [contents.mediaTransition] : cards.itemTransition,
             }),
         }),
     });
