@@ -19,7 +19,14 @@ import {
 // cssfn:
 import {
     // rules:
+    rule,
+    variants,
     states,
+    
+    
+    
+    // combinators:
+    children,
     
     
     
@@ -110,13 +117,69 @@ export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptio
 
 
 // styles:
-export const usesMasonryLayout = () => {
+export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
+    // options:
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    
+    
+    
     return style({
         ...imports([
             // layouts:
             usesContentLayout(),
         ]),
         ...style({
+            // layouts:
+            ...rule(orientationInlineSelector, { // inline
+                // layouts:
+                display             : 'inline-grid', // use css inline grid for layouting, the core of our Masonry layout
+                gridAutoFlow        : 'column', // items direction is to block & masonry's direction is to inline
+                gridAutoColumns     : masonries.itemsRaiseSize,
+                gridTemplateRows    : `repeat(auto-fill, minmax(${masonries.itemsMinColumnSize}, 1fr))`,
+                
+                // child default sizes:
+                alignItems          : 'stretch', // each item fills the entire Masonry's column height
+             // justifyItems        : 'stretch', // distorting the item's width a bit for consistent multiplies of `itemsRaiseSize` // causing the ResizeObserver doesn't work
+                justifyItems        : 'start',   // let's the item to resize so the esizeObserver will work
+            }),
+            ...rule(orientationBlockSelector , { // block
+                // layouts:
+                display             : 'grid', // use css block grid for layouting, the core of our Masonry layout
+                gridAutoFlow        : 'row', // items direction is to inline & masonry's direction is to block
+                gridAutoRows        : masonries.itemsRaiseSize,
+                gridTemplateColumns : `repeat(auto-fill, minmax(${masonries.itemsMinColumnSize}, 1fr))`,
+                
+                // child default sizes:
+                justifyItems        : 'stretch', // each item fills the entire Masonry's column width
+             // alignItems          : 'stretch', // distorting the item's height a bit for consistent multiplies of `itemsRaiseSize` // causing the ResizeObserver doesn't work
+                alignItems          : 'start',   // let's the item to resize so the esizeObserver will work
+            }),
+            
+            
+            
+            // spacings:
+            ...rule(orientationInlineSelector, { // inline
+                columnGap           : [[0], '!important'], // strip out the `columnGap` because it will conflict with masonry's direction
+            }),
+            ...rule(orientationBlockSelector , { // block
+                rowGap              : [[0], '!important'], // strip out the `rowGap` because it will conflict with masonry's direction
+            }),
+            
+            
+            
+            // children:
+            ...children('*', {
+                ...rule(parentOrientationInlineSelector, { // inline
+                }),
+                ...rule(parentOrientationBlockSelector , { // block
+                }),
+            }),
+            
+            
+            
             // customize:
             ...usesCssProps(masonries), // apply config's cssProps
         }),
