@@ -387,6 +387,21 @@ export const usesListItemLayout = (options?: OrientationVariantOptions) => {
             
             // customize:
             ...usesCssProps(usesPrefixedProps(lists, 'item')), // apply config's cssProps starting with item***
+            
+            
+            
+            // animations:
+            ...style({
+                transition : [
+                    // original:
+                    [lists.itemTransition],
+                    
+                    // overwrites:
+                    
+                    // borders:
+                    ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+                ],
+            }),
         }),
     });
 };
@@ -723,6 +738,24 @@ export const usesListLayout = (options?: OrientationVariantOptions) => {
                 // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
                 ...extendsBorder(),
             }),
+            
+            
+            
+            // animations:
+            ...style({
+                transition     : lists.transition,
+                ...children(wrapperElm, {
+                    transition : [
+                        // original:
+                        [lists.transition],
+                        
+                        // overwrites:
+                        
+                        // borders:
+                        ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+                    ],
+                }),
+            }),
         }),
     });
 };
@@ -941,18 +974,20 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                             
                             
                             // animations:
-                            transition : [
-                                // original:
-                                [lists.tabTransition],
-                                
-                                // overwrites:
-                                
-                                // borders:
-                                ['border-width', '0s'], // does not support transition on border width, because we use [border-width & padding] to maintain size
-                                
-                                // spacings:
-                                ['padding'     , '0s'], // does not support transition on padding     , because we use [border-width & padding] to maintain size
-                            ],
+                            ...style({
+                                transition : [
+                                    // original:
+                                    [lists.tabTransition],
+                                    
+                                    // overwrites:
+                                    
+                                    // borders:
+                                    ['border-width', '0s'], // does not support transition on border width, because we use [border-width & padding] to maintain size
+                                    
+                                    // spacings:
+                                    ['padding'     , '0s'], // does not support transition on padding     , because we use [border-width & padding] to maintain size
+                                ],
+                            }),
                         }),
                         ...states([
                             ifPassive({
@@ -1192,6 +1227,13 @@ export const useListStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [lists, listValues, cssListConfig] = cssConfig(() => {
     return {
+        // animations:
+        transition        : basics.transition                           as CssKnownProps['transition'],
+        itemTransition    : basics.transition                           as CssKnownProps['transition'],
+        tabTransition     : basics.transition                           as CssKnownProps['transition'],
+        
+        
+        
         buttonSpacing     : spacers.sm                                  as CssKnownProps['gapInline'],
         buttonSpacingSm   : spacers.xs                                  as CssKnownProps['gapInline'],
         buttonSpacingLg   : spacers.md                                  as CssKnownProps['gapInline'],
@@ -1199,7 +1241,6 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         
         
         tabTextAlign      : 'center'                                    as CssKnownProps['textAlign'],
-        tabTransition     : basics.transition                           as CssKnownProps['transition'],
         
         
         
