@@ -183,10 +183,10 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
             ...children('*', {
                 // sizes:
                 ...rule(parentOrientationInlineSelector, { // inline
-                    gridRowEnd    : ['unset', '!important'], // clear from residual effect from blockStyle (if was)
+                    gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Masonry orientation="block"> (if was)
                 }),
                 ...rule(parentOrientationBlockSelector , { // block
-                    gridColumnEnd : ['unset', '!important'], // clear from residual effect from inlineStyle (if was)
+                    gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Masonry orientation="inline"> (if was)
                 }),
             }),
             
@@ -331,7 +331,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             ||
             1 // if parsing error (NaN) => falsy => default to 1px
         );
-    }, [props.size]);
+    }, [isOrientationBlock, props.size]);
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const masonry = masonryRefInternal.current;
@@ -341,43 +341,42 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         // DOM manipulation functions:
         const updateItemHeight = (item: HTMLElement) => {
-            // we're working with [width on inlineStyle] or [height on blockStyle]:
-            const offsetSize : number = isOrientationBlock ? item.offsetHeight : item.offsetWidth;
-            
-            // calculate the related margins too:
-            const marginSize : number = (() => {
+            // measuring dom:
+            // note: side effect of measuring dom: force_reflow
+            const totalSize : number = (() => {
                 const style = getComputedStyle(item);
                 
                 if (isOrientationBlock) {
                     return (
                         Number.parseInt(style.marginBlockStart)
                         +
+                        Number.parseInt(style.blockSize)
+                        +
                         Number.parseInt(style.marginBlockEnd)
                     );
                 }
-                else { // isInlineStyle
+                else {
                     return (
                         Number.parseInt(style.marginInlineStart)
+                        +
+                        Number.parseInt(style.inlineSize)
                         +
                         Number.parseInt(style.marginInlineEnd)
                     );
                 } // if
             })();
             
-            // calculate the total size including margins:
-            const totalSize  : number = offsetSize + marginSize;
             
             
-            
-            // update the item's height by assigning inline css:
-            const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize)}`;
-            requestAnimationFrame(() => { // delayed modifying the css, so the next loop of `updateItemHeight` doesn't cause to force_reflow
+            // update the item's height by modifying item's inline css:
+            requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
+                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize)}`;
                 if (isOrientationBlock) {
                     item.style.gridRowEnd    = spanWidth;
-                    item.style.gridColumnEnd = ''; // clear from residual effect from inlineStyle (if was)
+                    item.style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
                 }
                 else {
-                    item.style.gridRowEnd    = ''; // clear from residual effect from blockStyle (if was)
+                    item.style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
                     item.style.gridColumnEnd = spanWidth;
                 } // if
             });
@@ -428,10 +427,10 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         // update for the first time:
         requestAnimationFrame(() => {
-            updateFirstRowItems(); // side effect: modify item's [class] => the computed css invalidated
+            updateFirstRowItems();      // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
             
             for (const item of (Array.from(masonry.children) as HTMLElement[])) {
-                updateItemHeight(item); // side effect => dynamically compute css => force_reflow & then modify item's [style] => the computed css invalidated
+                updateItemHeight(item); // side effect: dynamically compute css => force_reflow at the first_loop
             } // if
         });
     }, [isOrientationBlock, itemsRaiseSize]);
