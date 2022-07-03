@@ -9,6 +9,7 @@ import {
     useRef,
     useCallback,
     useEffect,
+    useMemo,
     
     
     
@@ -58,9 +59,7 @@ import {
 }                           from '@reusable-ui/spacers'             // a spacer (gap) management system
 import {
     // hooks:
-    useTriggerRender,
-    useEvent,
-    useMergeEvents,
+    useIsomorphicLayoutEffect,
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'               // react helper hooks
@@ -312,6 +311,117 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         masonryRefInternal,
     );
+    
+    
+    
+    // dom effects:
+    const itemsRaiseSize = useMemo<number>(() => {
+        // conditions:
+        const masonry = masonryRefInternal.current;
+        if (!masonry) return 1; // masonry was unloaded => default to 1px
+        
+        
+        
+        return Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
+            Number.parseInt(
+                isOrientationBlock
+                ?
+                getComputedStyle(masonry).gridAutoRows
+                :
+                getComputedStyle(masonry).gridAutoColumns
+            )
+            ||
+            1 // if parsing error (NaN) => falsy => default to 1px
+        );
+    }, [props.size]);
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        const masonry = masonryRefInternal.current;
+        if (!masonry) return; // masonry was unloaded => nothing to do
+        
+        
+        
+        // DOM manipulation functions:
+        const updateItemHeight = (item: HTMLElement) => {
+            // we're working with [width on inlineStyle] or [height on blockStyle]:
+            const offsetSize : number = isOrientationBlock ? item.offsetHeight : item.offsetWidth;
+            
+            // calculate the related margins too:
+            const marginSize : number = (() => {
+                const style = getComputedStyle(item);
+                
+                if (isOrientationBlock) {
+                    return (
+                        Number.parseInt(style.marginBlockStart)
+                        +
+                        Number.parseInt(style.marginBlockEnd)
+                    );
+                }
+                else { // isInlineStyle
+                    return (
+                        Number.parseInt(style.marginInlineStart)
+                        +
+                        Number.parseInt(style.marginInlineEnd)
+                    );
+                } // if
+            })();
+            
+            // calculate the total size including margins:
+            const totalSize  : number = offsetSize + marginSize;
+            
+            
+            
+            // update the item's height by assigning inline css:
+            const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize)}`;
+            if (isOrientationBlock) {
+                item.style.gridRowEnd    = spanWidth;
+                item.style.gridColumnEnd = ''; // clear from residual effect from inlineStyle (if was)
+            }
+            else {
+                item.style.gridRowEnd    = ''; // clear from residual effect from blockStyle (if was)
+                item.style.gridColumnEnd = spanWidth;
+            } // if
+        };
+        
+        let firstRowItems: HTMLElement[] = [];
+        const updateFirstRowItems = async () => {
+            const newFirstRowItems = (() => {
+                const items = (Array.from(masonry.children) as HTMLElement[]);
+                let selectionIndex = -1;
+                let prevPos = -1;
+                for (const item of items) {
+                    /*
+                        select the items in the first_masonry_row by comparing the offsetLeft/offsetTop to the prev one.
+                        if equal/greater than prev => the item is still in the same row,
+                        otherwise => the item in the next row
+                     */
+                    const currentPos = (isOrientationBlock ? item.offsetLeft : item.offsetTop);
+                    if (currentPos < prevPos) break;
+                    
+                    
+                    
+                    prevPos = currentPos + (isOrientationBlock ? item.offsetWidth : item.offsetHeight);
+                    selectionIndex++;
+                } // for
+                
+                
+                
+                // here the items in the first_masonry_row:
+                return items.slice(0, selectionIndex + 1); // select the first_item to the last_item in the first_masonry_row
+            })();
+            
+            
+            
+            // diffing the newFirstRowItems vs firstRowItems:
+            const removedItems =    firstRowItems.filter((item) => !newFirstRowItems.includes(item)); // old_items are not exist   in new_items
+            const addedItems   = newFirstRowItems.filter((item) =>    !firstRowItems.includes(item)); // new_items are not already in old_items
+            
+            removedItems.forEach((removedItem) => removedItem.classList.remove('firstRow'));
+            addedItems.forEach((addedItem)     =>   addedItem.classList.add('firstRow'));
+            
+            firstRowItems = newFirstRowItems; // update newFirstRowItems => (old)firstRowItems
+        };
+    }, [isOrientationBlock, itemsRaiseSize]);
     
     
     
