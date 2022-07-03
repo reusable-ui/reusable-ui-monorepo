@@ -149,10 +149,32 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
             
             // spacings:
             ...rule(orientationInlineSelector, { // inline
-                gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with masonry's direction
+                gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with programatically_adjust_height_and_gap
             }),
             ...rule(orientationBlockSelector , { // block
-                gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with masonry's direction
+                gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with programatically_adjust_height_and_gap
+            }),
+            ...children('*', {
+                ...rule(':not(.firstRow)', {
+                    ...rule(parentOrientationInlineSelector, { // inline
+                        /*
+                        * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
+                        * we use `marginInlineStart` instead of `marginInlineEnd`
+                        * because looping grid's items at the first_masonry_row is much faster than at the last_masonry_row
+                        * (we don't need to count the number of grid's item)
+                        */
+                        marginInlineStart : masonries.gapInline,
+                    }),
+                    ...rule(parentOrientationBlockSelector , { // block
+                        /*
+                        * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
+                        * we use `marginBlockStart` instead of `marginBlockEnd`
+                        * because looping grid's items at the first_masonry_row is much faster than at the last_masonry_row
+                        * (we don't need to count the number of grid's item)
+                        */
+                        marginBlockStart  : masonries.gapBlock,
+                    }),
+                }),
             }),
             
             
@@ -165,30 +187,6 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
                 }),
                 ...rule(parentOrientationBlockSelector , { // block
                     gridColumnEnd : ['unset', '!important'], // clear from residual effect from inlineStyle (if was)
-                }),
-                
-                
-                
-                // spacings:
-                ...rule(':not(.firstRow)', {
-                    ...rule(parentOrientationInlineSelector, { // inline
-                        /*
-                        * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
-                        * we use `marginInlineStart` instead of `marginInlineEnd`
-                        * because finding grid's items at the first row is much easier than at the last row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginInlineStart : masonries.gapBlock,
-                    }),
-                    ...rule(parentOrientationBlockSelector , { // block
-                        /*
-                        * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
-                        * we use `marginBlockStart` instead of `marginBlockEnd`
-                        * because finding grid's items at the first row is much easier than at the last row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginBlockStart  : masonries.gapBlock,
-                    }),
                 }),
             }),
             
@@ -373,14 +371,16 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             // update the item's height by assigning inline css:
             const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize)}`;
-            if (isOrientationBlock) {
-                item.style.gridRowEnd    = spanWidth;
-                item.style.gridColumnEnd = ''; // clear from residual effect from inlineStyle (if was)
-            }
-            else {
-                item.style.gridRowEnd    = ''; // clear from residual effect from blockStyle (if was)
-                item.style.gridColumnEnd = spanWidth;
-            } // if
+            requestAnimationFrame(() => { // delayed modifying the css, so the next loop of `updateItemHeight` doesn't cause to force_reflow
+                if (isOrientationBlock) {
+                    item.style.gridRowEnd    = spanWidth;
+                    item.style.gridColumnEnd = ''; // clear from residual effect from inlineStyle (if was)
+                }
+                else {
+                    item.style.gridRowEnd    = ''; // clear from residual effect from blockStyle (if was)
+                    item.style.gridColumnEnd = spanWidth;
+                } // if
+            });
         };
         
         let firstRowItems: HTMLElement[] = [];
@@ -421,6 +421,19 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             firstRowItems = newFirstRowItems; // update newFirstRowItems => (old)firstRowItems
         };
+        
+        
+        
+        // setups:
+        
+        // update for the first time:
+        requestAnimationFrame(() => {
+            updateFirstRowItems(); // side effect: modify item's [class] => the computed css invalidated
+            
+            for (const item of (Array.from(masonry.children) as HTMLElement[])) {
+                updateItemHeight(item); // side effect => dynamically compute css => force_reflow & then modify item's [style] => the computed css invalidated
+            } // if
+        });
     }, [isOrientationBlock, itemsRaiseSize]);
     
     
