@@ -34,7 +34,7 @@ function App() {
                     </button>
                 </article>
                 
-                <Masonry theme='primary'>
+                <Masonry theme='primary' size='sm'>
                     <img src="https://assets.codepen.io/12005/windmill.jpg" alt="A windmill" />
 					<img src="https://assets.codepen.io/12005/suspension-bridge.jpg" alt="The Clifton Suspension Bridge" />
 					<img src="https://assets.codepen.io/12005/sunset.jpg" alt="Sunset and boats" />
