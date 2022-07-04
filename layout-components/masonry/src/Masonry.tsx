@@ -410,7 +410,6 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                     item.style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
                     item.style.gridColumnEnd = spanWidth;
                 } // if
-                console.log('item fully updated');
             });
         };
         
@@ -475,14 +474,9 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         const handleMasonryResize = () => {
             overallResize = true;
             updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-            console.log('overall resize ---------------------------------------------');
             
-            requestAnimationFrame(() => console.log('frame 1 -------------------------'));
             setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
                 overallResize = false;
-                console.log('individual resize ---------------------------------------------');
-                
-                requestAnimationFrame(() => console.log('frame 2 -------------------------'));
             }, 0);
         };
         
@@ -512,7 +506,6 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         const handleItemResize = (item: HTMLElement) => {
             if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
             updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
-            console.log('item being update, overallResize: ', overallResize);
         };
         
         for (const item of (Array.from(masonry.children) as HTMLElement[])) {
