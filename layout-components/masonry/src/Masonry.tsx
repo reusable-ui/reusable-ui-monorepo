@@ -79,8 +79,8 @@ import {
 
 
 // defaults:
-const _defaultMasonryResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' }
-const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  }
+const _defaultMasonryResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' } // get the client size
+const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  } // get the offset size
 
 
 
@@ -371,7 +371,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // DOM manipulation functions:
-        const updateItemHeight = (item: HTMLElement) => {
+        const updateItemHeight = (item: Element) => {
             // measuring dom:
             // note: side effect of measuring dom: force_reflow
             const totalSize : number = (() => {
@@ -401,36 +401,41 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             // update the item's height by modifying item's inline css:
             requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
+                const style = (item as HTMLElement|SVGElement).style;
                 const spanWidth = `span ${Math.round(totalSize / itemsRaiseSizeCache.current)}`;
                 if (isOrientationBlock) {
-                    item.style.gridRowEnd    = spanWidth;
-                    item.style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
+                    style.gridRowEnd    = spanWidth;
+                    style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
                 }
                 else {
-                    item.style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
-                    item.style.gridColumnEnd = spanWidth;
+                    style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
+                    style.gridColumnEnd = spanWidth;
                 } // if
             });
         };
         
-        let firstRowItems: HTMLElement[] = [];
+        let firstRowItems: Element[] = [];
         const updateFirstRowItems = () => {
             const newFirstRowItems = (() => {
-                const items = (Array.from(masonry.children) as HTMLElement[]);
+                const items = Array.from(masonry.children);
                 let selectionIndex = -1;
                 let prevPos = -1;
                 for (const item of items) {
+                    const { left, top, width, height } = item.getBoundingClientRect();
+                    
+                    
+                    
                     /*
-                        select the items in the first_masonry_row by comparing the offsetLeft/offsetTop to the prev one.
+                        select the items in the first_masonry_row by comparing the left/top to the prev one.
                         if equal/greater than prev => the item is still in the same row,
                         otherwise => the item in the next row
                      */
-                    const currentPos = (isOrientationBlock ? item.offsetLeft : item.offsetTop);
+                    const currentPos = (isOrientationBlock ? left : top);
                     if (currentPos < prevPos) break;
                     
                     
                     
-                    prevPos = currentPos + (isOrientationBlock ? item.offsetWidth : item.offsetHeight);
+                    prevPos = currentPos + (isOrientationBlock ? width : height);
                     selectionIndex++;
                 } // for
                 
@@ -462,7 +467,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             
             
-            const newMasonrySize = entries[0].contentBoxSize[0];
+            const newMasonrySize = entries[0].contentBoxSize[0]; // get the client size
             if (isPartiallyResized(oldMasonrySize, newMasonrySize, isOrientationBlock)) {
                 oldMasonrySize = newMasonrySize;
                 
@@ -484,17 +489,16 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         
-        const oldItemSizes = new Map<HTMLElement, ResizeObserverSize>();
+        const oldItemSizes = new Map<Element, ResizeObserverSize>();
         const itemResizeObserver = new ResizeObserver((entries) => {
             for (const entry of entries) {
                 // conditions:
                 const item = entry.target;
-                if (!(item instanceof HTMLElement)) continue; // ignores svg element
-                if (!item.parentElement)            continue; // the item is being removed => ignore
+                if (!item.parentElement) continue; // the item is being removed => ignore
                 
                 
                 
-                const newItemSize = entry.contentBoxSize[0];
+                const newItemSize = entry.borderBoxSize[0]; // get the offset size
                 if (isPartiallyResized(oldItemSizes.get(item), newItemSize, !isOrientationBlock)) {
                     oldItemSizes.set(item, newItemSize);
                     
@@ -503,12 +507,12 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             } // for
         });
         
-        const handleItemResize = (item: HTMLElement) => {
+        const handleItemResize = (item: Element) => {
             if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
             updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
         };
         
-        for (const item of (Array.from(masonry.children) as HTMLElement[])) {
+        for (const item of Array.from(masonry.children)) {
             itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
         } // for
         
@@ -519,8 +523,8 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             oldMasonrySize = undefined;
             masonryResizeObserver.disconnect();
             
-            itemResizeObserver.disconnect();
             oldItemSizes.clear();
+            itemResizeObserver.disconnect();
         };
     }, [isOrientationBlock]);
     
