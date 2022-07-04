@@ -381,7 +381,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                     item.style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
                     item.style.gridColumnEnd = spanWidth;
                 } // if
-                console.log('item fully updated', item);
+                console.log('item fully updated');
             });
         };
         
@@ -439,7 +439,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                     // setups:
                     if (subsequentResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
                     updateItemHeight(item);                      // side effect: dynamically compute css => force_reflow at the first_loop
-                    console.log('item being update', item, 'subsequent: ', subsequentResize);
+                    console.log('item being update, subsequent: ', subsequentResize);
                 }
                 // else {
                 //     // cleanups:
