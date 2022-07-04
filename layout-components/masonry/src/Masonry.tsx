@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -304,14 +303,16 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     
     
     // dom effects:
-    const itemsRaiseSize = useMemo<number>(() => {
+    const itemsRaiseSize = useRef<number>(1);
+    useIsomorphicLayoutEffect(() => {
         // conditions:
         const masonry = masonryRefInternal.current;
-        if (!masonry) return 1; // masonry was unloaded => default to 1px
+        if (!masonry) return; // masonry was unloaded => nothing to do
         
         
         
-        return Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
+        // setups:
+        itemsRaiseSize.current = Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
             Number.parseInt(
                 isOrientationBlock
                 ?
@@ -322,6 +323,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             ||
             1 // if parsing error (NaN) => falsy => default to 1px
         );
+        console.log('itemsRaiseSize', getComputedStyle(masonry).gridAutoRows);
     }, [isOrientationBlock, props.size]);
     useIsomorphicLayoutEffect(() => {
         // conditions:
@@ -361,7 +363,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             // update the item's height by modifying item's inline css:
             requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
-                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize)}`;
+                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize.current)}`;
                 if (isOrientationBlock) {
                     item.style.gridRowEnd    = spanWidth;
                     item.style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
@@ -451,7 +453,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         return () => {
             resizeObserver.disconnect();
         };
-    }, [isOrientationBlock, itemsRaiseSize]);
+    }, [isOrientationBlock]);
     
     
     

@@ -7,10 +7,11 @@ import './App.css';
 import {
     Masonry,
 } from '@reusable-ui/masonry'
-import {
-    Styles,
-    HeadPortal,
-} from '@cssfn/cssfn-react'
+// import {
+//     Styles,
+//     HeadPortal,
+// } from '@cssfn/cssfn-react'
+import '@cssfn/cssfn-dom'
 
 
 
@@ -24,9 +25,9 @@ function App() {
     
     return (
         <>
-            <HeadPortal>
+            {/* <HeadPortal>
                 <Styles />
-            </HeadPortal>
+            </HeadPortal> */}
             <div className="App">
                 <article className='actions'>
                     <button onClick={handleTriggerRerender}>
