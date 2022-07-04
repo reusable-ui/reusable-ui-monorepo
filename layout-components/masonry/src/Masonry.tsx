@@ -79,7 +79,8 @@ import {
 
 
 // defaults:
-const _defaultItemResizeObserverOptions : ResizeObserverOptions = { box: 'border-box'  }
+const _defaultMasonryResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' }
+const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  }
 
 
 
@@ -427,8 +428,54 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // setups:
+        let oldSize : ResizeObserverSize|null = null;
         let overallResize = true;
-        const resizeObserver = new ResizeObserver((entries) => {
+        const masonryResizeObserver = new ResizeObserver((entries) => {
+            const newSize = entries[0].contentBoxSize[0];
+            let isResized = false;
+            
+            
+            
+            if (!oldSize) {
+                oldSize   = newSize;
+                isResized = true;
+            }
+            else {
+                if (isOrientationBlock) {
+                    if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
+                        oldSize   = newSize;
+                        isResized = true;
+                    } // if
+                }
+                else {
+                    if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
+                        oldSize   = newSize;
+                        isResized = true;
+                    } // if
+                } // if
+            } // if
+            
+            
+            
+            if (isResized) {
+                overallResize = true;
+                updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+                console.log('overall resize ---------------------------------------------');
+                
+                requestAnimationFrame(() => console.log('frame 1 -------------------------'));
+                setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
+                    overallResize = false;
+                    console.log('individual resize ---------------------------------------------');
+                    
+                    requestAnimationFrame(() => console.log('frame 2 -------------------------'));
+                }, 0);
+            } // if
+        });
+        masonryResizeObserver.observe(masonry, _defaultMasonryResizeObserverOptions);
+        
+        
+        
+        const itemResizeObserver = new ResizeObserver((entries) => {
             for (const { target: item } of entries) {
                 // conditions:
                 if (!(item instanceof HTMLElement)) continue; // ignores svg element
@@ -446,24 +493,16 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                 // } // if
             } // for
         });
-        
-        // initial setup:
-        updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
         for (const item of (Array.from(masonry.children) as HTMLElement[])) {
-            resizeObserver.observe(item, _defaultItemResizeObserverOptions);
+            itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
         } // for
-        
-        // subsequent setup:
-        setTimeout(() => { // make sure the ResizeObserver first event has already fired
-            overallResize = false;
-            console.log('individualResize');
-        }, 0);
         
         
         
         // cleanups:
         return () => {
-            resizeObserver.disconnect();
+            masonryResizeObserver.disconnect();
+            itemResizeObserver.disconnect();
         };
     }, [isOrientationBlock]);
     
