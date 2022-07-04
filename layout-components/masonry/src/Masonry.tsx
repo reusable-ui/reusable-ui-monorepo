@@ -427,7 +427,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // setups:
-        let subsequentResize = false;
+        let overallResize = true;
         const resizeObserver = new ResizeObserver((entries) => {
             for (const { target: item } of entries) {
                 // conditions:
@@ -437,9 +437,9 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                 
                 if (item.parentElement === (masonry as Element)) {
                     // setups:
-                    if (subsequentResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-                    updateItemHeight(item);                      // side effect: dynamically compute css => force_reflow at the first_loop
-                    console.log('item being update, subsequent: ', subsequentResize);
+                    if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+                    updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
+                    console.log('item being update, overallResize: ', overallResize);
                 }
                 // else {
                 //     // cleanups:
@@ -455,8 +455,8 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         // subsequent setup:
         setTimeout(() => { // make sure the ResizeObserver first event has already fired
-            subsequentResize = true;
-            console.log('subsequent!!!');
+            overallResize = false;
+            console.log('individualResize');
         }, 0);
         
         
