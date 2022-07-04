@@ -79,7 +79,7 @@ import {
 
 
 // defaults:
-const _defaultChildResizeObserverOptions : ResizeObserverOptions = { box: 'border-box'  }
+const _defaultItemResizeObserverOptions : ResizeObserverOptions = { box: 'border-box'  }
 
 
 
@@ -117,7 +117,7 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
                 gridAutoColumns     : masonries.itemsRaiseRowHeight,
                 gridTemplateRows    : `repeat(auto-fill, minmax(${masonries.itemsMinColumnWidth}, 1fr))`,
                 
-                // child default sizes:
+                // item default sizes:
                 alignItems          : 'stretch',     // each item fills the entire Masonry's column height
              // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
                 justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
@@ -129,7 +129,7 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
                 gridAutoRows        : masonries.itemsRaiseRowHeight,
                 gridTemplateColumns : `repeat(auto-fill, minmax(${masonries.itemsMinColumnWidth}, 1fr))`,
                 
-                // child default sizes:
+                // item default sizes:
                 justifyItems        : 'stretch',     // each item fills the entire Masonry's column width
              // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
                 alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
@@ -303,7 +303,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     
     
     // dom effects:
-    const itemsRaiseSize = useRef<number>(1);
+    const itemsRaiseSizeCache = useRef<number>(1);
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const masonry = masonryRefInternal.current;
@@ -312,19 +312,28 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // setups:
-        itemsRaiseSize.current = Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
-            Number.parseInt(
-                isOrientationBlock
-                ?
-                getComputedStyle(masonry).gridAutoRows
-                :
-                getComputedStyle(masonry).gridAutoColumns
-            )
-            ||
-            1 // if parsing error (NaN) => falsy => default to 1px
-        );
-        console.log('itemsRaiseSize', getComputedStyle(masonry).gridAutoRows);
-    }, [isOrientationBlock, props.size]);
+        const cancelRequest = requestAnimationFrame(() => { // wait until the cssfn is fully loaded
+            itemsRaiseSizeCache.current = Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
+                Number.parseInt(
+                    isOrientationBlock
+                    ?
+                    getComputedStyle(masonry).gridAutoRows
+                    :
+                    getComputedStyle(masonry).gridAutoColumns
+                )
+                ||
+                1 // if parsing error (NaN) => falsy => default to 1px
+            );
+        });
+        
+        
+        
+        // cleanups:
+        return () => {
+            cancelAnimationFrame(cancelRequest);
+        };
+    }, [isOrientationBlock, props.size]); // rebuild the itemsRaiseSizeCache if [orientation] or [size] changed
+    
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const masonry = masonryRefInternal.current;
@@ -363,7 +372,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             // update the item's height by modifying item's inline css:
             requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
-                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSize.current)}`;
+                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSizeCache.current)}`;
                 if (isOrientationBlock) {
                     item.style.gridRowEnd    = spanWidth;
                     item.style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
@@ -372,6 +381,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                     item.style.gridRowEnd    = ''; // clear from residual effect from <Masonry orientation="block"> (if was)
                     item.style.gridColumnEnd = spanWidth;
                 } // if
+                console.log('item fully updated', item);
             });
         };
         
@@ -419,16 +429,17 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         // setups:
         let subsequentResize = false;
         const resizeObserver = new ResizeObserver((entries) => {
-            for (const { target: child } of entries) {
+            for (const { target: item } of entries) {
                 // conditions:
-                if (!(child instanceof HTMLElement)) continue; // ignores svg element
+                if (!(item instanceof HTMLElement)) continue; // ignores svg element
                 
                 
                 
-                if (child.parentElement === (masonry as Element)) {
+                if (item.parentElement === (masonry as Element)) {
                     // setups:
-                    if (subsequentResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
-                    updateItemHeight(child);                     // side effect: dynamically compute css => force_reflow at the first_loop
+                    if (subsequentResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+                    updateItemHeight(item);                      // side effect: dynamically compute css => force_reflow at the first_loop
+                    console.log('item being update', item, 'subsequent: ', subsequentResize);
                 }
                 // else {
                 //     // cleanups:
@@ -437,15 +448,16 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         });
         
         // initial setup:
-        updateFirstRowItems(); // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
-        for (const child of (Array.from(masonry.children) as HTMLElement[])) {
-            resizeObserver.observe(child, _defaultChildResizeObserverOptions);
+        updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+        for (const item of (Array.from(masonry.children) as HTMLElement[])) {
+            resizeObserver.observe(item, _defaultItemResizeObserverOptions);
         } // for
         
         // subsequent setup:
-        requestAnimationFrame(() => { // make sure the ResizeObserver first event has already fired
+        setTimeout(() => { // make sure the ResizeObserver first event has already fired
             subsequentResize = true;
-        });
+            console.log('subsequent!!!');
+        }, 0);
         
         
         
