@@ -245,6 +245,34 @@ export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
 
 
 
+// utilities:
+const isPartiallyResized = (oldSize: ResizeObserverSize|undefined, newSize: ResizeObserverSize, compareOrientationBlock: boolean): boolean => {
+    if (!oldSize) {
+        oldSize   = newSize;
+        return true;
+    }
+    else {
+        if (compareOrientationBlock) {
+            if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
+                oldSize   = newSize;
+                return true;
+            } // if
+        }
+        else {
+            if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
+                oldSize   = newSize;
+                return true;
+            } // if
+        } // if
+    } // if
+    
+    
+    
+    return false;
+};
+
+
+
 // react components:
 export interface MasonryProps<TElement extends Element = HTMLElement>
     extends
@@ -428,35 +456,19 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // setups:
-        let oldSize : ResizeObserverSize|null = null;
+        let oldMasonrySize : ResizeObserverSize|undefined = undefined;
         const masonryResizeObserver = new ResizeObserver((entries) => {
-            const newSize = entries[0].contentBoxSize[0];
-            let isResized = false;
+            // conditions:
+            if (!entries[0].target.parentElement) return; // the <Masonry> is being removed => ignore
             
             
             
-            if (!oldSize) {
-                oldSize   = newSize;
-                isResized = true;
-            }
-            else {
-                if (isOrientationBlock) {
-                    if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
-                        oldSize   = newSize;
-                        isResized = true;
-                    } // if
-                }
-                else {
-                    if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
-                        oldSize   = newSize;
-                        isResized = true;
-                    } // if
-                } // if
+            const newMasonrySize = entries[0].contentBoxSize[0];
+            if (isPartiallyResized(oldMasonrySize, newMasonrySize, isOrientationBlock)) {
+                oldMasonrySize = newMasonrySize;
+                
+                handleMasonryResize();
             } // if
-            
-            
-            
-            if (isResized) handleMasonryResize();
         });
         
         let overallResize = true;
@@ -473,28 +485,36 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                 requestAnimationFrame(() => console.log('frame 2 -------------------------'));
             }, 0);
         };
+        
         masonryResizeObserver.observe(masonry, _defaultMasonryResizeObserverOptions);
         
         
         
+        const oldItemSizes = new Map<HTMLElement, ResizeObserverSize>();
         const itemResizeObserver = new ResizeObserver((entries) => {
-            for (const { target: item } of entries) {
+            for (const entry of entries) {
                 // conditions:
+                const item = entry.target;
                 if (!(item instanceof HTMLElement)) continue; // ignores svg element
+                if (!item.parentElement)            continue; // the item is being removed => ignore
                 
                 
                 
-                if (item.parentElement === (masonry as Element)) {
-                    // setups:
-                    if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-                    updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
-                    console.log('item being update, overallResize: ', overallResize);
-                }
-                // else {
-                //     // cleanups:
-                // } // if
+                const newItemSize = entry.contentBoxSize[0];
+                if (isPartiallyResized(oldItemSizes.get(item), newItemSize, !isOrientationBlock)) {
+                    oldItemSizes.set(item, newItemSize);
+                    
+                    handleItemResize(item);
+                } // if
             } // for
         });
+        
+        const handleItemResize = (item: HTMLElement) => {
+            if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+            updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
+            console.log('item being update, overallResize: ', overallResize);
+        };
+        
         for (const item of (Array.from(masonry.children) as HTMLElement[])) {
             itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
         } // for
@@ -503,8 +523,11 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         // cleanups:
         return () => {
+            oldMasonrySize = undefined;
             masonryResizeObserver.disconnect();
+            
             itemResizeObserver.disconnect();
+            oldItemSizes.clear();
         };
     }, [isOrientationBlock]);
     
