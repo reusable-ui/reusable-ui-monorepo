@@ -223,8 +223,8 @@ export const useMasonryStyleSheet = createUseStyleSheet(() => ({
 export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
     return {
         // sizes:
-        itemsRaiseRowHeight   : '3px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightSm : '2px'               as CssKnownProps['blockSize'],
+        itemsRaiseRowHeight   : '2px'               as CssKnownProps['blockSize'],
+        itemsRaiseRowHeightSm : '1px'               as CssKnownProps['blockSize'],
         itemsRaiseRowHeightLg : '4px'               as CssKnownProps['blockSize'],
         
         itemsMinColumnWidth   : 'calc(5 * 40px)'    as CssKnownProps['columnWidth'],
@@ -518,6 +518,43 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         
+        // in case of the <Masonry>'s children are modified using *vanilla* way,
+        // we detect the changes by `MutationObserver`:
+        const mutationObserver = new MutationObserver((entries) => {
+            updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+            
+            
+            
+            for (const entry of entries) {
+                for (const addedItem of entry.addedNodes) {
+                    if (!(addedItem instanceof Element)) continue;
+                    handleItemAdded(addedItem);
+                } // for
+                
+                
+                
+                for (const removedItem of entry.removedNodes) {
+                    if (!(removedItem instanceof Element)) continue;
+                    handleItemRemoved(removedItem);
+                } // for
+            } // for
+        });
+        
+        const handleItemAdded = (item: Element) => {
+            itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
+        };
+        const handleItemRemoved = (item: Element) => {
+            itemResizeObserver.unobserve(item);
+        };
+        mutationObserver.observe(masonry, {
+            childList  : true,  // watch  for child's DOM structure changes
+            subtree    : false, // ignore for grandchild's DOM structure changes
+            
+            attributes : false, // ignore for any attribute changes
+        });
+        
+        
+        
         // cleanups:
         return () => {
             oldMasonrySize = undefined;
@@ -525,6 +562,8 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             oldItemSizes.clear();
             itemResizeObserver.disconnect();
+            
+            mutationObserver.disconnect();
         };
     }, [isOrientationBlock]);
     
