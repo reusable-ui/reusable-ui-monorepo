@@ -7,14 +7,7 @@ import {
     
     // hooks:
     useRef,
-    useCallback,
-    useEffect,
     useMemo,
-    
-    
-    
-    // utilities:
-    startTransition,
 }                           from 'react'
 
 // cssfn:
@@ -25,8 +18,6 @@ import type {
 import {
     // rules:
     rule,
-    variants,
-    states,
     
     
     
@@ -73,11 +64,6 @@ import {
     usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
-    gradientOf,
-    ifNotOutlined,
-    outlinedOf,
-    usesBorder,
-    usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // styles:
@@ -90,6 +76,11 @@ import {
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'             // a base component
+
+
+
+// defaults:
+const _defaultChildResizeObserverOptions : ResizeObserverOptions = { box: 'border-box'  }
 
 
 
@@ -383,7 +374,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         };
         
         let firstRowItems: HTMLElement[] = [];
-        const updateFirstRowItems = async () => {
+        const updateFirstRowItems = () => {
             const newFirstRowItems = (() => {
                 const items = (Array.from(masonry.children) as HTMLElement[]);
                 let selectionIndex = -1;
@@ -424,15 +415,42 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // setups:
-        
-        // update for the first time:
-        requestAnimationFrame(() => {
-            updateFirstRowItems();      // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
-            
-            for (const item of (Array.from(masonry.children) as HTMLElement[])) {
-                updateItemHeight(item); // side effect: dynamically compute css => force_reflow at the first_loop
-            } // if
+        let subsequentResize = false;
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const { target: child } of entries) {
+                // conditions:
+                if (!(child instanceof HTMLElement)) continue; // ignores svg element
+                
+                
+                
+                if (child.parentElement === (masonry as Element)) {
+                    // setups:
+                    if (subsequentResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
+                    updateItemHeight(child);                     // side effect: dynamically compute css => force_reflow at the first_loop
+                }
+                // else {
+                //     // cleanups:
+                // } // if
+            } // for
         });
+        
+        // initial setup:
+        updateFirstRowItems(); // side effect: modify item's [class] => modify some child's [margin(Inline|Block)Start]
+        for (const child of (Array.from(masonry.children) as HTMLElement[])) {
+            resizeObserver.observe(child, _defaultChildResizeObserverOptions);
+        } // for
+        
+        // subsequent setup:
+        requestAnimationFrame(() => { // make sure the ResizeObserver first event has already fired
+            subsequentResize = true;
+        });
+        
+        
+        
+        // cleanups:
+        return () => {
+            resizeObserver.disconnect();
+        };
     }, [isOrientationBlock, itemsRaiseSize]);
     
     
