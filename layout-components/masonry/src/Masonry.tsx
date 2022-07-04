@@ -429,7 +429,6 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         // setups:
         let oldSize : ResizeObserverSize|null = null;
-        let overallResize = true;
         const masonryResizeObserver = new ResizeObserver((entries) => {
             const newSize = entries[0].contentBoxSize[0];
             let isResized = false;
@@ -457,20 +456,23 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             
             
-            if (isResized) {
-                overallResize = true;
-                updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-                console.log('overall resize ---------------------------------------------');
-                
-                requestAnimationFrame(() => console.log('frame 1 -------------------------'));
-                setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
-                    overallResize = false;
-                    console.log('individual resize ---------------------------------------------');
-                    
-                    requestAnimationFrame(() => console.log('frame 2 -------------------------'));
-                }, 0);
-            } // if
+            if (isResized) handleMasonryResize();
         });
+        
+        let overallResize = true;
+        const handleMasonryResize = () => {
+            overallResize = true;
+            updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+            console.log('overall resize ---------------------------------------------');
+            
+            requestAnimationFrame(() => console.log('frame 1 -------------------------'));
+            setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
+                overallResize = false;
+                console.log('individual resize ---------------------------------------------');
+                
+                requestAnimationFrame(() => console.log('frame 2 -------------------------'));
+            }, 0);
+        };
         masonryResizeObserver.observe(masonry, _defaultMasonryResizeObserverOptions);
         
         
