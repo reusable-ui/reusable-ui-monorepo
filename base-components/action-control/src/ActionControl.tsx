@@ -199,7 +199,7 @@ export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
 
 
 
-export const usePressReleaseState  = <TElement extends Element = Element>(props: ActionControlProps<TElement>) => {
+export const usePressReleaseState  = <TElement extends Element = HTMLElement>(props: ActionControlProps<TElement>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
@@ -575,7 +575,7 @@ export const handleClickDisabled : React.MouseEventHandler<Element> = (event) =>
 
 
 // react components:
-export interface ActionControlProps<TElement extends Element = Element>
+export interface ActionControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         ControlProps<TElement>
@@ -589,7 +589,7 @@ export interface ActionControlProps<TElement extends Element = Element>
     actionMouses ?: number[]|null
     actionKeys   ?: string[]|null
 }
-const ActionControl = <TElement extends Element = Element>(props: ActionControlProps<TElement>): JSX.Element|null => {
+const ActionControl = <TElement extends Element = HTMLElement>(props: ActionControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useActionControlStyleSheet();
     
@@ -736,7 +736,7 @@ export {
 
 
 
-interface ClientSideLinkWrapperProps<TElement extends Element = Element> {
+interface ClientSideLinkWrapperProps<TElement extends Element = HTMLElement> {
     // components:
     linkComponent   : JsxClientSideLink
     actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
@@ -746,7 +746,7 @@ interface ClientSideLinkWrapperProps<TElement extends Element = Element> {
     // children:
     children       ?: React.ReactNode
 }
-const ClientSideLinkWrapper = <TElement extends Element = Element>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
+const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
     const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
     
     
@@ -775,7 +775,7 @@ const ClientSideLinkWrapper = <TElement extends Element = Element>({ linkCompone
     );
 };
 
-interface ForwardRefWrapperProps<TElement extends Element = Element>
+interface ForwardRefWrapperProps<TElement extends Element = HTMLElement>
     extends
         // forwards <ActionControl>:
         ActionControlProps<TElement>
@@ -783,7 +783,7 @@ interface ForwardRefWrapperProps<TElement extends Element = Element>
     // components:
     actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
 }
-const ForwardRefWrapper = React.forwardRef(<TElement extends Element = Element>({ actionComponent, outerRef, ...restForwardProps }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLElement>({ actionComponent, outerRef, ...restForwardProps }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // refs:
     const mergedouterRef = useMergeRefs(
         // preserves the original `outerRef`:
