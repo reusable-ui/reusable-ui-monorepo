@@ -253,7 +253,7 @@ export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
 
 
 
-export const useFocusBlurState  = <TElement extends Element = Element>(props: ControlProps<TElement>) => {
+export const useFocusBlurState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableFocused = (props.focused !== undefined);
@@ -436,7 +436,7 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 
 
-export const useArriveLeaveState  = <TElement extends Element = Element>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState<TElement>>, 'focused'>) => {
+export const useArriveLeaveState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState<TElement>>, 'focused'>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableArrived = (props.arrived !== undefined);
@@ -758,7 +758,7 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
 
 
 // react components:
-export interface ControlProps<TElement extends Element = Element>
+export interface ControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         IndicatorProps<TElement>
@@ -769,7 +769,7 @@ export interface ControlProps<TElement extends Element = Element>
     
     arrived  ?: boolean
 }
-const Control = <TElement extends Element = Element>(props: ControlProps<TElement>): JSX.Element|null => {
+const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet       = useControlStyleSheet();
     
