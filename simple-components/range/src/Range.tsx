@@ -267,7 +267,7 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
             
             
             // positions:
-            verticalAlign     : 'baseline', // range's text should be aligned with sibling text, so the range behave like <span> wrapper
+            verticalAlign     : 'baseline', // <Range>'s text should be aligned with sibling text, so the <Range> behave like <span> wrapper
             
             
             
