@@ -2,13 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useReducer,
-    useRef,
-    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -19,14 +12,18 @@ import type {
 import {
     // rules:
     rule,
-    states,
-    keyframes,
+    variants,
+    ifEmpty,
+    
+    
+    
+    //combinators:
+    children,
     
     
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -40,26 +37,34 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
+    // configs:
+    borderRadiuses,
+}                           from '@reusable-ui/borders'         // a border (stroke) management system
+import {
+    // styles:
+    fillTextLineHeightLayout,
+    fillTextLineWidthLayout,
+}                           from '@reusable-ui/layouts'         // reusable common layouts
+import {
+    // configs:
+    typos,
+}                           from '@reusable-ui/typos'           // a typography management system
+import {
     // hooks:
-    useIsomorphicLayoutEffect,
-    useEvent,
-    EventHandler,
-    useMergeEvents,
-    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
+    ifNotNude,
+    usesBorder,
+    usesPadding,
+    extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
 export {
     // types:
@@ -83,23 +88,96 @@ import {
 
 
 
+// hooks:
+
+// appearances:
+
+//#region badge style
+export type BadgeStyle = 'pill'|'square'|'circle' // might be added more styles in the future
+export interface BadgeVariant {
+    badgeStyle ?: BadgeStyle
+}
+export const useBadgeVariant = (props: BadgeVariant) => {
+    return {
+        class: props.badgeStyle ?? null,
+    };
+};
+//#endregion badge style
+
+
+
 // styles:
 export const usesBadgeLayout = () => {
+    // dependencies:
+    
+    // spacings:
+    const [, paddings] = usesPadding();
+    
+    
+    
     return style({
         ...imports([
             // layouts:
             usesPopupLayout(),
         ]),
         ...style({
-            // positions:
-            ...rule('.overlay', {
-                zIndex: 1080,
+            // layouts:
+            display       : 'inline-block', // use inline block, so it takes the width & height as needed
+            ...ifEmpty({
+                display   : 'inline-grid',  // required for filling the width & height using `::before` & `::after`
             }),
+            
+            
+            
+            // positions:
+            verticalAlign : 'baseline',    // <Badge>'s text should be aligned with sibling text, so the <Badge> behave like <span> wrapper
+            
+            
+            
+            // sizes:
+            ...ifEmpty({
+                // makes the width and height equal, by filling `width === height === line(Height/Width)`:
+                
+                // width  : '1em', // not working, (font-width  !== 1em) if the font-size is fractional number
+                // height : '1em', // not working, (font-height !== 1em) if the font-size is fractional number
+                
+                ...children('::before', {
+                    ...imports([
+                        fillTextLineHeightLayout(),
+                    ]),
+                }),
+                ...children('::after', {
+                    ...imports([
+                        fillTextLineWidthLayout(),
+                    ]),
+                }),
+            }),
+            
+            
+            
+            // spacings:
+            ...ifEmpty({
+                // makes the width and height equal, by making `paddingInline === paddingBlock`:
+                [paddings.paddingInline] : paddings.paddingBlock,
+            }),
+            
+            
+            
+            // typos:
+            lineHeight    : 1,
+            textAlign     : 'center',
             
             
             
             // customize:
             ...usesCssProps(badges), // apply config's cssProps
+            
+            
+            
+            // spacings:
+            
+            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+            ...extendsPadding(badges),
         }),
     });
 };
@@ -108,6 +186,12 @@ export const usesBadgeVariants = () => {
     
     // layouts:
     const [sizeVariantRule] = usesSizeVariant(badges);
+    
+    // borders:
+    const [, borders      ] = usesBorder();
+    
+    // spacings:
+    const [, paddings     ] = usesPadding();
     
     
     
@@ -118,6 +202,36 @@ export const usesBadgeVariants = () => {
             
             // layouts:
             sizeVariantRule,
+        ]),
+        ...variants([
+            rule(['.pill', '.circle'], {
+                // borders:
+                // big rounded corners on top:
+                [borders.borderStartStartRadius] : borderRadiuses.pill,
+                [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                // big rounded corners on bottom:
+                [borders.borderEndStartRadius  ] : borderRadiuses.pill,
+                [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+            }),
+            rule(['.square', '.circle'], {
+                ...ifNotNude({
+                    // spacings:
+                    // makes the width and height equal, by making `paddingInline === paddingBlock`:
+                    [paddings.paddingInline] : paddings.paddingBlock,
+                }),
+            }),
+            rule('.pill', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(badges, 'pill')), // apply config's cssProps starting with pill***
+            }),
+            rule('.square', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(badges, 'square')), // apply config's cssProps starting with square***
+            }),
+            rule('.circle', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(badges, 'circle')), // apply config's cssProps starting with circle***
+            }),
         ]),
     });
 };
@@ -147,44 +261,37 @@ export const useBadgeStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
-    //#region keyframes
-    const framePassived     = style({
-        opacity   : 0,
-        transform : 'scale(0)',
-    });
-    const frameIntermediate = style({
-        transform : 'scale(1.02)',
-    });
-    const frameActived      = style({
-        opacity   : 1,
-        transform : 'scale(1)',
-    });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from  : framePassived,
-        '70%' : frameIntermediate,
-        to    : frameActived,
-    });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from  : frameActived,
-        '30%' : frameIntermediate,
-        to    : framePassived,
-    });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
-    //#endregion keyframes
+    const basics = {
+        // spacings:
+        paddingInline : '0.65em'                                            as CssKnownProps['paddingInline'],
+        paddingBlock  : '0.35em'                                            as CssKnownProps['paddingBlock' ],
+        
+        
+        
+        // typos:
+        whiteSpace    : 'normal'                                            as CssKnownProps['whiteSpace'],
+        fontSize      : '0.75em'                                            as CssKnownProps['fontSize'],
+        fontWeight    : typos.fontWeightBold                                as CssKnownProps['fontWeight'],
+    };
     
     
     
     return {
-        // animations:
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animActive    : [
-            ['300ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
-        animPassive   : [
-            ['500ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
+        ...basics,
+        
+        
+        
+        // spacings:
+        paddingInlineSm : [['calc(', basics.paddingInline, '/', 1.25, ')']] as CssKnownProps['paddingInline'],
+        paddingBlockSm  : [['calc(', basics.paddingBlock , '/', 1.25, ')']] as CssKnownProps['paddingBlock' ],
+        paddingInlineLg : [['calc(', basics.paddingInline, '*', 1.25, ')']] as CssKnownProps['paddingInline'],
+        paddingBlockLg  : [['calc(', basics.paddingBlock , '*', 1.25, ')']] as CssKnownProps['paddingBlock' ],
+        
+        
+        
+        // typos:
+        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'],
+        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'],
     };
 }, { prefix: 'bge' });
 
@@ -194,20 +301,63 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
 export interface BadgeProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>
+        PopupProps<TElement>,
+        
+        // appearances:
+        BadgeVariant
 {
+    // accessibilities:
+    label ?: string
 }
 const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet = useBadgeStyleSheet();
+    const styleSheet   = useBadgeStyleSheet();
+    
+    
+    
+    // variants:
+    const badgeVariant = useBadgeVariant(props);
     
     
     
     // rest props:
     const {
+        // appearances:
+        badgeStyle : _badgeStyle,
+        
+        
+        
+        // accessibilities:
+        active,
+        label,
+        
+        
+        
         // children:
         children,
     ...restPopupProps} = props;
+    
+    
+    
+    // fn props:
+    /*
+     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     */
+    const autoActive : boolean = !!(props.children || false);
+    const activeFn   : boolean = active /*controllable*/ ?? autoActive /*uncontrollable*/;
+    
+    
+    
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        badgeVariant.class,
+    );
     
     
     
@@ -220,13 +370,29 @@ const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElemen
             
             
             // semantics:
+            tag={props.tag ?? 'span'}
             semanticRole={props.semanticRole ?? 'status'}
+            
+            aria-label={props['aria-label'] ?? label}
+            
+            
+            
+            // variants:
+            mild={props.mild ?? false}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-        />
+            variantClasses={variantClasses}
+            
+            
+            
+            // accessibilities:
+            active={activeFn}
+        >
+            { props.children }
+        </Popup>
     );
 };
 export {
