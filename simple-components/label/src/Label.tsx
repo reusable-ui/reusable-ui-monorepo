@@ -94,7 +94,7 @@ export const usesLabelLayout = () => {
             
             
             // positions:
-            verticalAlign  : 'baseline',     // label's text should be aligned with sibling text, so the label behave like <span> wrapper
+            verticalAlign  : 'baseline',     // <Label>'s text should be aligned with sibling text, so the <Label> behave like <span> wrapper
             
             
             
