@@ -97,7 +97,7 @@ export const usesInputLayout = () => {
             
             
             // positions:
-            verticalAlign  : 'baseline', // input's text should be aligned with sibling text, so the input behave like <span> wrapper
+            verticalAlign  : 'baseline', // <Input>'s text should be aligned with sibling text, so the <Input> behave like <span> wrapper
             
             
             
