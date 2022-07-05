@@ -55,7 +55,7 @@ import {
 }                           from '@reusable-ui/badge'           // a base component
 import {
     // react components:
-    IconProps,
+    IconProps as IconIconProps,
     Icon,
 }                           from '@reusable-ui/icon'            // an icon set
 import {
@@ -143,16 +143,22 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
 
 
 // react components:
+
+export interface IconProps
+    extends
+        // bases:
+        Partial<Pick<IconIconProps<Element>, 'icon'>>
+{
+    // components:
+    iconComponent ?: React.ReactComponentElement<any, IconIconProps<Element>>
+}
+
 export interface BusyProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BadgeProps<TElement>,
-        
-        // an icon:
-        Partial<Pick<IconProps<Element>, 'icon'>>
+        IconProps
 {
-    // components:
-    iconComponent ?: React.ReactComponentElement<any, IconProps<Element>>
 }
 const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>): JSX.Element|null => {
     // styles:
@@ -221,7 +227,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             // accessibilities:
             label={label ?? 'Loading...'}
         >
-            {React.cloneElement<IconProps<Element>>(iconComponent,
+            {React.cloneElement<IconIconProps<Element>>(iconComponent,
                 // props:
                 {
                     size: iconComponent.props.size ?? '1em',
