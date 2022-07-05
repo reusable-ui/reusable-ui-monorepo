@@ -433,8 +433,8 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     
     // handlers:
-    const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((position) => {
-        setPopupPos(position);
+    const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((popupPosition) => {
+        setPopupPos(popupPosition);
     }, []);
     const handlePopupUpdate         = useMergeEvents(
         // preserves the original `onPopupUpdate`:
@@ -456,6 +456,10 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
         // accessibilities:
         activePassiveState.handleAnimationEnd,
     );
+    
+    
+    
+    // dom effects:
     
     
     
