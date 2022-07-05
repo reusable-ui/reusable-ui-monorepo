@@ -281,12 +281,12 @@ const [actives] = cssVar<ActivePassiveVars>();
 
 // .actived will be added after activating-animation done:
 const selectorIfActived     = '.actived'
-// [aria-checked],[aria-pressed],[aria-selected] = styled active, :checked = native active:
-const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.actived)'
+// [aria-checked],[aria-pressed],[aria-selected],[data-active] = styled active, :checked = native active:
+const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), [data-active], :checked):not(.actived)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
 // if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
+const selectorIfPassived    = ':not(:is(.actived, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), [data-active], :checked, .passivating))'
 
 
 
@@ -355,6 +355,12 @@ const checkableCtrls = [
     'radio',
 ];
 
+const popupRoles = [
+    'status',
+    'alert',
+    'tooltip',
+];
+
 export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propActive    = usePropActive(props);
@@ -401,7 +407,7 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
         
         class  : ((): string|null => {
             // activating:
-            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
+            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected] or [data-active]
             
             // passivating:
             if (animating === false) return 'passivating';
@@ -424,6 +430,8 @@ export const useActivePassiveState = <TElement extends Element = Element>(props:
             
             // use [aria-pressed] if <button> or [role="button"]:
             if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
+            
+            if (role && popupRoles.includes(role)) return { 'data-active': true }
             
             // else, use [aria-selected]:
             return { 'aria-selected' : true };
