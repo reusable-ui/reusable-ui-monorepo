@@ -327,10 +327,15 @@ export type IconPosition = 'start'|'end'
 export interface IconProps
     extends
         // bases:
-        Partial<Pick<IconIconProps, 'icon'>>
+        Partial<Pick<IconIconProps<Element>, 'icon'>>
 {
     // appearances:
-    iconPosition ?: IconPosition
+    iconPosition  ?: IconPosition
+    
+    
+    
+    // components:
+    iconComponent ?: React.ReactComponentElement<any, IconIconProps<Element>>
 }
 
 export interface ButtonIconProps
@@ -359,6 +364,11 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         
         
         
+        // components:
+        iconComponent = icon && <Icon<Element> icon={icon} />,
+        
+        
+        
         // children:
         children,
     ...restButtonProps} = props;
@@ -376,9 +386,9 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            { icon && (iconPosition === 'start') && <Icon icon={icon} /> }
+            { (iconPosition === 'start') && iconComponent }
             { children }
-            { icon && (iconPosition === 'end'  ) && <Icon icon={icon} /> }
+            { (iconPosition === 'end'  ) && iconComponent }
         </Button>
     );
 };
