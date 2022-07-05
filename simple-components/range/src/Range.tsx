@@ -704,6 +704,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // styles:
+        style,
         trackStyle,
         trackLowerStyle,
         trackUpperStyle,
@@ -740,11 +741,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         min,
         max,
         step,
-        
-        
-        
-        // styles:
-        style,
     ...restEditableControlProps}  = props;
     
     
