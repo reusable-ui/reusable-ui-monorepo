@@ -488,7 +488,9 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
         // setups:
         
         // the first trigger:
-        triggerPopupUpdate();
+        const cancelTimeout = setTimeout(() => { // wait until all cssfn (both for <Popup> and <Target>) are fully loaded
+            triggerPopupUpdate();
+        }, 0);
         
         // the live trigger:
         const stopUpdate = autoUpdate(target, popup, triggerPopupUpdate);
@@ -497,6 +499,7 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
         
         // cleanups:
         return () => {
+            clearTimeout(cancelTimeout);
             stopUpdate();
         };
     }, [
