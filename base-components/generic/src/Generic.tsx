@@ -145,7 +145,7 @@ export const useTestSemantic = (props: SemanticProps, options: SemanticOptions):
 
 
 // react components:
-export interface GenericProps<TElement extends Element = Element>
+export interface GenericProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         React.DOMAttributes<TElement>,
@@ -173,7 +173,7 @@ export interface GenericProps<TElement extends Element = Element>
     variantClasses ?: Optional<string>[]
     stateClasses   ?: Optional<string>[]
 }
-const Generic = <TElement extends Element = Element>(props: GenericProps<TElement>): JSX.Element|null => {
+const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // semantics:
