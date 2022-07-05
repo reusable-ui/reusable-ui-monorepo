@@ -15,13 +15,6 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -41,11 +34,6 @@ import {
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
-    // utilities:
-    cssVar,
-    fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
-import {
     cssConfig,
     
     
@@ -56,25 +44,14 @@ import {
 
 // reusable-ui:
 import {
-    // configs:
-    colors,
-}                           from '@reusable-ui/colors'          // a color management system
-import {
-    // styles:
-    stripoutPopup,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
-    usePropEnabled,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
     StateMixin,
@@ -83,22 +60,13 @@ import {
     
     // hooks:
     usesSizeVariant,
-    ThemeName,
-    usesThemeVariant,
-    usesThemeDefault as basicUsesThemeDefault,
-    usesAnim,
-    fallbackNoneBoxShadow,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ActivePassiveVars,
-    ifActived,
     ifActivating,
     ifPassivating,
     ifPassived,
-    ifActive,
-    ifPassive,
     usesActivePassiveState as indicatorUsesActivePassiveState,
     useActivePassiveState,
     
@@ -107,7 +75,6 @@ import {
     // styles:
     usesIndicatorLayout,
     usesIndicatorVariants,
-    usesIndicatorStates,
     
     
     
@@ -117,13 +84,22 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 
 // other libs:
-import type {
+import {
     // types:
     Placement             as PopupPlacement,
     Middleware            as PopupMiddleware,
     Strategy              as PopupStrategy,
     
     ComputePositionReturn as PopupPosition,
+    
+    
+    
+    // utilities:
+    computePosition,
+    flip,
+    shift,
+    offset,
+    autoUpdate,
 }                           from '@floating-ui/dom'             // a popup utility
 
 
@@ -320,7 +296,7 @@ export interface PopupProps<TElement extends Element = Element>
         IndicatorProps<TElement>
 {
     // popups:
-    targetRef       ?: React.RefObject<HTMLElement>|HTMLElement|null // getter ref
+    targetRef       ?: React.RefObject<Element>|Element|null // getter ref
     popupPlacement  ?: PopupPlacement
     popupMiddleware ?: PopupMiddleware[] | ((defaultMiddleware: PopupMiddleware[]) => Promise<PopupMiddleware[]>)
     popupStrategy   ?: PopupStrategy
@@ -460,6 +436,91 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     
     // dom effects:
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isVisible) return; // <Popup> is fully hidden => no need to update
+        
+        const target = (targetRef instanceof Element) ? targetRef : targetRef?.current;
+        if (!target)    return; // [targetRef] was not specified => nothing to do
+        
+        const popup  = popupRefInternal.current;
+        if (!popup)     return; // <Popup> was unloaded => nothing to do
+        if (!(popup instanceof HTMLElement)) return; // the floating-ui only supports manipulating HTMLElement
+        
+        
+        
+        // handlers:
+        const triggerPopupUpdate = async () => {
+            // calculate the proper position of the <Popup>:
+            const popupPosition = await computePosition(/*reference: */target, /*floating: */popup, /*options: */{
+                placement  : popupPlacement,
+                middleware : await (async (): Promise<PopupMiddleware[]> => {
+                    if (Array.isArray(popupMiddleware)) return popupMiddleware;
+                    
+                    
+                    
+                    const defaultMiddleware: PopupMiddleware[] = [
+                        ...((popupOffset || popupShift) ? [offset({ // requires to be placed at the first order
+                            mainAxis  : popupOffset,
+                            crossAxis : popupShift,
+                        })] : []),
+                        
+                        ...(popupAutoFlip  ? [flip() ] : []),
+                        ...(popupAutoShift ? [shift()] : []),
+                    ];
+                    
+                    
+                    
+                    if (popupMiddleware) return await popupMiddleware(defaultMiddleware);
+                    return defaultMiddleware;
+                })(),
+                strategy   : popupStrategy,
+            });
+            
+            
+            
+            // trigger the `onPopupUpdate`
+            handlePopupUpdate?.(popupPosition);
+        };
+        
+        
+        
+        // setups:
+        
+        // the first trigger:
+        triggerPopupUpdate();
+        
+        // the live trigger:
+        const stopUpdate = autoUpdate(target, popup, triggerPopupUpdate);
+        
+        
+        
+        // cleanups:
+        return () => {
+            stopUpdate();
+        };
+    }, [
+        // conditions:
+        isVisible,
+        
+        
+        
+        // popups:
+        targetRef,
+        popupPlacement,
+        popupMiddleware,
+        popupStrategy,
+        
+        popupAutoFlip,
+        popupAutoShift,
+        popupOffset,
+        popupShift,
+        
+        
+        
+        // handlers:
+        handlePopupUpdate,
+    ]);
     
     
     
