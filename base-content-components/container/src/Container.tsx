@@ -727,7 +727,7 @@ styleSheet({
 
 
 // react components:
-export interface ContainerProps<TElement extends Element = Element>
+export interface ContainerProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BasicProps<TElement>
@@ -735,7 +735,7 @@ export interface ContainerProps<TElement extends Element = Element>
     // children:
     children ?: React.ReactNode
 }
-const Container = <TElement extends Element = Element>(props: ContainerProps<TElement>): JSX.Element|null => {
+const Container = <TElement extends Element = HTMLElement>(props: ContainerProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet         = useContainerStyleSheet();
     
