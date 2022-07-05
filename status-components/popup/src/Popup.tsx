@@ -64,6 +64,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
@@ -96,6 +97,7 @@ import {
     ifActive,
     ifPassive,
     usesActivePassiveState as indicatorUsesActivePassiveState,
+    useActivePassiveState,
     
     
     
@@ -114,11 +116,11 @@ import {
 // other libs:
 import type {
     // types:
-    Placement  as PopupPlacement,
-    Middleware as PopupMiddleware,
-    Strategy   as PopupStrategy,
+    Placement             as PopupPlacement,
+    Middleware            as PopupMiddleware,
+    Strategy              as PopupStrategy,
     
-    ComputePositionReturn,
+    ComputePositionReturn as PopupPosition,
 }                           from '@floating-ui/dom'             // a popup utility
 
 
@@ -320,11 +322,28 @@ export interface PopupProps<TElement extends Element = Element>
         // bases:
         IndicatorProps<TElement>
 {
-    // accessibilities:
-    focused  ?: boolean
-    tabIndex ?: number
+    // popups:
+    targetRef       ?: React.RefObject<HTMLElement>|HTMLElement|null // getter ref
+    popupPlacement  ?: PopupPlacement
+    popupMiddleware ?: PopupMiddleware[] | ((defaultMiddleware: PopupMiddleware[]) => Promise<PopupMiddleware[]>)
+    popupStrategy   ?: PopupStrategy
     
-    arrived  ?: boolean
+    popupAutoFlip   ?: boolean
+    popupAutoShift  ?: boolean
+    popupOffset     ?: number
+    popupShift      ?: number
+    
+    onPopupUpdate   ?: EventHandler<PopupPosition>
+    
+    
+    
+    // behaviors:
+    lazy            ?: boolean
+    
+    
+    
+    // children:
+    children        ?: React.ReactNode
 }
 const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>): JSX.Element|null => {
     // styles:
@@ -332,21 +351,54 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     
     
-    // fn props:
-    const propEnabled      = usePropEnabled(props);
+    // states:
+    
+    // accessibilities:
+    const activePassiveState = useActivePassiveState<TElement>(props);
     
     
     
     // rest props:
     const {
-        // remove states props:
+        // popups:
+        targetRef,
+        popupPlacement   = 'top',
+        popupMiddleware,
+        popupStrategy    = 'absolute',
         
-        // accessibilities:
-        focused  : _focused,
-        tabIndex : _tabIndex,
+        popupAutoFlip    = false,
+        popupAutoShift   = false,
+        popupOffset      = 0,
+        popupShift       = 0,
         
-        arrived  : _arrived,
+        onPopupUpdate,
+        
+        
+        
+        // behaviors:
+        lazy             = false,
+        
+        
+        
+        // children:
+        children,
     ...restIndicatorProps} = props;
+    
+    
+    
+    // handlers:
+    const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((position) => {
+        // TODO: setPopupPos
+    }, []);
+    const handlePopupUpdate         = useMergeEvents(
+        // preserves the original `onPopupUpdate`:
+        onPopupUpdate,
+        
+        
+        
+        // popups:
+        handlePopupUpdateInternal,
+    );
     
     
     
