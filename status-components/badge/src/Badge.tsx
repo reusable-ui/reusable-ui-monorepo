@@ -263,15 +263,15 @@ export const useBadgeStyleSheet = createUseStyleSheet(() => ({
 export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
     const basics = {
         // spacings:
-        paddingInline : '0.65em'                                            as CssKnownProps['paddingInline'],
-        paddingBlock  : '0.35em'                                            as CssKnownProps['paddingBlock' ],
+        paddingInline   : '0.65em'                                          as CssKnownProps['paddingInline'],
+        paddingBlock    : '0.35em'                                          as CssKnownProps['paddingBlock' ],
         
         
         
         // typos:
-        whiteSpace    : 'normal'                                            as CssKnownProps['whiteSpace'],
-        fontSize      : '0.75em'                                            as CssKnownProps['fontSize'],
-        fontWeight    : typos.fontWeightBold                                as CssKnownProps['fontWeight'],
+        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'],
+        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'],
+        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'],
     };
     
     
