@@ -543,6 +543,11 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
             
             
             
+            // semantics:
+            semanticRole={props.semanticRole ?? 'status'}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             classes={classes}
