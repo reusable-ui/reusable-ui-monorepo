@@ -1520,7 +1520,7 @@ export interface ToggleExcitedProps
     excited         ?: boolean
     onExcitedChange ?: (newExcited: boolean) => void
 }
-export const useExcitedState = <TElement extends Element = Element>(props: ToggleExcitedProps) => {
+export const useExcitedState = <TElement extends Element = HTMLElement>(props: ToggleExcitedProps) => {
     // props:
     const {
         // accessibilities:
@@ -1883,7 +1883,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
 
 
 // react components:
-export interface BasicProps<TElement extends Element = Element>
+export interface BasicProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         GenericProps<TElement>,
@@ -1900,7 +1900,7 @@ export interface BasicProps<TElement extends Element = Element>
         MildVariant
 {
 }
-const Basic = <TElement extends Element = Element>(props: BasicProps<TElement>): JSX.Element|null => {
+const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet      = useBasicStyleSheet();
     
