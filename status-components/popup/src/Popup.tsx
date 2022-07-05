@@ -6,8 +6,9 @@ import {
     
     
     // hooks:
-    useState,
+    useReducer,
     useRef,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -291,27 +292,21 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
 
 
 // utilities:
-interface Coordinate {
-    x         : number
-    y         : number
-    placement : PopupPlacement
-}
-const coordinateReducer = (coordinate: Coordinate|null, newCoordinate: Coordinate|null): Coordinate|null => {
+type Coordinate = Pick<PopupPosition, 'x'|'y'|'placement'>
+const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordinate|null): Coordinate|null => {
     if (
-        (newCoordinate === coordinate)
+        (oldCoordinate === newCoordinate)
         ||
         (
-            !!newCoordinate
+            !!oldCoordinate  &&  !!newCoordinate
             &&
-            !!coordinate
+            (oldCoordinate.x === newCoordinate.x)
             &&
-            (newCoordinate.x === coordinate.x)
+            (oldCoordinate.y === newCoordinate.y)
             &&
-            (newCoordinate.y === coordinate.y)
-            &&
-            (newCoordinate.placement === coordinate.placement)
+            (oldCoordinate.placement === newCoordinate.placement)
         )
-    ) return coordinate;
+    ) return oldCoordinate;
     
     return newCoordinate;
 };
@@ -349,15 +344,16 @@ export interface PopupProps<TElement extends Element = Element>
 }
 const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet       = usePopupStyleSheet();
+    const styleSheet              = usePopupStyleSheet();
     
     
     
     // states:
     
     // accessibilities:
-    const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
+    const activePassiveState      = useActivePassiveState<TElement>(props);
+    const isVisible               = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
+    const [popupPos, setPopupPos] = useReducer(coordinateReducer, null);
     
     
     
@@ -375,6 +371,11 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
         popupShift       = 0,
         
         onPopupUpdate,
+        
+        
+        
+        // styles:
+        style,
         
         
         
@@ -402,9 +403,38 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     
     
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // popups:
+        ( targetRef              || null) && 'overlay',
+        ((targetRef && popupPos) || null) && popupPos?.placement,
+    );
+    
+    
+    
+    // styles:
+    const mergedStyle = useMemo(() => ({
+        // positions:
+        position : ( targetRef              || undefined) && popupStrategy,
+        left     : ((targetRef && popupPos) || undefined) && `${popupPos?.x}px`,
+        top      : ((targetRef && popupPos) || undefined) && `${popupPos?.y}px`,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `icon.style`):
+        ...(style ?? {}),
+    }), [popupStrategy, popupPos, style]);
+    
+    
+    
     // handlers:
     const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((position) => {
-        // TODO: setPopupPos
+        setPopupPos(position);
     }, []);
     const handlePopupUpdate         = useMergeEvents(
         // preserves the original `onPopupUpdate`:
@@ -444,6 +474,12 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            classes={classes}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
             
             
             
