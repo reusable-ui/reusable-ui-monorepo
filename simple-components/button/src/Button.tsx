@@ -219,7 +219,7 @@ export const usesButtonLayout = (options?: OrientationVariantOptions) => {
             
             
             // positions:
-            verticalAlign     : 'baseline',    // button's text should be aligned with sibling text, so the button behave like <span> wrapper
+            verticalAlign     : 'baseline',    // <Button>'s text should be aligned with sibling text, so the <Button> behave like <span> wrapper
             
             
             
