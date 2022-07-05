@@ -437,7 +437,7 @@ export const usesCheckLayout = () => {
             
             
             // positions:
-            verticalAlign  : 'baseline',    // check's text should be aligned with sibling text, so the check behave like <span> wrapper
+            verticalAlign  : 'baseline',    // <Check>'s text should be aligned with sibling text, so the <Check> behave like <span> wrapper
             
             
             
@@ -537,7 +537,7 @@ export const usesCheckLayout = () => {
                 
                 
                 // positions:
-                verticalAlign : 'baseline', // label's text should be aligned with sibling text, so the label behave like <span> wrapper
+                verticalAlign : 'baseline', // <Label>'s text should be aligned with sibling text, so the <Label> behave like <span> wrapper
                 
                 
                 
