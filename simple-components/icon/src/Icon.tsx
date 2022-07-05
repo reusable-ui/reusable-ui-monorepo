@@ -504,7 +504,7 @@ export const usesIconLayout      = () => {
             
             
             // positions:
-            verticalAlign  : 'baseline',    // icon's text should be aligned with sibling text, so the icon behave like <span> wrapper
+            verticalAlign  : 'baseline',    // <Icon>'s text should be aligned with sibling text, so the <Icon> behave like <span> wrapper
             
             
             
