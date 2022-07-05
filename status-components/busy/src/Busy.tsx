@@ -10,18 +10,6 @@ import type {
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
-    rule,
-    variants,
-    ifEmpty,
-    
-    
-    
-    //combinators:
-    children,
-    
-    
-    
     // styles:
     style,
     imports,
@@ -37,34 +25,12 @@ import {
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
-    // configs:
-    borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // styles:
-    fillTextLineHeightLayout,
-    fillTextLineWidthLayout,
-}                           from '@reusable-ui/layouts'         // reusable common layouts
-import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-import {
-    // hooks:
-    useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
     // hooks:
     usesSizeVariant,
-    ifNotNude,
-    usesBorder,
-    usesPadding,
-    extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
 export {
     // types:
@@ -87,81 +53,28 @@ import {
     BadgeProps,
     Badge,
 }                           from '@reusable-ui/badge'           // a base component
+import {
+    // react components:
+    IconProps,
+    Icon,
+}                           from '@reusable-ui/icon'            // an icon set
+import {
+    // react components:
+    VisuallyHidden,
+}                           from '@reusable-ui/visually-hidden' // an accessibility utility
 
 
 
 // styles:
 export const usesBusyLayout = () => {
-    // dependencies:
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    
-    
     return style({
         ...imports([
             // layouts:
             usesBadgeLayout(),
         ]),
         ...style({
-            // layouts:
-            display       : 'inline-block', // use inline block, so it takes the width & height as needed
-            ...ifEmpty({
-                display   : 'inline-grid',  // required for filling the width & height using `::before` & `::after`
-            }),
-            
-            
-            
-            // positions:
-            verticalAlign : 'baseline',    // <Busy>'s text should be aligned with sibling text, so the <Busy> behave like <span> wrapper
-            
-            
-            
-            // sizes:
-            ...ifEmpty({
-                // makes the width and height equal, by filling `width === height === line(Height/Width)`:
-                
-                // width  : '1em', // not working, (font-width  !== 1em) if the font-size is fractional number
-                // height : '1em', // not working, (font-height !== 1em) if the font-size is fractional number
-                
-                ...children('::before', {
-                    ...imports([
-                        fillTextLineHeightLayout(),
-                    ]),
-                }),
-                ...children('::after', {
-                    ...imports([
-                        fillTextLineWidthLayout(),
-                    ]),
-                }),
-            }),
-            
-            
-            
-            // spacings:
-            ...ifEmpty({
-                // makes the width and height equal, by making `paddingInline === paddingBlock`:
-                [paddings.paddingInline] : paddings.paddingBlock,
-            }),
-            
-            
-            
-            // typos:
-            lineHeight    : 1,
-            textAlign     : 'center',
-            
-            
-            
             // customize:
             ...usesCssProps(busies), // apply config's cssProps
-            
-            
-            
-            // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(busies),
         }),
     });
 };
@@ -170,12 +83,6 @@ export const usesBusyVariants = () => {
     
     // layouts:
     const [sizeVariantRule] = usesSizeVariant(busies);
-    
-    // borders:
-    const [, borders      ] = usesBorder();
-    
-    // spacings:
-    const [, paddings     ] = usesPadding();
     
     
     
@@ -216,16 +123,8 @@ export const useBusyStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
     const basics = {
-        // spacings:
-        paddingInline : '0.65em'                                            as CssKnownProps['paddingInline'],
-        paddingBlock  : '0.35em'                                            as CssKnownProps['paddingBlock' ],
-        
-        
-        
         // typos:
-        whiteSpace    : 'normal'                                            as CssKnownProps['whiteSpace'],
-        fontSize      : '0.75em'                                            as CssKnownProps['fontSize'],
-        fontWeight    : typos.fontWeightBold                                as CssKnownProps['fontWeight'],
+        fontSize   : '1em'                                          as CssKnownProps['fontSize'],
     };
     
     
@@ -235,17 +134,9 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
         
         
         
-        // spacings:
-        paddingInlineSm : [['calc(', basics.paddingInline, '/', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockSm  : [['calc(', basics.paddingBlock , '/', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        paddingInlineLg : [['calc(', basics.paddingInline, '*', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockLg  : [['calc(', basics.paddingBlock , '*', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        
-        
-        
         // typos:
-        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'],
-        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'],
+        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'],
+        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'],
     };
 }, { prefix: 'busy' });
 
@@ -255,10 +146,13 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
 export interface BusyProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        BadgeProps<TElement>
+        BadgeProps<TElement>,
+        
+        // an icon:
+        Partial<Pick<IconProps<Element>, 'icon'>>
 {
-    // accessibilities:
-    label ?: string
+    // components:
+    iconComponent ?: React.ReactComponentElement<any, IconProps<Element>>
 }
 const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>): JSX.Element|null => {
     // styles:
@@ -267,10 +161,19 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
     
     
     // rest props:
-    const {
+    let {
+        // appearances:
+        icon = 'busy',
+        
+        
+        
         // accessibilities:
-        active,
         label,
+        
+        
+        
+        // components:
+        iconComponent = <Icon<Element> icon={icon} />,
         
         
         
@@ -280,12 +183,14 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
     
     
     
-    // fn props:
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const autoActive : boolean = !!(props.children || false);
-    const activeFn   : boolean = active /*controllable*/ ?? autoActive /*uncontrollable*/;
+    // if no [label] and [children] are text-able => move them from [children] to [label]
+    if (!label && children) {
+        const childrenArr = React.Children.toArray(children);
+        if (childrenArr.length && childrenArr.every((child) => (typeof(child) === 'string') || (typeof(child) === 'number'))) {
+            label    = childrenArr.join(''); // move in
+            children = undefined;            // move out
+        } // if
+    } // if
     
     
     
@@ -297,16 +202,14 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             
             
             
-            // semantics:
-            tag={props.tag ?? 'span'}
-            semanticRole={props.semanticRole ?? 'status'}
-            
-            aria-label={props['aria-label'] ?? label}
+            // appearances:
+            nude={props.nude ?? true}
+            outlined={props.outlined ?? true}
             
             
             
             // variants:
-            mild={props.mild ?? false}
+            badgeStyle={props.badgeStyle ?? 'circle'}
             
             
             
@@ -316,9 +219,17 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             
             
             // accessibilities:
-            active={activeFn}
+            label={label ?? 'Loading...'}
         >
-            { props.children }
+            {React.cloneElement<IconProps<Element>>(iconComponent,
+                // props:
+                {
+                    size: iconComponent.props.size ?? '1em',
+                }
+            )}
+            { children && <VisuallyHidden>
+                { children }
+            </VisuallyHidden> }
         </Badge>
     );
 };
