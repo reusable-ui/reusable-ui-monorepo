@@ -69,22 +69,22 @@ const _defaultWindowResizeOptions  : ResizeObserverOptions = { box: 'content-box
 
 
 // utilities:
-const isRef      = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null): elementRef is React.RefObject<TElement> => {
+const isRef      = <TElement extends Element = HTMLElement>(elementRef: TElement|React.RefObject<TElement>|null): elementRef is React.RefObject<TElement> => {
     return (
         !!elementRef
         &&
         ('current' in elementRef)
     );
 };
-const getElement = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null): TElement|null => {
+const getElement = <TElement extends Element = HTMLElement>(elementRef: TElement|React.RefObject<TElement>|null): TElement|null => {
     return isRef(elementRef) ? elementRef.current : elementRef;
 };
 
 
 
 // hooks:
-export type ElementResizeCallback<TElement extends Element = Element> = (element: TElement, size: ResizeObserverSize) => void
-export const useElementResizeObserver = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = _defaultElementResizeOptions) => {
+export type ElementResizeCallback<TElement extends Element = HTMLElement> = (element: TElement, size: ResizeObserverSize) => void
+export const useElementResizeObserver = <TElement extends Element = HTMLElement>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = _defaultElementResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
@@ -221,7 +221,7 @@ export interface CssSizeOptions extends ResizeObserverOptions {
     varInlineSize ?: CssCustomName|CssCustomSimpleRef
     varBlockSize  ?: CssCustomName|CssCustomSimpleRef
 }
-export const useElementCssSize = <TElement extends Element = Element>(elementRef: TElement|React.RefObject<TElement>|null, options: CssSizeOptions) => {
+export const useElementCssSize = <TElement extends Element = HTMLElement>(elementRef: TElement|React.RefObject<TElement>|null, options: CssSizeOptions) => {
     // cssfn:
     const liveStyleSheet = useMemo(allocateLiveStyleSheet, []);
     
@@ -305,11 +305,11 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
 
 
 // react components:
-export interface UseElementCssSizeProps<TElement extends Element = Element> extends CssSizeOptions
+export interface UseElementCssSizeProps<TElement extends Element = HTMLElement> extends CssSizeOptions
 {
     elementRef: TElement|React.RefObject<TElement>|null
 }
-export const UseElementCssSize = <TElement extends Element = Element>(props: UseElementCssSizeProps<TElement>): JSX.Element|null => {
+export const UseElementCssSize = <TElement extends Element = HTMLElement>(props: UseElementCssSizeProps<TElement>): JSX.Element|null => {
     // hooks:
     useElementCssSize(props.elementRef, props);
     
