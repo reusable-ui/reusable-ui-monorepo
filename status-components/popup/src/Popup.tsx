@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -66,6 +67,7 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -355,6 +357,7 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     // accessibilities:
     const activePassiveState = useActivePassiveState<TElement>(props);
+    const isVisible          = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
     
     
     
@@ -386,6 +389,19 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
     
     
     
+    // refs:
+    const popupRefInternal = useRef<TElement|null>(null);
+    const mergedElmRef     = useMergeRefs(
+        // preserves the original `elmRef`:
+        props.elmRef,
+        
+        
+        
+        popupRefInternal,
+    );
+    
+    
+    
     // handlers:
     const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((position) => {
         // TODO: setPopupPos
@@ -399,6 +415,17 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
         // popups:
         handlePopupUpdateInternal,
     );
+    const handleAnimationEnd        = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        activePassiveState.handleAnimationEnd,
+    );
     
     
     
@@ -410,20 +437,26 @@ const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>):
             
             
             
+            // refs:
+            elmRef={mergedElmRef}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             
             
             
-            // Popup props:
-            {...{
-                // accessibilities:
-                tabIndex : props.tabIndex ?? (propEnabled ? 0 : -1), // makes any element type focusable
-            }}
-        />
+            // handlers:
+            onAnimationEnd={handleAnimationEnd}
+        >
+            { (!lazy || isVisible) && children }
+        </Indicator>
     );
 };
 export {
     Popup,
     Popup as default,
 }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition }
