@@ -111,6 +111,16 @@ import {
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
 
+// other libs:
+import type {
+    // types:
+    Placement  as PopupPlacement,
+    Middleware as PopupMiddleware,
+    Strategy   as PopupStrategy,
+    
+    ComputePositionReturn,
+}                           from '@floating-ui/dom'             // a popup utility
+
 
 
 // hooks:
@@ -273,6 +283,34 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
         ]                           as CssKnownProps['anim'],
     };
 }, { prefix: 'pop' });
+
+
+
+// utilities:
+interface Coordinate {
+    x         : number
+    y         : number
+    placement : PopupPlacement
+}
+const coordinateReducer = (coordinate: Coordinate|null, newCoordinate: Coordinate|null): Coordinate|null => {
+    if (
+        (newCoordinate === coordinate)
+        ||
+        (
+            !!newCoordinate
+            &&
+            !!coordinate
+            &&
+            (newCoordinate.x === coordinate.x)
+            &&
+            (newCoordinate.y === coordinate.y)
+            &&
+            (newCoordinate.placement === coordinate.placement)
+        )
+    ) return coordinate;
+    
+    return newCoordinate;
+};
 
 
 
