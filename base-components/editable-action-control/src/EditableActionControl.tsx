@@ -106,14 +106,14 @@ export const useEditableActionControlStyleSheet = createUseStyleSheet(() => ({
 
 
 // react components:
-export interface EditableActionControlProps<TElement extends Element = Element>
+export interface EditableActionControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         EditableControlProps<TElement>,
         Omit<ActionControlProps<TElement>, 'onChange'>
 {
 }
-const EditableActionControl = <TElement extends Element = Element>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
+const EditableActionControl = <TElement extends Element = HTMLElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableActionControlStyleSheet();
     
