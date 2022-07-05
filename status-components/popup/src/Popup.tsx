@@ -88,10 +88,14 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    ifDisable,
+    ActivePassiveVars,
+    ifActived,
+    ifActivating,
+    ifPassivating,
+    ifPassived,
     ifActive,
-    markActive      as indicatorMarkActive,
-    usesThemeActive as indicatorUsesThemeActive,
+    ifPassive,
+    usesActivePassiveState as indicatorUsesActivePassiveState,
     
     
     
@@ -109,22 +113,61 @@ import {
 
 
 
+// hooks:
+
+// accessibilities:
+
+//#region activePassive
+/**
+ * Uses active & passive states.
+ * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ */
+export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+    // dependencies:
+    
+    // accessibilities:
+    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // accessibilities:
+                activeRule,
+            ]),
+            ...states([
+                ifActivating({
+                    ...vars({
+                        [actives.anim  ] : popups.animActive,
+                    }),
+                }),
+                ifPassivating({
+                    ...vars({
+                        [actives.anim  ] : popups.animPassive,
+                    }),
+                }),
+            ]),
+        }),
+        actives,
+    ];
+};
+//#endregion activePassive
+
+
+
 // styles:
 export const usesPopupLayout = () => {
     return style({
         ...imports([
-            // resets:
-            stripoutPopup(), // clear browser's default styles
-            
             // layouts:
             usesIndicatorLayout(),
-            
-            // colors:
-            usesThemeDefault(),
         ]),
         ...style({
             // positions:
-            position: 'relative', // supports for boxShadowFocus, prevents boxShadowFocus from clipping
+            ...rule('.overlay', {
+                zIndex: 1080,
+            }),
             
             
             
@@ -155,49 +198,19 @@ export const usesPopupStates = () => {
     // dependencies:
     
     // states:
-    const [focusBlurStateRule  ] = usesFocusBlurState();
-    const [arriveLeaveStateRule] = usesArriveLeaveState();
+    const [activePassiveStateRule] = usesActivePassiveState();
     
     
     
     return style({
         ...imports([
-            // states:
-            usesIndicatorStates(),
-            
             // accessibilities:
-            focusBlurStateRule,
-            arriveLeaveStateRule,
+            activePassiveStateRule,
         ]),
         ...states([
-            ifDisable({
-                // accessibilities:
-                cursor : popups.cursorDisable,
-            }),
-            
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            
-            ifFocus({
-                // positions:
-                zIndex: 2, // prevents boxShadowFocus from clipping
-            }),
-            ifBlurring({
-                // positions:
-                zIndex: 1, // prevents boxShadowFocus from clipping but below the active one
+            ifPassived({
+                // appearances:
+                display: 'none', // hide the popup
             }),
         ]),
     });
@@ -220,104 +233,44 @@ export const usePopupStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const [, , animRegistry] = usesAnim();
-    const boxShadows = animRegistry.boxShadows;
-    const filters    = animRegistry.filters;
-    
-    const [, {boxShadow : boxShadowFocusBlur}] = usesFocusBlurState();
-    const [, {filter    : filterArriveLeave }] = usesArriveLeaveState();
-    
-    
-    
     //#region keyframes
-    const frameBlurred  = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
-            
-         // boxShadowFocusBlur, // missing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
+    const framePassived     = style({
+        opacity   : 0,
+        transform : 'scale(0)',
     });
-    const frameFocused = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
-            
-            boxShadowFocusBlur, // existing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
+    const frameIntermediate = style({
+        transform : 'scale(1.02)',
     });
-    const [keyframesFocusRule, keyframesFocus] = keyframes({
-        from : frameBlurred,
-        to   : frameFocused,
+    const frameActived      = style({
+        opacity   : 1,
+        transform : 'scale(1)',
     });
-    keyframesFocus.value = 'focus'; // the @keyframes name should contain 'focus' in order to be recognized by `useFocusBlurState`
-    const [keyframesBlurRule , keyframesBlur ] = keyframes({
-        from : frameFocused,
-        to   : frameBlurred,
+    const [keyframesActiveRule , keyframesActive ] = keyframes({
+        from  : framePassived,
+        '70%' : frameIntermediate,
+        to    : frameActived,
     });
-    keyframesBlur.value  = 'blur';  // the @keyframes name should contain 'blur'  in order to be recognized by `useFocusBlurState`
-    
-    
-    
-    const frameLeft = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
-            
-         // filterArriveLeave, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    const [keyframesPassiveRule, keyframesPassive] = keyframes({
+        from  : frameActived,
+        '30%' : frameIntermediate,
+        to    : framePassived,
     });
-    const frameArrived  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
-            
-            filterArriveLeave, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
-    });
-    const [keyframesArriveRule, keyframesArrive] = keyframes({
-        from : frameLeft,
-        to   : frameArrived,
-    });
-    keyframesArrive.value = 'arrive'; // the @keyframes name should contain 'arrive' in order to be recognized by `useArriveLeaveState`
-    const [keyframesLeaveRule , keyframesLeave ] = keyframes({
-        from : frameArrived,
-        to   : frameLeft,
-    });
-    keyframesLeave.value  = 'leave';  // the @keyframes name should contain 'leave'  in order to be recognized by `useArriveLeaveState`
+    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
     //#endregion keyframes
     
     
     
     return {
-        // accessibilities:
-        cursorDisable  : 'not-allowed'  as CssKnownProps['cursor'],
-        
-        
-        
         // animations:
-        boxShadowFocus : [
-            [0, 0, 0, '0.25rem'],
-        ]                               as CssKnownProps['boxShadow'],
-        filterArrive   : [[
-            'brightness(85%)',
-            'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
-        ]]                              as CssKnownProps['filter'],
-        
-        ...keyframesFocusRule,
-        ...keyframesBlurRule,
-        ...keyframesArriveRule,
-        ...keyframesLeaveRule,
-        animFocus      : [
-            ['150ms', 'ease-out', 'both', keyframesFocus ],
-        ]                               as CssKnownProps['anim'],
-        animBlur       : [
-            ['300ms', 'ease-out', 'both', keyframesBlur  ],
-        ]                               as CssKnownProps['anim'],
-        animArrive     : [
-            ['150ms', 'ease-out', 'both', keyframesArrive],
-        ]                               as CssKnownProps['anim'],
-        animLeave      : [
-            ['300ms', 'ease-out', 'both', keyframesLeave ],
-        ]                               as CssKnownProps['anim'],
+        ...keyframesActiveRule,
+        ...keyframesPassiveRule,
+        animActive    : [
+            ['300ms', 'ease-out', 'both', keyframesActive ],
+        ]                           as CssKnownProps['anim'],
+        animPassive   : [
+            ['500ms', 'ease-out', 'both', keyframesPassive],
+        ]                           as CssKnownProps['anim'],
     };
 }, { prefix: 'pop' });
 
