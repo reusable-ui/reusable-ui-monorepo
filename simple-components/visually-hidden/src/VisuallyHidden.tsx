@@ -71,13 +71,13 @@ export const useVisuallyHiddenStyleSheet = createUseStyleSheet(() => ({
 
 
 // react components:
-export interface VisuallyHiddenProps<TElement extends Element = Element>
+export interface VisuallyHiddenProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         GenericProps<TElement>
 {
 }
-const VisuallyHidden = <TElement extends Element = Element>(props: VisuallyHiddenProps<TElement>): JSX.Element|null => {
+const VisuallyHidden = <TElement extends Element = HTMLElement>(props: VisuallyHiddenProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet      = useVisuallyHiddenStyleSheet();
     
