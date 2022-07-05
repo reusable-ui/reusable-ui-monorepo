@@ -190,7 +190,7 @@ const htmlCtrls = [
     'textarea',
 ];
 
-export const useEnableDisableState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
+export const useEnableDisableState = <TElement extends Element = HTMLElement>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propEnabled = usePropEnabled(props);
     const { tag }     = useSemantic(props);
@@ -361,7 +361,7 @@ const popupRoles = [
     'tooltip',
 ];
 
-export const useActivePassiveState = <TElement extends Element = Element>(props: AccessibilityProps & SemanticProps) => {
+export const useActivePassiveState = <TElement extends Element = HTMLElement>(props: AccessibilityProps & SemanticProps) => {
     // fn props:
     const propActive    = usePropActive(props);
     const { tag, role } = useSemantic(props);
@@ -708,7 +708,7 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
 
 
 // react components:
-export interface IndicatorProps<TElement extends Element = Element>
+export interface IndicatorProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BasicProps<TElement>,
@@ -717,7 +717,7 @@ export interface IndicatorProps<TElement extends Element = Element>
         AccessibilityProps
 {
 }
-const Indicator = <TElement extends Element = Element>(props: IndicatorProps<TElement>): JSX.Element|null => {
+const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet         = useIndicatorStyleSheet();
     
