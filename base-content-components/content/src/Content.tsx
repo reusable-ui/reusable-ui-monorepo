@@ -589,7 +589,7 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
 
 
 // react components:
-export interface ContentProps<TElement extends Element = Element>
+export interface ContentProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BasicProps<TElement>
@@ -597,7 +597,7 @@ export interface ContentProps<TElement extends Element = Element>
     // children:
     children ?: React.ReactNode
 }
-const Content = <TElement extends Element = Element>(props: ContentProps<TElement>): JSX.Element|null => {
+const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet         = useContentStyleSheet();
     
