@@ -336,7 +336,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
     };
 };
 
-export const useValidInvalidState  = <TElement extends Element = Element>(props: ValidationProps, validator?: ValidatorHandler) => {
+export const useValidInvalidState  = <TElement extends Element = HTMLElement>(props: ValidationProps, validator?: ValidatorHandler) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);
@@ -670,7 +670,7 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
 
 
 // react components:
-export interface EditableControlProps<TElement extends Element = Element>
+export interface EditableControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         ControlProps<TElement>,
@@ -700,7 +700,7 @@ export interface EditableControlProps<TElement extends Element = Element>
     value           ?: string | number | ReadonlyArray<string>
     onChange        ?: React.ChangeEventHandler<TElement>
 }
-const EditableControl = <TElement extends Element = Element>(props: EditableControlProps<TElement>): JSX.Element|null => {
+const EditableControl = <TElement extends Element = HTMLElement>(props: EditableControlProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet        = useEditableControlStyleSheet();
     
