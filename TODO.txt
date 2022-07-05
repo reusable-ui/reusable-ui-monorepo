@@ -5,7 +5,7 @@ fix press/release animation on keyboard press on <Range>
 
 fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
 fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
-
+update onActiveChange(boolean, T) => onActiveChange(ActiveEvent)
 
 
 inline then block
