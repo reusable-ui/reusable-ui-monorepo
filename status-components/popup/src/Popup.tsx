@@ -293,7 +293,7 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 
 
 // react components:
-export interface PopupProps<TElement extends Element = Element>
+export interface PopupProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         IndicatorProps<TElement>
@@ -321,7 +321,7 @@ export interface PopupProps<TElement extends Element = Element>
     // children:
     children        ?: React.ReactNode
 }
-const Popup = <TElement extends Element = Element>(props: PopupProps<TElement>): JSX.Element|null => {
+const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet              = usePopupStyleSheet();
     
