@@ -740,6 +740,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         min,
         max,
         step,
+        
+        
+        
+        // styles:
+        style,
     ...restEditableControlProps}  = props;
     
     
