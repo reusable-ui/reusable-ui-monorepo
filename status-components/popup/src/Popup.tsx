@@ -67,6 +67,7 @@ import {
     ifActivating,
     ifPassivating,
     ifPassived,
+    usesEnableDisableState,
     usesActivePassiveState as indicatorUsesActivePassiveState,
     useActivePassiveState,
     
@@ -189,6 +190,7 @@ export const usesPopupStates = () => {
     // dependencies:
     
     // states:
+    const [enableDisableStateRule] = usesEnableDisableState();
     const [activePassiveStateRule] = usesActivePassiveState();
     
     
@@ -196,6 +198,7 @@ export const usesPopupStates = () => {
     return style({
         ...imports([
             // accessibilities:
+            enableDisableStateRule,
             activePassiveStateRule,
         ]),
         ...states([
