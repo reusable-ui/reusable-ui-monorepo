@@ -53,10 +53,11 @@ export const useTriggerRender = () => {
 
 export { useCallback as useEvent };
 
-export const useMergeEvents = <TEvent extends React.SyntheticEvent<any>>(...eventHandlers: Optional<React.EventHandler<TEvent>>[]): React.EventHandler<TEvent>|undefined => {
-    return useMemo<React.EventHandler<TEvent>|undefined>(() => {
+export type EventHandler<in TEvent> = (event: TEvent) => void;
+export const useMergeEvents = <TEvent>(...eventHandlers: Optional<EventHandler<TEvent>>[]): EventHandler<TEvent>|undefined => {
+    return useMemo<EventHandler<TEvent>|undefined>(() => {
         // check if singular eventHandler:
-        let firstEventHandler : React.EventHandler<TEvent>|undefined = undefined;
+        let firstEventHandler : EventHandler<TEvent>|undefined = undefined;
         let multiEventHandlers = false;
         for (const eventHandler of eventHandlers) {
             if (!eventHandler) continue; // ignores empty eventHandler
