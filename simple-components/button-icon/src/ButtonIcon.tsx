@@ -120,7 +120,7 @@ import {
     Icon,
     
     IconComponentProps,
-}                           from '@reusable-ui/icon'            // an icon set
+}                           from '@reusable-ui/icon'            // an icon component
 
 
 
