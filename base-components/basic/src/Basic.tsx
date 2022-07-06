@@ -493,6 +493,25 @@ const [themes] = cssVar<ThemeVars>();
 
 
 export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
+export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
+    return rule(
+        Object.keys(colorThemes)
+        .map((themeName) => `.th${pascalCase(themeName)}`)
+        ,
+        styles
+    );
+};
+export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
+    return rule(
+        `:not(:is(${
+            Object.keys(colorThemes)
+            .map((themeName) => `.th${pascalCase(themeName)}`)
+            .join(', ')
+        }))`
+        ,
+        styles
+    );
+};
 
 
 
