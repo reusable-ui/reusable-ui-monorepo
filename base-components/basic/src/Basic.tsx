@@ -1315,31 +1315,21 @@ export interface RingVars {
     /**
      * functional ring color.
      */
-    ringFn    : any
+    ringFn : any
     /**
      * final ring color.
      */
-    ring      : any
-    /**
-     * functional alternate ring color.
-     */
-    altRingFn : any
-    /**
-     * final alternate ring color.
-     */
-    altRing   : any
+    ring   : any
 }
 const [rings] = cssVar<RingVars>();
 
 /**
- * Uses ring color (text color).
+ * Uses ring color (focus ring color).
  * @returns A `FeatureMixin<RingVars>` represents ring color definitions.
  */
 export const usesRing = (): FeatureMixin<RingVars> => {
     // dependencies:
-    const [, themes   ] = usesThemeVariant();
-    const [, outlineds] = usesOutlinedVariant();
-    const [, milds    ] = usesMildVariant();
+    const [, themes] = usesThemeVariant();
     
     
     
@@ -1347,36 +1337,22 @@ export const usesRing = (): FeatureMixin<RingVars> => {
         () => style({
             // color functions:
             ...vars({
-                [rings.ringFn   ] : 'inherit',
-                [rings.ring     ] : 'inherit',
-                [rings.altRingFn] : 'inherit',
-                [rings.altRing  ] : 'inherit',
+                [rings.ringFn] : 'inherit',
+                [rings.ring  ] : 'inherit',
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [rings.ringFn   ] : fallbacks(
+                    [rings.ringFn] : fallbacks(
                         themes.ringImpt,      // first  priority
                         themes.ring,          // second priority
                         themes.ringCond,      // third  priority
                         
                         colors.secondaryThin, // default => uses secondary theme, because its color is neutral
                     ),
-                    [rings.ring     ] : fallbacks(
+                    [rings.ring  ] : fallbacks(
                         // no toggle outlined nor toggle mild yet (might be added in the future)
                         
-                        rings.ringFn,         // default => uses our `boxShadowColorFn`
-                    ),
-                    [rings.altRingFn] : fallbacks(
-                        themes.altRingImpt,   // first  priority
-                        themes.altRing,       // second priority
-                        themes.altRingCond,   // third  priority
-                        
-                        colors.secondaryThin, // default => uses secondary theme, because its color is neutral
-                    ),
-                    [rings.altRing  ] : fallbacks(
-                        // no toggle outlined nor toggle mild yet (might be added in the future)
-                        
-                        rings.altRingFn,      // default => uses our `boxShadowColorFn`
+                        rings.ringFn,         // default => uses our `ringFn`
                     ),
                 }),
             }),
@@ -1756,6 +1732,9 @@ export const usesBasicLayout = () => {
     // borders:
     const [borderRule          ] = usesBorder();
     
+    // rings:
+    const [ringRule            ] = usesRing();
+    
     // animations:
     const [animRule    , anims ] = usesAnim();
     
@@ -1777,6 +1756,9 @@ export const usesBasicLayout = () => {
             
             // borders:
             borderRule,
+            
+            // rings:
+            ringRule,
             
             // animations:
             animRule,
