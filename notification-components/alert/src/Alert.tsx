@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Optional,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
@@ -56,6 +60,9 @@ import {
 }                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
+    useEvent,
+    EventHandler,
+    useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -66,6 +73,10 @@ import {
     usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // types:
+    ToggleActiveProps,
+}                           from '@reusable-ui/indicator'       // a base component
 export {
     // types:
     PopupPlacement,
@@ -96,6 +107,25 @@ import {
     // configs:
     contents,
 }                           from '@reusable-ui/content'         // a base component
+import {
+    // types:
+    SizeName as IconSizeName,
+    
+    
+    
+    // react components:
+    IconList,
+    IconProps,
+    Icon,
+    
+    IconComponentProps,
+}                           from '@reusable-ui/icon'            // an icon set
+
+
+
+// defaults:
+const _defaultIconSize    : IconSizeName       = 'md';
+const _defaultIconClasses : Optional<string>[] = ['icon'];
 
 
 
@@ -242,14 +272,35 @@ export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
 
 
 
+// utilities:
+const getIconByTheme = <TElement extends Element = HTMLElement>({ theme }: AlertProps<TElement>): IconList => {
+    switch (theme) {
+        case 'success'   : return 'check_circle';
+        case 'warning'   : return 'warning';
+        case 'danger'    : return 'error';
+     // case 'primary'   :
+     // case 'secondary' :
+     // case 'info'      :
+     // case 'light'     :
+     // case 'dark'      :
+        default          : return 'info';
+    } // switch
+};
+
+
+
 // react components:
 export interface AlertProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>
+        PopupProps<TElement>,
+        
+        // accessibilities:
+        Pick<ToggleActiveProps, 'onActiveChange'>,
+        
+        // components:
+        IconComponentProps
 {
-    // accessibilities:
-    label ?: string
 }
 const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElement>): JSX.Element|null => {
     // styles:
@@ -267,6 +318,22 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
         // accessibilities:
         active,
         label,
+        
+        
+        
+        // components:
+        icon,
+        iconComponent = (
+            <Icon<Element>
+                // appearances:
+                icon={icon ?? getIconByTheme(props)}
+                
+                
+                
+                // classes:
+                classes={_defaultIconClasses} // inject icon classes
+            />
+        ),
         
         
         
@@ -314,6 +381,20 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
             // accessibilities:
             active={activeFn}
         >
+            {/* <Icon> */}
+            {React.cloneElement<IconProps<Element>>(iconComponent,
+                // props:
+                {
+                    // variants:
+                    size    : (iconComponent.props as any).size ?? _defaultIconSize,
+                    
+                    
+                    
+                    // classes:
+                    classes : (iconComponent.props as any).classes ?? _defaultIconClasses,
+                }
+            )}
+            
             { props.children }
         </Popup>
     );
