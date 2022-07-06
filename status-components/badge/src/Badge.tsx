@@ -66,7 +66,7 @@ import {
     usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
-export {
+export type {
     // types:
     PopupPlacement,
     PopupMiddleware,
