@@ -85,87 +85,58 @@ import {
     PopupProps,
     Popup,
 }                           from '@reusable-ui/popup'           // a base component
-
-
-
-// hooks:
-
-// appearances:
-
-//#region alert style
-export type AlertStyle = 'pill'|'square'|'circle' // might be added more styles in the future
-export interface AlertVariant {
-    alertStyle ?: AlertStyle
-}
-export const useAlertVariant = (props: AlertVariant) => {
-    return {
-        class: props.alertStyle ?? null,
-    };
-};
-//#endregion alert style
+import {
+    // styles:
+    usesContentLayout,
+    usesContentVariants,
+    usesContentChildren,
+    
+    
+    
+    // configs:
+    contents,
+}                           from '@reusable-ui/content'         // a base component
 
 
 
 // styles:
+const iconElm    = ':where(.icon)';   // zero specificity
+const bodyElm    = ':where(.body)';   // zero specificity
+const controlElm = ':where(.button)'; // zero specificity
+
+
+
 export const usesAlertLayout = () => {
-    // dependencies:
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    
-    
     return style({
         ...imports([
             // layouts:
             usesPopupLayout(),
+            usesContentLayout(),
         ]),
         ...style({
             // layouts:
-            display       : 'inline-block', // use inline block, so it takes the width & height as needed
-            ...ifEmpty({
-                display   : 'inline-grid',  // required for filling the width & height using `::before` & `::after`
-            }),
+            display             : 'grid',        // use css grid for layouting, so we can customize the desired area later.
             
+            // explicit areas:
+            /*
+                just one explicit area: `body`
+                `icon` & `button` rely on implicit area
+            */
+            gridTemplateRows    : [['auto'/*fluid height*/]],
+            gridTemplateColumns : [['auto'/*fluid width*/ ]],
+            gridTemplateAreas   : [[
+                '"body"',
+            ]],
             
+            // implicit areas:
+            gridAutoFlow        : 'column',      // if child's gridArea was not specified => place it automatically at horz direction
+            gridAutoRows        : 'min-content', // other areas than `body` should take the minimum required height
+            gridAutoColumns     : 'min-content', // other areas than `body` should take the minimum required width
+            // the gridArea's size configured as *minimum* content's size required => no free space left to distribute => so (justify|algin)Content is *not required*
             
-            // positions:
-            verticalAlign : 'baseline',    // <Alert>'s text should be aligned with sibling text, so the <Alert> behave like <span> wrapper
-            
-            
-            
-            // sizes:
-            ...ifEmpty({
-                // makes the width and height equal, by filling `width === height === line(Height/Width)`:
-                
-                // width  : '1em', // not working, (font-width  !== 1em) if the font-size is fractional number
-                // height : '1em', // not working, (font-height !== 1em) if the font-size is fractional number
-                
-                ...children('::before', {
-                    ...imports([
-                        fillTextLineHeightLayout(),
-                    ]),
-                }),
-                ...children('::after', {
-                    ...imports([
-                        fillTextLineWidthLayout(),
-                    ]),
-                }),
-            }),
-            
-            
-            
-            // spacings:
-            ...ifEmpty({
-                // makes the width and height equal, by making `paddingInline === paddingBlock`:
-                [paddings.paddingInline] : paddings.paddingBlock,
-            }),
-            
-            
-            
-            // typos:
-            lineHeight    : 1,
-            textAlign     : 'center',
+            // child default sizes:
+            justifyItems        : 'stretch',     // each section fills the entire area's width
+            alignItems          : 'stretch',     // each section fills the entire area's height
             
             
             
@@ -301,10 +272,7 @@ export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
 export interface AlertProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>,
-        
-        // appearances:
-        AlertVariant
+        PopupProps<TElement>
 {
     // accessibilities:
     label ?: string
@@ -312,11 +280,6 @@ export interface AlertProps<TElement extends Element = HTMLElement>
 const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet   = useAlertStyleSheet();
-    
-    
-    
-    // variants:
-    const alertVariant = useAlertVariant(props);
     
     
     
@@ -348,19 +311,6 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
     
     
     
-    // classes:
-    const variantClasses = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
-        
-        
-        
-        // variants:
-        alertVariant.class,
-    );
-    
-    
-    
     // jsx:
     return (
         <Popup<TElement>
@@ -384,7 +334,6 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
             
             
             
