@@ -73,7 +73,7 @@ import {
 
 
 // defaults:
-const _defaultIconSize : IconSizeName = '1em';
+const _defaultIconSize : IconSizeName = '1em'
 
 
 
