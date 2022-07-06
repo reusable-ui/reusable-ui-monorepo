@@ -54,6 +54,11 @@ import {
     Badge,
 }                           from '@reusable-ui/badge'           // a base component
 import {
+    // types:
+    SizeName as IconSizeName,
+    
+    
+    
     // react components:
     IconProps,
     Icon,
@@ -64,6 +69,11 @@ import {
     // react components:
     VisuallyHidden,
 }                           from '@reusable-ui/visually-hidden' // an accessibility utility
+
+
+
+// defaults:
+const _defaultIconSize : IconSizeName = 'md';
 
 
 
@@ -221,7 +231,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
                 // props:
                 {
                     // variants:
-                    size: (iconComponent.props as any).size ?? '1em',
+                    size: (iconComponent.props as any).size ?? _defaultIconSize,
                 }
             )}
             { children && <VisuallyHidden>
