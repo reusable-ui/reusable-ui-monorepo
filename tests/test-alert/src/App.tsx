@@ -8,6 +8,9 @@ import {
     Alert,
 } from '@reusable-ui/alert'
 import {
+    Icon,
+} from '@reusable-ui/icon'
+import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -37,10 +40,16 @@ function App() {
                 <button onClick={() => setShow(true)}>
                     Show message
                 </button>
-                <Alert active={show} theme='primary' onActiveChange={() => setShow(false)} >
+                <Alert active={show} theme='primary' mild={false} onActiveChange={() => setShow(false)} >
+                    <Icon icon='face' />
+                    <Icon icon='instagram' />
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus</p>
                 </Alert>
+                <Icon icon='info' theme='primary' />
+                <Icon icon='info' />
+                <Icon icon='instagram' theme='primary' />
+                <Icon icon='instagram' />
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
             </div>
         </>

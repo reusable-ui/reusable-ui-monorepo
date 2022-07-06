@@ -206,9 +206,9 @@ export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
         () => style({
             ...vars({
                 [focuses.boxShadowColorFn] : fallbacks(
-                    themes.focusImpt,     // first  priority
-                    themes.focus,         // second priority
-                    themes.focusCond,     // third  priority
+                    themes.ringImpt,      // first  priority
+                    themes.ring,          // second priority
+                    themes.ringCond,      // third  priority
                     
                     colors.secondaryThin, // default => uses secondary theme, because its color is neutral
                 ),
