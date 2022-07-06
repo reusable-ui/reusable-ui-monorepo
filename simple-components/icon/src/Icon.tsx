@@ -985,3 +985,14 @@ export {
     Icon,
     Icon as default,
 }
+
+
+
+export interface IconComponentProps
+    extends
+        // bases:
+        Partial<Pick<IconProps<Element>, 'icon'>>
+{
+    // components:
+    iconComponent ?: React.ReactComponentElement<any, IconProps<Element>>
+}
