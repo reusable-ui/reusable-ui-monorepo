@@ -43,8 +43,8 @@ import {
 // reusable-ui:
 import {
     // configs:
-    borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // styles:
     fillTextLineHeightLayout,
@@ -100,9 +100,9 @@ import {
 
 
 // styles:
-const iconElm    = ':where(.icon)';   // zero specificity
-const bodyElm    = ':where(.body)';   // zero specificity
-const controlElm = ':where(.button)'; // zero specificity
+const iconElm    = ':where(.icon)';    // zero specificity
+const bodyElm    = ':where(.body)';    // zero specificity
+const controlElm = ':where(.control)'; // zero specificity
 
 
 
@@ -120,7 +120,7 @@ export const usesAlertLayout = () => {
             // explicit areas:
             /*
                 just one explicit area: `body`
-                `icon` & `button` rely on implicit area
+                `icon` & `control` rely on implicit area
             */
             gridTemplateRows    : [['auto'/*fluid height*/]],
             gridTemplateColumns : [['auto'/*fluid width*/ ]],
@@ -140,15 +140,51 @@ export const usesAlertLayout = () => {
             
             
             
+            // children:
+            ...children(iconElm, {
+                // layouts:
+                gridArea    : '1 / -3', // the first row / the third column starting from the last
+                
+                
+                
+                // sizes:
+                justifySelf : 'center', // align horizontally to center
+                alignSelf   : 'start',  // align vertically   to top
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(alerts, 'icon')), // apply config's cssProps starting with icon***
+            }),
+            ...children(bodyElm, {
+                // layouts:
+                gridArea : 'body',
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(alerts, 'body')), // apply config's cssProps starting with body***
+            }),
+            ...children(controlElm, {
+                // layouts:
+                gridArea    : '1 / 2',  // the first row / the second column
+                
+                
+                
+                // sizes:
+                justifySelf : 'center', // align horizontally to center
+                alignSelf   : 'start',  // align vertically   to top
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(alerts, 'control')), // apply config's cssProps starting with control***
+            }),
+            
+            
+            
             // customize:
             ...usesCssProps(alerts), // apply config's cssProps
-            
-            
-            
-            // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(alerts),
         }),
     });
 };
@@ -158,51 +194,16 @@ export const usesAlertVariants = () => {
     // layouts:
     const [sizeVariantRule] = usesSizeVariant(alerts);
     
-    // borders:
-    const [, borders      ] = usesBorder();
-    
-    // spacings:
-    const [, paddings     ] = usesPadding();
-    
     
     
     return style({
         ...imports([
             // variants:
             usesPopupVariants(),
+            usesContentVariants(),
             
             // layouts:
             sizeVariantRule,
-        ]),
-        ...variants([
-            rule(['.pill', '.circle'], {
-                // borders:
-                // big rounded corners on top:
-                [borders.borderStartStartRadius] : borderRadiuses.pill,
-                [borders.borderStartEndRadius  ] : borderRadiuses.pill,
-                // big rounded corners on bottom:
-                [borders.borderEndStartRadius  ] : borderRadiuses.pill,
-                [borders.borderEndEndRadius    ] : borderRadiuses.pill,
-            }),
-            rule(['.square', '.circle'], {
-                ...ifNotNude({
-                    // spacings:
-                    // makes the width and height equal, by making `paddingInline === paddingBlock`:
-                    [paddings.paddingInline] : paddings.paddingBlock,
-                }),
-            }),
-            rule('.pill', {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'pill')), // apply config's cssProps starting with pill***
-            }),
-            rule('.square', {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'square')), // apply config's cssProps starting with square***
-            }),
-            rule('.circle', {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'circle')), // apply config's cssProps starting with circle***
-            }),
         ]),
     });
 };
@@ -232,37 +233,10 @@ export const useAlertStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
-    const basics = {
-        // spacings:
-        paddingInline   : '0.65em'                                          as CssKnownProps['paddingInline'],
-        paddingBlock    : '0.35em'                                          as CssKnownProps['paddingBlock' ],
-        
-        
-        
-        // typos:
-        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'],
-        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'],
-        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'],
-    };
-    
-    
-    
     return {
-        ...basics,
-        
-        
-        
         // spacings:
-        paddingInlineSm : [['calc(', basics.paddingInline, '/', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockSm  : [['calc(', basics.paddingBlock , '/', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        paddingInlineLg : [['calc(', basics.paddingInline, '*', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockLg  : [['calc(', basics.paddingBlock , '*', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        
-        
-        
-        // typos:
-        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'],
-        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'],
+        gapInline : spacers.default as CssKnownProps['gapInline'],
+        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
     };
 }, { prefix: 'alrt' });
 
