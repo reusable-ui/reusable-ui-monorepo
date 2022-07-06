@@ -910,3 +910,11 @@ export {
     Control,
     Control as default,
 }
+
+
+
+export interface ControlComponentProps
+{
+    // components:
+    controlComponent ?: React.ReactComponentElement<any, ControlProps<Element>>
+}
