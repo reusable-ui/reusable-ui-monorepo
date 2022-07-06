@@ -331,7 +331,7 @@ export interface ButtonIconComponentProps
         Partial<IconComponentProps>
 {
     // positions:
-    iconPosition  ?: IconPosition
+    iconPosition ?: IconPosition
 }
 
 export interface ButtonIconProps
