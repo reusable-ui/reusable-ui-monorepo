@@ -47,6 +47,12 @@ function App() {
                     <ButtonIcon theme='primary' pressed={pressed || undefined} onClick={handleTogglePressed} icon='elderly'>
                         toggle press
                     </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='whatsapp' mild={true}>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='whatsapp' outlined={true}>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
                 </article>
             </div>
         </>

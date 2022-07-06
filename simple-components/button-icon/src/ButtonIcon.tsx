@@ -71,8 +71,6 @@ import {
     OrientationVariantOptions,
     OrientationVariant,
     
-    usesBackg,
-    
     extendsBorder,
     extendsPadding,
     
@@ -170,9 +168,6 @@ export const usesButtonIconLayout = (options?: OrientationVariantOptions) => {
     // icon:
     const [, iconVars] = usesIcon();
     
-    // backgrounds:
-    const [, backgs  ] = usesBackg();
-    
     
     
     return style({
@@ -188,13 +183,6 @@ export const usesButtonIconLayout = (options?: OrientationVariantOptions) => {
                     // sizes:
                     // fills the entire parent text's height:
                     [iconVars.size       ] : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
-                    
-                    
-                    
-                    // backgrounds:
-                    // a fix for mild+(active|focus|arrive):
-                    [backgs.altBackgColor] : 'inherit',
-                    [iconVars.color      ] : backgs.altBackgColor,
                     
                     
                     
