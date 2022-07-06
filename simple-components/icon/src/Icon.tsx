@@ -304,6 +304,10 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     
     return [
         () => style({
+            ...vars({
+                [backgs.altBackgColorFn] : 'inherit',
+                [backgs.altBackgColor  ] : 'inherit',
+            }),
             ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
                 ...vars({
                     [backgs.altBackgColorFn] : fallbacks(
