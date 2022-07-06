@@ -148,7 +148,7 @@ import {
 import {
     // styles:
     usesButtonLayout,
-}                           from '@reusable-ui/button'                  // a button ui
+}                           from '@reusable-ui/button'                  // a button component
 
 
 
