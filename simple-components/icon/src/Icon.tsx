@@ -380,7 +380,10 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
                 
                 
                 // backgrounds:
-                [iconVars.color] : backgs.altBackgColor, // default => uses alternate background color
+                [iconVars.color] : fallbacks(
+                    backgs.altBackgColor, // first  priority // uses theme color (if any)
+                    icons.color,          // default => uses config's color
+                ),
             }),
         }),
         iconVars,
