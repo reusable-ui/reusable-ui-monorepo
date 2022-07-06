@@ -108,6 +108,8 @@ import {
 
 
 // defaults:
+const _defaultMild           : boolean            = true;
+
 const _defaultIconSize       : IconSizeName       = 'md'
 const _defaultIconClasses    : Optional<string>[] = ['icon']
 
@@ -298,6 +300,11 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
     
     // rest props:
     const {
+        // variants:
+        mild = _defaultMild,
+        
+        
+        
         // accessibilities:
         onActiveChange,
         
@@ -344,7 +351,7 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
             
             
             // variants:
-            mild={props.mild ?? true}
+            mild={mild}
             
             
             
@@ -357,6 +364,7 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                 {
                     // variants:
                     size    : (iconComponent.props as any).size ?? _defaultIconSize,
+                    mild    : (iconComponent.props as any).mild ?? mild,
                     
                     
                     
