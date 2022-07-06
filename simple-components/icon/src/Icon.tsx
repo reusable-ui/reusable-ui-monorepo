@@ -102,7 +102,7 @@ import {
     ThemeName,
     ThemeVars,
     ifTheme,
-    usesThemeVariant,
+    usesThemeVariant as basicUsesThemeVariant,
     themeOptions,
     ThemeVariant,
     useThemeVariant,
@@ -177,13 +177,21 @@ export {
     ThemeName,
     ThemeVars,
     ifTheme,
-    usesThemeVariant,
     themeOptions,
     ThemeVariant,
     useThemeVariant,
 }
 
 
+
+/**
+ * Uses theme colors.  
+ * For example: `primary`, `secondary`, `danger`, `success`, etc.
+ * @param factory Customize the callback to create theme color definitions for each theme in `options`.
+ * @param options Customize the theme options.
+ * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
+ */
+export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => basicUsesThemeVariant(factory, options);
 
 /**
  * Creates theme color definitions for the given `themeName`.
