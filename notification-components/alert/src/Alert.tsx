@@ -14,13 +14,6 @@ import type {
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
-    rule,
-    variants,
-    ifEmpty,
-    
-    
-    
     //combinators:
     children,
     
@@ -50,34 +43,18 @@ import {
     spacers,
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
-    // styles:
-    fillTextLineHeightLayout,
-    fillTextLineWidthLayout,
-}                           from '@reusable-ui/layouts'         // reusable common layouts
-import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-import {
     // hooks:
     useEvent,
-    EventHandler,
-    useMergeEvents,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
     usesSizeVariant,
-    ifNotNude,
-    usesBorder,
-    usesPadding,
-    extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // types:
     ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
-export {
+export type {
     // types:
     PopupPlacement,
     PopupMiddleware,
@@ -100,15 +77,9 @@ import {
     // styles:
     usesContentLayout,
     usesContentVariants,
-    usesContentChildren,
-    
-    
-    
-    // configs:
-    contents,
 }                           from '@reusable-ui/content'         // a base component
 import {
-    // types:
+    // hooks:
     SizeName as IconSizeName,
     
     
@@ -119,13 +90,29 @@ import {
     Icon,
     
     IconComponentProps,
-}                           from '@reusable-ui/icon'            // an icon set
+}                           from '@reusable-ui/icon'            // an icon component
+import type {
+    // react components:
+    ControlProps,
+    ControlComponentProps,
+}                           from '@reusable-ui/control'         // a controllable component
+import type {
+    // hooks:
+    SizeName as ButtonIconSizeName,
+}                           from '@reusable-ui/button-icon'     // a button component with icon
+import {
+    // react components:
+    CloseButton,
+}                           from '@reusable-ui/close-button'    // a close button component
 
 
 
 // defaults:
-const _defaultIconSize    : IconSizeName       = 'md';
-const _defaultIconClasses : Optional<string>[] = ['icon'];
+const _defaultIconSize       : IconSizeName       = 'md'
+const _defaultIconClasses    : Optional<string>[] = ['icon']
+
+const _defaultControlSize    : ButtonIconSizeName = 'xs'
+const _defaultControlClasses : Optional<string>[] = ['control']
 
 
 
@@ -299,7 +286,8 @@ export interface AlertProps<TElement extends Element = HTMLElement>
         Pick<ToggleActiveProps, 'onActiveChange'>,
         
         // components:
-        IconComponentProps
+        IconComponentProps,
+        ControlComponentProps
 {
 }
 const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElement>): JSX.Element|null => {
@@ -310,30 +298,15 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
     
     // rest props:
     const {
-        // appearances:
-        alertStyle : _alertStyle,
-        
-        
-        
         // accessibilities:
-        active,
-        label,
+        onActiveChange,
         
         
         
         // components:
         icon,
-        iconComponent = (
-            <Icon<Element>
-                // appearances:
-                icon={icon ?? getIconByTheme(props)}
-                
-                
-                
-                // classes:
-                classes={_defaultIconClasses} // inject icon classes
-            />
-        ),
+        iconComponent    = <Icon<Element> icon={icon ?? getIconByTheme(props)} />,
+        controlComponent = <CloseButton />,
         
         
         
@@ -343,12 +316,17 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
     
     
     
-    // fn props:
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const autoActive : boolean = !!(props.children || false);
-    const activeFn   : boolean = active /*controllable*/ ?? autoActive /*uncontrollable*/;
+    // handlers:
+    const defaultHandleControlClick = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        onActiveChange?.({ newActive: false }); // handle click as request to close <Alert>
+        event.preventDefault(); // handled
+    }, []);
     
     
     
@@ -361,25 +339,17 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
             
             
             // semantics:
-            tag={props.tag ?? 'span'}
-            semanticRole={props.semanticRole ?? 'status'}
-            
-            aria-label={props['aria-label'] ?? label}
+            semanticRole={props.semanticRole ?? 'alert'}
             
             
             
             // variants:
-            mild={props.mild ?? false}
+            mild={props.mild ?? true}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            
-            
-            
-            // accessibilities:
-            active={activeFn}
         >
             {/* <Icon> */}
             {React.cloneElement<IconProps<Element>>(iconComponent,
@@ -395,7 +365,28 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                 }
             )}
             
-            { props.children }
+            { children && <div className='body'>
+                { children }
+            </div> }
+            
+            {/* <Control> */}
+            {React.cloneElement<ControlProps<Element>>(controlComponent,
+                // props:
+                {
+                    // variants:
+                    size    : (controlComponent.props as any).size ?? _defaultControlSize,
+                    
+                    
+                    
+                    // classes:
+                    classes : (controlComponent.props as any).classes ?? _defaultControlClasses,
+                    
+                    
+                    
+                    // handlers:
+                    onClick : (controlComponent.props as any).onClick ?? defaultHandleControlClick,
+                }
+            )}
         </Popup>
     );
 };
