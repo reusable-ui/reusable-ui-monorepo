@@ -92,7 +92,7 @@ import {
     // hooks:
     ifPress,
 }                           from '@reusable-ui/action-control'  // a base component
-export {
+export type {
     // hooks:
     ButtonStyle,
     ButtonVariant,
