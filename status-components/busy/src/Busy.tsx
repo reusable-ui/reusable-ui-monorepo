@@ -55,8 +55,10 @@ import {
 }                           from '@reusable-ui/badge'           // a base component
 import {
     // react components:
-    IconProps as IconIconProps,
+    IconProps,
     Icon,
+    
+    IconComponentProps,
 }                           from '@reusable-ui/icon'            // an icon set
 import {
     // react components:
@@ -143,21 +145,13 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
 
 
 // react components:
-
-export interface IconProps
-    extends
-        // bases:
-        Partial<Pick<IconIconProps<Element>, 'icon'>>
-{
-    // components:
-    iconComponent ?: React.ReactComponentElement<any, IconIconProps<Element>>
-}
-
 export interface BusyProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BadgeProps<TElement>,
-        IconProps
+        
+        // components:
+        IconComponentProps
 {
 }
 const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>): JSX.Element|null => {
@@ -168,17 +162,13 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
     
     // rest props:
     let {
-        // appearances:
-        icon = 'busy',
-        
-        
-        
         // accessibilities:
         label,
         
         
         
         // components:
+        icon = 'busy',
         iconComponent = <Icon<Element> icon={icon} />,
         
         
@@ -227,10 +217,10 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             // accessibilities:
             label={label ?? 'Loading...'}
         >
-            {React.cloneElement<IconIconProps<Element>>(iconComponent,
+            {React.cloneElement<IconProps<Element>>(iconComponent,
                 // props:
                 {
-                    size: iconComponent.props.size ?? '1em',
+                    size: (iconComponent.props as any).size ?? '1em',
                 }
             )}
             { children && <VisuallyHidden>
