@@ -187,7 +187,7 @@ import {
 import {
     // styles:
     usesIconImage,
-}                           from '@reusable-ui/icon'            // an icon set
+}                           from '@reusable-ui/icon'            // an icon component
 import {
     // hooks:
     SemanticButtonProps,
