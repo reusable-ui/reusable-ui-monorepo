@@ -305,8 +305,8 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     return [
         () => style({
             ...vars({
-                [backgs.altBackgColorFn] : 'inherit',
-                [backgs.altBackgColor  ] : 'inherit',
+                [backgs.altBackgColorFn] : 'inherit', // inherit to parent theme
+                [backgs.altBackgColor  ] : 'inherit', // inherit to parent theme
             }),
             ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
                 ...vars({
@@ -539,6 +539,7 @@ export const usesIconLayout      = () => {
             
             // customize:
             ...usesCssProps(icons), // apply config's cssProps
+            color : null, // delete color prop from config, we use color prop in special way
         }),
     });
 };
