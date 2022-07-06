@@ -58,6 +58,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
@@ -460,16 +461,19 @@ const activeReducer = (oldActive: boolean, action: ActiveReducerAction): boolean
     } // switch
 };
 
-export interface ToggleActiveProps<TActiveChangeArg = unknown>
+export interface ActiveChangeEvent {
+    newActive : boolean
+}
+export interface ToggleActiveProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
         // accessibilities:
         AccessibilityProps
 {
     // accessibilities:
     defaultActive     ?: boolean
-    onActiveChange    ?: (newActive: boolean, arg?: TActiveChangeArg) => void
+    onActiveChange    ?: EventHandler<TActiveChangeEvent>
 }
-export const useToggleActive = <TActiveChangeArg extends unknown = unknown>(props: ToggleActiveProps<TActiveChangeArg>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: ToggleActiveProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // fn props:
     const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
     
@@ -492,7 +496,7 @@ export const useToggleActive = <TActiveChangeArg extends unknown = unknown>(prop
             
             
             // fire change synthetic event:
-            props.onActiveChange?.(activeFn);
+            props.onActiveChange?.({ newActive: activeFn } as TActiveChangeEvent);
             
             // fire change dom event:
             if (changeEventTarget?.current) {
