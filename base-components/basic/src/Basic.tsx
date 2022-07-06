@@ -1310,6 +1310,81 @@ export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
 };
 //#endregion border
 
+//#region ring
+export interface RingVars {
+    /**
+     * functional ring color.
+     */
+    ringFn    : any
+    /**
+     * final ring color.
+     */
+    ring      : any
+    /**
+     * functional alternate ring color.
+     */
+    altRingFn : any
+    /**
+     * final alternate ring color.
+     */
+    altRing   : any
+}
+const [rings] = cssVar<RingVars>();
+
+/**
+ * Uses ring color (text color).
+ * @returns A `FeatureMixin<RingVars>` represents ring color definitions.
+ */
+export const usesRing = (): FeatureMixin<RingVars> => {
+    // dependencies:
+    const [, themes   ] = usesThemeVariant();
+    const [, outlineds] = usesOutlinedVariant();
+    const [, milds    ] = usesMildVariant();
+    
+    
+    
+    return [
+        () => style({
+            // color functions:
+            ...vars({
+                [rings.ringFn   ] : 'inherit',
+                [rings.ring     ] : 'inherit',
+                [rings.altRingFn] : 'inherit',
+                [rings.altRing  ] : 'inherit',
+            }),
+            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
+                ...vars({
+                    [rings.ringFn   ] : fallbacks(
+                        themes.ringImpt,      // first  priority
+                        themes.ring,          // second priority
+                        themes.ringCond,      // third  priority
+                        
+                        colors.secondaryThin, // default => uses secondary theme, because its color is neutral
+                    ),
+                    [rings.ring     ] : fallbacks(
+                        // no toggle outlined nor toggle mild yet (might be added in the future)
+                        
+                        rings.ringFn,         // default => uses our `boxShadowColorFn`
+                    ),
+                    [rings.altRingFn] : fallbacks(
+                        themes.altRingImpt,   // first  priority
+                        themes.altRing,       // second priority
+                        themes.altRingCond,   // third  priority
+                        
+                        colors.secondaryThin, // default => uses secondary theme, because its color is neutral
+                    ),
+                    [rings.altRing  ] : fallbacks(
+                        // no toggle outlined nor toggle mild yet (might be added in the future)
+                        
+                        rings.altRingFn,      // default => uses our `boxShadowColorFn`
+                    ),
+                }),
+            }),
+        }),
+        rings,
+    ];
+};
+//#endregion ring
 
 // spacings:
 
