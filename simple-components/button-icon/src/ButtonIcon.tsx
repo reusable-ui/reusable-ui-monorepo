@@ -117,8 +117,9 @@ import {
     
     
     // react components:
-    IconProps as IconIconProps,
     Icon,
+    
+    IconComponentProps,
 }                           from '@reusable-ui/icon'            // an icon set
 
 
@@ -324,28 +325,25 @@ export const [buttonIcons, buttonIconValues, cssButtonIconConfig] = cssConfig(()
 // react components:
 
 export type IconPosition = 'start'|'end'
-export interface IconProps
+export interface ButtonIconComponentProps
     extends
         // bases:
-        Partial<Pick<IconIconProps<Element>, 'icon'>>
+        Partial<IconComponentProps>
 {
-    // appearances:
+    // positions:
     iconPosition  ?: IconPosition
-    
-    
-    
-    // components:
-    iconComponent ?: React.ReactComponentElement<any, IconIconProps<Element>>
 }
 
 export interface ButtonIconProps
     extends
         // bases:
         Omit<ButtonProps, 'size'>,
-        IconProps,
         
         // layouts:
-        SizeVariant
+        SizeVariant,
+        
+        // components:
+        ButtonIconComponentProps
 {
 }
 const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
@@ -356,15 +354,9 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // remove props:
-        
-        // appearances:
-        icon,
-        iconPosition = 'start',
-        
-        
-        
         // components:
+        icon,
+        iconPosition  = 'start',
         iconComponent = icon && <Icon<Element> icon={icon} />,
         
         
