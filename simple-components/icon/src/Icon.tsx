@@ -102,6 +102,7 @@ import {
     ThemeName,
     ThemeVars,
     ifTheme,
+    ifHasTheme,
     usesThemeVariant as basicUsesThemeVariant,
     themeOptions,
     ThemeVariant,
@@ -303,20 +304,22 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     
     return [
         () => style({
-            ...vars({
-                [backgs.altBackgColorFn] : fallbacks(
-                    themes.altBackgImpt,    // first  priority // supports for validation on ancestor
-                    themes.altBackg,        // second priority
-                    themes.altBackgCond,    // third  priority // supports for active state on ancestor
-                    
-                    icons.color,            // default => uses config's color
-                ),
-                [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
-                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
-                    
-                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
-                ),
+            ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
+                ...vars({
+                    [backgs.altBackgColorFn] : fallbacks(
+                        themes.altBackgImpt,    // first  priority // supports for validation on ancestor
+                        themes.altBackg,        // second priority
+                        themes.altBackgCond,    // third  priority // supports for active state on ancestor
+                        
+                        icons.color,            // default => uses config's color
+                    ),
+                    [backgs.altBackgColor  ] : fallbacks(
+                        outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
+                        milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                        
+                        backgs.altBackgColorFn, // default => uses our `backgColorFn`
+                    ),
+                }),
             }),
         }),
         backgs,
