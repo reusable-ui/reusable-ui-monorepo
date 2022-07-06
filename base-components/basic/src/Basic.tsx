@@ -1019,40 +1019,55 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     
     return [
         () => style({
+            // constants:
             ...vars({
                 [backgs.backgNone      ] : solidBackg('transparent'),
-                
-                
-                
-                [backgs.backgColorFn   ] : fallbacks(
-                    themes.backgImpt,       // first  priority
-                    themes.backg,           // second priority
-                    themes.backgCond,       // third  priority
-                    
-                    basics.backg,           // default => uses config's background
-                ),
-                [backgs.backgColor     ] : fallbacks(
-                    outlineds.backgTg,      // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.backgTg,          // toggle mild     (if `usesMildVariant()` applied)
-                    
-                    backgs.backgColorFn,    // default => uses our `backgColorFn`
-                ),
-                [backgs.altBackgColorFn] : fallbacks(
-                    themes.altBackgImpt,    // first  priority
-                    themes.altBackg,        // second priority
-                    themes.altBackgCond,    // third  priority
-                    
-                    colors.primary,         // default => uses primary text theme
-                ),
-                [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
-                    
-                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
-                ),
-                
-                
-                
+            }),
+            
+            
+            
+            // color functions:
+            ...vars({
+                [backgs.backgColorFn   ] : 'inherit',
+                [backgs.backgColor     ] : 'inherit',
+                [backgs.altBackgColorFn] : 'inherit',
+                [backgs.altBackgColor  ] : 'inherit',
+            }),
+            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
+                ...vars({
+                    [backgs.backgColorFn   ] : fallbacks(
+                        themes.backgImpt,       // first  priority
+                        themes.backg,           // second priority
+                        themes.backgCond,       // third  priority
+                        
+                        basics.backg,           // default => uses config's background
+                    ),
+                    [backgs.backgColor     ] : fallbacks(
+                        outlineds.backgTg,      // toggle outlined (if `usesOutlinedVariant()` applied)
+                        milds.backgTg,          // toggle mild     (if `usesMildVariant()` applied)
+                        
+                        backgs.backgColorFn,    // default => uses our `backgColorFn`
+                    ),
+                    [backgs.altBackgColorFn] : fallbacks(
+                        themes.altBackgImpt,    // first  priority
+                        themes.altBackg,        // second priority
+                        themes.altBackgCond,    // third  priority
+                        
+                        colors.primary,         // default => uses primary text theme
+                    ),
+                    [backgs.altBackgColor  ] : fallbacks(
+                        outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
+                        milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                        
+                        backgs.altBackgColorFn, // default => uses our `backgColorFn`
+                    ),
+                }),
+            }),
+            
+            
+            
+            // compositions:
+            ...vars({
                 [backgs.backg          ] : [
                     // layering: backg1 | backg2 | backg3 ...
                     
@@ -1108,33 +1123,42 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
     
     return [
         () => style({
+            // color functions:
             ...vars({
-                [foregs.foregFn   ] : fallbacks(
-                    themes.foregImpt,     // first  priority
-                    themes.foreg,         // second priority
-                    themes.foregCond,     // third  priority
-                    
-                    basics.foreg,         // default => uses config's foreground
-                ),
-                [foregs.foreg     ] : fallbacks(
-                    outlineds.foregTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.foregTg,        // toggle mild     (if `usesMildVariant()` applied)
-                    
-                    foregs.foregFn,       // default => uses our `foregFn`
-                ),
-                [foregs.altForegFn] : fallbacks(
-                    themes.altForegImpt,  // first  priority
-                    themes.altForeg,      // second priority
-                    themes.altForegCond,  // third  priority
-                    
-                    colors.primaryText,   // default => uses primary text theme
-                ),
-                [foregs.altForeg  ] : fallbacks(
-                    outlineds.altForegTg, // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.altForegTg,     // toggle mild     (if `usesMildVariant()` applied)
-                    
-                    foregs.altForegFn,    // default => uses our `foregFn`
-                ),
+                [foregs.foregFn   ] : 'inherit',
+                [foregs.foreg     ] : 'inherit',
+                [foregs.altForegFn] : 'inherit',
+                [foregs.altForeg  ] : 'inherit',
+            }),
+            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
+                ...vars({
+                    [foregs.foregFn   ] : fallbacks(
+                        themes.foregImpt,     // first  priority
+                        themes.foreg,         // second priority
+                        themes.foregCond,     // third  priority
+                        
+                        basics.foreg,         // default => uses config's foreground
+                    ),
+                    [foregs.foreg     ] : fallbacks(
+                        outlineds.foregTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
+                        milds.foregTg,        // toggle mild     (if `usesMildVariant()` applied)
+                        
+                        foregs.foregFn,       // default => uses our `foregFn`
+                    ),
+                    [foregs.altForegFn] : fallbacks(
+                        themes.altForegImpt,  // first  priority
+                        themes.altForeg,      // second priority
+                        themes.altForegCond,  // third  priority
+                        
+                        colors.primaryText,   // default => uses primary text theme
+                    ),
+                    [foregs.altForeg  ] : fallbacks(
+                        outlineds.altForegTg, // toggle outlined (if `usesOutlinedVariant()` applied)
+                        milds.altForegTg,     // toggle mild     (if `usesMildVariant()` applied)
+                        
+                        foregs.altForegFn,    // default => uses our `foregFn`
+                    ),
+                }),
             }),
         }),
         foregs,
@@ -1200,22 +1224,32 @@ export const usesBorder = (): FeatureMixin<BorderVars> => {
     
     return [
         () => style({
+            // color functions:
             ...vars({
-                [borders.borderColorFn         ] : fallbacks(
-                    themes.borderImpt,     // first  priority
-                    themes.border,         // second priority
-                    themes.borderCond,     // third  priority
-                    
-                    basics.borderColor,    // default => uses config's border color
-                ),
-                [borders.borderColor           ] : fallbacks(
-                    outlineds.foregTg,     // toggle outlined (if `usesOutlinedVariant()` applied)
-                    
-                    borders.borderColorFn, // default => uses our `borderColorFn`
-                ),
-                
-                
-                
+                [borders.borderColorFn] : 'inherit',
+                [borders.borderColor  ] : 'inherit',
+            }),
+            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
+                ...vars({
+                    [borders.borderColorFn] : fallbacks(
+                        themes.borderImpt,     // first  priority
+                        themes.border,         // second priority
+                        themes.borderCond,     // third  priority
+                        
+                        basics.borderColor,    // default => uses config's border color
+                    ),
+                    [borders.borderColor  ] : fallbacks(
+                        outlineds.foregTg,     // toggle outlined (if `usesOutlinedVariant()` applied)
+                        
+                        borders.borderColorFn, // default => uses our `borderColorFn`
+                    ),
+                }),
+            }),
+            
+            
+            
+            // compositions:
+            ...vars({
                 [borders.border                ] : basics.border,      // default => uses config's border
                 [borders.borderWidth           ] : basics.borderWidth, // default => uses config's border width
                 
