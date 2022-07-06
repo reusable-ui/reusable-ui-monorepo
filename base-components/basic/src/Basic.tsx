@@ -368,9 +368,9 @@ export interface ThemeVars {
     altForegMild         : any
     
     /**
-     * themed focus color - at focused state.
+     * themed ring color.
      */
-    focus                : any
+    ring                 : any
     
     
     
@@ -426,9 +426,9 @@ export interface ThemeVars {
     altForegMildCond     : any
     
     /**
-     * conditional focus color - at focused state.
+     * conditional ring color.
      */
-    focusCond            : any
+    ringCond             : any
     
     
     
@@ -484,9 +484,9 @@ export interface ThemeVars {
     altForegMildImpt     : any
     
     /**
-     * important conditional focus color - at focused state.
+     * important conditional ring color.
      */
-    focusImpt            : any
+    ringImpt             : any
 }
 const [themes] = cssVar<ThemeVars>();
 
@@ -559,7 +559,7 @@ export const themeOf = (themeName: ThemeName): CssRule => style({
         [themes.altBackgMild        ] : themes.backg,
         [themes.altForegMild        ] : themes.foreg,
         
-        [themes.focus               ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
@@ -600,7 +600,7 @@ export const usesThemeConditional = (themeName: ThemeName|null): CssRule => styl
         [themes.altBackgMildCond    ] : themes.backgCond,
         [themes.altForegMildCond    ] : themes.foregCond,
         
-        [themes.focusCond           ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
@@ -626,7 +626,7 @@ export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => styl
         [themes.altBackgMildImpt    ] : themes.backgImpt,
         [themes.altForegMildImpt    ] : themes.foregImpt,
         
-        [themes.focusImpt           ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themes.ringImpt            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
