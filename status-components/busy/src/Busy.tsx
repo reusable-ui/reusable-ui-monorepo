@@ -54,7 +54,7 @@ import {
     Badge,
 }                           from '@reusable-ui/badge'           // a base component
 import {
-    // types:
+    // hooks:
     SizeName as IconSizeName,
     
     
@@ -73,7 +73,7 @@ import {
 
 
 // defaults:
-const _defaultIconSize : IconSizeName = 'md';
+const _defaultIconSize : IconSizeName = '1em';
 
 
 
