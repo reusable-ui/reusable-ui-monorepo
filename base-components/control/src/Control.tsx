@@ -41,7 +41,6 @@ import {
 import {
     // utilities:
     cssVar,
-    fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
@@ -53,10 +52,6 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
-import {
-    // configs:
-    colors,
-}                           from '@reusable-ui/colors'          // a color management system
 import {
     // styles:
     stripoutControl,
@@ -80,8 +75,8 @@ import {
     // hooks:
     usesSizeVariant,
     ThemeName,
-    usesThemeVariant,
     usesThemeDefault as basicUsesThemeDefault,
+    usesRing,
     usesAnim,
     fallbackNoneBoxShadow,
     fallbackNoneFilter,
@@ -141,23 +136,15 @@ export const usesThemeActive  = (themeName: ThemeName|null = 'primary'): CssRule
 
 //#region focusBlur
 export interface FocusBlurVars {
-    boxShadow        : any
-    anim             : any
+    boxShadow   : any
+    anim        : any
     
     
     
-    /**
-     * functional boxShadow color - at focused state.
-     */
-    boxShadowColorFn : any
-    /**
-     * final boxShadow color - at focused state.
-     */
-    boxShadowColor   : any
     /**
      * final boxShadow single layer - at focused state.
      */
-    boxShadowLy      : any
+    boxShadowLy : any
 }
 const [focuses] = cssVar<FocusBlurVars>();
 
@@ -198,33 +185,21 @@ export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([se
  */
 export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
     // dependencies:
-    const [, themes] = usesThemeVariant();
+    const [, rings] = usesRing();
     
     
     
     return [
         () => style({
             ...vars({
-                [focuses.boxShadowColorFn] : fallbacks(
-                    themes.ringImpt,      // first  priority
-                    themes.ring,          // second priority
-                    themes.ringCond,      // third  priority
-                    
-                    colors.secondaryThin, // default => uses secondary theme, because its color is neutral
-                ),
-                [focuses.boxShadowColor  ] : fallbacks(
-                    // no toggle outlined nor toggle mild yet (might be added in the future)
-                    
-                    focuses.boxShadowColorFn, // default => uses our `boxShadowColorFn`
-                ),
                 [focuses.boxShadowLy     ] : [[
                     // combining: pos width spread color ...
                     
                     // boxShadowFocus pos, width, spread, etc:
                     controls.boxShadowFocus,
                     
-                    // boxShadowFocus color:
-                    focuses.boxShadowColor,
+                    // ring color:
+                    rings.ring,
                 ]],
             }),
             ...states([
