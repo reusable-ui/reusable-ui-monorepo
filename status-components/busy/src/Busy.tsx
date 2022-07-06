@@ -220,6 +220,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             {React.cloneElement<IconProps<Element>>(iconComponent,
                 // props:
                 {
+                    // variants:
                     size: (iconComponent.props as any).size ?? '1em',
                 }
             )}
