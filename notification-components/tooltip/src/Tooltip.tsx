@@ -332,34 +332,19 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     // rest props:
     const {
         // accessibilities:
-        onActiveChange,
+        active,
         
         
         
-        // components:
-        icon,
-        iconComponent    = <Icon<Element> icon={icon ?? getIconByTheme(props)} />,
-        controlComponent = <CloseButton />,
+        // popups:
+        unsafe_calculateArrowSize : calculateArrowSize = defaultCalculateArrowSize,
         
         
         
-        // children:
-        children,
+        // debounces:
+        activeDelay  = 300,
+        passiveDelay = 500,
     ...restPopupProps} = props;
-    
-    
-    
-    // handlers:
-    const defaultHandleControlClick = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // actions:
-        onActiveChange?.({ newActive: false }); // handle click as request to close <Tooltip>
-        event.preventDefault(); // handled
-    }, []);
     
     
     
@@ -376,50 +361,15 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             
-            // variants:
-            mild={props.mild ?? true}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            {/* <Icon> */}
-            {React.cloneElement<IconProps<Element>>(iconComponent,
-                // props:
-                {
-                    // variants:
-                    size    : (iconComponent.props as any).size ?? _defaultIconSize,
-                    
-                    
-                    
-                    // classes:
-                    classes : (iconComponent.props as any).classes ?? _defaultIconClasses,
-                }
-            )}
+            { props.children }
             
-            { children && <div className='body'>
-                { children }
-            </div> }
-            
-            {/* <Control> */}
-            {React.cloneElement<ControlProps<Element>>(controlComponent,
-                // props:
-                {
-                    // variants:
-                    size    : (controlComponent.props as any).size ?? _defaultControlSize,
-                    
-                    
-                    
-                    // classes:
-                    classes : (controlComponent.props as any).classes ?? _defaultControlClasses,
-                    
-                    
-                    
-                    // handlers:
-                    onClick : (controlComponent.props as any).onClick ?? defaultHandleControlClick,
-                }
-            )}
+            <div
+                // classes:
+                className='arrow'
+            />
         </Popup>
     );
 };
