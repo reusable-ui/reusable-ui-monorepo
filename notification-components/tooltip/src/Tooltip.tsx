@@ -385,6 +385,9 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // callbacks:
+    /**
+     * Calculates the required offset (space) for the <arrow>.
+     */
     const arrowOffsetMiddleware = useCallback((arrow: Element): PopupMiddleware => {
         return {
             name: 'arrowOffset',
