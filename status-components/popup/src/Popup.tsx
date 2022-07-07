@@ -449,14 +449,13 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
         
         const popup  = popupRefInternal.current;
         if (!popup)     return; // <Popup> was unloaded => nothing to do
-        if (!(popup instanceof HTMLElement)) return; // the floating-ui only supports manipulating HTMLElement
         
         
         
         // handlers:
         const triggerPopupUpdate = async () => {
             // calculate the proper position of the <Popup>:
-            const popupPosition = await computePosition(/*reference: */target, /*floating: */popup, /*options: */{
+            const popupPosition = await computePosition(/*reference: */target, /*floating: */popup as unknown as HTMLElement, /*options: */{
                 placement  : popupPlacement,
                 middleware : await (async (): Promise<PopupMiddleware[]> => {
                     if (Array.isArray(popupMiddleware)) return popupMiddleware;
@@ -497,7 +496,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
         }, 0);
         
         // the live trigger:
-        const stopUpdate = autoUpdate(target, popup, triggerPopupUpdate);
+        const stopUpdate = autoUpdate(target, popup as unknown as HTMLElement, triggerPopupUpdate);
         
         
         
