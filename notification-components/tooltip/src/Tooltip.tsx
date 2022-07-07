@@ -1,0 +1,396 @@
+// react:
+import {
+    // react:
+    default as React,
+}                           from 'react'
+
+// cssfn:
+import type {
+    // types:
+    Optional,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'             // cssfn css specific types
+import {
+    //combinators:
+    children,
+    
+    
+    
+    // styles:
+    style,
+    imports,
+}                           from '@cssfn/cssfn'                 // writes css in javascript
+import {
+    // style sheets:
+    createUseStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
+import {
+    cssConfig,
+    
+    
+    
+    // utilities:
+    usesCssProps,
+    usesPrefixedProps,
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
+
+// reusable-ui:
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+import {
+    // hooks:
+    useEvent,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    usesSizeVariant,
+}                           from '@reusable-ui/basic'           // a base component
+import {
+    // types:
+    ToggleActiveProps,
+}                           from '@reusable-ui/indicator'       // a base component
+export type {
+    // types:
+    PopupPlacement,
+    PopupMiddleware,
+    PopupStrategy,
+    PopupPosition,
+}                           from '@reusable-ui/popup'           // a base component
+import {
+    // styles:
+    usesPopupLayout,
+    usesPopupVariants,
+    usesPopupStates,
+    
+    
+    
+    // react components:
+    PopupProps,
+    Popup,
+}                           from '@reusable-ui/popup'           // a base component
+import {
+    // styles:
+    usesContentLayout,
+    usesContentVariants,
+}                           from '@reusable-ui/content'         // a base component
+import {
+    // hooks:
+    SizeName as IconSizeName,
+    
+    
+    
+    // react components:
+    IconList,
+    IconProps,
+    Icon,
+    
+    IconComponentProps,
+}                           from '@reusable-ui/icon'            // an icon component
+import type {
+    // react components:
+    ControlProps,
+    ControlComponentProps,
+}                           from '@reusable-ui/control'         // a controllable component
+import type {
+    // hooks:
+    SizeName as ButtonIconSizeName,
+}                           from '@reusable-ui/button-icon'     // a button component with icon
+import {
+    // react components:
+    CloseButton,
+}                           from '@reusable-ui/close-button'    // a close button component
+
+
+
+// defaults:
+const _defaultIconSize       : IconSizeName       = 'md'
+const _defaultIconClasses    : Optional<string>[] = ['icon']
+
+const _defaultControlSize    : ButtonIconSizeName = 'xs'
+const _defaultControlClasses : Optional<string>[] = ['control']
+
+
+
+// styles:
+const iconElm    = ':where(.icon)';    // zero specificity
+const bodyElm    = ':where(.body)';    // zero specificity
+const controlElm = ':where(.control)'; // zero specificity
+
+
+
+export const usesTooltipLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesPopupLayout(),
+            usesContentLayout(),
+        ]),
+        ...style({
+            // layouts:
+            display             : 'grid',        // use css grid for layouting, so we can customize the desired area later.
+            
+            // explicit areas:
+            /*
+                just one explicit area: `body`
+                `icon` & `control` rely on implicit area
+            */
+            gridTemplateRows    : [['auto'/*fluid height*/]],
+            gridTemplateColumns : [['auto'/*fluid width*/ ]],
+            gridTemplateAreas   : [[
+                '"body"',
+            ]],
+            
+            // implicit areas:
+            gridAutoFlow        : 'column',      // if child's gridArea was not specified => place it automatically at horz direction
+            gridAutoRows        : 'min-content', // other areas than `body` should take the minimum required height
+            gridAutoColumns     : 'min-content', // other areas than `body` should take the minimum required width
+            // the gridArea's size configured as *minimum* content's size required => no free space left to distribute => so (justify|algin)Content is *not required*
+            
+            // child default sizes:
+            justifyItems        : 'stretch',     // each section fills the entire area's width
+            alignItems          : 'stretch',     // each section fills the entire area's height
+            
+            
+            
+            // children:
+            ...children(iconElm, {
+                // layouts:
+                gridArea    : '1 / -3', // the first row / the third column starting from the last
+                
+                
+                
+                // sizes:
+                justifySelf : 'center', // align horizontally to center
+                alignSelf   : 'start',  // align vertically   to top
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(tooltips, 'icon')), // apply config's cssProps starting with icon***
+            }),
+            ...children(bodyElm, {
+                // layouts:
+                gridArea : 'body',
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(tooltips, 'body')), // apply config's cssProps starting with body***
+            }),
+            ...children(controlElm, {
+                // layouts:
+                gridArea    : '1 / 2',  // the first row / the second column
+                
+                
+                
+                // sizes:
+                justifySelf : 'center', // align horizontally to center
+                alignSelf   : 'start',  // align vertically   to top
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(tooltips, 'control')), // apply config's cssProps starting with control***
+            }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(tooltips), // apply config's cssProps
+        }),
+    });
+};
+export const usesTooltipVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizeVariantRule] = usesSizeVariant(tooltips);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesPopupVariants(),
+            usesContentVariants(),
+            
+            // layouts:
+            sizeVariantRule,
+        ]),
+    });
+};
+export const usesTooltipStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesPopupStates(),
+        ]),
+    });
+};
+
+export const useTooltipStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesTooltipLayout(),
+        
+        // variants:
+        usesTooltipVariants(),
+        
+        // states:
+        usesTooltipStates(),
+    ]),
+}), { id: '3h41koviqh' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+// configs:
+export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
+    return {
+        // spacings:
+        gapInline : spacers.default as CssKnownProps['gapInline'],
+        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
+    };
+}, { prefix: 'ttip' });
+
+
+
+// utilities:
+const getIconByTheme = <TElement extends Element = HTMLElement>({ theme }: TooltipProps<TElement>): IconList => {
+    switch (theme) {
+        case 'success'   : return 'check_circle';
+        case 'warning'   : return 'warning';
+        case 'danger'    : return 'error';
+     // case 'primary'   :
+     // case 'secondary' :
+     // case 'info'      :
+     // case 'light'     :
+     // case 'dark'      :
+        default          : return 'info';
+    } // switch
+};
+
+
+
+// react components:
+export interface TooltipProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        PopupProps<TElement>,
+        
+        // accessibilities:
+        Pick<ToggleActiveProps, 'onActiveChange'>,
+        
+        // components:
+        IconComponentProps,
+        ControlComponentProps
+{
+}
+const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TElement>): JSX.Element|null => {
+    // styles:
+    const styleSheet   = useTooltipStyleSheet();
+    
+    
+    
+    // rest props:
+    const {
+        // accessibilities:
+        onActiveChange,
+        
+        
+        
+        // components:
+        icon,
+        iconComponent    = <Icon<Element> icon={icon ?? getIconByTheme(props)} />,
+        controlComponent = <CloseButton />,
+        
+        
+        
+        // children:
+        children,
+    ...restPopupProps} = props;
+    
+    
+    
+    // handlers:
+    const defaultHandleControlClick = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        onActiveChange?.({ newActive: false }); // handle click as request to close <Tooltip>
+        event.preventDefault(); // handled
+    }, []);
+    
+    
+    
+    // jsx:
+    return (
+        <Popup<TElement>
+            // other props:
+            {...restPopupProps}
+            
+            
+            
+            // semantics:
+            semanticRole={props.semanticRole ?? 'tooltip'}
+            
+            
+            
+            // variants:
+            mild={props.mild ?? true}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+        >
+            {/* <Icon> */}
+            {React.cloneElement<IconProps<Element>>(iconComponent,
+                // props:
+                {
+                    // variants:
+                    size    : (iconComponent.props as any).size ?? _defaultIconSize,
+                    
+                    
+                    
+                    // classes:
+                    classes : (iconComponent.props as any).classes ?? _defaultIconClasses,
+                }
+            )}
+            
+            { children && <div className='body'>
+                { children }
+            </div> }
+            
+            {/* <Control> */}
+            {React.cloneElement<ControlProps<Element>>(controlComponent,
+                // props:
+                {
+                    // variants:
+                    size    : (controlComponent.props as any).size ?? _defaultControlSize,
+                    
+                    
+                    
+                    // classes:
+                    classes : (controlComponent.props as any).classes ?? _defaultControlClasses,
+                    
+                    
+                    
+                    // handlers:
+                    onClick : (controlComponent.props as any).onClick ?? defaultHandleControlClick,
+                }
+            )}
+        </Popup>
+    );
+};
+export {
+    Tooltip,
+    Tooltip as default,
+}
