@@ -1,3 +1,6 @@
+fix fooElm constant with zero specificity:
+^(export\s+)?const\s+\w+Elm\s*=.*?;
+
 fix peer dependencies for colors, borders, spacers, etc...
 
 fix touchStart/End on <ActionControl>
