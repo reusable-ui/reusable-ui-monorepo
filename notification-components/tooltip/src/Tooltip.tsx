@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -62,6 +63,9 @@ import {
 import {
     // hooks:
     useEvent,
+    useMergeEvents,
+    useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // react components:
@@ -293,6 +297,11 @@ const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
 
 export interface ArrowComponentProps
 {
+    // refs:
+    arrowRef       ?: React.Ref<Element> // setter ref
+    
+    
+    
     // components:
     arrowComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
 }
@@ -344,8 +353,27 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         // components:
-        arrowComponent = <Generic<Element> />,
+        arrowRef,
+        arrowComponent = <Generic<Element> /> as React.ReactComponentElement<any, GenericProps<Element>>,
     ...restPopupProps} = props;
+    
+    
+    
+    // refs:
+    const arrowRefInternal = useRef<TElement|null>(null);
+    const mergedArrowRef   = useMergeRefs(
+        // preserves the original `arrowRef` from `arrowComponent`:
+        arrowComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `arrowRef` from `props`:
+        arrowRef,
+        
+        
+        
+        arrowRefInternal,
+    );
     
     
     
@@ -381,13 +409,18 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             {React.cloneElement<GenericProps<Element>>(arrowComponent,
                 // props:
                 {
+                    // refs:
+                    elmRef        : mergedArrowRef,
+                    
+                    
+                    
                     // semantics:
-                    'aria-hidden' : (arrowComponent.props as any)['aria-hidden'] ?? _defaultArrowAriaHidden,
+                    'aria-hidden' : arrowComponent.props['aria-hidden'] ?? _defaultArrowAriaHidden,
                     
                     
                     
                     // classes:
-                    classes       : (arrowComponent.props as any).classes ?? _defaultArrowClasses,
+                    classes       : arrowComponent.props.classes ?? _defaultArrowClasses,
                 }
             )}
         </Popup>
