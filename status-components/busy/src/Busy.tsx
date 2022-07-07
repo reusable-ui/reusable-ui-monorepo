@@ -38,6 +38,7 @@ export type {
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
+    PopupSide,
     
     BadgeStyle,
 }                           from '@reusable-ui/badge'           // a base component
