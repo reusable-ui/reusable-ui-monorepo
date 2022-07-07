@@ -564,7 +564,102 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         const targetRef = props.targetRef;
         const target    = (targetRef instanceof Element) ? targetRef : targetRef?.current;
         if (!target)              return; // [targetRef] was not specified => nothing to do
-    }, [isControllableActive, props.targetRef]);
+        
+        
+        
+        // states:
+        let hovered = false;
+        let focused = false;
+        let actived = false;
+        let activating  : ReturnType<typeof setTimeout>|undefined = undefined;
+        let passivating : ReturnType<typeof setTimeout>|undefined = undefined;
+        // handlers:
+        const handleDelayActive = () => {
+            if (actived) return; // already activated => nothing to change
+            
+            
+            
+            clearTimeout(passivating); // cancel the deactivating process (if not too late)
+            activating = setTimeout(() => {
+                if (actived) return; // already activated => nothing to change
+                actived = true;      // now mark as activated
+                
+                setActiveDn(true);   // activate the <Tooltip>
+            }, activeDelay);
+        };
+        const handleDelayPassive = () => {
+            if (!actived) return; // already deactivated => nothing to change
+            
+            
+            
+            clearTimeout(activating); // cancel the activating process (if not too late)
+            passivating = setTimeout(() => {
+                if (!actived) return; // already deactivated => nothing to change
+                actived = false;      // now mark as deactivated
+                
+                setActiveDn(false);   // deactivate the <Tooltip>
+            }, passiveDelay);
+        };
+        const handleChange = () => {
+            const active = (hovered || focused);
+            if (active) {
+                handleDelayActive();
+            }
+            else {
+                handleDelayPassive();
+            } // if
+        };
+        const handleHover  = () => {
+            if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
+            
+            
+            
+            hovered = true;
+            handleChange();
+        };
+        const handleLeave  = () => {
+            if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
+            
+            
+            
+            hovered = false;
+            handleChange();
+        };
+        const handleFocus  = () => {
+            if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
+            
+            
+            
+            focused = true;
+            handleChange();
+        };
+        const handleBlur   = () => {
+            if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
+            
+            
+            
+            focused = false;
+            handleChange();
+        };
+        
+        
+        
+        // setups:
+        target.addEventListener('mouseenter', handleHover);
+        target.addEventListener('mouseleave', handleLeave);
+        target.addEventListener('focus'     , handleFocus, { capture: true }); // force `focus` as bubbling
+        target.addEventListener('blur'      , handleBlur , { capture: true }); // force `blur`  as bubbling
+        
+        
+        
+        // cleanups:
+        return () => {
+            target.removeEventListener('mouseenter', handleHover);
+            target.removeEventListener('mouseleave', handleLeave);
+            target.removeEventListener('focus'     , handleFocus, { capture: true });
+            target.removeEventListener('blur'      , handleBlur , { capture: true });
+        };
+    }, [isControllableActive, props.targetRef, activeDelay, passiveDelay]);
     
     
     
