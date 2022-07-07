@@ -1,6 +1,9 @@
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=.*?;
 
+add <Range> with component based
+change <Range> ref from HTMLElement to Element
+
 fix peer dependencies for colors, borders, spacers, etc...
 
 fix touchStart/End on <ActionControl>
