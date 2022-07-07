@@ -74,6 +74,11 @@ export type {
     PopupPosition,
 }                           from '@reusable-ui/popup'           // a base component
 import {
+    // types:
+    PopupPlacement,
+    
+    
+    
     // styles:
     usesPopupLayout,
     usesPopupVariants,
@@ -287,19 +292,36 @@ const isTargetEnabled = (target: HTMLElement|null|undefined): boolean => {
 
 
 
+export interface ArrowProps {
+    arrow     : Element
+    placement : PopupPlacement
+}
+export type ArrowSize           = readonly [number, number]
+export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
+const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
+    const { width, height, }   = arrow.getBoundingClientRect();
+    return [
+        (width  / 2) - 1,
+        (height / 2) - 1,
+    ];
+};
+
+
+
 // react components:
 export interface TooltipProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>,
-        
-        // accessibilities:
-        Pick<ToggleActiveProps, 'onActiveChange'>,
-        
-        // components:
-        IconComponentProps,
-        ControlComponentProps
+        PopupProps<TElement>
 {
+    // popups:
+    unsafe_calculateArrowSize ?: CalculateArrowSize
+    
+    
+    
+    // debounces:
+    activeDelay               ?: number
+    passiveDelay              ?: number
 }
 const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TElement>): JSX.Element|null => {
     // styles:
