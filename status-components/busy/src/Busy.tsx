@@ -179,7 +179,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
         
         // components:
         icon = 'busy',
-        iconComponent = <Icon<Element> icon={icon} />,
+        iconComponent = (<Icon<Element> icon={icon} /> as React.ReactComponentElement<any, IconProps<Element>>),
         
         
         
@@ -231,9 +231,10 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
                 // props:
                 {
                     // variants:
-                    size: (iconComponent.props as any).size ?? _defaultIconSize,
+                    size : iconComponent.props.size ?? _defaultIconSize,
                 }
             )}
+            
             { children && <VisuallyHidden>
                 { children }
             </VisuallyHidden> }
