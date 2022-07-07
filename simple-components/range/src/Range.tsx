@@ -220,11 +220,11 @@ export const markActive = (): CssRule => style({
 
 
 // styles:
-export const inputElm      = ':first-child';
-export const trackElm      = '.track';
-export const trackLowerElm = '.tracklower';
-export const trackUpperElm = '.trackupper';
-export const thumbElm      = '.thumb';
+export const inputElm      = ':first-child'
+export const trackElm      = '.track'
+export const trackLowerElm = '.tracklower'
+export const trackUpperElm = '.trackupper'
+export const thumbElm      = '.thumb'
 
 export const usesRangeLayout = (options?: OrientationVariantOptions) => {
     // options:
