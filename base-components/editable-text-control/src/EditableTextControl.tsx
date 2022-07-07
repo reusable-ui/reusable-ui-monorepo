@@ -175,7 +175,7 @@ export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
 
 
 // styles:
-export const iconElm = '::after';
+export const iconElm = '::after'
 
 export const usesEditableTextControlLayout = () => {
     // dependencies:
