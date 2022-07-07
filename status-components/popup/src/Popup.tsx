@@ -90,6 +90,7 @@ import {
     Placement             as PopupPlacement,
     Middleware            as PopupMiddleware,
     Strategy              as PopupStrategy,
+    Side                  as PopupSide,
     
     ComputePositionReturn as PopupPosition,
     
@@ -571,4 +572,4 @@ export {
     Popup as default,
 }
 
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition }
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
