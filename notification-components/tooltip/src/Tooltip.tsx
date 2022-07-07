@@ -8,6 +8,7 @@ import {
     // hooks:
     useState,
     useRef,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -86,6 +87,7 @@ export type {
 import {
     // types:
     PopupPlacement,
+    PopupMiddleware,
     
     
     
@@ -266,7 +268,7 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
 
 
 // utilities:
-const isTargetEnabled = (target: HTMLElement|null|undefined): boolean => {
+const isTargetEnabled = (target: Element|null|undefined): boolean => {
     // conditions:
     if (!target) return false; // if no target => assumes target as disabled
     
@@ -379,6 +381,69 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     // fn props:
     const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
+    
+    
+    
+    // callbacks:
+    const arrowOffsetMiddleware = useCallback((arrowElm: Element): PopupMiddleware => {
+        return {
+            name: 'arrowOffset',
+            async fn({ placement, x, y }) {
+                const [width, height]  = await (async (): Promise<ArrowSize> => {
+                    const tooltipElm = arrowElm.parentElement;
+                    if (!tooltipElm) {
+                        // measure size:
+                        return await calculateArrowSize({ arrow: arrowElm, placement });
+                    } // if
+                    
+                    
+                    
+                    // backup:
+                    const tooltipStyle = tooltipElm.style;
+                    const {
+                        display,
+                        visibility,
+                        transition,
+                        animation,
+                    } = tooltipStyle;
+                    
+                    
+                    
+                    try {
+                        // temporary modify:
+                        tooltipStyle.display    = 'block';
+                        tooltipStyle.visibility = 'hidden';
+                        tooltipStyle.transition = 'none';
+                        tooltipStyle.animation  = 'none';
+                        
+                        
+                        
+                        // measure size:
+                        return await calculateArrowSize({ arrow: arrowElm, placement });
+                    }
+                    finally {
+                        // restore:
+                        tooltipStyle.display    = display;
+                        tooltipStyle.visibility = visibility;
+                        tooltipStyle.transition = transition;
+                        tooltipStyle.animation  = animation;
+                    } // try
+                })();
+                
+                
+                
+                const basePlacement = placement.split('-')[0];
+                const isTop         = (basePlacement === 'top'   );
+                const isBottom      = (basePlacement === 'bottom');
+                const isLeft        = (basePlacement === 'left'  );
+                const isRight       = (basePlacement === 'right' );
+                return {
+                    x : x - (isLeft ? width  : 0) + (isRight  ? width  : 0),
+                    y : y - (isTop  ? height : 0) + (isBottom ? height : 0),
+                };
+            },
+        };
+    }, [calculateArrowSize]);
     
     
     
