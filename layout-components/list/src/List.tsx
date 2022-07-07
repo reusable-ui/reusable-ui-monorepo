@@ -285,8 +285,8 @@ export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRu
 
 
 // styles:
-export const wrapperElm  = '*';                    // zero specificity
-export const listItemElm = ':where(:first-child)'; // zero specificity
+export const wrapperElm  = '*'                    // zero specificity
+export const listItemElm = ':where(:first-child)' // zero specificity
 
 
 
