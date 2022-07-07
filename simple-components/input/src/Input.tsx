@@ -71,7 +71,7 @@ import {
 
 
 // styles:
-export const inputElm = ':first-child';
+export const inputElm = ':first-child'
 
 export const usesInputLayout = () => {
     // dependencies:
