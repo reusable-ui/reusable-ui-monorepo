@@ -72,6 +72,7 @@ export type {
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
+    PopupSide,
 }                           from '@reusable-ui/popup'           // a base component
 import {
     // styles:
