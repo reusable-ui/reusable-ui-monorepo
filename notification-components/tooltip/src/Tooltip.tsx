@@ -63,7 +63,9 @@ import {
 }                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -83,11 +85,14 @@ export type {
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
+    PopupSide,
 }                           from '@reusable-ui/popup'           // a base component
 import {
     // types:
     PopupPlacement,
     PopupMiddleware,
+    PopupPosition,
+    PopupSide,
     
     
     
@@ -368,7 +373,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // refs:
-    const arrowRefInternal = useRef<TElement|null>(null);
+    const arrowRefInternal = useRef<HTMLElement|SVGElement|null>(null);
     const mergedArrowRef   = useMergeRefs(
         // preserves the original `arrowRef` from `arrowComponent`:
         arrowComponent.props.elmRef,
@@ -498,6 +503,44 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     
+    // handlers:
+    const handleArrowPosition   = useEvent<EventHandler<PopupPosition>>((popupPosition) => {
+        const arrow = arrowRefInternal.current;
+        if (!arrow) return;
+        
+        
+        
+        const { middlewareData, placement } = popupPosition;
+        const { x, y } = middlewareData.arrow ?? {};
+        const basePlacement : PopupSide = placement.split('-')[0] as PopupSide;
+        const invertBasePlacement : PopupSide = {
+            top    : 'bottom',
+            right  : 'left',
+            bottom : 'top',
+            left   : 'right',
+        }[basePlacement] as PopupSide;
+        
+        
+        
+        const arrowStyle                = arrow.style;
+        arrowStyle.left                 = ((x ?? false) !== false) ? `${x}px` : '';
+        arrowStyle.top                  = ((y ?? false) !== false) ? `${y}px` : '';
+        arrowStyle.right                = '';
+        arrowStyle.bottom               = '';
+        arrowStyle[invertBasePlacement] = '';
+    }, []);
+    const handlePopupUpdate     = useMergeEvents(
+        // preserves the original `onPopupUpdate`:
+        props.onPopupUpdate,
+        
+        
+        
+        // popups:
+        handleArrowPosition,
+    );
+    
+    
+    
     // jsx:
     return (
         <Popup<TElement>
@@ -518,6 +561,11 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             // accessibilities:
             active={activeFn}
+            
+            
+            
+            // handlers:
+            onPopupUpdate={handlePopupUpdate}
         >
             { props.children }
             
