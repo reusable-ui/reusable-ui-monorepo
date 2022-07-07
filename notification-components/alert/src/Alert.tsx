@@ -305,8 +305,8 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
         
         // components:
         icon,
-        iconComponent    = <Icon<Element> icon={icon ?? getIconByTheme(props)} />,
-        controlComponent = <CloseButton />,
+        iconComponent    = (<Icon<Element> icon={icon ?? getIconByTheme(props)} /> as React.ReactComponentElement<any,    IconProps<Element>>),
+        controlComponent = (<CloseButton />                                        as React.ReactComponentElement<any, ControlProps<Element>>),
         
         
         
@@ -356,12 +356,12 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                 // props:
                 {
                     // variants:
-                    size    : (iconComponent.props as any).size ?? _defaultIconSize,
+                    size    : iconComponent.props.size ?? _defaultIconSize,
                     
                     
                     
                     // classes:
-                    classes : (iconComponent.props as any).classes ?? _defaultIconClasses,
+                    classes : iconComponent.props.classes ?? _defaultIconClasses,
                 }
             )}
             
@@ -374,17 +374,17 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                 // props:
                 {
                     // variants:
-                    size    : (controlComponent.props as any).size ?? _defaultControlSize,
+                    size    : controlComponent.props.size ?? _defaultControlSize,
                     
                     
                     
                     // classes:
-                    classes : (controlComponent.props as any).classes ?? _defaultControlClasses,
+                    classes : controlComponent.props.classes ?? _defaultControlClasses,
                     
                     
                     
                     // handlers:
-                    onClick : (controlComponent.props as any).onClick ?? defaultHandleControlClick,
+                    onClick : controlComponent.props.onClick ?? defaultHandleControlClick,
                 }
             )}
         </Popup>
