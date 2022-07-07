@@ -111,7 +111,7 @@ import {
 // other libs:
 import {
     // utilities:
-    arrowMiddleware,
+    arrow as arrowMiddleware,
 }                           from '@floating-ui/dom'             // a popup utility
 
 
@@ -356,6 +356,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         // popups:
         unsafe_calculateArrowSize : calculateArrowSize = defaultCalculateArrowSize,
+        popupMiddleware,
         
         
         
@@ -462,7 +463,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     /**
      * Attaches an arrow element to the <Tooltip>.
      */
-    const middlewareWithArrow   = useCallback(async (defaultMiddleware: PopupMiddleware[]) => {
+    const middlewareWithArrow   = useCallback(async (defaultMiddleware: PopupMiddleware[]): Promise<PopupMiddleware[]> => {
         const arrow = arrowRefInternal.current;
         if (!arrow) return defaultMiddleware;
         
@@ -495,11 +496,23 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             ...defaultMiddleware.slice(arrowOffsetMiddlewareIndex),    // the rest middleware(s)
             
             arrowMiddleware({                                          // the last `arrowMiddleware`
-                element : arrow,
+                element : arrow as HTMLElement,
                 padding : maxBorderRadius ?? 0,
             }),
         ];
     }, [arrowOffsetMiddleware]);
+    const mergedPopupMiddleware = useCallback(async (defaultMiddleware: PopupMiddleware[]): Promise<PopupMiddleware[]> => {
+        if (Array.isArray(popupMiddleware)) return popupMiddleware;
+        
+        
+        
+        const defaultMiddleware2 = await middlewareWithArrow(defaultMiddleware);
+        
+        
+        
+        // preserves the original `popupMiddleware`:
+        return popupMiddleware ? await popupMiddleware(defaultMiddleware2) : defaultMiddleware2;
+    }, [popupMiddleware, middlewareWithArrow]);
     
     
     
@@ -561,6 +574,15 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             // accessibilities:
             active={activeFn}
+            
+            
+            
+            // popups:
+            popupPlacement={props.popupPlacement ?? 'top'}
+            popupAutoFlip={props.popupAutoFlip ?? true}
+            popupAutoShift={props.popupAutoShift ?? true}
+            
+            popupMiddleware={mergedPopupMiddleware}
             
             
             
