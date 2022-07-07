@@ -103,6 +103,12 @@ import {
     Popup,
 }                           from '@reusable-ui/popup'           // a base component
 
+// other libs:
+import {
+    // utilities:
+    arrowMiddleware,
+}                           from '@floating-ui/dom'             // a popup utility
+
 
 
 // defaults:
@@ -447,6 +453,48 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             },
         };
     }, [calculateArrowSize]);
+    
+    /**
+     * Attaches an arrow element to the <Tooltip>.
+     */
+    const middlewareWithArrow   = useCallback(async (defaultMiddleware: PopupMiddleware[]) => {
+        const arrow = arrowRefInternal.current;
+        if (!arrow) return defaultMiddleware;
+        
+        
+        
+        const maxBorderRadius = ((): number => {
+            const tooltip = arrow.parentElement;
+            if (!tooltip) return 0;
+            
+            
+            
+            const tooltipStyle = getComputedStyle(tooltip);
+            return Math.max(
+                Number.parseFloat(tooltipStyle.borderStartStartRadius),
+                Number.parseFloat(tooltipStyle.borderStartEndRadius  ),
+                Number.parseFloat(tooltipStyle.borderEndStartRadius  ),
+                Number.parseFloat(tooltipStyle.borderEndEndRadius    ),
+            );
+        })();
+        
+        
+        
+        // `arrowOffsetMiddleware` should be inserted *after* the `offset` middleware,
+        // so we need to find the index of `offset` middleware:
+        const offsetMiddlewareIndex      = defaultMiddleware.findIndex((middleware) => (middleware.name === 'offset'));
+        const arrowOffsetMiddlewareIndex = offsetMiddlewareIndex + 1;
+        return [
+            ...defaultMiddleware.slice(0, arrowOffsetMiddlewareIndex), // the `offset` middleware and prev(s)
+            arrowOffsetMiddleware(arrow),                              // the inserted `arrowOffsetMiddleware`
+            ...defaultMiddleware.slice(arrowOffsetMiddlewareIndex),    // the rest middleware(s)
+            
+            arrowMiddleware({                                          // the last `arrowMiddleware`
+                element : arrow,
+                padding : maxBorderRadius ?? 0,
+            }),
+        ];
+    }, [arrowOffsetMiddleware]);
     
     
     
