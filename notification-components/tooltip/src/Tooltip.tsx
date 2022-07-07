@@ -14,7 +14,15 @@ import type {
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    //combinators:
+    // rules:
+    rule,
+    rules,
+    variants,
+    states,
+    
+    
+    
+    // combinators:
     children,
     
     
@@ -42,6 +50,10 @@ import {
     // configs:
     spacers,
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+import {
+    // configs:
+    typos,
+}                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
     useEvent,
@@ -107,19 +119,8 @@ import {
 
 
 
-// defaults:
-const _defaultIconSize       : IconSizeName       = 'md'
-const _defaultIconClasses    : Optional<string>[] = ['icon']
-
-const _defaultControlSize    : ButtonIconSizeName = 'xs'
-const _defaultControlClasses : Optional<string>[] = ['control']
-
-
-
 // styles:
-const iconElm    = ':where(.icon)';    // zero specificity
-const bodyElm    = ':where(.body)';    // zero specificity
-const controlElm = ':where(.control)'; // zero specificity
+const arrowElm = ':where(.arrow)' // zero specificity
 
 
 
@@ -128,74 +129,55 @@ export const usesTooltipLayout = () => {
         ...imports([
             // layouts:
             usesPopupLayout(),
-            usesContentLayout(),
         ]),
         ...style({
             // layouts:
-            display             : 'grid',        // use css grid for layouting, so we can customize the desired area later.
-            
-            // explicit areas:
-            /*
-                just one explicit area: `body`
-                `icon` & `control` rely on implicit area
-            */
-            gridTemplateRows    : [['auto'/*fluid height*/]],
-            gridTemplateColumns : [['auto'/*fluid width*/ ]],
-            gridTemplateAreas   : [[
-                '"body"',
-            ]],
-            
-            // implicit areas:
-            gridAutoFlow        : 'column',      // if child's gridArea was not specified => place it automatically at horz direction
-            gridAutoRows        : 'min-content', // other areas than `body` should take the minimum required height
-            gridAutoColumns     : 'min-content', // other areas than `body` should take the minimum required width
-            // the gridArea's size configured as *minimum* content's size required => no free space left to distribute => so (justify|algin)Content is *not required*
-            
-            // child default sizes:
-            justifyItems        : 'stretch',     // each section fills the entire area's width
-            alignItems          : 'stretch',     // each section fills the entire area's height
+            display : 'block',
             
             
             
             // children:
-            ...children(iconElm, {
+            ...children(arrowElm, {
                 // layouts:
-                gridArea    : '1 / -3', // the first row / the third column starting from the last
+                content     : '""',
+                display     : 'block',
+                ...rule([':not(.overlay)&', '.nude&'], {
+                    display : 'none', // the arrow is not supported when [not overlayed] or [nude=true]
+                }),
                 
                 
                 
-                // sizes:
-                justifySelf : 'center', // align horizontally to center
-                alignSelf   : 'start',  // align vertically   to top
+                // positions:
+                position    : 'absolute', // absolute position, so we can move the location easily
+                
+                
+                
+                // backgrounds:
+                backg       : 'inherit', // copy the background color. for background image, it may look strange
+                
+                
+                
+                // borders:
+                border      : 'inherit', // copy border style|width|color
+                boxShadow   : 'inherit', // copy shadow
                 
                 
                 
                 // customize:
-                ...usesCssProps(usesPrefixedProps(tooltips, 'icon')), // apply config's cssProps starting with icon***
-            }),
-            ...children(bodyElm, {
-                // layouts:
-                gridArea : 'body',
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(tooltips, 'body')), // apply config's cssProps starting with body***
-            }),
-            ...children(controlElm, {
-                // layouts:
-                gridArea    : '1 / 2',  // the first row / the second column
-                
-                
-                
-                // sizes:
-                justifySelf : 'center', // align horizontally to center
-                alignSelf   : 'start',  // align vertically   to top
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(tooltips, 'control')), // apply config's cssProps starting with control***
+                ...usesCssProps(usesPrefixedProps(tooltips, 'arrow')), // apply config's cssProps starting with arrow***
+                ...rules([
+                    ...['top', 'bottom', 'left', 'right']
+                    .map((tooltipPos) =>
+                        rule([
+                            `.${tooltipPos}&`,
+                            `.${tooltipPos}-start&`,
+                            `.${tooltipPos}-end&`,
+                        ], {
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(usesPrefixedProps(tooltips, 'arrow'), tooltipPos)), // apply config's cssProps starting with arrow*** and then starting with ***${tooltipPos}
+                        }),
+                    ),
+                ]),
             }),
             
             
@@ -217,7 +199,6 @@ export const usesTooltipVariants = () => {
         ...imports([
             // variants:
             usesPopupVariants(),
-            usesContentVariants(),
             
             // layouts:
             sizeVariantRule,
@@ -250,28 +231,58 @@ export const useTooltipStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
+    const basics = {
+        // sizes:
+        arrowInlineSize      : '0.8rem'                                                                     as CssKnownProps['inlineSize'],
+        arrowBlockSize       : '0.8rem'                                                                     as CssKnownProps['blockSize' ],
+        
+     // arrowClipPath        : 'polygon(100% 0, 100% 100%, 0 100%)'                                         as CssKnownProps['clipPath'  ],
+        arrowClipPath        : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                 as CssKnownProps['clipPath'  ], // compensates for boxShadow
+        
+        arrowTopTransform    : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]]  as CssKnownProps['transform' ],
+        arrowRightTransform  : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']]  as CssKnownProps['transform' ],
+        arrowBottomTransform : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']]  as CssKnownProps['transform' ],
+        arrowLeftTransform   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']]  as CssKnownProps['transform' ],
+        
+        
+        
+        // borders:
+        boxShadow            : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]                                          as CssKnownProps['boxShadow'],
+        
+        
+        
+        // typos:
+        whiteSpace           : 'normal'                                                                     as CssKnownProps['whiteSpace'],
+        fontSize             : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]                as CssKnownProps['fontSize'  ],
+        fontSizeSm           : typos.fontSizeSm                                                             as CssKnownProps['fontSize'  ],
+        fontSizeLg           : typos.fontSizeNm                                                             as CssKnownProps['fontSize'  ],
+    };
+    
+    
+    
     return {
-        // spacings:
-        gapInline : spacers.default as CssKnownProps['gapInline'],
-        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
+        ...basics,
+        
+        
+        
+        // sizes:
+        arrowInlineSizeSm    : [['calc((', basics.arrowInlineSize, ')*0.75)']]                              as CssKnownProps['inlineSize'],
+        arrowBlockSizeSm     : [['calc((', basics.arrowBlockSize , ')*0.75)']]                              as CssKnownProps['blockSize' ],
+        arrowInlineSizeLg    : [['calc((', basics.arrowInlineSize, ')*1.50)']]                              as CssKnownProps['inlineSize'],
+        arrowBlockSizeLg     : [['calc((', basics.arrowBlockSize , ')*1.50)']]                              as CssKnownProps['blockSize' ],
     };
 }, { prefix: 'ttip' });
 
 
 
 // utilities:
-const getIconByTheme = <TElement extends Element = HTMLElement>({ theme }: TooltipProps<TElement>): IconList => {
-    switch (theme) {
-        case 'success'   : return 'check_circle';
-        case 'warning'   : return 'warning';
-        case 'danger'    : return 'error';
-     // case 'primary'   :
-     // case 'secondary' :
-     // case 'info'      :
-     // case 'light'     :
-     // case 'dark'      :
-        default          : return 'info';
-    } // switch
+const isTargetEnabled = (target: HTMLElement|null|undefined): boolean => {
+    // conditions:
+    if (!target) return false; // if no target => assumes target as disabled
+    
+    
+    
+    return !target.matches(':disabled, [aria-disabled]:not([aria-disabled="false"])')
 };
 
 
