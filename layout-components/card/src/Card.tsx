@@ -152,9 +152,9 @@ export const useCardVariant = (props: CardVariant) => {
 
 
 // styles:
-const headerElm = ':where(.header)'; // zero specificity
-const footerElm = ':where(.footer)'; // zero specificity
-const bodyElm   = ':where(.body)';   // zero specificity
+const headerElm = ':where(.header)' // zero specificity
+const footerElm = ':where(.footer)' // zero specificity
+const bodyElm   = ':where(.body)'   // zero specificity
 
 
 
