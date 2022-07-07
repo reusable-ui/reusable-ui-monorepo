@@ -115,6 +115,7 @@ import {
     
     
     // react components:
+    IconProps,
     Icon,
     
     IconComponentProps,
@@ -345,7 +346,7 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         // components:
         icon,
         iconPosition  = 'start',
-        iconComponent = icon && <Icon<Element> icon={icon} />,
+        iconComponent = icon && (<Icon<Element> icon={icon} /> as React.ReactComponentElement<any, IconProps<Element>>),
         
         
         
