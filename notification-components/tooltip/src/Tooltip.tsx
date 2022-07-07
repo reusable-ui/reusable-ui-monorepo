@@ -385,21 +385,21 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // callbacks:
-    const arrowOffsetMiddleware = useCallback((arrowElm: Element): PopupMiddleware => {
+    const arrowOffsetMiddleware = useCallback((arrow: Element): PopupMiddleware => {
         return {
             name: 'arrowOffset',
             async fn({ placement, x, y }) {
                 const [width, height]  = await (async (): Promise<ArrowSize> => {
-                    const tooltipElm = arrowElm.parentElement;
-                    if (!tooltipElm) {
+                    const tooltip = arrow.parentElement;
+                    if (!tooltip) {
                         // measure size:
-                        return await calculateArrowSize({ arrow: arrowElm, placement });
+                        return await calculateArrowSize({ arrow: arrow, placement });
                     } // if
                     
                     
                     
                     // backup:
-                    const tooltipStyle = tooltipElm.style;
+                    const tooltipStyle = tooltip.style;
                     const {
                         display,
                         visibility,
@@ -419,7 +419,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
                         
                         
                         // measure size:
-                        return await calculateArrowSize({ arrow: arrowElm, placement });
+                        return await calculateArrowSize({ arrow: arrow, placement });
                     }
                     finally {
                         // restore:
