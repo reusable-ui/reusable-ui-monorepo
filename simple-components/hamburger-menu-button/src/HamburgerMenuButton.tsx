@@ -312,7 +312,7 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
 
 
 // styles:
-const svgElm = 'svg';
+const svgElm = 'svg'
 
 export const usesHamburgerLayout = () => {
     // dependencies:
