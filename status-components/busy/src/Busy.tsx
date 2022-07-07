@@ -227,6 +227,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             // accessibilities:
             label={label ?? 'Loading...'}
         >
+            {/* <Icon> */}
             {React.cloneElement<IconProps<Element>>(iconComponent,
                 // props:
                 {
