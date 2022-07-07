@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -59,13 +64,14 @@ import {
     useEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'         // a generic component
+import {
     // hooks:
     usesSizeVariant,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // types:
-    ToggleActiveProps,
-}                           from '@reusable-ui/indicator'       // a base component
 export type {
     // types:
     PopupPlacement,
@@ -90,37 +96,12 @@ import {
     PopupProps,
     Popup,
 }                           from '@reusable-ui/popup'           // a base component
-import {
-    // styles:
-    usesContentLayout,
-    usesContentVariants,
-}                           from '@reusable-ui/content'         // a base component
-import {
-    // hooks:
-    SizeName as IconSizeName,
-    
-    
-    
-    // react components:
-    IconList,
-    IconProps,
-    Icon,
-    
-    IconComponentProps,
-}                           from '@reusable-ui/icon'            // an icon component
-import type {
-    // react components:
-    ControlProps,
-    ControlComponentProps,
-}                           from '@reusable-ui/control'         // a controllable component
-import type {
-    // hooks:
-    SizeName as ButtonIconSizeName,
-}                           from '@reusable-ui/button-icon'     // a button component with icon
-import {
-    // react components:
-    CloseButton,
-}                           from '@reusable-ui/close-button'    // a close button component
+
+
+
+// defaults:
+const _defaultArrowAriaHidden : boolean            = true      // the arrow is just for decoration purpose, no meaningful content
+const _defaultArrowClasses    : Optional<string>[] = ['arrow']
 
 
 
@@ -309,10 +290,20 @@ const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
 
 
 // react components:
+
+export interface ArrowComponentProps
+{
+    // components:
+    arrowComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
+}
+
 export interface TooltipProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>
+        PopupProps<TElement>,
+        
+        // components:
+        ArrowComponentProps
 {
     // popups:
     unsafe_calculateArrowSize ?: CalculateArrowSize
@@ -325,7 +316,12 @@ export interface TooltipProps<TElement extends Element = HTMLElement>
 }
 const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet   = useTooltipStyleSheet();
+    const styleSheet          = useTooltipStyleSheet();
+    
+    
+    
+    // states:
+    const [activeDn, setActiveDn] = useState<boolean>(false);
     
     
     
@@ -344,7 +340,17 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         // debounces:
         activeDelay  = 300,
         passiveDelay = 500,
+        
+        
+        
+        // components:
+        arrowComponent = <Generic<Element> />,
     ...restPopupProps} = props;
+    
+    
+    
+    // fn props:
+    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
@@ -363,13 +369,27 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            
+            
+            
+            // accessibilities:
+            active={activeFn}
         >
             { props.children }
             
-            <div
-                // classes:
-                className='arrow'
-            />
+            {/* <Arrow> */}
+            {React.cloneElement<GenericProps<Element>>(arrowComponent,
+                // props:
+                {
+                    // semantics:
+                    'aria-hidden' : (arrowComponent.props as any)['aria-hidden'] ?? _defaultArrowAriaHidden,
+                    
+                    
+                    
+                    // classes:
+                    classes       : (arrowComponent.props as any).classes ?? _defaultArrowClasses,
+                }
+            )}
         </Popup>
     );
 };
