@@ -354,7 +354,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         // components:
         arrowRef,
-        arrowComponent = <Generic<Element> /> as React.ReactComponentElement<any, GenericProps<Element>>,
+        arrowComponent = (<Generic<Element> /> as React.ReactComponentElement<any, GenericProps<Element>>),
     ...restPopupProps} = props;
     
     
