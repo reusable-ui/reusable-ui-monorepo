@@ -117,9 +117,9 @@ const _defaultControlClasses : Optional<string>[] = ['control']
 
 
 // styles:
-const iconElm    = ':where(.icon)';    // zero specificity
-const bodyElm    = ':where(.body)';    // zero specificity
-const controlElm = ':where(.control)'; // zero specificity
+const iconElm    = ':where(.icon)'    // zero specificity
+const bodyElm    = ':where(.body)'    // zero specificity
+const controlElm = ':where(.control)' // zero specificity
 
 
 
