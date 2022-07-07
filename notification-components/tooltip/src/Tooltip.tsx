@@ -9,6 +9,7 @@ import {
     useState,
     useRef,
     useCallback,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -374,7 +375,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // refs:
-    const arrowRefInternal = useRef<HTMLElement|SVGElement|null>(null);
+    const arrowRefInternal = useRef<Element|null>(null);
     const mergedArrowRef   = useMergeRefs(
         // preserves the original `arrowRef` from `arrowComponent`:
         arrowComponent.props.elmRef,
@@ -392,6 +393,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // fn props:
+    const isControllableActive = (active !== undefined);
     const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
@@ -535,7 +537,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         
-        const arrowStyle                = arrow.style;
+        const arrowStyle                = (arrow as (HTMLElement|SVGElement)).style;
         arrowStyle.left                 = ((x ?? false) !== false) ? `${x}px` : '';
         arrowStyle.top                  = ((y ?? false) !== false) ? `${y}px` : '';
         arrowStyle.right                = '';
@@ -551,6 +553,18 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         // popups:
         handleArrowPosition,
     );
+    
+    
+    
+    // dom effects:
+    useEffect(() => {
+        // conditions:
+        if (isControllableActive) return; // controllable [active] is set => no uncontrollable required
+        
+        const targetRef = props.targetRef;
+        const target    = (targetRef instanceof Element) ? targetRef : targetRef?.current;
+        if (!target)              return; // [targetRef] was not specified => nothing to do
+    }, [isControllableActive, props.targetRef]);
     
     
     
