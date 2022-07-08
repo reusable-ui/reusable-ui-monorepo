@@ -569,29 +569,37 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         // handlers:
         const handleDelayActive = () => {
-            if (targetStates.actived) return; // already activated => nothing to change
-            
-            
-            
+            // conditions:
             clearTimeout(targetStates.passivating); // cancel the deactivating process (if not too late)
+            if (targetStates.actived) return;       // already activated => nothing to change
+            
+            
+            
             targetStates.activating = setTimeout(() => {
+                // conditions:
                 if (targetStates.actived) return; // already activated => nothing to change
-                targetStates.actived = true;      // now mark as activated
                 
-                setActiveDn(true); // activate the <Tooltip>
+                
+                
+                targetStates.actived = true;      // now mark as activated
+                setActiveDn(true);                // activate the <Tooltip>
             }, activeDelay);
         };
         const handleDelayPassive = () => {
-            if (!targetStates.actived) return; // already deactivated => nothing to change
-            
-            
-            
+            // conditions:
             clearTimeout(targetStates.activating); // cancel the activating process (if not too late)
+            if (!targetStates.actived) return;     // already deactivated => nothing to change
+            
+            
+            
             targetStates.passivating = setTimeout(() => {
+                // conditions:
                 if (!targetStates.actived) return; // already deactivated => nothing to change
-                targetStates.actived = false;      // now mark as deactivated
                 
-                setActiveDn(false); // deactivate the <Tooltip>
+                
+                
+                targetStates.actived = false;      // now mark as deactivated
+                setActiveDn(false);                // deactivate the <Tooltip>
             }, passiveDelay);
         };
         const handleChange = () => {
