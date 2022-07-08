@@ -43,6 +43,11 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'         // a generic component
+import {
     // types:
     StateMixin,
     
@@ -58,12 +63,10 @@ import {
     OrientationVariant,
     useOrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    ActivePassiveVars,
-    ifActivating,
-    ifPassivating,
-    usesActivePassiveState as indicatorUsesActivePassiveState,
+import type {
+    // types:
+    ActiveChangeEvent,
+    ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
 export type {
     // types:
@@ -96,6 +99,20 @@ export const usesDropdownLayout = (options?: OrientationVariantOptions) => {
             usesCollapseLayout(options),
         ]),
         ...style({
+            // layouts:
+            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
+            flexDirection  : 'column', // items are stacked vertically
+            justifyContent : 'center', // center items (text, icon, etc) horizontally
+            alignItems     : 'center', // center items (text, icon, etc) vertically
+            flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            
+            
+            
+            // sizes:
+            inlineSize     : 'fit-content',
+            
+            
+            
             // customize:
             ...usesCssProps(dropdowns), // apply config's cssProps
         }),
@@ -145,99 +162,71 @@ export const useDropdownStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
-    //#region keyframes
-    const framePassived     = style({
-        overflowY     : 'hidden',
-        maxBlockSize  : 0,
-    });
-    const frameIntermediate = style({
-        overflowY     : 'hidden',
-        maxBlockSize  : '100vh',
-    });
-    const frameActived      = style({
-        overflowY     : 'unset',
-        maxBlockSize  : 'unset',
-    });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from  : framePassived,
-        '99%' : frameIntermediate,
-        to    : frameActived,
-    });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from  : frameActived,
-        '1%'  : frameIntermediate,
-        to    : framePassived,
-    });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
-    
-    
-    
-    const framePassivedInline     = style({
-        overflowX     : 'hidden',
-        maxInlineSize : 0,
-    });
-    const frameIntermediateInline = style({
-        overflowX     : 'hidden',
-        maxInlineSize : '100vh',
-    });
-    const frameActivedInline      = style({
-        overflowX     : 'unset',
-        maxInlineSize : 'unset',
-    });
-    const [keyframesActiveInlineRule , keyframesActiveInline ] = keyframes({
-        from  : framePassivedInline,
-        '99%' : frameIntermediateInline,
-        to    : frameActivedInline,
-    });
-    keyframesActive.value  = 'activeInline';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveInlineRule, keyframesPassiveInline] = keyframes({
-        from  : frameActivedInline,
-        '1%'  : frameIntermediateInline,
-        to    : framePassivedInline,
-    });
-    keyframesPassive.value = 'passiveInline'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
-    //#endregion keyframes
-    
-    
-    
     return {
-        // animations:
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animActive        : [
-            ['300ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
-        animPassive       : [
-            ['500ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
-        
-        
-        
-        ...keyframesActiveInlineRule,
-        ...keyframesPassiveInlineRule,
-        animActiveInline  : [
-            ['300ms', 'ease-out', 'both', keyframesActiveInline ],
-        ]                           as CssKnownProps['anim'],
-        animPassiveInline : [
-            ['500ms', 'ease-out', 'both', keyframesPassiveInline],
-        ]                           as CssKnownProps['anim'],
+        // borders:
+        boxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'],
     };
 }, { prefix: 'ddwn' });
 
 
 
-// react components:
-export interface DropdownProps<TElement extends Element = HTMLElement>
-    extends
-        // bases:
-        CollapseProps<TElement>,
+// utilities:
+const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
+    let parent: Element|null = element;
+    do {
+        if (parent === desired) return true; // confirmed
         
-        // layouts:
-        OrientationVariant
+        // let's try again:
+        parent = parent.parentElement;
+    } while (parent);
+    
+    
+    
+    return false; // not the descendant of desired
+};
+
+
+
+// react components:
+
+export type DropdownCloseType = 'shortcut'|'blur'
+export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
+    closeType : DropdownCloseType
+}
+export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+    extends
+        // accessibilities:
+        Pick<ToggleActiveProps<TDropdownActiveChangeEvent>, 'onActiveChange'>
 {
 }
-const Dropdown = <TElement extends Element = HTMLElement>(props: DropdownProps<TElement>): JSX.Element|null => {
+
+export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+    extends
+        // accessibilities:
+        DropdownAction<TDropdownActiveChangeEvent>
+{
+    // accessibilities:
+    tabIndex ?: number
+    
+    
+    
+    // components:
+    children ?: React.ReactElement<GenericProps<Element> | React.HTMLAttributes<HTMLDivElement> | React.SVGAttributes<SVGSVGElement>>
+}
+
+export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+    extends
+        // bases:
+        Omit<CollapseProps<TElement>,
+            // children:
+            |'children' // we use `children` prop as a dropdown component
+        >,
+        
+        // components:
+        DropdownComponentProps<TDropdownActiveChangeEvent>
+{
+}
+const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet = useDropdownStyleSheet();
     
