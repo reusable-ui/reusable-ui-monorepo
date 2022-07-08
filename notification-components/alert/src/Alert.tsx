@@ -50,7 +50,7 @@ import {
     // hooks:
     usesSizeVariant,
 }                           from '@reusable-ui/basic'           // a base component
-import {
+import type {
     // types:
     ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
