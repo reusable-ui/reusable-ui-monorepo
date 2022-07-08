@@ -360,6 +360,8 @@ const popupRoles = [
     'status',
     'alert',
     'tooltip',
+    'dialog',
+    'menu'
 ];
 
 export const useActivePassiveState = <TElement extends Element = HTMLElement>(props: AccessibilityProps & SemanticProps) => {
