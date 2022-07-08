@@ -24,7 +24,8 @@ import type {
 import {
     // rules:
     rule,
-    rules,
+    states,
+    keyframes,
     
     
     
@@ -35,6 +36,7 @@ import {
     
     // styles:
     style,
+    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -48,7 +50,8 @@ import {
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -69,9 +72,46 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
+    // types:
+    StateMixin,
+    
+    
+    
     // hooks:
     usesSizeVariant,
+    OrientationName,
+    OrientationVariantOptions,
+    defaultBlockOrientationVariantOptions,
+    normalizeOrientationVariantOptions,
+    usesOrientationVariant,
+    OrientationVariant,
+    useOrientationVariant,
+    usesBorder,
+    extendsBorder,
+    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // hooks:
+    ActivePassiveVars,
+    ifActivating,
+    ifPassivating,
+    ifPassived,
+    usesEnableDisableState,
+    usesActivePassiveState as indicatorUsesActivePassiveState,
+    useActivePassiveState,
+    
+    
+    
+    // styles:
+    usesIndicatorLayout,
+    usesIndicatorVariants,
+    
+    
+    
+    // react components:
+    IndicatorProps,
+    Indicator,
+}                           from '@reusable-ui/indicator'       // a base component
 export type {
     // types:
     PopupPlacement,
@@ -109,64 +149,80 @@ import {
 
 
 
-// defaults:
-const _defaultArrowAriaHidden : boolean            = true      // the arrow is just for decoration purpose, no meaningful content
-const _defaultArrowClasses    : Optional<string>[] = ['arrow']
+// hooks:
+
+// layouts:
+
+//#region orientation
+export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
+//#endregion orientation
+
+
+// accessibilities:
+
+//#region activePassive
+/**
+ * Uses active & passive states.
+ * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ */
+export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+    // dependencies:
+    
+    // accessibilities:
+    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // accessibilities:
+                activeRule,
+            ]),
+            ...states([
+                ifActivating({
+                    ...vars({
+                        [actives.anim] : collapses.animActive,
+                    }),
+                }),
+                ifPassivating({
+                    ...vars({
+                        [actives.anim] : collapses.animPassive,
+                    }),
+                }),
+            ]),
+        }),
+        actives,
+    ];
+};
+//#endregion activePassive
 
 
 
 // styles:
-const arrowElm = ':where(.arrow)' // zero specificity
-
-
-
-export const usesCollapseLayout = () => {
+export const usesCollapseLayout = (options?: OrientationVariantOptions) => {
+    // options:
+    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    
+    
+    
     return style({
         ...imports([
             // layouts:
             usesPopupLayout(),
         ]),
         ...style({
-            // layouts:
-            display : 'block',
-            
-            
-            
-            // children:
-            ...children(arrowElm, {
-                // layouts:
-                content     : '""',
-                display     : 'block',
-                ...rule([':not(.overlay)&', '.nude&'], {
-                    display : 'none', // the arrow is not supported when [not overlayed] or [nude=true]
-                }),
-                
-                
-                
-                // positions:
-                position    : 'absolute', // absolute position, so we can move the location easily
-                
-                
-                
-                // backgrounds:
-                backg       : 'inherit', // copy the background color. for background image, it may look strange
-                
-                
-                
-                // borders:
-                border      : 'inherit', // copy border style|width|color
-                boxShadow   : 'inherit', // copy shadow
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(collapses, 'arrow')), // apply config's cssProps starting with arrow***
-            }),
-            
-            
-            
             // customize:
             ...usesCssProps(collapses), // apply config's cssProps
+            ...rule(orientationInlineSelector, { // inline
+                // overwrites propName = propName{Inline}:
+                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'inline')),
+            }),
+            ...rule(orientationBlockSelector , { // block
+                // overwrites propName = propName{Block}:
+                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
+            }),
         }),
     });
 };
@@ -189,10 +245,20 @@ export const usesCollapseVariants = () => {
     });
 };
 export const usesCollapseStates = () => {
+    // dependencies:
+    
+    // states:
+    const [activePassiveStateRule] = usesActivePassiveState();
+    
+    
+    
     return style({
         ...imports([
             // states:
             usesPopupStates(),
+            
+            // accessibilities:
+            activePassiveStateRule,
         ]),
     });
 };
