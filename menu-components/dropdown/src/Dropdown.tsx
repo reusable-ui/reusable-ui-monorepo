@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -216,13 +221,18 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>
 {
+    // refs:
+    dropdownRef ?: React.Ref<Element> // setter ref
+    
+    
+    
     // accessibilities:
-    tabIndex ?: number
+    tabIndex    ?: number
     
     
     
     // components:
-    children  : React.ReactElement<GenericProps<Element> | React.HTMLAttributes<HTMLDivElement> | React.SVGAttributes<SVGSVGElement>>
+    children     : React.ReactElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -257,6 +267,50 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     
+    // rest props:
+    const {
+        // accessibilities:
+        onActiveChange,
+        
+        
+        
+        // popups:
+        targetRef,
+        
+        
+        
+        // components:
+        dropdownRef,
+        tabIndex,
+        children,
+    ...restCollapseProps} = props;
+    
+    
+    
+    // verifies:
+    React.Children.only(children);
+    if (!React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(children)) throw Error('Invalid child element.');
+    
+    
+    
+    // refs:
+    const dropdownRefInternal = useRef<Element|null>(null);
+    const mergedDropdownRef   = useMergeRefs(
+        // preserves the original `ref` from `dropdownComponent`:
+        (children.props as GenericProps<Element>).elmRef ?? (children.props as React.RefAttributes<HTMLElement|SVGElement>).ref ?? undefined,
+        
+        
+        
+        // preserves the original `dropdownRef` from `props`:
+        dropdownRef,
+        
+        
+        
+        dropdownRefInternal,
+    );
+    
+    
+    
     // handlers:
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -276,7 +330,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     return (
         <Collapse<TElement>
             // other props:
-            {...props}
+            {...restCollapseProps}
             
             
             
