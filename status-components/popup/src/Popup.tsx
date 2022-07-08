@@ -332,7 +332,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
     
     // accessibilities:
     const activePassiveState      = useActivePassiveState<TElement>(props);
-    const isVisible               = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
+    const isVisible               = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const [popupPos, setPopupPos] = useReducer(coordinateReducer, null);
     
     
