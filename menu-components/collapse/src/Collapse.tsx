@@ -2,21 +2,9 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
-    useRef,
-    useCallback,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
-import type {
-    // types:
-    Optional,
-}                           from '@cssfn/types'                 // cssfn general types
 import type {
     // css known (standard) properties:
     CssKnownProps,
@@ -26,11 +14,6 @@ import {
     rule,
     states,
     keyframes,
-    
-    
-    
-    // combinators:
-    children,
     
     
     
@@ -56,21 +39,9 @@ import {
 
 // reusable-ui:
 import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-import {
     // hooks:
-    useEvent,
-    EventHandler,
-    useMergeEvents,
-    useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // react components:
-    GenericProps,
-    Generic,
-}                           from '@reusable-ui/generic'         // a generic component
 import {
     // types:
     StateMixin,
@@ -86,31 +57,13 @@ import {
     usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
-    usesBorder,
-    extendsBorder,
-    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ActivePassiveVars,
     ifActivating,
     ifPassivating,
-    ifPassived,
-    usesEnableDisableState,
     usesActivePassiveState as indicatorUsesActivePassiveState,
-    useActivePassiveState,
-    
-    
-    
-    // styles:
-    usesIndicatorLayout,
-    usesIndicatorVariants,
-    
-    
-    
-    // react components:
-    IndicatorProps,
-    Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
 export type {
     // types:
@@ -121,14 +74,6 @@ export type {
     PopupSide,
 }                           from '@reusable-ui/popup'           // a base component
 import {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupPosition,
-    PopupSide,
-    
-    
-    
     // styles:
     usesPopupLayout,
     usesPopupVariants,
@@ -140,12 +85,6 @@ import {
     PopupProps,
     Popup,
 }                           from '@reusable-ui/popup'           // a base component
-
-// other libs:
-import {
-    // utilities:
-    arrow as arrowMiddleware,
-}                           from '@floating-ui/dom'             // a popup utility
 
 
 
@@ -280,154 +219,120 @@ export const useCollapseStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
-    const basics = {
-        // sizes:
-        arrowInlineSize      : '0.8rem'                                                                     as CssKnownProps['inlineSize'],
-        arrowBlockSize       : '0.8rem'                                                                     as CssKnownProps['blockSize' ],
-        
-     // arrowClipPath        : 'polygon(100% 0, 100% 100%, 0 100%)'                                         as CssKnownProps['clipPath'  ],
-        arrowClipPath        : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                 as CssKnownProps['clipPath'  ], // compensates for boxShadow
-        
-        arrowTopTransform    : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]]  as CssKnownProps['transform' ],
-        arrowRightTransform  : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']]  as CssKnownProps['transform' ],
-        arrowBottomTransform : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']]  as CssKnownProps['transform' ],
-        arrowLeftTransform   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']]  as CssKnownProps['transform' ],
-        
-        
-        
-        // borders:
-        boxShadow            : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]                                          as CssKnownProps['boxShadow'],
-        
-        
-        
-        // typos:
-        whiteSpace           : 'normal'                                                                     as CssKnownProps['whiteSpace'],
-        fontSize             : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]                as CssKnownProps['fontSize'  ],
-        fontSizeSm           : typos.fontSizeSm                                                             as CssKnownProps['fontSize'  ],
-        fontSizeLg           : typos.fontSizeNm                                                             as CssKnownProps['fontSize'  ],
-    };
+    //#region keyframes
+    const framePassived     = style({
+        overflowY     : 'hidden',
+        maxBlockSize  : 0,
+    });
+    const frameIntermediate = style({
+        overflowY     : 'hidden',
+        maxBlockSize  : '100vh',
+    });
+    const frameActived      = style({
+        overflowY     : 'unset',
+        maxBlockSize  : 'unset',
+    });
+    const [keyframesActiveRule , keyframesActive ] = keyframes({
+        from  : framePassived,
+        '99%' : frameIntermediate,
+        to    : frameActived,
+    });
+    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    const [keyframesPassiveRule, keyframesPassive] = keyframes({
+        from  : frameActived,
+        '1%'  : frameIntermediate,
+        to    : framePassived,
+    });
+    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    
+    
+    
+    const framePassivedInline     = style({
+        overflowX     : 'hidden',
+        maxInlineSize : 0,
+    });
+    const frameIntermediateInline = style({
+        overflowX     : 'hidden',
+        maxInlineSize : '100vh',
+    });
+    const frameActivedInline      = style({
+        overflowX     : 'unset',
+        maxInlineSize : 'unset',
+    });
+    const [keyframesActiveInlineRule , keyframesActiveInline ] = keyframes({
+        from  : framePassivedInline,
+        '99%' : frameIntermediateInline,
+        to    : frameActivedInline,
+    });
+    keyframesActive.value  = 'activeInline';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    const [keyframesPassiveInlineRule, keyframesPassiveInline] = keyframes({
+        from  : frameActivedInline,
+        '1%'  : frameIntermediateInline,
+        to    : framePassivedInline,
+    });
+    keyframesPassive.value = 'passiveInline'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    //#endregion keyframes
     
     
     
     return {
-        ...basics,
+        // animations:
+        ...keyframesActiveRule,
+        ...keyframesPassiveRule,
+        animActive        : [
+            ['300ms', 'ease-out', 'both', keyframesActive ],
+        ]                           as CssKnownProps['anim'],
+        animPassive       : [
+            ['500ms', 'ease-out', 'both', keyframesPassive],
+        ]                           as CssKnownProps['anim'],
         
         
         
-        // sizes:
-        arrowInlineSizeSm    : [['calc((', basics.arrowInlineSize, ')*0.75)']]                              as CssKnownProps['inlineSize'],
-        arrowBlockSizeSm     : [['calc((', basics.arrowBlockSize , ')*0.75)']]                              as CssKnownProps['blockSize' ],
-        arrowInlineSizeLg    : [['calc((', basics.arrowInlineSize, ')*1.50)']]                              as CssKnownProps['inlineSize'],
-        arrowBlockSizeLg     : [['calc((', basics.arrowBlockSize , ')*1.50)']]                              as CssKnownProps['blockSize' ],
+        ...keyframesActiveInlineRule,
+        ...keyframesPassiveInlineRule,
+        animActiveInline  : [
+            ['300ms', 'ease-out', 'both', keyframesActiveInline ],
+        ]                           as CssKnownProps['anim'],
+        animPassiveInline : [
+            ['500ms', 'ease-out', 'both', keyframesPassiveInline],
+        ]                           as CssKnownProps['anim'],
     };
 }, { prefix: 'clps' });
 
 
 
-export interface ArrowProps {
-    arrow     : Element
-    placement : PopupPlacement
-}
-export type ArrowSize           = readonly [number, number]
-export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
-const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
-    const { width, height, }   = arrow.getBoundingClientRect();
-    return [
-        (width  / 2) - 1,
-        (height / 2) - 1,
-    ];
-};
-
-
-
 // react components:
-
-export interface ArrowComponentProps
-{
-    // refs:
-    arrowRef       ?: React.Ref<Element> // setter ref
-    
-    
-    
-    // components:
-    arrowComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
-}
-
 export interface CollapseProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         PopupProps<TElement>,
         
-        // components:
-        ArrowComponentProps
+        // layouts:
+        OrientationVariant
 {
-    // popups:
-    unsafe_calculateArrowSize ?: CalculateArrowSize
-    
-    
-    
-    // debounces:
-    activeDelay               ?: number
-    passiveDelay              ?: number
 }
 const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet          = useCollapseStyleSheet();
+    const styleSheet         = useCollapseStyleSheet();
     
     
     
-    // states:
-    const [activeDn, setActiveDn] = useState<boolean>(false);
+    // variants:
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
-    // rest props:
-    const {
-        // accessibilities:
-        active,
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
         
         
         
-        // popups:
-        unsafe_calculateArrowSize : calculateArrowSize = defaultCalculateArrowSize,
-        popupMiddleware,
-        
-        
-        
-        // debounces:
-        activeDelay  = 300,
-        passiveDelay = 500,
-        
-        
-        
-        // components:
-        arrowRef,
-        arrowComponent = (<Generic<Element> /> as React.ReactComponentElement<any, GenericProps<Element>>),
-    ...restPopupProps} = props;
-    
-    
-    
-    // refs:
-    const arrowRefInternal = useRef<Element|null>(null);
-    const mergedArrowRef   = useMergeRefs(
-        // preserves the original `arrowRef` from `arrowComponent`:
-        arrowComponent.props.elmRef,
-        
-        
-        
-        // preserves the original `arrowRef` from `props`:
-        arrowRef,
-        
-        
-        
-        arrowRefInternal,
+        // variants:
+        orientationVariant.class,
     );
-    
-    
-    
-    // fn props:
-    const isControllableActive = (active !== undefined);
-    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
@@ -435,22 +340,19 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
     return (
         <Popup<TElement>
             // other props:
-            {...restPopupProps}
+            {...props}
             
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'collapse'}
+            semanticRole={props.semanticRole ?? 'dialog'}
+            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            
-            
-            
-            // accessibilities:
-            active={activeFn}
+            variantClasses={variantClasses}
         />
     );
 };
@@ -458,3 +360,5 @@ export {
     Collapse,
     Collapse as default,
 }
+
+export type { OrientationName, OrientationVariant }
