@@ -211,7 +211,7 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
     
     
     // components:
-    children ?: React.ReactElement<GenericProps<Element> | React.HTMLAttributes<HTMLDivElement> | React.SVGAttributes<SVGSVGElement>>
+    children  : React.ReactElement<GenericProps<Element> | React.HTMLAttributes<HTMLDivElement> | React.SVGAttributes<SVGSVGElement>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
