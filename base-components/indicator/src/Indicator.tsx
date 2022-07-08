@@ -406,9 +406,10 @@ export const useActivePassiveState = <TElement extends Element = HTMLElement>(pr
     
     
     return {
-        active : actived,
+        active    : actived,
+        isVisible : actived || (animating !== null),
         
-        class  : ((): string|null => {
+        class     : ((): string|null => {
             // activating:
             if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected] or [data-active]
             
@@ -422,7 +423,7 @@ export const useActivePassiveState = <TElement extends Element = HTMLElement>(pr
             return null;
         })(),
         
-        props  : (() => {
+        props     : (() => {
             if (!actived) return null;
             
             // use :checked if <input type="checkbox|radio">:
