@@ -530,11 +530,11 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         const arrowStyle                = (arrow as (HTMLElement|SVGElement)).style;
-        arrowStyle.left                 = ((x ?? false) !== false) ? `${x}px` : '';
-        arrowStyle.top                  = ((y ?? false) !== false) ? `${y}px` : '';
-        arrowStyle.right                = '';
-        arrowStyle.bottom               = '';
-        arrowStyle[invertBasePlacement] = '';
+        arrowStyle.left                 = ((x ?? false) !== false) ? `${x}px` /* set */ : '' /* reset */;
+        arrowStyle.top                  = ((y ?? false) !== false) ? `${y}px` /* set */ : '' /* reset */;
+        arrowStyle.right                = ''; /* reset */
+        arrowStyle.bottom               = ''; /* reset */
+        arrowStyle[invertBasePlacement] = '0px'; /* top => bottom:0px | bottom => top:0px | left => right:0px | right => left:0px */
     }, []);
     const handlePopupUpdate     = useMergeEvents(
         // preserves the original `onPopupUpdate`:
