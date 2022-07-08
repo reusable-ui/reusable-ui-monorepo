@@ -132,12 +132,12 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
             ...states([
                 ifActivating({
                     ...vars({
-                        [actives.anim  ] : popups.animActive,
+                        [actives.anim] : popups.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...vars({
-                        [actives.anim  ] : popups.animPassive,
+                        [actives.anim] : popups.animPassive,
                     }),
                 }),
             ]),
