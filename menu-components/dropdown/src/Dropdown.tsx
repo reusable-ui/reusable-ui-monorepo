@@ -40,6 +40,11 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
+    useEvent,
+    EventHandler,
+    useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -78,6 +83,11 @@ export type {
     PopupSide,
 }                           from '@reusable-ui/collapse'        // a base component
 import {
+    // hooks:
+    defaultOrientationRuleOptions,
+    
+    
+    
     // styles:
     usesCollapseLayout,
     usesCollapseVariants,
@@ -233,11 +243,32 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     
+    // variants:
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    
+    
+    
     // states:
     
     // accessibilities:
     const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
+    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    
+    
+    // handlers:
+    const handleAnimationEnd = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        activePassiveState.handleAnimationEnd,
+    );
     
     
     
@@ -249,9 +280,28 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             
+            // variants:
+            nude={props.nude ?? true}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-        />
+            
+            
+            
+            // popups:
+            popupPlacement={props.popupPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
+            popupAutoFlip={props.popupAutoFlip ?? true}
+            popupAutoShift={props.popupAutoShift ?? true}
+            
+            
+            
+            // handlers:
+            onAnimationEnd={handleAnimationEnd}
+        >
+            // TODO
+        </Collapse>
     );
 };
 export {
