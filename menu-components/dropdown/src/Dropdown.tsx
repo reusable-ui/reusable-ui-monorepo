@@ -63,8 +63,9 @@ import {
     OrientationVariant,
     useOrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
-import type {
-    // types:
+import {
+    // hooks:
+    useActivePassiveState,
     ActiveChangeEvent,
     ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
@@ -228,7 +229,15 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet = useDropdownStyleSheet();
+    const styleSheet         = useDropdownStyleSheet();
+    
+    
+    
+    // states:
+    
+    // accessibilities:
+    const activePassiveState = useActivePassiveState<TElement>(props);
+    const isVisible          = activePassiveState.active || (!!activePassiveState.class); // visible = showing, shown, hidding ; !visible = hidden
     
     
     
