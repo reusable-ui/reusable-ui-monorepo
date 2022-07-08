@@ -39,7 +39,7 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Tooltip targetRef={btnRef} theme='warning' active={true} popupPlacement='top'>
+                <Tooltip targetRef={btnRef} theme='warning' popupPlacement='top'>
                     This is cool!
                 </Tooltip>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
