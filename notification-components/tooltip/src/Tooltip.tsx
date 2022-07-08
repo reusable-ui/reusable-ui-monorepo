@@ -25,8 +25,6 @@ import {
     // rules:
     rule,
     rules,
-    variants,
-    states,
     
     
     
@@ -56,20 +54,14 @@ import {
 // reusable-ui:
 import {
     // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-import {
-    // configs:
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
-    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // react components:
@@ -557,6 +549,14 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // dom effects:
+    const [targetStates] = useState({
+        hovered     : false,
+        focused     : false,
+        
+        actived     : false,
+        activating  : undefined as ReturnType<typeof setTimeout>|undefined,
+        passivating : undefined as ReturnType<typeof setTimeout>|undefined,
+    });
     useEffect(() => {
         // conditions:
         if (isControllableActive) return; // controllable [active] is set => no uncontrollable required
@@ -567,41 +567,35 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         
-        // states:
-        let hovered = false;
-        let focused = false;
-        let actived = false;
-        let activating  : ReturnType<typeof setTimeout>|undefined = undefined;
-        let passivating : ReturnType<typeof setTimeout>|undefined = undefined;
         // handlers:
         const handleDelayActive = () => {
-            if (actived) return; // already activated => nothing to change
+            if (targetStates.actived) return; // already activated => nothing to change
             
             
             
-            clearTimeout(passivating); // cancel the deactivating process (if not too late)
-            activating = setTimeout(() => {
-                if (actived) return; // already activated => nothing to change
-                actived = true;      // now mark as activated
+            clearTimeout(targetStates.passivating); // cancel the deactivating process (if not too late)
+            targetStates.activating = setTimeout(() => {
+                if (targetStates.actived) return; // already activated => nothing to change
+                targetStates.actived = true;      // now mark as activated
                 
-                setActiveDn(true);   // activate the <Tooltip>
+                setActiveDn(true); // activate the <Tooltip>
             }, activeDelay);
         };
         const handleDelayPassive = () => {
-            if (!actived) return; // already deactivated => nothing to change
+            if (!targetStates.actived) return; // already deactivated => nothing to change
             
             
             
-            clearTimeout(activating); // cancel the activating process (if not too late)
-            passivating = setTimeout(() => {
-                if (!actived) return; // already deactivated => nothing to change
-                actived = false;      // now mark as deactivated
+            clearTimeout(targetStates.activating); // cancel the activating process (if not too late)
+            targetStates.passivating = setTimeout(() => {
+                if (!targetStates.actived) return; // already deactivated => nothing to change
+                targetStates.actived = false;      // now mark as deactivated
                 
-                setActiveDn(false);   // deactivate the <Tooltip>
+                setActiveDn(false); // deactivate the <Tooltip>
             }, passiveDelay);
         };
         const handleChange = () => {
-            const active = (hovered || focused);
+            const active = (targetStates.hovered || targetStates.focused);
             if (active) {
                 handleDelayActive();
             }
@@ -614,7 +608,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             
-            hovered = true;
+            targetStates.hovered = true;
             handleChange();
         };
         const handleLeave  = () => {
@@ -622,7 +616,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             
-            hovered = false;
+            targetStates.hovered = false;
             handleChange();
         };
         const handleFocus  = () => {
@@ -630,7 +624,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             
-            focused = true;
+            targetStates.focused = true;
             handleChange();
         };
         const handleBlur   = () => {
@@ -638,13 +632,17 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             
-            focused = false;
+            targetStates.focused = false;
             handleChange();
         };
         
         
         
         // setups:
+        targetStates.hovered = target.matches(':hover');
+        targetStates.focused = target.matches(':focus-within');
+        targetStates.actived = (targetStates.hovered || targetStates.focused);
+        
         target.addEventListener('mouseenter', handleHover);
         target.addEventListener('mouseleave', handleLeave);
         target.addEventListener('focus'     , handleFocus, { capture: true }); // force `focus` as bubbling
