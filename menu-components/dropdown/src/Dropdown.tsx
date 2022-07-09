@@ -184,7 +184,7 @@ const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
 
 // react components:
 
-export type DropdownCloseType = 'shortcut'|'blur'
+export type DropdownCloseType = 'shortcut'|'blur'|{}
 export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
     closeType : DropdownCloseType
 }
