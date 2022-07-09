@@ -41,6 +41,11 @@ import {
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
+    // types:
+    Role,
+    
+    
+    
     // react components:
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
@@ -83,22 +88,45 @@ import {
     CollapseProps,
     Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
+import {
+    // hooks:
+    ListStyle,
+    ListVariant,
+    
+    
+    
+    // react components:
+    ListItemProps,
+    ListItem,
+    
+    ListSeparatorItem,
+    
+    ListProps,
+    List,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
 // utilities:
-const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
-    let parent: Element|null = element;
-    do {
-        if (parent === desired) return true; // confirmed
-        
-        // let's try again:
-        parent = parent.parentElement;
-    } while (parent);
+export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): Role|null => {
+    if (props.role) return null; // pre defined role => no need to determine
     
     
     
-    return false; // not the descendant of desired
+    const children          = props.children;
+    const defaultActionCtrl = props.actionCtrl ?? true;
+    if (React.Children.toArray(children).some((child) => {
+        if (!React.isValidElement<ListItemProps<Element>>(child)) {
+            return !defaultActionCtrl;                             // if the default is not an actionCtrl => not a menu item => role='dialog'
+        }
+        else {
+            return !(child.props.actionCtrl ?? defaultActionCtrl); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
+        } // if
+    })) return 'dialog'; // one/some <ListItem>s are [actionCtrl=false] => role='dialog'
+    
+    
+    
+    return 'menu'; // all <ListItem>s are [actionCtrl=true] => role='menu'
 };
 
 
