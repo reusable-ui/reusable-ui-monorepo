@@ -330,7 +330,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 isKeyOf('arrowdown' ) ||
                 isKeyOf('arrowup'   ) ||
                 isKeyOf('arrowleft' ) ||
-                isKeyOf('arrowright')
+                isKeyOf('arrowright') ||
+                isKeyOf('space')
             )
             {
                 // do nothing
