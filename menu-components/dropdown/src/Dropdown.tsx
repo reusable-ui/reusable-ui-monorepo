@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -277,11 +278,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         
-        // popups:
-        targetRef,
-        
-        
-        
         // components:
         dropdownRef,
         tabIndex,
@@ -345,7 +341,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             if (isKeyOf('escape')) {
-                handleActiveChange?.({ newActive: false, closeType: 'shortcut' });
+                handleActiveChange?.({ newActive: false, closeType: 'shortcut' } as TDropdownActiveChangeEvent);
             }
             else if (
                 isKeyOf('pagedown'  ) ||
@@ -390,6 +386,14 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         // accessibilities:
         activePassiveState.handleAnimationEnd,
     );
+    
+    
+    
+    // dom effects:
+    const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+    useEffect(() => {
+        // TODO
+    }, [isVisible, target]);
     
     
     
