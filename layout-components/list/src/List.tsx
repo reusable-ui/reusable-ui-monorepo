@@ -1484,7 +1484,7 @@ const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<T
         />
     );
 };
-export {
+export type {
     ListItemProps,
     ListItemProps as ItemProps,
 }
@@ -1523,7 +1523,7 @@ const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSe
         </ListItem>
     );
 };
-export {
+export type {
     ListSeparatorItemProps,
     ListSeparatorItemProps as SeparatorItemProps,
 }
