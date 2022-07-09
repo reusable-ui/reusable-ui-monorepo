@@ -224,7 +224,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // bases:
         Omit<CollapseProps<TElement>,
             // children:
-            |'children' // we use `children` prop as a dropdown component
+            |'children' // we redefined `children` prop as a dropdown component
         >,
         
         // components:
