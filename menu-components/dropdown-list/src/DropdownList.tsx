@@ -186,6 +186,7 @@ export interface DropdownListComponentUIProps<TDropdownListActiveChangeEvent ext
         // accessibilities:
         DropdownComponentUIProps<TDropdownListActiveChangeEvent>
 {
+    /* no additional required props yet */
 }
 export interface DropdownListComponentProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
@@ -193,12 +194,13 @@ export interface DropdownListComponentProps<TDropdownListActiveChangeEvent exten
         DropdownListComponentUIProps<TDropdownListActiveChangeEvent>
 {
     // refs:
-    dropdownListRef ?: React.Ref<Element> // setter ref
+    listRef       ?: React.Ref<Element> // setter ref
     
     
     
     // components:
-    children     : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownListComponentUIProps<TDropdownListActiveChangeEvent>>
+    listComponent ?: React.ReactComponentElement<any, ListProps<Element>>
+    children      ?: ListProps<Element>['children']
 }
 
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
@@ -206,7 +208,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         // bases:
         Omit<CollapseProps<TElement>,
             // children:
-            |'children' // we use `children` prop as a dropdownList component
+            |'children' // we redefined `children` prop as a dropdownList component
         >,
         
         // components:
