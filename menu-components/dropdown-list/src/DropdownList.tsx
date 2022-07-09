@@ -88,6 +88,14 @@ import {
     CollapseProps,
     Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
+import type {
+    // react components:
+    DropdownCloseType,
+    DropdownActiveChangeEvent,
+    DropdownAction,
+    
+    DropdownComponentUIProps,
+}                           from '@reusable-ui/dropdown'        // a base component
 import {
     // hooks:
     ListStyle,
@@ -162,24 +170,22 @@ export {
 
 
 
-export type DropdownListCloseType = 'shortcut'|'blur'
-export interface DropdownListActiveChangeEvent extends ActiveChangeEvent {
+export type DropdownListCloseType = DropdownCloseType|number
+export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent {
     closeType : DropdownListCloseType
 }
-export interface DropdownListAction<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
-    extends
-        // accessibilities:
-        Pick<ToggleActiveProps<TDropdownListActiveChangeEvent>, 'onActiveChange'>
-{
-}
+// export interface DropdownListAction<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+//     extends
+//         // accessibilities:
+//         DropdownAction<TDropdownListActiveChangeEvent>
+// {
+// }
 
 export interface DropdownListComponentUIProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // accessibilities:
-        DropdownListAction<TDropdownListActiveChangeEvent>
+        DropdownComponentUIProps<TDropdownListActiveChangeEvent>
 {
-    // accessibilities:
-    tabIndex ?: number
 }
 export interface DropdownListComponentProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
