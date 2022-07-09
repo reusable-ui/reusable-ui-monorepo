@@ -216,7 +216,7 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentUIProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>
@@ -227,7 +227,7 @@ export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends Dro
 export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // component ui:
-        DropdownComponentUiProps<TDropdownActiveChangeEvent>
+        DropdownComponentUIProps<TDropdownActiveChangeEvent>
 {
     // refs:
     dropdownRef ?: React.Ref<Element> // setter ref
@@ -235,7 +235,7 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
     
     
     // components:
-    children     : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps<TDropdownActiveChangeEvent>>
+    children     : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUIProps<TDropdownActiveChangeEvent>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -322,7 +322,64 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // handlers:
-    const handleAnimationEnd = useMergeEvents(
+    const handleActiveChange    = useMergeEvents(
+        // preserves the original `onActiveChange` from `dropdownComponent`:
+        dropdownComponent.props.onActiveChange,
+        
+        
+        
+        // preserves the original `onActiveChange`:
+        onActiveChange,
+    );
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        if (((): boolean => {
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
+            };
+            
+            
+            
+            if (isKeyOf('escape')) {
+                handleActiveChange?.({ newActive: false, closeType: 'shortcut' });
+            }
+            else if (
+                isKeyOf('pagedown'  ) ||
+                isKeyOf('pageup'    ) ||
+                isKeyOf('home'      ) ||
+                isKeyOf('end'       ) ||
+                isKeyOf('arrowdown' ) ||
+                isKeyOf('arrowup'   ) ||
+                isKeyOf('arrowleft' ) ||
+                isKeyOf('arrowright')
+            )
+            {
+                // do nothing
+                // do not scroll the page
+            }
+            else return false; // not handled
+            
+            
+            
+            return true; // handled
+        })()) {
+            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
+        } // if
+    }, []);
+    const handleKeyDown         = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // range handlers:
+        handleKeyDownInternal,
+    );
+    const handleAnimationEnd    = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -332,15 +389,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         // accessibilities:
         activePassiveState.handleAnimationEnd,
-    );
-    const handleActiveChange = useMergeEvents(
-        // preserves the original `onActiveChange` from `dropdownComponent`:
-        dropdownComponent.props.onActiveChange,
-        
-        
-        
-        // preserves the original `onActiveChange`:
-        onActiveChange,
     );
     
     
@@ -371,9 +419,10 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // handlers:
+            onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps<TDropdownActiveChangeEvent>>(dropdownComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUIProps<TDropdownActiveChangeEvent>>(dropdownComponent,
                 // props:
                 {
                     // refs:
