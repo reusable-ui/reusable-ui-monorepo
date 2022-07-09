@@ -40,8 +40,8 @@ function App() {
                 <button ref={btnRef} onClick={() => setShowDropdown(!showDropdown)}>
                     I'm here
                 </button>
-                <Dropdown targetRef={btnRef} theme='primary' active={showDropdown}>
-                    <div>
+                <Dropdown targetRef={btnRef} theme='primary' active={showDropdown} onActiveChange={(event) => setShowDropdown(event.newActive)}>
+                    <div tabIndex={-1}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
