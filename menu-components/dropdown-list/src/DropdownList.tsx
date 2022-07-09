@@ -99,6 +99,7 @@ import {
     ListItemProps,
     ListItem,
     
+    ListSeparatorItemProps,
     ListSeparatorItem,
     
     ListProps,
@@ -109,7 +110,7 @@ import {
 
 // utilities:
 export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): Role|null => {
-    if (props.role) return null; // pre defined role => no need to determine
+    if (props.role) return null; // pre defined role => no need to determine the role automatically
     
     
     
@@ -132,6 +133,34 @@ export const calculateSemanticRole = <TElement extends Element = HTMLElement>(pr
 
 
 // react components:
+
+// ListItem => DropdownListItem
+export type {
+    ListItemProps,
+    ListItemProps as DropdownListItemProps,
+    ListItemProps as ItemProps,
+}
+export {
+    ListItem,
+    ListItem as DropdownListItem,
+    ListItem as Item,
+}
+
+
+
+// ListSeparatorItem => DropdownListSeparatorItem
+export type {
+    ListSeparatorItemProps,
+    ListSeparatorItemProps as DropdownListSeparatorItemProps,
+    ListSeparatorItemProps as SeparatorItemProps,
+}
+export {
+    ListSeparatorItem,
+    ListSeparatorItem as DropdownListSeparatorItem,
+    ListSeparatorItem as SeparatorItem,
+}
+
+
 
 export type DropdownListCloseType = 'shortcut'|'blur'
 export interface DropdownListActiveChangeEvent extends ActiveChangeEvent {
