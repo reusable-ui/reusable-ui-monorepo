@@ -200,6 +200,8 @@ export interface DropdownComponentUIProps<TDropdownActiveChangeEvent extends Dro
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>
 {
+    /* additional required props: */
+    
     // accessibilities:
     tabIndex ?: number
 }
@@ -209,12 +211,12 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
         DropdownComponentUIProps<TDropdownActiveChangeEvent>
 {
     // refs:
-    dropdownRef ?: React.Ref<Element> // setter ref
+    dropdownUIRef ?: React.Ref<Element> // setter ref
     
     
     
     // components:
-    children     : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUIProps<TDropdownActiveChangeEvent>>
+    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUIProps<TDropdownActiveChangeEvent>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -257,7 +259,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         // components:
-        dropdownRef,
+        dropdownUIRef,
         tabIndex,
         children: dropdownComponent,
     ...restCollapseProps} = props;
@@ -272,8 +274,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // refs:
-    const dropdownRefInternal   = useRef<Element|null>(null);
-    const mergedDropdownRef     = useMergeRefs(
+    const dropdownUIRefInternal = useRef<Element|null>(null);
+    const mergedDropdownUIRef   = useMergeRefs(
         // preserves the original `ref` from `dropdownComponent`:
         (
             isReusableUiComponent
@@ -285,12 +287,12 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         
-        // preserves the original `dropdownRef` from `props`:
-        dropdownRef,
+        // preserves the original `dropdownUIRef` from `props`:
+        dropdownUIRef,
         
         
         
-        dropdownRefInternal,
+        dropdownUIRefInternal,
     );
     
     
@@ -380,7 +382,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         // setups:
         // when actived => focus the <DropdownUI>, so the user able to use [esc] key to close the <Dropdown>:
-        (dropdownRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+        (dropdownUIRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
     }, [isVisible]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUI> each time it shown:
@@ -408,8 +410,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // check if focusedTarget is inside the <Dropdown> or not:
-            const dropdown = dropdownRefInternal.current;
-            if ((focusedTarget instanceof Element) && dropdown && isSelfOrDescendantOf(focusedTarget, dropdown)) return; // focus is still inside <Dropdown> => nothing to do
+            const dropdownUI = dropdownUIRefInternal.current;
+            if ((focusedTarget instanceof Element) && dropdownUI && isSelfOrDescendantOf(focusedTarget, dropdownUI)) return; // focus is still inside <Dropdown> => nothing to do
             
             
             
@@ -477,7 +479,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 // props:
                 {
                     // refs:
-                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownRef,
+                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownUIRef,
                     
                     
                     
