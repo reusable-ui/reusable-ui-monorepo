@@ -216,23 +216,26 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>
+{
+    // accessibilities:
+    tabIndex ?: number
+}
+export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+    extends
+        // component ui:
+        DropdownComponentUiProps<TDropdownActiveChangeEvent>
 {
     // refs:
     dropdownRef ?: React.Ref<Element> // setter ref
     
     
     
-    // accessibilities:
-    tabIndex    ?: number
-    
-    
-    
     // components:
-    children     : React.ReactElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
+    children     : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps<TDropdownActiveChangeEvent>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -282,14 +285,15 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         // components:
         dropdownRef,
         tabIndex,
-        children,
+        children: dropdownComponent,
     ...restCollapseProps} = props;
     
     
     
     // verifies:
-    React.Children.only(children);
-    if (!React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(children)) throw Error('Invalid child element.');
+    React.Children.only(dropdownComponent);
+    if (!React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownComponent)) throw Error('Invalid child element.');
+    const isReusableUiComponent : boolean = (typeof(dropdownComponent.type) !== 'string');
     
     
     
@@ -297,7 +301,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     const dropdownRefInternal = useRef<Element|null>(null);
     const mergedDropdownRef   = useMergeRefs(
         // preserves the original `ref` from `dropdownComponent`:
-        (children.props as GenericProps<Element>).elmRef ?? (children.props as React.RefAttributes<HTMLElement|SVGElement>).ref ?? undefined,
+        (
+            isReusableUiComponent
+            ?
+            (dropdownComponent.props as GenericProps<Element>).elmRef
+            :
+            (dropdownComponent.props as React.RefAttributes<Element>).ref
+        ),
         
         
         
@@ -322,6 +332,15 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         // accessibilities:
         activePassiveState.handleAnimationEnd,
+    );
+    const handleActiveChange = useMergeEvents(
+        // preserves the original `onActiveChange` from `dropdownComponent`:
+        dropdownComponent.props.onActiveChange,
+        
+        
+        
+        // preserves the original `onActiveChange`:
+        onActiveChange,
     );
     
     
@@ -354,7 +373,25 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             // handlers:
             onAnimationEnd={handleAnimationEnd}
         >
-            // TODO
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps<TDropdownActiveChangeEvent>>(dropdownComponent,
+                // props:
+                {
+                    // refs:
+                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownRef,
+                    
+                    
+                    
+                    // accessibilities:
+                    tabIndex : dropdownComponent.props.tabIndex ?? tabIndex,
+                    
+                    
+                    
+                    // handlers:
+                    ...(isReusableUiComponent ? {
+                        onActiveChange : handleActiveChange,
+                    } : null),
+                }
+            )}
         </Collapse>
     );
 };
