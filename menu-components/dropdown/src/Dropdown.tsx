@@ -16,16 +16,8 @@ import type {
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
-    rule,
-    states,
-    keyframes,
-    
-    
-    
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -39,38 +31,24 @@ import {
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // hooks:
-    useIsomorphicLayoutEffect,
     useEvent,
-    EventHandler,
     useMergeEvents,
     useMergeRefs,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
+import type {
     // react components:
     GenericProps,
-    Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
     OrientationName,
     OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
@@ -294,8 +272,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // refs:
-    const dropdownRefInternal = useRef<Element|null>(null);
-    const mergedDropdownRef   = useMergeRefs(
+    const dropdownRefInternal   = useRef<Element|null>(null);
+    const mergedDropdownRef     = useMergeRefs(
         // preserves the original `ref` from `dropdownComponent`:
         (
             isReusableUiComponent
@@ -341,6 +319,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             if (isKeyOf('escape')) {
+                // [esc] key pressed => request to hide the <Dropdown>:
                 handleActiveChange?.({ newActive: false, closeType: 'shortcut' } as TDropdownActiveChangeEvent);
             }
             else if (
@@ -394,30 +373,53 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // set focus on <DropdownUI> each time it shown:
     useEffect(() => {
         // conditions:
-        if (!isVisible) return;          // dropdown is not shown => nothing to do
+        if (!isVisible) return;          // <Dropdown> is not shown => nothing to do
         
         
         
         // setups:
-        // when actived => focus the dropdown, so the user able to use [esc] key to close the dropdown:
+        // when actived => focus the <DropdownUI>, so the user able to use [esc] key to close the <Dropdown>:
         (dropdownRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
     }, [isVisible]);
     
-    const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
     // watch an onClick|onBlur event *outside* the <DropdownUI> each time it shown:
     useEffect(() => {
         // conditions:
-        if (!isVisible) return;          // dropdown is not shown => nothing to do
+        if (!isVisible)          return; // <Dropdown> is not shown => nothing to do
         if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
         
         
         
         // handlers:
         const handleClick = (event: MouseEvent): void => {
-            // todo
+            // conditions:
+            if (event.button !== 0) return; // only handle left click
+            
+            
+            
+            // although clicking on page won't change the focus, but we decided this event as lost focus on <Dropdown>:
+            handleFocus({ target: event.target } as FocusEvent);
         };
         const handleFocus = (event: FocusEvent): void => {
-            // todo
+            const focusedTarget = event.target;
+            if (!focusedTarget) return;
+            
+            
+            
+            // check if focusedTarget is inside the <Dropdown> or not:
+            const dropdown = dropdownRefInternal.current;
+            if ((focusedTarget instanceof Element) && dropdown && isSelfOrDescendantOf(focusedTarget, dropdown)) return; // focus is still inside <Dropdown> => nothing to do
+            
+            
+            
+            // `targetRef` is <Dropdown>'s friend, so focus on `targetRef` is considered not to lost focus on <Dropdown>:
+            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+            if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
+            
+            
+            
+            // focus is outside of <Dropdown> => <Dropdown> lost focus => request to hide the <Dropdown>:
+                handleActiveChange?.({ newActive: false, closeType: 'blur' } as TDropdownActiveChangeEvent);
         };
         
         
@@ -437,7 +439,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             document.removeEventListener('click', handleClick);
             document.removeEventListener('focus', handleFocus, { capture: true });
         };
-    }, [isVisible, target, handleActiveChange]);
+    }, [isVisible, props.targetRef, handleActiveChange]);
     
     
     

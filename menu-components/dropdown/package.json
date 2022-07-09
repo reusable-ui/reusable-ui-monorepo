@@ -43,9 +43,10 @@
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/collapse": "^5.0.0",
+    "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/indicator": "^5.0.0",
-    "@reusable-ui/popup": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
