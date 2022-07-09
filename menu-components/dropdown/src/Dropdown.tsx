@@ -390,10 +390,54 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // dom effects:
-    const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+    
+    // set focus on <DropdownUI> each time it shown:
     useEffect(() => {
-        // TODO
-    }, [isVisible, target]);
+        // conditions:
+        if (!isVisible) return;          // dropdown is not shown => nothing to do
+        
+        
+        
+        // setups:
+        // when actived => focus the dropdown, so the user able to use [esc] key to close the dropdown:
+        (dropdownRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+    }, [isVisible]);
+    
+    const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+    // watch an onClick|onBlur event *outside* the <DropdownUI> each time it shown:
+    useEffect(() => {
+        // conditions:
+        if (!isVisible) return;          // dropdown is not shown => nothing to do
+        if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
+        
+        
+        
+        // handlers:
+        const handleClick = (event: MouseEvent): void => {
+            // todo
+        };
+        const handleFocus = (event: FocusEvent): void => {
+            // todo
+        };
+        
+        
+        
+        // setups:
+        const asyncPerformAttachEvents = setTimeout(() => { // wait until the triggering <Dropdown>.open() event is fully fired, so it won't immediately trigger <Dropdown>.close()
+            document.addEventListener('click', handleClick);
+            document.addEventListener('focus', handleFocus, { capture: true }); // force `focus` as bubbling
+        }, 0);
+        
+        
+        
+        // cleanups:
+        return () => {
+            clearTimeout(asyncPerformAttachEvents);
+            
+            document.removeEventListener('click', handleClick);
+            document.removeEventListener('focus', handleFocus, { capture: true });
+        };
+    }, [isVisible, target, handleActiveChange]);
     
     
     
