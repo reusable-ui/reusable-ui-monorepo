@@ -492,7 +492,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                     ...(isReusableUiComponent ? {
                         onActiveChange : handleActiveChange,
                     } : null),
-                }
+                },
             )}
         </Collapse>
     );
