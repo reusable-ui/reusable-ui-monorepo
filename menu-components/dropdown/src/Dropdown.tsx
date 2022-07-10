@@ -40,6 +40,10 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
 import type {
     // react components:
     GenericProps,
@@ -269,8 +273,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // verifies:
     React.Children.only(dropdownComponent);
-    if (!React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownComponent)) throw Error('Invalid child element.');
-    const isReusableUiComponent : boolean = (typeof(dropdownComponent.type) !== 'string');
+    const isReusableUiDropdownComponent : boolean = isReusableUiComponent(dropdownComponent);
+    if (!isReusableUiDropdownComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownComponent)) throw Error('Invalid child element.');
     
     
     
@@ -279,7 +283,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     const mergedDropdownUiRef   = useMergeRefs(
         // preserves the original `ref` from `dropdownComponent`:
         (
-            isReusableUiComponent
+            isReusableUiDropdownComponent
             ?
             (dropdownComponent.props as GenericProps<Element>).elmRef
             :
@@ -480,7 +484,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 // props:
                 {
                     // refs:
-                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownUiRef,
+                    [isReusableUiDropdownComponent ? 'elmRef' : 'ref'] : mergedDropdownUiRef,
                     
                     
                     
@@ -490,7 +494,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                     
                     
                     // handlers:
-                    ...(isReusableUiComponent ? {
+                    ...(isReusableUiDropdownComponent ? {
                         onActiveChange : handleActiveChange,
                     } : null),
                 },
