@@ -58,15 +58,16 @@ import {
     ActiveChangeEvent,
     ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
-export type {
+import {
     // types:
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
     PopupSide,
-}                           from '@reusable-ui/collapse'        // a base component
-import {
+    
+    
+    
     // hooks:
     defaultOrientationRuleOptions,
     
@@ -503,3 +504,5 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
