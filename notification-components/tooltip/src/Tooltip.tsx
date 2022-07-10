@@ -369,7 +369,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     // refs:
     const arrowRefInternal = useRef<Element|null>(null);
     const mergedArrowRef   = useMergeRefs(
-        // preserves the original `arrowRef` from `arrowComponent`:
+        // preserves the original `elmRef` from `arrowComponent`:
         arrowComponent.props.elmRef,
         
         
