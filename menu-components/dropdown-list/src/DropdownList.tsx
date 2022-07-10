@@ -72,23 +72,6 @@ export type {
     PopupSide,
 }                           from '@reusable-ui/collapse'        // a base component
 import {
-    // hooks:
-    defaultOrientationRuleOptions,
-    
-    
-    
-    // styles:
-    usesCollapseLayout,
-    usesCollapseVariants,
-    usesCollapseStates,
-    
-    
-    
-    // react components:
-    CollapseProps,
-    Collapse,
-}                           from '@reusable-ui/collapse'        // a base component
-import type {
     // react components:
     DropdownCloseType,
     DropdownActiveChangeEvent,
@@ -97,6 +80,7 @@ import type {
     DropdownComponentUiProps,
     
     DropdownProps,
+    Dropdown,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
     // hooks:
@@ -210,7 +194,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         // bases:
         Omit<DropdownProps<TElement, TDropdownListActiveChangeEvent>,
             // refs:
-            |'dropdownUIRef'
+            |'dropdownUIRef' // we replaced `dropdownUIRef` with `listRef`
             
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
@@ -221,96 +205,31 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
-    // styles:
-    const styleSheet         = useDropdownListStyleSheet();
-    
-    
-    
-    // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
-    
-    
-    
-    // states:
-    
-    // accessibilities:
-    const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    
-    
-    
     // rest props:
     const {
-        // accessibilities:
-        onActiveChange,
-        
-        
-        
         // components:
-        dropdownListRef,
-        tabIndex,
-        children: dropdownListComponent,
-    ...restCollapseProps} = props;
-    
-    
-    
-    // verifies:
-    React.Children.only(dropdownListComponent);
-    if (!React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownListComponent)) throw Error('Invalid child element.');
-    const isReusableUiComponent : boolean = (typeof(dropdownListComponent.type) !== 'string');
+        listRef,
+        listComponent,
+        children: listItems,
+    ...restDropdownProps} = props;
     
     
     
     // jsx:
     return (
-        <Collapse<TElement>
+        <Dropdown<TElement, TDropdownListActiveChangeEvent>
             // other props:
-            {...restCollapseProps}
+            {...restDropdownProps}
             
             
             
-            // variants:
-            nude={props.nude ?? true}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            
-            
-            
-            // popups:
-            popupPlacement={props.popupPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
-            popupAutoFlip={props.popupAutoFlip ?? true}
-            popupAutoShift={props.popupAutoShift ?? true}
-            
-            
-            
-            // handlers:
-            onKeyDown={handleKeyDown}
-            onAnimationEnd={handleAnimationEnd}
+            // semantics:
+            semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownListComponentUiProps<TDropdownListActiveChangeEvent>>(dropdownListComponent,
-                // props:
-                {
-                    // refs:
-                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownListRef,
-                    
-                    
-                    
-                    // accessibilities:
-                    tabIndex : dropdownListComponent.props.tabIndex ?? tabIndex,
-                    
-                    
-                    
-                    // handlers:
-                    ...(isReusableUiComponent ? {
-                        onActiveChange : handleActiveChange,
-                    } : null),
-                }
-            )}
-        </Collapse>
+            <p>
+                test
+            </p>
+        </Dropdown>
     );
 };
 export {
