@@ -25,6 +25,10 @@ import {
     useEvent,
     useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
 
 
 
@@ -95,12 +99,12 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     
     // jsx:
-    const isReusableUiComponent : boolean = (typeof(linkComponent.type) !== 'string');
+    const isReusableUiLinkComponent : boolean = isReusableUiComponent(linkComponent);
     return React.cloneElement(linkComponent,
         // props:
         {
             // refs:
-            [isReusableUiComponent ? 'elmRef' : 'ref'] : ref,
+            [isReusableUiLinkComponent ? 'elmRef' : 'ref'] : ref,
             
             
             
