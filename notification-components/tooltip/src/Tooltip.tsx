@@ -722,7 +722,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
                     
                     // classes:
                     classes       : arrowComponent.props.classes ?? _defaultArrowClasses,
-                }
+                },
             )}
         </Popup>
     );
