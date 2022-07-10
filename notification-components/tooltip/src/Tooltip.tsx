@@ -72,18 +72,11 @@ import {
     // hooks:
     usesSizeVariant,
 }                           from '@reusable-ui/basic'           // a base component
-export type {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-}                           from '@reusable-ui/popup'           // a base component
 import {
     // types:
     PopupPlacement,
     PopupMiddleware,
+    PopupStrategy,
     PopupPosition,
     PopupSide,
     
@@ -731,3 +724,5 @@ export {
     Tooltip,
     Tooltip as default,
 }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
