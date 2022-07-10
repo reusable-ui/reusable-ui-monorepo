@@ -234,7 +234,7 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
                 {
                     // variants:
                     size : iconComponent.props.size ?? _defaultIconSize,
-                }
+                },
             )}
             
             { children && <VisuallyHidden>
