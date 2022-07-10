@@ -185,13 +185,18 @@ export interface DropdownListComponentProps<TDropdownListActiveChangeEvent exten
         DropdownListComponentUiProps<TDropdownListActiveChangeEvent>
 {
     // refs:
-    listRef       ?: React.Ref<Element> // setter ref
+    listRef         ?: React.Ref<Element> // setter ref
+    
+    
+    
+    // layouts:
+    listOrientation ?: OrientationName
     
     
     
     // components:
-    listComponent ?: React.ReactComponentElement<any, ListProps<Element>>
-    children      ?: ListProps<Element>['children']
+    listComponent   ?: React.ReactComponentElement<any, ListProps<Element>>
+    children        ?: ListProps<Element>['children']
 }
 
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
@@ -199,7 +204,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         // bases:
         Omit<DropdownProps<TElement, TDropdownListActiveChangeEvent>,
             // refs:
-            |'dropdownUIRef' // we replaced `dropdownUIRef` with `listRef`
+            |'dropdownUiRef' // we replaced `dropdownUiRef` with `listRef`
             
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
@@ -214,14 +219,15 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     const {
         // components:
         listRef,
-        listComponent = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
-        children: listItems,
+        listOrientation,
+        listComponent    = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
+        children         : listItems,
     ...restDropdownProps} = props;
     
     
     
     // refs:
-    const mergedListRef   = useMergeRefs(
+    const mergedListRef = useMergeRefs(
         // preserves the original `elmRef` from `listComponent`:
         listComponent.props.elmRef,
         
@@ -248,18 +254,23 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 // props:
                 {
                     // refs:
-                    elmRef     : mergedListRef,
+                    elmRef      : mergedListRef,
+                    
+                    
+                    
+                    // layouts:
+                    orientation : listComponent.props.orientation ?? listOrientation,
                     
                     
                     
                     // behaviors:
-                    actionCtrl : listComponent.props.actionCtrl ?? _defaultActionCtrl,
+                    actionCtrl  : listComponent.props.actionCtrl ?? _defaultActionCtrl,
                 },
                 
                 
                 
                 // children:
-                listItems,
+                listComponent.props.children ?? listItems,
             )}
         </Dropdown>
     );
