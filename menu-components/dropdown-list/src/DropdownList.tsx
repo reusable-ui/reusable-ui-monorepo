@@ -94,7 +94,7 @@ import type {
     DropdownActiveChangeEvent,
     DropdownAction,
     
-    DropdownComponentUIProps,
+    DropdownComponentUiProps,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
     // hooks:
@@ -184,7 +184,7 @@ export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent
 export interface DropdownListComponentUIProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // accessibilities:
-        DropdownComponentUIProps<TDropdownListActiveChangeEvent>
+        DropdownComponentUiProps<TDropdownListActiveChangeEvent>
 {
     /* no additional required props yet */
 }
