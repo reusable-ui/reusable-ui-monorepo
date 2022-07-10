@@ -102,6 +102,11 @@ import {
 
 
 
+// defaults:
+const _defaultActionCtrl : boolean = true // the default for <ListItem>(s) is clickable
+
+
+
 // utilities:
 export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): Role|null => {
     if (props.role) return null; // pre defined role => no need to determine the role automatically
@@ -209,9 +214,22 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     const {
         // components:
         listRef,
-        listComponent,
+        listComponent = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children: listItems,
     ...restDropdownProps} = props;
+    
+    
+    
+    // refs:
+    const mergedListRef   = useMergeRefs(
+        // preserves the original `elmRef` from `listComponent`:
+        listComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `listRef` from `props`:
+        listRef,
+    );
     
     
     
@@ -226,9 +244,23 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             // semantics:
             semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
         >
-            <p>
-                test
-            </p>
+            {React.cloneElement<ListProps<Element>>(listComponent,
+                // props:
+                {
+                    // refs:
+                    elmRef     : mergedListRef,
+                    
+                    
+                    
+                    // behaviors:
+                    actionCtrl : listComponent.props.actionCtrl ?? _defaultActionCtrl,
+                },
+                
+                
+                
+                // children:
+                listItems,
+            )}
         </Dropdown>
     );
 };
