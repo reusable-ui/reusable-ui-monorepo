@@ -95,6 +95,8 @@ import type {
     DropdownAction,
     
     DropdownComponentUiProps,
+    
+    DropdownProps,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
     // hooks:
@@ -181,7 +183,7 @@ export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent
 // {
 // }
 
-export interface DropdownListComponentUIProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListComponentUiProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // accessibilities:
         DropdownComponentUiProps<TDropdownListActiveChangeEvent>
@@ -191,7 +193,7 @@ export interface DropdownListComponentUIProps<TDropdownListActiveChangeEvent ext
 export interface DropdownListComponentProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // component ui:
-        DropdownListComponentUIProps<TDropdownListActiveChangeEvent>
+        DropdownListComponentUiProps<TDropdownListActiveChangeEvent>
 {
     // refs:
     listRef       ?: React.Ref<Element> // setter ref
@@ -206,9 +208,12 @@ export interface DropdownListComponentProps<TDropdownListActiveChangeEvent exten
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
-        Omit<CollapseProps<TElement>,
+        Omit<DropdownProps<TElement, TDropdownListActiveChangeEvent>,
+            // refs:
+            |'dropdownUIRef'
+            
             // children:
-            |'children' // we redefined `children` prop as a dropdownList component
+            |'children' // we redefined `children` prop as <ListItem>(s)
         >,
         
         // components:
@@ -286,7 +291,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownListComponentUIProps<TDropdownListActiveChangeEvent>>(dropdownListComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownListComponentUiProps<TDropdownListActiveChangeEvent>>(dropdownListComponent,
                 // props:
                 {
                     // refs:
