@@ -62,6 +62,10 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // utilities:
+    isForwardRef,
+}                           from '@reusable-ui/utilities'       // common utility functions
+import {
     // hooks:
     usePropEnabled,
     usePropReadOnly,
@@ -522,13 +526,9 @@ export type JsxReactRouterLink = React.ReactElement<{
 }>
 export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
     return (
-        React.isValidElement(node)                         // JSX element
+        isForwardRef(node) // JSX element
         &&
-        (typeof(node.type) === 'object')                   // forwardRef
-        &&
-        (typeof((node.type as any).render) === 'function') // functional component
-        &&
-        !!node.props.to                                    // one of ReactRouter prop
+        !!node.props.to    // one of ReactRouter prop
     );
 };
 
@@ -548,11 +548,9 @@ export type JsxNextLink = React.ReactElement<{
 }>
 export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
     return (
-        React.isValidElement(node)         // JSX element
+        isForwardRef(node) // JSX element
         &&
-        (typeof(node.type) === 'object')   // forwardRef
-        &&
-        !!node.props.href                  // one of NextLink prop
+        !!node.props.href  // one of NextLink prop
     );
 };
 
