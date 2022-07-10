@@ -195,7 +195,7 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentUIProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>
@@ -208,7 +208,7 @@ export interface DropdownComponentUIProps<TDropdownActiveChangeEvent extends Dro
 export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // component ui:
-        DropdownComponentUIProps<TDropdownActiveChangeEvent>
+        DropdownComponentUiProps<TDropdownActiveChangeEvent>
 {
     // refs:
     dropdownUIRef ?: React.Ref<Element> // setter ref
@@ -216,7 +216,7 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
     
     
     // components:
-    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUIProps<TDropdownActiveChangeEvent>>
+    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps<TDropdownActiveChangeEvent>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -475,7 +475,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUIProps<TDropdownActiveChangeEvent>>(dropdownComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps<TDropdownActiveChangeEvent>>(dropdownComponent,
                 // props:
                 {
                     // refs:
