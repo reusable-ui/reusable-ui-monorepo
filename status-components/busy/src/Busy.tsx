@@ -32,7 +32,7 @@ import {
     // hooks:
     usesSizeVariant,
 }                           from '@reusable-ui/basic'           // a base component
-export type {
+import {
     // types:
     PopupPlacement,
     PopupMiddleware,
@@ -41,8 +41,9 @@ export type {
     PopupSide,
     
     BadgeStyle,
-}                           from '@reusable-ui/badge'           // a base component
-import {
+    
+    
+    
     // styles:
     usesBadgeLayout,
     usesBadgeVariants,
@@ -247,3 +248,7 @@ export {
     Busy,
     Busy as default,
 }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+
+export type { BadgeStyle }
