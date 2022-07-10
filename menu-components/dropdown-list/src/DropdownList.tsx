@@ -56,6 +56,7 @@ import {
 
 
 // defaults:
+const _defaultTabIndex   : number  = -1   // make the <List> programatically focusable
 const _defaultActionCtrl : boolean = true // the default for <ListItem>(s) is clickable
 
 
@@ -210,8 +211,13 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                     
                     
                     
+                    // accessibilities:
+                    tabIndex    : listComponent.props.tabIndex    ?? _defaultTabIndex,
+                    
+                    
+                    
                     // behaviors:
-                    actionCtrl  : listComponent.props.actionCtrl ?? _defaultActionCtrl,
+                    actionCtrl  : listComponent.props.actionCtrl  ?? _defaultActionCtrl,
                 },
                 
                 
