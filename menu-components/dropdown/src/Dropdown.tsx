@@ -399,7 +399,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         // handlers:
-        const handleClick = (event: MouseEvent): void => {
+        const handleMouseDown = (event: MouseEvent): void => {
             // conditions:
             if (event.button !== 0) return; // only handle left click
             
@@ -408,7 +408,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             // although clicking on page won't change the focus, but we decided this event as lost focus on <Dropdown>:
             handleFocus({ target: event.target } as FocusEvent);
         };
-        const handleFocus = (event: FocusEvent): void => {
+        const handleFocus     = (event: FocusEvent): void => {
             const focusedTarget = event.target;
             if (!focusedTarget) return;
             
@@ -434,8 +434,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         // setups:
         const asyncPerformAttachEvents = setTimeout(() => { // wait until the triggering <Dropdown>.open() event is fully fired, so it won't immediately trigger <Dropdown>.close()
-            document.addEventListener('click', handleClick);
-            document.addEventListener('focus', handleFocus, { capture: true }); // force `focus` as bubbling
+            document.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('focus'    , handleFocus    , { capture: true }); // force `focus` as bubbling
         }, 0);
         
         
@@ -444,8 +444,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         return () => {
             clearTimeout(asyncPerformAttachEvents);
             
-            document.removeEventListener('click', handleClick);
-            document.removeEventListener('focus', handleFocus, { capture: true });
+            document.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
     }, [isVisible, props.targetRef, handleActiveChange]);
     
