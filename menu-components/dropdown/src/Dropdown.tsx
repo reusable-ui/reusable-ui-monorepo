@@ -224,7 +224,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // bases:
         Omit<CollapseProps<TElement>,
             // children:
-            |'children' // we redefined `children` prop as a dropdown component
+            |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
         // components:
@@ -373,7 +373,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // dom effects:
     
-    // set focus on <DropdownUI> each time it shown:
+    // set focus on <DropdownUi> each time it shown:
     useEffect(() => {
         // conditions:
         if (!isVisible) return;          // <Dropdown> is not shown => nothing to do
@@ -381,11 +381,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         // setups:
-        // when actived => focus the <DropdownUI>, so the user able to use [esc] key to close the <Dropdown>:
+        // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
         (dropdownUIRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
     }, [isVisible]);
     
-    // watch an onClick|onBlur event *outside* the <DropdownUI> each time it shown:
+    // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
         // conditions:
         if (!isVisible)          return; // <Dropdown> is not shown => nothing to do
