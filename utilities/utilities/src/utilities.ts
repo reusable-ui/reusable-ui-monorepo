@@ -46,6 +46,8 @@ export const isReusableUiComponent = (node: React.ReactNode): node is React.Reac
     return (
         React.isValidElement(node)
         &&
+        (typeof(node.type) !== 'string')
+        &&
         !isForwardRef(node)
     );
 };
