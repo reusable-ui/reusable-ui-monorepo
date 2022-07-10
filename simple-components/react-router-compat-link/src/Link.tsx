@@ -31,8 +31,8 @@ import {
 export interface LinkProps extends BaseLinkProps
 {
     // react router links:
-    component ?: React.ReactElement
-    passHref  ?: boolean
+    linkComponent ?: React.ReactElement
+    passHref      ?: boolean
 }
 
 /**
@@ -49,7 +49,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         state,
         to,
         
-        component      = undefined,
+        linkComponent = (<a /> as React.ReactElement<LinkProps>),
         passHref       = false,
         
         
@@ -71,94 +71,59 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     
     // handlers:
-    const handleClientSideClick            = useLinkClickHandler(to, { replace, state, target });
-    const handleConditionalClientSideClick = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
+    const handleClickClientSide            = useLinkClickHandler(to, { replace, state, target });
+    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
         if (!event.defaultPrevented && !reloadDocument) {
-            handleClientSideClick(event);
+            handleClickClientSide(event);
         } // if
-    }, [handleClientSideClick, reloadDocument]);
-    const handleClick = useMergeEvents(
-        // preserves the original `onClick`:
-        props.onClick, // keeps the original onClick on <Link onClick={...} />
+    }, [handleClickClientSide, reloadDocument]);
+    const handleMergedClick = useMergeEvents(
+        // preserves the original `onClick` from `linkComponent`:
+        linkComponent.props.onClick,
+        
+        
+        
+        // preserves the original `onClick` from `props`:
+        props.onClick,
         
         
         
         // handlers:
-        handleConditionalClientSideClick,
+        handleClickInternal,
     );
     
     
     
     // jsx:
-    if (component) {
-        // handlers:
-        const handleMergedClick = useMergeEvents(
-            // preserves the original `onClick`:
-            component.props.onClick, // keeps the original onClick on <FooComponent onClick={...} />
+    const isReusableUiComponent : boolean = (typeof(linkComponent.type) !== 'string');
+    return React.cloneElement(linkComponent,
+        // props:
+        {
+            // refs:
+            [isReusableUiComponent ? 'elmRef' : 'ref'] : ref,
+            
+            
+            
+            // links:
+            ...(passHref ? {
+                href,
+                target,
+                
+                // other props:
+                ...restAnchorProps,
+            } : null),
             
             
             
             // handlers:
-            handleClick,
-        );
+            onClick: handleMergedClick,
+        },
         
         
         
-        // jsx:
-        return React.cloneElement(component,
-            // props:
-            {
-                // essentials:
-                ref,
-                
-                
-                
-                // links:
-                ...(passHref ? {
-                    href,
-                    target,
-                } : {}),
-                
-                
-                
-                // handlers:
-                onClick: handleMergedClick,
-            },
-            
-            
-            
-            // children:
-            children
-        );
-    }
-    else {
-        // jsx:
-        return (
-            // eslint-disable-next-line jsx-a11y/anchor-has-content
-            <a
-                // other props:
-                {...restAnchorProps}
-                
-                
-                
-                // essentials:
-                ref={ref}
-                
-                
-                
-                // links:
-                href={href}
-                target={target}
-                
-                
-                
-                // handlers:
-                onClick={handleClick}
-            >
-                {children}
-            </a>
-        );
-    } // if
+        // children:
+        children,
+    );
 });
 export {
     Link,
