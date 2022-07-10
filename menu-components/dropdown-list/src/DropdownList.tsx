@@ -2,80 +2,33 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useRef,
-    useEffect,
 }                           from 'react'
-
-// cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-}                           from '@cssfn/css-types'             // cssfn css specific types
-import {
-    // styles:
-    style,
-    imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // hooks:
-    useEvent,
-    useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // types:
     Role,
-    
-    
-    
-    // react components:
-    GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // hooks:
-    usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    OrientationVariant,
-    useOrientationVariant,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    useActivePassiveState,
-    ActiveChangeEvent,
-    ToggleActiveProps,
-}                           from '@reusable-ui/indicator'       // a base component
-export type {
     // types:
+    OrientationName,
+    OrientationVariant,
+    
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
     PopupSide,
-}                           from '@reusable-ui/collapse'        // a base component
-import {
+    
+    
+    
     // react components:
     DropdownCloseType,
     DropdownActiveChangeEvent,
-    DropdownAction,
     
     DropdownComponentUiProps,
     
@@ -83,7 +36,7 @@ import {
     Dropdown,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
-    // hooks:
+    // types:
     ListStyle,
     ListVariant,
     
@@ -165,12 +118,6 @@ export type DropdownListCloseType = DropdownCloseType|number
 export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent {
     closeType : DropdownListCloseType
 }
-// export interface DropdownListAction<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
-//     extends
-//         // accessibilities:
-//         DropdownAction<TDropdownListActiveChangeEvent>
-// {
-// }
 
 export interface DropdownListComponentUiProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
@@ -281,3 +228,7 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+
+export type { ListStyle, ListVariant }
