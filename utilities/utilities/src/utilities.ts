@@ -32,6 +32,16 @@ export const isTypeOf = <TProps>(element: React.ReactNode, funcComponent: React.
     );
 };
 
+export const isForwardRef = (node: React.ReactNode): node is React.ReactElement => {
+    return (
+        React.isValidElement(node)                                                          // JSX element
+        &&
+        (typeof(node.type) === 'object')                                                    // forwardRef
+        &&
+        ((node.type as React.ExoticComponent).$$typeof === Symbol.for('react.forward_ref')) // forwardRef
+    );
+};
+
 const isSingleValue = (expression: string|ReadonlyArray<string>): expression is string => (typeof(expression) === 'string') || (Array.isArray(expression) && (expression.length === 1));
 export const parseNumber = (expression: number|string|ReadonlyArray<string>|null|undefined): number|null => {
     if (typeof(expression) === 'number') {
