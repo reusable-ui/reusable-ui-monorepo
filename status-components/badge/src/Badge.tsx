@@ -66,15 +66,16 @@ import {
     usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
-export type {
+import {
     // types:
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
     PopupSide,
-}                           from '@reusable-ui/popup'           // a base component
-import {
+    
+    
+    
     // styles:
     usesPopupLayout,
     usesPopupVariants,
@@ -400,3 +401,5 @@ export {
     Badge,
     Badge as default,
 }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
