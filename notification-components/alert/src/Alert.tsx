@@ -363,7 +363,7 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                     
                     // classes:
                     classes : iconComponent.props.classes ?? _defaultIconClasses,
-                }
+                },
             )}
             
             { children && <div className='body'>
@@ -386,7 +386,7 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
                     
                     // handlers:
                     onClick : controlComponent.props.onClick ?? defaultHandleControlClick,
-                }
+                },
             )}
         </Popup>
     );
