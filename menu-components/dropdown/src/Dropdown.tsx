@@ -211,7 +211,7 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
         DropdownComponentUiProps<TDropdownActiveChangeEvent>
 {
     // refs:
-    dropdownUIRef ?: React.Ref<Element> // setter ref
+    dropdownUiRef ?: React.Ref<Element> // setter ref
     
     
     
@@ -259,7 +259,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         // components:
-        dropdownUIRef,
+        dropdownUiRef,
         tabIndex,
         children: dropdownComponent,
     ...restCollapseProps} = props;
@@ -274,8 +274,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // refs:
-    const dropdownUIRefInternal = useRef<Element|null>(null);
-    const mergedDropdownUIRef   = useMergeRefs(
+    const dropdownUiRefInternal = useRef<Element|null>(null);
+    const mergedDropdownUiRef   = useMergeRefs(
         // preserves the original `ref` from `dropdownComponent`:
         (
             isReusableUiComponent
@@ -287,12 +287,12 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         
-        // preserves the original `dropdownUIRef` from `props`:
-        dropdownUIRef,
+        // preserves the original `dropdownUiRef` from `props`:
+        dropdownUiRef,
         
         
         
-        dropdownUIRefInternal,
+        dropdownUiRefInternal,
     );
     
     
@@ -304,7 +304,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         
-        // preserves the original `onActiveChange`:
+        // preserves the original `onActiveChange` from `props`:
         onActiveChange,
     );
     const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
@@ -382,7 +382,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         // setups:
         // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
-        (dropdownUIRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+        (dropdownUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
     }, [isVisible]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
@@ -410,8 +410,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // check if focusedTarget is inside the <Dropdown> or not:
-            const dropdownUI = dropdownUIRefInternal.current;
-            if ((focusedTarget instanceof Element) && dropdownUI && isSelfOrDescendantOf(focusedTarget, dropdownUI)) return; // focus is still inside <Dropdown> => nothing to do
+            const dropdownUi = dropdownUiRefInternal.current;
+            if ((focusedTarget instanceof Element) && dropdownUi && isSelfOrDescendantOf(focusedTarget, dropdownUi)) return; // focus is still inside <Dropdown> => nothing to do
             
             
             
@@ -479,7 +479,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 // props:
                 {
                     // refs:
-                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownUIRef,
+                    [isReusableUiComponent ? 'elmRef' : 'ref'] : mergedDropdownUiRef,
                     
                     
                     
