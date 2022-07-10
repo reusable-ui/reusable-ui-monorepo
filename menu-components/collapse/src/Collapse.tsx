@@ -65,15 +65,16 @@ import {
     ifPassivating,
     usesActivePassiveState as indicatorUsesActivePassiveState,
 }                           from '@reusable-ui/indicator'       // a base component
-export type {
+import {
     // types:
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
     PopupSide,
-}                           from '@reusable-ui/popup'           // a base component
-import {
+    
+    
+    
     // styles:
     usesPopupLayout,
     usesPopupVariants,
@@ -362,3 +363,5 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
