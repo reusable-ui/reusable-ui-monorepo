@@ -507,18 +507,18 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
 // utilities:
 export type JsxReactRouterLink = React.ReactElement<{
     // links:
-    to        ?: To
+    to            ?: To
     
     
     
     // components:
-    passHref  ?: boolean
-    component ?: React.ReactElement
+    passHref      ?: boolean
+    linkComponent ?: React.ReactElement
     
     
     
     // children:
-    children  ?: React.ReactNode
+    children      ?: React.ReactNode
 }>
 export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouterLink => {
     return (
@@ -534,17 +534,17 @@ export const isReactRouterLink = (node: React.ReactNode): node is JsxReactRouter
 
 export type JsxNextLink = React.ReactElement<{
     // links:
-    href      ?: To
+    href          ?: To
     
     
     
     // components:
-    passHref  ?: boolean
+    passHref      ?: boolean
     
     
     
     // children:
-    children  ?: React.ReactNode
+    children      ?: React.ReactNode
 }>
 export const isNextLink = (node: React.ReactNode): node is JsxNextLink => {
     return (
@@ -756,8 +756,8 @@ const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkCom
     return React.cloneElement(linkComponent,
         // props:
         {
-            ...(!isNextJsLink  ? { component : actionComponent } : undefined),
-            ...(isSemanticLink ? { passHref  : true            } : undefined),
+            ...(!isNextJsLink  ? { linkComponent : actionComponent } : undefined),
+            ...(isSemanticLink ? { passHref      : true            } : undefined),
         },
         
         
