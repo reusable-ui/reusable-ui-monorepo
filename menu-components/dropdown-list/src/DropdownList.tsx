@@ -7,6 +7,9 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    useEvent,
+    EventHandler,
+    useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
@@ -67,14 +70,14 @@ export const calculateSemanticRole = <TElement extends Element = HTMLElement>(pr
     
     
     
-    const children          = props.children;
+    const listItems         = props.children;
     const defaultActionCtrl = props.actionCtrl ?? true;
-    if (React.Children.toArray(children).some((child) => {
-        if (!React.isValidElement<ListItemProps<Element>>(child)) {
-            return !defaultActionCtrl;                             // if the default is not an actionCtrl => not a menu item => role='dialog'
+    if (React.Children.toArray(listItems).some((listItem) => {
+        if (!React.isValidElement<ListItemProps<Element>>(listItem)) {
+            return !defaultActionCtrl;                                // if the default is not an actionCtrl => not a menu item => role='dialog'
         }
         else {
-            return !(child.props.actionCtrl ?? defaultActionCtrl); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
+            return !(listItem.props.actionCtrl ?? defaultActionCtrl); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
         } // if
     })) return 'dialog'; // one/some <ListItem>s are [actionCtrl=false] => role='dialog'
     
@@ -165,6 +168,11 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
+        // accessibilities:
+        onActiveChange,
+        
+        
+        
         // components:
         listRef,
         listOrientation,
@@ -223,7 +231,29 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 
                 
                 // children:
-                listComponent.props.children ?? listItems,
+                React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
+                    // conditions:
+                    if (!onActiveChange)                                                                       return listItem; // [onActiveChange] was not set  => ignore
+                    if (!React.isValidElement<ListItemProps<Element>>(listItem))                               return listItem; // not a <ListItem>              => ignore
+                    if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl  ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
+                    // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
+                    
+                    
+                    
+                    // jsx:
+                    return (
+                        <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
+                            // accessibilities:
+                            onActiveChange={onActiveChange}
+                            
+                            
+                            
+                            // components:
+                            listIndex={index}
+                            listItemComponent={listItem}
+                        />
+                    );
+                }),
             )}
         </Dropdown>
     );
@@ -238,3 +268,63 @@ export type { OrientationName, OrientationVariant }
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { ListStyle, ListVariant }
+
+
+
+interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent> {
+    // accessibilities:
+    onActiveChange    : EventHandler<TDropdownListActiveChangeEvent>
+    
+    
+    
+    // components:
+    listIndex         : number
+    listItemComponent : React.ReactElement<ListItemProps<Element>>
+}
+const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
+    // rest props:
+    const {
+        // accessibilities:
+        onActiveChange,
+        
+        
+        
+        // components:
+        listIndex,
+        listItemComponent,
+    } = props;
+    
+    
+    
+    // handlers:
+    const handleActiveChange  = onActiveChange;
+    const handleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // a <ListItem> was clicked => close the <DropdownList>:
+        handleActiveChange?.({ newActive: false, closeType: listIndex } as TDropdownListActiveChangeEvent);
+    }, [handleActiveChange, listIndex]);
+    const handleClick         = useMergeEvents(
+        // preserves the original `onClick` from `listItemComponent`:
+        listItemComponent.props.onClick,
+        
+        
+        
+        // handlers:
+        handleClickInternal,
+    );
+    
+    
+    
+    // jsx:
+    return React.cloneElement<ListItemProps<Element>>(listItemComponent,
+        // props:
+        {
+            // handlers:
+            onClick : handleClick,
+        },
+    );
+};
