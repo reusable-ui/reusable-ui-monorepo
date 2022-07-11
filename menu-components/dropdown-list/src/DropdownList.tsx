@@ -229,13 +229,21 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         // functions:
         let allPossibleFocusableElementsCache : Element[]|undefined = undefined;
+        const sortByTabIndex = (a: Element|undefined, b: Element|undefined) => {
+            if (!a || !b) return 0;
+            return ((a as HTMLElement|SVGElement).tabIndex ?? 0) - ((b as HTMLElement|SVGElement).tabIndex ?? 0)
+        };
         const getAllPossibleFocusableElements = (): Element[] => {
             if (allPossibleFocusableElementsCache) return allPossibleFocusableElementsCache;
             
             
             
-            return allPossibleFocusableElementsCache = Array.from(event.currentTarget.querySelectorAll(`
-:is(
+            return allPossibleFocusableElementsCache = (
+                Array.from(event.currentTarget.children)
+                .flatMap((liElement) => {
+                    const focusableElements = (
+                        Array.from(liElement.querySelectorAll(
+`:is(
     a,
     button,
     textarea,
@@ -248,8 +256,18 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         [disabled]:not([disabled="false"]),
         [aria-disabled]:not([aria-disabled="false"])
     )
-)
-`           ));
+)`                      ))
+                        .sort(sortByTabIndex)
+                    );
+                    return {
+                        primary : focusableElements.at(0),
+                        items   : focusableElements,
+                    };
+                })
+                .sort((x, y) => sortByTabIndex(x.primary, y.primary))
+                .flatMap((item) => item.items)
+                .filter((element): element is Element => !!element)
+            );
         };
         
         const setFocus = (index: number, fallback?: number) => {
@@ -334,8 +352,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         } // if
     }, [isOrientationBlock]);
     const handleKeyDown         = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
+        // preserves the original `onKeyDown` from `listComponent`:
+        listComponent.props.onKeyDown,
         
         
         
@@ -355,11 +373,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             // semantics:
             semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
-            
-            
-            
-            // handlers:
-            onKeyDown={handleKeyDown}
         >
             {React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
@@ -381,6 +394,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                     
                     // behaviors:
                     actionCtrl  : listComponent.props.actionCtrl  ?? _defaultActionCtrl,
+                    
+                    
+                    
+                    // handlers:
+                    onKeyDown   : handleKeyDown,
                 },
                 
                 
