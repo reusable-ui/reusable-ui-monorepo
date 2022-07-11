@@ -399,7 +399,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             const dropdownUi     = dropdownUiRefInternal.current;
             if (focusedElement && dropdownUi && isSelfOrDescendantOf(focusedElement, dropdownUi)) {
                 const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
-                (target as HTMLOrSVGElement|null|undefined)?.focus?.();
+                (target as HTMLElement|SVGElement|null|undefined)?.focus?.();
             } // if
         } // if
     }, [isVisible, props.targetRef]);
