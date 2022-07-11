@@ -304,9 +304,9 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     
     return [
         () => style({
+            // color functions:
             ...vars({
                 [backgs.altBackgColorFn] : 'inherit', // inherit to parent theme
-                [backgs.altBackgColor  ] : 'inherit', // inherit to parent theme
             }),
             ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
                 ...vars({
@@ -317,13 +317,15 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
                         
                         icons.color,            // default => uses config's color
                     ),
-                    [backgs.altBackgColor  ] : fallbacks(
-                        outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
-                        milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
-                        
-                        backgs.altBackgColorFn, // default => uses our `backgColorFn`
-                    ),
                 }),
+            }),
+            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
+                [backgs.altBackgColor  ] : fallbacks(
+                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
+                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                    
+                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
+                ),
             }),
         }),
         backgs,
