@@ -91,6 +91,16 @@ import {
 
 
 
+// hooks:
+
+// layouts:
+
+//#region orientation
+export { defaultOrientationRuleOptions };
+//#endregion orientation
+
+
+
 // styles:
 export const usesDropdownLayout = (options?: OrientationVariantOptions) => {
     return style({
