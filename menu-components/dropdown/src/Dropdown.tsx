@@ -200,10 +200,7 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
-    extends
-        // accessibilities:
-        DropdownAction<TDropdownActiveChangeEvent>
+export interface DropdownComponentUiProps
 {
     /* additional required props: */
     
@@ -213,7 +210,10 @@ export interface DropdownComponentUiProps<TDropdownActiveChangeEvent extends Dro
 export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // component ui:
-        DropdownComponentUiProps<TDropdownActiveChangeEvent>
+        DropdownComponentUiProps,
+        
+        // accessibilities:
+        DropdownAction<TDropdownActiveChangeEvent>
 {
     // refs:
     dropdownUiRef ?: React.Ref<Element> // setter ref
@@ -221,7 +221,7 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
     
     
     // components:
-    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps<TDropdownActiveChangeEvent>>
+    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -303,15 +303,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // handlers:
-    const handleActiveChange    = useMergeEvents(
-        // preserves the original `onActiveChange` from `dropdownComponent`:
-        dropdownComponent.props.onActiveChange,
-        
-        
-        
-        // preserves the original `onActiveChange` from `props`:
-        onActiveChange,
-    );
+    const handleActiveChange    = onActiveChange;
     const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -480,7 +472,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps<TDropdownActiveChangeEvent>>(dropdownComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps>(dropdownComponent,
                 // props:
                 {
                     // refs:
@@ -490,13 +482,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                     
                     // accessibilities:
                     tabIndex : dropdownComponent.props.tabIndex ?? tabIndex,
-                    
-                    
-                    
-                    // handlers:
-                    ...(isReusableUiDropdownComponent ? {
-                        onActiveChange : handleActiveChange,
-                    } : null),
                 },
             )}
         </Collapse>
