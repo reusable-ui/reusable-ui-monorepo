@@ -271,7 +271,11 @@ export type { ListStyle, ListVariant }
 
 
 
-interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent> {
+interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+    extends
+    // bases:
+        ListItemProps<Element>
+{
     // accessibilities:
     onActiveChange    : EventHandler<TDropdownListActiveChangeEvent>
     
@@ -292,7 +296,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         // components:
         listIndex,
         listItemComponent,
-    } = props;
+    ...restListItemProps} = props;
     
     
     
@@ -323,6 +327,11 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
     return React.cloneElement<ListItemProps<Element>>(listItemComponent,
         // props:
         {
+            // other props:
+            ...restListItemProps,
+            
+            
+            
             // handlers:
             onClick : handleClick,
         },
