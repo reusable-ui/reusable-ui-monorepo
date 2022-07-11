@@ -169,7 +169,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     // rest props:
     const {
         // accessibilities:
-        onActiveChange,
+        // onActiveChange, // do not steal `onActiveChange` from `props`, otherwise the [esc] key and blur event will not handled by <Dropdown>
         
         
         
@@ -179,6 +179,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         listComponent    = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children         : listItems,
     ...restDropdownProps} = props;
+    const onActiveChange = props.onActiveChange; // copy the `onActiveChange` instead of steal it from `props`
     
     
     
