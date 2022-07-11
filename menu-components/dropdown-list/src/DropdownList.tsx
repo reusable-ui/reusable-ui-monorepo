@@ -220,6 +220,131 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     
     
     
+    // handlers:
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // functions:
+        let allPossibleFocusableElementsCache : Element[]|undefined = undefined;
+        const getAllPossibleFocusableElements = (): Element[] => {
+            if (allPossibleFocusableElementsCache) return allPossibleFocusableElementsCache;
+            
+            
+            
+            return allPossibleFocusableElementsCache = Array.from(event.currentTarget.querySelectorAll(`
+:is(
+    a,
+    button,
+    textarea,
+    select,
+    details,
+    input:not([type="hidden"]),
+    [tabindex]:not([tabindex^="-"])
+):not(
+    :is(
+        [disabled]:not([disabled="false"]),
+        [aria-disabled]:not([aria-disabled="false"])
+    )
+)
+`           ));
+        };
+        
+        const setFocus = (index: number, fallback?: number) => {
+            // find the element:
+            let element = getAllPossibleFocusableElements().at(index);
+            if (!element && (fallback !== undefined)) {
+                element = getAllPossibleFocusableElements().at(fallback);
+            } // if
+            
+            
+            
+            // set focus:
+            (element as HTMLElement|SVGElement)?.focus?.();
+        };
+        
+        const focusPrev  = () => {
+            let focusedElement = document.activeElement;
+            if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
+            
+            if (!focusedElement) {
+                setFocus(-1); // the last focusable element
+            }
+            else {
+                setFocus(
+                    getAllPossibleFocusableElements().indexOf(focusedElement) - 1,
+                    -1
+                );
+            } // if
+        };
+        const focusNext  = () => {
+            let focusedElement = document.activeElement;
+            if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
+            
+            if (!focusedElement) {
+                setFocus(0); // the first focusable element
+            }
+            else {
+                setFocus(
+                    getAllPossibleFocusableElements().indexOf(focusedElement) + 1,
+                    0
+                );
+            } // if
+        };
+        const focusFirst = () => {
+            setFocus(0); // the first focusable element
+        };
+        const focusLast  = () => {
+            setFocus(-1); // the last focusable element
+        };
+        
+        
+        
+        if (((): boolean => {
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
+            };
+            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
+            
+            
+            
+                 if (                                 isKeyOf('pagedown'  )) focusNext();
+            else if (                                 isKeyOf('pageup'    )) focusPrev();
+            
+            else if (                                 isKeyOf('home'      )) focusFirst();
+            else if (                                 isKeyOf('end'       )) focusLast();
+            
+            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
+            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
+            
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
+            
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
+            else return false; // not handled
+            
+            
+            
+            return true; // handled
+        })()) {
+            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
+        } // if
+    }, [isOrientationBlock]);
+    const handleKeyDown         = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // range handlers:
+        handleKeyDownInternal,
+    );
+    
+    
+    
     // jsx:
     return (
         <Dropdown<TElement, TDropdownListActiveChangeEvent>
@@ -230,6 +355,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             // semantics:
             semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
+            
+            
+            
+            // handlers:
+            onKeyDown={handleKeyDown}
         >
             {React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
@@ -361,64 +491,6 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         // handlers:
         handleClickInternal,
     );
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // functions:
-        const focusPrev  = () => {
-        };
-        const focusNext  = () => {
-        };
-        const focusFirst = () => {
-        };
-        const focusLast  = () => {
-        };
-        
-        
-        
-        if (((): boolean => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
-            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
-            
-            
-            
-                 if (                                 isKeyOf('pagedown'  )) focusNext();
-            else if (                                 isKeyOf('pageup'    )) focusPrev();
-            
-            else if (                                 isKeyOf('home'      )) focusFirst();
-            else if (                                 isKeyOf('end'       )) focusLast();
-            
-            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
-            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
-            
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
-            
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
-            else return false; // not handled
-            
-            
-            
-            return true; // handled
-        })()) {
-            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
-        } // if
-    }, [isOrientationBlock]);
-    const handleKeyDown         = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
-        
-        
-        
-        // range handlers:
-        handleKeyDownInternal,
-    );
     
     
     
@@ -433,7 +505,6 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
             
             // handlers:
             onClick   : handleClick,
-            onKeyDown : handleKeyDown,
         },
     );
 };
