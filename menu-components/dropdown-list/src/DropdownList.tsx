@@ -310,6 +310,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         
         // a <ListItem> was clicked => close the <DropdownList>:
         handleActiveChange?.({ newActive: false, closeType: listIndex } as TDropdownListActiveChangeEvent);
+        event.preventDefault(); // mark as handled
     }, [handleActiveChange, listIndex]);
     const handleClick         = useMergeEvents(
         // preserves the original `onClick` from `listItemComponent`:
