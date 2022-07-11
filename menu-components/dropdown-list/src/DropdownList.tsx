@@ -328,7 +328,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             
             
-                 if (                                 isKeyOf('pagedown'  )) focusNext();
+                 if (                                 isKeyOf('tab'       )) focusNext();
+            else if (                                 isKeyOf('pagedown'  )) focusNext();
             else if (                                 isKeyOf('pageup'    )) focusPrev();
             
             else if (                                 isKeyOf('home'      )) focusFirst();
