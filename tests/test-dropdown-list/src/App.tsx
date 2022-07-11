@@ -6,6 +6,12 @@ import {
 // import logo from './logo.svg';
 import './App.css';
 import {
+    ButtonIcon
+} from '@reusable-ui/button-icon'
+import {
+    TextInput
+} from '@reusable-ui/input'
+import {
     DropdownList,
     ListItem,
 } from '@reusable-ui/dropdown-list'
@@ -38,9 +44,9 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <button ref={btnRef} onClick={() => setShowDropdown(!showDropdown)}>
-                    I'm here
-                </button>
+                <ButtonIcon theme='primary' elmRef={btnRef} onClick={() => setShowDropdown(!showDropdown)} icon='dropdown' iconPosition='end'>
+                    Show menu
+                </ButtonIcon>
                 <DropdownList targetRef={btnRef} theme='primary' active={showDropdown} onActiveChange={(event) => setShowDropdown(event.newActive)}>
                     <ListItem>
                         A first item
@@ -48,8 +54,12 @@ function App() {
                     <ListItem>
                         A second item
                     </ListItem>
-                    <ListItem theme='success'>
+                    <ListItem theme='success' actionCtrl={false}>
                         A third item
+                        <hr />
+                        <ButtonIcon theme='primary' tabIndex={1}>Click</ButtonIcon>
+                        <ButtonIcon theme='success' tabIndex={0}>Click</ButtonIcon>
+                        <ButtonIcon theme='warning' tabIndex={2}>Click</ButtonIcon>
                     </ListItem>
                     <ListItem active={true}>
                         A fourth item
