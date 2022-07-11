@@ -17,15 +17,23 @@ import type {
     Role,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // types:
+    // hooks:
     OrientationName,
     OrientationVariant,
-    
+    useOrientationVariant,
+}                           from '@reusable-ui/basic'           // a base component
+import {
+    // types:
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
     PopupPosition,
     PopupSide,
+    
+    
+    
+    // hooks:
+    defaultOrientationRuleOptions,
     
     
     
@@ -55,6 +63,16 @@ import {
     ListProps,
     List,
 }                           from '@reusable-ui/list'            // represents a series of content
+
+
+
+// hooks:
+
+// layouts:
+
+//#region orientation
+export { defaultOrientationRuleOptions };
+//#endregion orientation
 
 
 
@@ -166,6 +184,12 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
+    // variants:
+    const orientationVariant = useOrientationVariant(props);
+    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -244,6 +268,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                     // jsx:
                     return (
                         <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
+                            // layouts:
+                            isOrientationBlock={isOrientationBlock}
+                            
+                            
+                            
                             // accessibilities:
                             onActiveChange={onActiveChange}
                             
@@ -277,18 +306,28 @@ interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends 
     // bases:
         ListItemProps<Element>
 {
+    // layouts:
+    isOrientationBlock : boolean
+    
+    
+    
     // accessibilities:
-    onActiveChange    : EventHandler<TDropdownListActiveChangeEvent>
+    onActiveChange     : EventHandler<TDropdownListActiveChangeEvent>
     
     
     
     // components:
-    listIndex         : number
-    listItemComponent : React.ReactElement<ListItemProps<Element>>
+    listIndex          : number
+    listItemComponent  : React.ReactElement<ListItemProps<Element>>
 }
 const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
+        // layouts:
+        isOrientationBlock,
+        
+        
+        
         // accessibilities:
         onActiveChange,
         
@@ -322,6 +361,64 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         // handlers:
         handleClickInternal,
     );
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // functions:
+        const focusPrev  = () => {
+        };
+        const focusNext  = () => {
+        };
+        const focusFirst = () => {
+        };
+        const focusLast  = () => {
+        };
+        
+        
+        
+        if (((): boolean => {
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
+            };
+            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
+            
+            
+            
+                 if (                                 isKeyOf('pagedown'  )) focusNext();
+            else if (                                 isKeyOf('pageup'    )) focusPrev();
+            
+            else if (                                 isKeyOf('home'      )) focusFirst();
+            else if (                                 isKeyOf('end'       )) focusLast();
+            
+            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
+            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
+            
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
+            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
+            
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
+            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
+            else return false; // not handled
+            
+            
+            
+            return true; // handled
+        })()) {
+            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
+        } // if
+    }, [isOrientationBlock]);
+    const handleKeyDown         = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // range handlers:
+        handleKeyDownInternal,
+    );
     
     
     
@@ -335,7 +432,8 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
             
             
             // handlers:
-            onClick : handleClick,
+            onClick   : handleClick,
+            onKeyDown : handleKeyDown,
         },
     );
 };
