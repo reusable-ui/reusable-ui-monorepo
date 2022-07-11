@@ -268,6 +268,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // rest props:
     const {
+        // refs:
+        elmRef,
+        
+        
+        
         // accessibilities:
         onActiveChange,
         
@@ -382,15 +387,22 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // set focus on <DropdownUi> each time it shown:
     useEffect(() => {
-        // conditions:
-        if (!isVisible) return;          // <Dropdown> is not shown => nothing to do
-        
-        
-        
         // setups:
-        // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
-        (dropdownUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
-    }, [isVisible]);
+        if (isVisible) {
+            // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
+            (dropdownUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+        }
+        else {
+            // in case of pressing [esc] key to close the <DropdownUi>,
+            // switch the focus to <TargetRef>, so the <Dropdown> can be activated by [space] key:
+            const focusedElement = document.activeElement;
+            const dropdownUi     = dropdownUiRefInternal.current;
+            if (focusedElement && dropdownUi && isSelfOrDescendantOf(focusedElement, dropdownUi)) {
+                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+                (target as HTMLOrSVGElement|null|undefined)?.focus?.();
+            } // if
+        } // if
+    }, [isVisible, props.targetRef]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
