@@ -419,7 +419,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // focus is outside of <Dropdown> => <Dropdown> lost focus => request to hide the <Dropdown>:
-                handleActiveChange?.({ newActive: false, closeType: 'blur' } as TDropdownActiveChangeEvent);
+            handleActiveChange?.({ newActive: false, closeType: 'blur' } as TDropdownActiveChangeEvent);
         };
         
         
