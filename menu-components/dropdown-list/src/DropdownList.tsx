@@ -120,17 +120,17 @@ export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent
     closeType : DropdownListCloseType
 }
 
-export interface DropdownListComponentUiProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListComponentUiProps
     extends
         // accessibilities:
-        DropdownComponentUiProps<TDropdownListActiveChangeEvent>
+        DropdownComponentUiProps
 {
     /* no additional required props yet */
 }
-export interface DropdownListComponentProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListComponentProps
     extends
         // component ui:
-        DropdownListComponentUiProps<TDropdownListActiveChangeEvent>
+        DropdownListComponentUiProps
 {
     // refs:
     listRef         ?: React.Ref<Element> // setter ref
@@ -159,7 +159,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         
         // components:
-        DropdownListComponentProps<TDropdownListActiveChangeEvent>
+        DropdownListComponentProps
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
