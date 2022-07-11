@@ -233,9 +233,9 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 // children:
                 React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
                     // conditions:
-                    if (!onActiveChange)                                                                       return listItem; // [onActiveChange] was not set  => ignore
-                    if (!React.isValidElement<ListItemProps<Element>>(listItem))                               return listItem; // not a <ListItem>              => ignore
-                    if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl  ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
+                    if (!onActiveChange)                                                                      return listItem; // [onActiveChange] was not set  => ignore
+                    if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>              => ignore
+                    if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
                     // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
                     
                     
