@@ -263,6 +263,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // accessibilities:
     const activePassiveState = useActivePassiveState<TElement>(props);
     const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isActive           = activePassiveState.active;
     
     
     
@@ -388,7 +389,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // set focus on <DropdownUi> each time it shown:
     useEffect(() => {
         // setups:
-        if (isVisible) {
+        if (isActive) {
             // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
             (dropdownUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
         }
@@ -402,7 +403,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 (target as HTMLElement|SVGElement|null|undefined)?.focus?.();
             } // if
         } // if
-    }, [isVisible, props.targetRef]);
+    }, [isActive, props.targetRef]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
