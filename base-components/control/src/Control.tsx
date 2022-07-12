@@ -888,8 +888,8 @@ export {
 
 
 
-export interface ControlComponentProps
+export interface ControlComponentProps<TElement extends Element = HTMLElement>
 {
     // components:
-    controlComponent ?: React.ReactComponentElement<any, ControlProps<Element>>
+    controlComponent ?: React.ReactComponentElement<any, ControlProps<TElement>>
 }
