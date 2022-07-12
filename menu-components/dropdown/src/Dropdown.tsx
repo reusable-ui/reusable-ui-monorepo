@@ -210,20 +210,11 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentUiProps
-{
-    /* additional required props: */
-    
-    // accessibilities:
-    tabIndex ?: number
-}
-export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentUiProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
-        // component ui:
-        DropdownComponentUiProps,
-        
         // accessibilities:
-        DropdownAction<TDropdownActiveChangeEvent>
+        DropdownAction<TDropdownActiveChangeEvent>,
+        Pick<React.HTMLAttributes<HTMLElement>, 'tabIndex'>
 {
     // refs:
     dropdownUiRef ?: React.Ref<TElement> // setter ref
@@ -231,7 +222,7 @@ export interface DropdownComponentProps<TElement extends Element = HTMLElement, 
     
     
     // components:
-    children       : React.ReactElement<(GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps>
+    children       : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -243,7 +234,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         >,
         
         // components:
-        DropdownComponentProps<Element, TDropdownActiveChangeEvent>
+        DropdownComponentUiProps<Element, TDropdownActiveChangeEvent>
 {
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
@@ -495,7 +486,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & DropdownComponentUiProps>(dropdownComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(dropdownComponent,
                 // props:
                 {
                     // refs:
@@ -504,7 +495,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                     
                     
                     // accessibilities:
-                    tabIndex : dropdownComponent.props.tabIndex ?? tabIndex,
+                    tabIndex : (dropdownComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
                 },
             )}
         </Collapse>
