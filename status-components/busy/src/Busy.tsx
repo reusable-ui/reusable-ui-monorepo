@@ -163,7 +163,7 @@ export interface BusyProps<TElement extends Element = HTMLElement>
         BadgeProps<TElement>,
         
         // components:
-        IconComponentProps
+        IconComponentProps<Element>
 {
 }
 const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>): JSX.Element|null => {
