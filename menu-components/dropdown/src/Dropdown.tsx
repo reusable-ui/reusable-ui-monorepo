@@ -210,7 +210,7 @@ export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiv
 {
 }
 
-export interface DropdownComponentUiProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownUiComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // accessibilities:
         DropdownAction<TDropdownActiveChangeEvent>,
@@ -234,7 +234,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         >,
         
         // components:
-        DropdownComponentUiProps<Element, TDropdownActiveChangeEvent>
+        DropdownUiComponentProps<Element, TDropdownActiveChangeEvent>
 {
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
