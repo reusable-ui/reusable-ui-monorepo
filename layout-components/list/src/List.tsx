@@ -1739,5 +1739,5 @@ export interface ListComponentProps<TElement extends Element = HTMLElement>
     
     // components:
     listComponent   ?: React.ReactComponentElement<any, ListProps<TElement>>
-    children        ?: ListProps<TElement>['children']
+    listChildren    ?: ListProps<TElement>['children']
 }
