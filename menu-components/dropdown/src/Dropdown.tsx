@@ -217,7 +217,7 @@ export interface DropdownComponentUiProps
     // accessibilities:
     tabIndex ?: number
 }
-export interface DropdownComponentProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // component ui:
         DropdownComponentUiProps,
@@ -226,12 +226,12 @@ export interface DropdownComponentProps<TDropdownActiveChangeEvent extends Dropd
         DropdownAction<TDropdownActiveChangeEvent>
 {
     // refs:
-    dropdownUiRef ?: React.Ref<Element> // setter ref
+    dropdownUiRef ?: React.Ref<TElement> // setter ref
     
     
     
     // components:
-    children       : React.ReactElement<(GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps>
+    children       : React.ReactElement<(GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>) & DropdownComponentUiProps>
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -243,7 +243,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         >,
         
         // components:
-        DropdownComponentProps<TDropdownActiveChangeEvent>
+        DropdownComponentProps<Element, TDropdownActiveChangeEvent>
 {
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
