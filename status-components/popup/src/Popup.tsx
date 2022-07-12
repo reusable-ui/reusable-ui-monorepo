@@ -294,10 +294,20 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 
 
 // react components:
+
+export interface PopupComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    popupComponent ?: React.ReactComponentElement<any, IndicatorProps<TElement>>
+}
+
 export interface PopupProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        IndicatorProps<TElement>
+        IndicatorProps<TElement>,
+        
+        // components:
+        PopupComponentProps<TElement>
 {
     // popups:
     targetRef       ?: React.RefObject<Element>|Element|null // getter ref
@@ -361,6 +371,11 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
         
         // behaviors:
         lazy             = false,
+        
+        
+        
+        // components:
+        popupComponent   = (<Indicator<TElement> /> as React.ReactComponentElement<any, IndicatorProps<TElement>>),
         
         
         
@@ -531,39 +546,43 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
     
     
     // jsx:
-    return (
-        <Indicator<TElement>
+    return React.cloneElement<IndicatorProps<TElement>>(popupComponent,
+        // props:
+        {
             // other props:
-            {...restIndicatorProps}
+            ...restIndicatorProps,
             
             
             
             // refs:
-            elmRef={mergedElmRef}
+            elmRef         : mergedElmRef,
             
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'status'}
+            semanticRole   : props.semanticRole ?? 'status',
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            classes={classes}
+            mainClass      : props.mainClass ?? styleSheet.main,
+            classes        : classes,
             
             
             
             // styles:
-            style={mergedStyle}
+            style          : mergedStyle,
             
             
             
             // handlers:
-            onAnimationEnd={handleAnimationEnd}
-        >
-            { (!lazy || isVisible) && children }
-        </Indicator>
+            onAnimationEnd : handleAnimationEnd,
+        },
+        
+        
+        
+        // children:
+        ((!lazy || isVisible) && children),
     );
 };
 export {
