@@ -269,28 +269,28 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         // components:
         dropdownUiRef,
         tabIndex,
-        children: dropdownComponent,
+        children: dropdownUiComponent,
     ...restCollapseProps} = props;
     
     
     
     // verifies:
-    React.Children.only(dropdownComponent);
-    const isReusableUiDropdownComponent : boolean = isReusableUiComponent(dropdownComponent);
-    if (!isReusableUiDropdownComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownComponent)) throw Error('Invalid child element.');
+    React.Children.only(dropdownUiComponent);
+    const isReusableUiDropdownComponent : boolean = isReusableUiComponent(dropdownUiComponent);
+    if (!isReusableUiDropdownComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownUiComponent)) throw Error('Invalid child element.');
     
     
     
     // refs:
     const dropdownUiRefInternal = useRef<Element|null>(null);
     const mergedDropdownUiRef   = useMergeRefs(
-        // preserves the original `ref` from `dropdownComponent`:
+        // preserves the original `ref` from `dropdownUiComponent`:
         (
             isReusableUiDropdownComponent
             ?
-            (dropdownComponent.props as GenericProps<Element>).elmRef
+            (dropdownUiComponent.props as GenericProps<Element>).elmRef
             :
-            (dropdownComponent.props as React.RefAttributes<Element>).ref
+            (dropdownUiComponent.props as React.RefAttributes<Element>).ref
         ),
         
         
@@ -482,7 +482,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             onKeyDown={handleKeyDown}
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(dropdownComponent,
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(dropdownUiComponent,
                 // props:
                 {
                     // refs:
@@ -491,7 +491,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                     
                     
                     // accessibilities:
-                    tabIndex : (dropdownComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
+                    tabIndex : (dropdownUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
                 },
             )}
         </Collapse>
