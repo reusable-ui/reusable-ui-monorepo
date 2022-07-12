@@ -1009,11 +1009,11 @@ export {
 
 
 
-export interface IconComponentProps
+export interface IconComponentProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        Partial<Pick<IconProps<Element>, 'icon'>>
+        Partial<Pick<IconProps<TElement>, 'icon'>>
 {
     // components:
-    iconComponent ?: React.ReactComponentElement<any, IconProps<Element>>
+    iconComponent ?: React.ReactComponentElement<any, IconProps<TElement>>
 }
