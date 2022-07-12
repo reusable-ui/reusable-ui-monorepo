@@ -148,13 +148,13 @@ export interface DropdownListComponentUiProps
 {
     /* no additional required props yet */
 }
-export interface DropdownListComponentProps
+export interface DropdownListComponentProps<TElement extends Element = HTMLElement>
     extends
         // component ui:
         DropdownListComponentUiProps
 {
     // refs:
-    listRef         ?: React.Ref<Element> // setter ref
+    listRef         ?: React.Ref<TElement> // setter ref
     
     
     
@@ -164,8 +164,8 @@ export interface DropdownListComponentProps
     
     
     // components:
-    listComponent   ?: React.ReactComponentElement<any, ListProps<Element>>
-    children        ?: ListProps<Element>['children']
+    listComponent   ?: React.ReactComponentElement<any, ListProps<TElement>>
+    children        ?: ListProps<TElement>['children']
 }
 
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
@@ -180,7 +180,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         
         // components:
-        DropdownListComponentProps
+        DropdownListComponentProps<Element>
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
@@ -266,7 +266,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 })
                 .sort((x, y) => sortByTabIndex(x.primary, y.primary))
                 .flatMap((item) => item.items)
-                .filter((element): element is Element => !!element)
             );
         };
         
