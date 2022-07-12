@@ -145,9 +145,6 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
     extends
         // bases:
         Omit<DropdownProps<TElement, TDropdownListActiveChangeEvent>,
-            // refs:
-            |'dropdownUiRef' // we replaced `dropdownUiRef` with `listRef`
-            
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
         >,
