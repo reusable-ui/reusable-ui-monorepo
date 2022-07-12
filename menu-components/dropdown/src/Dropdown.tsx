@@ -204,13 +204,8 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
         // accessibilities:
         Pick<React.HTMLAttributes<HTMLElement>, 'tabIndex'>
 {
-    // refs:
-    dropdownUiRef ?: React.Ref<TElement> // setter ref
-    
-    
-    
     // components:
-    children       : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
+    children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
 export type DropdownCloseType = 'shortcut'|'blur'|{}
@@ -267,7 +262,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         
         // components:
-        dropdownUiRef,
         tabIndex,
         children: dropdownUiComponent,
     ...restCollapseProps} = props;
@@ -292,11 +286,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             :
             (dropdownUiComponent.props as React.RefAttributes<Element>).ref
         ),
-        
-        
-        
-        // preserves the original `dropdownUiRef` from `props`:
-        dropdownUiRef,
         
         
         
