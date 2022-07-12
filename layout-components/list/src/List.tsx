@@ -1722,3 +1722,22 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+
+
+export interface ListComponentProps<TElement extends Element = HTMLElement>
+{
+    // refs:
+    listRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // layouts:
+    listOrientation ?: OrientationName
+    
+    
+    
+    // components:
+    listComponent   ?: React.ReactComponentElement<any, ListProps<TElement>>
+    children        ?: ListProps<TElement>['children']
+}
