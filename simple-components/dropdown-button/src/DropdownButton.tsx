@@ -56,7 +56,6 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        dropdownUiRef,
         tabIndex,
         children: dropdownUiComponent,
         
