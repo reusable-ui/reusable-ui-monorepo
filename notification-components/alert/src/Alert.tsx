@@ -288,8 +288,8 @@ export interface AlertProps<TElement extends Element = HTMLElement>
         Pick<ToggleActiveProps, 'onActiveChange'>,
         
         // components:
-        IconComponentProps,
-        ControlComponentProps
+        IconComponentProps<Element>,
+        ControlComponentProps<Element>
 {
 }
 const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElement>): JSX.Element|null => {
