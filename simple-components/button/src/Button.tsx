@@ -611,3 +611,22 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+
+
+export interface ButtonComponentProps
+{
+    // refs:
+    buttonRef         ?: React.Ref<HTMLButtonElement> // setter ref
+    
+    
+    
+    // layouts:
+    buttonOrientation ?: OrientationName
+    
+    
+    
+    // components:
+    buttonComponent   ?: React.ReactComponentElement<any, ButtonProps>
+    buttonChildren    ?: ButtonProps['children']
+}
