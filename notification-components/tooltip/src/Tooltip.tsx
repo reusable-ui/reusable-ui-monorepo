@@ -294,15 +294,15 @@ const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
 
 // react components:
 
-export interface ArrowComponentProps
+export interface ArrowComponentProps<TElement extends Element = HTMLElement>
 {
     // refs:
-    arrowRef       ?: React.Ref<Element> // setter ref
+    arrowRef       ?: React.Ref<TElement> // setter ref
     
     
     
     // components:
-    arrowComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
+    arrowComponent ?: React.ReactComponentElement<any, GenericProps<TElement>>
 }
 
 export interface TooltipProps<TElement extends Element = HTMLElement>
@@ -311,7 +311,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement>
         PopupProps<TElement>,
         
         // components:
-        ArrowComponentProps
+        ArrowComponentProps<Element>
 {
     // popups:
     unsafe_calculateArrowSize ?: CalculateArrowSize
