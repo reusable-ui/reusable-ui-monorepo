@@ -509,3 +509,21 @@ export {
 export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+
+
+
+export interface DropdownComponentProps<TElement extends Element = HTMLElement>
+{
+    // refs:
+    dropdownRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // layouts:
+    dropdownOrientation ?: OrientationName
+    
+    
+    
+    // components:
+    dropdownComponent   ?: React.ReactComponentElement<any, DropdownProps<TElement>>
+}
