@@ -199,21 +199,9 @@ const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
 
 // react components:
 
-export type DropdownCloseType = 'shortcut'|'blur'|{}
-export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
-    closeType : DropdownCloseType
-}
-export interface DropdownAction<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownUiComponentProps<TElement extends Element = HTMLElement>
     extends
         // accessibilities:
-        Pick<ToggleActiveProps<TDropdownActiveChangeEvent>, 'onActiveChange'>
-{
-}
-
-export interface DropdownUiComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
-    extends
-        // accessibilities:
-        DropdownAction<TDropdownActiveChangeEvent>,
         Pick<React.HTMLAttributes<HTMLElement>, 'tabIndex'>
 {
     // refs:
@@ -225,6 +213,11 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
     children       : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
+export type DropdownCloseType = 'shortcut'|'blur'|{}
+export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
+    closeType : DropdownCloseType
+}
+
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // bases:
@@ -233,8 +226,11 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
+        // accessibilities:
+        Pick<ToggleActiveProps<TDropdownActiveChangeEvent>, 'onActiveChange'>,
+        
         // components:
-        DropdownUiComponentProps<Element, TDropdownActiveChangeEvent>
+        DropdownUiComponentProps<Element>
 {
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
