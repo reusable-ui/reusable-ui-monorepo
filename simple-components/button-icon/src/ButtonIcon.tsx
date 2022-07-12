@@ -314,10 +314,10 @@ export const [buttonIcons, buttonIconValues, cssButtonIconConfig] = cssConfig(()
 // react components:
 
 export type IconPosition = 'start'|'end'
-export interface ButtonIconComponentProps
+export interface ButtonIconComponentProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        Partial<IconComponentProps>
+        Partial<IconComponentProps<TElement>>
 {
     // positions:
     iconPosition ?: IconPosition
@@ -332,7 +332,7 @@ export interface ButtonIconProps
         SizeVariant,
         
         // components:
-        ButtonIconComponentProps
+        ButtonIconComponentProps<Element>
 {
 }
 const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
