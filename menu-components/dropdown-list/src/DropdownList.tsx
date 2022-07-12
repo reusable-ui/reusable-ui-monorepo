@@ -347,6 +347,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             // semantics:
             semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
         >
+            {/* <List> */}
             {React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
                 {
@@ -486,6 +487,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
     
     
     // jsx:
+    /* <ListItem> */
     return React.cloneElement<ListItemProps<Element>>(listItemComponent,
         // props:
         {
