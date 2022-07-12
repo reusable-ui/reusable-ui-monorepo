@@ -4,79 +4,11 @@ import {
     default as React,
 }                           from 'react'
 
-// cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-}                           from '@cssfn/css-types'             // cssfn css specific types
-import {
-    // combinators:
-    children,
-    
-    
-    
-    // styles:
-    style,
-    vars,
-    imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
-import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
-
 // reusable-ui:
 import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-import {
-    // types:
-    VariantMixin,
-    
-    
-    
     // hooks:
-    SizeVars,
-    ifSize          as basicIfSize,
-    usesSizeVariant as basicUsesSizeVariant,
-    useSizeVariant  as basicUseSizeVariant,
-    
-    OrientationVariantOptions,
-    
-    extendsBorder,
-    extendsPadding,
-    
-    
-    
-    // configs:
-    basics,
-}                           from '@reusable-ui/basic'           // a base component
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
     OrientationName,
@@ -93,6 +25,15 @@ import {
     ButtonIconProps,
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a base component
+import {
+    // react components:
+    DropdownUiComponentProps,
+    
+    DropdownProps,
+    Dropdown,
+    
+    DropdownComponentProps,
+}                           from '@reusable-ui/dropdown'        // a base component
 
 
 
@@ -101,34 +42,68 @@ import {
 export interface DropdownButtonProps
     extends
         // bases:
-        ButtonIconProps
+        Omit<ButtonIconProps,
+            // children:
+            |'children' // we redefined `children` prop as a <DropdownUi> component
+        >,
         
         // components:
-        // TODO
+        DropdownUiComponentProps<Element>,
+        DropdownComponentProps<Element>
 {
 }
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        // TODO
+        dropdownUiRef,
+        tabIndex,
+        children: dropdownUiComponent,
         
-        
-        
-        // children:
-        children,
+        dropdownRef,
+        dropdownOrientation,
+        dropdownComponent   = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
     ...restButtonIconProps} = props;
+    
+    
+    
+    // refs:
+    const mergedDropdownRef = useMergeRefs(
+        // preserves the original `elmRef` from `dropdownComponent`:
+        dropdownComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `dropdownRef` from `props`:
+        dropdownRef,
+    );
     
     
     
     // jsx:
     return (
-        <ButtonIcon
-            // other props:
-            {...restButtonIconProps}
-        >
-            { children }
-        </ButtonIcon>
+        <>
+            <ButtonIcon
+                // other props:
+                {...restButtonIconProps}
+            >
+                // TODO
+            </ButtonIcon>
+            
+            {/* <Dropdown> */}
+            {React.cloneElement<DropdownProps<Element>>(dropdownComponent,
+                // props:
+                {
+                    // refs:
+                    elmRef      : mergedDropdownRef,
+                    
+                    
+                    
+                    // layouts:
+                    orientation : dropdownComponent.props.orientation ?? dropdownOrientation,
+                },
+            )}
+        </>
     );
 };
 export {
