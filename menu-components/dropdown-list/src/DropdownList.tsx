@@ -41,8 +41,6 @@ import {
     DropdownCloseType,
     DropdownActiveChangeEvent,
     
-    DropdownComponentUiProps,
-    
     DropdownProps,
     Dropdown,
 }                           from '@reusable-ui/dropdown'        // a base component
@@ -62,6 +60,8 @@ import {
     
     ListProps,
     List,
+    
+    ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 
 
@@ -141,33 +141,6 @@ export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent
     closeType : DropdownListCloseType
 }
 
-export interface DropdownListComponentUiProps
-    extends
-        // accessibilities:
-        DropdownComponentUiProps
-{
-    /* no additional required props yet */
-}
-export interface DropdownListComponentProps<TElement extends Element = HTMLElement>
-    extends
-        // component ui:
-        DropdownListComponentUiProps
-{
-    // refs:
-    listRef         ?: React.Ref<TElement> // setter ref
-    
-    
-    
-    // layouts:
-    listOrientation ?: OrientationName
-    
-    
-    
-    // components:
-    listComponent   ?: React.ReactComponentElement<any, ListProps<TElement>>
-    children        ?: ListProps<TElement>['children']
-}
-
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
@@ -180,7 +153,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         
         // components:
-        DropdownListComponentProps<Element>
+        ListComponentProps<Element>
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
