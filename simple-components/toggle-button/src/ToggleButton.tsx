@@ -57,6 +57,17 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     
     
     
+    // rest props:
+    const {
+        // remove props:
+        
+        // accessibilities:
+        defaultActive  : _defaultActive,  // take, already handled by `useToggleActive`
+        onActiveChange : _onActiveChange, // take, already handled by `useToggleActive`
+    ...restButtonProps} = props;
+    
+    
+    
     // handlers:
     const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
@@ -84,7 +95,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     return (
         <Button
             // other props:
-            {...props}
+            {...restButtonProps}
             
             
             
