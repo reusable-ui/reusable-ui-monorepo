@@ -2,18 +2,31 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
 }                           from 'react'
 
 // reusable-ui:
 import {
     // hooks:
+    useEvent,
+    useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    ToggleActiveProps,
+    useToggleActive,
+}                           from '@reusable-ui/indicator'       // a base indicator control
 import {
     // react components:
     ButtonProps,
     ButtonComponentProps,
-}                           from '@reusable-ui/button'          // a base component
+}                           from '@reusable-ui/button'          // a button component for initiating an action
 import {
     // hooks:
     OrientationName,
@@ -29,7 +42,7 @@ import {
     // react components:
     ButtonIconProps,
     ButtonIcon,
-}                           from '@reusable-ui/button-icon'     // a base component
+}                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
     // react components:
     DropdownUiComponentProps,
@@ -38,7 +51,7 @@ import {
     Dropdown,
     
     DropdownComponentProps,
-}                           from '@reusable-ui/dropdown'        // a base component
+}                           from '@reusable-ui/dropdown'        // overlays contextual element such as lists, menus, and more
 
 
 
@@ -47,7 +60,13 @@ import {
 export interface DropdownButtonProps
     extends
         // bases:
-        Omit<ButtonIconProps,
+        Omit<ButtonProps,
+            // children:
+            |'children' // we redefined `children` prop as a <DropdownUi> component
+        >,
+        
+        // behaviors:
+        Omit<ToggleActiveProps,
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
@@ -59,6 +78,11 @@ export interface DropdownButtonProps
 {
 }
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
+    // states:
+    const [isActive, , toggleActive] = useToggleActive(props);
+    
+    
+    
     // rest props:
     const {
         // components:
@@ -67,18 +91,19 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         buttonComponent     = (<ButtonIcon /> as React.ReactComponentElement<any, ButtonIconProps>),
         buttonChildren,
         
-        // tabIndex, // the [tabIndex] is still attached to <ButtonIcon>
+        // tabIndex, // the [tabIndex] is still attached to <Button>
         children: dropdownUiComponent,
         
         dropdownRef,
         dropdownOrientation,
         dropdownComponent   = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
-    ...restButtonIconProps} = props;
+    ...restButtonProps} = props;
     
     
     
     // refs:
-    const mergedButtonRef = useMergeRefs(
+    const buttonRefInternal = useRef<HTMLButtonElement|null>(null);
+    const mergedButtonRef   = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
         buttonComponent.props.elmRef,
         
@@ -86,6 +111,10 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         // preserves the original `buttonRef` from `props`:
         buttonRef,
+        
+        
+        
+        buttonRefInternal,
     );
     const mergedDropdownRef = useMergeRefs(
         // preserves the original `outerRef` from `dropdownComponent`:
@@ -99,6 +128,47 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        'last-visible-child',
+    );
+    
+    
+    
+    // handlers:
+    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        toggleActive();         // handle click as toggle [active]
+        event.preventDefault(); // handled
+    }, []);
+    const handleClick           = useMergeEvents(
+        // preserves the original `onClick` from `buttonComponent`:
+        buttonComponent.props.onClick,
+        
+        
+        
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickInternal,
+    );
+    
+    
+    
     // jsx:
     return (
         <>
@@ -107,17 +177,37 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // other props:
-                    ...restButtonIconProps,
+                    ...restButtonProps,
                     
                     
                     
                     // refs:
-                    elmRef      : mergedButtonRef,
+                    elmRef          : mergedButtonRef,
+                    
+                    
+                    
+                    // semantics:
+                    'aria-expanded' : buttonComponent.props['aria-expanded'] ?? isActive,
                     
                     
                     
                     // layouts:
-                    orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                    orientation     : buttonComponent.props.orientation ?? buttonOrientation,
+                    
+                    
+                    
+                    // classes:
+                    classes         : classes,
+                    
+                    
+                    
+                    // accessibilities:
+                    active          : isActive,
+                    
+                    
+                    
+                    // handlers:
+                    onClick         : handleClick,
                 },
                 
                 
@@ -137,6 +227,11 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     // layouts:
                     orientation : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    
+                    
+                    
+                    // popups:
+                    targetRef   : buttonRefInternal,
                 },
             )}
         </>
