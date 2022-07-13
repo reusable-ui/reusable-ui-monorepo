@@ -69,7 +69,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -79,7 +79,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
     }, []);
-    const handleClick           = useMergeEvents(
+    const handleClick         = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
         
