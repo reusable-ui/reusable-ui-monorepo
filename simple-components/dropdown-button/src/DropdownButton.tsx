@@ -10,6 +10,11 @@ import {
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // react components:
+    ButtonProps,
+    ButtonComponentProps,
+}                           from '@reusable-ui/button'          // a base component
+import {
     // hooks:
     OrientationName,
     OrientationVariant,
@@ -48,6 +53,7 @@ export interface DropdownButtonProps
         >,
         
         // components:
+        ButtonComponentProps,
         DropdownUiComponentProps<Element>,
         DropdownComponentProps<Element>
 {
@@ -56,6 +62,11 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
+        buttonRef,
+        buttonOrientation,
+        buttonComponent     = (<ButtonIcon /> as React.ReactComponentElement<any, ButtonIconProps>),
+        buttonChildren,
+        
         // tabIndex, // the [tabIndex] is still attached to <ButtonIcon>
         children: dropdownUiComponent,
         
@@ -67,6 +78,15 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     // refs:
+    const mergedButtonRef = useMergeRefs(
+        // preserves the original `elmRef` from `buttonComponent`:
+        buttonComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `buttonRef` from `props`:
+        buttonRef,
+    );
     const mergedDropdownRef = useMergeRefs(
         // preserves the original `outerRef` from `dropdownComponent`:
         dropdownComponent.props.outerRef,
@@ -82,12 +102,29 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // jsx:
     return (
         <>
-            <ButtonIcon
-                // other props:
-                {...restButtonIconProps}
-            >
-                // TODO
-            </ButtonIcon>
+            {/* <Button> */}
+            {React.cloneElement<ButtonProps>(buttonComponent,
+                // props:
+                {
+                    // other props:
+                    ...restButtonIconProps,
+                    
+                    
+                    
+                    // refs:
+                    elmRef      : mergedButtonRef,
+                    
+                    
+                    
+                    // layouts:
+                    orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                },
+                
+                
+                
+                // children:
+                buttonChildren,
+            )}
             
             {/* <Dropdown> */}
             {React.cloneElement<DropdownProps<Element>>(dropdownComponent,
