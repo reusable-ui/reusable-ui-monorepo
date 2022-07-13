@@ -13,20 +13,17 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
+    ActiveChangeEvent,
     ToggleActiveProps,
     useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base indicator control
-import {
-    // react components:
-    ButtonProps,
-    ButtonComponentProps,
-}                           from '@reusable-ui/button'          // a button component for initiating an action
 import {
     // hooks:
     OrientationName,
@@ -39,12 +36,25 @@ import {
     
     
     // react components:
+    ButtonProps,
+    ButtonComponentProps,
+}                           from '@reusable-ui/button'          // a button component for initiating an action
+import {
+    ToggleButtonProps,
+    ToggleButton,
+    
+    ToggleButtonComponentProps,
+}                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
+import {
+    // react components:
     ButtonIconProps,
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
     // react components:
     DropdownUiComponentProps,
+    
+    DropdownActiveChangeEvent,
     
     DropdownProps,
     Dropdown,
@@ -72,13 +82,14 @@ export interface DropdownButtonProps
         
         // components:
         ButtonComponentProps,
+        ToggleButtonComponentProps,
         DropdownUiComponentProps<Element>,
         DropdownComponentProps<Element>
 {
 }
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // states:
-    const [isActive, , toggleActive] = useToggleActive(props);
+    const [isActive, setActive] = useToggleActive(props);
     
     
     
@@ -95,15 +106,17 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         // components:
         buttonRef,
         buttonOrientation,
-        buttonComponent     = (<ButtonIcon /> as React.ReactComponentElement<any, ButtonIconProps>),
+        buttonComponent       = (<ButtonIcon />   as React.ReactComponentElement<any, ButtonIconProps>),
         buttonChildren,
+        
+        toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
         
         // tabIndex, // the [tabIndex] is still attached to <Button>
         children: dropdownUiComponent,
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent   = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
+        dropdownComponent     = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
     ...restButtonProps} = props;
     
     
@@ -149,30 +162,9 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // actions:
-        toggleActive();         // handle click as toggle [active]
-        event.preventDefault(); // handled
+    const handleActiveChangeInternal = useEvent<EventHandler<DropdownActiveChangeEvent>>((event) => {
+        setActive(event.newActive);
     }, []);
-    const handleClick         = useMergeEvents(
-        // preserves the original `onClick` from `buttonComponent`:
-        buttonComponent.props.onClick,
-        
-        
-        
-        // preserves the original `onClick` from `props`:
-        props.onClick,
-        
-        
-        
-        // actions:
-        handleClickInternal,
-    );
     const handleActiveChange  = useMergeEvents(
         // preserves the original `onActiveChange` from `dropdownComponent`:
         dropdownComponent.props.onActiveChange,
@@ -181,6 +173,11 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         // preserves the original `onActiveChange` from `props`:
         onActiveChange,
+        
+        
+        
+        // actions:
+        handleActiveChangeInternal,
     );
     
     
@@ -188,48 +185,45 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // jsx:
     return (
         <>
-            {/* <Button> */}
-            {React.cloneElement<ButtonProps>(buttonComponent,
+            {/* <ToggleButton> */}
+            {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                 // props:
                 {
-                    // other props:
-                    ...restButtonProps,
-                    
-                    
-                    
-                    // refs:
-                    elmRef          : mergedButtonRef,
-                    
-                    
-                    
-                    // semantics:
-                    'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
-                    
-                    
-                    
-                    // layouts:
-                    orientation     : buttonComponent.props.orientation ?? buttonOrientation,
-                    
-                    
-                    
-                    // classes:
-                    classes         : classes,
-                    
-                    
-                    
                     // accessibilities:
                     active          : isActive,
+                    onActiveChange  : handleActiveChange as EventHandler<ActiveChangeEvent>,
                     
                     
                     
-                    // handlers:
-                    onClick         : handleClick,
+                    /* <Button> */
+                    buttonComponent : React.cloneElement<ButtonProps>(buttonComponent,
+                        // props:
+                        {
+                            // other props:
+                            ...restButtonProps,
+                            
+                            
+                            
+                            // refs:
+                            elmRef      : mergedButtonRef,
+                            
+                            
+                            
+                            // layouts:
+                            orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                            
+                            
+                            
+                            // classes:
+                            classes     : classes,
+                        },
+                        
+                        
+                        
+                        // children:
+                        buttonComponent.props.children ?? buttonChildren,
+                    ),
                 },
-                
-                
-                
-                // children:
-                buttonComponent.props.children ?? buttonChildren,
             )}
             
             {/* <Dropdown> */}
@@ -237,23 +231,23 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // refs:
-                    outerRef       : mergedDropdownRef,
+                    outerRef        : mergedDropdownRef,
                     
                     
                     
                     // layouts:
-                    orientation    : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    orientation     : dropdownComponent.props.orientation ?? dropdownOrientation,
                     
                     
                     
                     // accessibilities:
-                    active         : isActive,
-                    onActiveChange : handleActiveChange,
+                    active          : isActive,
+                    onActiveChange  : handleActiveChange,
                     
                     
                     
                     // popups:
-                    targetRef      : buttonRefInternal,
+                    targetRef       : buttonRefInternal,
                 },
                 
                 
