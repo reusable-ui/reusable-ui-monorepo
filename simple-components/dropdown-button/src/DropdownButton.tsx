@@ -87,8 +87,8 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         // remove props:
         
         // accessibilities:
-        defaultActive  : _defaultActive,  // take, already handled by `useToggleActive`
-        onActiveChange : _onActiveChange, // take, already handled by `useToggleActive`
+        defaultActive  : _defaultActive, // take, already handled by `useToggleActive`
+        onActiveChange,                  // take, already handled by `useToggleActive`
         
         
         
@@ -143,13 +143,13 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         
         // classes:
-        'last-visible-child',
+        'last-visible-child', // a fix for <DropdownButton> inside a <Group>
     );
     
     
     
     // handlers:
-    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -159,7 +159,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
     }, []);
-    const handleClick           = useMergeEvents(
+    const handleClick         = useMergeEvents(
         // preserves the original `onClick` from `buttonComponent`:
         buttonComponent.props.onClick,
         
@@ -172,6 +172,15 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         // actions:
         handleClickInternal,
+    );
+    const handleActiveChange  = useMergeEvents(
+        // preserves the original `onActiveChange` from `dropdownComponent`:
+        dropdownComponent.props.onActiveChange,
+        
+        
+        
+        // preserves the original `onActiveChange` from `props`:
+        onActiveChange,
     );
     
     
@@ -194,7 +203,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     
                     // semantics:
-                    'aria-expanded' : buttonComponent.props['aria-expanded'] ?? isActive,
+                    'aria-expanded' : (isActive || undefined) && (props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
                     
                     
                     
@@ -220,7 +229,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 
                 
                 // children:
-                buttonChildren,
+                buttonComponent.props.children ?? buttonChildren,
             )}
             
             {/* <Dropdown> */}
@@ -239,13 +248,18 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     // accessibilities:
                     active         : isActive,
-                    onActiveChange : undefined, // TODO
+                    onActiveChange : handleActiveChange,
                     
                     
                     
                     // popups:
                     targetRef      : buttonRefInternal,
                 },
+                
+                
+                
+                // children:
+                dropdownComponent.props.children ?? dropdownUiComponent,
             )}
         </>
     );
