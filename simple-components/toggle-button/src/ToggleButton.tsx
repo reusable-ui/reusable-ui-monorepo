@@ -9,6 +9,7 @@ import {
     // hooks:
     useEvent,
     useMergeEvents,
+    useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 export type {
     // hooks:
@@ -37,6 +38,8 @@ import {
     // react components:
     ButtonProps,
     Button,
+    
+    ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a base component
 
 
@@ -48,7 +51,10 @@ export interface ToggleButtonProps
         ButtonProps,
         
         // behaviors:
-        ToggleActiveProps
+        ToggleActiveProps,
+        
+        // components:
+        ButtonComponentProps
 {
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
@@ -64,7 +70,28 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         // accessibilities:
         defaultActive  : _defaultActive,  // take, already handled by `useToggleActive`
         onActiveChange : _onActiveChange, // take, already handled by `useToggleActive`
+        
+        
+        
+        // components:
+        buttonRef,
+        buttonOrientation,
+        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
+        buttonChildren,
     ...restButtonProps} = props;
+    
+    
+    
+    // refs:
+    const mergedButtonRef   = useMergeRefs(
+        // preserves the original `elmRef` from `buttonComponent`:
+        buttonComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `buttonRef` from `props`:
+        buttonRef,
+    );
     
     
     
@@ -92,26 +119,33 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     
     
     // jsx:
-    return (
-        <Button
+    /* <Button> */
+    return React.cloneElement<ButtonProps>(buttonComponent,
+        // props:
+        {
             // other props:
-            {...restButtonProps}
+            ...restButtonProps,
+            
+            
+            
+            // refs:
+            elmRef          : mergedButtonRef,
             
             
             
             // semantics:
-            aria-expanded={(isActive || undefined) && (props['aria-expanded'] ?? true)} // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
+            'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
             
             
             
             // accessibilities:
-            active={isActive}
+            active          : isActive,
             
             
             
             // handlers:
-            onClick={handleClick}
-        />
+            onClick         : handleClick,
+        },
     );
 };
 export {
