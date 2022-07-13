@@ -203,7 +203,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     
                     // semantics:
-                    'aria-expanded' : (isActive || undefined) && (props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
+                    'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
                     
                     
                     
