@@ -56,7 +56,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        tabIndex,
+        // tabIndex, // the [tabIndex] is still attached to <ButtonIcon>
         children: dropdownUiComponent,
         
         dropdownRef,
@@ -68,8 +68,8 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // refs:
     const mergedDropdownRef = useMergeRefs(
-        // preserves the original `elmRef` from `dropdownComponent`:
-        dropdownComponent.props.elmRef,
+        // preserves the original `outerRef` from `dropdownComponent`:
+        dropdownComponent.props.outerRef,
         
         
         
@@ -94,7 +94,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // refs:
-                    elmRef      : mergedDropdownRef,
+                    outerRef    : mergedDropdownRef,
                     
                     
                     
