@@ -221,17 +221,23 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // refs:
-                    outerRef    : mergedDropdownRef,
+                    outerRef       : mergedDropdownRef,
                     
                     
                     
                     // layouts:
-                    orientation : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    orientation    : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    
+                    
+                    
+                    // accessibilities:
+                    active         : isActive,
+                    onActiveChange : undefined, // TODO
                     
                     
                     
                     // popups:
-                    targetRef   : buttonRefInternal,
+                    targetRef      : buttonRefInternal,
                 },
             )}
         </>
