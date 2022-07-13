@@ -336,7 +336,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, []);
+    }, [handleActiveChange]);
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
