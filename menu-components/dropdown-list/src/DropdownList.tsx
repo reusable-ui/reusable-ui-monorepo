@@ -150,8 +150,13 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         
         // components:
-        ListComponentProps<Element>
+        Omit<ListComponentProps<Element>,
+            // children:
+            |'listItems' // we redefined `children` prop as <ListItem>(s)
+        >
 {
+    // children:
+    children ?: ListComponentProps<Element>['listItems']
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // variants:
