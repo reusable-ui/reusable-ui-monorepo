@@ -165,3 +165,11 @@ export {
 export type { OrientationName, OrientationVariant }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
+
+
+
+export interface ToggleButtonComponentProps
+{
+    // components:
+    toggleButtonComponent ?: React.ReactComponentElement<any, ToggleButtonProps>
+}
