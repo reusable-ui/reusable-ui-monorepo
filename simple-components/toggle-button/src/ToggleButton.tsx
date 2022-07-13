@@ -11,7 +11,7 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-export type {
+import type {
     // hooks:
     OrientationName,
     OrientationVariant,
@@ -21,7 +21,7 @@ import {
     ToggleActiveProps,
     useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base component
-export {
+import {
     // hooks:
     ButtonStyle,
     ButtonVariant,
@@ -41,6 +41,15 @@ import {
     
     ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a base component
+
+
+
+// styles:
+export {
+    usesToggleButtonLayout,
+    usesToggleButtonVariants,
+    usesToggleButtonStates,
+}
 
 
 
@@ -152,3 +161,7 @@ export {
     ToggleButton,
     ToggleButton as default,
 }
+
+export type { OrientationName, OrientationVariant }
+
+export type { ButtonStyle, ButtonVariant, ButtonType }
