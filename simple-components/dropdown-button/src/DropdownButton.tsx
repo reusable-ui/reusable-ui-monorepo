@@ -35,7 +35,6 @@ import {
     ButtonStyle,
     ButtonVariant,
     ButtonType,
-    IconPosition,
     
     
     
@@ -85,6 +84,14 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // rest props:
     const {
+        // remove props:
+        
+        // accessibilities:
+        defaultActive  : _defaultActive,  // take, already handled by `useToggleActive`
+        onActiveChange : _onActiveChange, // take, already handled by `useToggleActive`
+        
+        
+        
         // components:
         buttonRef,
         buttonOrientation,
@@ -250,4 +257,4 @@ export {
 
 export type { OrientationName, OrientationVariant }
 
-export type { ButtonStyle, ButtonVariant, ButtonType, IconPosition }
+export type { ButtonStyle, ButtonVariant, ButtonType }
