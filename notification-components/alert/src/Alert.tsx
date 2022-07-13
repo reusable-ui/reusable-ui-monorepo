@@ -319,6 +319,7 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
     
     
     // handlers:
+    const handleActiveChange        = onActiveChange;
     const defaultHandleControlClick = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -326,9 +327,9 @@ const Alert = <TElement extends Element = HTMLElement>(props: AlertProps<TElemen
         
         
         // actions:
-        onActiveChange?.({ newActive: false }); // handle click as request to close <Alert>
+        handleActiveChange?.({ newActive: false }); // handle click as request to close <Alert>
         event.preventDefault(); // handled
-    }, []);
+    }, [handleActiveChange]);
     
     
     
