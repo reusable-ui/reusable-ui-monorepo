@@ -611,11 +611,6 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
             
             
             
-            // semantics:
-            aria-expanded={true} // the <ToggleButton> will automatically remove [aria-expanded] if not [active]
-            
-            
-            
             // accessibilities:
             label={props.label ?? 'Toggle navigation'}
             
