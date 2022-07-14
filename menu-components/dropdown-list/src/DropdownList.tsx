@@ -207,6 +207,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         // preserves the original `dropdownRef` from `props`:
         dropdownRef,
+        // preserves the original `outerRef` from `props`:
+        props.outerRef,
     );
     
     
@@ -365,16 +367,17 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             
             // refs:
-            outerRef        : mergedDropdownRef,
+            outerRef     : mergedDropdownRef,
             
             
             
             // semantics:
-            semanticRole    : props.semanticRole ?? calculateSemanticRole(props),
+            semanticRole : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props),
+            
             
             
             // layouts:
-            orientation     : dropdownComponent.props.orientation ?? dropdownOrientation,
+            orientation  : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
         },
         
         
