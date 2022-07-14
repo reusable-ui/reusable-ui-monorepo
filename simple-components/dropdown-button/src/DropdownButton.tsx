@@ -150,7 +150,12 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // classes:
     const classes = useMergeClasses(
-        // preserves the original `classes`:
+        // preserves the original `classes` from `buttonComponent`:
+        buttonComponent.props.classes,
+        
+        
+        
+        // preserves the original `classes` from `props`:
         props.classes,
         
         
