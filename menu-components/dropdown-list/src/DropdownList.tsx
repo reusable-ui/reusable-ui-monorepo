@@ -43,6 +43,8 @@ import {
     
     DropdownProps,
     Dropdown,
+    
+    DropdownComponentProps,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
     // types:
@@ -153,7 +155,8 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         Omit<ListComponentProps<Element>,
             // children:
             |'listItems' // we redefined `children` prop as <ListItem>(s)
-        >
+        >,
+        DropdownComponentProps<Element>
 {
     // children:
     children ?: ListComponentProps<Element>['listItems']
@@ -177,6 +180,10 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         listOrientation,
         listComponent    = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children         : listItems,
+        
+        dropdownRef,
+        dropdownOrientation,
+        dropdownComponent     = (<Dropdown<Element> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
     ...restDropdownProps} = props;
     const onActiveChange = props.onActiveChange; // copy the `onActiveChange` instead of steal it from `props`
     
@@ -191,6 +198,15 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         // preserves the original `listRef` from `props`:
         listRef,
+    );
+    const mergedDropdownRef = useMergeRefs(
+        // preserves the original `outerRef` from `dropdownComponent`:
+        dropdownComponent.props.outerRef,
+        
+        
+        
+        // preserves the original `dropdownRef` from `props`:
+        dropdownRef,
     );
     
     
@@ -339,77 +355,91 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     
     
     // jsx:
-    return (
-        <Dropdown<TElement, TDropdownListActiveChangeEvent>
+    /* <Dropdown> */
+    return React.cloneElement<DropdownProps<Element>>(dropdownComponent,
+        // props:
+        {
             // other props:
-            {...restDropdownProps}
+            ...restDropdownProps as DropdownProps<Element>,
+            
+            
+            
+            // refs:
+            outerRef        : mergedDropdownRef,
             
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? calculateSemanticRole(props)}
-        >
-            {/* <List> */}
-            {React.cloneElement<ListProps<Element>>(listComponent,
-                // props:
-                {
-                    // refs:
-                    elmRef      : mergedListRef,
-                    
-                    
-                    
-                    // layouts:
-                    orientation : listComponent.props.orientation ?? listOrientation,
-                    
-                    
-                    
-                    // accessibilities:
-                    tabIndex    : listComponent.props.tabIndex    ?? _defaultTabIndex,
-                    
-                    
-                    
-                    // behaviors:
-                    actionCtrl  : listComponent.props.actionCtrl  ?? _defaultActionCtrl,
-                    
-                    
-                    
-                    // handlers:
-                    onKeyDown   : handleKeyDown,
-                },
+            semanticRole    : props.semanticRole ?? calculateSemanticRole(props),
+            
+            
+            // layouts:
+            orientation     : dropdownComponent.props.orientation ?? dropdownOrientation,
+        },
+        
+        
+        
+        // children:
+        /* <List> */
+        ((dropdownComponent.props.children !== listComponent) ? dropdownComponent.props.children : React.cloneElement<ListProps<Element>>(listComponent,
+            // props:
+            {
+                // refs:
+                elmRef      : mergedListRef,
                 
                 
                 
-                // children:
-                React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
-                    // conditions:
-                    if (!onActiveChange)                                                                      return listItem; // [onActiveChange] was not set  => ignore
-                    if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>              => ignore
-                    if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
-                    // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
-                    
-                    
-                    
-                    // jsx:
-                    return (
-                        <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
-                            // layouts:
-                            isOrientationBlock={isOrientationBlock}
-                            
-                            
-                            
-                            // accessibilities:
-                            onActiveChange={onActiveChange}
-                            
-                            
-                            
-                            // components:
-                            listIndex={index}
-                            listItemComponent={listItem}
-                        />
-                    );
-                }),
-            )}
-        </Dropdown>
+                // layouts:
+                orientation : listComponent.props.orientation ?? listOrientation,
+                
+                
+                
+                // accessibilities:
+                tabIndex    : listComponent.props.tabIndex    ?? _defaultTabIndex,
+                
+                
+                
+                // behaviors:
+                actionCtrl  : listComponent.props.actionCtrl  ?? _defaultActionCtrl,
+                
+                
+                
+                // handlers:
+                onKeyDown   : handleKeyDown,
+            },
+            
+            
+            
+            // children:
+            React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
+                // conditions:
+                if (!onActiveChange)                                                                      return listItem; // [onActiveChange] was not set  => ignore
+                if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>              => ignore
+                if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
+                // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
+                
+                
+                
+                // jsx:
+                return (
+                    <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
+                        // layouts:
+                        isOrientationBlock={isOrientationBlock}
+                        
+                        
+                        
+                        // accessibilities:
+                        onActiveChange={onActiveChange}
+                        
+                        
+                        
+                        // components:
+                        listIndex={index}
+                        listItemComponent={listItem}
+                    />
+                );
+            }),
+        )),
     );
 };
 export {
