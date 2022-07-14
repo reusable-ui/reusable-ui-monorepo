@@ -92,18 +92,15 @@ export interface DropdownButtonProps
 {
 }
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
-    // states:
-    const [isActive, setActive] = useToggleActive(props);
-    
-    
-    
     // rest props:
     const {
         // remove props:
         
         // accessibilities:
-        defaultActive  : _defaultActive, // take, already handled by `useToggleActive`
-        onActiveChange,                  // take, already handled by `useToggleActive`
+        defaultActive,  // take, to be handled by `useToggleActive`
+        active,         // take, to be handled by `useToggleActive`
+        inheritActive,  // take, to be handled by `useToggleActive`
+        onActiveChange, // take, to be handled by `useToggleActive`
         
         
         
@@ -122,6 +119,22 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         dropdownOrientation,
         dropdownComponent     = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
     ...restButtonProps} = props;
+    
+    
+    
+    // states:
+    const [isActive, setActive] = useToggleActive({
+        enabled         : props.enabled,
+        inheritEnabled  : props.inheritEnabled,
+        
+        readOnly        : props.readOnly,
+        inheritReadOnly : props.inheritReadOnly,
+        
+        defaultActive,
+        active,
+        inheritActive,
+        // onActiveChange, // trigger manually to <Dropdown>'s `onActiveChange`
+    });
     
     
     
@@ -172,7 +185,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // handlers:
     const triggerOnActiveChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' });
+        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
     }, [onActiveChange]);
     const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         setActive(event.newActive);
