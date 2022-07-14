@@ -10,7 +10,6 @@ import {
     useReducer,
     useRef,
     useCallback,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -516,12 +515,16 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     
-    // callbacks:
+    // states:
     const isDisabledOrReadOnly = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
-    useEffect(() => {
-        isDisabledOrReadOnly.current = (!enabled || readOnly);
-    }, [enabled, readOnly]);
+    isDisabledOrReadOnly.current = (!enabled || readOnly);
     
+    const wasActiveFn = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
+    wasActiveFn.current = (activeFn);
+    
+    
+    
+    // callbacks:
     const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
         // conditions:
         if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
