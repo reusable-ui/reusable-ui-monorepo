@@ -483,6 +483,9 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     const wasActiveFn = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
     wasActiveFn.current = (activeFn);
     
+    const onActiveChange = useRef<EventHandler<TActiveChangeEvent>|undefined>(props.onActiveChange);
+    onActiveChange.current = props.onActiveChange;
+    
     
     
     // callbacks:
@@ -493,7 +496,7 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     const triggerActiveChange = useCallback((newActive: boolean) => {
         Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
             // fire change synthetic event:
-            props.onActiveChange?.({ newActive } as TActiveChangeEvent);
+            onActiveChange.current?.({ newActive } as TActiveChangeEvent);
             
             // fire change dom event:
             if (changeEventTarget?.current) {
