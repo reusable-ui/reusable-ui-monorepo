@@ -54,8 +54,6 @@ import {
     // react components:
     DropdownUiComponentProps,
     
-    DropdownActiveChangeEvent,
-    
     DropdownProps,
     Dropdown,
     
@@ -74,10 +72,16 @@ export interface DropdownButtonProps
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
-        // behaviors:
+        // accessibilities:
         Omit<ToggleActiveProps,
+            // accessibilities:
+            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
+            
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
+        >,
+        Pick<DropdownProps<Element>,
+            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
         >,
         
         // components:
@@ -167,10 +171,27 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleActiveChangeInternal = useEvent<EventHandler<DropdownActiveChangeEvent>>((event) => {
+    const triggerOnActiveChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' });
+    }, [onActiveChange]);
+    const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         setActive(event.newActive);
     }, []);
-    const handleActiveChange  = useMergeEvents(
+    const handleToggleButtonActiveChange = useMergeEvents(
+        // preserves the original `onActiveChange` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onActiveChange,
+        
+        
+        
+        // forwards the original `onActiveChange` from `props`:
+        triggerOnActiveChangeByUi,
+        
+        
+        
+        // actions:
+        handleActiveChangeInternal,
+    );
+    const handleDropdownActiveChange     = useMergeEvents(
         // preserves the original `onActiveChange` from `dropdownComponent`:
         dropdownComponent.props.onActiveChange,
         
@@ -196,7 +217,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 {
                     // accessibilities:
                     active          : toggleButtonComponent.props.active ?? isActive,
-                    onActiveChange  : handleActiveChange as EventHandler<ActiveChangeEvent>,
+                    onActiveChange  : handleToggleButtonActiveChange,
                     
                     
                     
@@ -247,7 +268,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     // accessibilities:
                     active          : dropdownComponent.props.active ?? isActive,
-                    onActiveChange  : handleActiveChange,
+                    onActiveChange  : handleDropdownActiveChange,
                     
                     
                     
