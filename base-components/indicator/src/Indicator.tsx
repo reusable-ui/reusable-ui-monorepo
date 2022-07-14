@@ -487,19 +487,15 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
-    const wasActive = useRef<boolean>(activeFn);
-    
-    if (active === null) { // only for uncontrollable [active]
-        if (wasActive.current !== activeFn) { // change detected => apply the change & firing `onActiveChange`
-            wasActive.current = activeFn;     // remember the last change
-            
-            
+    const wasActive = useRef<boolean>(activeTg);
+    if (wasActive.current !== activeTg) { // change detected => apply the change & firing `onActiveChange`
+        wasActive.current = activeTg;     // remember the last change
+        
+        
+        
+        Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
             // fire change synthetic event:
-            props.onActiveChange?.({ newActive: activeFn } as TActiveChangeEvent);
+            props.onActiveChange?.({ newActive: activeTg } as TActiveChangeEvent);
             
             // fire change dom event:
             if (changeEventTarget?.current) {
@@ -507,8 +503,15 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
                 // side effect: toggles the [checked] prop:
                 changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
-        } // if
+        });
     } // if
+    
+    
+    
+    /*
+     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     */
+    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
     
     
     
