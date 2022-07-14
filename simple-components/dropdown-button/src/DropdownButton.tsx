@@ -94,8 +94,6 @@ export interface DropdownButtonProps
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     // rest props:
     const {
-        // remove props:
-        
         // accessibilities:
         defaultActive,  // take, to be handled by `useToggleActive`
         active,         // take, to be handled by `useToggleActive`
