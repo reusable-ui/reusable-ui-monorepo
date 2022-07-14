@@ -208,7 +208,7 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
     children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
-export type DropdownCloseType = 'shortcut'|'blur'|{}
+export type DropdownCloseType = 'shortcut'|'blur'|'ui'|{}
 export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
     closeType : DropdownCloseType
 }
