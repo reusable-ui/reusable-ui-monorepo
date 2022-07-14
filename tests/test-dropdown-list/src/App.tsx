@@ -2,6 +2,7 @@ import {
     default as React,
     useState,
     useRef,
+    useCallback,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
@@ -9,10 +10,8 @@ import {
     ButtonIcon
 } from '@reusable-ui/button-icon'
 import {
-    TextInput
-} from '@reusable-ui/input'
-import {
     DropdownList,
+    DropdownListActiveChangeEvent,
     ListItem,
 } from '@reusable-ui/dropdown-list'
 import {
@@ -29,9 +28,15 @@ function App() {
     };
     
     const btnRef = useRef<HTMLButtonElement>(null);
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
     
-
+    const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const handleActiveChange = useCallback((event: DropdownListActiveChangeEvent) => {
+        console.log('onActiveChange', event.newActive, event.closeType);
+        setShowDropdown(event.newActive);
+    }, []);
+    
+    
+    
     return (
         <>
             <HeadPortal>
@@ -47,7 +52,7 @@ function App() {
                 <ButtonIcon theme='primary' elmRef={btnRef} onClick={() => setShowDropdown(!showDropdown)} icon='dropdown' iconPosition='end'>
                     Show menu
                 </ButtonIcon>
-                <DropdownList targetRef={btnRef} theme='primary' active={showDropdown} onActiveChange={(event) => setShowDropdown(event.newActive)}>
+                <DropdownList targetRef={btnRef} theme='primary' active={showDropdown} onActiveChange={handleActiveChange}>
                     <ListItem>
                         A first item
                     </ListItem>
