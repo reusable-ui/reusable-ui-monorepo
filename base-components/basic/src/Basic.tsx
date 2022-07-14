@@ -1701,7 +1701,9 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
         const continueToRun = wasExcited.current;
         wasExcited.current = false; // mark the animation was completed (stopped)
         
-        onExcitedChange?.(false); // request to stop
+        Promise.resolve().then(() => { // trigger the event after the <Basic> has finished rendering (for controllable <Basic>)
+            onExcitedChange?.(false); // request to stop
+        });
         if (continueToRun) {
             triggerRender(); // need to restart the animation
         } // if
