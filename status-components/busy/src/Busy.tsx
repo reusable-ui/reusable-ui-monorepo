@@ -233,6 +233,11 @@ const Busy = <TElement extends Element = HTMLElement>(props: BusyProps<TElement>
             {React.cloneElement<IconProps<Element>>(iconComponent,
                 // props:
                 {
+                    // appearances:
+                    icon: iconComponent.props.icon  ?? icon,
+                    
+                    
+                    
                     // variants:
                     size : iconComponent.props.size ?? _defaultIconSize,
                 },
