@@ -195,7 +195,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // accessibilities:
-                    active          : isActive,
+                    active          : toggleButtonComponent.props.active ?? isActive,
                     onActiveChange  : handleActiveChange as EventHandler<ActiveChangeEvent>,
                     
                     
@@ -246,13 +246,13 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                     
                     
                     // accessibilities:
-                    active          : isActive,
+                    active          : dropdownComponent.props.active ?? isActive,
                     onActiveChange  : handleActiveChange,
                     
                     
                     
                     // popups:
-                    targetRef       : buttonRefInternal,
+                    targetRef       : dropdownComponent.props.targetRef ?? buttonRefInternal,
                 },
                 
                 
