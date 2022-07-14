@@ -184,10 +184,8 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     // handlers:
-    const triggerActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        Promise.resolve().then(() => { // trigger the event after the <DropdownButton> has finished rendering (for controllable <DropdownButton>)
-            onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
-        });
+    const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
     }, [onActiveChange]);
     const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         setActive(event.newActive);
@@ -199,7 +197,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         
         // forwards the original `onActiveChange` from `props`:
-        triggerActiveChangeByUi,
+        forwardActiveChangeByUi,
         
         
         

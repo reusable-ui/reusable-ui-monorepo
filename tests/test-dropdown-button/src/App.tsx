@@ -1,5 +1,6 @@
 import {
     default as React,
+    useCallback,
     useState,
 } from 'react';
 // import logo from './logo.svg';
@@ -11,6 +12,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
+import { DropdownActiveChangeEvent } from '@reusable-ui/dropdown';
 
 
 
@@ -21,6 +23,10 @@ function App() {
     };
     
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const handleActiveChange = useCallback((event: DropdownActiveChangeEvent) => {
+        console.log('onActiveChange', event.newActive, event.closeType);
+        setShowDropdown(event.newActive);
+    }, []);
     
     
     return (
@@ -35,10 +41,7 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <DropdownButton theme='primary' active={showDropdown} onActiveChange={(event) => {
-                    console.log('onActiveChange', event.newActive, event.closeType);
-                    setShowDropdown(event.newActive);
-                }}>
+                <DropdownButton theme='primary' active={showDropdown} onActiveChange={handleActiveChange}>
                     <div tabIndex={-1}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
