@@ -487,6 +487,13 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     
+    /*
+     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     */
+    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    
+    
+    
     const wasActive = useRef<boolean>(activeTg);
     if (wasActive.current !== activeTg) { // change detected => apply the change & firing `onActiveChange`
         wasActive.current = activeTg;     // remember the last change
@@ -505,13 +512,6 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
             } // if
         });
     } // if
-    
-    
-    
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
     
     
     
