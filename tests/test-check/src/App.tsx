@@ -14,17 +14,17 @@ import {
 
 
 
-const handleChange : React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    console.log('checked = ', event.target.checked);
-}
-
-
-
 function App() {
     const [value, setValue] = useState(0);
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    
+    const [isChecked, setChecked] = useState<boolean>(false);
+    const handleChange : React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        console.log('checked = ', event.target.checked);
+        setChecked(event.target.checked);
+    }
     
     
     return (
@@ -39,7 +39,7 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <Check theme='primary' onChange={handleChange}>
+                    <Check theme='primary' onChange={handleChange} active={isChecked}>
                         test &lt;Check&gt;
                     </Check>
                     <Check theme='success' checkStyle='button' nude={false}>
