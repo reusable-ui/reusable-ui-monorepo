@@ -20,6 +20,9 @@ function App() {
         setValue(value + 1);
     };
     
+    const [isPressed, setPressed] = useState<boolean>(false);
+    
+    
     
     return (
         <>
@@ -33,7 +36,10 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <ToggleButton theme='primary'>
+                    <ToggleButton theme='primary' active={isPressed} onActiveChange={(event) => {
+                        console.log('onActiveChange', event.newActive);
+                        setPressed(event.newActive);
+                    }}>
                         test &lt;Button&gt;
                     </ToggleButton>
                     <ToggleButton theme='danger'>
