@@ -321,7 +321,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         if (parentGroup) {
             // after <currentRadio> finishes rendering => un-check (clear) the other checked radio (within the same name at the same <form>):
-            Promise.resolve(parentGroup).then((parentGroup) => {
+            Promise.resolve(parentGroup).then((parentGroup) => { // trigger the event after the <Radio> has finished rendering (for controllable <Radio>)
                 for (const radio of (Array.from(parentGroup.querySelectorAll('input[type="radio"]:not(:checked)')) as HTMLInputElement[])) {
                     if (radio === currentRadio) continue; // <radio> is self => skip
                     if (radio.name !== name)    continue; // <radio>'s name is different to us => skip
