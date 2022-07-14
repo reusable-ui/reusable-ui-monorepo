@@ -10,6 +10,7 @@ import {
     useReducer,
     useRef,
     useCallback,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -494,9 +495,9 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     
-    const wasActive = useRef<boolean>(activeTg);
-    if (wasActive.current !== activeTg) { // change detected => apply the change & firing `onActiveChange`
-        wasActive.current = activeTg;     // remember the last change
+    const wasActiveTg = useRef<boolean>(activeTg);
+    if (wasActiveTg.current !== activeTg) { // change detected => apply the change & firing `onActiveChange`
+        wasActiveTg.current = activeTg;     // remember the last change
         
         
         
@@ -516,24 +517,27 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     // callbacks:
+    const isDisabledOrReadOnly = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
+    useEffect(() => {
+        isDisabledOrReadOnly.current = (!enabled || readOnly);
+    }, [enabled, readOnly]);
+    
     const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
         // conditions:
-        if (!enabled) return; // control is disabled => no response required
-        if (readOnly) return; // control is readOnly => no response required
+        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
         
         
         
         dispatchActiveTg({ type: 'set', payload: newActive});
-    }, [enabled, readOnly]);
+    }, []); // a stable callback, the `setActive` guaranteed to never change
     const toggleActive : React.Dispatch<void> = useCallback((): void => {
         // conditions:
-        if (!enabled) return; // control is disabled => no response required
-        if (readOnly) return; // control is readOnly => no response required
+        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
         
         
         
         dispatchActiveTg({ type: 'toggle'});
-    }, [enabled, readOnly]);
+    }, []); // a stable callback, the `setActive` guaranteed to never change
     
     
     
