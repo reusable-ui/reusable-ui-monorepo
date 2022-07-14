@@ -185,7 +185,9 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // handlers:
     const triggerOnActiveChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
+        Promise.resolve().then(() => { // trigger the event after the <DropdownButton> has finished rendering (for controllable <DropdownButton>)
+            onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
+        });
     }, [onActiveChange]);
     const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         setActive(event.newActive);
