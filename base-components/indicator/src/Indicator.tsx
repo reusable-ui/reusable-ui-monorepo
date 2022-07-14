@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useState,
-    useReducer,
     useRef,
     useCallback,
 }                           from 'react'
@@ -447,23 +446,6 @@ export const useActivePassiveState = <TElement extends Element = HTMLElement>(pr
 
 
 
-interface ActiveReducerAction {
-    type     : 'set'|'toggle'
-    payload ?: React.SetStateAction<boolean>
-}
-const activeReducer = (oldActive: boolean, action: ActiveReducerAction): boolean => {
-    switch (action.type) {
-        case 'set':
-            return ((typeof(action.payload) === 'function') ? action.payload(oldActive) : action.payload) ?? oldActive;
-        
-        case 'toggle':
-            return !oldActive;
-        
-        default:
-            return oldActive;
-    } // switch
-};
-
 export interface ActiveChangeEvent {
     newActive : boolean
 }
@@ -483,7 +465,7 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     // states:
-    const [activeTg, dispatchActiveTg] = useReducer(activeReducer, /*initialState: */props.defaultActive ?? false);
+    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
     
     
     
@@ -491,27 +473,6 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
      * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
      */
     const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
-    
-    
-    
-    const wasActiveTg = useRef<boolean>(activeTg);
-    if (wasActiveTg.current !== activeTg) { // change detected => apply the change & firing `onActiveChange`
-        wasActiveTg.current = activeTg;     // remember the last change
-        
-        
-        
-        Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
-            // fire change synthetic event:
-            props.onActiveChange?.({ newActive: activeTg } as TActiveChangeEvent);
-            
-            // fire change dom event:
-            if (changeEventTarget?.current) {
-                // *hack*: trigger `onChange` event:
-                // side effect: toggles the [checked] prop:
-                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-            } // if
-        });
-    } // if
     
     
     
@@ -525,13 +486,34 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     // callbacks:
+    /*
+          controllable : setActive(new) => update state(old => old) => trigger Event(new)
+        uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
+    */
+    const triggerActiveChange = useCallback((newActive: boolean) => {
+        Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
+            // fire change synthetic event:
+            props.onActiveChange?.({ newActive } as TActiveChangeEvent);
+            
+            // fire change dom event:
+            if (changeEventTarget?.current) {
+                // *hack*: trigger `onChange` event:
+                // side effect: toggles the [checked] prop:
+                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+            } // if
+        });
+    }, []);
     const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((newActive: React.SetStateAction<boolean>): void => {
         // conditions:
         if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
         
+        const newActiveVal = (typeof(newActive) === 'function') ? newActive(wasActiveFn.current) : newActive;
+        if (newActiveVal === wasActiveFn.current) return; // still the same => nothing to update
         
         
-        dispatchActiveTg({ type: 'set', payload: newActive});
+        
+        setActiveTg(newActiveVal);
+        triggerActiveChange(newActiveVal);
     }, []); // a stable callback, the `setActive` guaranteed to never change
     const toggleActive : React.Dispatch<void> = useCallback((): void => {
         // conditions:
@@ -539,7 +521,9 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
         
         
         
-        dispatchActiveTg({ type: 'toggle'});
+        const newActiveVal = !wasActiveFn.current;
+        setActiveTg(newActiveVal);
+        triggerActiveChange(newActiveVal);
     }, []); // a stable callback, the `setActive` guaranteed to never change
     
     
