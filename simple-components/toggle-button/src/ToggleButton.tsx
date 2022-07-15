@@ -59,7 +59,7 @@ export interface ToggleButtonProps
         // bases:
         ButtonProps,
         
-        // behaviors:
+        // accessibilities:
         ToggleActiveProps,
         
         // components:
