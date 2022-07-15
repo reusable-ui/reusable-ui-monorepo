@@ -80,6 +80,7 @@ export interface DropdownButtonProps
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         Pick<DropdownProps<Element>,
+            // accessibilities:
             |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
         >,
         
@@ -145,6 +146,8 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         // preserves the original `buttonRef` from `props`:
         buttonRef,
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
         
         
         
@@ -246,7 +249,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                             
                             
                             // layouts:
-                            orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                            orientation : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
                             
                             
                             
