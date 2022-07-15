@@ -497,7 +497,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     // variants:
     const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     const buttonVariant      = useButtonVariant(props);
     
