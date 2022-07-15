@@ -172,8 +172,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         // components:
         listRef,
         listOrientation,
-        listComponent    = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
-        children         : listItems,
+        listComponent         = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
+        children              : listItems,
         
         dropdownRef,
         dropdownOrientation,
@@ -350,7 +350,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         
         
-        // range handlers:
+        // actions:
         handleKeyDownInternal,
     );
     
