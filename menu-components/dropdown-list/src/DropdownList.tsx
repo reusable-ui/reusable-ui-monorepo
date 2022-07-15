@@ -162,12 +162,6 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
     children ?: ListComponentProps<Element>['listItems']
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
-    // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
-    
-    
-    
     // rest props:
     const {
         // accessibilities:
@@ -186,6 +180,12 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         dropdownComponent     = (<Dropdown<Element> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
     ...restDropdownProps} = props;
     const onActiveChange = props.onActiveChange; // copy the `onActiveChange` instead of steal it from `props`
+    
+    
+    
+    // variants:
+    const listOrientationVariant = useOrientationVariant({ orientation: listOrientation });
+    const isListOrientationBlock = ((listOrientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
@@ -320,21 +320,21 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             
             
-                 if (                                 isKeyOf('tab'       )) focusNext();
-            else if (                                 isKeyOf('pagedown'  )) focusNext();
-            else if (                                 isKeyOf('pageup'    )) focusPrev();
+                 if (                                     isKeyOf('tab'       )) focusNext();
+            else if (                                     isKeyOf('pagedown'  )) focusNext();
+            else if (                                     isKeyOf('pageup'    )) focusPrev();
             
-            else if (                                 isKeyOf('home'      )) focusFirst();
-            else if (                                 isKeyOf('end'       )) focusLast();
+            else if (                                     isKeyOf('home'      )) focusFirst();
+            else if (                                     isKeyOf('end'       )) focusLast();
             
-            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
-            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
+            else if ( isListOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
+            else if ( isListOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
             
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
+            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
+            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
             
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
+            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
+            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
             else return false; // not handled
             
             
@@ -343,7 +343,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [isOrientationBlock]);
+    }, [isListOrientationBlock]);
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown` from `listComponent`:
         listComponent.props.onKeyDown,
@@ -427,7 +427,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 return (
                     <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
                         // layouts:
-                        isOrientationBlock={isOrientationBlock}
+                        isOrientationBlock={isListOrientationBlock}
                         
                         
                         
