@@ -299,7 +299,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     
     // variants:
     const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
