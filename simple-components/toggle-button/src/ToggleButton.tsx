@@ -160,7 +160,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // accessibilities:
-            active          : buttonComponent.props.active ?? props.active ?? isActive,
+            active          : buttonComponent.props.active ?? isActive,
             
             
             
