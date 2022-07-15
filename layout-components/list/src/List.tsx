@@ -1565,7 +1565,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     
     // variants:
     const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     const listVariant        = useListVariant(props);
     
