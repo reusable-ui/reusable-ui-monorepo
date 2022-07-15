@@ -100,6 +100,8 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         
         // preserves the original `buttonRef` from `props`:
         buttonRef,
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
     );
     
     
@@ -116,7 +118,12 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         event.preventDefault(); // handled
     }, []);
     const handleClick         = useMergeEvents(
-        // preserves the original `onClick`:
+        // preserves the original `onClick` from `buttonComponent`:
+        buttonComponent.props.onClick,
+        
+        
+        
+        // preserves the original `onClick` from `props`:
         props.onClick,
         
         
@@ -143,18 +150,28 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // semantics:
-            'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
+            'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
+            
+            
+            
+            // layouts:
+            orientation     : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
             
             
             
             // accessibilities:
-            active          : isActive,
+            active          : buttonComponent.props.active ?? props.active ?? isActive,
             
             
             
             // handlers:
             onClick         : handleClick,
         },
+        
+        
+        
+        // children:
+        buttonComponent.props.children ?? buttonChildren ?? props.children,
     );
 };
 export {
