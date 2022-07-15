@@ -41,7 +41,7 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <DropdownButton theme='primary' active={showDropdown} onActiveChange={handleActiveChange}>
+                <DropdownButton theme='primary' active={showDropdown} onActiveChange={handleActiveChange} buttonChildren='Show menu'>
                     <div tabIndex={-1}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
