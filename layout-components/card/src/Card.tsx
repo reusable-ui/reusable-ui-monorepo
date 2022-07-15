@@ -655,7 +655,7 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
     
     // variants:
     const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     const cardVariant        = useCardVariant(props);
     
