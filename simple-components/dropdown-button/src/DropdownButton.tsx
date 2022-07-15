@@ -185,7 +185,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     // handlers:
     const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent
+        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent>
     }, [onActiveChange]);
     const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         setActive(event.newActive);
@@ -229,7 +229,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // accessibilities:
-                    active          : toggleButtonComponent.props.active ?? props.active ?? isActive,
+                    active          : toggleButtonComponent.props.active ?? isActive,
                     onActiveChange  : handleToggleButtonActiveChange,
                     
                     
