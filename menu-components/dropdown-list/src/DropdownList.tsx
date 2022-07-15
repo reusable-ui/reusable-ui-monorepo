@@ -20,7 +20,6 @@ import {
     // hooks:
     OrientationName,
     OrientationVariant,
-    useOrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // types:
@@ -29,11 +28,6 @@ import {
     PopupStrategy,
     PopupPosition,
     PopupSide,
-    
-    
-    
-    // hooks:
-    defaultOrientationRuleOptions,
     
     
     
@@ -53,6 +47,11 @@ import {
     
     
     
+    // hooks:
+    defaultOrientationRuleOptions as defaultListOrientationRuleOptions,
+    
+    
+    
     // react components:
     ListItemProps,
     ListItem,
@@ -65,16 +64,6 @@ import {
     
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
-
-
-
-// hooks:
-
-// layouts:
-
-//#region orientation
-export { defaultOrientationRuleOptions };
-//#endregion orientation
 
 
 
@@ -184,8 +173,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     
     
     // variants:
-    const listOrientationVariant = useOrientationVariant({ orientation: listOrientation });
-    const isListOrientationBlock = ((listOrientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isListOrientationBlock = ((listOrientation ?? defaultListOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
