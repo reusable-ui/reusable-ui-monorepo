@@ -51,6 +51,11 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
+    // hooks:
+    defaultOrientationRuleOptions as defaultDropdownOrientationRuleOptions,
+    
+    
+    
     // react components:
     DropdownUiComponentProps,
     
@@ -92,6 +97,11 @@ export interface DropdownButtonProps
 {
 }
 const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
+    // variants:
+    const isDropdownOrientationBlock = ((props.dropdownOrientation ?? defaultDropdownOrientationRuleOptions.defaultOrientation) === 'block');
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -105,7 +115,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         // components:
         buttonRef,
         buttonOrientation,
-        buttonComponent       = (<ButtonIcon />   as React.ReactComponentElement<any, ButtonIconProps>),
+        buttonComponent       = (<ButtonIcon iconPosition='end' icon={isDropdownOrientationBlock ? 'dropdown' : 'dropright'} />   as React.ReactComponentElement<any, ButtonIconProps>),
         buttonChildren,
         
         toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
