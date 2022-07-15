@@ -224,7 +224,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         let allPossibleFocusableElementsCache : Element[]|undefined = undefined;
         const sortByTabIndex = (a: Element|undefined, b: Element|undefined) => {
             if (!a || !b) return 0;
-            return ((a as HTMLElement|SVGElement).tabIndex ?? 0) - ((b as HTMLElement|SVGElement).tabIndex ?? 0)
+            return ((a as HTMLElement|SVGElement).tabIndex ?? 0) - ((b as HTMLElement|SVGElement).tabIndex ?? 0);
         };
         const getAllPossibleFocusableElements = (): Element[] => {
             if (allPossibleFocusableElementsCache) return allPossibleFocusableElementsCache;
@@ -277,6 +277,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         const focusPrev  = () => {
             let focusedElement = document.activeElement;
+            // filter only for focusable elements inside the <List>:
             if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
             
             if (!focusedElement) {
@@ -291,6 +292,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         };
         const focusNext  = () => {
             let focusedElement = document.activeElement;
+            // filter only for focusable elements inside the <List>:
             if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
             
             if (!focusedElement) {
