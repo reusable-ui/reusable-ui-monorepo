@@ -885,7 +885,7 @@ export interface CheckProps
         // appearances:
         CheckVariant,
         
-        // behaviors:
+        // accessibilities:
         ToggleActiveProps
 {
     // accessibilities:
