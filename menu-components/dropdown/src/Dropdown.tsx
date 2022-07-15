@@ -54,7 +54,6 @@ import {
     OrientationName,
     OrientationVariantOptions,
     OrientationVariant,
-    useOrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -235,8 +234,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((orientationVariant.class || defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
