@@ -229,7 +229,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
                 // props:
                 {
                     // accessibilities:
-                    active          : toggleButtonComponent.props.active ?? isActive,
+                    active          : toggleButtonComponent.props.active ?? props.active ?? isActive,
                     onActiveChange  : handleToggleButtonActiveChange,
                     
                     
