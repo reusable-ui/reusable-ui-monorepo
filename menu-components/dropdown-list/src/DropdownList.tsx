@@ -428,11 +428,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 // jsx:
                 return (
                     <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
-                        // layouts:
-                        isOrientationBlock={isListOrientationBlock}
-                        
-                        
-                        
                         // accessibilities:
                         onActiveChange={onActiveChange}
                         
@@ -465,28 +460,18 @@ interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends 
     // bases:
         ListItemProps<Element>
 {
-    // layouts:
-    isOrientationBlock : boolean
-    
-    
-    
     // accessibilities:
-    onActiveChange     : EventHandler<TDropdownListActiveChangeEvent>
+    onActiveChange    : EventHandler<TDropdownListActiveChangeEvent>
     
     
     
     // components:
-    listIndex          : number
-    listItemComponent  : React.ReactElement<ListItemProps<Element>>
+    listIndex         : number
+    listItemComponent : React.ReactElement<ListItemProps<Element>>
 }
 const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
-        // layouts:
-        isOrientationBlock,
-        
-        
-        
         // accessibilities:
         onActiveChange,
         
@@ -534,7 +519,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
             
             
             // handlers:
-            onClick   : handleClick,
+            onClick : handleClick,
         },
     );
 };
