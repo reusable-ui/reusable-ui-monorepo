@@ -24,8 +24,8 @@ import {
     ToggleActiveProps,
     useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base indicator control
-import {
-    // hooks:
+import type {
+    // types:
     OrientationName,
     OrientationVariant,
     
