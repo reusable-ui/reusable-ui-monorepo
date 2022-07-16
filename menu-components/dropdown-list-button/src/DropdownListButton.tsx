@@ -105,6 +105,8 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
+export type { DropdownListActiveChangeEvent }
+
 export type { ButtonStyle, ButtonVariant, ButtonType }
 
 export type { ListStyle, ListVariant }
