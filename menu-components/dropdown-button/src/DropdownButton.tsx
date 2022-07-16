@@ -58,6 +58,8 @@ import {
     PopupPosition,
     PopupSide,
     
+    DropdownActiveChangeEvent,
+    
     
     
     // hooks:
@@ -324,5 +326,7 @@ export {
 export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+
+export type { DropdownActiveChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
