@@ -47,7 +47,7 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <DropdownListButton theme='primary' active={showDropdown} onActiveChange={handleActiveChange} buttonChildren='Show menu'>
+                <DropdownListButton theme='primary' onActiveChange={handleActiveChange} buttonChildren='Show menu'>
                     <ListItem>
                         A first item
                     </ListItem>
