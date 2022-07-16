@@ -17,12 +17,10 @@ import type {
     Role,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // hooks:
+    // types:
     OrientationName,
     OrientationVariant,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // types:
+    
     PopupPlacement,
     PopupMiddleware,
     PopupStrategy,
