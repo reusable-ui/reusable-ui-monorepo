@@ -17,6 +17,7 @@ import {
     
     
     // react components:
+    DropdownListCloseType,
     DropdownListActiveChangeEvent,
     
     DropdownListProps,
@@ -56,29 +57,29 @@ import {
 
 // react components:
 
-// ListItem => DropdownListItem
+// ListItem => DropdownListButtonItem
 export type {
     ListItemProps,
-    ListItemProps as DropdownListItemProps,
+    ListItemProps as DropdownListButtonItemProps,
     ListItemProps as ItemProps,
 }
 export {
     ListItem,
-    ListItem as DropdownListItem,
+    ListItem as DropdownListButtonItem,
     ListItem as Item,
 }
 
 
 
-// ListSeparatorItem => DropdownListSeparatorItem
+// ListSeparatorItem => DropdownListButtonSeparatorItem
 export type {
     ListSeparatorItemProps,
-    ListSeparatorItemProps as DropdownListSeparatorItemProps,
+    ListSeparatorItemProps as DropdownListButtonSeparatorItemProps,
     ListSeparatorItemProps as SeparatorItemProps,
 }
 export {
     ListSeparatorItem,
-    ListSeparatorItem as DropdownListSeparatorItem,
+    ListSeparatorItem as DropdownListButtonSeparatorItem,
     ListSeparatorItem as SeparatorItem,
 }
 
@@ -142,7 +143,7 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownListActiveChangeEvent }
+export type { DropdownListCloseType, DropdownListActiveChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
 
