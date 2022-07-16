@@ -43,10 +43,47 @@ import {
     DropdownButtonProps,
     DropdownButton,
 }                           from '@reusable-ui/dropdown-button' // a button component with a dropdown UI.
+import {
+    // react components:
+    ListItemProps,
+    ListItem,
+    
+    ListSeparatorItemProps,
+    ListSeparatorItem,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
 // react components:
+
+// ListItem => DropdownListItem
+export type {
+    ListItemProps,
+    ListItemProps as DropdownListItemProps,
+    ListItemProps as ItemProps,
+}
+export {
+    ListItem,
+    ListItem as DropdownListItem,
+    ListItem as Item,
+}
+
+
+
+// ListSeparatorItem => DropdownListSeparatorItem
+export type {
+    ListSeparatorItemProps,
+    ListSeparatorItemProps as DropdownListSeparatorItemProps,
+    ListSeparatorItemProps as SeparatorItemProps,
+}
+export {
+    ListSeparatorItem,
+    ListSeparatorItem as DropdownListSeparatorItem,
+    ListSeparatorItem as SeparatorItem,
+}
+
+
+
 export interface DropdownListButtonProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
