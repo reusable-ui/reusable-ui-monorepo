@@ -64,39 +64,42 @@ import {
     
     DropdownComponentProps,
 }                           from '@reusable-ui/dropdown'        // overlays contextual element such as lists, menus, and more
+import {
+    // react components:
+    DropdownListActiveChangeEvent,
+    
+    DropdownListProps,
+    DropdownList,
+}                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
+import {
+    // react components:
+    DropdownButtonProps,
+    DropdownButton,
+}                           from '@reusable-ui/dropdown-button' // a button component with a dropdown UI.
 
 
 
 // react components:
-export interface DropdownListButtonProps
+export interface DropdownListButtonProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
-        Omit<ButtonProps,
-            // children:
-            |'children' // we redefined `children` prop as a <DropdownUi> component
+        Omit<DropdownListProps<TElement, TDropdownListActiveChangeEvent>,
+            // refs:
+            |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
+            
+            // DOMs:
+            |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
         >,
-        
-        // accessibilities:
-        Omit<ToggleActiveProps,
+        Omit<DropdownButtonProps,
             // accessibilities:
-            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
+            |'onActiveChange' // replaced with more specific <DropdownList>'s `onActiveChange`
             
             // children:
-            |'children' // we redefined `children` prop as a <DropdownUi> component
-        >,
-        Pick<DropdownProps<Element>,
-            // accessibilities:
-            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
-        >,
-        
-        // components:
-        ButtonComponentProps,
-        ToggleButtonComponentProps,
-        DropdownUiComponentProps<Element>,
-        DropdownComponentProps<Element>
+            |'children' // we redefined `children` prop as <ListItem>(s)
+        >
 {
 }
-const DropdownListButton = (props: DropdownListButtonProps): JSX.Element|null => {
+const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // variants:
     const isDropdownOrientationBlock = ((props.dropdownOrientation ?? defaultDropdownOrientationRuleOptions.defaultOrientation) === 'block');
     
