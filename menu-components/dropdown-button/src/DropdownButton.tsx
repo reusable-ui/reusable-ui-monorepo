@@ -58,8 +58,6 @@ import {
     PopupPosition,
     PopupSide,
     
-    DropdownActiveChangeEvent,
-    
     
     
     // hooks:
@@ -69,6 +67,8 @@ import {
     
     // react components:
     DropdownUiComponentProps,
+    
+    DropdownActiveChangeEvent,
     
     DropdownProps,
     Dropdown,
