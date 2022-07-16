@@ -68,6 +68,7 @@ import {
     // react components:
     DropdownUiComponentProps,
     
+    DropdownCloseType,
     DropdownActiveChangeEvent,
     
     DropdownProps,
@@ -327,6 +328,6 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownActiveChangeEvent }
+export type { DropdownCloseType, DropdownActiveChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
