@@ -1,0 +1,53 @@
+{
+  "name": "@reusable-ui/dropdown-list-button",
+  "version": "5.0.0",
+  "description": "A button component with a dropdown list UI.",
+  "keywords": [
+    "dropdown",
+    "overlays",
+    "lists",
+    "menus",
+    "show",
+    "hide",
+    "clickable",
+    "action",
+    "button",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/DropdownListButton.js",
+  "types": "dist/DropdownListButton.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/button": "^5.0.0",
+    "@reusable-ui/button-icon": "^5.0.0",
+    "@reusable-ui/dropdown": "^5.0.0",
+    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/indicator": "^5.0.0",
+    "@reusable-ui/toggle-button": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
