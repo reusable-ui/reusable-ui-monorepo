@@ -51,6 +51,15 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
+    // types:
+    PopupPlacement,
+    PopupMiddleware,
+    PopupStrategy,
+    PopupPosition,
+    PopupSide,
+    
+    
+    
     // hooks:
     defaultOrientationRuleOptions as defaultDropdownOrientationRuleOptions,
     
@@ -313,5 +322,7 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
