@@ -88,16 +88,16 @@ export {
 export interface DropdownListButtonProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
+        Omit<DropdownButtonProps<TDropdownListActiveChangeEvent>,
+            // children:
+            |'children' // we redefined `children` prop as <ListItem>(s)
+        >,
         Omit<DropdownListProps<TElement, TDropdownListActiveChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
             
             // DOMs:
             |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
-        >,
-        Omit<DropdownButtonProps<TDropdownListActiveChangeEvent>,
-            // children:
-            |'children' // we redefined `children` prop as <ListItem>(s)
         >
 {
 }
