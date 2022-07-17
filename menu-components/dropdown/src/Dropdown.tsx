@@ -496,7 +496,7 @@ export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, Pop
 
 
 
-export interface DropdownComponentProps<TElement extends Element = HTMLElement>
+export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
 {
     // refs:
     dropdownRef         ?: React.Ref<TElement> // setter ref
@@ -509,5 +509,5 @@ export interface DropdownComponentProps<TElement extends Element = HTMLElement>
     
     
     // components:
-    dropdownComponent   ?: React.ReactComponentElement<any, DropdownProps<TElement>>
+    dropdownComponent   ?: React.ReactComponentElement<any, DropdownProps<TElement, TDropdownActiveChangeEvent>>
 }
