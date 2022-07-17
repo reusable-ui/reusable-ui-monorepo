@@ -80,7 +80,7 @@ import {
 
 
 // react components:
-export interface DropdownButtonProps
+export interface DropdownButtonProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
     extends
         // bases:
         Omit<ButtonProps,
@@ -96,7 +96,7 @@ export interface DropdownButtonProps
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
-        Pick<DropdownProps<Element>,
+        Pick<DropdownProps<Element, TDropdownActiveChangeEvent>,
             // accessibilities:
             |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
         >,
@@ -105,10 +105,10 @@ export interface DropdownButtonProps
         ButtonComponentProps,
         ToggleButtonComponentProps,
         DropdownUiComponentProps<Element>,
-        DropdownComponentProps<Element>
+        DropdownComponentProps<Element, TDropdownActiveChangeEvent>
 {
 }
-const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
+const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownButtonProps<TDropdownActiveChangeEvent>): JSX.Element|null => {
     // variants:
     const isDropdownOrientationBlock = ((props.dropdownOrientation ?? defaultDropdownOrientationRuleOptions.defaultOrientation) === 'block');
     
@@ -137,7 +137,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent     = (<Dropdown<Element> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
+        dropdownComponent     = (<Dropdown<Element, TDropdownActiveChangeEvent> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownActiveChangeEvent>>),
     ...restButtonProps} = props;
     
     
@@ -206,12 +206,23 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
     
     
     // handlers:
-    const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        onActiveChange?.({ newActive: event.newActive, closeType: 'ui' }); // request to change the [active] to <Parent>
-    }, [onActiveChange]);
-    const handleActiveChangeInternal     = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+    const handleActiveChangeInternal     = useEvent<EventHandler<TDropdownActiveChangeEvent>>((event) => {
         setActive(event.newActive);
     }, []);
+    const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // create a dropdown event:
+        const dropdownEvent = { newActive: event.newActive, closeType: 'ui' } as TDropdownActiveChangeEvent;
+        
+        
+        
+        // forwards the original `onActiveChange` from `props`:
+        onActiveChange?.(dropdownEvent); // request to change the [active] to <Parent>
+        
+        
+        
+        // actions:
+        handleActiveChangeInternal(dropdownEvent);
+    }, [onActiveChange]);
     const handleToggleButtonActiveChange = useMergeEvents(
         // preserves the original `onActiveChange` from `toggleButtonComponent`:
         toggleButtonComponent.props.onActiveChange,
@@ -220,11 +231,6 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
         
         // forwards the original `onActiveChange` from `props`:
         forwardActiveChangeByUi,
-        
-        
-        
-        // actions:
-        handleActiveChangeInternal,
     );
     const handleDropdownActiveChange     = useMergeEvents(
         // preserves the original `onActiveChange` from `dropdownComponent`:
@@ -288,7 +294,7 @@ const DropdownButton = (props: DropdownButtonProps): JSX.Element|null => {
             )}
             
             {/* <Dropdown> */}
-            {React.cloneElement<DropdownProps<Element>>(dropdownComponent,
+            {React.cloneElement<DropdownProps<Element, TDropdownActiveChangeEvent>>(dropdownComponent,
                 // props:
                 {
                     // refs:
