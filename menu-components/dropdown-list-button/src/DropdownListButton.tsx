@@ -20,7 +20,6 @@ import {
     DropdownListCloseType,
     DropdownListActiveChangeEvent,
     
-    DropdownListProps,
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
@@ -53,6 +52,9 @@ import {
     ListSeparatorItem,
     
     ListProps,
+    List,
+    
+    ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 
 
@@ -87,37 +89,36 @@ export {
 
 
 
-export interface DropdownListButtonProps<TListElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListButtonProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
         Omit<DropdownButtonProps<TDropdownListActiveChangeEvent>,
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
         >,
-        Omit<ListProps<TListElement>,
-            // refs:
-            |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
-            
-            // DOMs:
-            |Exclude<keyof React.DOMAttributes<TListElement>, 'children'> // all DOM [attributes] are for <Button>
-            
-            // appearances:
-            |keyof ListVariant
-            
-            // behaviors:
-            |keyof Pick<ListItemProps<TListElement>, 'actionCtrl'>
+        
+        // components:
+        Omit<ListComponentProps<Element>,
+            // children:
+            |'listItems' // we redefined `children` prop as <ListItem>(s)
+        >,
+        Pick<ListProps<Element>,
+            // children:
+            |'children' // we redefined `children` prop as <ListItem>(s)
         >
 {
 }
-const DropdownListButton = <TListElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TListElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
+const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // components:
+        listRef,
+        listOrientation,
+        listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children          : listItems,
-        dropdownComponent = (<DropdownList<TListElement, TDropdownListActiveChangeEvent> >{listItems}</DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+        
+        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent> listRef={listRef} listOrientation={listOrientation} listComponent={listComponent} >{listItems}</DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
     ...restDropdownButtonProps} = props;
-    type Test1 = typeof restDropdownButtonProps;
-    type Test2 = Omit<Test1, keyof DropdownButtonProps<TDropdownListActiveChangeEvent>>
     
     
     
