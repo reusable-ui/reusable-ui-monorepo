@@ -17,7 +17,7 @@ import {
     
     
     // react components:
-    DropdownListCloseType,
+    DropdownListActionType,
     DropdownListActiveChangeEvent,
     
     DropdownList,
@@ -186,7 +186,7 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownListCloseType, DropdownListActiveChangeEvent }
+export type { DropdownListActionType, DropdownListActiveChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
 

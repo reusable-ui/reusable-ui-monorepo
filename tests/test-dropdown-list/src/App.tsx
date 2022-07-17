@@ -31,7 +31,7 @@ function App() {
     
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const handleActiveChange = useCallback((event: DropdownListActiveChangeEvent) => {
-        console.log('onActiveChange', event.newActive, event.closeType);
+        console.log('onActiveChange', event.newActive, event.actionType);
         setShowDropdown(event.newActive);
     }, []);
     

@@ -29,7 +29,7 @@ import {
     
     
     // react components:
-    DropdownCloseType,
+    DropdownActionType,
     DropdownActiveChangeEvent,
     
     DropdownProps,
@@ -124,9 +124,9 @@ export {
 
 
 
-export type DropdownListCloseType = DropdownCloseType|number
+export type DropdownListActionType = DropdownActionType|number
 export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent {
-    closeType : DropdownListCloseType
+    actionType : DropdownListActionType
 }
 
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
@@ -529,7 +529,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         
         
         // a <ListItem> was clicked => close the <DropdownList>:
-        handleActiveChange({ newActive: false, closeType: listIndex } as TDropdownListActiveChangeEvent);
+        handleActiveChange({ newActive: false, actionType: listIndex } as TDropdownListActiveChangeEvent);
         event.preventDefault(); // mark as handled
     }, [handleActiveChange, listIndex]);
     const handleClick         = useMergeEvents(

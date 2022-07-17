@@ -68,7 +68,7 @@ import {
     // react components:
     DropdownUiComponentProps,
     
-    DropdownCloseType,
+    DropdownActionType,
     DropdownActiveChangeEvent,
     
     DropdownProps,
@@ -211,7 +211,7 @@ const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeE
     }, []);
     const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // create a dropdown event:
-        const dropdownEvent = { newActive: event.newActive, closeType: 'ui' } as TDropdownActiveChangeEvent;
+        const dropdownEvent = { newActive: event.newActive, actionType: 'ui' } as TDropdownActiveChangeEvent;
         
         
         
@@ -334,6 +334,6 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownCloseType, DropdownActiveChangeEvent }
+export type { DropdownActionType, DropdownActiveChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }

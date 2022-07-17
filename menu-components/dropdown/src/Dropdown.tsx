@@ -207,9 +207,9 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
     children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
-export type DropdownCloseType = 'shortcut'|'blur'|'ui'|{}
+export type DropdownActionType = 'shortcut'|'blur'|'ui'|{}
 export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
-    closeType : DropdownCloseType
+    actionType : DropdownActionType
 }
 
 export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
@@ -309,7 +309,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Dropdown>:
-                handleActiveChange?.({ newActive: false, closeType: 'shortcut' } as TDropdownActiveChangeEvent);
+                handleActiveChange?.({ newActive: false, actionType: 'shortcut' } as TDropdownActiveChangeEvent);
             }
             else if (
                 isKeyOf('pagedown'  ) ||
@@ -416,7 +416,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // focus is outside of <Dropdown> => <Dropdown> lost focus => request to hide the <Dropdown>:
-            handleActiveChange?.({ newActive: false, closeType: 'blur' } as TDropdownActiveChangeEvent);
+            handleActiveChange?.({ newActive: false, actionType: 'blur' } as TDropdownActiveChangeEvent);
         };
         
         
