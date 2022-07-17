@@ -133,7 +133,16 @@ export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent
 export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
         // bases:
-        Omit<DropdownProps<TElement, TDropdownListActiveChangeEvent>,
+        ListProps<TElement>,
+        
+        // accessibilities:
+        Omit<DropdownProps<Element, TDropdownListActiveChangeEvent>,
+            // refs:
+            |'elmRef'|'outerRef' // all (elm|outer)Ref are for <List>
+            
+            // DOMs:
+            |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <List>
+            
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
         >,
@@ -143,16 +152,36 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
             // children:
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >,
-        DropdownComponentProps<Element>
+        DropdownComponentProps<Element, TDropdownListActiveChangeEvent>
 {
-    // children:
-    children ?: ListComponentProps<Element>['listItems']
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
-        // onActiveChange, // do not steal `onActiveChange` from `props`, otherwise the [esc] key and blur event will not handled by <Dropdown>
+        active,         // take, to be handled by <Dropdown>
+        inheritActive,  // take, to be handled by <Dropdown>
+        onActiveChange, // take, to be handled by <Dropdown>
+        
+        
+        
+        // behaviors:
+        lazy,
+        
+        
+        
+        // popups:
+        targetRef,
+        popupPlacement,
+        popupMiddleware,
+        popupStrategy,
+        
+        popupAutoFlip,
+        popupAutoShift,
+        popupOffset,
+        popupShift,
+        
+        onPopupUpdate,
         
         
         
@@ -164,9 +193,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent     = (<Dropdown<Element> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element>>),
-    ...restDropdownProps} = props;
-    const onActiveChange = props.onActiveChange; // copy the `onActiveChange` instead of steal it from `props`
+        dropdownComponent     = (<Dropdown<Element> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+    ...restListProps} = props;
     
     
     
@@ -346,14 +374,9 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     
     // jsx:
     /* <Dropdown> */
-    return React.cloneElement<DropdownProps<Element>>(dropdownComponent,
+    return React.cloneElement<DropdownProps<Element, TDropdownListActiveChangeEvent>>(dropdownComponent,
         // props:
         {
-            // other props:
-            ...restDropdownProps as DropdownProps<Element>,
-            
-            
-            
             // refs:
             outerRef     : mergedDropdownRef,
             
@@ -366,6 +389,33 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             // layouts:
             orientation  : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
+            
+            
+            
+            // accessibilities:
+            active,
+            inheritActive,
+            onActiveChange,
+            
+            
+            
+            // behaviors:
+            lazy,
+            
+            
+            
+            // popups:
+            targetRef,
+            popupPlacement,
+            popupMiddleware,
+            popupStrategy,
+            
+            popupAutoFlip,
+            popupAutoShift,
+            popupOffset,
+            popupShift,
+            
+            onPopupUpdate,
         },
         
         
@@ -375,6 +425,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         ((dropdownComponent.props.children !== listComponent) ? dropdownComponent.props.children : React.cloneElement<ListProps<Element>>(listComponent,
             // props:
             {
+                // other props:
+                ...restListProps,
+                
+                
+                
                 // refs:
                 elmRef      : mergedListRef,
                 
