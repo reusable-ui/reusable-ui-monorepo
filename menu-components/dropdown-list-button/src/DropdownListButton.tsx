@@ -96,9 +96,6 @@ export interface DropdownListButtonProps<TElement extends Element = HTMLElement,
             |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
         >,
         Omit<DropdownButtonProps<TDropdownListActiveChangeEvent>,
-            // accessibilities:
-            |'onActiveChange' // replaced with more specific <DropdownList>'s `onActiveChange`
-            
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
         >
@@ -107,21 +104,16 @@ export interface DropdownListButtonProps<TElement extends Element = HTMLElement,
 const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
-        // accessibilities:
-        onActiveChange, // take, to be handled by `useToggleActive`
-        
-        
-        
         // components:
         children          : listItems,
-        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent> onActiveChange={onActiveChange} >{listItems}</DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent> >{listItems}</DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
     ...restDropdownButtonProps} = props;
     
     
     
     // jsx:
     return (
-        <DropdownButton
+        <DropdownButton<TDropdownListActiveChangeEvent>
             // other props:
             {...restDropdownButtonProps}
             
