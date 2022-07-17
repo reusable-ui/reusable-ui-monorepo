@@ -111,6 +111,27 @@ const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownLis
     
     
     
+    // forward props:
+    const {
+        // from <Basic>:
+        size,
+        nude,
+        theme,
+        gradient,
+        outlined,
+        mild,
+        
+        // from <Indicator>:
+        enabled,
+        inheritEnabled,
+        readOnly,
+        inheritReadOnly,
+        // active,
+        // inheritActive,
+    } = props;
+    
+    
+    
     // jsx:
     return (
         <DropdownButton<TDropdownListActiveChangeEvent>
@@ -120,7 +141,26 @@ const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownLis
             
             
             // components:
-            dropdownComponent={dropdownComponent}
+            dropdownComponent={React.cloneElement<DropdownProps<Element, TDropdownListActiveChangeEvent>>(dropdownComponent,
+                // props:
+                {
+                    // from <Basic>:
+                    size,
+                    nude,
+                    theme,
+                    gradient,
+                    outlined,
+                    mild,
+                    
+                    // from <Indicator>:
+                    enabled,
+                    inheritEnabled,
+                    readOnly,
+                    inheritReadOnly,
+                    // active,
+                    // inheritActive,
+                }
+            )}
         >
             {dropdownComponent.props.children}
         </DropdownButton>
