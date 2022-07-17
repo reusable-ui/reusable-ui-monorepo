@@ -126,8 +126,8 @@ const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownLis
         inheritEnabled,
         readOnly,
         inheritReadOnly,
-        // active,
-        // inheritActive,
+     // active,
+     // inheritActive,
     } = props;
     
     
@@ -145,20 +145,20 @@ const DropdownListButton = <TElement extends Element = HTMLElement, TDropdownLis
                 // props:
                 {
                     // from <Basic>:
-                    size,
-                    nude,
-                    theme,
-                    gradient,
-                    outlined,
-                    mild,
+                    size            : dropdownComponent.props.size            ?? size,
+                    nude            : dropdownComponent.props.nude            ?? nude,
+                    theme           : dropdownComponent.props.theme           ?? theme,
+                    gradient        : dropdownComponent.props.gradient        ?? gradient,
+                    outlined        : dropdownComponent.props.outlined        ?? outlined,
+                    mild            : dropdownComponent.props.mild            ?? mild,
                     
                     // from <Indicator>:
-                    enabled,
-                    inheritEnabled,
-                    readOnly,
-                    inheritReadOnly,
-                    // active,
-                    // inheritActive,
+                    enabled         : dropdownComponent.props.enabled         ?? enabled,
+                    inheritEnabled  : dropdownComponent.props.inheritEnabled  ?? inheritEnabled,
+                    readOnly        : dropdownComponent.props.readOnly        ?? readOnly,
+                    inheritReadOnly : dropdownComponent.props.inheritReadOnly ?? inheritReadOnly,
+                 // active          : dropdownComponent.props.active          ?? active,
+                 // inheritActive   : dropdownComponent.props.inheritActive   ?? inheritActive,
                 }
             )}
         >
