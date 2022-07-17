@@ -8,7 +8,6 @@ import {
 import {
     // hooks:
     useEvent,
-    EventHandler,
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
@@ -193,7 +192,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent     = (<Dropdown<Element> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+        dropdownComponent     = (<Dropdown<Element, TDropdownListActiveChangeEvent> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
     ...restListProps} = props;
     
     
@@ -499,13 +498,9 @@ export type { ListStyle, ListVariant }
 interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
     // bases:
-        ListItemProps<Element>
+        ListItemProps<Element>,
+        Required<Pick<DropdownProps<Element, TDropdownListActiveChangeEvent>, 'onActiveChange'>>
 {
-    // accessibilities:
-    onActiveChange    : EventHandler<TDropdownListActiveChangeEvent>
-    
-    
-    
     // components:
     listIndex         : number
     listItemComponent : React.ReactElement<ListItemProps<Element>>
@@ -534,7 +529,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         
         
         // a <ListItem> was clicked => close the <DropdownList>:
-        handleActiveChange?.({ newActive: false, closeType: listIndex } as TDropdownListActiveChangeEvent);
+        handleActiveChange({ newActive: false, closeType: listIndex } as TDropdownListActiveChangeEvent);
         event.preventDefault(); // mark as handled
     }, [handleActiveChange, listIndex]);
     const handleClick         = useMergeEvents(
