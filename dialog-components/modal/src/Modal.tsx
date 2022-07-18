@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useEffect,
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -103,6 +104,8 @@ import {
     ThemeName,
     mildOf,
     usesAnim,
+    
+    ToggleExcitedProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -370,6 +373,9 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
         // appearances:
         BackdropVariant,
         
+        // accessibilities:
+        ToggleExcitedProps,
+        
         // components:
         ModalUiComponentProps<Element>
 {
@@ -387,6 +393,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     
     
+    // variants:
+    const backdropVariant    = useBackdropVariant(props);
+    
+    
+    
     // states:
     
     // accessibilities:
@@ -398,20 +409,43 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     // rest props:
     const {
-        // refs:
-        elmRef,
+        // remove states props:
+        
+        // accessibilities:
+        backdropStyle : _backdropStyle,
         
         
         
         // accessibilities:
         onActiveChange,
         
+        excited,
+        onExcitedChange,
+        
+        
+        
+        // behaviors:
+        lazy = false,
+        
+        
+        
+        // modals:
+        viewportRef,
+        
         
         
         // components:
         tabIndex,
         children: modalUiComponent,
-    ...restCollapseProps} = props;
+    ...restIndicatorProps} = props;
+    type Test1 = typeof restIndicatorProps
+    type Test2 = Omit<Test1, keyof IndicatorProps>
+    
+    
+    
+    // states:
+    const [excitedDn, setExcitedDn] = useState(false);
+    const excitedFn = excited ?? excitedDn;
     
     
     
@@ -524,7 +558,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     return (
         <Indicator<TElement>
             // other props:
-            {...restCollapseProps}
+            {...restIndicatorProps}
             
             
             
@@ -543,7 +577,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             onAnimationEnd={handleAnimationEnd}
         >
             {/* <ModalUi> */}
-            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,
+            {(!lazy || isVisible) && React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,
                 // props:
                 {
                     // refs:
