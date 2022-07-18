@@ -15,17 +15,11 @@ import type {
     SingleOrArray,
 }                           from '@cssfn/types'             // cssfn general types
 
-// other libs:
+// reusable-ui:
 import {
-    // tests:
-    isBrowser,
-    isJsDom,
-}                           from 'is-in-browser'
-
-
-
-// utilities:
-export const isClientSide : boolean = isBrowser || isJsDom;
+    // utilities:
+    isClientSide,
+}                           from '@reusable-ui/utilities'   // common utility functions
 
 
 
