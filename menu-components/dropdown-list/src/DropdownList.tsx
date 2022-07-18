@@ -61,6 +61,13 @@ import {
     
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
+import {
+    // utilities:
+    setFocusFirst,
+    setFocusLast,
+    setFocusPrev,
+    setFocusNext,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site page
 
 
 
@@ -233,100 +240,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         
         
-        // functions:
-        let allPossibleFocusableElementsCache : Element[]|undefined = undefined;
-        const sortByTabIndex = (a: Element|undefined, b: Element|undefined) => {
-            if (!a || !b) return 0;
-            return ((a as HTMLElement|SVGElement).tabIndex ?? 0) - ((b as HTMLElement|SVGElement).tabIndex ?? 0);
-        };
-        const getAllPossibleFocusableElements = (): Element[] => {
-            if (allPossibleFocusableElementsCache) return allPossibleFocusableElementsCache;
-            
-            
-            
-            return allPossibleFocusableElementsCache = (
-                Array.from(event.currentTarget.children)
-                .flatMap((liElement) => {
-                    const focusableElements = (
-                        Array.from(liElement.querySelectorAll(
-`:is(
-    a,
-    button,
-    textarea,
-    select,
-    details,
-    input:not([type="hidden"]),
-    [tabindex]:not([tabindex^="-"])
-):not(
-    :is(
-        [disabled]:not([disabled="false"]),
-        [aria-disabled]:not([aria-disabled="false"])
-    )
-)`                      ))
-                        .sort(sortByTabIndex)
-                    );
-                    return {
-                        primary : focusableElements.at(0),
-                        items   : focusableElements,
-                    };
-                })
-                .sort((x, y) => sortByTabIndex(x.primary, y.primary))
-                .flatMap((item) => item.items)
-            );
-        };
-        
-        const setFocus = (index: number, fallback?: number) => {
-            // find the element:
-            let element = getAllPossibleFocusableElements().at(index);
-            if (!element && (fallback !== undefined)) {
-                element = getAllPossibleFocusableElements().at(fallback);
-            } // if
-            
-            
-            
-            // set focus:
-            (element as HTMLElement|SVGElement|undefined)?.focus?.();
-        };
-        
-        const focusPrev  = () => {
-            let focusedElement = document.activeElement;
-            // filter only for focusable elements inside the <List>:
-            if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
-            
-            if (!focusedElement) {
-                setFocus(-1); // the last focusable element
-            }
-            else {
-                setFocus(
-                    getAllPossibleFocusableElements().indexOf(focusedElement) - 1,
-                    -1
-                );
-            } // if
-        };
-        const focusNext  = () => {
-            let focusedElement = document.activeElement;
-            // filter only for focusable elements inside the <List>:
-            if (focusedElement && !getAllPossibleFocusableElements().includes(focusedElement)) focusedElement = null;
-            
-            if (!focusedElement) {
-                setFocus(0); // the first focusable element
-            }
-            else {
-                setFocus(
-                    getAllPossibleFocusableElements().indexOf(focusedElement) + 1,
-                    0
-                );
-            } // if
-        };
-        const focusFirst = () => {
-            setFocus(0); // the first focusable element
-        };
-        const focusLast  = () => {
-            setFocus(-1); // the last focusable element
-        };
-        
-        
-        
         if (((): boolean => {
             const isKeyOf = (key: string): boolean => {
                 return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
@@ -335,21 +248,21 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
             
             
             
-                 if (                                     isKeyOf('tab'       )) focusNext();
-            else if (                                     isKeyOf('pagedown'  )) focusNext();
-            else if (                                     isKeyOf('pageup'    )) focusPrev();
+                 if (                                     isKeyOf('tab'       )) setFocusNext(event.currentTarget);
+            else if (                                     isKeyOf('pagedown'  )) setFocusNext(event.currentTarget);
+            else if (                                     isKeyOf('pageup'    )) setFocusPrev(event.currentTarget);
             
-            else if (                                     isKeyOf('home'      )) focusFirst();
-            else if (                                     isKeyOf('end'       )) focusLast();
+            else if (                                     isKeyOf('home'      )) setFocusFirst(event.currentTarget);
+            else if (                                     isKeyOf('end'       )) setFocusLast(event.currentTarget);
             
-            else if ( isListOrientationBlock &&           isKeyOf('arrowdown' )) focusNext();
-            else if ( isListOrientationBlock &&           isKeyOf('arrowup'   )) focusPrev();
+            else if ( isListOrientationBlock &&           isKeyOf('arrowdown' )) setFocusNext(event.currentTarget);
+            else if ( isListOrientationBlock &&           isKeyOf('arrowup'   )) setFocusPrev(event.currentTarget);
             
-            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowleft' )) focusNext();
-            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowright')) focusPrev();
+            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setFocusNext(event.currentTarget);
+            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowright')) setFocusPrev(event.currentTarget);
             
-            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowright')) focusNext();
-            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) focusPrev();
+            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowright')) setFocusNext(event.currentTarget);
+            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setFocusPrev(event.currentTarget);
             else return false; // not handled
             
             
