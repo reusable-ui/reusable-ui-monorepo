@@ -51,9 +51,6 @@ import type {
 import {
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    OrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -62,20 +59,6 @@ import {
     ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
-    
-    
-    // hooks:
-    defaultOrientationRuleOptions,
-    
-    
-    
     // styles:
     usesCollapseLayout,
     usesCollapseVariants,
@@ -90,22 +73,12 @@ import {
 
 
 
-// hooks:
-
-// layouts:
-
-//#region orientation
-export { defaultOrientationRuleOptions };
-//#endregion orientation
-
-
-
 // styles:
-export const usesModalLayout = (options?: OrientationVariantOptions) => {
+export const usesModalLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesCollapseLayout(options),
+            usesCollapseLayout(),
         ]),
         ...style({
             // layouts:
@@ -179,23 +152,6 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
 
 
 
-// utilities:
-const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
-    let parent: Element|null = element;
-    do {
-        if (parent === desired) return true; // confirmed
-        
-        // let's try again:
-        parent = parent.parentElement;
-    } while (parent);
-    
-    
-    
-    return false; // not the descendant of desired
-};
-
-
-
 // react components:
 
 export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
@@ -230,11 +186,6 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
 const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>(props: ModalProps<TElement, TModalActiveChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useModalStyleSheet();
-    
-    
-    
-    // variants:
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
     
     
     
@@ -366,77 +317,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         if (isActive) {
             // when actived => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
             (modalUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
-        }
-        else {
-            // in case of pressing [esc] key to close the <ModalUi>,
-            // switch the focus to <TargetRef>, so the <Modal> can be activated by [space] key:
-            const focusedElement = document.activeElement;
-            const modalUi        = modalUiRefInternal.current;
-            if (focusedElement && modalUi && isSelfOrDescendantOf(focusedElement, modalUi)) {
-                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
-                (target as HTMLElement|SVGElement|null|undefined)?.focus?.();
-            } // if
         } // if
-    }, [isActive, props.targetRef]);
-    
-    // watch an onClick|onBlur event *outside* the <ModalUi> each time it shown:
-    useEffect(() => {
-        // conditions:
-        if (!isVisible)          return; // <Modal> is not shown => nothing to do
-        if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
-        
-        
-        
-        // handlers:
-        const handleMouseDown = (event: MouseEvent): void => {
-            // conditions:
-            if (event.button !== 0) return; // only handle left click
-            
-            
-            
-            // although clicking on page won't change the focus, but we decided this event as lost focus on <Modal>:
-            handleFocus({ target: event.target } as FocusEvent);
-        };
-        const handleFocus     = (event: FocusEvent): void => {
-            const focusedTarget = event.target;
-            if (!focusedTarget) return;
-            
-            
-            
-            // check if focusedTarget is inside the <Modal> or not:
-            const modalUi = modalUiRefInternal.current;
-            if ((focusedTarget instanceof Element) && modalUi && isSelfOrDescendantOf(focusedTarget, modalUi)) return; // focus is still inside <Modal> => nothing to do
-            
-            
-            
-            // `targetRef` is <Modal>'s friend, so focus on `targetRef` is considered not to lost focus on <Modal>:
-            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
-            if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
-            
-            
-            
-            // focus is outside of <Modal> => <Modal> lost focus => request to hide the <Modal>:
-            handleActiveChange?.({ newActive: false, actionType: 'blur' } as TModalActiveChangeEvent);
-        };
-        
-        
-        
-        // setups:
-        const asyncPerformAttachEvents = setTimeout(() => { // wait until the triggering <Modal>.open() event is fully fired, so it won't immediately trigger <Modal>.close()
-            document.addEventListener('mousedown', handleMouseDown);
-            document.addEventListener('focus'    , handleFocus    , { capture: true }); // force `focus` as bubbling
-        }, 0);
-        
-        
-        
-        // cleanups:
-        return () => {
-            clearTimeout(asyncPerformAttachEvents);
-            
-            document.removeEventListener('mousedown', handleMouseDown);
-            document.removeEventListener('focus'    , handleFocus    , { capture: true });
-        };
-    }, [isVisible, props.targetRef, handleActiveChange]);
+    }, [isActive]);
     
     
     
@@ -455,13 +337,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            
-            
-            
-            // popups:
-            popupPlacement={props.popupPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
-            popupAutoFlip={props.popupAutoFlip ?? true}
-            popupAutoShift={props.popupAutoShift ?? true}
             
             
             
@@ -490,24 +365,15 @@ export {
     Modal as default,
 }
 
-export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
-
 
 
 export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
 {
     // refs:
-    modalRef         ?: React.Ref<TElement> // setter ref
-    
-    
-    
-    // layouts:
-    modalOrientation ?: OrientationName
+    modalRef       ?: React.Ref<TElement> // setter ref
     
     
     
     // components:
-    modalComponent   ?: React.ReactComponentElement<any, ModalProps<TElement, TModalActiveChangeEvent>>
+    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalActiveChangeEvent>>
 }
