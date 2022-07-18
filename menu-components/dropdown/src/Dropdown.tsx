@@ -248,11 +248,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // rest props:
     const {
-        // refs:
-        elmRef,
-        
-        
-        
         // accessibilities:
         onActiveChange,
         
