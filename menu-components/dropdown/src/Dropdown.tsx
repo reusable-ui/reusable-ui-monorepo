@@ -242,7 +242,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // accessibilities:
     const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isActive           = activePassiveState.active;
     
     
@@ -382,7 +381,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
         // conditions:
-        if (!isVisible)          return; // <Dropdown> is not shown => nothing to do
+        if (!isActive)           return; // <Dropdown> is not shown => nothing to do
         if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
         
         
@@ -436,7 +435,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
-    }, [isVisible, props.targetRef, handleActiveChange]);
+    }, [isActive, props.targetRef, handleActiveChange]);
     
     
     
