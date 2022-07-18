@@ -78,15 +78,16 @@ import {
 
 // reusable-ui:
 import {
+    // utilities:
+    isClientSide,
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
+import {
     // hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // utilities:
-    isReusableUiComponent,
-}                           from '@reusable-ui/utilities'       // common utility functions
 import type {
     // react components:
     GenericProps,
@@ -299,9 +300,47 @@ export const useBackdropStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
+    //#region keyframes
+    const framePassived     = style({
+        filter : [[
+            'opacity(0)',
+        ]]
+    });
+    const frameActived      = style({
+        filter : [[
+            'opacity(1)',
+        ]]
+    });
+    const [keyframesActiveRule , keyframesActive ] = keyframes({
+        from  : framePassived,
+        to    : frameActived,
+    });
+    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    const [keyframesPassiveRule, keyframesPassive] = keyframes({
+        from  : frameActived,
+        to    : framePassived,
+    });
+    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    //#endregion keyframes
+    
+    
+    
     return {
-        // borders:
-        boxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'],
+        // backgrounds:
+        backg            : 'rgba(0,0,0, 0.5)'                   as CssKnownProps['backg'],
+        modalUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]  as CssKnownProps['boxShadow'],
+        
+        
+        
+        // animations:
+        ...keyframesActiveRule,
+        ...keyframesPassiveRule,
+        animActive       : [
+            ['300ms', 'ease-out', 'both', keyframesActive ],
+        ]                                                       as CssKnownProps['anim'],
+        animPassive      : [
+            ['500ms', 'ease-out', 'both', keyframesPassive],
+        ]                                                       as CssKnownProps['anim'],
     };
 }, { prefix: 'mdl' });
 
@@ -318,7 +357,7 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
     children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
-export type ModalActionType = 'shortcut'|'blur'|'ui'|{}
+export type ModalActionType = 'shortcut'|'overlay'|{}
 export interface ModalActiveChangeEvent extends ActiveChangeEvent {
     actionType : ModalActionType
 }
