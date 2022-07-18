@@ -1,0 +1,513 @@
+// react:
+import {
+    // react:
+    default as React,
+    
+    
+    
+    // hooks:
+    useRef,
+    useEffect,
+}                           from 'react'
+
+// cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'             // cssfn css specific types
+import {
+    // styles:
+    style,
+    imports,
+}                           from '@cssfn/cssfn'                 // writes css in javascript
+import {
+    // style sheets:
+    createUseStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
+import {
+    cssConfig,
+    
+    
+    
+    // utilities:
+    usesCssProps,
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
+
+// reusable-ui:
+import {
+    // hooks:
+    useEvent,
+    useMergeEvents,
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
+import type {
+    // react components:
+    GenericProps,
+}                           from '@reusable-ui/generic'         // a generic component
+import {
+    // hooks:
+    usesSizeVariant,
+    OrientationName,
+    OrientationVariantOptions,
+    OrientationVariant,
+}                           from '@reusable-ui/basic'           // a base component
+import {
+    // hooks:
+    useActivePassiveState,
+    ActiveChangeEvent,
+    ToggleActiveProps,
+}                           from '@reusable-ui/indicator'       // a base component
+import {
+    // types:
+    PopupPlacement,
+    PopupMiddleware,
+    PopupStrategy,
+    PopupPosition,
+    PopupSide,
+    
+    
+    
+    // hooks:
+    defaultOrientationRuleOptions,
+    
+    
+    
+    // styles:
+    usesCollapseLayout,
+    usesCollapseVariants,
+    usesCollapseStates,
+    
+    
+    
+    // react components:
+    CollapseProps,
+    Collapse,
+}                           from '@reusable-ui/collapse'        // a base component
+
+
+
+// hooks:
+
+// layouts:
+
+//#region orientation
+export { defaultOrientationRuleOptions };
+//#endregion orientation
+
+
+
+// styles:
+export const usesModalLayout = (options?: OrientationVariantOptions) => {
+    return style({
+        ...imports([
+            // layouts:
+            usesCollapseLayout(options),
+        ]),
+        ...style({
+            // layouts:
+            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
+            flexDirection  : 'column', // items are stacked vertically
+            justifyContent : 'center', // center items (text, icon, etc) horizontally
+            alignItems     : 'center', // center items (text, icon, etc) vertically
+            flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            
+            
+            
+            // sizes:
+            inlineSize     : 'fit-content',
+            
+            
+            
+            // customize:
+            ...usesCssProps(modals), // apply config's cssProps
+        }),
+    });
+};
+export const usesModalVariants = () => {
+    // dependencies:
+    
+    // layouts:
+    const [sizeVariantRule] = usesSizeVariant(modals);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesCollapseVariants(),
+            
+            // layouts:
+            sizeVariantRule,
+        ]),
+    });
+};
+export const usesModalStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesCollapseStates(),
+        ]),
+    });
+};
+
+export const useModalStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesModalLayout(),
+        
+        // variants:
+        usesModalVariants(),
+        
+        // states:
+        usesModalStates(),
+    ]),
+}), { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+// configs:
+export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
+    return {
+        // borders:
+        boxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'],
+    };
+}, { prefix: 'mdl' });
+
+
+
+// utilities:
+const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
+    let parent: Element|null = element;
+    do {
+        if (parent === desired) return true; // confirmed
+        
+        // let's try again:
+        parent = parent.parentElement;
+    } while (parent);
+    
+    
+    
+    return false; // not the descendant of desired
+};
+
+
+
+// react components:
+
+export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
+    extends
+        // accessibilities:
+        Pick<React.HTMLAttributes<HTMLElement>, 'tabIndex'>
+{
+    // components:
+    children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
+}
+
+export type ModalActionType = 'shortcut'|'blur'|'ui'|{}
+export interface ModalActiveChangeEvent extends ActiveChangeEvent {
+    actionType : ModalActionType
+}
+
+export interface ModalProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
+    extends
+        // bases:
+        Omit<CollapseProps<TElement>,
+            // children:
+            |'children' // we redefined `children` prop as a <ModalUi> component
+        >,
+        
+        // accessibilities:
+        Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
+        
+        // components:
+        ModalUiComponentProps<Element>
+{
+}
+const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>(props: ModalProps<TElement, TModalActiveChangeEvent>): JSX.Element|null => {
+    // styles:
+    const styleSheet         = useModalStyleSheet();
+    
+    
+    
+    // variants:
+    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    
+    
+    
+    // states:
+    
+    // accessibilities:
+    const activePassiveState = useActivePassiveState<TElement>(props);
+    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isActive           = activePassiveState.active;
+    
+    
+    
+    // rest props:
+    const {
+        // refs:
+        elmRef,
+        
+        
+        
+        // accessibilities:
+        onActiveChange,
+        
+        
+        
+        // components:
+        tabIndex,
+        children: modalUiComponent,
+    ...restCollapseProps} = props;
+    
+    
+    
+    // verifies:
+    React.Children.only(modalUiComponent);
+    const isReusableUiModalComponent : boolean = isReusableUiComponent(modalUiComponent);
+    if (!isReusableUiModalComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(modalUiComponent)) throw Error('Invalid child element.');
+    
+    
+    
+    // refs:
+    const modalUiRefInternal = useRef<Element|null>(null);
+    const mergedModalUiRef   = useMergeRefs(
+        // preserves the original `ref` from `modalUiComponent`:
+        (
+            isReusableUiModalComponent
+            ?
+            (modalUiComponent.props as GenericProps<Element>).elmRef
+            :
+            (modalUiComponent.props as React.RefAttributes<Element>).ref
+        ),
+        
+        
+        
+        modalUiRefInternal,
+    );
+    
+    
+    
+    // handlers:
+    const handleActiveChange    = onActiveChange;
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        if (((): boolean => {
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
+            };
+            
+            
+            
+            if (isKeyOf('escape')) {
+                // [esc] key pressed => request to hide the <Modal>:
+                handleActiveChange?.({ newActive: false, actionType: 'shortcut' } as TModalActiveChangeEvent);
+            }
+            else if (
+                isKeyOf('pagedown'  ) ||
+                isKeyOf('pageup'    ) ||
+                isKeyOf('home'      ) ||
+                isKeyOf('end'       ) ||
+                isKeyOf('arrowdown' ) ||
+                isKeyOf('arrowup'   ) ||
+                isKeyOf('arrowleft' ) ||
+                isKeyOf('arrowright') ||
+                isKeyOf('space')
+            )
+            {
+                // do nothing
+                // do not scroll the page
+            }
+            else return false; // not handled
+            
+            
+            
+            return true; // handled
+        })()) {
+            event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
+        } // if
+    }, [handleActiveChange]);
+    const handleKeyDown         = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // range handlers:
+        handleKeyDownInternal,
+    );
+    const handleAnimationEnd    = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        activePassiveState.handleAnimationEnd,
+    );
+    
+    
+    
+    // dom effects:
+    
+    // set focus on <ModalUi> each time it shown:
+    useEffect(() => {
+        // setups:
+        if (isActive) {
+            // when actived => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
+            (modalUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+        }
+        else {
+            // in case of pressing [esc] key to close the <ModalUi>,
+            // switch the focus to <TargetRef>, so the <Modal> can be activated by [space] key:
+            const focusedElement = document.activeElement;
+            const modalUi        = modalUiRefInternal.current;
+            if (focusedElement && modalUi && isSelfOrDescendantOf(focusedElement, modalUi)) {
+                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+                (target as HTMLElement|SVGElement|null|undefined)?.focus?.();
+            } // if
+        } // if
+    }, [isActive, props.targetRef]);
+    
+    // watch an onClick|onBlur event *outside* the <ModalUi> each time it shown:
+    useEffect(() => {
+        // conditions:
+        if (!isVisible)          return; // <Modal> is not shown => nothing to do
+        if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
+        
+        
+        
+        // handlers:
+        const handleMouseDown = (event: MouseEvent): void => {
+            // conditions:
+            if (event.button !== 0) return; // only handle left click
+            
+            
+            
+            // although clicking on page won't change the focus, but we decided this event as lost focus on <Modal>:
+            handleFocus({ target: event.target } as FocusEvent);
+        };
+        const handleFocus     = (event: FocusEvent): void => {
+            const focusedTarget = event.target;
+            if (!focusedTarget) return;
+            
+            
+            
+            // check if focusedTarget is inside the <Modal> or not:
+            const modalUi = modalUiRefInternal.current;
+            if ((focusedTarget instanceof Element) && modalUi && isSelfOrDescendantOf(focusedTarget, modalUi)) return; // focus is still inside <Modal> => nothing to do
+            
+            
+            
+            // `targetRef` is <Modal>'s friend, so focus on `targetRef` is considered not to lost focus on <Modal>:
+            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+            if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
+            
+            
+            
+            // focus is outside of <Modal> => <Modal> lost focus => request to hide the <Modal>:
+            handleActiveChange?.({ newActive: false, actionType: 'blur' } as TModalActiveChangeEvent);
+        };
+        
+        
+        
+        // setups:
+        const asyncPerformAttachEvents = setTimeout(() => { // wait until the triggering <Modal>.open() event is fully fired, so it won't immediately trigger <Modal>.close()
+            document.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('focus'    , handleFocus    , { capture: true }); // force `focus` as bubbling
+        }, 0);
+        
+        
+        
+        // cleanups:
+        return () => {
+            clearTimeout(asyncPerformAttachEvents);
+            
+            document.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('focus'    , handleFocus    , { capture: true });
+        };
+    }, [isVisible, props.targetRef, handleActiveChange]);
+    
+    
+    
+    // jsx:
+    return (
+        <Collapse<TElement>
+            // other props:
+            {...restCollapseProps}
+            
+            
+            
+            // variants:
+            nude={props.nude ?? true}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+            
+            
+            
+            // popups:
+            popupPlacement={props.popupPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
+            popupAutoFlip={props.popupAutoFlip ?? true}
+            popupAutoShift={props.popupAutoShift ?? true}
+            
+            
+            
+            // handlers:
+            onKeyDown={handleKeyDown}
+            onAnimationEnd={handleAnimationEnd}
+        >
+            {/* <ModalUi> */}
+            {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,
+                // props:
+                {
+                    // refs:
+                    [isReusableUiModalComponent ? 'elmRef' : 'ref'] : mergedModalUiRef,
+                    
+                    
+                    
+                    // accessibilities:
+                    tabIndex : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
+                },
+            )}
+        </Collapse>
+    );
+};
+export {
+    Modal,
+    Modal as default,
+}
+
+export type { OrientationName, OrientationVariant }
+
+export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+
+
+
+export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
+{
+    // refs:
+    modalRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // layouts:
+    modalOrientation ?: OrientationName
+    
+    
+    
+    // components:
+    modalComponent   ?: React.ReactComponentElement<any, ModalProps<TElement, TModalActiveChangeEvent>>
+}
