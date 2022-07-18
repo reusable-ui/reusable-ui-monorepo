@@ -24,6 +24,8 @@ import type {
     
     // cssfn properties:
     CssRule,
+    
+    CssStyleCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -106,6 +108,7 @@ import {
     ActivePassiveVars,
     ifActivating,
     ifPassivating,
+    ifPassived,
     usesActivePassiveState as indicatorUsesActivePassiveState,
     useActivePassiveState,
     ActiveChangeEvent,
@@ -182,27 +185,40 @@ export const useBackdropVariant = (props: BackdropVariant) => {
 };
 //#endregion backdrop style
 
+// behaviors:
+export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body>*>&', styles);
+
 
 
 // styles:
 export const usesBackdropLayout = () => {
     return style({
-        ...imports([
-            // layouts:
-            usesCollapseLayout(),
-        ]),
         ...style({
             // layouts:
-            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
-            flexDirection  : 'column', // items are stacked vertically
-            justifyContent : 'center', // center items (text, icon, etc) horizontally
-            alignItems     : 'center', // center items (text, icon, etc) vertically
-            flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            display      : 'grid',
+            
+            // child default sizes:
+            justifyItems : 'center', // center horizontally
+            alignItems   : 'center', // center vertically
+            
+            
+            
+            // positions:
+            position     : 'absolute', // local <Modal>: absolute position
+            ...ifGlobalModal({
+                position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
+            }),
+            inset        : 0,          // span the <Modal> to the edges of <container>
+            zIndex       : 1040,
             
             
             
             // sizes:
-            inlineSize     : 'fit-content',
+            // global <Modal>: fills the entire screen height:
+            ...ifGlobalModal({
+                boxSizing    : 'border-box', // the final size is including borders & paddings
+                minBlockSize : '100vh',
+            }),
             
             
             
@@ -221,19 +237,47 @@ export const usesBackdropVariants = () => {
     
     return style({
         ...imports([
-            // variants:
-            usesCollapseVariants(),
-            
             // layouts:
             sizeVariantRule,
+        ]),
+        ...variants([
+            rule('.hidden', {
+                // backgrounds:
+                background    : 'none',
+            }),
+            rule(['.hidden', '.interactive'], {
+                // accessibilities:
+                pointerEvents : 'none', // a ghost layer
+                
+                
+                
+                // children:
+                ...children('*', { // <ModalUi>
+                    // accessibilities:
+                    pointerEvents : 'initial', // cancel out ghost layer
+                }),
+            }),
         ]),
     });
 };
 export const usesBackdropStates = () => {
+    // dependencies:
+    
+    // states:
+    const [activePassiveStateRule] = usesActivePassiveState();
+    
+    
+    
     return style({
         ...imports([
-            // states:
-            usesCollapseStates(),
+            // accessibilities:
+            activePassiveStateRule,
+        ]),
+        ...states([
+            ifPassived({
+                // appearances:
+                display: 'none', // hide the <Modal>
+            }),
         ]),
     });
 };
