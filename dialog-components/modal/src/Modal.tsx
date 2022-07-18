@@ -114,19 +114,13 @@ import {
     useActivePassiveState,
     ActiveChangeEvent,
     ToggleActiveProps,
-}                           from '@reusable-ui/indicator'       // a base component
-import {
-    // styles:
-    usesCollapseLayout,
-    usesCollapseVariants,
-    usesCollapseStates,
     
     
     
     // react components:
-    CollapseProps,
-    Collapse,
-}                           from '@reusable-ui/collapse'        // a base component
+    IndicatorProps,
+    Indicator,
+}                           from '@reusable-ui/indicator'       // a base component
 
 
 
@@ -365,7 +359,7 @@ export interface ModalActiveChangeEvent extends ActiveChangeEvent {
 export interface ModalProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
     extends
         // bases:
-        Omit<CollapseProps<TElement>,
+        Omit<IndicatorProps<TElement>,
             // children:
             |'children' // we redefined `children` prop as a <ModalUi> component
         >,
@@ -373,13 +367,23 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
         // accessibilities:
         Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
         
+        // appearances:
+        BackdropVariant,
+        
         // components:
         ModalUiComponentProps<Element>
 {
+    // modals:
+    viewportRef ?: React.RefObject<Element>|Element|null // getter ref
+    
+    
+    
+    // behaviors:
+    lazy        ?: boolean
 }
 const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>(props: ModalProps<TElement, TModalActiveChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useModalStyleSheet();
+    const styleSheet         = useBackdropStyleSheet();
     
     
     
@@ -518,7 +522,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     // jsx:
     return (
-        <Collapse<TElement>
+        <Indicator<TElement>
             // other props:
             {...restCollapseProps}
             
@@ -551,7 +555,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     tabIndex : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
                 },
             )}
-        </Collapse>
+        </Indicator>
     );
 };
 export {
