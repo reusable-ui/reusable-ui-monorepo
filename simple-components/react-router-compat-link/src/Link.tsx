@@ -21,14 +21,14 @@ import {
 
 // reusable-ui:
 import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
+import {
     // hooks:
     useEvent,
     useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // utilities:
-    isReusableUiComponent,
-}                           from '@reusable-ui/utilities'       // common utility functions
 
 
 

@@ -76,16 +76,16 @@ import {
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
 import {
+    // utilities:
+    parseNumber,
+}                           from '@reusable-ui/utilities'               // common utility functions
+import {
     // hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
-import {
-    // utilities:
-    parseNumber,
-}                           from '@reusable-ui/utilities'               // common utility functions
 import {
     // hooks:
     usePropEnabled,
