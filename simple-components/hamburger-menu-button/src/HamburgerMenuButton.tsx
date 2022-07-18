@@ -193,7 +193,7 @@ const [hamburgerAnims] = cssVar<HamburgerAnimVars>();
 export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, ReadonlyCssCustomRefs<HamburgerAnimVars>]
 /**
  * Uses hamburger animation.
- * @returns A `StateMixin<HamburgerAnimVars>` represents hamburger animation definitions.
+ * @returns A `HamburgerAnimMixin` represents hamburger animation definitions.
  */
 export const usesHamburgerAnim = (): HamburgerAnimMixin => {
     // dependencies:
