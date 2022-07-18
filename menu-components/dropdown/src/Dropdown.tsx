@@ -87,6 +87,10 @@ import {
     CollapseProps,
     Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
+import {
+    // utilities:
+    setFocusNext,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site page
 
 
 
@@ -305,6 +309,10 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 // [esc] key pressed => request to hide the <Dropdown>:
                 handleActiveChange?.({ newActive: false, actionType: 'shortcut' } as TDropdownActiveChangeEvent);
             }
+            else if (isKeyOf('tab'))
+            {
+                setFocusNext(event.currentTarget);
+            }
             else if (
                 isKeyOf('pagedown'  ) ||
                 isKeyOf('pageup'    ) ||
@@ -314,7 +322,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 isKeyOf('arrowup'   ) ||
                 isKeyOf('arrowleft' ) ||
                 isKeyOf('arrowright') ||
-                isKeyOf('space')
+                isKeyOf('space'     )
             )
             {
                 // do nothing
