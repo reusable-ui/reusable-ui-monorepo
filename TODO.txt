@@ -1,3 +1,6 @@
+simplifiy Dropdown to Modal:
+* getAllPossibleFocusableElements => getFocusableElements
+
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=.*?;
 
