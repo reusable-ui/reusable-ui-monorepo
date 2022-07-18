@@ -169,7 +169,7 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
 //#endregion activePassive
 
 
-// appearances:
+// behaviors:
 
 //#region backdrop style
 export type BackdropStyle = 'hidden'|'interactive'|'static' // might be added more styles in the future
@@ -183,7 +183,6 @@ export const useBackdropVariant = (props: BackdropVariant) => {
 };
 //#endregion backdrop style
 
-// behaviors:
 export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body>*>&', styles);
 
 
@@ -369,12 +368,10 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
         
         // accessibilities:
         Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
-        
-        // appearances:
-        BackdropVariant,
-        
-        // accessibilities:
         ToggleExcitedProps,
+        
+        // behaviors:
+        BackdropVariant,
         
         // components:
         ModalUiComponentProps<Element>
@@ -398,24 +395,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     
     
-    // states:
-    
-    // accessibilities:
-    const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const isActive           = activePassiveState.active;
-    
-    
-    
     // rest props:
     const {
-        // remove states props:
-        
-        // accessibilities:
-        backdropStyle : _backdropStyle,
-        
-        
-        
         // accessibilities:
         onActiveChange,
         
@@ -425,6 +406,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         
         // behaviors:
+        backdropStyle = 'static',
         lazy = false,
         
         
@@ -440,6 +422,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     ...restIndicatorProps} = props;
     type Test1 = typeof restIndicatorProps
     type Test2 = Omit<Test1, keyof IndicatorProps>
+    
+    
+    
+    // states:
+    
+    // accessibilities:
+    const activePassiveState = useActivePassiveState<TElement>(props);
+    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isActive           = activePassiveState.active;
+    const isModal            = isVisible && !['hidden', 'interactive'].includes(backdropStyle);
     
     
     
