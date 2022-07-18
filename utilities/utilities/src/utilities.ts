@@ -4,9 +4,17 @@ import {
     default as React,
 }                           from 'react'
 
+// other libs:
+import {
+    // tests:
+    isBrowser,
+    isJsDom,
+}                           from 'is-in-browser'
+
 
 
 // utilities:
+export const isClientSide : boolean = isBrowser || isJsDom;
 
 export const isTypeOf = <TProps>(element: React.ReactNode, funcComponent: React.JSXElementConstructor<TProps>): element is React.ReactElement<TProps, React.JSXElementConstructor<TProps>> => {
     return (
