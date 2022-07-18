@@ -12,18 +12,57 @@ import {
 
 // cssfn:
 import type {
+    // css custom properties:
+    CssCustomSimpleRef,
+    
+    
+    
     // css known (standard) properties:
     CssKnownProps,
-}                           from '@cssfn/css-types'             // cssfn css specific types
+    
+    
+    
+    // cssfn properties:
+    CssRule,
+}                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
+    // rules:
+    rule,
+    variants,
+    states,
+    keyframes,
+    ifNotLastChild,
+    
+    
+    
+    //combinators:
+    children,
+    
+    
+    
     // styles:
     style,
+    vars,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // utilities:
+    escapeSvg,
+}                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
+}                           from '@cssfn/cssfn-react'                   // writes css in react hook
+import {
+    // types:
+    ReadonlyCssCustomRefs,
+    
+    
+    
+    // utilities:
+    cssVar,
+}                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
     
@@ -31,7 +70,9 @@ import {
     
     // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
+    usesPrefixedProps,
+    overwriteProps,
+}                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
 import {
@@ -49,11 +90,23 @@ import type {
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
+    // types:
+    StateMixin,
+    
+    
+    
     // hooks:
     usesSizeVariant,
+    ThemeName,
+    mildOf,
+    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
+    ActivePassiveVars,
+    ifActivating,
+    ifPassivating,
+    usesActivePassiveState as indicatorUsesActivePassiveState,
     useActivePassiveState,
     ActiveChangeEvent,
     ToggleActiveProps,
@@ -73,8 +126,66 @@ import {
 
 
 
+// hooks:
+
+// accessibilities:
+
+//#region activePassive
+/**
+ * Uses active & passive states.
+ * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ */
+export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+    // dependencies:
+    
+    // accessibilities:
+    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    
+    
+    
+    return [
+        () => style({
+            ...imports([
+                // accessibilities:
+                activeRule,
+            ]),
+            ...states([
+                ifActivating({
+                    ...vars({
+                        [actives.anim] : modals.animActive,
+                    }),
+                }),
+                ifPassivating({
+                    ...vars({
+                        [actives.anim] : modals.animPassive,
+                    }),
+                }),
+            ]),
+        }),
+        actives,
+    ];
+};
+//#endregion activePassive
+
+
+// appearances:
+
+//#region backdrop style
+export type BackdropStyle = 'hidden'|'interactive'|'static' // might be added more styles in the future
+export interface BackdropVariant {
+    backdropStyle ?: BackdropStyle
+}
+export const useBackdropVariant = (props: BackdropVariant) => {
+    return {
+        class: props.backdropStyle ?? null,
+    };
+};
+//#endregion backdrop style
+
+
+
 // styles:
-export const usesModalLayout = () => {
+export const usesBackdropLayout = () => {
     return style({
         ...imports([
             // layouts:
@@ -100,7 +211,7 @@ export const usesModalLayout = () => {
         }),
     });
 };
-export const usesModalVariants = () => {
+export const usesBackdropVariants = () => {
     // dependencies:
     
     // layouts:
@@ -118,7 +229,7 @@ export const usesModalVariants = () => {
         ]),
     });
 };
-export const usesModalStates = () => {
+export const usesBackdropStates = () => {
     return style({
         ...imports([
             // states:
@@ -127,16 +238,16 @@ export const usesModalStates = () => {
     });
 };
 
-export const useModalStyleSheet = createUseStyleSheet(() => ({
+export const useBackdropStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesModalLayout(),
+        usesBackdropLayout(),
         
         // variants:
-        usesModalVariants(),
+        usesBackdropVariants(),
         
         // states:
-        usesModalStates(),
+        usesBackdropStates(),
     ]),
 }), { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
