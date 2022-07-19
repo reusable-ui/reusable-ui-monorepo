@@ -586,15 +586,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         modalUiRefInternal,
     );
-    
-    const viewportElm : Element|null = (
-        viewportRef
-        ?
-        ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
-        :
-        (isClientSide ? document.body : null)
-    );
-    const portalRefInternal = useRef<HTMLDivElement|null>(null);
+    const portalRefInternal  = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -747,14 +739,38 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         } // if
     }, [isActive]);
-    
-    useIsomorphicLayoutEffect(() => {
+
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => { // delays the rendering of portal until the page is fully hydrated
         // conditions:
-        if (!viewportElm) return; // server side => no portal
+        if (!isClientSide) return; // client side only, server side => ignore
         
         
         
         // setups:
+        setIsHydrated(true); // re-render with hydrated version
+    }, []); // runs once at startup
+    
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isHydrated)  return; // server side -or- client side but not already hydrated => ignore
+        
+        
+        
+        // setups:
+        const viewportElm : Element = (
+            // custom viewport (if was set):
+            (
+                viewportRef
+                ?
+                ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
+                :
+                null
+            )
+            ??
+            // the default viewport is <body>:
+            document.body
+        );
         const portalElm = document.createElement('div');
         viewportElm.appendChild(portalElm);
         portalRefInternal.current = portalElm;
@@ -763,16 +779,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         // cleanups:
         return () => {
-            portalElm.parentElement?.removeChild(portalElm);
+            viewportElm.removeChild(portalElm);
             portalRefInternal.current = null;
         };
-    }, [viewportElm]);
+    }, [isHydrated, viewportRef]);
     
     
     
     // jsx:
     const portalElm = portalRefInternal.current;
-    if (!portalElm) return null; // page is not already hydrated or server side => nothing to render
+    if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
     return createPortal(
         <Indicator<TElement>
             // other props:
