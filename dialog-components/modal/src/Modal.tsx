@@ -16,11 +16,6 @@ import {
 
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomSimpleRef,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
     
@@ -37,7 +32,6 @@ import {
     variants,
     states,
     keyframes,
-    ifNotLastChild,
     
     
     
@@ -50,25 +44,11 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    escapeSvg,
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
-import {
-    // types:
-    ReadonlyCssCustomRefs,
-    
-    
-    
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                       // strongly typed of css variables
 import {
     cssConfig,
     
@@ -76,8 +56,6 @@ import {
     
     // utilities:
     usesCssProps,
-    usesPrefixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui:
@@ -95,6 +73,12 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
+    // types:
+    SemanticTag,
+    SemanticRole,
+    
+    
+    
     // react components:
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
@@ -106,10 +90,6 @@ import {
     
     // hooks:
     usesSizeVariant,
-    ThemeName,
-    mildOf,
-    usesAnim,
-    
     ToggleExcitedProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -129,6 +109,12 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
+
+
+
+// defaults:
+const _defaultModalUiSemanticTag  : SemanticTag  = [null, 'dialog'] // uses <div>           as the default semantic, fallbacks to <dialog>
+const _defaultModalUiSemanticRole : SemanticRole =        'dialog'  // uses [role="dialog"] as the default semantic
 
 
 
@@ -247,6 +233,22 @@ export const setFocusNext  = (parentElement : Element) => {
     }
 };
 
+const getViewportOrDefault = (viewportRef: React.RefObject<Element>|Element|null|undefined): Element => {
+    return (
+        // custom viewport (if was set):
+        (
+            viewportRef
+            ?
+            ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
+            :
+            null
+        )
+        ??
+        // the default viewport is <body>:
+        document.body
+    );
+};
+
 
 
 // hooks:
@@ -312,38 +314,36 @@ export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body
 // styles:
 export const usesBackdropLayout = () => {
     return style({
-        ...style({
-            // layouts:
-            display      : 'grid',
-            
-            // child default sizes:
-            justifyItems : 'center', // center horizontally
-            alignItems   : 'center', // center vertically
-            
-            
-            
-            // positions:
-            position     : 'absolute', // local <Modal>: absolute position
-            ...ifGlobalModal({
-                position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
-            }),
-            inset        : 0,          // span the <Modal> to the edges of <container>
-            zIndex       : 1040,
-            
-            
-            
-            // sizes:
-            // global <Modal>: fills the entire screen height:
-            ...ifGlobalModal({
-                boxSizing    : 'border-box', // the final size is including borders & paddings
-                minBlockSize : '100vh',
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(modals), // apply config's cssProps
+        // layouts:
+        display      : 'grid',
+        
+        // child default sizes:
+        justifyItems : 'center', // center horizontally
+        alignItems   : 'center', // center vertically
+        
+        
+        
+        // positions:
+        position     : 'absolute', // local <Modal>: absolute position
+        ...ifGlobalModal({
+            position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
         }),
+        inset        : 0,          // span the <Modal> to the edges of <container>
+        zIndex       : 1040,
+        
+        
+        
+        // sizes:
+        // global <Modal>: fills the entire screen height:
+        ...ifGlobalModal({
+            boxSizing    : 'border-box', // the final size is including borders & paddings
+            minBlockSize : '100vh',
+        }),
+        
+        
+        
+        // customize:
+        ...usesCssProps(modals), // apply config's cssProps
     });
 };
 export const usesBackdropVariants = () => {
@@ -542,8 +542,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         tabIndex,
         children: modalUiComponent,
     ...restIndicatorProps} = props;
-    type Test1 = typeof restIndicatorProps
-    type Test2 = Omit<Test1, keyof IndicatorProps>
     
     
     
@@ -739,9 +737,42 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         } // if
     }, [isActive]);
-
+    
+    // prevent the <viewport> from scrolling when in modal (blocking) mode:
+    useEffect(() => {
+        // conditions:
+        if (!isModal)  return; // only modal (blocking) mode
+        
+        
+        
+        // setups:
+        const viewportElm         = getViewportOrDefault(viewportRef);
+        
+        const scrollableElm       = (viewportElm === document.body) ? document.documentElement : viewportElm;
+        const scrollableEvent     = (viewportElm === document.body) ? document                 : viewportElm;
+        const currentScrollTop    = scrollableElm.scrollTop;
+        const currentScrollLeft   = scrollableElm.scrollLeft;
+        
+        const handlePreventScroll = (event: Event) => {
+            if (event.target === scrollableEvent) { // only handle click on the viewport, ignores click bubbling from the children
+                scrollableElm.scrollTop  = currentScrollTop;  // prevent from scrolling by keeping the initial scroll position
+                scrollableElm.scrollLeft = currentScrollLeft; // prevent from scrolling by keeping the initial scroll position
+            } // if
+        };
+        
+        scrollableEvent.addEventListener('scroll', handlePreventScroll);
+        
+        
+        
+        // cleanups:
+        return () => {
+            scrollableEvent.removeEventListener('scroll', handlePreventScroll);
+        };
+    }, [isModal]);
+    
+    // delays the rendering of portal until the page is fully hydrated
     const [isHydrated, setIsHydrated] = useState(false);
-    useEffect(() => { // delays the rendering of portal until the page is fully hydrated
+    useEffect(() => {
         // conditions:
         if (!isClientSide) return; // client side only, server side => ignore
         
@@ -751,6 +782,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         setIsHydrated(true); // re-render with hydrated version
     }, []); // runs once at startup
     
+    // setups & cleanups the portal:
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!isHydrated)  return; // server side -or- client side but not already hydrated => ignore
@@ -758,19 +790,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         
         // setups:
-        const viewportElm : Element = (
-            // custom viewport (if was set):
-            (
-                viewportRef
-                ?
-                ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
-                :
-                null
-            )
-            ??
-            // the default viewport is <body>:
-            document.body
-        );
+        const viewportElm = getViewportOrDefault(viewportRef);
         const portalElm = document.createElement('div');
         viewportElm.appendChild(portalElm);
         portalRefInternal.current = portalElm;
@@ -796,11 +816,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             
             
             
-            // semantics:
-            semanticRole={props.semanticRole ?? 'dialog'}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
@@ -823,8 +838,20 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     
                     
                     
+                    // semantics:
+                    ...(isReusableUiModalComponent ? {
+                        semanticTag  : (modalUiComponent.props as GenericProps<Element>).semanticTag  ?? _defaultModalUiSemanticTag,
+                        semanticRole : (modalUiComponent.props as GenericProps<Element>).semanticRole ?? _defaultModalUiSemanticRole,
+                    } : null),
+                    'aria-modal'     : modalUiComponent.props['aria-modal'] ?? (isModal || undefined),
+                    
+                    
+                    
                     // accessibilities:
-                    tabIndex : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
+                    tabIndex         : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
+                    ...((modalUiComponent.type === 'dialog') ? {
+                        open         : isVisible,
+                    } : null)
                 },
             )}
         </Indicator>
