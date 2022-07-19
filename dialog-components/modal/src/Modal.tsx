@@ -66,7 +66,7 @@ import {
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
-    useIsomorphicLayoutEffect,
+    useTriggerRender,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -90,6 +90,7 @@ import {
     
     // hooks:
     usesSizeVariant,
+    usesAnim,
     ToggleExcitedProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -313,37 +314,55 @@ export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body
 
 // styles:
 export const usesBackdropLayout = () => {
+    // dependencies:
+    
+    // animations:
+    const [animRule, anims] = usesAnim();
+    
+    
+    
     return style({
-        // layouts:
-        display      : 'grid',
-        
-        // child default sizes:
-        justifyItems : 'center', // center horizontally
-        alignItems   : 'center', // center vertically
-        
-        
-        
-        // positions:
-        position     : 'absolute', // local <Modal>: absolute position
-        ...ifGlobalModal({
-            position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
+        ...imports([
+            // animations:
+            animRule,
+        ]),
+        ...style({
+            // layouts:
+            display      : 'grid',
+            
+            // child default sizes:
+            justifyItems : 'center', // center horizontally
+            alignItems   : 'center', // center vertically
+            
+            
+            
+            // positions:
+            position     : 'absolute', // local <Modal>: absolute position
+            ...ifGlobalModal({
+                position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
+            }),
+            inset        : 0,          // span the <Modal> to the edges of <container>
+            zIndex       : 1040,
+            
+            
+            
+            // sizes:
+            // global <Modal>: fills the entire screen height:
+            ...ifGlobalModal({
+                boxSizing    : 'border-box', // the final size is including borders & paddings
+                minBlockSize : '100vh',
+            }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(modals), // apply config's cssProps
+            
+            
+            
+            // animations:
+            anim         : anims.anim,
         }),
-        inset        : 0,          // span the <Modal> to the edges of <container>
-        zIndex       : 1040,
-        
-        
-        
-        // sizes:
-        // global <Modal>: fills the entire screen height:
-        ...ifGlobalModal({
-            boxSizing    : 'border-box', // the final size is including borders & paddings
-            minBlockSize : '100vh',
-        }),
-        
-        
-        
-        // customize:
-        ...usesCssProps(modals), // apply config's cssProps
     });
 };
 export const usesBackdropVariants = () => {
@@ -772,21 +791,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     }, [isModal]);
     
     // delays the rendering of portal until the page is fully hydrated
-    const [isHydrated, setIsHydrated] = useState(false);
+    const [triggerRender] = useTriggerRender();
     useEffect(() => {
         // conditions:
         if (!isClientSide) return; // client side only, server side => ignore
-        
-        
-        
-        // setups:
-        setIsHydrated(true); // re-render with hydrated version
-    }, []); // runs once at startup
-    
-    // setups & cleanups the portal:
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (!isHydrated)  return; // server side -or- client side but not already hydrated => ignore
         
         
         
@@ -796,6 +804,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         viewportElm.appendChild(portalElm);
         portalRefInternal.current = portalElm;
         
+        triggerRender(); // re-render with hydrated version
+        
         
         
         // cleanups:
@@ -803,7 +813,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             viewportElm.removeChild(portalElm);
             portalRefInternal.current = null;
         };
-    }, [isHydrated, viewportRef]);
+    }, [viewportRef]);
     
     
     
