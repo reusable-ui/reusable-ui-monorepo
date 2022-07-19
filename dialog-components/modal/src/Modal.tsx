@@ -557,6 +557,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     // states:
     const [excitedDn, setExcitedDn] = useState(false);
+    // @ts-ignore
     const excitedFn = excited ?? excitedDn;
     
     
