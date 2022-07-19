@@ -470,7 +470,7 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
     children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
-export type ModalActionType = 'shortcut'|'overlay'|{}
+export type ModalActionType = 'shortcut'|'backdrop'|{}
 export interface ModalActiveChangeEvent extends ActiveChangeEvent {
     actionType : ModalActionType
 }
@@ -523,7 +523,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         
         // behaviors:
-        backdropStyle = 'static',
+        backdropStyle = undefined,
         lazy = false,
         
         
@@ -548,7 +548,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     const activePassiveState = useActivePassiveState<TElement>(props);
     const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isActive           = activePassiveState.active;
-    const isModal            = isVisible && !['hidden', 'interactive'].includes(backdropStyle);
+    const isModal            = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
     
     
@@ -585,8 +585,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     
     // handlers:
-    const handleActiveChange    = onActiveChange;
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleActiveChange        = onActiveChange;
+    const handleKeyDownInternal     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -631,7 +631,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     }, [handleActiveChange]);
-    const handleKeyDown         = useMergeEvents(
+    const handleKeyDown             = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -640,7 +640,63 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // range handlers:
         handleKeyDownInternal,
     );
-    const handleAnimationEnd    = useMergeEvents(
+    const handleMouseDownInternal   = useEvent<React.MouseEventHandler<TElement> & React.TouchEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented)               return; // the event was already handled by user => nothing to do
+        if (event.target !== event.currentTarget) return; // ignore bubbling from <ModalUi>
+        
+        
+        
+        // actions:
+        if (backdropStyle === 'static') {
+            setExcitedDn(true); // make <ModalUi> blinking
+            (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true }); // re-focus to the <ModalUi>, so the user able to use [esc] key to close the <Modal>
+        }
+        else {
+            // backdrop clicked => request to hide the <Modal>:
+            handleActiveChange?.({ newActive: false, actionType: 'backdrop' } as TModalActiveChangeEvent);
+        } // if
+        if (event.type !== 'touchstart') event.preventDefault(); // handled
+    }, [backdropStyle]);
+    const handleMouseDown           = useMergeEvents(
+        // preserves the original `onMouseDown` from `props`:
+        props.onMouseDown,
+        
+        
+        
+        // actions:
+        handleMouseDownInternal,
+    );
+    const handleTouchStart          = useMergeEvents(
+        // preserves the original `onTouchStart` from `props`:
+        props.onTouchStart,
+        
+        
+        
+        // actions:
+        handleMouseDownInternal,
+    );
+    const handleContextMenuInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented)               return; // the event was already handled by user => nothing to do
+        if (event.target !== event.currentTarget) return; // only cancels the contextMenu at the <overlay>, allows at the <ModalUi>
+        
+        
+        
+        // actions:
+        // cancel the contextMenu:
+        event.preventDefault(); // handled
+    }, []);
+    const handleContextMenu         = useMergeEvents(
+        // preserves the original `onContextMenu` from `props`:
+        props.onContextMenu,
+        
+        
+        
+        // actions:
+        handleContextMenuInternal,
+    );
+    const handleAnimationEnd        = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -661,7 +717,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // setups:
         if (isActive) {
             // when actived => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
-            (modalUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+            (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         } // if
     }, [isActive]);
     
@@ -687,6 +743,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             
             // handlers:
             onKeyDown={handleKeyDown}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            onContextMenu={handleContextMenu}
             onAnimationEnd={handleAnimationEnd}
         >
             {/* <ModalUi> */}
