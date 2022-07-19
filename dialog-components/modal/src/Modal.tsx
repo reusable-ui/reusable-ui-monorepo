@@ -10,6 +10,9 @@ import {
     useEffect,
     useState,
 }                           from 'react'
+import {
+    createPortal,
+}                           from 'react-dom'
 
 // cssfn:
 import type {
@@ -85,9 +88,11 @@ import {
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // react components:
@@ -582,6 +587,28 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         modalUiRefInternal,
     );
     
+    const viewportElm : Element|null = (
+        viewportRef
+        ?
+        ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
+        :
+        (isClientSide ? document.body : null)
+    );
+    const portalRefInternal = useRef<HTMLDivElement|null>(null);
+    
+    
+    
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        backdropVariant.class,
+    );
+    
     
     
     // handlers:
@@ -721,23 +748,46 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         } // if
     }, [isActive]);
     
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!viewportElm) return; // server side => no portal
+        
+        
+        
+        // setups:
+        const portalElm = document.createElement('div');
+        viewportElm.appendChild(portalElm);
+        portalRefInternal.current = portalElm;
+        
+        
+        
+        // cleanups:
+        return () => {
+            portalElm.parentElement?.removeChild(portalElm);
+            portalRefInternal.current = null;
+        };
+    }, [viewportElm]);
+    
     
     
     // jsx:
-    return (
+    const portalElm = portalRefInternal.current;
+    if (!portalElm) return null; // page is not already hydrated or server side => nothing to render
+    return createPortal(
         <Indicator<TElement>
             // other props:
             {...restIndicatorProps}
             
             
             
-            // variants:
-            nude={props.nude ?? true}
+            // semantics:
+            semanticRole={props.semanticRole ?? 'dialog'}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            variantClasses={variantClasses}
             
             
             
@@ -762,7 +812,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                 },
             )}
         </Indicator>
-    );
+    , portalElm);
 };
 export {
     Modal,
