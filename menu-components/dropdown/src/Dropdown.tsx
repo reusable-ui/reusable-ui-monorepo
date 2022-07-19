@@ -367,7 +367,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         // setups:
         if (isActive) {
             // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
-            (dropdownUiRefInternal.current as HTMLOrSVGElement|null)?.focus({ preventScroll: true });
+            (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
             // in case of pressing [esc] key to close the <DropdownUi>,
