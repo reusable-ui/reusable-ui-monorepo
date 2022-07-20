@@ -35,6 +35,10 @@ import {
 
 // reusable-ui:
 import {
+    // styles:
+    stripoutFocusableElement,
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+import {
     // utilities:
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
@@ -43,6 +47,7 @@ import {
     useEvent,
     useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // react components:
@@ -105,6 +110,24 @@ export { defaultOrientationRuleOptions };
 
 
 // styles:
+export const usesDropdownUiLayout = () => {
+    return style({
+        ...imports([
+            // resets:
+            stripoutFocusableElement(), // clear browser's default styles
+        ]),
+    });
+};
+
+export const useDropdownUiStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesDropdownUiLayout(),
+    ]),
+}), { specificityWeight: 0, id: 'g8pud07qti' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
 export const usesDropdownLayout = (options?: OrientationVariantOptions) => {
     return style({
         ...imports([
@@ -234,6 +257,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useDropdownStyleSheet();
+    const uiStyleSheet       = useDropdownUiStyleSheet();
     
     
     
@@ -288,6 +312,25 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         dropdownUiRefInternal,
     );
     const prevFocusRef          = useRef<Element|null>(null);
+    
+    
+    
+    // classes:
+    const dropdownUiClasses = useMergeClasses(
+        // preserves the original `classes` from `dropdownUiComponent`:
+        (
+            isReusableUiDropdownComponent
+            ?
+            (dropdownUiComponent.props as GenericProps<Element>).classes
+            :
+            ((dropdownUiComponent.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
+        ),
+        
+        
+        
+        // styles:
+        uiStyleSheet.main,
+    );
     
     
     
@@ -476,6 +519,15 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
                 {
                     // refs:
                     [isReusableUiDropdownComponent ? 'elmRef' : 'ref'] : mergedDropdownUiRef,
+                    
+                    
+                    
+                    // classes:
+                    ...(isReusableUiDropdownComponent ? {
+                        classes      : dropdownUiClasses,
+                    } : {
+                        className    : dropdownUiClasses.filter((c) => !!c).join(' '),
+                    }),
                     
                     
                     
