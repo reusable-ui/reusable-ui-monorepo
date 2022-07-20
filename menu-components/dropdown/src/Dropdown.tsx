@@ -287,6 +287,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         
         dropdownUiRefInternal,
     );
+    const prevFocusRef          = useRef<Element|null>(null);
     
     
     
@@ -366,20 +367,18 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     useEffect(() => {
         // setups:
         if (isActive) {
+            // backup the current focused element (if any):
+            prevFocusRef.current = document.activeElement;
+            
             // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
             (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
-            // in case of pressing [esc] key to close the <DropdownUi>,
-            // switch the focus to <TargetRef>, so the <Dropdown> can be activated by [space] key:
-            const focusedElement = document.activeElement;
-            const dropdownUi     = dropdownUiRefInternal.current;
-            if (focusedElement && dropdownUi && isSelfOrDescendantOf(focusedElement, dropdownUi)) {
-                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
-                (target as HTMLElement|SVGElement|null|undefined)?.focus?.();
-            } // if
+            // restore the previously focused element (if any):
+            (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            prevFocusRef.current = null; // unreference the restored focused element
         } // if
-    }, [isActive, props.targetRef]);
+    }, [isActive]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
