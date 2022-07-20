@@ -1656,33 +1656,33 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
     
     
     
-    const asyncTriggerRender = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncTriggerRender = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
         return () => {
             // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) clearTimeout(asyncTriggerRender.current);
+            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
         };
     }, []); // runs once on startup
     
     
     
     if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
-        wasExcited.current = excitedFn; // remember the last change
-        
-        
-        
         const continueToRun = excitedFn;
         if (continueToRun) {
             // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) clearTimeout(asyncTriggerRender.current);
+            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
             
             
             
             // wait until the non-excited `<Basic>` has been applied by browser ui, then re-render the excited `<Basic>`
-            asyncTriggerRender.current = setTimeout(() => {
+            asyncTriggerRender.current = requestIdleCallback(() => {
+                wasExcited.current = excitedFn; // remember the last change
                 triggerRender(); // re-render the excited `<Basic>`
-            }, 0); // 0 = runs immediately after all micro tasks finished
+            });
+        }
+        else {
+            wasExcited.current = excitedFn; // remember the last change
         } // if
     } // if
     
@@ -1707,7 +1707,7 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
         if (continueToRun) {
             triggerRender(); // need to restart the animation
         } // if
-    }, [onExcitedChange, triggerRender]);
+    }, [onExcitedChange]);
     
     
     
