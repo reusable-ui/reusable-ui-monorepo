@@ -281,12 +281,15 @@ export const usesNudeVariant = (): VariantMixin<NudeVars> => {
                     
                     // borders:
                     [borders.borderWidth           ] : '0px', // discard border
-                 // // remove rounded corners on top:
-                 // [borders.borderStartStartRadius] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // [borders.borderStartEndRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // // remove rounded corners on bottom:
-                 // [borders.borderEndStartRadius  ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
-                 // [borders.borderEndEndRadius    ] : '0px', // do not discard borderRadius, causing boxShadow looks weird
+                    
+                    // remove rounded corners on top:
+                    [borders.borderStartStartRadius] : '0px', // discard borderRadius
+                    [borders.borderStartEndRadius  ] : '0px', // discard borderRadius
+                    // remove rounded corners on bottom:
+                    [borders.borderEndStartRadius  ] : '0px', // discard borderRadius
+                    [borders.borderEndEndRadius    ] : '0px', // discard borderRadius
+                    
+                    boxShadow : ['none', '!important'],       // no shadow & no focus animation
                     
                     
                     
