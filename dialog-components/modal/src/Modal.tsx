@@ -100,7 +100,6 @@ import {
     // hooks:
     usesSizeVariant,
     usesAnim,
-    ToggleExcitedProps,
     useExcitedState,
     usesExcitedState,
 }                           from '@reusable-ui/basic'           // a base component
@@ -565,7 +564,6 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
         // accessibilities:
         Pick<AccessibilityProps, 'active'|'inheritActive'>,
         Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
-        ToggleExcitedProps,
         
         // behaviors:
         BackdropVariant,
@@ -605,9 +603,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         // accessibilities:
         onActiveChange,
-        
-        excited,
-        onExcitedChange,
         
         
         
