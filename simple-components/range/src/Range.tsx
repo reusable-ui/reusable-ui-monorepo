@@ -30,7 +30,6 @@ import type {
 import {
     // rules:
     rule,
-    variants,
     states,
     
     
@@ -110,7 +109,6 @@ import {
     usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
-    ifNude,
     mildOf,
     usesBackg,
     extendsBorder,
@@ -324,7 +322,7 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
                     
                     
                     // animations:
-                    boxShadow      : ['initial', '!important'], // no focus animation
+                    boxShadow      : ['none', '!important'], // no shadow & no focus animation
                     
                     
                     
@@ -500,12 +498,6 @@ export const usesRangeVariants = () => {
             
             // layouts:
             sizeVariantRule,
-        ]),
-        ...variants([
-            ifNude({
-                // animations:
-                boxShadow : ['initial', '!important'], // no focus animation on slider, but has one in thumb
-            }),
         ]),
     });
 };
