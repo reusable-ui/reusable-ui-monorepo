@@ -1649,7 +1649,7 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
      * `true`  => was excited  
      * `false` => was normal
      */
-    const wasExcited = useRef(excitedFn);
+    const wasExcited = useRef<boolean|null>(excitedFn);
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
@@ -1668,7 +1668,7 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
     
     
     if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
-        const continueToRun = excitedFn;
+        const continueToRun = excitedFn && (wasExcited.current === null);
         if (continueToRun) {
             // cancel out previously asyncTriggerRender (if any):
             if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
@@ -1699,7 +1699,7 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
         // clean up finished animation
         
         const continueToRun = wasExcited.current;
-        wasExcited.current = false; // mark the animation was completed (stopped)
+        wasExcited.current = null; // mark the animation need to restart
         
         Promise.resolve().then(() => { // trigger the event after the <Basic> has finished rendering (for controllable <Basic>)
             onExcitedChange?.(false); // request to stop
