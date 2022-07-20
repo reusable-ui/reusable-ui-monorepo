@@ -51,7 +51,7 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <Modal active={showModal} onActiveChange={handleActiveChange}>
+                <Modal active={showModal} onActiveChange={handleActiveChange} backdropStyle='static'>
                     <div tabIndex={-1} style={modalUiStyle}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>

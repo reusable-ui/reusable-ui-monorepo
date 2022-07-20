@@ -97,6 +97,8 @@ import {
     usesSizeVariant,
     usesAnim,
     ToggleExcitedProps,
+    useExcitedState,
+    usesExcitedState,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -312,6 +314,53 @@ export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body
 
 
 // styles:
+export const usesBackdropUiLayout = () => {
+    // dependencies:
+    
+    // animations:
+    const [animRule, anims] = usesAnim();
+    
+    
+    
+    return style({
+        ...imports([
+            // animations:
+            animRule,
+        ]),
+        ...style({
+            // animations:
+            anim : anims.anim,
+        }),
+    });
+};
+export const usesBackdropUiStates = () => {
+    // dependencies:
+    
+    // states:
+    const [excitedStateRule] = usesExcitedState();
+    
+    
+    
+    return style({
+        ...imports([
+            // accessibilities:
+            excitedStateRule,
+        ]),
+    });
+};
+
+export const useBackdropUiStyleSheet = createUseStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesBackdropUiLayout(),
+        
+        // states:
+        usesBackdropUiStates(),
+    ]),
+}), { specificityWeight: 0, id: 'u4teynvq1y' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
 export const usesBackdropLayout = () => {
     // dependencies:
     
@@ -528,6 +577,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
 const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>(props: ModalProps<TElement, TModalActiveChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropStyleSheet();
+    const uiStyleSheet       = useBackdropUiStyleSheet();
     
     
     
@@ -580,12 +630,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     const isActive           = activePassiveState.active;
     const isModal            = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
-    
-    
-    // states:
     const [excitedDn, setExcitedDn] = useState(false);
-    // @ts-ignore
-    const excitedFn = excited ?? excitedDn;
+    const excitedState = useExcitedState<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: setExcitedDn });
     
     
     
@@ -634,6 +680,24 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         // accessibilities:
         activePassiveState.class,
+    );
+    const modalUiStateClasses = useMergeClasses(
+        // preserves the original `stateClasses` from `modalUiComponent`:
+        (
+            isReusableUiModalComponent
+            ?
+            (modalUiComponent.props as GenericProps<Element>).stateClasses
+            :
+            ((modalUiComponent.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
+        ),
+        
+        
+        
+        // styles:
+        uiStyleSheet.main,
+        
+        // accessibilities:
+        excitedState.class,
     );
     
     
@@ -761,6 +825,17 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // accessibilities:
         activePassiveState.handleAnimationEnd,
     );
+    const modalUiHandleAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
+        // preserves the original `onAnimationEnd` from `modalUiComponent`:
+        modalUiComponent.props.onAnimationEnd,
+        
+        
+        
+        // states:
+        
+        // accessibilities:
+        excitedState.handleAnimationEnd,
+    );
     
     
     
@@ -832,6 +907,18 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         };
     }, [viewportRef]);
     
+    // stops the excited state when modal is closed:
+    useEffect(() => {
+        // conditions:
+        if (isActive)   return; // <Modal> is still shown => ignore
+        if (!excitedDn) return; // <Modal> is not excited => ignore
+        
+        
+        
+        // actions:
+        setExcitedDn(false);
+    }, [isActive, excitedDn]);
+    
     
     
     // jsx:
@@ -877,8 +964,19 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     ...(isReusableUiModalComponent ? {
                         semanticTag  : (modalUiComponent.props as GenericProps<Element>).semanticTag  ?? _defaultModalUiSemanticTag,
                         semanticRole : (modalUiComponent.props as GenericProps<Element>).semanticRole ?? _defaultModalUiSemanticRole,
-                    } : null),
+                    } : {
+                        role         : modalUiComponent.props.role ?? _defaultModalUiSemanticRole,
+                    }),
                     'aria-modal'     : modalUiComponent.props['aria-modal'] ?? (isModal || undefined),
+                    
+                    
+                    
+                    // classes:
+                    ...(isReusableUiModalComponent ? {
+                        clases       : modalUiStateClasses,
+                    } : {
+                        className    : modalUiStateClasses.filter((c) => !!c).join(' '),
+                    }),
                     
                     
                     
@@ -886,7 +984,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     tabIndex         : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
                     ...((modalUiComponent.type === 'dialog') ? {
                         open         : isVisible,
-                    } : null)
+                    } : null),
+                    
+                    
+                    
+                    // handlers:
+                    onAnimationEnd   : modalUiHandleAnimationEnd,
                 },
             )}
         </Generic>
