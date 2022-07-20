@@ -265,13 +265,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         '99%' : frameIntermediateInline,
         to    : frameActivedInline,
     });
-    keyframesActive.value  = 'activeInline';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    keyframesActiveInline.value  = 'activeInline';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
     const [keyframesPassiveInlineRule, keyframesPassiveInline] = keyframes({
         from  : frameActivedInline,
         '1%'  : frameIntermediateInline,
         to    : framePassivedInline,
     });
-    keyframesPassive.value = 'passiveInline'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesPassiveInline.value = 'passiveInline'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
     //#endregion keyframes
     
     
