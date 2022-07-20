@@ -329,7 +329,7 @@ export const usesBackdropUiLayout = () => {
     return style({
         ...imports([
             // resets:
-            stripoutFocusableElement(),     // clear browser's default styles
+            stripoutFocusableElement(), // clear browser's default styles
             
             // animations:
             animRule,
