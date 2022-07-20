@@ -318,7 +318,7 @@ export const usesButtonVariants = () => {
             rule('.ghost', {
                 ...style({
                     // borders:
-                    boxShadow : ['none', '!important'], // no focus animation
+                    boxShadow : ['none', '!important'], // no shadow & no focus animation
                     
                     
                     
