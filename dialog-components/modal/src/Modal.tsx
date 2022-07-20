@@ -25,7 +25,7 @@ import type {
     CssRule,
     
     CssStyleCollection,
-}                           from '@cssfn/css-types'                     // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -44,11 +44,11 @@ import {
     style,
     vars,
     imports,
-}                           from '@cssfn/cssfn'                         // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'                   // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
     
@@ -56,18 +56,18 @@ import {
     
     // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'                    // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // styles:
     stripoutFocusableElement,
-}                           from '@reusable-ui/stripouts'               // removes browser's default stylesheet
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // utilities:
     isClientSide,
     isReusableUiComponent,
-}                           from '@reusable-ui/utilities'               // common utility functions
+}                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
     useTriggerRender,
@@ -75,11 +75,11 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'                   // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // react components:
     AccessibilityProps,
-}                           from '@reusable-ui/accessibilities'         // an accessibility management system
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
     // types:
     SemanticTag,
@@ -90,7 +90,7 @@ import {
     // react components:
     GenericProps,
     Generic,
-}                           from '@reusable-ui/generic'                 // a generic component
+}                           from '@reusable-ui/generic'         // a generic component
 import {
     // types:
     StateMixin,
@@ -103,7 +103,7 @@ import {
     ToggleExcitedProps,
     useExcitedState,
     usesExcitedState,
-}                           from '@reusable-ui/basic'                   // a base component
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ActivePassiveVars,
@@ -114,7 +114,7 @@ import {
     useActivePassiveState,
     ActiveChangeEvent,
     ToggleActiveProps,
-}                           from '@reusable-ui/indicator'               // a base component
+}                           from '@reusable-ui/indicator'       // a base component
 
 
 
