@@ -361,6 +361,11 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
             
             
             
+            // variants:
+            nude={props.nude ?? true}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
