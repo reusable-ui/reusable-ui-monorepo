@@ -666,6 +666,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         modalUiRefInternal,
     );
     const portalRefInternal  = useRef<HTMLDivElement|null>(null);
+    const prevFocusRef       = useRef<Element|null>(null);
     
     
     
@@ -852,8 +853,15 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     useEffect(() => {
         // setups:
         if (isActive) {
+            // backup the current focused element (if any):
+            prevFocusRef.current = document.activeElement;
+            
             // when actived => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
             (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+        }
+        else {
+            // restore the previously focused element (if any):
+            (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         } // if
     }, [isActive]);
     
