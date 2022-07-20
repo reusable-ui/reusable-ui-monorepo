@@ -862,6 +862,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         else {
             // restore the previously focused element (if any):
             (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            prevFocusRef.current = null; // unreference the restored focused element
         } // if
     }, [isActive]);
     
