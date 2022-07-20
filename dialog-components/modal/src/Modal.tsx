@@ -680,7 +680,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // variants:
         backdropVariant.class,
     );
-    const stateClasses = useMergeClasses(
+    const stateClasses   = useMergeClasses(
         // preserves the original `stateClasses`:
         props.stateClasses,
         
@@ -689,12 +689,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // accessibilities:
         activePassiveState.class,
     );
-    const modalUiStateClasses = useMergeClasses(
-        // preserves the original `stateClasses` from `modalUiComponent`:
+    const modalUiClasses = useMergeClasses(
+        // preserves the original `classes` from `modalUiComponent`:
         (
             isReusableUiModalComponent
             ?
-            (modalUiComponent.props as GenericProps<Element>).stateClasses
+            (modalUiComponent.props as GenericProps<Element>).classes
             :
             ((modalUiComponent.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
         ),
@@ -989,9 +989,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     
                     // classes:
                     ...(isReusableUiModalComponent ? {
-                        clases       : modalUiStateClasses,
+                        classes      : modalUiClasses,
                     } : {
-                        className    : modalUiStateClasses.filter((c) => !!c).join(' '),
+                        className    : modalUiClasses.filter((c) => !!c).join(' '),
                     }),
                     
                     
