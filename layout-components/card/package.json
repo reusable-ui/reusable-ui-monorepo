@@ -43,7 +43,6 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/indicator": "^5.0.0",
-    "@reusable-ui/stripouts": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

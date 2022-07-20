@@ -42,10 +42,6 @@ import {
 
 // reusable-ui:
 import {
-    // styles:
-    stripoutFocusableElement,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
     // hooks:
     useMergeEvents,
     useMergeClasses,
@@ -270,9 +266,6 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
     
     return style({
         ...imports([
-            // resets:
-            stripoutFocusableElement(),     // clear browser's default styles
-            
             // borders:
             borderRule,
             usesBorderAsContainer(options), // make a nicely rounded corners
