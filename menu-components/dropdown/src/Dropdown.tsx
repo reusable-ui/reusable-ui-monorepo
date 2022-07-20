@@ -492,11 +492,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             
-            // variants:
-            nude={props.nude ?? true}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             
