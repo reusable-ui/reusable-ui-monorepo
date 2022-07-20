@@ -2,6 +2,7 @@ import {
     default as React,
     useState,
     useCallback,
+    useMemo,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
@@ -26,6 +27,9 @@ function App() {
         console.log('onActiveChange', event.newActive, event.actionType);
         setShowModal(event.newActive);
     }, []);
+    const modalUiStyle = useMemo<React.CSSProperties>(() => ({
+        background: 'white',
+    }), []);
     
     
     
@@ -47,8 +51,8 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <Modal theme='primary' active={showModal} onActiveChange={handleActiveChange}>
-                    <div tabIndex={-1}>
+                <Modal active={showModal} onActiveChange={handleActiveChange}>
+                    <div tabIndex={-1} style={modalUiStyle}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>

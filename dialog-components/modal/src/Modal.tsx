@@ -72,7 +72,11 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import type {
+import {
+    // react components:
+    AccessibilityProps,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
     // types:
     SemanticTag,
     SemanticRole,
@@ -81,6 +85,7 @@ import type {
     
     // react components:
     GenericProps,
+    Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
     // types:
@@ -103,12 +108,6 @@ import {
     useActivePassiveState,
     ActiveChangeEvent,
     ToggleActiveProps,
-    
-    
-    
-    // react components:
-    IndicatorProps,
-    Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
 
 
@@ -502,12 +501,13 @@ export interface ModalActiveChangeEvent extends ActiveChangeEvent {
 export interface ModalProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
     extends
         // bases:
-        Omit<IndicatorProps<TElement>,
+        Omit<GenericProps<TElement>,
             // children:
             |'children' // we redefined `children` prop as a <ModalUi> component
         >,
         
         // accessibilities:
+        Pick<AccessibilityProps, 'active'|'inheritActive'>,
         Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
         ToggleExcitedProps,
         
@@ -538,6 +538,14 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     // rest props:
     const {
+        // remove states props:
+        
+        // accessibilities:
+        active          : _active,
+        inheritActive   : _inheritActive,
+        
+        
+        
         // accessibilities:
         onActiveChange,
         
@@ -617,6 +625,15 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         // variants:
         backdropVariant.class,
+    );
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        activePassiveState.class,
     );
     
     
@@ -821,7 +838,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     const portalElm = portalRefInternal.current;
     if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
     return createPortal(
-        <Indicator<TElement>
+        <Generic<TElement>
             // other props:
             {...restIndicatorProps}
             
@@ -830,6 +847,13 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            stateClasses={stateClasses}
+            
+            
+            
+            {...(isActive ? {
+                'data-active': true,
+            } : null)}
             
             
             
@@ -865,7 +889,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
                     } : null)
                 },
             )}
-        </Indicator>
+        </Generic>
     , portalElm);
 };
 export {
