@@ -324,6 +324,16 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
     
     
     
+    // rest props:
+    const {
+        // remove props:
+        
+        // layouts:
+        orientation : _orientation,
+    ...restPopupProps} = props;
+    
+    
+    
     // classes:
     const variantClasses = useMergeClasses(
         // preserves the original `variantClasses`:
@@ -341,7 +351,7 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
     return (
         <Popup<TElement>
             // other props:
-            {...props}
+            {...restPopupProps}
             
             
             
