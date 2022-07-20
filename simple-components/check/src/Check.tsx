@@ -655,7 +655,7 @@ export const usesCheckVariants = () => {
                 
                 
                 // animations:
-                boxShadow : ['initial'    , '!important'], // no focus animation
+                boxShadow : ['none'       , '!important'], // no shadow & no focus animation
             }),
         ], { specificityWeight: 2 }),
     });
