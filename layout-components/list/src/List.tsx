@@ -70,7 +70,6 @@ import {
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // styles:
-    stripoutFocusableElement,
     stripoutList,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
@@ -623,7 +622,6 @@ export const usesListLayout = (options?: OrientationVariantOptions) => {
     return style({
         ...imports([
             // resets:
-            stripoutFocusableElement(),     // clear browser's default styles
             stripoutList(),                 // clear browser's default styles
             
             // borders:
