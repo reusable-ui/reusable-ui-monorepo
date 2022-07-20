@@ -651,11 +651,6 @@ export const usesCheckVariants = () => {
             ifNude({
                 // foregrounds:
                 foreg     : [milds.foregFn, '!important'], // no valid/invalid animation
-                
-                
-                
-                // animations:
-                boxShadow : ['none'       , '!important'], // no shadow & no focus animation
             }),
         ], { specificityWeight: 2 }),
     });
