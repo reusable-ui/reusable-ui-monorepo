@@ -613,7 +613,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         
         // behaviors:
         backdropStyle = undefined,
-        lazy = false,
+        lazy          = false,
         
         
         
@@ -625,7 +625,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // components:
         tabIndex,
         children: modalUiComponent,
-    ...restIndicatorProps} = props;
+    ...restGenericProps} = props;
     
     
     
@@ -934,7 +934,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     return createPortal(
         <Generic<TElement>
             // other props:
-            {...restIndicatorProps}
+            {...restGenericProps}
             
             
             
