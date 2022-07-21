@@ -1,5 +1,5 @@
-simplifiy Dropdown to Modal:
-* getAllPossibleFocusableElements => getFocusableElements
+fix <Alert> close button
+test tree shake a Dropdown without Modal
 
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=.*?;
