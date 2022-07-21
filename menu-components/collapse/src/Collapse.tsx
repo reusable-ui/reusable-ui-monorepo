@@ -42,6 +42,14 @@ import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import type {
+    // react components:
+    AccessibilityProps,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import type {
+    // react components:
+    GenericProps,
+}                           from '@reusable-ui/generic'         // a generic component
 import {
     // types:
     StateMixin,
@@ -49,7 +57,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     OrientationName,
     OrientationVariantOptions,
     defaultBlockOrientationVariantOptions,
@@ -57,13 +64,20 @@ import {
     usesOrientationVariant,
     OrientationVariant,
     useOrientationVariant,
+    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ActivePassiveVars,
     ifActivating,
     ifPassivating,
+    ifPassived,
     usesActivePassiveState as indicatorUsesActivePassiveState,
+    
+    
+    
+    // react components:
+    IndicatorProps,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // types:
@@ -72,13 +86,6 @@ import {
     PopupStrategy,
     PopupPosition,
     PopupSide,
-    
-    
-    
-    // styles:
-    usesPopupLayout,
-    usesPopupVariants,
-    usesPopupStates,
     
     
     
@@ -147,10 +154,17 @@ export const usesCollapseLayout = (options?: OrientationVariantOptions) => {
     
     
     
+    // dependencies:
+    
+    // animations:
+    const [animRule, anims] = usesAnim();
+    
+    
+    
     return style({
         ...imports([
-            // layouts:
-            usesPopupLayout(),
+            // animations:
+            animRule,
         ]),
         ...style({
             // customize:
@@ -163,25 +177,12 @@ export const usesCollapseLayout = (options?: OrientationVariantOptions) => {
                 // overwrites propName = propName{Block}:
                 ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
             }),
-        }),
-    });
-};
-export const usesCollapseVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(collapses);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesPopupVariants(),
             
-            // layouts:
-            sizeVariantRule,
-        ]),
+            
+            
+            // animations:
+            anim : anims.anim,
+        }),
     });
 };
 export const usesCollapseStates = () => {
@@ -194,11 +195,14 @@ export const usesCollapseStates = () => {
     
     return style({
         ...imports([
-            // states:
-            usesPopupStates(),
-            
             // accessibilities:
             activePassiveStateRule,
+        ]),
+        ...states([
+            ifPassived({
+                // appearances:
+                display: 'none', // hide the <Collapse>
+            }),
         ]),
     });
 };
@@ -207,9 +211,6 @@ export const useCollapseStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesCollapseLayout(),
-        
-        // variants:
-        usesCollapseVariants(),
         
         // states:
         usesCollapseStates(),
@@ -306,7 +307,11 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
 export interface CollapseProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        PopupProps<TElement>,
+        GenericProps<TElement>,
+        Omit<PopupProps<TElement>, keyof IndicatorProps<TElement>>, // all props from <Popup> but not all props from the ancestors
+        
+        // accessibilities:
+        Pick<AccessibilityProps, 'active'|'inheritActive'>,
         
         // layouts:
         OrientationVariant
@@ -356,13 +361,8 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'dialog'}
+            semanticRole={props.semanticRole ?? ''}
             aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
-            
-            
-            
-            // variants:
-            nude={props.nude ?? true}
             
             
             

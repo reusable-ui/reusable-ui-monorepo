@@ -39,7 +39,7 @@ function App() {
                 <button onClick={() => setShowCollapse(!showCollapse)}>
                     I'm here
                 </button>
-                <Collapse theme='primary' active={showCollapse}>
+                <Collapse active={showCollapse}>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
