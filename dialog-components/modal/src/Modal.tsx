@@ -627,7 +627,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     // verifies:
     React.Children.only(modalUiComponent);
-    const isReusableUiModalComponent : boolean = isReusableUiComponent(modalUiComponent);
+    const isReusableUiModalComponent : boolean = isReusableUiComponent<GenericProps<Element>>(modalUiComponent);
     if (!isReusableUiModalComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(modalUiComponent)) throw Error('Invalid child element.');
     
     
