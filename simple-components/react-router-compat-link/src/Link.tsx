@@ -29,6 +29,10 @@ import {
     useEvent,
     useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import type {
+    // react components:
+    GenericProps,
+}                           from '@reusable-ui/generic'         // a generic component
 
 
 
@@ -99,7 +103,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     
     // jsx:
-    const isReusableUiLinkComponent : boolean = isReusableUiComponent(linkComponent);
+    const isReusableUiLinkComponent : boolean = isReusableUiComponent<GenericProps<Element>>(linkComponent);
     return React.cloneElement(linkComponent,
         // props:
         {
