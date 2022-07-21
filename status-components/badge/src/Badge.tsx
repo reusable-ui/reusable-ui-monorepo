@@ -373,7 +373,6 @@ const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElemen
             
             // semantics:
             tag={props.tag ?? 'span'}
-            semanticRole={props.semanticRole ?? 'status'}
             
             aria-label={props['aria-label'] ?? label}
             
