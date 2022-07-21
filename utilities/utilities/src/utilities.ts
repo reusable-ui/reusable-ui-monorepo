@@ -50,7 +50,7 @@ export const isForwardRef = (node: React.ReactNode): node is React.ReactElement 
     );
 };
 
-export const isReusableUiComponent = (node: React.ReactNode): node is React.ReactElement => {
+export const isReusableUiComponent = <TProps = any, TConstructor extends React.JSXElementConstructor<any> = React.JSXElementConstructor<any>>(node: React.ReactNode): node is React.ReactElement<TProps, TConstructor> => {
     return (
         React.isValidElement(node)
         &&
