@@ -267,7 +267,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     // verifies:
     React.Children.only(dropdownUiComponent);
-    const isReusableUiDropdownComponent : boolean = isReusableUiComponent(dropdownUiComponent);
+    const isReusableUiDropdownComponent : boolean = isReusableUiComponent<GenericProps<Element>>(dropdownUiComponent);
     if (!isReusableUiDropdownComponent && !React.isValidElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(dropdownUiComponent)) throw Error('Invalid child element.');
     
     
