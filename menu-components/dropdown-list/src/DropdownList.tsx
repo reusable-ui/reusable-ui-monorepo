@@ -410,7 +410,7 @@ export type { ListStyle, ListVariant }
 
 interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
     extends
-    // bases:
+        // bases:
         ListItemProps<Element>,
         Required<Pick<DropdownProps<Element, TDropdownListActiveChangeEvent>, 'onActiveChange'>>
 {
