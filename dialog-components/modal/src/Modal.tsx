@@ -78,8 +78,8 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // types:
-    OpenChangeEvent,
-    Collapsible,
+    ExpandChangeEvent,
+    ExpandableProps,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to reduce its size or visibility
 import {
     // types:
@@ -536,11 +536,11 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
 }
 
 export type ModalActionType = 'shortcut'|'backdrop'|{}
-export interface ModalOpenChangeEvent extends OpenChangeEvent {
+export interface ModalExpandChangeEvent extends ExpandChangeEvent {
     actionType : ModalActionType
 }
 
-export interface ModalProps<TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>
+export interface ModalProps<TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>
     extends
         // bases:
         Omit<GenericProps<TElement>,
@@ -549,7 +549,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalOpenCh
         >,
         
         // accessibilities:
-        Collapsible,
+        ExpandableProps<TModalExpandChangeEvent>,
         
         // behaviors:
         BackdropVariant,
@@ -565,7 +565,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalOpenCh
     // behaviors:
     lazy        ?: boolean
 }
-const Modal = <TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>(props: ModalProps<TElement, TModalOpenChangeEvent>): JSX.Element|null => {
+const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>(props: ModalProps<TElement, TModalExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropStyleSheet();
     const uiStyleSheet       = useBackdropUiStyleSheet();
@@ -582,12 +582,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalOpenChangeEvent ext
         // remove states props:
         
         // accessibilities:
-        open          : _open,
+        expand        : _expand,
         
         
         
         // accessibilities:
-        onOpenChange,
+        onExpandChange,
         
         
         
@@ -707,7 +707,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalOpenChangeEvent ext
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
-                handleOpenChange?.({ open: false, actionType: 'shortcut' } as TModalOpenChangeEvent);
+                handleOpenChange?.({ expand: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -760,7 +760,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalOpenChangeEvent ext
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
-            handleOpenChange?.({ open: false, actionType: 'backdrop' } as TModalOpenChangeEvent);
+            handleOpenChange?.({ expand: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
     }, [handleOpenChange, backdropStyle]);
@@ -998,7 +998,7 @@ export {
 
 
 
-export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>
+export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>
 {
     // refs:
     modalRef       ?: React.Ref<TElement> // setter ref
@@ -1006,5 +1006,5 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     // components:
-    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalOpenChangeEvent>>
+    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalExpandChangeEvent>>
 }
