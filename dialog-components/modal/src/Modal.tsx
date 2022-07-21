@@ -98,7 +98,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     usesAnim,
     useExcitedState,
     usesExcitedState,
@@ -420,18 +419,7 @@ export const usesBackdropLayout = () => {
     });
 };
 export const usesBackdropVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(modals);
-    
-    
-    
     return style({
-        ...imports([
-            // layouts:
-            sizeVariantRule,
-        ]),
         ...variants([
             rule('.hidden', {
                 // backgrounds:
