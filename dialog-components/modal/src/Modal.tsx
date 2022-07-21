@@ -77,9 +77,10 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
+    // types:
+    OpenChangeEvent,
+    Collapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to reduce its size or visibility
 import {
     // types:
     SemanticTag,
@@ -110,8 +111,6 @@ import {
     ifPassived,
     usesActivePassiveState as indicatorUsesActivePassiveState,
     useActivePassiveState,
-    ActiveChangeEvent,
-    ToggleActiveProps,
 }                           from '@reusable-ui/indicator'       // a base component
 
 
@@ -537,11 +536,11 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
 }
 
 export type ModalActionType = 'shortcut'|'backdrop'|{}
-export interface ModalActiveChangeEvent extends ActiveChangeEvent {
+export interface ModalOpenChangeEvent extends OpenChangeEvent {
     actionType : ModalActionType
 }
 
-export interface ModalProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
+export interface ModalProps<TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>
     extends
         // bases:
         Omit<GenericProps<TElement>,
@@ -550,8 +549,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
         >,
         
         // accessibilities:
-        Pick<AccessibilityProps, 'active'|'inheritActive'>,
-        Pick<ToggleActiveProps<TModalActiveChangeEvent>, 'onActiveChange'>,
+        Collapsible,
         
         // behaviors:
         BackdropVariant,
@@ -567,7 +565,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalActive
     // behaviors:
     lazy        ?: boolean
 }
-const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>(props: ModalProps<TElement, TModalActiveChangeEvent>): JSX.Element|null => {
+const Modal = <TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>(props: ModalProps<TElement, TModalOpenChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropStyleSheet();
     const uiStyleSheet       = useBackdropUiStyleSheet();
@@ -584,13 +582,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         // remove states props:
         
         // accessibilities:
-        active          : _active,
-        inheritActive   : _inheritActive,
+        open          : _open,
         
         
         
         // accessibilities:
-        onActiveChange,
+        onOpenChange,
         
         
         
@@ -694,7 +691,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
     
     
     // handlers:
-    const handleActiveChange        = onActiveChange;
+    const handleOpenChange          = onOpenChange;
     const handleKeyDownInternal     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -710,7 +707,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
-                handleActiveChange?.({ newActive: false, actionType: 'shortcut' } as TModalActiveChangeEvent);
+                handleOpenChange?.({ open: false, actionType: 'shortcut' } as TModalOpenChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -739,7 +736,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [handleActiveChange]);
+    }, [handleOpenChange]);
     const handleKeyDown             = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -763,10 +760,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalActiveChangeEvent e
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
-            handleActiveChange?.({ newActive: false, actionType: 'backdrop' } as TModalActiveChangeEvent);
+            handleOpenChange?.({ open: false, actionType: 'backdrop' } as TModalOpenChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
-    }, [backdropStyle]);
+    }, [handleOpenChange, backdropStyle]);
     const handleMouseDown           = useMergeEvents(
         // preserves the original `onMouseDown` from `props`:
         props.onMouseDown,
@@ -1001,7 +998,7 @@ export {
 
 
 
-export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalActiveChangeEvent extends ModalActiveChangeEvent = ModalActiveChangeEvent>
+export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalOpenChangeEvent extends ModalOpenChangeEvent = ModalOpenChangeEvent>
 {
     // refs:
     modalRef       ?: React.Ref<TElement> // setter ref
@@ -1009,5 +1006,5 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     // components:
-    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalActiveChangeEvent>>
+    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalOpenChangeEvent>>
 }
