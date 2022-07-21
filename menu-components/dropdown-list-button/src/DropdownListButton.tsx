@@ -109,19 +109,6 @@ export interface DropdownListButtonProps<TDropdownListActiveChangeEvent extends 
 {
 }
 const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
-    // rest props:
-    const {
-        // components:
-        listRef,
-        listOrientation,
-        listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
-        children          : listItems,
-        
-        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent> listRef={listRef} listOrientation={listOrientation} listComponent={listComponent} >{listItems}</DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
-    ...restDropdownButtonProps} = props;
-    
-    
-    
     // forward props:
     const {
         // from <Basic>:
@@ -137,9 +124,47 @@ const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListA
         inheritEnabled,
         readOnly,
         inheritReadOnly,
-     // active,
-     // inheritActive,
+        active,
+        inheritActive,
     } = props;
+    
+    
+    
+    // rest props:
+    const {
+        // components:
+        listRef,
+        listOrientation,
+        listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
+        children          : listItems,
+        
+        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent>
+            listRef={listRef}
+            listOrientation={listOrientation}
+            listComponent={React.cloneElement<ListProps<Element>>(listComponent,
+                // props:
+                {
+                    // from <Basic>:
+                    size            : listComponent.props.size            ?? size,
+                    nude            : listComponent.props.nude            ?? nude,
+                    theme           : listComponent.props.theme           ?? theme,
+                    gradient        : listComponent.props.gradient        ?? gradient,
+                    outlined        : listComponent.props.outlined        ?? outlined,
+                    mild            : listComponent.props.mild            ?? mild,
+                    
+                    // from <Indicator>:
+                    enabled         : listComponent.props.enabled         ?? enabled,
+                    inheritEnabled  : listComponent.props.inheritEnabled  ?? inheritEnabled,
+                    readOnly        : listComponent.props.readOnly        ?? readOnly,
+                    inheritReadOnly : listComponent.props.inheritReadOnly ?? inheritReadOnly,
+                    active          : listComponent.props.active          ?? active,
+                    inheritActive   : listComponent.props.inheritActive   ?? inheritActive,
+                },
+            )}
+        >
+            {listItems}
+        </DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+    ...restDropdownButtonProps} = props;
     
     
     
@@ -152,26 +177,7 @@ const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListA
             
             
             // components:
-            dropdownComponent={React.cloneElement<DropdownProps<Element, TDropdownListActiveChangeEvent>>(dropdownComponent,
-                // props:
-                {
-                    // from <Basic>:
-                    size            : dropdownComponent.props.size            ?? size,
-                    nude            : dropdownComponent.props.nude            ?? nude,
-                    theme           : dropdownComponent.props.theme           ?? theme,
-                    gradient        : dropdownComponent.props.gradient        ?? gradient,
-                    outlined        : dropdownComponent.props.outlined        ?? outlined,
-                    mild            : dropdownComponent.props.mild            ?? mild,
-                    
-                    // from <Indicator>:
-                    enabled         : dropdownComponent.props.enabled         ?? enabled,
-                    inheritEnabled  : dropdownComponent.props.inheritEnabled  ?? inheritEnabled,
-                    readOnly        : dropdownComponent.props.readOnly        ?? readOnly,
-                    inheritReadOnly : dropdownComponent.props.inheritReadOnly ?? inheritReadOnly,
-                 // active          : dropdownComponent.props.active          ?? active,
-                 // inheritActive   : dropdownComponent.props.inheritActive   ?? inheritActive,
-                }
-            )}
+            dropdownComponent={dropdownComponent}
         >
             {dropdownComponent.props.children}
         </DropdownButton>
