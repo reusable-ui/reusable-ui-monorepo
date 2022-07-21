@@ -55,7 +55,6 @@ import type {
 }                           from '@reusable-ui/generic'         // a generic component
 import {
     // hooks:
-    usesSizeVariant,
     OrientationName,
     OrientationVariantOptions,
     OrientationVariant,
@@ -83,7 +82,6 @@ import {
     
     // styles:
     usesCollapseLayout,
-    usesCollapseVariants,
     usesCollapseStates,
     
     
@@ -154,24 +152,6 @@ export const usesDropdownLayout = (options?: OrientationVariantOptions) => {
         }),
     });
 };
-export const usesDropdownVariants = () => {
-    // dependencies:
-    
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(dropdowns);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesCollapseVariants(),
-            
-            // layouts:
-            sizeVariantRule,
-        ]),
-    });
-};
 export const usesDropdownStates = () => {
     return style({
         ...imports([
@@ -185,9 +165,6 @@ export const useDropdownStyleSheet = createUseStyleSheet(() => ({
     ...imports([
         // layouts:
         usesDropdownLayout(),
-        
-        // variants:
-        usesDropdownVariants(),
         
         // states:
         usesDropdownStates(),
@@ -489,6 +466,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         <Collapse<TElement>
             // other props:
             {...restCollapseProps}
+            
+            
+            
+            // semantics:
+            semanticRole={props.semanticRole ?? 'dialog'}
             
             
             
