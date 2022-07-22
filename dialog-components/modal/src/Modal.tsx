@@ -83,7 +83,7 @@ import {
     ifCollapsing,
     ifCollapsed,
     usesExpandCollapseState as baseUsesExpandCollapseState,
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
     ExpandableProps,
     useExpandCollapseState,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
@@ -533,11 +533,11 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
 }
 
 export type ModalActionType = 'shortcut'|'backdrop'|{}
-export interface ModalExpandChangeEvent extends ExpandChangeEvent {
+export interface ModalExpandedChangeEvent extends ExpandedChangeEvent {
     actionType : ModalActionType
 }
 
-export interface ModalProps<TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>
+export interface ModalProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
     extends
         // bases:
         Omit<GenericProps<TElement>,
@@ -546,7 +546,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         >,
         
         // accessibilities:
-        ExpandableProps<TModalExpandChangeEvent>,
+        ExpandableProps<TModalExpandedChangeEvent>,
         
         // behaviors:
         BackdropVariant,
@@ -562,7 +562,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     // behaviors:
     lazy        ?: boolean
 }
-const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>(props: ModalProps<TElement, TModalExpandChangeEvent>): JSX.Element|null => {
+const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropStyleSheet();
     const uiStyleSheet       = useBackdropUiStyleSheet();
@@ -609,7 +609,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     // states:
     
     // accessibilities:
-    const expandCollapseState = useExpandCollapseState<TElement, TModalExpandChangeEvent>(props);
+    const expandCollapseState = useExpandCollapseState<TElement, TModalExpandedChangeEvent>(props);
     const isVisible           = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isExpanded          = expandCollapseState.expanded;
     const isModal             = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
@@ -704,7 +704,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
-                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
+                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandedChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -757,7 +757,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
-            handleExpandedChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
+            handleExpandedChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandedChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
     }, [handleExpandedChange, backdropStyle]);
@@ -989,7 +989,7 @@ export {
 
 
 
-export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalExpandChangeEvent extends ModalExpandChangeEvent = ModalExpandChangeEvent>
+export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
 {
     // refs:
     modalRef       ?: React.Ref<TElement> // setter ref
@@ -997,5 +997,5 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     // components:
-    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalExpandChangeEvent>>
+    modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalExpandedChangeEvent>>
 }

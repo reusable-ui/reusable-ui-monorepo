@@ -7,7 +7,7 @@ import {
 // import logo from './logo.svg';
 import './App.css';
 import {
-    Modal, ModalExpandChangeEvent,
+    Modal, ModalExpandedChangeEvent,
 } from '@reusable-ui/modal'
 import {
     Styles,
@@ -23,7 +23,7 @@ function App() {
     };
     
     const [showModal, setShowModal] = useState<boolean>(false);
-    const handleExpandedChange = useCallback((event: ModalExpandChangeEvent) => {
+    const handleExpandedChange = useCallback((event: ModalExpandedChangeEvent) => {
         console.log('onExpandedChange', event.expanded, event.actionType);
         setShowModal(event.expanded);
     }, []);
