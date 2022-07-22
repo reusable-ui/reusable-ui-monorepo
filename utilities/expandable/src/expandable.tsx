@@ -132,8 +132,8 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
     
     
     /*
-     * state is expand/collapse based on [controllable expand]
-     * [uncontrollable expand] is not supported
+     * state is expand/collapse based on [controllable expanded]
+     * [uncontrollable expanded] is not supported
      */
     const expandFn : boolean = isExpanded /*controllable*/;
     
@@ -160,7 +160,7 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
     
     
     return {
-        expand    : expanded,
+        expanded  : expanded,
         isVisible : expanded || (animating !== null),
         
         class     : ((): string|null => {
