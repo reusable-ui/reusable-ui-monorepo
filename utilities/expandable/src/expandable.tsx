@@ -105,11 +105,11 @@ export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
 
 
 export interface ExpandChangeEvent {
-    expand: boolean
+    expanded : boolean
 }
 export interface ExpandableProps<TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
     extends
-        Partial<Pick<TExpandChangeEvent, 'expand'>>
+        Partial<Pick<TExpandChangeEvent, 'expanded'>>
 {
     onExpandChange ?: EventHandler<TExpandChangeEvent>
 }
@@ -120,13 +120,13 @@ const expandableCtrls = [
 ];
 export const useExpandCollapseState = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: ExpandableProps<TExpandChangeEvent> & SemanticProps) => {
     // fn props:
-    const expand  = props.expand ?? false;
+    const isExpanded  = props.expanded ?? false;
     const { tag } = useSemantic(props);
     
     
     
     // states:
-    const [expanded,  setExpanded ] = useState<boolean>(expand);    // true => expand, false => collapse
+    const [expanded,  setExpanded ] = useState<boolean>(isExpanded);    // true => expand, false => collapse
     const [animating, setAnimating] = useState<boolean|null>(null); // null => no-animation, true => expanding-animation, false => collapsing-animation
     
     
@@ -135,7 +135,7 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
      * state is expand/collapse based on [controllable expand]
      * [uncontrollable expand] is not supported
      */
-    const expandFn : boolean = expand /*controllable*/;
+    const expandFn : boolean = isExpanded /*controllable*/;
     
     if (expanded !== expandFn) { // change detected => apply the change & start animating
         setExpanded(expandFn);   // remember the last change
