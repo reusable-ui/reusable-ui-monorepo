@@ -330,7 +330,7 @@ const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElemen
         
         
         // accessibilities:
-        active,
+        expanded,
         label,
         
         
@@ -343,10 +343,10 @@ const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElemen
     
     // fn props:
     /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     * state is expand/collapse based on [controllable expanded] (if set) and fallback to [uncontrollable expanded]
      */
-    const autoActive : boolean = !!(props.children || false);
-    const activeFn   : boolean = active /*controllable*/ ?? autoActive /*uncontrollable*/;
+    const autoExpanded : boolean = !!(props.children || false);
+    const expandedFn   : boolean = expanded /*controllable*/ ?? autoExpanded /*uncontrollable*/;
     
     
     
@@ -390,7 +390,7 @@ const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElemen
             
             
             // accessibilities:
-            active={activeFn}
+            expanded={expandedFn}
         >
             { props.children }
         </Popup>

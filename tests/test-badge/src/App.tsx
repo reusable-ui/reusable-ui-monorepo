@@ -39,7 +39,7 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Badge targetRef={btnRef} theme='danger' active={true} popupPlacement='right-start' popupOffset={-10} popupShift={-10}>
+                <Badge targetRef={btnRef} theme='danger' expanded={true} popupPlacement='right-start' popupOffset={-10} popupShift={-10}>
                     new!
                 </Badge>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
