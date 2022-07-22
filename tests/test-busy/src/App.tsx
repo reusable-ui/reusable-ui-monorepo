@@ -39,8 +39,8 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Busy targetRef={btnRef} theme='danger' active={true} popupPlacement='right' popupOffset={10}>
-                    new!
+                <Busy targetRef={btnRef} theme='danger' expanded={true} popupPlacement='right' popupOffset={10}>
+                    loading...
                 </Busy>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
             </div>
