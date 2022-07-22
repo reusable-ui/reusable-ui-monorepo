@@ -104,21 +104,21 @@ export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
 
 
 
-export interface ExpandChangeEvent {
+export interface ExpandedChangeEvent {
     expanded : boolean
 }
-export interface ExpandableProps<TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface ExpandableProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
-        Partial<Pick<TExpandChangeEvent, 'expanded'>>
+        Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
-    onExpandedChange ?: EventHandler<TExpandChangeEvent>
+    onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
 
 const expandableCtrls = [
     'dialog',
     'details',
 ];
-export const useExpandCollapseState = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: ExpandableProps<TExpandChangeEvent> & SemanticProps) => {
+export const useExpandCollapseState = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ExpandableProps<TExpandedChangeEvent> & SemanticProps) => {
     // fn props:
     const isExpanded  = props.expanded ?? false;
     const { tag } = useSemantic(props);
