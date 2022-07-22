@@ -24,8 +24,8 @@ function App() {
     
     const [showModal, setShowModal] = useState<boolean>(false);
     const handleExpandChange = useCallback((event: ModalExpandChangeEvent) => {
-        console.log('onExpandChange', event.expand, event.actionType);
-        setShowModal(event.expand);
+        console.log('onExpandChange', event.expanded, event.actionType);
+        setShowModal(event.expanded);
     }, []);
     const modalUiStyle = useMemo<React.CSSProperties>(() => ({
         background: 'white',
@@ -51,7 +51,7 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <Modal expand={showModal} onExpandChange={handleExpandChange} backdropStyle='static'>
+                <Modal expanded={showModal} onExpandChange={handleExpandChange} backdropStyle='static'>
                     <div tabIndex={-1} style={modalUiStyle}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
