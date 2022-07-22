@@ -49,6 +49,12 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // type:
+    ExpandChangeEvent,
+    ExpandableProps,
+    useExpandCollapseState,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
     GenericProps,
@@ -59,12 +65,6 @@ import {
     OrientationVariantOptions,
     OrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    useActivePassiveState,
-    ActiveChangeEvent,
-    ToggleActiveProps,
-}                           from '@reusable-ui/indicator'       // a base component
 import {
     // types:
     PopupPlacement,
@@ -212,26 +212,28 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
 }
 
 export type DropdownActionType = 'shortcut'|'blur'|'ui'|{}
-export interface DropdownActiveChangeEvent extends ActiveChangeEvent {
+export interface DropdownExpandChangeEvent extends ExpandChangeEvent {
     actionType : DropdownActionType
 }
 
-export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownExpandChangeEvent extends DropdownExpandChangeEvent = DropdownExpandChangeEvent>
     extends
         // bases:
-        Omit<CollapseProps<TElement>,
+        Omit<CollapseProps<TElement, TDropdownExpandChangeEvent>,
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
         // accessibilities:
-        Pick<ToggleActiveProps<TDropdownActiveChangeEvent>, 'onActiveChange'>,
+        Pick<ExpandableProps<TDropdownExpandChangeEvent>,
+            |'onExpandedChange' // implements `onExpandedChange`
+        >,
         
         // components:
         DropdownUiComponentProps<Element>
 {
 }
-const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownProps<TElement, TDropdownActiveChangeEvent>): JSX.Element|null => {
+const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandChangeEvent extends DropdownExpandChangeEvent = DropdownExpandChangeEvent>(props: DropdownProps<TElement, TDropdownExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useDropdownStyleSheet();
     const uiStyleSheet       = useDropdownUiStyleSheet();
@@ -246,15 +248,15 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // states:
     
     // accessibilities:
-    const activePassiveState = useActivePassiveState<TElement>(props);
-    const isActive           = activePassiveState.active;
+    const expandCollapseState = useExpandCollapseState<TElement, TDropdownExpandChangeEvent>(props);
+    const isExpanded          = expandCollapseState.expanded;
     
     
     
     // rest props:
     const {
         // accessibilities:
-        onActiveChange,
+        onExpandedChange,
         
         
         
@@ -312,7 +314,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     
     
     // handlers:
-    const handleActiveChange    = onActiveChange;
+    const handleExpandedChange  = onExpandedChange;
     const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -328,7 +330,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Dropdown>:
-                handleActiveChange?.({ newActive: false, actionType: 'shortcut' } as TDropdownActiveChangeEvent);
+                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TDropdownExpandChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -357,7 +359,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [handleActiveChange]);
+    }, [handleExpandedChange]);
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -376,7 +378,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
         // states:
         
         // accessibilities:
-        activePassiveState.handleAnimationEnd,
+        expandCollapseState.handleAnimationEnd,
     );
     
     
@@ -386,11 +388,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
     // set focus on <DropdownUi> each time it shown:
     useEffect(() => {
         // setups:
-        if (isActive) {
+        if (isExpanded) {
             // backup the current focused element (if any):
             prevFocusRef.current = document.activeElement;
             
-            // when actived => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
+            // when shown => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
             (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
@@ -398,13 +400,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
             prevFocusRef.current = null; // unreference the restored focused element
         } // if
-    }, [isActive]);
+    }, [isExpanded]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
         // conditions:
-        if (!isActive)           return; // <Dropdown> is not shown => nothing to do
-        if (!handleActiveChange) return; // [onActiveChange] was not set => nothing to do
+        if (!isExpanded)           return; // <Dropdown> is not shown => nothing to do
+        if (!handleExpandedChange) return; // [onExpandedChange] was not set => nothing to do
         
         
         
@@ -437,7 +439,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             
             
             // focus is outside of <Dropdown> => <Dropdown> lost focus => request to hide the <Dropdown>:
-            handleActiveChange?.({ newActive: false, actionType: 'blur' } as TDropdownActiveChangeEvent);
+            handleExpandedChange?.({ expanded: false, actionType: 'blur' } as TDropdownExpandChangeEvent);
         };
         
         
@@ -457,13 +459,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownActiveChangeE
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
-    }, [isActive, props.targetRef, handleActiveChange]);
+    }, [isExpanded, props.targetRef, handleExpandedChange]);
     
     
     
     // jsx:
     return (
-        <Collapse<TElement>
+        <Collapse<TElement, TDropdownExpandChangeEvent>
             // other props:
             {...restCollapseProps}
             
@@ -526,7 +528,7 @@ export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, Pop
 
 
 
-export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownExpandChangeEvent extends DropdownExpandChangeEvent = DropdownExpandChangeEvent>
 {
     // refs:
     dropdownRef         ?: React.Ref<TElement> // setter ref
@@ -539,5 +541,5 @@ export interface DropdownComponentProps<TElement extends Element = HTMLElement, 
     
     
     // components:
-    dropdownComponent   ?: React.ReactComponentElement<any, DropdownProps<TElement, TDropdownActiveChangeEvent>>
+    dropdownComponent   ?: React.ReactComponentElement<any, DropdownProps<TElement, TDropdownExpandChangeEvent>>
 }
