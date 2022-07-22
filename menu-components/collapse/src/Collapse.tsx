@@ -42,10 +42,15 @@ import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import type {
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    ExpandCollapseVars,
+    ifExpanding,
+    ifCollapsing,
+    ifCollapsed,
+    usesExpandCollapseState as baseUsesExpandCollapseState,
+    ExpandChangeEvent,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
     GenericProps,
@@ -65,20 +70,12 @@ import {
     OrientationVariant,
     useOrientationVariant,
     usesAnim,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    ActivePassiveVars,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
-    usesActivePassiveState as indicatorUsesActivePassiveState,
     
     
     
     // react components:
-    IndicatorProps,
-}                           from '@reusable-ui/indicator'       // a base component
+    BasicProps,
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // types:
     PopupPlacement,
@@ -107,16 +104,16 @@ export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptio
 
 // accessibilities:
 
-//#region activePassive
+//#region expandable
 /**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ * Uses expand & collapse states.
+ * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
  */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
     // dependencies:
     
     // accessibilities:
-    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    const [expandRule, expands] = baseUsesExpandCollapseState();
     
     
     
@@ -124,25 +121,25 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
         () => style({
             ...imports([
                 // accessibilities:
-                activeRule,
+                expandRule,
             ]),
             ...states([
-                ifActivating({
+                ifExpanding({
                     ...vars({
-                        [actives.anim] : collapses.animActive,
+                        [expands.anim] : collapses.animExpand,
                     }),
                 }),
-                ifPassivating({
+                ifCollapsing({
                     ...vars({
-                        [actives.anim] : collapses.animPassive,
+                        [expands.anim] : collapses.animCollapse,
                     }),
                 }),
             ]),
         }),
-        actives,
+        expands,
     ];
 };
-//#endregion activePassive
+//#endregion expandable
 
 
 
@@ -189,17 +186,17 @@ export const usesCollapseStates = () => {
     // dependencies:
     
     // states:
-    const [activePassiveStateRule] = usesActivePassiveState();
+    const [expandCollapseStateRule] = usesExpandCollapseState();
     
     
     
     return style({
         ...imports([
             // accessibilities:
-            activePassiveStateRule,
+            expandCollapseStateRule,
         ]),
         ...states([
-            ifPassived({
+            ifCollapsed({
                 // appearances:
                 display: 'none', // hide the <Collapse>
             }),
@@ -222,7 +219,7 @@ export const useCollapseStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     //#region keyframes
-    const framePassived     = style({
+    const frameCollapsed    = style({
         overflowY     : 'hidden',
         maxBlockSize  : 0,
     });
@@ -230,94 +227,91 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         overflowY     : 'hidden',
         maxBlockSize  : '100vh',
     });
-    const frameActived      = style({
+    const frameExpanded     = style({
         overflowY     : 'unset',
         maxBlockSize  : 'unset',
     });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from  : framePassived,
+    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
+        from  : frameCollapsed,
         '99%' : frameIntermediate,
-        to    : frameActived,
+        to    : frameExpanded,
     });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from  : frameActived,
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
+        from  : frameExpanded,
         '1%'  : frameIntermediate,
-        to    : framePassived,
+        to    : frameCollapsed,
     });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
     
     
     
-    const framePassivedInline     = style({
+    const frameCollapsedInline    = style({
         overflowX     : 'hidden',
         maxInlineSize : 0,
     });
     const frameIntermediateInline = style({
         overflowX     : 'hidden',
-        maxInlineSize : '100vh',
+        maxInlineSize : '100vw',
     });
-    const frameActivedInline      = style({
+    const frameExpandedInline     = style({
         overflowX     : 'unset',
         maxInlineSize : 'unset',
     });
-    const [keyframesActiveInlineRule , keyframesActiveInline ] = keyframes({
-        from  : framePassivedInline,
+    const [keyframesExpandInlineRule  , keyframesExpandInline  ] = keyframes({
+        from  : frameCollapsedInline,
         '99%' : frameIntermediateInline,
-        to    : frameActivedInline,
+        to    : frameExpandedInline,
     });
-    keyframesActiveInline.value  = 'activeInline';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveInlineRule, keyframesPassiveInline] = keyframes({
-        from  : frameActivedInline,
+    keyframesExpandInline.value   = 'expandInline';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    const [keyframesCollapseInlineRule, keyframesCollapseInline] = keyframes({
+        from  : frameExpandedInline,
         '1%'  : frameIntermediateInline,
-        to    : framePassivedInline,
+        to    : frameCollapsedInline,
     });
-    keyframesPassiveInline.value = 'passiveInline'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesCollapseInline.value = 'collapseInline'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
     //#endregion keyframes
     
     
     
     return {
         // animations:
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animActive        : [
-            ['300ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
-        animPassive       : [
-            ['500ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
+        ...keyframesExpandRule,
+        ...keyframesCollapseRule,
+        animExpand         : [
+            ['300ms', 'ease-out', 'both', keyframesExpand  ],
+        ]                                                       as CssKnownProps['anim'],
+        animCollapse       : [
+            ['500ms', 'ease-out', 'both', keyframesCollapse],
+        ]                                                       as CssKnownProps['anim'],
         
         
         
-        ...keyframesActiveInlineRule,
-        ...keyframesPassiveInlineRule,
-        animActiveInline  : [
-            ['300ms', 'ease-out', 'both', keyframesActiveInline ],
-        ]                           as CssKnownProps['anim'],
-        animPassiveInline : [
-            ['500ms', 'ease-out', 'both', keyframesPassiveInline],
-        ]                           as CssKnownProps['anim'],
+        ...keyframesExpandInlineRule,
+        ...keyframesCollapseInlineRule,
+        animExpandInline   : [
+            ['300ms', 'ease-out', 'both', keyframesExpandInline  ],
+        ]                                                       as CssKnownProps['anim'],
+        animCollapseInline : [
+            ['500ms', 'ease-out', 'both', keyframesCollapseInline],
+        ]                                                       as CssKnownProps['anim'],
     };
 }, { prefix: 'clps' });
 
 
 
 // react components:
-export interface CollapseProps<TElement extends Element = HTMLElement>
+export interface CollapseProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
     extends
         // bases:
         GenericProps<TElement>,
-        Omit<PopupProps<TElement>, keyof IndicatorProps<TElement>>, // all props from <Popup> but not all props from the ancestors
-        
-        // accessibilities:
-        Pick<AccessibilityProps, 'active'|'inheritActive'>,
+        Omit<PopupProps<TElement, TExpandChangeEvent>, keyof BasicProps<TElement>>, // all props from <Popup> but not all props from the ancestors
         
         // layouts:
         OrientationVariant
 {
 }
-const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<TElement>): JSX.Element|null => {
+const Collapse = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: CollapseProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useCollapseStyleSheet();
     
@@ -354,7 +348,7 @@ const Collapse = <TElement extends Element = HTMLElement>(props: CollapseProps<T
     
     // jsx:
     return (
-        <Popup<TElement>
+        <Popup<TElement, TExpandChangeEvent>
             // other props:
             {...restPopupProps}
             
