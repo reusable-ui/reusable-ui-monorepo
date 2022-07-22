@@ -300,7 +300,7 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandChang
         
         // accessibilities:
         Omit<ExpandableProps<TExpandChangeEvent>,
-            |'onExpandChange' // not implemented yet
+            |'onExpandedChange' // not implemented yet
         >
 {
     // popups:
