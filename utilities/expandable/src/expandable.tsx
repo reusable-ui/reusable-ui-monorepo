@@ -19,6 +19,7 @@ import type {
 import {
     // rules:
     rule,
+    neverRule,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -37,6 +38,11 @@ import {
     useSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
+    // types:
+    StateMixin,
+    
+    
+    
     // hooks:
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
@@ -82,6 +88,19 @@ export const ifExpand            = (styles: CssStyleCollection): CssRule => rule
 export const ifCollapse          = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfCollapsing, selectorIfCollapsed], styles);
 export const ifExpandCollapsing  = (styles: CssStyleCollection): CssRule => rule([selectorIfExpanding, selectorIfExpanded, selectorIfCollapsing                     ], styles);
 export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule([selectorIfExpanding,                     selectorIfCollapsing, selectorIfCollapsed], styles);
+
+
+
+/**
+ * Uses expand & collapse states.
+ * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
+ */
+export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
+    return [
+        () => neverRule(), // not implemented yet
+        expands,
+    ];
+};
 
 
 
