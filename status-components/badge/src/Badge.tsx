@@ -369,7 +369,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandChangeEvent extend
     
     // jsx:
     return (
-        <Popup<TElement>
+        <Popup<TElement, TExpandChangeEvent>
             // other props:
             {...restPopupProps}
             
