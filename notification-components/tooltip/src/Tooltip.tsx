@@ -679,6 +679,11 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandChangeEvent exte
             
             
             
+            // variants:
+            mild={props.mild ?? true}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             
