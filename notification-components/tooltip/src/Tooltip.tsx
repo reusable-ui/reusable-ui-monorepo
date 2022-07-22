@@ -65,7 +65,7 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // type:
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // react components:
@@ -309,10 +309,10 @@ export interface ArrowComponentProps<TElement extends Element = HTMLElement>
     arrowComponent ?: React.ReactComponentElement<any, GenericProps<TElement>>
 }
 
-export interface TooltipProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        PopupProps<TElement, TExpandChangeEvent>,
+        PopupProps<TElement, TExpandedChangeEvent>,
         
         // components:
         ArrowComponentProps<Element>
@@ -326,7 +326,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandCha
     expandDelay               ?: number
     collapseDelay             ?: number
 }
-const Tooltip = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: TooltipProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
+const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: TooltipProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet          = useTooltipStyleSheet();
     
@@ -668,7 +668,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandChangeEvent exte
     
     // jsx:
     return (
-        <Popup<TElement, TExpandChangeEvent>
+        <Popup<TElement, TExpandedChangeEvent>
             // other props:
             {...restPopupProps}
             
