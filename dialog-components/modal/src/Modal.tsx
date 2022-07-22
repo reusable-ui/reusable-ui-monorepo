@@ -76,10 +76,16 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import type {
-    // types:
+import {
+    // hooks:
+    ExpandCollapseVars,
+    ifExpanding,
+    ifCollapsing,
+    ifCollapsed,
+    usesExpandCollapseState as baseUsesExpandCollapseState,
     ExpandChangeEvent,
     ExpandableProps,
+    useExpandCollapseState,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // types:
@@ -103,15 +109,6 @@ import {
     useExcitedState,
     usesExcitedState,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    ActivePassiveVars,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
-    usesActivePassiveState as indicatorUsesActivePassiveState,
-    useActivePassiveState,
-}                           from '@reusable-ui/indicator'       // a base component
 
 
 
@@ -258,16 +255,16 @@ const getViewportOrDefault = (viewportRef: React.RefObject<Element>|Element|null
 
 // accessibilities:
 
-//#region activePassive
+//#region expandable
 /**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ * Uses expand & collapse states.
+ * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
  */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
     // dependencies:
     
     // accessibilities:
-    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    const [expandRule, expands] = baseUsesExpandCollapseState();
     
     
     
@@ -275,25 +272,25 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
         () => style({
             ...imports([
                 // accessibilities:
-                activeRule,
+                expandRule,
             ]),
             ...states([
-                ifActivating({
+                ifExpanding({
                     ...vars({
-                        [actives.anim] : modals.animActive,
+                        [expands.anim] : modals.animExpand,
                     }),
                 }),
-                ifPassivating({
+                ifCollapsing({
                     ...vars({
-                        [actives.anim] : modals.animPassive,
+                        [expands.anim] : modals.animCollapse,
                     }),
                 }),
             ]),
         }),
-        actives,
+        expands,
     ];
 };
-//#endregion activePassive
+//#endregion expandable
 
 
 // behaviors:
@@ -443,17 +440,17 @@ export const usesBackdropStates = () => {
     // dependencies:
     
     // states:
-    const [activePassiveStateRule] = usesActivePassiveState();
+    const [expandCollapseStateRule] = usesExpandCollapseState();
     
     
     
     return style({
         ...imports([
             // accessibilities:
-            activePassiveStateRule,
+            expandCollapseStateRule,
         ]),
         ...states([
-            ifPassived({
+            ifCollapsed({
                 // appearances:
                 display: 'none', // hide the <Modal>
             }),
@@ -479,26 +476,26 @@ export const useBackdropStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
     //#region keyframes
-    const framePassived     = style({
+    const frameCollapsed    = style({
         filter : [[
             'opacity(0)',
         ]]
     });
-    const frameActived      = style({
+    const frameExpanded     = style({
         filter : [[
             'opacity(1)',
         ]]
     });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from  : framePassived,
-        to    : frameActived,
+    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
+        from  : frameCollapsed,
+        to    : frameExpanded,
     });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from  : frameActived,
-        to    : framePassived,
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
+        from  : frameExpanded,
+        to    : frameCollapsed,
     });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
     //#endregion keyframes
     
     
@@ -511,13 +508,13 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         
         
         // animations:
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animActive       : [
-            ['300ms', 'ease-out', 'both', keyframesActive ],
+        ...keyframesExpandRule,
+        ...keyframesCollapseRule,
+        animExpand       : [
+            ['300ms', 'ease-out', 'both', keyframesExpand  ],
         ]                                                       as CssKnownProps['anim'],
-        animPassive      : [
-            ['500ms', 'ease-out', 'both', keyframesPassive],
+        animCollapse     : [
+            ['500ms', 'ease-out', 'both', keyframesCollapse],
         ]                                                       as CssKnownProps['anim'],
     };
 }, { prefix: 'mdl' });
@@ -612,10 +609,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     // states:
     
     // accessibilities:
-    const activePassiveState = useActivePassiveState<TElement>(props);
-    const isVisible          = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const isActive           = activePassiveState.active;
-    const isModal            = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
+    const expandCollapseState = useExpandCollapseState<TElement, TModalExpandChangeEvent>(props);
+    const isVisible           = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isExpanded          = expandCollapseState.expand;
+    const isModal             = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
     const [excitedDn, setExcitedDn] = useState(false);
     const excitedState = useExcitedState<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: setExcitedDn });
@@ -667,7 +664,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         
         
         // accessibilities:
-        activePassiveState.class,
+        expandCollapseState.class,
     );
     const modalUiClasses = useMergeClasses(
         // preserves the original `classes` from `modalUiComponent`:
@@ -811,7 +808,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         // states:
         
         // accessibilities:
-        activePassiveState.handleAnimationEnd,
+        expandCollapseState.handleAnimationEnd,
     );
     const modalUiHandleAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
         // preserves the original `onAnimationEnd` from `modalUiComponent`:
@@ -832,11 +829,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     // set focus on <ModalUi> each time it shown:
     useEffect(() => {
         // setups:
-        if (isActive) {
+        if (isExpanded) {
             // backup the current focused element (if any):
             prevFocusRef.current = document.activeElement;
             
-            // when actived => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
+            // when shown => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
             (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
@@ -844,7 +841,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
             (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
             prevFocusRef.current = null; // unreference the restored focused element
         } // if
-    }, [isActive]);
+    }, [isExpanded]);
     
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {
@@ -906,14 +903,14 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     // stops the excited state when modal is closed:
     useEffect(() => {
         // conditions:
-        if (isActive)   return; // <Modal> is still shown => ignore
+        if (isExpanded) return; // <Modal> is still shown => ignore
         if (!excitedDn) return; // <Modal> is not excited => ignore
         
         
         
         // actions:
         setExcitedDn(false);
-    }, [isActive, excitedDn]);
+    }, [isExpanded, excitedDn]);
     
     
     
@@ -931,12 +928,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
             stateClasses={stateClasses}
-            
-            
-            
-            {...(isActive ? {
-                'data-active': true,
-            } : null)}
             
             
             
