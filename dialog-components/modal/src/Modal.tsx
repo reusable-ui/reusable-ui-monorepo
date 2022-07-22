@@ -611,7 +611,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     // accessibilities:
     const expandCollapseState = useExpandCollapseState<TElement, TModalExpandChangeEvent>(props);
     const isVisible           = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const isExpanded          = expandCollapseState.expand;
+    const isExpanded          = expandCollapseState.expanded;
     const isModal             = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
     const [excitedDn, setExcitedDn] = useState(false);
