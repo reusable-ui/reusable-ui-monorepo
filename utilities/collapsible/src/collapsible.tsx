@@ -11,11 +11,6 @@ import {
 
 // cssfn:
 import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
     // cssfn properties:
     CssRule,
     
@@ -24,40 +19,17 @@ import type {
 import {
     // rules:
     rule,
-    states,
-    keyframes,
-    
-    
-    
-    // styles:
-    style,
-    vars,
-    imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
     cssVar,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
 import {
     // hooks:
     useEvent,
     EventHandler,
-    useMergeEvents,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // types:
@@ -65,31 +37,8 @@ import {
     useSemantic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
-    usesSizeVariant,
-    ThemeName,
-    usesThemeConditional,
-    outlinedOf,
-    mildOf,
     usesAnim,
-    fallbackNoneFilter,
-    
-    
-    
-    // styles:
-    usesBasicLayout,
-    usesBasicVariants,
-    
-    
-    
-    // react components:
-    BasicProps,
-    Basic,
 }                           from '@reusable-ui/basic'           // a base component
 
 
@@ -136,6 +85,20 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 
 
+export interface ExpandChangeEvent {
+    expand: boolean
+}
+export interface ExpandableProps<TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+    extends
+        Partial<Pick<TExpandChangeEvent, 'expand'>>
+{
+    onExpandChange ?: EventHandler<TExpandChangeEvent>
+}
+
+const expandableCtrls = [
+    'dialog',
+    'details',
+];
 export const useExpandCollapseState = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: ExpandableProps<TExpandChangeEvent> & SemanticProps) => {
     // fn props:
     const expand  = props.expand ?? false;
@@ -166,13 +129,13 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(expand|collapse)|(?<=[a-z])(Expand|Collapse))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
+        if (!/((?<![a-z])(expand|collapse)|(?<=[a-z])(Expand|Collapse))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (expand|collapse)[Foo] or boo(Expand|Collapse)[Foo]
         
         
         
         // clean up finished animation
         
-        setAnimating(null); // stop activating-animation/deactivating-animation
+        setAnimating(null); // stop expanding-animation/collapsing-animation
     }, []);
     
     
@@ -183,9 +146,9 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
         
         class     : ((): string|null => {
             // expanding:
-            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected] or [data-active]
             if (animating === true) {
-                //
+                if (tag && expandableCtrls.includes(tag)) return null; // uses [open]
+                return 'expanding';
             } // if
             
             // collapsing:
@@ -201,33 +164,14 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
         props     : (() => {
             if (!expanded) return null;
             
-            // use :checked if <input type="checkbox|radio">:
-            if ((tag === 'input') && checkableCtrls.includes((props as any).type)) return { checked: true };
+            // use [open] if <dialog> or <details>:
+            if (tag && expandableCtrls.includes(tag)) return { open: true };
             
-            // use [aria-checked] if [role="checkbox|radio"]:
-            if (role && checkableCtrls.includes(role)) return { 'aria-checked': true };
-            
-            // use [aria-pressed] if <button> or [role="button"]:
-            if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
-            
-            if (role && popupRoles.includes(role)) return { 'data-active': true }
-            
-            // else, use [aria-selected]:
-            return { 'aria-selected' : true };
+            // else, use .expanding or .expanded which already defined in `class`:
+            return null;
         })(),
         
         handleAnimationEnd,
     };
 };
 //#endregion expandable
-
-
-
-// react components:
-export interface ExpandChangeEvent {
-    expand: boolean
-}
-export interface ExpandableProps<TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent> {
-    expand         ?: boolean
-    onExpandChange ?: EventHandler<TExpandChangeEvent>
-}
