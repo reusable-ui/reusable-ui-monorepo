@@ -48,7 +48,7 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import type {
     // type:
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
     ExpandableProps,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
@@ -263,7 +263,7 @@ export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
 
 
 // utilities:
-const getIconByTheme = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>({ theme }: AlertProps<TElement, TExpandChangeEvent>): IconList => {
+const getIconByTheme = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>({ theme }: AlertProps<TElement, TExpandedChangeEvent>): IconList => {
     switch (theme) {
         case 'success'   : return 'check_circle';
         case 'warning'   : return 'warning';
@@ -280,13 +280,13 @@ const getIconByTheme = <TElement extends Element = HTMLElement, TExpandChangeEve
 
 
 // react components:
-export interface AlertProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface AlertProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        PopupProps<TElement, TExpandChangeEvent>,
+        PopupProps<TElement, TExpandedChangeEvent>,
         
         // accessibilities:
-        Pick<ExpandableProps<TExpandChangeEvent>,
+        Pick<ExpandableProps<TExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange`
         >,
         
@@ -295,7 +295,7 @@ export interface AlertProps<TElement extends Element = HTMLElement, TExpandChang
         ControlComponentProps<Element>
 {
 }
-const Alert = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: AlertProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
+const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AlertProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet   = useAlertStyleSheet();
     
@@ -330,7 +330,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandChangeEvent extend
         
         
         // actions:
-        handleExpandedChange?.({ expanded: false } as TExpandChangeEvent); // handle click as request to close <Alert>
+        handleExpandedChange?.({ expanded: false } as TExpandedChangeEvent); // handle click as request to close <Alert>
         event.preventDefault(); // handled
     }, [handleExpandedChange]);
     
@@ -338,7 +338,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandChangeEvent extend
     
     // jsx:
     return (
-        <Popup<TElement, TExpandChangeEvent>
+        <Popup<TElement, TExpandedChangeEvent>
             // other props:
             {...restPopupProps}
             
