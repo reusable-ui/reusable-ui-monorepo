@@ -59,7 +59,7 @@ import {
     ifCollapsing,
     ifCollapsed,
     usesExpandCollapseState as baseUsesExpandCollapseState,
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
     ExpandableProps,
     useExpandCollapseState,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
@@ -293,13 +293,13 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 
 
 // react components:
-export interface PopupProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface PopupProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
         BasicProps<TElement>,
         
         // accessibilities:
-        Omit<ExpandableProps<TExpandChangeEvent>,
+        Omit<ExpandableProps<TExpandedChangeEvent>,
             |'onExpandedChange' // not implemented yet
         >
 {
@@ -326,7 +326,7 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandChang
     // children:
     children        ?: React.ReactNode
 }
-const Popup = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: PopupProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
+const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: PopupProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet              = usePopupStyleSheet();
     
@@ -335,7 +335,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandChangeEvent extend
     // states:
     
     // accessibilities:
-    const expandCollapseState     = useExpandCollapseState<TElement, TExpandChangeEvent>(props);
+    const expandCollapseState     = useExpandCollapseState<TElement, TExpandedChangeEvent>(props);
     const isVisible               = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const [popupPos, setPopupPos] = useReducer(coordinateReducer, null);
     
