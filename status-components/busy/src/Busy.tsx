@@ -30,7 +30,7 @@ import {
 // reusable-ui:
 import type {
     // type:
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // hooks:
@@ -161,16 +161,16 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
 
 
 // react components:
-export interface BusyProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface BusyProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        BadgeProps<TElement, TExpandChangeEvent>,
+        BadgeProps<TElement, TExpandedChangeEvent>,
         
         // components:
         IconComponentProps<Element>
 {
 }
-const Busy = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: BusyProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
+const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: BusyProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet   = useBusyStyleSheet();
     
@@ -208,7 +208,7 @@ const Busy = <TElement extends Element = HTMLElement, TExpandChangeEvent extends
     
     // jsx:
     return (
-        <Badge<TElement, TExpandChangeEvent>
+        <Badge<TElement, TExpandedChangeEvent>
             // other props:
             {...restBadgeProps}
             
