@@ -59,6 +59,10 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // type:
+    ExpandChangeEvent,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+import {
     // hooks:
     usesSizeVariant,
     ifNotNude,
@@ -300,10 +304,10 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
 
 
 // react components:
-export interface BadgeProps<TElement extends Element = HTMLElement>
+export interface BadgeProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
     extends
         // bases:
-        PopupProps<TElement>,
+        PopupProps<TElement, TExpandChangeEvent>,
         
         // appearances:
         BadgeVariant
@@ -311,7 +315,7 @@ export interface BadgeProps<TElement extends Element = HTMLElement>
     // accessibilities:
     label ?: string
 }
-const Badge = <TElement extends Element = HTMLElement>(props: BadgeProps<TElement>): JSX.Element|null => {
+const Badge = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: BadgeProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet   = useBadgeStyleSheet();
     
