@@ -1,8 +1,9 @@
 {
-  "name": "@reusable-ui/collapsible",
+  "name": "@reusable-ui/expandable",
   "version": "5.0.0",
-  "description": "A capability of UI to reduce its size or visibility.",
+  "description": "A capability of UI to expand/reduce its size or toggle the visibility.",
   "keywords": [
+    "expandable",
     "collapsible",
     "design",
     "layouts"
@@ -14,8 +15,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/collapsible.js",
-  "types": "dist/collapsible.d.ts",
+  "main": "dist/expandable.js",
+  "types": "dist/expandable.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
