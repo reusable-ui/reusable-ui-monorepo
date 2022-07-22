@@ -579,7 +579,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         // remove states props:
         
         // accessibilities:
-        expand        : _expand,
+        expanded      : _expanded,
         
         
         
@@ -601,7 +601,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         
         // components:
         tabIndex,
-        children: modalUiComponent,
+        children      : modalUiComponent,
     ...restGenericProps} = props;
     
     
@@ -704,7 +704,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
-                handleExpandChange?.({ expand: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
+                handleExpandChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -757,7 +757,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
-            handleExpandChange?.({ expand: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
+            handleExpandChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
     }, [handleExpandChange, backdropStyle]);
