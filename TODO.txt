@@ -7,7 +7,8 @@ const popupRoles = [
 ];
 
 rename newActive => active
-fix <Alert> close button
+fix <Alert> close button on mild={false}
+fix <Alert> icon color   on mild={true}
 test tree shake a Dropdown without Modal
 
 fix fooElm constant with zero specificity:

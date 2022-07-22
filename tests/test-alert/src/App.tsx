@@ -40,7 +40,7 @@ function App() {
                 <button onClick={() => setShow(true)}>
                     Show message
                 </button>
-                <Alert active={show} theme='primary' mild={false} onActiveChange={() => setShow(false)} >
+                <Alert expanded={show} theme='primary' onExpandedChange={() => setShow(false)} >
                     <Icon icon='face' />
                     <Icon icon='instagram' />
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus</p>
