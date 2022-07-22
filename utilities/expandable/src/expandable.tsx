@@ -111,7 +111,7 @@ export interface ExpandableProps<TExpandChangeEvent extends ExpandChangeEvent = 
     extends
         Partial<Pick<TExpandChangeEvent, 'expanded'>>
 {
-    onExpandChange ?: EventHandler<TExpandChangeEvent>
+    onExpandedChange ?: EventHandler<TExpandChangeEvent>
 }
 
 const expandableCtrls = [
