@@ -63,6 +63,10 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import type {
+    // type:
+    ExpandChangeEvent,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // react components:
     GenericProps,
@@ -305,10 +309,10 @@ export interface ArrowComponentProps<TElement extends Element = HTMLElement>
     arrowComponent ?: React.ReactComponentElement<any, GenericProps<TElement>>
 }
 
-export interface TooltipProps<TElement extends Element = HTMLElement>
+export interface TooltipProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
     extends
         // bases:
-        PopupProps<TElement>,
+        PopupProps<TElement, TExpandChangeEvent>,
         
         // components:
         ArrowComponentProps<Element>
@@ -319,24 +323,24 @@ export interface TooltipProps<TElement extends Element = HTMLElement>
     
     
     // debounces:
-    activeDelay               ?: number
-    passiveDelay              ?: number
+    expandDelay               ?: number
+    collapseDelay             ?: number
 }
-const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TElement>): JSX.Element|null => {
+const Tooltip = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: TooltipProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet          = useTooltipStyleSheet();
     
     
     
     // states:
-    const [activeDn, setActiveDn] = useState<boolean>(false);
+    const [expandedDn, setExpandedDn] = useState<boolean>(false);
     
     
     
     // rest props:
     const {
         // accessibilities:
-        active,
+        expanded,
         
         
         
@@ -347,8 +351,8 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         // debounces:
-        activeDelay  = 300,
-        passiveDelay = 500,
+        expandDelay    = 300,
+        collapseDelay  = 500,
         
         
         
@@ -378,8 +382,8 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     
     // fn props:
-    const isControllableActive = (active !== undefined);
-    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const isControllableExpanded = (expanded !== undefined);
+    const expandedFn             = expanded /*controllable*/ ?? expandedDn /*uncontrollable*/;
     
     
     
@@ -543,16 +547,16 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
     
     // dom effects:
     const [targetStates] = useState({
-        hovered     : false,
-        focused     : false,
+        hovered    : false,
+        focused    : false,
         
-        actived     : false,
-        activating  : undefined as ReturnType<typeof setTimeout>|undefined,
-        passivating : undefined as ReturnType<typeof setTimeout>|undefined,
+        expanded   : false,
+        expanding  : undefined as ReturnType<typeof setTimeout>|undefined,
+        collapsing : undefined as ReturnType<typeof setTimeout>|undefined,
     });
     useEffect(() => {
         // conditions:
-        if (isControllableActive) return; // controllable [active] is set => no uncontrollable required
+        if (isControllableExpanded) return; // controllable [expanded] is set => no uncontrollable required
         
         const targetRef = props.targetRef;
         const target    = (targetRef instanceof Element) ? targetRef : targetRef?.current;
@@ -561,47 +565,47 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         // handlers:
-        const handleDelayActive = () => {
+        const handleDelayExpand   = () => {
             // conditions:
-            clearTimeout(targetStates.passivating); // cancel the deactivating process (if not too late)
-            if (targetStates.actived) return;       // already activated => nothing to change
+            clearTimeout(targetStates.collapsing); // cancel the collapsing process (if not too late)
+            if (targetStates.expanded) return;     // already expanded => nothing to change
             
             
             
-            targetStates.activating = setTimeout(() => {
+            targetStates.expanding = setTimeout(() => {
                 // conditions:
-                if (targetStates.actived) return; // already activated => nothing to change
+                if (targetStates.expanded) return; // already expanded => nothing to change
                 
                 
                 
-                targetStates.actived = true;      // now mark as activated
-                setActiveDn(true);                // activate the <Tooltip>
-            }, activeDelay);
+                targetStates.expanded = true;      // now mark as expanded
+                setExpandedDn(true);               // expand the <Tooltip>
+            }, expandDelay);
         };
-        const handleDelayPassive = () => {
+        const handleDelayCollapse = () => {
             // conditions:
-            clearTimeout(targetStates.activating); // cancel the activating process (if not too late)
-            if (!targetStates.actived) return;     // already deactivated => nothing to change
+            clearTimeout(targetStates.expanding);   // cancel the expanding process (if not too late)
+            if (!targetStates.expanded) return;     // already collapsed => nothing to change
             
             
             
-            targetStates.passivating = setTimeout(() => {
+            targetStates.collapsing = setTimeout(() => {
                 // conditions:
-                if (!targetStates.actived) return; // already deactivated => nothing to change
+                if (!targetStates.expanded) return; // already collapsed => nothing to change
                 
                 
                 
-                targetStates.actived = false;      // now mark as deactivated
-                setActiveDn(false);                // deactivate the <Tooltip>
-            }, passiveDelay);
+                targetStates.expanded = false;      // now mark as collapsed
+                setExpandedDn(false);               // collapse the <Tooltip>
+            }, collapseDelay);
         };
         const handleChange = () => {
-            const active = (targetStates.hovered || targetStates.focused);
-            if (active) {
-                handleDelayActive();
+            const expanded = (targetStates.hovered || targetStates.focused);
+            if (expanded) {
+                handleDelayExpand();
             }
             else {
-                handleDelayPassive();
+                handleDelayCollapse();
             } // if
         };
         const handleHover  = () => {
@@ -640,9 +644,9 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
         
         
         // setups:
-        targetStates.hovered = target.matches(':hover');
-        targetStates.focused = target.matches(':focus-within');
-        targetStates.actived = (targetStates.hovered || targetStates.focused);
+        targetStates.hovered  = target.matches(':hover');
+        targetStates.focused  = target.matches(':focus-within');
+        targetStates.expanded = (targetStates.hovered || targetStates.focused);
         
         target.addEventListener('mouseenter', handleHover);
         target.addEventListener('mouseleave', handleLeave);
@@ -658,13 +662,13 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             target.removeEventListener('focus'     , handleFocus, { capture: true });
             target.removeEventListener('blur'      , handleBlur , { capture: true });
         };
-    }, [isControllableActive, props.targetRef, activeDelay, passiveDelay]);
+    }, [isControllableExpanded, props.targetRef, expandDelay, collapseDelay]);
     
     
     
     // jsx:
     return (
-        <Popup<TElement>
+        <Popup<TElement, TExpandChangeEvent>
             // other props:
             {...restPopupProps}
             
@@ -681,7 +685,7 @@ const Tooltip = <TElement extends Element = HTMLElement>(props: TooltipProps<TEl
             
             
             // accessibilities:
-            active={activeFn}
+            expanded={expandedFn}
             
             
             
