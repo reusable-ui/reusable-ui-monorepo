@@ -41,8 +41,8 @@
     "@cssfn/cssfn-react": "^2.0.8",
     "@floating-ui/dom": "^0.5.4",
     "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/expandable": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
-    "@reusable-ui/indicator": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

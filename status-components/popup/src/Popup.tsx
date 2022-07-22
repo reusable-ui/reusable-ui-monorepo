@@ -53,6 +53,17 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // hooks:
+    ExpandCollapseVars,
+    ifExpanding,
+    ifCollapsing,
+    ifCollapsed,
+    usesExpandCollapseState as baseUsesExpandCollapseState,
+    ExpandChangeEvent,
+    ExpandableProps,
+    useExpandCollapseState,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+import {
     // types:
     StateMixin,
     
@@ -60,29 +71,19 @@ import {
     
     // hooks:
     usesSizeVariant,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // hooks:
-    ActivePassiveVars,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
-    usesEnableDisableState,
-    usesActivePassiveState as indicatorUsesActivePassiveState,
-    useActivePassiveState,
     
     
     
     // styles:
-    usesIndicatorLayout,
-    usesIndicatorVariants,
+    usesBasicLayout,
+    usesBasicVariants,
     
     
     
     // react components:
-    IndicatorProps,
-    Indicator,
-}                           from '@reusable-ui/indicator'       // a base component
+    BasicProps,
+    Basic,
+}                           from '@reusable-ui/basic'           // a base component
 
 // other libs:
 import {
@@ -110,16 +111,16 @@ import {
 
 // accessibilities:
 
-//#region activePassive
+//#region expandable
 /**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
+ * Uses expand & collapse states.
+ * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
  */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
+export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
     // dependencies:
     
     // accessibilities:
-    const [activeRule, actives] = indicatorUsesActivePassiveState();
+    const [expandRule, expands] = baseUsesExpandCollapseState();
     
     
     
@@ -127,25 +128,25 @@ export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
         () => style({
             ...imports([
                 // accessibilities:
-                activeRule,
+                expandRule,
             ]),
             ...states([
-                ifActivating({
+                ifExpanding({
                     ...vars({
-                        [actives.anim] : popups.animActive,
+                        [expands.anim] : popups.animExpand,
                     }),
                 }),
-                ifPassivating({
+                ifCollapsing({
                     ...vars({
-                        [actives.anim] : popups.animPassive,
+                        [expands.anim] : popups.animCollapse,
                     }),
                 }),
             ]),
         }),
-        actives,
+        expands,
     ];
 };
-//#endregion activePassive
+//#endregion expandable
 
 
 
@@ -154,7 +155,7 @@ export const usesPopupLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesIndicatorLayout(),
+            usesBasicLayout(),
         ]),
         ...style({
             // positions:
@@ -180,7 +181,7 @@ export const usesPopupVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesIndicatorVariants(),
+            usesBasicVariants(),
             
             // layouts:
             sizeVariantRule,
@@ -191,21 +192,19 @@ export const usesPopupStates = () => {
     // dependencies:
     
     // states:
-    const [enableDisableStateRule] = usesEnableDisableState();
-    const [activePassiveStateRule] = usesActivePassiveState();
+    const [expandCollapseStateRule] = usesExpandCollapseState();
     
     
     
     return style({
         ...imports([
             // accessibilities:
-            enableDisableStateRule,
-            activePassiveStateRule,
+            expandCollapseStateRule,
         ]),
         ...states([
-            ifPassived({
+            ifCollapsed({
                 // appearances:
-                display: 'none', // hide the popup
+                display: 'none', // hide the <Popup>
             }),
         ]),
     });
@@ -229,43 +228,43 @@ export const usePopupStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
     //#region keyframes
-    const framePassived     = style({
+    const frameCollapsed    = style({
         opacity   : 0,
         transform : 'scale(0)',
     });
     const frameIntermediate = style({
         transform : 'scale(1.02)',
     });
-    const frameActived      = style({
+    const frameExpanded     = style({
         opacity   : 1,
         transform : 'scale(1)',
     });
-    const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from  : framePassived,
+    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
+        from  : frameCollapsed,
         '70%' : frameIntermediate,
-        to    : frameActived,
+        to    : frameExpanded,
     });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
-    const [keyframesPassiveRule, keyframesPassive] = keyframes({
-        from  : frameActived,
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
+        from  : frameExpanded,
         '30%' : frameIntermediate,
-        to    : framePassived,
+        to    : frameCollapsed,
     });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
     //#endregion keyframes
     
     
     
     return {
         // animations:
-        ...keyframesActiveRule,
-        ...keyframesPassiveRule,
-        animActive    : [
-            ['300ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
-        animPassive   : [
-            ['500ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
+        ...keyframesExpandRule,
+        ...keyframesCollapseRule,
+        animExpand       : [
+            ['300ms', 'ease-out', 'both', keyframesExpand  ],
+        ]                                                       as CssKnownProps['anim'],
+        animCollapse     : [
+            ['500ms', 'ease-out', 'both', keyframesCollapse],
+        ]                                                       as CssKnownProps['anim'],
     };
 }, { prefix: 'pop' });
 
@@ -294,10 +293,15 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 
 
 // react components:
-export interface PopupProps<TElement extends Element = HTMLElement>
+export interface PopupProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
     extends
         // bases:
-        IndicatorProps<TElement>
+        BasicProps<TElement>,
+        
+        // accessibilities:
+        Omit<ExpandableProps<TExpandChangeEvent>,
+            |'onExpandChange' // not implemented yet
+        >
 {
     // popups:
     targetRef       ?: React.RefObject<Element>|Element|null // getter ref
@@ -322,7 +326,7 @@ export interface PopupProps<TElement extends Element = HTMLElement>
     // children:
     children        ?: React.ReactNode
 }
-const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElement>): JSX.Element|null => {
+const Popup = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: PopupProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet              = usePopupStyleSheet();
     
@@ -331,14 +335,21 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
     // states:
     
     // accessibilities:
-    const activePassiveState      = useActivePassiveState<TElement>(props);
-    const isVisible               = activePassiveState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const expandCollapseState     = useExpandCollapseState<TElement, TExpandChangeEvent>(props);
+    const isVisible               = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const [popupPos, setPopupPos] = useReducer(coordinateReducer, null);
     
     
     
     // rest props:
     const {
+        // remove states props:
+        
+        // accessibilities:
+        expanded         : _expanded,
+        
+        
+        
         // popups:
         targetRef,
         popupPlacement   = 'top',
@@ -366,7 +377,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
         
         // children:
         children,
-    ...restIndicatorProps} = props;
+    ...restBasicProps} = props;
     
     
     
@@ -384,7 +395,16 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
     
     
     // classes:
-    const classes = useMergeClasses(
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // accessibilities:
+        expandCollapseState.class,
+    );
+    const classes      = useMergeClasses(
         // preserves the original `classes`:
         props.classes,
         
@@ -434,7 +454,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
         // states:
         
         // accessibilities:
-        activePassiveState.handleAnimationEnd,
+        expandCollapseState.handleAnimationEnd,
     );
     
     
@@ -532,9 +552,9 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
     
     // jsx:
     return (
-        <Indicator<TElement>
+        <Basic<TElement>
             // other props:
-            {...restIndicatorProps}
+            {...restBasicProps}
             
             
             
@@ -550,6 +570,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            stateClasses={stateClasses}
             classes={classes}
             
             
@@ -563,7 +584,7 @@ const Popup = <TElement extends Element = HTMLElement>(props: PopupProps<TElemen
             onAnimationEnd={handleAnimationEnd}
         >
             { (!lazy || isVisible) && children }
-        </Indicator>
+        </Basic>
     );
 };
 export {
