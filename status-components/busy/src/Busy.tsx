@@ -28,7 +28,7 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
-import {
+import type {
     // type:
     ExpandChangeEvent,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
