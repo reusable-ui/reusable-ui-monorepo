@@ -49,7 +49,7 @@ import {
     ifCollapsing,
     ifCollapsed,
     usesExpandCollapseState as baseUsesExpandCollapseState,
-    ExpandChangeEvent,
+    ExpandedChangeEvent,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
@@ -301,17 +301,17 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
 
 
 // react components:
-export interface CollapseProps<TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>
+export interface CollapseProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
         GenericProps<TElement>,
-        Omit<PopupProps<TElement, TExpandChangeEvent>, keyof BasicProps<TElement>>, // all props from <Popup> but not all props from the ancestors
+        Omit<PopupProps<TElement, TExpandedChangeEvent>, keyof BasicProps<TElement>>, // all props from <Popup> but not all props from the ancestors
         
         // layouts:
         OrientationVariant
 {
 }
-const Collapse = <TElement extends Element = HTMLElement, TExpandChangeEvent extends ExpandChangeEvent = ExpandChangeEvent>(props: CollapseProps<TElement, TExpandChangeEvent>): JSX.Element|null => {
+const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapseProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useCollapseStyleSheet();
     
@@ -348,7 +348,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandChangeEvent ext
     
     // jsx:
     return (
-        <Popup<TElement, TExpandChangeEvent>
+        <Popup<TElement, TExpandedChangeEvent>
             // other props:
             {...restPopupProps}
             
