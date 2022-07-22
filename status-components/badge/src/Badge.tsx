@@ -58,7 +58,7 @@ import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
+import type {
     // type:
     ExpandChangeEvent,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
