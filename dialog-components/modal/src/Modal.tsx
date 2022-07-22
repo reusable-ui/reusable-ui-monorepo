@@ -584,7 +584,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         
         
         // accessibilities:
-        onExpandChange,
+        onExpandedChange,
         
         
         
@@ -688,7 +688,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
     
     
     // handlers:
-    const handleExpandChange        = onExpandChange;
+    const handleExpandedChange      = onExpandedChange;
     const handleKeyDownInternal     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -704,7 +704,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
             
             if (isKeyOf('escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
-                handleExpandChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
+                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandChangeEvent);
             }
             else if (isKeyOf('tab'))
             {
@@ -733,7 +733,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [handleExpandChange]);
+    }, [handleExpandedChange]);
     const handleKeyDown             = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -757,10 +757,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandChangeEvent e
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
-            handleExpandChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
+            handleExpandedChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
-    }, [handleExpandChange, backdropStyle]);
+    }, [handleExpandedChange, backdropStyle]);
     const handleMouseDown           = useMergeEvents(
         // preserves the original `onMouseDown` from `props`:
         props.onMouseDown,
