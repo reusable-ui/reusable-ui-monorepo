@@ -165,9 +165,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     // rest props:
     const {
         // accessibilities:
-        active,         // take, to be handled by <Dropdown>
-        inheritActive,  // take, to be handled by <Dropdown>
-        onActiveChange, // take, to be handled by <Dropdown>
+        expanded,         // take, to be handled by <Dropdown>
+        onExpandedChange, // take, to be handled by <Dropdown>
         
         
         
@@ -305,9 +304,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // accessibilities:
-            active,
-            inheritActive,
-            onActiveChange,
+            expanded,
+            onExpandedChange,
             
             
             
@@ -371,18 +369,18 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             // children:
             React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
                 // conditions:
-                if (!onActiveChange)                                                                      return listItem; // [onActiveChange] was not set  => ignore
-                if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>              => ignore
-                if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}> => ignore
+                if (!onExpandedChange)                                                                    return listItem; // [onExpandedChange] was not set => ignore
+                if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>               => ignore
+                if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}>  => ignore
                 // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
                 
                 
                 
                 // jsx:
                 return (
-                    <ListItemWithActiveHandler<TDropdownListExpandedChangeEvent>
+                    <ListItemWithExpandedHandler<TDropdownListExpandedChangeEvent>
                         // accessibilities:
-                        onActiveChange={onActiveChange}
+                        onExpandedChange={onExpandedChange}
                         
                         
                         
@@ -408,21 +406,21 @@ export type { ListStyle, ListVariant }
 
 
 
-interface ListItemWithActiveHandlerProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
+interface ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
         // bases:
         ListItemProps<Element>,
-        Required<Pick<DropdownProps<Element, TDropdownListExpandedChangeEvent>, 'onActiveChange'>>
+        Required<Pick<DropdownProps<Element, TDropdownListExpandedChangeEvent>, 'onExpandedChange'>>
 {
     // components:
     listIndex         : number
     listItemComponent : React.ReactElement<ListItemProps<Element>>
 }
-const ListItemWithActiveHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
-        onActiveChange,
+        onExpandedChange,
         
         
         
@@ -434,17 +432,17 @@ const ListItemWithActiveHandler = <TDropdownListExpandedChangeEvent extends Drop
     
     
     // handlers:
-    const handleActiveChange  = onActiveChange;
-    const handleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleExpandedChange = onExpandedChange;
+    const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
         
         // a <ListItem> was clicked => close the <DropdownList>:
-        handleActiveChange({ newActive: false, actionType: listIndex } as TDropdownListExpandedChangeEvent);
+        handleExpandedChange({ expanded: false, actionType: listIndex } as TDropdownListExpandedChangeEvent);
         event.preventDefault(); // mark as handled
-    }, [handleActiveChange, listIndex]);
+    }, [handleExpandedChange, listIndex]);
     const handleClick         = useMergeEvents(
         // preserves the original `onClick` from `listItemComponent`:
         listItemComponent.props.onClick,
