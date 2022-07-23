@@ -69,7 +69,7 @@ import {
     DropdownUiComponentProps,
     
     DropdownActionType,
-    DropdownActiveChangeEvent,
+    DropdownExpandedChangeEvent,
     
     DropdownProps,
     Dropdown,
@@ -80,7 +80,7 @@ import {
 
 
 // react components:
-export interface DropdownButtonProps<TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>
+export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
     extends
         // bases:
         Omit<ButtonProps,
@@ -96,7 +96,7 @@ export interface DropdownButtonProps<TDropdownActiveChangeEvent extends Dropdown
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
-        Pick<DropdownProps<Element, TDropdownActiveChangeEvent>,
+        Pick<DropdownProps<Element, TDropdownExpandedChangeEvent>,
             // accessibilities:
             |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
         >,
@@ -105,10 +105,10 @@ export interface DropdownButtonProps<TDropdownActiveChangeEvent extends Dropdown
         ButtonComponentProps,
         ToggleButtonComponentProps,
         DropdownUiComponentProps<Element>,
-        DropdownComponentProps<Element, TDropdownActiveChangeEvent>
+        DropdownComponentProps<Element, TDropdownExpandedChangeEvent>
 {
 }
-const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeEvent = DropdownActiveChangeEvent>(props: DropdownButtonProps<TDropdownActiveChangeEvent>): JSX.Element|null => {
+const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // variants:
     const isDropdownOrientationBlock = ((props.dropdownOrientation ?? defaultDropdownOrientationRuleOptions.defaultOrientation) === 'block');
     
@@ -137,7 +137,7 @@ const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeE
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent     = (<Dropdown<Element, TDropdownActiveChangeEvent> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownActiveChangeEvent>>),
+        dropdownComponent     = (<Dropdown<Element, TDropdownExpandedChangeEvent> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownExpandedChangeEvent>>),
     ...restButtonProps} = props;
     
     
@@ -206,12 +206,12 @@ const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeE
     
     
     // handlers:
-    const handleActiveChangeInternal     = useEvent<EventHandler<TDropdownActiveChangeEvent>>((event) => {
+    const handleActiveChangeInternal     = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
         setActive(event.newActive);
     }, []);
     const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // create a dropdown event:
-        const dropdownEvent = { newActive: event.newActive, actionType: 'ui' } as TDropdownActiveChangeEvent;
+        const dropdownEvent = { expanded: event.newActive, actionType: 'ui' } as TDropdownExpandedChangeEvent;
         
         
         
@@ -294,7 +294,7 @@ const DropdownButton = <TDropdownActiveChangeEvent extends DropdownActiveChangeE
             )}
             
             {/* <Dropdown> */}
-            {React.cloneElement<DropdownProps<Element, TDropdownActiveChangeEvent>>(dropdownComponent,
+            {React.cloneElement<DropdownProps<Element, TDropdownExpandedChangeEvent>>(dropdownComponent,
                 // props:
                 {
                     // refs:
@@ -334,6 +334,6 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownActionType, DropdownActiveChangeEvent }
+export type { DropdownActionType, DropdownExpandedChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
