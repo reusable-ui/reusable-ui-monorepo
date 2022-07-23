@@ -223,7 +223,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     }, []);
     const forwardExpandedChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // create an expanded event:
-        const expandedEvent = { expanded: event.newActive, actionType: 'ui' } as TDropdownExpandedChangeEvent;
+        const expandedEvent = { expanded: event.active, actionType: 'ui' } as TDropdownExpandedChangeEvent;
         
         
         
