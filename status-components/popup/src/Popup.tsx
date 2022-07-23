@@ -62,7 +62,7 @@ import {
     ExpandedChangeEvent,
     ExpandableProps,
     useExpandCollapseState,
-}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // types:
     StateMixin,
@@ -111,7 +111,7 @@ import {
 
 // accessibilities:
 
-//#region expandable
+//#region expandCollapse
 /**
  * Uses expand & collapse states.
  * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
@@ -146,7 +146,7 @@ export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
         expands,
     ];
 };
-//#endregion expandable
+//#endregion expandCollapse
 
 
 
