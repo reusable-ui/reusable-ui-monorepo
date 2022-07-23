@@ -94,6 +94,7 @@ import {
 import {
     // utilities:
     setFocusNext,
+    isSelfOrDescendantOf,
 }                           from '@reusable-ui/modal'           // overlays a dialog to the entire site page
 
 
@@ -188,23 +189,6 @@ export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
         ] as CssKnownProps['filter'],
     };
 }, { prefix: 'ddwn' });
-
-
-
-// utilities:
-const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
-    let parent: Element|null = element;
-    do {
-        if (parent === desired) return true; // confirmed
-        
-        // let's try again:
-        parent = parent.parentElement;
-    } while (parent);
-    
-    
-    
-    return false; // not the descendant of desired
-};
 
 
 
@@ -401,27 +385,26 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         }
         else {
             // if current focused element is inside the <Dropdown> or inside the <targetRef> => back focus to <targetRef>:
-            setTimeout(() => {
-                // conditions:
-                const focusedElm = document.activeElement;
-                if (!focusedElm) return; // nothing was focused => nothing to do
-                
-                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
-                if (!target) return;                                   // [targetRef] was not set      => nothing to focus
-                if (!(target as HTMLElement|SVGElement).focus) return; // [targetRef] is not focusable => nothing to focus
-                
-                const dropdownUi = dropdownUiRefInternal.current;
-                if (                                                              // neither
-                    !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
-                    &&                                                            // nor
-                    !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <targetRef>
-                ) return;                                                         // => nothing to focus
-                
-                
-                
-                // restore the previously focused element (if any):
-                (target as HTMLElement|SVGElement).focus({ preventScroll: true });
-            }, 0); // wait until the user decided to change the focus to another <element>
+            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+            if (target && (target as HTMLElement|SVGElement).focus) {
+                setTimeout(() => {
+                    // conditions:
+                    const focusedElm = document.activeElement;
+                    if (!focusedElm) return; // nothing was focused => nothing to do
+                    
+                    const dropdownUi = dropdownUiRefInternal.current;
+                    if (                                                              // neither
+                        !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
+                        &&                                                            // nor
+                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <targetRef>
+                    ) return;                                                         // => nothing to focus
+                    
+                    
+                    
+                    // restore the previously focused element (if any):
+                    (target as HTMLElement|SVGElement).focus({ preventScroll: true });
+                }, 0); // wait until the user decided to change the focus to another <element>
+            } // if
         } // if
     }, [isExpanded, props.targetRef]);
     
