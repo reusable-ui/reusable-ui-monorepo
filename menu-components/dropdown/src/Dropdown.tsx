@@ -31,6 +31,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -114,6 +115,10 @@ export const usesDropdownUiLayout = () => {
             // resets:
             stripoutFocusableElement(), // clear browser's default styles
         ]),
+        ...style({
+            // customize:
+            ...usesCssProps(usesPrefixedProps(dropdowns, 'dropdownUi')), // apply config's cssProps starting with dropdownUi***
+        }),
     });
 };
 
@@ -177,7 +182,7 @@ export const useDropdownStyleSheet = createUseStyleSheet(() => ({
 export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
     return {
         // borders:
-        boxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'],
+        dropdownUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'],
     };
 }, { prefix: 'ddwn' });
 
