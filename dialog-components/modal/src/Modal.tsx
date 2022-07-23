@@ -56,6 +56,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui:
@@ -330,6 +331,11 @@ export const usesBackdropUiLayout = () => {
             animRule,
         ]),
         ...style({
+            // customize:
+            ...usesCssProps(usesPrefixedProps(modals, 'modalUi')), // apply config's cssProps starting with modalUi***
+            
+            
+            
             // animations:
             anim : anims.anim,
         }),
