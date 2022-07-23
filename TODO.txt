@@ -1,12 +1,3 @@
-const popupRoles = [
-    'status', // <Busy>, <Badge>, <Popup>   // ExpandableProps
-    'alert',  // <Alert>                    // ExpandableProps
-    'tooltip', // <Tooltip>                 // ExpandableProps
-    'dialog',  // <Modal> <Dropdown>        // ExpandableProps
-    'menu'     // <DropdownList>            // ExpandableProps
-];
-
-rename newActive => active
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
 test tree shake a Dropdown without Modal
