@@ -30,7 +30,7 @@ import {
     
     // react components:
     DropdownActionType,
-    DropdownActiveChangeEvent,
+    DropdownExpandedChangeEvent,
     
     DropdownProps,
     Dropdown,
@@ -132,17 +132,17 @@ export {
 
 
 export type DropdownListActionType = DropdownActionType|number
-export interface DropdownListActiveChangeEvent extends DropdownActiveChangeEvent {
+export interface DropdownListExpandedChangeEvent extends DropdownExpandedChangeEvent {
     actionType : DropdownListActionType
 }
 
-export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
         // bases:
         ListProps<TElement>,
         
         // accessibilities:
-        Omit<DropdownProps<Element, TDropdownListActiveChangeEvent>,
+        Omit<DropdownProps<Element, TDropdownListExpandedChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <List>
             
@@ -158,10 +158,10 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
             // children:
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >,
-        DropdownComponentProps<Element, TDropdownListActiveChangeEvent>
+        DropdownComponentProps<Element, TDropdownListExpandedChangeEvent>
 {
 }
-const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListProps<TElement, TDropdownListActiveChangeEvent>): JSX.Element|null => {
+const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
@@ -199,7 +199,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
         
         dropdownRef,
         dropdownOrientation,
-        dropdownComponent     = (<Dropdown<Element, TDropdownListActiveChangeEvent> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+        dropdownComponent     = (<Dropdown<Element, TDropdownListExpandedChangeEvent> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListExpandedChangeEvent>>),
     ...restListProps} = props;
     
     
@@ -286,7 +286,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
     
     // jsx:
     /* <Dropdown> */
-    return React.cloneElement<DropdownProps<Element, TDropdownListActiveChangeEvent>>(dropdownComponent,
+    return React.cloneElement<DropdownProps<Element, TDropdownListExpandedChangeEvent>>(dropdownComponent,
         // props:
         {
             // refs:
@@ -380,7 +380,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListActiv
                 
                 // jsx:
                 return (
-                    <ListItemWithActiveHandler<TDropdownListActiveChangeEvent>
+                    <ListItemWithActiveHandler<TDropdownListExpandedChangeEvent>
                         // accessibilities:
                         onActiveChange={onActiveChange}
                         
@@ -408,17 +408,17 @@ export type { ListStyle, ListVariant }
 
 
 
-interface ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+interface ListItemWithActiveHandlerProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
         // bases:
         ListItemProps<Element>,
-        Required<Pick<DropdownProps<Element, TDropdownListActiveChangeEvent>, 'onActiveChange'>>
+        Required<Pick<DropdownProps<Element, TDropdownListExpandedChangeEvent>, 'onActiveChange'>>
 {
     // components:
     listIndex         : number
     listItemComponent : React.ReactElement<ListItemProps<Element>>
 }
-const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
+const ListItemWithActiveHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithActiveHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
@@ -442,7 +442,7 @@ const ListItemWithActiveHandler = <TDropdownListActiveChangeEvent extends Dropdo
         
         
         // a <ListItem> was clicked => close the <DropdownList>:
-        handleActiveChange({ newActive: false, actionType: listIndex } as TDropdownListActiveChangeEvent);
+        handleActiveChange({ newActive: false, actionType: listIndex } as TDropdownListExpandedChangeEvent);
         event.preventDefault(); // mark as handled
     }, [handleActiveChange, listIndex]);
     const handleClick         = useMergeEvents(
