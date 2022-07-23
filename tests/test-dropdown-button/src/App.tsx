@@ -12,7 +12,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
-import { DropdownActiveChangeEvent } from '@reusable-ui/dropdown';
+import { DropdownExpandedChangeEvent } from '@reusable-ui/dropdown';
 
 
 
@@ -23,9 +23,9 @@ function App() {
     };
     
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const handleActiveChange = useCallback((event: DropdownActiveChangeEvent) => {
-        console.log('onActiveChange', event.newActive, event.actionType);
-        setShowDropdown(event.newActive);
+    const handleExpandedChange = useCallback((event: DropdownExpandedChangeEvent) => {
+        console.log('onExpandedChange', event.expanded, event.actionType);
+        setShowDropdown(event.expanded);
     }, []);
     
     
@@ -41,7 +41,7 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <DropdownButton theme='primary' active={showDropdown} onActiveChange={handleActiveChange} buttonChildren='Show menu'>
+                <DropdownButton theme='primary' expanded={showDropdown} onExpandedChange={handleExpandedChange} buttonChildren='Show menu'>
                     <div tabIndex={-1}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>

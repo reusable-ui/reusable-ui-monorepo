@@ -19,10 +19,13 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // type:
+    ToggleExpandableProps,
+    useToggleExpandable,
+}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+import type {
     // hooks:
     ActiveChangeEvent,
-    ToggleActiveProps,
-    useToggleActive,
 }                           from '@reusable-ui/indicator'       // a base indicator control
 import type {
     // types:
@@ -89,17 +92,14 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         >,
         
         // accessibilities:
-        Omit<ToggleActiveProps,
-            // accessibilities:
-            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
+        Omit<DropdownProps<Element, TDropdownExpandedChangeEvent>,
+            // refs:
+            |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
             
-            // children:
-            |'children' // we redefined `children` prop as a <DropdownUi> component
+            // DOMs:
+            |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
         >,
-        Pick<DropdownProps<Element, TDropdownExpandedChangeEvent>,
-            // accessibilities:
-            |'onActiveChange' // replaced with more specific <Dropdown>'s `onActiveChange`
-        >,
+        ToggleExpandableProps<TDropdownExpandedChangeEvent>, // supports uncontrollable expanded
         
         // components:
         ButtonComponentProps,
@@ -117,10 +117,29 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     // rest props:
     const {
         // accessibilities:
-        defaultActive,  // take, to be handled by `useToggleActive`
-        active,         // take, to be handled by `useToggleActive`
-        inheritActive,  // take, to be handled by `useToggleActive`
-        onActiveChange, // take, to be handled by `useToggleActive`
+        defaultExpanded,  // take, to be handled by `useToggleExpandable`
+        expanded,         // take, to be handled by `useToggleExpandable`
+        onExpandedChange, // take, to be handled by `useToggleExpandable`
+        
+        
+        
+        // popups:
+        targetRef,
+        popupPlacement,
+        popupMiddleware,
+        popupStrategy,
+        
+        popupAutoFlip,
+        popupAutoShift,
+        popupOffset,
+        popupShift,
+        
+        onPopupUpdate,
+        
+        
+        
+        // behaviors:
+        lazy,
         
         
         
@@ -143,17 +162,10 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // states:
-    const [isActive, setActive] = useToggleActive({
-        enabled         : props.enabled,
-        inheritEnabled  : props.inheritEnabled,
-        
-        readOnly        : props.readOnly,
-        inheritReadOnly : props.inheritReadOnly,
-        
-        defaultActive,
-        active,
-        inheritActive,
-        // onActiveChange, // trigger manually to <Dropdown>'s `onActiveChange`
+    const [isExpanded, setExpanded] = useToggleExpandable({
+        defaultExpanded,
+        expanded,
+        // onExpandedChange, // trigger manually to <Dropdown>'s `onExpandedChange`
     });
     
     
@@ -206,45 +218,54 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // handlers:
-    const handleActiveChangeInternal     = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
-        setActive(event.newActive);
+    const handleExpandedChangeInternal   = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
+        setExpanded(event.expanded);
     }, []);
-    const forwardActiveChangeByUi        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        // create a dropdown event:
-        const dropdownEvent = { expanded: event.newActive, actionType: 'ui' } as TDropdownExpandedChangeEvent;
+    const forwardExpandedChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // create an expanded event:
+        const expandedEvent = { expanded: event.newActive, actionType: 'ui' } as TDropdownExpandedChangeEvent;
         
         
         
-        // forwards the original `onActiveChange` from `props`:
-        onActiveChange?.(dropdownEvent); // request to change the [active] to <Parent>
+        // forwards the original `onExpandedChange` from `props`:
+        onExpandedChange?.(expandedEvent); // request to change the [expanded] to <Parent>
         
         
         
         // actions:
-        handleActiveChangeInternal(dropdownEvent);
-    }, [onActiveChange]);
+        handleExpandedChangeInternal(expandedEvent);
+    }, [onExpandedChange]);
     const handleToggleButtonActiveChange = useMergeEvents(
         // preserves the original `onActiveChange` from `toggleButtonComponent`:
         toggleButtonComponent.props.onActiveChange,
         
         
         
-        // forwards the original `onActiveChange` from `props`:
-        forwardActiveChangeByUi,
+        // forwards the original `onExpandedChange` from `props`:
+        forwardExpandedChangeByUi,
     );
-    const handleDropdownActiveChange     = useMergeEvents(
-        // preserves the original `onActiveChange` from `dropdownComponent`:
-        dropdownComponent.props.onActiveChange,
+    const handleExpandedChange           = useMergeEvents(
+        // preserves the original `onExpandedChange` from `dropdownComponent`:
+        dropdownComponent.props.onExpandedChange,
         
         
         
-        // preserves the original `onActiveChange` from `props`:
-        onActiveChange,
+        // preserves the original `onExpandedChange` from `props`:
+        onExpandedChange,
         
         
         
         // actions:
-        handleActiveChangeInternal,
+        handleExpandedChangeInternal,
+    );
+    const handlePopupUpdate              = useMergeEvents(
+        // preserves the original `onPopupUpdate` from `dropdownComponent`:
+        dropdownComponent.props.onPopupUpdate,
+        
+        
+        
+        // preserves the original `onPopupUpdate` from `props`:
+        onPopupUpdate,
     );
     
     
@@ -257,7 +278,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                 // props:
                 {
                     // accessibilities:
-                    active          : toggleButtonComponent.props.active ?? isActive,
+                    active          : toggleButtonComponent.props.active ?? isExpanded,
                     onActiveChange  : handleToggleButtonActiveChange,
                     
                     
@@ -298,23 +319,38 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                 // props:
                 {
                     // refs:
-                    outerRef        : mergedDropdownRef,
+                    outerRef         : mergedDropdownRef,
                     
                     
                     
                     // layouts:
-                    orientation     : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    orientation      : dropdownComponent.props.orientation ?? dropdownOrientation,
                     
                     
                     
                     // accessibilities:
-                    active          : dropdownComponent.props.active ?? isActive,
-                    onActiveChange  : handleDropdownActiveChange,
+                    expanded         : dropdownComponent.props.expanded ?? isExpanded,
+                    onExpandedChange : handleExpandedChange,
                     
                     
                     
                     // popups:
-                    targetRef       : dropdownComponent.props.targetRef ?? buttonRefInternal,
+                    targetRef        : dropdownComponent.props.targetRef       ?? targetRef       ?? buttonRefInternal,
+                    popupPlacement   : dropdownComponent.props.popupPlacement  ?? popupPlacement,
+                    popupMiddleware  : dropdownComponent.props.popupMiddleware ?? popupMiddleware,
+                    popupStrategy    : dropdownComponent.props.popupStrategy   ?? popupStrategy,
+                    
+                    popupAutoFlip    : dropdownComponent.props.popupAutoFlip   ?? popupAutoFlip,
+                    popupAutoShift   : dropdownComponent.props.popupAutoShift  ?? popupAutoShift,
+                    popupOffset      : dropdownComponent.props.popupOffset     ?? popupOffset,
+                    popupShift       : dropdownComponent.props.popupShift      ?? popupShift,
+                    
+                    onPopupUpdate    : handlePopupUpdate,
+                    
+                    
+                    
+                    // behaviors:
+                    lazy             : dropdownComponent.props.lazy            ?? lazy,
                 },
                 
                 
