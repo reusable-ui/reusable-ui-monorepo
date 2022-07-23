@@ -298,7 +298,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         dropdownUiRefInternal,
     );
-    const prevFocusRef          = useRef<Element|null>(null);
     
     
     
@@ -397,18 +396,34 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     useEffect(() => {
         // setups:
         if (isExpanded) {
-            // backup the current focused element (if any):
-            prevFocusRef.current = document.activeElement;
-            
             // when shown => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
             (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
-            // restore the previously focused element (if any):
-            (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
-            prevFocusRef.current = null; // unreference the restored focused element
+            // if current focused element is inside the <Dropdown> or inside the <targetRef> => back focus to <targetRef>:
+            setTimeout(() => {
+                // conditions:
+                const focusedElm = document.activeElement;
+                if (!focusedElm) return; // nothing was focused => nothing to do
+                
+                const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+                if (!target) return;                                   // [targetRef] was not set      => nothing to focus
+                if (!(target as HTMLElement|SVGElement).focus) return; // [targetRef] is not focusable => nothing to focus
+                
+                const dropdownUi = dropdownUiRefInternal.current;
+                if (                                                              // neither
+                    !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
+                    &&                                                            // nor
+                    !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <targetRef>
+                ) return;                                                         // => nothing to focus
+                
+                
+                
+                // restore the previously focused element (if any):
+                (target as HTMLElement|SVGElement).focus({ preventScroll: true });
+            }, 0); // wait until the user decided to change the focus to another <element>
         } // if
-    }, [isExpanded]);
+    }, [isExpanded, props.targetRef]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
