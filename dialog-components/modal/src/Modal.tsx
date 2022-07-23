@@ -86,6 +86,7 @@ import {
     ExpandedChangeEvent,
     ExpandableProps,
     useExpandCollapseState,
+    ToggleExpandableProps,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // types:
@@ -547,6 +548,9 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         
         // accessibilities:
         ExpandableProps<TModalExpandedChangeEvent>,
+        Pick<ToggleExpandableProps<TModalExpandedChangeEvent>,
+            |'onExpandedChange' // implements `onExpandedChange`
+        >,
         
         // behaviors:
         BackdropVariant,
