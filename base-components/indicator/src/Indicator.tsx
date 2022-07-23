@@ -504,6 +504,7 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
         
         
         
+        // update:
         setActiveTg(newActiveVal);
         triggerActiveChange(newActiveVal);
     }, []); // a stable callback, the `setActive` guaranteed to never change
@@ -514,9 +515,13 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
         
         
         const newActiveVal = !wasActiveFn.current;
+        
+        
+        
+        // update:
         setActiveTg(newActiveVal);
         triggerActiveChange(newActiveVal);
-    }, []); // a stable callback, the `setActive` guaranteed to never change
+    }, []); // a stable callback, the `toggleActive` guaranteed to never change
     
     
     
