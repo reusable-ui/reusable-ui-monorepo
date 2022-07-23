@@ -7,6 +7,8 @@ import {
     
     // hooks:
     useState,
+    useRef,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -202,4 +204,66 @@ export interface ToggleExpandableProps<TExpandedChangeEvent extends ExpandedChan
     defaultExpanded  ?: boolean
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
+export const useToggleExpandable = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ToggleExpandableProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+    // states:
+    const [expandedTg, setExpandedTg] = useState<boolean>(props.defaultExpanded ?? false);
+    
+    
+    
+    /*
+     * state is expanded/collapsed based on [controllable expanded] (if set) and fallback to [uncontrollable expanded]
+     */
+    const expandedFn : boolean = props.expanded /*controllable*/ ?? expandedTg /*uncontrollable*/;
+    
+    
+    
+    // states:
+    const wasExpandedFn      = useRef<boolean>(expandedFn); // a stable reference used by 2 callbacks below
+    wasExpandedFn.current    = (expandedFn);
+    
+    const onExpandedChange   = useRef<EventHandler<TExpandedChangeEvent>|undefined>(props.onExpandedChange);
+    onExpandedChange.current = props.onExpandedChange;
+    
+    
+    
+    // callbacks:
+    /*
+          controllable : setExpanded(new) => update state(old => old) => trigger Event(new)
+        uncontrollable : setExpanded(new) => update state(old => new) => trigger Event(new)
+    */
+    const triggerExpandedChange = useCallback((expanded: boolean): void => {
+        Promise.resolve().then(() => { // trigger the event after the <Expandable> has finished rendering (for controllable <Expandable>)
+            // fire expandedChange synthetic event:
+            onExpandedChange.current?.({ expanded } as TExpandedChangeEvent);
+        });
+    }, []);
+    const setExpanded    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((expanded: React.SetStateAction<boolean>): void => {
+        // conditions:
+        const newExpanded = (typeof(expanded) === 'function') ? expanded(wasExpandedFn.current) : expanded;
+        if (newExpanded === wasExpandedFn.current) return; // still the same => nothing to update
+        
+        
+        
+        // update:
+        setExpandedTg(newExpanded);
+        triggerExpandedChange(newExpanded);
+    }, []); // a stable callback, the `setExpanded` guaranteed to never change
+    const toggleExpanded : React.Dispatch<void> = useCallback((): void => {
+        const newExpanded = !wasExpandedFn.current;
+        
+        
+        
+        // update:
+        setExpandedTg(newExpanded);
+        triggerExpandedChange(newExpanded);
+    }, []); // a stable callback, the `toggleExpanded` guaranteed to never change
+    
+    
+    
+    return [
+        expandedFn,
+        setExpanded,
+        toggleExpanded,
+    ];
+};
 //#endregion expandCollapse
