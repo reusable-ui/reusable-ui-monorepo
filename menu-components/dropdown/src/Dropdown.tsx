@@ -44,6 +44,11 @@ import {
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
+    // utilities:
+    setFocusNext,
+    isSelfOrDescendantOf,
+}                           from '@reusable-ui/focuses'         // focusing functions
+import {
     // hooks:
     useEvent,
     useMergeEvents,
@@ -91,11 +96,6 @@ import {
     CollapseProps,
     Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
-import {
-    // utilities:
-    setFocusNext,
-    isSelfOrDescendantOf,
-}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site page
 
 
 
