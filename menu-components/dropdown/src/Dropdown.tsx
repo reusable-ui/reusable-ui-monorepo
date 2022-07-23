@@ -52,8 +52,8 @@ import {
 import {
     // type:
     ExpandedChangeEvent,
-    ExpandableProps,
     useExpandCollapseState,
+    ToggleExpandableProps,
 }                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
@@ -225,7 +225,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         >,
         
         // accessibilities:
-        Pick<ExpandableProps<TDropdownExpandedChangeEvent>,
+        Pick<ToggleExpandableProps<TDropdownExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange`
         >,
         
