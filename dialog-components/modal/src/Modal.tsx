@@ -235,6 +235,20 @@ export const setFocusNext  = (parentElement : Element) => {
     }
 };
 
+export const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
+    let parent: Element|null = element;
+    do {
+        if (parent === desired) return true; // confirmed
+        
+        // let's try again:
+        parent = parent.parentElement;
+    } while (parent);
+    
+    
+    
+    return false; // not the descendant of desired
+};
+
 const getViewportOrDefault = (viewportRef: React.RefObject<Element>|Element|null|undefined): Element => {
     return (
         // custom viewport (if was set):
@@ -847,9 +861,30 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
-            // restore the previously focused element (if any):
-            (prevFocusRef.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
-            prevFocusRef.current = null; // unreference the restored focused element
+            // if current focused element is inside the <Modal> => back focus to <prevFocusRef>:
+            const prevFocusElm = prevFocusRef.current;
+            if (prevFocusElm && (prevFocusElm as HTMLElement|SVGElement).focus) {
+                setTimeout(() => {
+                    // conditions:
+                    const focusedElm = document.activeElement;
+                    if (!focusedElm) return; // nothing was focused => nothing to do
+                    
+                    const modalUi = modalUiRefInternal.current;
+                    if (                                                        // neither
+                        !(modalUi && isSelfOrDescendantOf(focusedElm, modalUi)) // the current focused element is inside the <Modal>
+                    ) return;                                                   // => nothing to focus
+                    
+                    
+                    
+                    // restore the previously focused element (if any):
+                    (prevFocusElm as HTMLElement|SVGElement).focus({ preventScroll: true });
+                }, 0); // wait until the user decided to change the focus to another <element>
+            } // if
+            
+            
+            
+            // unreference the restored focused element:
+            prevFocusRef.current = null;
         } // if
     }, [isExpanded]);
     
