@@ -11,7 +11,7 @@ import {
 } from '@reusable-ui/button-icon'
 import {
     DropdownListButton,
-    DropdownListActiveChangeEvent,
+    DropdownListExpandedChangeEvent,
     ListItem,
 } from '@reusable-ui/dropdown-list-button'
 import {
@@ -28,9 +28,9 @@ function App() {
     };
     
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const handleActiveChange = useCallback((event: DropdownListActiveChangeEvent) => {
-        console.log('onActiveChange', event.newActive, event.actionType);
-        setShowDropdown(event.newActive);
+    const handleExpandedChange = useCallback((event: DropdownListExpandedChangeEvent) => {
+        console.log('onExpandedChange', event.expanded, event.actionType);
+        setShowDropdown(event.expanded);
     }, []);
     
     
@@ -47,7 +47,7 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <DropdownListButton theme='primary' onActiveChange={handleActiveChange} buttonChildren='Show menu'>
+                <DropdownListButton theme='primary' onExpandedChange={handleExpandedChange} buttonChildren='Show menu'>
                     <ListItem>
                         A first item
                     </ListItem>
