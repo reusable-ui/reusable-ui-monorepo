@@ -299,9 +299,7 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         BasicProps<TElement>,
         
         // accessibilities:
-        Omit<ExpandableProps<TExpandedChangeEvent>,
-            |'onExpandedChange' // not implemented yet
-        >
+        ExpandableProps<TExpandedChangeEvent>
 {
     // popups:
     targetRef       ?: React.RefObject<Element>|Element|null // getter ref
