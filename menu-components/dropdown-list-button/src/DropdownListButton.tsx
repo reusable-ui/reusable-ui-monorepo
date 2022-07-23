@@ -18,7 +18,7 @@ import {
     
     // react components:
     DropdownListActionType,
-    DropdownListActiveChangeEvent,
+    DropdownListExpandedChangeEvent,
     
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
@@ -89,10 +89,10 @@ export {
 
 
 
-export interface DropdownListButtonProps<TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>
+export interface DropdownListButtonProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
         // bases:
-        Omit<DropdownButtonProps<TDropdownListActiveChangeEvent>,
+        Omit<DropdownButtonProps<TDropdownListExpandedChangeEvent>,
             // children:
             |'children' // we redefined `children` prop as <ListItem>(s)
         >,
@@ -108,7 +108,7 @@ export interface DropdownListButtonProps<TDropdownListActiveChangeEvent extends 
         >
 {
 }
-const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListActiveChangeEvent = DropdownListActiveChangeEvent>(props: DropdownListButtonProps<TDropdownListActiveChangeEvent>): JSX.Element|null => {
+const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListButtonProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // forward props:
     const {
         // from <Basic>:
@@ -138,7 +138,7 @@ const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListA
         listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children          : listItems,
         
-        dropdownComponent = (<DropdownList<Element, TDropdownListActiveChangeEvent>
+        dropdownComponent = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
             listRef={listRef}
             listOrientation={listOrientation}
             listComponent={React.cloneElement<ListProps<Element>>(listComponent,
@@ -163,14 +163,14 @@ const DropdownListButton = <TDropdownListActiveChangeEvent extends DropdownListA
             )}
         >
             {listItems}
-        </DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListActiveChangeEvent>>),
+        </DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListExpandedChangeEvent>>),
     ...restDropdownButtonProps} = props;
     
     
     
     // jsx:
     return (
-        <DropdownButton<TDropdownListActiveChangeEvent>
+        <DropdownButton<TDropdownListExpandedChangeEvent>
             // other props:
             {...restDropdownButtonProps}
             
@@ -192,7 +192,7 @@ export type { OrientationName, OrientationVariant }
 
 export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
-export type { DropdownListActionType, DropdownListActiveChangeEvent }
+export type { DropdownListActionType, DropdownListExpandedChangeEvent }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
 
