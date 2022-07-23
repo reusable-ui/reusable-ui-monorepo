@@ -726,11 +726,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             
             
             
-            if (isKeyOf('escape')) {
-                // [esc] key pressed => request to hide the <Modal>:
-                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandedChangeEvent);
-            }
-            else if (isKeyOf('tab'))
+            if (isKeyOf('tab'))
             {
                 setFocusNext(event.currentTarget);
             }
@@ -891,7 +887,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {
         // conditions:
-        if (!isModal)  return; // only modal (blocking) mode
+        if (!isModal) return; // only modal (blocking) mode
         
         
         
@@ -956,6 +952,38 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         setExcitedDn(false);
     }, [isExpanded, excitedDn]);
+    
+    // watch [esc] key globally, when non modal (interactive|hidden) mode:
+    useEffect(() => {
+        // conditions:
+        if (!isExpanded) return; // <Modal> is not expanded => ignore
+        
+        
+        
+        // handlers:
+        const handleKeyDown = (event: KeyboardEvent) => {
+            const isKeyOf = (key: string): boolean => {
+                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
+            };
+            if (isKeyOf('escape')) {
+                // [esc] key pressed => request to hide the <Modal>:
+                handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandedChangeEvent);
+                // event.preventDefault(); // no need to mark as handled, because it's a global event
+            } // if
+        };
+        
+        
+        
+        // setups:
+        document.addEventListener('keydown', handleKeyDown);
+        
+        
+        
+        // cleanups:
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isExpanded, handleExpandedChange]);
     
     
     
