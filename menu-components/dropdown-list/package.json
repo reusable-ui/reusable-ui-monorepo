@@ -39,9 +39,9 @@
   "dependencies": {
     "@reusable-ui/dropdown": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
+    "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
-    "@reusable-ui/modal": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

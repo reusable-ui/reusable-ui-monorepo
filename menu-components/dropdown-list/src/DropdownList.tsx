@@ -11,6 +11,13 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // utilities:
+    setFocusFirst,
+    setFocusLast,
+    setFocusPrev,
+    setFocusNext,
+}                           from '@reusable-ui/focuses'         // focusing functions
 import type {
     // types:
     Role,
@@ -61,13 +68,6 @@ import {
     
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
-import {
-    // utilities:
-    setFocusFirst,
-    setFocusLast,
-    setFocusPrev,
-    setFocusNext,
-}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site page
 
 
 
