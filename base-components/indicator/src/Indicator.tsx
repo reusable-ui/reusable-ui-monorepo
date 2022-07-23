@@ -466,14 +466,14 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
     
     
     // states:
-    const isDisabledOrReadOnly = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
+    const isDisabledOrReadOnly   = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
     isDisabledOrReadOnly.current = (!enabled || readOnly);
     
-    const wasActiveFn = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
-    wasActiveFn.current = (activeFn);
+    const wasActiveFn            = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
+    wasActiveFn.current          = (activeFn);
     
-    const onActiveChange = useRef<EventHandler<TActiveChangeEvent>|undefined>(props.onActiveChange);
-    onActiveChange.current = props.onActiveChange;
+    const onActiveChange         = useRef<EventHandler<TActiveChangeEvent>|undefined>(props.onActiveChange);
+    onActiveChange.current       = props.onActiveChange;
     
     
     
@@ -482,7 +482,7 @@ export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = A
           controllable : setActive(new) => update state(old => old) => trigger Event(new)
         uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
     */
-    const triggerActiveChange = useCallback((newActive: boolean) => {
+    const triggerActiveChange = useCallback((newActive: boolean): void => {
         Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
             // fire change synthetic event:
             onActiveChange.current?.({ newActive } as TActiveChangeEvent);
