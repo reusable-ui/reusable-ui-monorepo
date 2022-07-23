@@ -14,6 +14,7 @@ import {
     rule,
     states,
     keyframes,
+    fallbacks,
     
     
     
@@ -220,11 +221,17 @@ export const useCollapseStyleSheet = createUseStyleSheet(() => ({
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     //#region keyframes
     const frameCollapsed    = style({
-        overflowY     : 'hidden',
+        overflowY     : 'clip',
+        ...fallbacks({
+            overflowY     : 'hidden',
+        }),
         maxBlockSize  : 0,
     });
     const frameIntermediate = style({
-        overflowY     : 'hidden',
+        overflowY     : 'clip',
+        ...fallbacks({
+            overflowY     : 'hidden',
+        }),
         maxBlockSize  : '100vh',
     });
     const frameExpanded     = style({
@@ -247,11 +254,17 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     
     const frameCollapsedInline    = style({
-        overflowX     : 'hidden',
+        overflowX     : 'clip',
+        ...fallbacks({
+            overflowX     : 'hidden',
+        }),
         maxInlineSize : 0,
     });
     const frameIntermediateInline = style({
-        overflowX     : 'hidden',
+        overflowX     : 'clip',
+        ...fallbacks({
+            overflowX     : 'hidden',
+        }),
         maxInlineSize : '100vw',
     });
     const frameExpandedInline     = style({
