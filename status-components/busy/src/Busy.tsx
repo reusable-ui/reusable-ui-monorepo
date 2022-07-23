@@ -31,7 +31,7 @@ import {
 import type {
     // type:
     ExpandedChangeEvent,
-}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // hooks:
     usesSizeVariant,

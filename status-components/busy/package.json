@@ -42,7 +42,7 @@
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/badge": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
-    "@reusable-ui/expandable": "^5.0.0",
+    "@reusable-ui/expandables": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
     "@reusable-ui/visually-hidden": "^5.0.0",
     "@types/react": "^18.0.10"
