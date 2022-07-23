@@ -53,7 +53,7 @@ import {
 
 // accessibilities:
 
-//#region expandable
+//#region expandCollapse
 export interface ExpandCollapseVars {
     filter : any
     anim   : any
@@ -193,4 +193,4 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
         handleAnimationEnd,
     };
 };
-//#endregion expandable
+//#endregion expandCollapse
