@@ -111,7 +111,6 @@ export interface ExpandableProps<TExpandedChangeEvent extends ExpandedChangeEven
     extends
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
-    onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
 
 const expandableCtrls = [
@@ -193,4 +192,14 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
         handleAnimationEnd,
     };
 };
+
+
+
+export interface ToggleExpandableProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+    extends
+        ExpandableProps<TExpandedChangeEvent>
+{
+    defaultExpanded  ?: boolean
+    onExpandedChange ?: EventHandler<TExpandedChangeEvent>
+}
 //#endregion expandCollapse
