@@ -1,3 +1,6 @@
+add floatables
+add orientations
+
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
 test tree shake a Dropdown without Modal
