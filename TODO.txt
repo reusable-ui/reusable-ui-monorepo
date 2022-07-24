@@ -1,5 +1,38 @@
-add floatables
-add orientations
+features
+    backgrounds
+    foregrounds
+    borders
+    rings
+
+    paddings
+    animations
+    
+    floatable
+
+states
+    excites
+    
+    enableDisable
+    activePassive
+    
+    focusBlur
+    arriveLeave
+    
+    pressRelease
+    
+    validInvalid
+    
+    expandCollapse
+
+variants
+    sizes           multi-options
+    orientations    multi-options
+    nude            toggle-option
+    themes          multi-options
+    gradient        toggle-option
+    outlined        toggle-option
+    mild            toggle-option
+
 
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
