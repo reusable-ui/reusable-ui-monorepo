@@ -54,15 +54,6 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
-    
-    
     // hooks:
     defaultOrientationRuleOptions as defaultDropdownOrientationRuleOptions,
     
@@ -123,18 +114,18 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         
-        // popups:
-        targetRef,
-        popupPlacement,
-        popupMiddleware,
-        popupStrategy,
+        // floatings:
+        floatingTarget,
+        floatingPlacement,
+        floatingMiddleware,
+        floatingStrategy,
         
-        popupAutoFlip,
-        popupAutoShift,
-        popupOffset,
-        popupShift,
+        floatingAutoFlip,
+        floatingAutoShift,
+        floatingOffset,
+        floatingShift,
         
-        onPopupUpdate,
+        onFloatingUpdate,
         
         
         
@@ -258,14 +249,14 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // actions:
         handleExpandedChangeInternal,
     );
-    const handlePopupUpdate              = useMergeEvents(
-        // preserves the original `onPopupUpdate` from `dropdownComponent`:
-        dropdownComponent.props.onPopupUpdate,
+    const handleFloatingUpdate           = useMergeEvents(
+        // preserves the original `onFloatingUpdate` from `dropdownComponent`:
+        dropdownComponent.props.onFloatingUpdate,
         
         
         
-        // preserves the original `onPopupUpdate` from `props`:
-        onPopupUpdate,
+        // preserves the original `onFloatingUpdate` from `props`:
+        onFloatingUpdate,
     );
     
     
@@ -334,18 +325,18 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    // popups:
-                    targetRef        : dropdownComponent.props.targetRef       ?? targetRef       ?? buttonRefInternal,
-                    popupPlacement   : dropdownComponent.props.popupPlacement  ?? popupPlacement,
-                    popupMiddleware  : dropdownComponent.props.popupMiddleware ?? popupMiddleware,
-                    popupStrategy    : dropdownComponent.props.popupStrategy   ?? popupStrategy,
+                    // floatings:
+                    floatingTarget      : dropdownComponent.props.floatingTarget     ?? floatingTarget     ?? buttonRefInternal,
+                    floatingPlacement   : dropdownComponent.props.floatingPlacement  ?? floatingPlacement,
+                    floatingMiddleware  : dropdownComponent.props.floatingMiddleware ?? floatingMiddleware,
+                    floatingStrategy    : dropdownComponent.props.floatingStrategy   ?? floatingStrategy,
                     
-                    popupAutoFlip    : dropdownComponent.props.popupAutoFlip   ?? popupAutoFlip,
-                    popupAutoShift   : dropdownComponent.props.popupAutoShift  ?? popupAutoShift,
-                    popupOffset      : dropdownComponent.props.popupOffset     ?? popupOffset,
-                    popupShift       : dropdownComponent.props.popupShift      ?? popupShift,
+                    floatingAutoFlip    : dropdownComponent.props.floatingAutoFlip   ?? floatingAutoFlip,
+                    floatingAutoShift   : dropdownComponent.props.floatingAutoShift  ?? floatingAutoShift,
+                    floatingOffset      : dropdownComponent.props.floatingOffset     ?? floatingOffset,
+                    floatingShift       : dropdownComponent.props.floatingShift      ?? floatingShift,
                     
-                    onPopupUpdate    : handlePopupUpdate,
+                    onFloatingUpdate    : handleFloatingUpdate,
                     
                     
                     
@@ -367,8 +358,6 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { DropdownActionType, DropdownExpandedChangeEvent }
 
