@@ -53,19 +53,19 @@ import {
 
 // hooks:
 
-// accessibilities:
+// states:
 
-//#region expandCollapse
-export interface ExpandCollapseVars {
+//#region expandable
+export interface ExpandVars {
     filter : any
     anim   : any
 }
-const [expands] = cssVar<ExpandCollapseVars>();
+const [expandVars] = cssVar<ExpandVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(expands.filter);
-    animRegistry.registerAnim(expands.anim);
+    animRegistry.registerFilter(expandVars.filter);
+    animRegistry.registerAnim(expandVars.anim);
 }
 
 
@@ -94,13 +94,13 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 
 /**
- * Uses expand & collapse states.
- * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
+ * Uses expand/collapse state.
+ * @returns A `StateMixin<ExpandVars>` represents an expand/collapse state.
  */
-export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
+export const usesExpandable = (): StateMixin<ExpandVars> => {
     return [
         () => neverRule(), // not implemented yet
-        expands,
+        expandVars,
     ];
 };
 
@@ -119,7 +119,7 @@ const expandableCtrls = [
     'dialog',
     'details',
 ];
-export const useExpandCollapseState = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ExpandableProps<TExpandedChangeEvent> & SemanticProps) => {
+export const useExpandable = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ExpandableProps<TExpandedChangeEvent> & SemanticProps) => {
     // fn props:
     const isExpanded  = props.expanded ?? false;
     const { tag } = useSemantic(props);
@@ -127,8 +127,8 @@ export const useExpandCollapseState = <TElement extends Element = HTMLElement, T
     
     
     // states:
-    const [expanded,  setExpanded ] = useState<boolean>(isExpanded);    // true => expand, false => collapse
-    const [animating, setAnimating] = useState<boolean|null>(null); // null => no-animation, true => expanding-animation, false => collapsing-animation
+    const [expanded,  setExpanded ] = useState<boolean>(isExpanded); // true => expand, false => collapse
+    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => expanding-animation, false => collapsing-animation
     
     
     
@@ -266,4 +266,4 @@ export const useToggleExpandable = <TExpandedChangeEvent extends ExpandedChangeE
         toggleExpanded,
     ];
 };
-//#endregion expandCollapse
+//#endregion expandable
