@@ -78,15 +78,6 @@ import {
     BasicProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
-    
-    
     // react components:
     PopupProps,
     Popup,
@@ -385,5 +376,3 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
