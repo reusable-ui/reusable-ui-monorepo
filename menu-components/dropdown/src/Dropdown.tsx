@@ -72,15 +72,6 @@ import {
     OrientationVariant,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
-    
-    
     // hooks:
     defaultOrientationRuleOptions,
     
@@ -384,8 +375,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
-            // if current focused element is inside the <Dropdown> or inside the <targetRef> => back focus to <targetRef>:
-            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+            // if current focused element is inside the <Dropdown> or inside the <floatingTarget> => back focus to <floatingTarget>:
+            const target = (props.floatingTarget instanceof Element) ? props.floatingTarget : props.floatingTarget?.current;
             if (target && (target as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
                     // conditions:
@@ -396,7 +387,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                     if (                                                              // neither
                         !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
                         &&                                                            // nor
-                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <targetRef>
+                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <floatingTarget>
                     ) return;                                                         // => nothing to focus
                     
                     
@@ -406,7 +397,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                 }, 0); // wait until the user decided to change the focus to another <element>
             } // if
         } // if
-    }, [isExpanded, props.targetRef]);
+    }, [isExpanded, props.floatingTarget]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
@@ -438,8 +429,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             
-            // `targetRef` is <Dropdown>'s friend, so focus on `targetRef` is considered not to lost focus on <Dropdown>:
-            const target = (props.targetRef instanceof Element) ? props.targetRef : props.targetRef?.current;
+            // <floatingTarget> is <Dropdown>'s friend, so focus on <floatingTarget> is considered not to lost focus on <Dropdown>:
+            const target = (props.floatingTarget instanceof Element) ? props.floatingTarget : props.floatingTarget?.current;
             if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
             
             
@@ -465,7 +456,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
-    }, [isExpanded, props.targetRef, handleExpandedChange]);
+    }, [isExpanded, props.floatingTarget, handleExpandedChange]);
     
     
     
@@ -487,10 +478,10 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             
-            // popups:
-            popupPlacement={props.popupPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
-            popupAutoFlip={props.popupAutoFlip ?? true}
-            popupAutoShift={props.popupAutoShift ?? true}
+            // floatings:
+            floatingPlacement ={props.floatingPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
+            floatingAutoFlip  ={props.floatingAutoFlip  ?? true}
+            floatingAutoShift ={props.floatingAutoShift ?? true}
             
             
             
@@ -529,8 +520,6 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 
 
