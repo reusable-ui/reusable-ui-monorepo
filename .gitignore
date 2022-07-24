@@ -9,8 +9,8 @@ simple-components/*/dist/
 layout-components/*/dist/
 status-components/*/dist/
 notification-components/*/dist/
-dialog-components/*/dist/
 menu-components/*/dist/
+dialog-components/*/dist/
 composite-components/*/dist/
 
 

@@ -9,8 +9,8 @@
     "layout-components/*",
     "status-components/*",
     "notification-components/*",
-    "dialog-components/*",
     "menu-components/*",
+    "dialog-components/*",
     "composite-components/*",
     
     "tests/*"
