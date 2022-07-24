@@ -38,12 +38,6 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
     BadgeStyle,
     
     
@@ -257,7 +251,5 @@ export {
     Busy,
     Busy as default,
 }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { BadgeStyle }
