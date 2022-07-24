@@ -27,12 +27,6 @@ import {
     OrientationName,
     OrientationVariant,
     
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
     
     
     // react components:
@@ -175,18 +169,18 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         
-        // popups:
-        targetRef,
-        popupPlacement,
-        popupMiddleware,
-        popupStrategy,
+        // floatings:
+        floatingTarget,
+        floatingPlacement,
+        floatingMiddleware,
+        floatingStrategy,
         
-        popupAutoFlip,
-        popupAutoShift,
-        popupOffset,
-        popupShift,
+        floatingAutoFlip,
+        floatingAutoShift,
+        floatingOffset,
+        floatingShift,
         
-        onPopupUpdate,
+        onFloatingUpdate,
         
         
         
@@ -314,18 +308,18 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // popups:
-            targetRef,
-            popupPlacement,
-            popupMiddleware,
-            popupStrategy,
+            // floatings:
+            floatingTarget,
+            floatingPlacement,
+            floatingMiddleware,
+            floatingStrategy,
             
-            popupAutoFlip,
-            popupAutoShift,
-            popupOffset,
-            popupShift,
+            floatingAutoFlip,
+            floatingAutoShift,
+            floatingOffset,
+            floatingShift,
             
-            onPopupUpdate,
+            onFloatingUpdate,
         },
         
         
@@ -399,8 +393,6 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { ListStyle, ListVariant }
 
