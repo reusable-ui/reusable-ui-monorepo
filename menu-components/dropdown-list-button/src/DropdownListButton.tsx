@@ -27,12 +27,6 @@ import {
     OrientationName,
     OrientationVariant,
     
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
-    
     ButtonStyle,
     ButtonVariant,
     ButtonType,
@@ -189,8 +183,6 @@ export {
 }
 
 export type { OrientationName, OrientationVariant }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
 
 export type { DropdownListActionType, DropdownListExpandedChangeEvent }
 
