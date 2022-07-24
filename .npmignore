@@ -1,5 +1,7 @@
 node_modules/
 
+states/*/src/
+states/*/__tests__/
 utilities/*/src/
 utilities/*/__tests__/
 

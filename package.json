@@ -11,6 +11,7 @@
   },
   "type": "module",
   "workspaces": [
+    "states/*",
     "utilities/*",
     
     "base-components/*",
