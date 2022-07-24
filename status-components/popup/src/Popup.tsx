@@ -88,12 +88,12 @@ import {
 // other libs:
 import {
     // types:
-    Placement             as PopupPlacement,
-    Middleware            as PopupMiddleware,
-    Strategy              as PopupStrategy,
-    Side                  as PopupSide,
+    Placement             as FloatingPlacement,
+    Middleware            as FloatingMiddleware,
+    Strategy              as FloatingStrategy,
+    Side                  as FloatingSide,
     
-    ComputePositionReturn as PopupPosition,
+    ComputePositionReturn as FloatingPosition,
     
     
     
@@ -271,7 +271,7 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
 
 
 // utilities:
-type Coordinate = Pick<PopupPosition, 'x'|'y'|'placement'>
+type Coordinate = Pick<FloatingPosition, 'x'|'y'|'placement'>
 const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordinate|null): Coordinate|null => {
     if (
         (oldCoordinate === newCoordinate)
@@ -301,18 +301,18 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         // accessibilities:
         ExpandableProps<TExpandedChangeEvent>
 {
-    // popups:
-    targetRef       ?: React.RefObject<Element>|Element|null // getter ref
-    popupPlacement  ?: PopupPlacement
-    popupMiddleware ?: PopupMiddleware[] | ((defaultMiddleware: PopupMiddleware[]) => Promise<PopupMiddleware[]>)
-    popupStrategy   ?: PopupStrategy
+    // floatings:
+    floatingTarget     ?: React.RefObject<Element>|Element|null // getter ref
+    floatingPlacement  ?: FloatingPlacement
+    floatingMiddleware ?: FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>)
+    floatingStrategy   ?: FloatingStrategy
     
-    popupAutoFlip   ?: boolean
-    popupAutoShift  ?: boolean
-    popupOffset     ?: number
-    popupShift      ?: number
+    floatingAutoFlip   ?: boolean
+    floatingAutoShift  ?: boolean
+    floatingOffset     ?: number
+    floatingShift      ?: number
     
-    onPopupUpdate   ?: EventHandler<PopupPosition>
+    onFloatingUpdate   ?: EventHandler<FloatingPosition>
     
     
     
@@ -326,16 +326,16 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
 }
 const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: PopupProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet              = usePopupStyleSheet();
+    const styleSheet                    = usePopupStyleSheet();
     
     
     
     // states:
     
     // accessibilities:
-    const expandCollapseState     = useExpandCollapseState<TElement, TExpandedChangeEvent>(props);
-    const isVisible               = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const [popupPos, setPopupPos] = useReducer(coordinateReducer, null);
+    const expandCollapseState           = useExpandCollapseState<TElement, TExpandedChangeEvent>(props);
+    const isVisible                     = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const [floatingPos, setFloatingPos] = useReducer(coordinateReducer, null);
     
     
     
@@ -348,18 +348,18 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // popups:
-        targetRef,
-        popupPlacement   = 'top',
-        popupMiddleware,
-        popupStrategy    = 'absolute',
+        // floatings:
+        floatingTarget,
+        floatingPlacement   = 'top',
+        floatingMiddleware,
+        floatingStrategy    = 'absolute',
         
-        popupAutoFlip    = false,
-        popupAutoShift   = false,
-        popupOffset      = 0,
-        popupShift       = 0,
+        floatingAutoFlip    = false,
+        floatingAutoShift   = false,
+        floatingOffset      = 0,
+        floatingShift       = 0,
         
-        onPopupUpdate,
+        onFloatingUpdate,
         
         
         
@@ -408,9 +408,9 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // popups:
-        ( targetRef              || null) && 'overlay',
-        ((targetRef && popupPos) || null) && popupPos?.placement,
+        // floatings:
+        ( floatingTarget                 || null) && 'overlay',
+        ((floatingTarget && floatingPos) || null) && floatingPos?.placement,
     );
     
     
@@ -418,30 +418,30 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     // styles:
     const mergedStyle = useMemo(() => ({
         // positions:
-        position : ( targetRef              || undefined) && popupStrategy,
-        left     : ((targetRef && popupPos) || undefined) && `${popupPos?.x}px`,
-        top      : ((targetRef && popupPos) || undefined) && `${popupPos?.y}px`,
+        position : ( floatingTarget                 || undefined) && floatingStrategy,
+        left     : ((floatingTarget && floatingPos) || undefined) && `${floatingPos?.x}px`,
+        top      : ((floatingTarget && floatingPos) || undefined) && `${floatingPos?.y}px`,
         
         
         
-        // preserves the original `style` (can overwrite the `icon.style`):
+        // preserves the original `style` (can overwrite the `.style`):
         ...(style ?? {}),
-    }), [popupStrategy, popupPos, style]);
+    }), [floatingStrategy, floatingPos, style]);
     
     
     
     // handlers:
-    const handlePopupUpdateInternal = useEvent<EventHandler<PopupPosition>>((popupPosition) => {
-        setPopupPos(popupPosition);
+    const handleFloatingUpdateInternal = useEvent<EventHandler<FloatingPosition>>((floatingPosition) => {
+        setFloatingPos(floatingPosition);
     }, []);
-    const handlePopupUpdate         = useMergeEvents(
-        // preserves the original `onPopupUpdate`:
-        onPopupUpdate,
+    const handleFloatingUpdate         = useMergeEvents(
+        // preserves the original `onFloatingUpdate`:
+        onFloatingUpdate,
         
         
         
-        // popups:
-        handlePopupUpdateInternal,
+        // floatings:
+        handleFloatingUpdateInternal,
     );
     const handleAnimationEnd        = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -462,8 +462,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         // conditions:
         if (!isVisible) return; // <Popup> is fully hidden => no need to update
         
-        const target = (targetRef instanceof Element) ? targetRef : targetRef?.current;
-        if (!target)    return; // [targetRef] was not specified => nothing to do
+        const target = (floatingTarget instanceof Element) ? floatingTarget : floatingTarget?.current;
+        if (!target)    return; // [floatingTarget] was not specified => nothing to do
         
         const popup  = popupRefInternal.current;
         if (!popup)     return; // <Popup> was unloaded => nothing to do
@@ -471,37 +471,37 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // handlers:
-        const triggerPopupUpdate = async () => {
+        const triggerFloatingUpdate = async () => {
             // calculate the proper position of the <Popup>:
-            const popupPosition = await computePosition(/*reference: */target, /*floating: */popup as unknown as HTMLElement, /*options: */{
-                placement  : popupPlacement,
-                middleware : await (async (): Promise<PopupMiddleware[]> => {
-                    if (Array.isArray(popupMiddleware)) return popupMiddleware;
+            const floatingPosition = await computePosition(/*reference: */target, /*floating: */popup as unknown as HTMLElement, /*options: */{
+                placement  : floatingPlacement,
+                middleware : await (async (): Promise<FloatingMiddleware[]> => {
+                    if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
                     
                     
                     
-                    const defaultMiddleware: PopupMiddleware[] = [
-                        ...((popupOffset || popupShift) ? [offset({ // requires to be placed at the first order
-                            mainAxis  : popupOffset,
-                            crossAxis : popupShift,
+                    const defaultMiddleware: FloatingMiddleware[] = [
+                        ...((floatingOffset || floatingShift) ? [offset({ // requires to be placed at the first order
+                            mainAxis  : floatingOffset,
+                            crossAxis : floatingShift,
                         })] : []),
                         
-                        ...(popupAutoFlip  ? [flip() ] : []),
-                        ...(popupAutoShift ? [shift()] : []),
+                        ...(floatingAutoFlip  ? [flip() ] : []),
+                        ...(floatingAutoShift ? [shift()] : []),
                     ];
                     
                     
                     
-                    if (popupMiddleware) return await popupMiddleware(defaultMiddleware);
+                    if (floatingMiddleware) return await floatingMiddleware(defaultMiddleware);
                     return defaultMiddleware;
                 })(),
-                strategy   : popupStrategy,
+                strategy   : floatingStrategy,
             });
             
             
             
-            // trigger the `onPopupUpdate`
-            handlePopupUpdate?.(popupPosition);
+            // trigger the `onFloatingUpdate`
+            handleFloatingUpdate?.(floatingPosition);
         };
         
         
@@ -510,11 +510,11 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         // the first trigger:
         const cancelTimeout = setTimeout(() => { // wait until all cssfn (both for <Popup> and <Target>) are fully loaded
-            triggerPopupUpdate();
+            triggerFloatingUpdate();
         }, 0);
         
         // the live trigger:
-        const stopUpdate = autoUpdate(target, popup as unknown as HTMLElement, triggerPopupUpdate);
+        const stopUpdate = autoUpdate(target, popup as unknown as HTMLElement, triggerFloatingUpdate);
         
         
         
@@ -529,21 +529,21 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // popups:
-        targetRef,
-        popupPlacement,
-        popupMiddleware,
-        popupStrategy,
+        // floatings:
+        floatingTarget,
+        floatingPlacement,
+        floatingMiddleware,
+        floatingStrategy,
         
-        popupAutoFlip,
-        popupAutoShift,
-        popupOffset,
-        popupShift,
+        floatingAutoFlip,
+        floatingAutoShift,
+        floatingOffset,
+        floatingShift,
         
         
         
         // handlers:
-        handlePopupUpdate,
+        handleFloatingUpdate,
     ]);
     
     
@@ -590,4 +590,4 @@ export {
     Popup as default,
 }
 
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
+export type { FloatingPlacement, FloatingMiddleware, FloatingStrategy, FloatingPosition, FloatingSide }
