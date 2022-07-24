@@ -39,7 +39,7 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Popup targetRef={btnRef} theme='warning' expanded={true}>
+                <Popup floatingTarget={btnRef} theme='warning' expanded={true}>
                     test &lt;Popup&gt;
                 </Popup>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

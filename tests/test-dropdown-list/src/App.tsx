@@ -52,7 +52,7 @@ function App() {
                 <ButtonIcon theme='primary' elmRef={btnRef} onClick={() => setShowDropdown(!showDropdown)} icon='dropdown' iconPosition='end'>
                     Show menu
                 </ButtonIcon>
-                <DropdownList targetRef={btnRef} theme='primary' expanded={showDropdown} onExpandedChange={handleExpandedChange}>
+                <DropdownList floatingTarget={btnRef} theme='primary' expanded={showDropdown} onExpandedChange={handleExpandedChange}>
                     <ListItem>
                         A first item
                     </ListItem>

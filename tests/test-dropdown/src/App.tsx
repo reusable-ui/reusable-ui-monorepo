@@ -40,7 +40,7 @@ function App() {
                 <button ref={btnRef} onClick={() => setShowDropdown(!showDropdown)}>
                     I'm here
                 </button>
-                <Dropdown targetRef={btnRef} expanded={showDropdown} onExpandedChange={(event) => setShowDropdown(event.expanded)}>
+                <Dropdown floatingTarget={btnRef} expanded={showDropdown} onExpandedChange={(event) => setShowDropdown(event.expanded)}>
                     <div tabIndex={-1}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
