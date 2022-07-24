@@ -78,11 +78,10 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // types:
-    PopupPlacement,
-    PopupMiddleware,
-    PopupStrategy,
-    PopupPosition,
-    PopupSide,
+    FloatingPlacement,
+    FloatingMiddleware,
+    FloatingPosition,
+    FloatingSide,
     
     
     
@@ -282,7 +281,7 @@ const isTargetEnabled = (target: Element|null|undefined): boolean => {
 
 export interface ArrowProps {
     arrow     : Element
-    placement : PopupPlacement
+    placement : FloatingPlacement
 }
 export type ArrowSize           = readonly [number, number]
 export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
@@ -317,7 +316,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
         // components:
         ArrowComponentProps<Element>
 {
-    // popups:
+    // floatings:
     unsafe_calculateArrowSize ?: CalculateArrowSize
     
     
@@ -344,9 +343,9 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // popups:
+        // floatings:
         unsafe_calculateArrowSize : calculateArrowSize = defaultCalculateArrowSize,
-        popupMiddleware,
+        floatingMiddleware,
         
         
         
@@ -391,7 +390,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     /**
      * Calculates the required offset (space) for the <arrow>.
      */
-    const arrowOffsetMiddleware = useCallback((arrow: Element): PopupMiddleware => {
+    const arrowOffsetMiddleware    = useCallback((arrow: Element): FloatingMiddleware => {
         return {
             name: 'arrowOffset',
             async fn({ placement, x, y }) {
@@ -454,7 +453,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     /**
      * Attaches an arrow element to the <Tooltip>.
      */
-    const middlewareWithArrow   = useCallback(async (defaultMiddleware: PopupMiddleware[]): Promise<PopupMiddleware[]> => {
+    const middlewareWithArrow      = useCallback(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
         const arrow = arrowRefInternal.current;
         if (!arrow) return defaultMiddleware;
         
@@ -492,8 +491,8 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             }),
         ];
     }, [arrowOffsetMiddleware]);
-    const mergedPopupMiddleware = useCallback(async (defaultMiddleware: PopupMiddleware[]): Promise<PopupMiddleware[]> => {
-        if (Array.isArray(popupMiddleware)) return popupMiddleware;
+    const mergedFloatingMiddleware = useCallback(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
+        if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
         
         
         
@@ -501,28 +500,28 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // preserves the original `popupMiddleware`:
-        return popupMiddleware ? await popupMiddleware(defaultMiddleware2) : defaultMiddleware2;
-    }, [popupMiddleware, middlewareWithArrow]);
+        // preserves the original `floatingMiddleware`:
+        return floatingMiddleware ? await floatingMiddleware(defaultMiddleware2) : defaultMiddleware2;
+    }, [floatingMiddleware, middlewareWithArrow]);
     
     
     
     // handlers:
-    const handleArrowPosition   = useEvent<EventHandler<PopupPosition>>((popupPosition) => {
+    const handleArrowPosition      = useEvent<EventHandler<FloatingPosition>>((floatingPosition) => {
         const arrow = arrowRefInternal.current;
         if (!arrow) return;
         
         
         
-        const { middlewareData, placement } = popupPosition;
+        const { middlewareData, placement } = floatingPosition;
         const { x, y } = middlewareData.arrow ?? {};
-        const basePlacement : PopupSide = placement.split('-')[0] as PopupSide;
-        const invertBasePlacement : PopupSide = {
+        const basePlacement : FloatingSide = placement.split('-')[0] as FloatingSide;
+        const invertBasePlacement : FloatingSide = {
             top    : 'bottom',
             right  : 'left',
             bottom : 'top',
             left   : 'right',
-        }[basePlacement] as PopupSide;
+        }[basePlacement] as FloatingSide;
         
         
         
@@ -533,13 +532,13 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         arrowStyle.bottom               = ''; /* reset */
         arrowStyle[invertBasePlacement] = '0px'; /* top => bottom:0px | bottom => top:0px | left => right:0px | right => left:0px */
     }, []);
-    const handlePopupUpdate     = useMergeEvents(
-        // preserves the original `onPopupUpdate`:
-        props.onPopupUpdate,
+    const handleFloatingUpdate     = useMergeEvents(
+        // preserves the original `onFloatingUpdate`:
+        props.onFloatingUpdate,
         
         
         
-        // popups:
+        // floatings:
         handleArrowPosition,
     );
     
@@ -558,9 +557,9 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // conditions:
         if (isControllableExpanded) return; // controllable [expanded] is set => no uncontrollable required
         
-        const targetRef = props.targetRef;
-        const target    = (targetRef instanceof Element) ? targetRef : targetRef?.current;
-        if (!target)              return; // [targetRef] was not specified => nothing to do
+        const floatingTarget = props.floatingTarget;
+        const target         = (floatingTarget instanceof Element) ? floatingTarget : floatingTarget?.current;
+        if (!target)                return; // [floatingTarget] was not specified => nothing to do
         
         
         
@@ -662,7 +661,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             target.removeEventListener('focus'     , handleFocus, { capture: true });
             target.removeEventListener('blur'      , handleBlur , { capture: true });
         };
-    }, [isControllableExpanded, props.targetRef, expandDelay, collapseDelay]);
+    }, [isControllableExpanded, props.floatingTarget, expandDelay, collapseDelay]);
     
     
     
@@ -694,17 +693,17 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             
-            // popups:
-            popupPlacement={props.popupPlacement ?? 'top'}
-            popupAutoFlip={props.popupAutoFlip ?? true}
-            popupAutoShift={props.popupAutoShift ?? true}
+            // floatings:
+            floatingPlacement  = {props.floatingPlacement ?? 'top'}
+            floatingAutoFlip   = {props.floatingAutoFlip  ?? true }
+            floatingAutoShift  = {props.floatingAutoShift ?? true }
             
-            popupMiddleware={mergedPopupMiddleware}
+            floatingMiddleware = {mergedFloatingMiddleware}
             
             
             
             // handlers:
-            onPopupUpdate={handlePopupUpdate}
+            onFloatingUpdate={handleFloatingUpdate}
         >
             { props.children }
             
@@ -733,5 +732,3 @@ export {
     Tooltip,
     Tooltip as default,
 }
-
-export type { PopupPlacement, PopupMiddleware, PopupStrategy, PopupPosition, PopupSide }
