@@ -26,7 +26,6 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -54,21 +53,13 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
-    ExpandCollapseVars,
-    ifExpanding,
-    ifCollapsing,
     ifCollapsed,
-    usesExpandCollapseState as baseUsesExpandCollapseState,
+    usesCollapsible,
     ExpandedChangeEvent,
-    ExpandableProps,
-    useExpandCollapseState,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+    CollapsibleProps,
+    useCollapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesSizeVariant,
     
@@ -104,49 +95,6 @@ import {
     offset,
     autoUpdate,
 }                           from '@floating-ui/dom'             // a popup utility
-
-
-
-// hooks:
-
-// accessibilities:
-
-//#region expandCollapse
-/**
- * Uses expand & collapse states.
- * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
- */
-export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
-    // dependencies:
-    
-    // accessibilities:
-    const [expandRule, expands] = baseUsesExpandCollapseState();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // accessibilities:
-                expandRule,
-            ]),
-            ...states([
-                ifExpanding({
-                    ...vars({
-                        [expands.anim] : popups.animExpand,
-                    }),
-                }),
-                ifCollapsing({
-                    ...vars({
-                        [expands.anim] : popups.animCollapse,
-                    }),
-                }),
-            ]),
-        }),
-        expands,
-    ];
-};
-//#endregion expandCollapse
 
 
 
@@ -192,14 +140,14 @@ export const usesPopupStates = () => {
     // dependencies:
     
     // states:
-    const [expandCollapseStateRule] = usesExpandCollapseState();
+    const [collapsibleRule] = usesCollapsible(popups);
     
     
     
     return style({
         ...imports([
-            // accessibilities:
-            expandCollapseStateRule,
+            // states:
+            collapsibleRule,
         ]),
         ...states([
             ifCollapsed({
@@ -244,13 +192,13 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
         '70%' : frameIntermediate,
         to    : frameExpanded,
     });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseRule, keyframesCollapse] = keyframes({
         from  : frameExpanded,
         '30%' : frameIntermediate,
         to    : frameCollapsed,
     });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     //#endregion keyframes
     
     
@@ -298,8 +246,8 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         // bases:
         BasicProps<TElement>,
         
-        // accessibilities:
-        ExpandableProps<TExpandedChangeEvent>
+        // states:
+        CollapsibleProps<TExpandedChangeEvent>
 {
     // floatings:
     floatingTarget     ?: React.RefObject<Element>|Element|null // getter ref
@@ -331,10 +279,9 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     // states:
+    const collapsibleState              = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const isVisible                     = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
-    // accessibilities:
-    const expandCollapseState           = useExpandCollapseState<TElement, TExpandedChangeEvent>(props);
-    const isVisible                     = expandCollapseState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const [floatingPos, setFloatingPos] = useReducer(coordinateReducer, null);
     
     
@@ -399,8 +346,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // accessibilities:
-        expandCollapseState.class,
+        // states:
+        collapsibleState.class,
     );
     const classes      = useMergeClasses(
         // preserves the original `classes`:
@@ -451,8 +398,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         // states:
         
-        // accessibilities:
-        expandCollapseState.handleAnimationEnd,
+        // states:
+        collapsibleState.handleAnimationEnd,
     );
     
     
@@ -575,6 +522,11 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             // styles:
             style={mergedStyle}
+                    
+                    
+                    
+            // [open]:
+            {...collapsibleState.props}
             
             
             
