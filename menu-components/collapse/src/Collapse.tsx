@@ -20,7 +20,6 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -45,23 +44,15 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
-    ExpandCollapseVars,
-    ifExpanding,
-    ifCollapsing,
     ifCollapsed,
-    usesExpandCollapseState as baseUsesExpandCollapseState,
+    usesCollapsible,
     ExpandedChangeEvent,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     OrientationName,
     OrientationVariantOptions,
@@ -92,46 +83,6 @@ import {
 //#region orientation
 export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
 //#endregion orientation
-
-
-// accessibilities:
-
-//#region expandCollapse
-/**
- * Uses expand & collapse states.
- * @returns A `StateMixin<ExpandCollapseVars>` represents expand & collapse state definitions.
- */
-export const usesExpandCollapseState = (): StateMixin<ExpandCollapseVars> => {
-    // dependencies:
-    
-    // accessibilities:
-    const [expandRule, expands] = baseUsesExpandCollapseState();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // accessibilities:
-                expandRule,
-            ]),
-            ...states([
-                ifExpanding({
-                    ...vars({
-                        [expands.anim] : collapses.animExpand,
-                    }),
-                }),
-                ifCollapsing({
-                    ...vars({
-                        [expands.anim] : collapses.animCollapse,
-                    }),
-                }),
-            ]),
-        }),
-        expands,
-    ];
-};
-//#endregion expandCollapse
 
 
 
@@ -178,14 +129,14 @@ export const usesCollapseStates = () => {
     // dependencies:
     
     // states:
-    const [expandCollapseStateRule] = usesExpandCollapseState();
+    const [collapsibleRule] = usesCollapsible(collapses);
     
     
     
     return style({
         ...imports([
-            // accessibilities:
-            expandCollapseStateRule,
+            // states:
+            collapsibleRule,
         ]),
         ...states([
             ifCollapsed({
@@ -234,13 +185,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         '99%' : frameIntermediate,
         to    : frameExpanded,
     });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseRule, keyframesCollapse] = keyframes({
         from  : frameExpanded,
         '1%'  : frameIntermediate,
         to    : frameCollapsed,
     });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     
     
     
@@ -267,13 +218,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         '99%' : frameIntermediateInline,
         to    : frameExpandedInline,
     });
-    keyframesExpandInline.value   = 'expandInline';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandCollapseState`
+    keyframesExpandInline.value   = 'expandInline';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseInlineRule, keyframesCollapseInline] = keyframes({
         from  : frameExpandedInline,
         '1%'  : frameIntermediateInline,
         to    : frameCollapsedInline,
     });
-    keyframesCollapseInline.value = 'collapseInline'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandCollapseState`
+    keyframesCollapseInline.value = 'collapseInline'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     //#endregion keyframes
     
     
