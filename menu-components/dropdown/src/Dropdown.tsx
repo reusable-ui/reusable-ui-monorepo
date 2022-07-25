@@ -371,8 +371,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
         }
         else {
-            // if current focused element is inside the <Dropdown> or inside the <floatingTarget> => back focus to <floatingTarget>:
-            const target = (props.floatingTarget instanceof Element) ? props.floatingTarget : props.floatingTarget?.current;
+            // if current focused element is inside the <Dropdown> or inside the <floatingOn> => back focus to <floatingOn>:
+            const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
             if (target && (target as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
                     // conditions:
@@ -383,7 +383,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                     if (                                                              // neither
                         !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
                         &&                                                            // nor
-                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <floatingTarget>
+                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <floatingOn>
                     ) return;                                                         // => nothing to focus
                     
                     
@@ -393,7 +393,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                 }, 0); // wait until the user decided to change the focus to another <element>
             } // if
         } // if
-    }, [isExpanded, props.floatingTarget]);
+    }, [isExpanded, props.floatingOn]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
@@ -425,8 +425,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             
-            // <floatingTarget> is <Dropdown>'s friend, so focus on <floatingTarget> is considered not to lost focus on <Dropdown>:
-            const target = (props.floatingTarget instanceof Element) ? props.floatingTarget : props.floatingTarget?.current;
+            // <floatingOn> is <Dropdown>'s friend, so focus on <floatingOn> is considered not to lost focus on <Dropdown>:
+            const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
             if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
             
             
@@ -452,7 +452,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
-    }, [isExpanded, props.floatingTarget, handleExpandedChange]);
+    }, [isExpanded, props.floatingOn, handleExpandedChange]);
     
     
     
