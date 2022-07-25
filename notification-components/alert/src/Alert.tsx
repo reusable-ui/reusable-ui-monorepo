@@ -276,7 +276,7 @@ export interface AlertProps<TElement extends Element = HTMLElement, TExpandedCha
         // bases:
         PopupProps<TElement, TExpandedChangeEvent>,
         
-        // accessibilities:
+        // states:
         Pick<ToggleCollapsibleProps<TExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
@@ -294,7 +294,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
-        // accessibilities:
+        // states:
         onExpandedChange,
         
         
