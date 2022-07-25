@@ -42,7 +42,6 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -84,16 +83,13 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
-    ExpandVars,
-    ifExpanding,
-    ifCollapsing,
     ifCollapsed,
-    usesExpandable as baseUsesExpandable,
+    usesCollapsible,
     ExpandedChangeEvent,
-    ExpandableProps,
-    useExpandable,
-    ToggleExpandableProps,
-}                           from '@reusable-ui/expandable'      // a capability of UI to expand/reduce its size or toggle the visibility
+    CollapsibleProps,
+    useCollapsible,
+    ToggleCollapsibleProps,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // types:
     SemanticTag,
@@ -106,11 +102,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // hooks:
     usesAnim,
     useExcitedState,
@@ -145,46 +136,6 @@ const getViewportOrDefault = (viewportRef: React.RefObject<Element>|Element|null
 
 
 // hooks:
-
-// states:
-
-//#region expandable
-/**
- * Uses expand/collapse state.
- * @returns A `StateMixin<ExpandVars>` represents an expand/collapse state.
- */
-export const usesExpandable = (): StateMixin<ExpandVars> => {
-    // dependencies:
-    
-    // states:
-    const [expandRule, expandVars] = baseUsesExpandable();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // states:
-                expandRule,
-            ]),
-            ...states([
-                ifExpanding({
-                    ...vars({
-                        [expandVars.anim] : modals.animExpand,
-                    }),
-                }),
-                ifCollapsing({
-                    ...vars({
-                        [expandVars.anim] : modals.animCollapse,
-                    }),
-                }),
-            ]),
-        }),
-        expandVars,
-    ];
-};
-//#endregion expandable
-
 
 // behaviors:
 
@@ -338,14 +289,14 @@ export const usesBackdropStates = () => {
     // dependencies:
     
     // states:
-    const [expandableRule] = usesExpandable();
+    const [collapsibleRule] = usesCollapsible(modals);
     
     
     
     return style({
         ...imports([
             // states:
-            expandableRule,
+            collapsibleRule,
         ]),
         ...states([
             ifCollapsed({
@@ -388,12 +339,12 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         from  : frameCollapsed,
         to    : frameExpanded,
     });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useExpandable`
+    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseRule, keyframesCollapse] = keyframes({
         from  : frameExpanded,
         to    : frameCollapsed,
     });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useExpandable`
+    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     //#endregion keyframes
     
     
@@ -447,9 +398,9 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         BackdropVariant,
         
         // states:
-        ExpandableProps<TModalExpandedChangeEvent>,
-        Pick<ToggleExpandableProps<TModalExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange`
+        CollapsibleProps<TModalExpandedChangeEvent>,
+        Pick<ToggleCollapsibleProps<TModalExpandedChangeEvent>,
+            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
         
         // components:
@@ -502,10 +453,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // states:
-    const expandableState = useExpandable<TElement, TModalExpandedChangeEvent>(props);
-    const isVisible       = expandableState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const isExpanded      = expandableState.expanded;
-    const isModal         = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
+    const collapsibleState = useCollapsible<TElement, TModalExpandedChangeEvent>(props);
+    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isExpanded       = collapsibleState.expanded;
+    const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
     const [excitedDn, setExcitedDn] = useState(false);
     const excitedState = useExcitedState<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: setExcitedDn });
@@ -557,7 +508,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // states:
-        expandableState.class,
+        collapsibleState.class,
     );
     const modalUiClasses = useMergeClasses(
         // preserves the original `classes` from `modalUiComponent`:
@@ -697,7 +648,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // states:
-        expandableState.handleAnimationEnd,
+        collapsibleState.handleAnimationEnd,
     );
     const modalUiHandleAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
         // preserves the original `onAnimationEnd` from `modalUiComponent`:
@@ -908,7 +859,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     
                     
                     // [open]:
-                    ...expandableState.props,
+                    ...collapsibleState.props,
                     
                     
                     
