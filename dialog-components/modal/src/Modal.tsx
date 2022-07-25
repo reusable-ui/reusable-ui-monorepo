@@ -582,7 +582,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         
-        // range handlers:
+        // actions:
         handleKeyDownInternal,
     );
     const handleMouseDownInternal   = useEvent<React.MouseEventHandler<TElement> & React.TouchEventHandler<TElement>>((event) => {
