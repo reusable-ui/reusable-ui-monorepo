@@ -325,8 +325,12 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // accessibilities:
-        expanded,
         label,
+        
+        
+        
+        // states:
+        expanded,
         
         
         
@@ -384,7 +388,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             
-            // accessibilities:
+            // states:
             expanded={expandedFn}
         >
             { props.children }
