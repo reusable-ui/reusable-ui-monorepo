@@ -860,9 +860,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     
                     // accessibilities:
                     tabIndex         : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
-                    ...((modalUiComponent.type === 'dialog') ? {
-                        open         : isVisible,
-                    } : null),
                     
                     
                     
