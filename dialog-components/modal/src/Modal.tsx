@@ -157,7 +157,7 @@ export const usesExpandable = (): StateMixin<ExpandVars> => {
     // dependencies:
     
     // states:
-    const [expandRule, expands] = baseUsesExpandable();
+    const [expandRule, expandVars] = baseUsesExpandable();
     
     
     
@@ -170,17 +170,17 @@ export const usesExpandable = (): StateMixin<ExpandVars> => {
             ...states([
                 ifExpanding({
                     ...vars({
-                        [expands.anim] : modals.animExpand,
+                        [expandVars.anim] : modals.animExpand,
                     }),
                 }),
                 ifCollapsing({
                     ...vars({
-                        [expands.anim] : modals.animCollapse,
+                        [expandVars.anim] : modals.animCollapse,
                     }),
                 }),
             ]),
         }),
-        expands,
+        expandVars,
     ];
 };
 //#endregion expandable
