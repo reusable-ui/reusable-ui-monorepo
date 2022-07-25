@@ -20,9 +20,9 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // type:
-    ToggleExpandableProps,
-    useToggleExpandable,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+    ToggleCollapsibleProps,
+    useToggleCollapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // hooks:
     ActiveChangeEvent,
@@ -82,7 +82,7 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
-        // accessibilities:
+        // dropdowns:
         Omit<DropdownProps<Element, TDropdownExpandedChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
@@ -90,7 +90,7 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
             // DOMs:
             |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
         >,
-        ToggleExpandableProps<TDropdownExpandedChangeEvent>, // supports uncontrollable expanded
+        ToggleCollapsibleProps<TDropdownExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
         
         // components:
         ButtonComponentProps,
@@ -107,10 +107,10 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     // rest props:
     const {
-        // accessibilities:
-        defaultExpanded,  // take, to be handled by `useToggleExpandable`
-        expanded,         // take, to be handled by `useToggleExpandable`
-        onExpandedChange, // take, to be handled by `useToggleExpandable`
+        // states:
+        defaultExpanded,  // take, to be handled by `useToggleCollapsible`
+        expanded,         // take, to be handled by `useToggleCollapsible`
+        onExpandedChange, // take, to be handled by `useToggleCollapsible`
         
         
         
@@ -153,7 +153,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // states:
-    const [isExpanded, setExpanded] = useToggleExpandable({
+    const [isExpanded, setExpanded] = useToggleCollapsible({
         defaultExpanded,
         expanded,
         // onExpandedChange, // trigger manually to <Dropdown>'s `onExpandedChange`
@@ -268,7 +268,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
             {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                 // props:
                 {
-                    // accessibilities:
+                    // states:
                     active          : toggleButtonComponent.props.active ?? isExpanded,
                     onActiveChange  : handleToggleButtonActiveChange,
                     
@@ -319,7 +319,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    // accessibilities:
+                    // states:
                     expanded         : dropdownComponent.props.expanded ?? isExpanded,
                     onExpandedChange : handleExpandedChange,
                     

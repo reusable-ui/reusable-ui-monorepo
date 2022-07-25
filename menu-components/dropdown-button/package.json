@@ -41,7 +41,7 @@
     "@reusable-ui/button": "^5.0.0",
     "@reusable-ui/button-icon": "^5.0.0",
     "@reusable-ui/dropdown": "^5.0.0",
-    "@reusable-ui/expandable": "^5.0.0",
+    "@reusable-ui/collapsible": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/indicator": "^5.0.0",
     "@reusable-ui/toggle-button": "^5.0.0",
