@@ -557,9 +557,9 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // conditions:
         if (isControllableExpanded) return; // controllable [expanded] is set => no uncontrollable required
         
-        const floatingTarget = props.floatingTarget;
-        const target         = (floatingTarget instanceof Element) ? floatingTarget : floatingTarget?.current;
-        if (!target)                return; // [floatingTarget] was not specified => nothing to do
+        const floatingOn = props.floatingOn;
+        const target     = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
+        if (!target)                return; // [floatingOn] was not specified => nothing to do
         
         
         
@@ -661,7 +661,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             target.removeEventListener('focus'     , handleFocus, { capture: true });
             target.removeEventListener('blur'      , handleBlur , { capture: true });
         };
-    }, [isControllableExpanded, props.floatingTarget, expandDelay, collapseDelay]);
+    }, [isControllableExpanded, props.floatingOn, expandDelay, collapseDelay]);
     
     
     
