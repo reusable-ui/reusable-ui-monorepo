@@ -55,17 +55,17 @@ import {
 
 // states:
 
-//#region expandable
-export interface ExpandVars {
+//#region collapsible
+export interface CollapseVars {
     filter : any
     anim   : any
 }
-const [expandVars] = cssVar<ExpandVars>();
+const [collapseVars] = cssVar<CollapseVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(expandVars.filter);
-    animRegistry.registerAnim(expandVars.anim);
+    animRegistry.registerFilter(collapseVars.filter);
+    animRegistry.registerAnim(collapseVars.anim);
 }
 
 
@@ -95,12 +95,12 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 /**
  * Uses expand/collapse state.
- * @returns A `StateMixin<ExpandVars>` represents an expand/collapse state.
+ * @returns A `StateMixin<CollapseVars>` represents an expand/collapse state.
  */
-export const usesExpandable = (): StateMixin<ExpandVars> => {
+export const usesCollapsible = (): StateMixin<CollapseVars> => {
     return [
         () => neverRule(), // not implemented yet
-        expandVars,
+        collapseVars,
     ];
 };
 
@@ -109,17 +109,17 @@ export const usesExpandable = (): StateMixin<ExpandVars> => {
 export interface ExpandedChangeEvent {
     expanded : boolean
 }
-export interface ExpandableProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
 }
 
-const expandableCtrls = [
+const collapsibleCtrls = [
     'dialog',
     'details',
 ];
-export const useExpandable = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ExpandableProps<TExpandedChangeEvent> & SemanticProps) => {
+export const useCollapsible = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleProps<TExpandedChangeEvent> & SemanticProps) => {
     // fn props:
     const isExpanded  = props.expanded ?? false;
     const { tag } = useSemantic(props);
@@ -167,7 +167,7 @@ export const useExpandable = <TElement extends Element = HTMLElement, TExpandedC
         class     : ((): string|null => {
             // expanding:
             if (animating === true) {
-                if (tag && expandableCtrls.includes(tag)) return null; // uses [open]
+                if (tag && collapsibleCtrls.includes(tag)) return null; // uses [open]
                 return 'expanding';
             } // if
             
@@ -185,7 +185,7 @@ export const useExpandable = <TElement extends Element = HTMLElement, TExpandedC
             if (!expanded) return null;
             
             // use [open] if <dialog> or <details>:
-            if (tag && expandableCtrls.includes(tag)) return { open: true };
+            if (tag && collapsibleCtrls.includes(tag)) return { open: true };
             
             // else, use .expanding or .expanded which already defined in `class`:
             return null;
@@ -197,14 +197,14 @@ export const useExpandable = <TElement extends Element = HTMLElement, TExpandedC
 
 
 
-export interface ToggleExpandableProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+export interface ToggleCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
-        ExpandableProps<TExpandedChangeEvent>
+        CollapsibleProps<TExpandedChangeEvent>
 {
     defaultExpanded  ?: boolean
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
-export const useToggleExpandable = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ToggleExpandableProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export const useToggleCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ToggleCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // states:
     const [expandedTg, setExpandedTg] = useState<boolean>(props.defaultExpanded ?? false);
     
@@ -232,7 +232,7 @@ export const useToggleExpandable = <TExpandedChangeEvent extends ExpandedChangeE
         uncontrollable : setExpanded(new) => update state(old => new) => trigger Event(new)
     */
     const triggerExpandedChange = useCallback((expanded: boolean): void => {
-        Promise.resolve().then(() => { // trigger the event after the <Expandable> has finished rendering (for controllable <Expandable>)
+        Promise.resolve().then(() => { // trigger the event after the <Collapsible> has finished rendering (for controllable <Collapsible>)
             // fire expandedChange synthetic event:
             onExpandedChange.current?.({ expanded } as TExpandedChangeEvent);
         });
@@ -266,4 +266,4 @@ export const useToggleExpandable = <TExpandedChangeEvent extends ExpandedChangeE
         toggleExpanded,
     ];
 };
-//#endregion expandable
+//#endregion collapsible
