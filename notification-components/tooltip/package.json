@@ -41,7 +41,7 @@
     "@cssfn/types": "^2.0.1",
     "@floating-ui/dom": "^0.5.4",
     "@reusable-ui/basic": "^5.0.0",
-    "@reusable-ui/expandable": "^5.0.0",
+    "@reusable-ui/collapsible": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/popup": "^5.0.0",

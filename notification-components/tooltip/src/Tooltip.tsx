@@ -66,7 +66,7 @@ import {
 import type {
     // type:
     ExpandedChangeEvent,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // react components:
     GenericProps,
