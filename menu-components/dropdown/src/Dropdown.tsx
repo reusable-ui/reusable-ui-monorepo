@@ -346,7 +346,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         
         
-        // range handlers:
+        // actions:
         handleKeyDownInternal,
     );
     const handleAnimationEnd    = useMergeEvents(
