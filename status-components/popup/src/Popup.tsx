@@ -288,10 +288,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
-        // remove states props:
-        
-        // accessibilities:
-        expanded         : _expanded,
+        // states:
+        expanded            : _expanded, // remove
         
         
         
@@ -395,8 +393,6 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         props.onAnimationEnd,
         
         
-        
-        // states:
         
         // states:
         collapsibleState.handleAnimationEnd,
