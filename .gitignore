@@ -1,5 +1,6 @@
 node_modules/
 
+features/*/dist/
 states/*/dist/
 utilities/*/dist/
 

@@ -1,5 +1,7 @@
 node_modules/
 
+features/*/src/
+features/*/__tests__/
 states/*/src/
 states/*/__tests__/
 utilities/*/src/
