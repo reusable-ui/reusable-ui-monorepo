@@ -117,13 +117,13 @@ const _defaultModalUiSemanticRole : SemanticRole =        'dialog'  // uses [rol
 
 
 // utilities:
-const getViewportOrDefault = (viewportRef: React.RefObject<Element>|Element|null|undefined): Element => {
+const getViewportOrDefault = (modalViewport: React.RefObject<Element>|Element|null|undefined): Element => {
     return (
         // custom viewport (if was set):
         (
-            viewportRef
+            modalViewport
             ?
-            ((viewportRef.constructor === Object) ? (viewportRef as React.RefObject<Element>)?.current : (viewportRef as Element))
+            ((modalViewport.constructor === Object) ? (modalViewport as React.RefObject<Element>)?.current : (modalViewport as Element))
             :
             null
         )
@@ -407,12 +407,12 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         ModalUiComponentProps<Element>
 {
     // modals:
-    viewportRef ?: React.RefObject<Element>|Element|null // getter ref
+    modalViewport ?: React.RefObject<Element>|Element|null // getter ref
     
     
     
     // behaviors:
-    lazy        ?: boolean
+    lazy          ?: boolean
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -441,7 +441,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // modals:
-        viewportRef,
+        modalViewport,
         
         
         
@@ -710,7 +710,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // setups:
-        const viewportElm         = getViewportOrDefault(viewportRef);
+        const viewportElm         = getViewportOrDefault(modalViewport);
         
         const scrollableElm       = (viewportElm === document.body) ? document.documentElement : viewportElm;
         const scrollableEvent     = (viewportElm === document.body) ? document                 : viewportElm;
@@ -732,7 +732,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         return () => {
             scrollableEvent.removeEventListener('scroll', handlePreventScroll);
         };
-    }, [isModal]);
+    }, [isModal, modalViewport]);
     
     // delays the rendering of portal until the page is fully hydrated
     const [triggerRender] = useTriggerRender();
@@ -743,7 +743,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // setups:
-        const viewportElm = getViewportOrDefault(viewportRef);
+        const viewportElm = getViewportOrDefault(modalViewport);
         const portalElm = document.createElement('div');
         viewportElm.appendChild(portalElm);
         portalRefInternal.current = portalElm;
@@ -757,7 +757,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             viewportElm.removeChild(portalElm);
             portalRefInternal.current = null;
         };
-    }, [viewportRef]);
+    }, [modalViewport]);
     
     // stops the excited state when modal is closed:
     useEffect(() => {
