@@ -135,7 +135,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         // bases:
         ListProps<TElement>,
         
-        // accessibilities:
+        // dropdowns:
         Omit<DropdownProps<Element, TDropdownListExpandedChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <List>
@@ -158,7 +158,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
-        // accessibilities:
+        // states:
         expanded,         // take, to be handled by <Dropdown>
         onExpandedChange, // take, to be handled by <Dropdown>
         
@@ -297,7 +297,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // accessibilities:
+            // states:
             expanded,
             onExpandedChange,
             
@@ -373,7 +373,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 // jsx:
                 return (
                     <ListItemWithExpandedHandler<TDropdownListExpandedChangeEvent>
-                        // accessibilities:
+                        // states:
                         onExpandedChange={onExpandedChange}
                         
                         
@@ -411,7 +411,7 @@ interface ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent exte
 const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
-        // accessibilities:
+        // states:
         onExpandedChange,
         
         
