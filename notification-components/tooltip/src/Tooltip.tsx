@@ -338,7 +338,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // rest props:
     const {
-        // accessibilities:
+        // states:
         expanded,
         
         
@@ -688,7 +688,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             
-            // accessibilities:
+            // states:
             expanded={expandedFn}
             
             
