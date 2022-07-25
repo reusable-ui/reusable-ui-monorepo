@@ -858,16 +858,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     
                     
                     
-                    // [open]:
-                    ...collapsibleState.props,
-                    
-                    
-                    
                     // accessibilities:
                     tabIndex         : (modalUiComponent.props as React.HTMLAttributes<HTMLElement>).tabIndex ?? tabIndex,
                     ...((modalUiComponent.type === 'dialog') ? {
                         open         : isVisible,
                     } : null),
+                    
+                    
+                    
+                    // [open]:
+                    ...collapsibleState.props,
                     
                     
                     
