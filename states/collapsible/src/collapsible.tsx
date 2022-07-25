@@ -13,6 +13,11 @@ import {
 
 // cssfn:
 import type {
+    // css custom properties:
+    CssCustomSimpleRef,
+    
+    
+    
     // cssfn properties:
     CssRule,
     
@@ -21,7 +26,13 @@ import type {
 import {
     // rules:
     rule,
-    neverRule,
+    states,
+    
+    
+    
+    // styles:
+    style,
+    vars,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -56,16 +67,16 @@ import {
 // states:
 
 //#region collapsible
-export interface CollapseVars {
+export interface CollapsibleVars {
     filter : any
     anim   : any
 }
-const [collapseVars] = cssVar<CollapseVars>();
+const [collapsibleVars] = cssVar<CollapsibleVars>();
 
 {
     const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(collapseVars.filter);
-    animRegistry.registerAnim(collapseVars.anim);
+    animRegistry.registerFilter(collapsibleVars.filter);
+    animRegistry.registerAnim(collapsibleVars.anim);
 }
 
 
@@ -93,14 +104,31 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 
 
+export interface CssCollapsibleProps {
+    animExpand   ?: CssCustomSimpleRef
+    animCollapse ?: CssCustomSimpleRef
+}
 /**
- * Uses expand/collapse state.
- * @returns A `StateMixin<CollapseVars>` represents an expand/collapse state.
+ * Adds a capability of UI to expand/reduce its size or toggle the visibility.
+ * @returns A `StateMixin<CollapsibleVars>` represents a collapsible state.
  */
-export const usesCollapsible = (): StateMixin<CollapseVars> => {
+export const usesCollapsible = (cssCollapsibleProps?: CssCollapsibleProps): StateMixin<CollapsibleVars> => {
     return [
-        () => neverRule(), // not implemented yet
-        collapseVars,
+        () => style({
+            ...states([
+                ifExpanding({
+                    ...vars({
+                        [collapsibleVars.anim] : cssCollapsibleProps?.animExpand,
+                    }),
+                }),
+                ifCollapsing({
+                    ...vars({
+                        [collapsibleVars.anim] : cssCollapsibleProps?.animCollapse,
+                    }),
+                }),
+            ]),
+        }),
+        collapsibleVars,
     ];
 };
 
