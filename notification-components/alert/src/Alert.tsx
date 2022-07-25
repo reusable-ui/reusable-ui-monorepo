@@ -49,8 +49,8 @@ import {
 import type {
     // type:
     ExpandedChangeEvent,
-    ToggleExpandableProps,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+    ToggleCollapsibleProps,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // hooks:
     usesSizeVariant,
@@ -277,8 +277,8 @@ export interface AlertProps<TElement extends Element = HTMLElement, TExpandedCha
         PopupProps<TElement, TExpandedChangeEvent>,
         
         // accessibilities:
-        Pick<ToggleExpandableProps<TExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange`
+        Pick<ToggleCollapsibleProps<TExpandedChangeEvent>,
+            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
         
         // components:
