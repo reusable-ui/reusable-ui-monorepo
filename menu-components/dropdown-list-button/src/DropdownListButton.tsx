@@ -113,6 +113,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
         outlined,
         mild,
         
+        
+        
         // from <Indicator>:
         enabled,
         inheritEnabled,
@@ -145,6 +147,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
                     gradient        : listComponent.props.gradient        ?? gradient,
                     outlined        : listComponent.props.outlined        ?? outlined,
                     mild            : listComponent.props.mild            ?? mild,
+                    
+                    
                     
                     // from <Indicator>:
                     enabled         : listComponent.props.enabled         ?? enabled,
