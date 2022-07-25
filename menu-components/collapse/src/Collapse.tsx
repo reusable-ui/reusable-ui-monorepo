@@ -280,10 +280,8 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     // rest props:
     const {
-        // remove props:
-        
         // layouts:
-        orientation : _orientation,
+        orientation : _orientation, // remove
     ...restPopupProps} = props;
     
     
