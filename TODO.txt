@@ -1,3 +1,9 @@
+TODO: create a dedicated package of:
+FeatureMixin
+VariantMixin
+StateMixin
+
+
 features
     background      useBackground   backgroundVars
     foreground      useForeground   foregroundVars
