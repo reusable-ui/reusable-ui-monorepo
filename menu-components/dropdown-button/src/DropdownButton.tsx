@@ -107,6 +107,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     // rest props:
     const {
+        // behaviors:
+        lazy,
+        
+        
+        
         // states:
         defaultExpanded,  // take, to be handled by `useToggleCollapsible`
         expanded,         // take, to be handled by `useToggleCollapsible`
@@ -126,11 +131,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         floatingShift,
         
         onFloatingUpdate,
-        
-        
-        
-        // behaviors:
-        lazy,
         
         
         
@@ -319,6 +319,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
+                    // behaviors:
+                    lazy             : dropdownComponent.props.lazy            ?? lazy,
+                    
+                    
+                    
                     // states:
                     expanded         : dropdownComponent.props.expanded ?? isExpanded,
                     onExpandedChange : handleExpandedChange,
@@ -337,11 +342,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     floatingShift       : dropdownComponent.props.floatingShift      ?? floatingShift,
                     
                     onFloatingUpdate    : handleFloatingUpdate,
-                    
-                    
-                    
-                    // behaviors:
-                    lazy             : dropdownComponent.props.lazy            ?? lazy,
                 },
                 
                 
