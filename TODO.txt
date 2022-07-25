@@ -28,7 +28,7 @@ states
     
     validInvalid    useValidation   validVars
     
-    expandCollapse  useExpandable   expandVars
+    expandCollapse  [done] useCollapsible  collapsibleVars
 
 variants
     sizes           multi-options   useSizable      sizeVars
