@@ -56,11 +56,11 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
-    // type:
+    // hooks:
     ExpandedChangeEvent,
-    useExpandCollapseState,
-    ToggleExpandableProps,
-}                           from '@reusable-ui/expandables'     // a capability of UI to expand/reduce its size or toggle the visibility
+    useCollapsible,
+    ToggleCollapsibleProps,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
     GenericProps,
@@ -207,9 +207,9 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
-        // accessibilities:
-        Pick<ToggleExpandableProps<TDropdownExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange`
+        // states:
+        Pick<ToggleCollapsibleProps<TDropdownExpandedChangeEvent>,
+            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
         
         // components:
@@ -229,16 +229,14 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // states:
-    
-    // accessibilities:
-    const expandCollapseState = useExpandCollapseState<TElement, TDropdownExpandedChangeEvent>(props);
-    const isExpanded          = expandCollapseState.expanded;
+    const collapsibleState   = useCollapsible<TElement, TDropdownExpandedChangeEvent>(props);
+    const isExpanded         = collapsibleState.expanded;
     
     
     
     // rest props:
     const {
-        // accessibilities:
+        // states:
         onExpandedChange,
         
         
@@ -358,9 +356,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         
         // states:
-        
-        // accessibilities:
-        expandCollapseState.handleAnimationEnd,
+        collapsibleState.handleAnimationEnd,
     );
     
     
