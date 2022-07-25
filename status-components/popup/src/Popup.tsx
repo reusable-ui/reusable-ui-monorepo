@@ -288,6 +288,16 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
+        // styles:
+        style,
+        
+        
+        
+        // behaviors:
+        lazy                = false,
+        
+        
+        
         // states:
         expanded            : _expanded, // remove
         
@@ -305,16 +315,6 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         floatingShift       = 0,
         
         onFloatingUpdate,
-        
-        
-        
-        // styles:
-        style,
-        
-        
-        
-        // behaviors:
-        lazy             = false,
         
         
         
@@ -518,9 +518,9 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             // styles:
             style={mergedStyle}
-                    
-                    
-                    
+            
+            
+            
             // [open]:
             {...collapsibleState.props}
             
