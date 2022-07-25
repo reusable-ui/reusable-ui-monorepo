@@ -250,7 +250,7 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         CollapsibleProps<TExpandedChangeEvent>
 {
     // floatings:
-    floatingTarget     ?: React.RefObject<Element>|Element|null // getter ref
+    floatingOn         ?: React.RefObject<Element>|Element|null // getter ref
     floatingPlacement  ?: FloatingPlacement
     floatingMiddleware ?: FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>)
     floatingStrategy   ?: FloatingStrategy
@@ -304,7 +304,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // floatings:
-        floatingTarget,
+        floatingOn,
         floatingPlacement   = 'top',
         floatingMiddleware,
         floatingStrategy    = 'absolute',
@@ -354,8 +354,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // floatings:
-        ( floatingTarget                 || null) && 'overlay',
-        ((floatingTarget && floatingPos) || null) && floatingPos?.placement,
+        ( floatingOn                 || null) && 'overlay',
+        ((floatingOn && floatingPos) || null) && floatingPos?.placement,
     );
     
     
@@ -363,9 +363,9 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     // styles:
     const mergedStyle = useMemo(() => ({
         // positions:
-        position : ( floatingTarget                 || undefined) && floatingStrategy,
-        left     : ((floatingTarget && floatingPos) || undefined) && `${floatingPos?.x}px`,
-        top      : ((floatingTarget && floatingPos) || undefined) && `${floatingPos?.y}px`,
+        position : ( floatingOn                 || undefined) && floatingStrategy,
+        left     : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.x}px`,
+        top      : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.y}px`,
         
         
         
@@ -405,8 +405,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         // conditions:
         if (!isVisible) return; // <Popup> is fully hidden => no need to update
         
-        const target = (floatingTarget instanceof Element) ? floatingTarget : floatingTarget?.current;
-        if (!target)    return; // [floatingTarget] was not specified => nothing to do
+        const target = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
+        if (!target)    return; // [floatingOn] was not specified => nothing to do
         
         const popup  = popupRefInternal.current;
         if (!popup)     return; // <Popup> was unloaded => nothing to do
@@ -473,7 +473,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // floatings:
-        floatingTarget,
+        floatingOn,
         floatingPlacement,
         floatingMiddleware,
         floatingStrategy,
