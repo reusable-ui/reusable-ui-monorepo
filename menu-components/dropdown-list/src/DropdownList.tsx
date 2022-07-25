@@ -158,14 +158,14 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
+        // behaviors:
+        lazy,
+        
+        
+        
         // states:
         expanded,         // take, to be handled by <Dropdown>
         onExpandedChange, // take, to be handled by <Dropdown>
-        
-        
-        
-        // behaviors:
-        lazy,
         
         
         
@@ -297,14 +297,14 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
+            // behaviors:
+            lazy,
+            
+            
+            
             // states:
             expanded,
             onExpandedChange,
-            
-            
-            
-            // behaviors:
-            lazy,
             
             
             
