@@ -59,6 +59,8 @@ import {
     ifCollapsed,
     usesCollapsible,
     ExpandedChangeEvent,
+    CollapsibleProps,
+    useCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import {
     // react components:
@@ -76,11 +78,6 @@ import {
     useOrientationVariant,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // react components:
-    PopupProps,
-    Popup,
-}                           from '@reusable-ui/popup'           // a base component
 
 
 
@@ -273,8 +270,18 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
         OrientationVariant,
         
         // features:
-        FloatableProps
+        FloatableProps,
+        
+        // states:
+        CollapsibleProps<TExpandedChangeEvent>
 {
+    // behaviors:
+    lazy     ?: boolean
+    
+    
+    
+    // children:
+    children ?: React.ReactNode
 }
 const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapseProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -288,6 +295,12 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
+    // states:
+    const collapsibleState   = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const isVisible          = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    
+    
     // features:
     const floatable          = useFloatable<TElement>(props, isVisible);
     
@@ -296,7 +309,17 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     // rest props:
     const {
         // layouts:
-        orientation : _orientation, // remove
+        orientation        : _orientation, // remove
+        
+        
+        
+        // behaviors:
+        lazy               = false,
+        
+        
+        
+        // states:
+        expanded           : _expanded,           // remove
         
         
         
@@ -312,9 +335,12 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         floatingShift      : _floatingShift,      // remove
         
         onFloatingUpdate   : _onFloatingUpdate,   // remove
+        
+        
+        
+        // children:
+        children,
     ...restGenericProps} = props;
-    type Test1 = typeof restGenericProps
-    type Test2 = Omit<Test1, keyof GenericProps>
     
     
     
@@ -339,6 +365,15 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         // variants:
         orientationVariant.class,
+    );
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        collapsibleState.class,
     );
     const classes      = useMergeClasses(
         // preserves the original `classes`:
@@ -365,6 +400,19 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
+    // handlers:
+    const handleAnimationEnd = useMergeEvents(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationEnd,
+    );
+    
+    
+    
     // jsx:
     return (
         <Generic<TElement>
@@ -387,13 +435,26 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            stateClasses={stateClasses}
             classes={classes}
             
             
             
             // styles:
             style={mergedStyle}
-        />
+            
+            
+            
+            // [open]:
+            {...collapsibleState.props}
+            
+            
+            
+            // handlers:
+            onAnimationEnd={handleAnimationEnd}
+        >
+            { (!lazy || isVisible) && children }
+        </Generic>
     );
 };
 export {
