@@ -474,7 +474,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             
-            // floatings:
+            // floatable:
             floatingPlacement ={props.floatingPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
             floatingAutoFlip  ={props.floatingAutoFlip  ?? true}
             floatingAutoShift ={props.floatingAutoShift ?? true}
