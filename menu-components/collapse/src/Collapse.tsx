@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -40,17 +45,25 @@ import {
 // reusable-ui:
 import {
     // hooks:
+    useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    FloatableProps,
+    useFloatable,
+}                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
 import {
     // hooks:
     ifCollapsed,
     usesCollapsible,
     ExpandedChangeEvent,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-import type {
+import {
     // react components:
     GenericProps,
+    Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
     // hooks:
@@ -62,11 +75,6 @@ import {
     OrientationVariant,
     useOrientationVariant,
     usesAnim,
-    
-    
-    
-    // react components:
-    BasicProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // react components:
@@ -260,10 +268,12 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
     extends
         // bases:
         GenericProps<TElement>,
-        Omit<PopupProps<TElement, TExpandedChangeEvent>, keyof BasicProps<TElement>>, // all props from <Popup> but not all props from the ancestors
         
         // layouts:
-        OrientationVariant
+        OrientationVariant,
+        
+        // features:
+        FloatableProps
 {
 }
 const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapseProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
@@ -278,11 +288,45 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
+    // features:
+    const floatable          = useFloatable<TElement>(props, isVisible);
+    
+    
+    
     // rest props:
     const {
         // layouts:
         orientation : _orientation, // remove
-    ...restPopupProps} = props;
+        
+        
+        
+        // floatable:
+        floatingOn         : _floatingOn,         // remove
+        floatingPlacement  : _floatingPlacement,  // remove
+        floatingMiddleware : _floatingMiddleware, // remove
+        floatingStrategy   : _floatingStrategy,   // remove
+        
+        floatingAutoFlip   : _floatingAutoFlip,   // remove
+        floatingAutoShift  : _floatingAutoShift,  // remove
+        floatingOffset     : _floatingOffset,     // remove
+        floatingShift      : _floatingShift,      // remove
+        
+        onFloatingUpdate   : _onFloatingUpdate,   // remove
+    ...restGenericProps} = props;
+    type Test1 = typeof restGenericProps
+    type Test2 = Omit<Test1, keyof GenericProps>
+    
+    
+    
+    // refs:
+    const mergedOuterRef = useMergeRefs(
+        // preserves the original `outerRef`:
+        props.outerRef,
+        
+        
+        
+        floatable.outerRef,
+    );
     
     
     
@@ -296,14 +340,41 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         // variants:
         orientationVariant.class,
     );
+    const classes      = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // features:
+        floatable.classes,
+    );
+    
+    
+    
+    // styles:
+    const mergedStyle = useMemo(() => ({
+        // floatable:
+        ...floatable.style,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `floatable.style`):
+        ...props.style,
+    }), [floatable.style, props.style]);
     
     
     
     // jsx:
     return (
-        <Popup<TElement, TExpandedChangeEvent>
+        <Generic<TElement>
             // other props:
-            {...restPopupProps}
+            {...restGenericProps}
+            
+            
+            
+            // refs:
+            outerRef={mergedOuterRef}
             
             
             
@@ -316,6 +387,12 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            classes={classes}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
         />
     );
 };
