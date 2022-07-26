@@ -63,6 +63,13 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // types:
+    FloatingPlacement,
+    FloatingMiddleware,
+    FloatingPosition,
+    FloatingSide,
+}                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
 import type {
     // type:
     ExpandedChangeEvent,
@@ -77,14 +84,6 @@ import {
     usesSizeVariant,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // types:
-    FloatingPlacement,
-    FloatingMiddleware,
-    FloatingPosition,
-    FloatingSide,
-    
-    
-    
     // styles:
     usesPopupLayout,
     usesPopupVariants,
@@ -316,7 +315,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
         // components:
         ArrowComponentProps<Element>
 {
-    // floatings:
+    // floatable:
     unsafe_calculateArrowSize ?: CalculateArrowSize
     
     
@@ -343,7 +342,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // floatings:
+        // floatable:
         unsafe_calculateArrowSize : calculateArrowSize = defaultCalculateArrowSize,
         floatingMiddleware,
         
@@ -538,7 +537,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // floatings:
+        // actions:
         handleArrowPosition,
     );
     
@@ -693,7 +692,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             
-            // floatings:
+            // floatable:
             floatingPlacement  = {props.floatingPlacement ?? 'top'}
             floatingAutoFlip   = {props.floatingAutoFlip  ?? true }
             floatingAutoShift  = {props.floatingAutoShift ?? true }
