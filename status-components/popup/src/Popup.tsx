@@ -252,7 +252,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // floatables:
+        // floatable:
         floatingOn         : _floatingOn,         // remove
         floatingPlacement  : _floatingPlacement,  // remove
         floatingMiddleware : _floatingMiddleware, // remove
@@ -309,7 +309,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // styles:
     const mergedStyle = useMemo(() => ({
-        // floatables:
+        // floatable:
         ...floatable.style,
         
         
