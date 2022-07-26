@@ -427,7 +427,6 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? ''}
             aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
             
             
