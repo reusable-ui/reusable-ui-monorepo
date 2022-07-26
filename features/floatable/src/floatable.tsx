@@ -11,36 +11,6 @@ import {
     useMemo,
 }                           from 'react'
 
-// cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-}                           from '@cssfn/css-types'             // cssfn css specific types
-import {
-    // rules:
-    rule,
-    states,
-    keyframes,
-    
-    
-    
-    // styles:
-    style,
-    imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
-
 // reusable-ui:
 import {
     // hooks:
@@ -48,33 +18,8 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
-    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
-    ifCollapsed,
-    usesCollapsible,
-    ExpandedChangeEvent,
-    CollapsibleProps,
-    useCollapsible,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-import {
-    // hooks:
-    usesSizeVariant,
-    
-    
-    
-    // styles:
-    usesBasicLayout,
-    usesBasicVariants,
-    
-    
-    
-    // react components:
-    BasicProps,
-    Basic,
-}                           from '@reusable-ui/basic'           // a base component
 
 // other libs:
 import {
@@ -136,7 +81,7 @@ export interface FloatableProps
     
     onFloatingUpdate   ?: EventHandler<FloatingPosition>
 }
-export const useFloatable = (props: FloatableProps) => {
+export const useFloatable = (props: FloatableProps, isVisible: boolean = true) => {
     // states:
     const [floatingPos, setFloatingPos] = useReducer(coordinateReducer, null);
     
@@ -180,7 +125,7 @@ export const useFloatable = (props: FloatableProps) => {
         position : ( floatingOn                 || undefined) && floatingStrategy,
         left     : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.x}px`,
         top      : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.y}px`,
-    }), [floatingStrategy, floatingPos]);
+    }), [floatingOn, floatingPos, floatingStrategy]);
     
     
     
@@ -216,7 +161,7 @@ export const useFloatable = (props: FloatableProps) => {
         // handlers:
         const triggerFloatingUpdate = async () => {
             // calculate the proper position of the <floatingUi>:
-            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
+            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as HTMLElement, /*options: */{
                 placement  : floatingPlacement,
                 middleware : await (async (): Promise<FloatingMiddleware[]> => {
                     if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
@@ -257,7 +202,7 @@ export const useFloatable = (props: FloatableProps) => {
         }, 0);
         
         // the live trigger:
-        const stopUpdate = autoUpdate(target, floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
+        const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as HTMLElement, triggerFloatingUpdate);
         
         
         
@@ -288,4 +233,15 @@ export const useFloatable = (props: FloatableProps) => {
         // handlers:
         handleFloatingUpdate,
     ]);
+    
+    
+    
+    // return the implementations:
+    return useMemo(() => ({
+        outerRef,
+        classes,
+        style,
+    }), [outerRef, classes, style]);
 };
+
+export type { FloatingPlacement, FloatingMiddleware, FloatingStrategy, FloatingPosition, FloatingSide }
