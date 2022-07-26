@@ -211,12 +211,12 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         CollapsibleProps<TExpandedChangeEvent>
 {
     // behaviors:
-    lazy            ?: boolean
+    lazy     ?: boolean
     
     
     
     // children:
-    children        ?: React.ReactNode
+    children ?: React.ReactNode
 }
 const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: PopupProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
