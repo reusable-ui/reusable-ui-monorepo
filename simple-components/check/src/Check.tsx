@@ -866,6 +866,7 @@ export interface CheckProps
             
             // accessibilities:
             |'enterKeyHint'          // no special [enter] keyboard
+            |'disabled'              // we use [enabled] instead of [disabled]
             
             // validations:
             |'minLength'|'maxLength' // text length constraint is not supported
@@ -1144,7 +1145,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             active={isActive}
             pressed={pressedFn}
             
