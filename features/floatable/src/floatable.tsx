@@ -81,7 +81,7 @@ export interface FloatableProps
     
     onFloatingUpdate   ?: EventHandler<FloatingPosition>
 }
-export const useFloatable = (props: FloatableProps, isVisible: boolean = true) => {
+export const useFloatable = <TElement extends Element = HTMLElement>(props: FloatableProps, isVisible: boolean = true) => {
     // states:
     const [floatingPos, setFloatingPos] = useReducer(coordinateReducer, null);
     
@@ -106,7 +106,7 @@ export const useFloatable = (props: FloatableProps, isVisible: boolean = true) =
     
     
     // refs:
-    const outerRef = useRef<Element|null>(null);
+    const outerRef = useRef<TElement|null>(null);
     
     
     
@@ -161,7 +161,7 @@ export const useFloatable = (props: FloatableProps, isVisible: boolean = true) =
         // handlers:
         const triggerFloatingUpdate = async () => {
             // calculate the proper position of the <floatingUi>:
-            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as HTMLElement, /*options: */{
+            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
                 placement  : floatingPlacement,
                 middleware : await (async (): Promise<FloatingMiddleware[]> => {
                     if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
@@ -202,7 +202,7 @@ export const useFloatable = (props: FloatableProps, isVisible: boolean = true) =
         }, 0);
         
         // the live trigger:
-        const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as HTMLElement, triggerFloatingUpdate);
+        const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
         
         
         
