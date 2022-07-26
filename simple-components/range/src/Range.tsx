@@ -606,6 +606,7 @@ export interface RangeProps
             
             // accessibilities:
             |'enterKeyHint'          // no special [enter] keyboard
+            |'disabled'              // we use [enabled] instead of [disabled]
             
             // validations:
             |'required'              // never blank value => not supported
@@ -703,7 +704,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // accessibilities:
         pressed      : _pressed,      // remove
-        disabled,
         
         // still on <EditableControl> element
         // autoFocus,
@@ -1318,11 +1318,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             // styles:
             style={mergedStyle}
-            
-            
-            
-            // accessibilities:
-            enabled={props.enabled ?? !(disabled ?? false)} // aliasing [disabled] => ![enabled]
             
             
             
