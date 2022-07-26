@@ -169,7 +169,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         
-        // floatings:
+        // floatable:
         floatingOn,
         floatingPlacement,
         floatingMiddleware,
@@ -308,7 +308,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // floatings:
+            // floatable:
             floatingOn,
             floatingPlacement,
             floatingMiddleware,
