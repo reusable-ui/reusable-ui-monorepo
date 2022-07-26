@@ -912,24 +912,19 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     // rest props:
     const {
-        // remove variant props:
+        // variant props:
         
         // layouts:
-        size     : _size,
+        size     : _size,  // remove
         
         // colors:
-        theme    : _theme,
-        mild     : _mild,
+        theme    : _theme, // remove
+        mild     : _mild,  // remove
         
         
         
-        // remove appearances:
-        icon     : _icon,
-        
-        
-        
-        // styles:
-        style,
+        // appearances:
+        icon     : _icon,  // remove
     ...restGenericProps} = props;
     
     
@@ -968,8 +963,8 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         
         // preserves the original `style` (can overwrite the `icon.style`):
-        ...style,
-    }), [icon.style, style]);
+        ...props.style,
+    }), [icon.style, props.style]);
     
     
     
