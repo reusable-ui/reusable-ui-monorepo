@@ -968,7 +968,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         
         // preserves the original `style` (can overwrite the `icon.style`):
-        ...(style ?? null),
+        ...style,
     }), [icon.style, style]);
     
     
