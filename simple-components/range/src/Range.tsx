@@ -965,7 +965,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // preserves the original `style` (can overwrite the `[rangeVars.valueRatio]`):
-        ...(style ?? {}),
+        ...(style ?? null),
     }), [rangeVars.valueRatio, valueRatio, style]);
     
     
