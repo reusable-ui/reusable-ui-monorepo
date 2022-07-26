@@ -402,19 +402,22 @@ export interface SemanticButtonProps<TElement extends Element = HTMLButtonElemen
         // button:
         Omit<React.ButtonHTMLAttributes<TElement>,
             // semantics:
-            |'role' // we redefined [role] in <Generic>
+            |'role'                  // we redefined [role] in <Generic>
+            
+            // accessibilities:
+            |'disabled'              // we use [enabled] instead of [disabled]
             
             // formats:
-            |'type' // we redefined [type] in <Button>
+            |'type'                  // we redefined [type] in <Button>
         >,
         
         // link:
         Omit<React.AnchorHTMLAttributes<TElement>,
             // semantics:
-            |'role' // we redefined [role] in <Generic>
+            |'role'                  // we redefined [role] in <Generic>
             
             // formats:
-            |'type' // we redefined [type] in <Button>
+            |'type'                  // we redefined [type] in <Button>
         >
 {
     // actions:
@@ -505,15 +508,13 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // remove props:
-        
         // layouts:
-        orientation : _orientation,
+        orientation : _orientation, // remove
         
         
         
         // appearances:
-        buttonStyle : _buttonStyle,
+        buttonStyle : _buttonStyle, // remove
         
         
         
@@ -592,7 +593,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             pressed={pressedFn}
             
             
