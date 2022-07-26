@@ -1438,7 +1438,6 @@ const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<T
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             inheritActive={props.inheritActive ?? true} // change default value to `true`
             pressed={pressedFn}
             
@@ -1477,7 +1476,6 @@ const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<T
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
             inheritActive={props.inheritActive ?? true} // change default value to `true`
         />
     );
