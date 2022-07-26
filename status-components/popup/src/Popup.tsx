@@ -237,11 +237,6 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
-        // styles:
-        style,
-        
-        
-        
         // behaviors:
         lazy               = false,
         
@@ -315,8 +310,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // preserves the original `style` (can overwrite the `floatable.style`):
-        ...style,
-    }), [floatable.style, style]);
+        ...props.style,
+    }), [floatable.style, props.style]);
     
     
     
