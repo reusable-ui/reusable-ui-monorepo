@@ -39,7 +39,7 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Badge floatingTarget={btnRef} theme='danger' expanded={true} floatingPlacement='right-start' floatingOffset={-10} floatingShift={-10}>
+                <Badge floatingOn={btnRef} theme='danger' expanded={true} floatingPlacement='right-start' floatingOffset={-10} floatingShift={-10}>
                     new!
                 </Badge>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

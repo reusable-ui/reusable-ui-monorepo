@@ -39,7 +39,7 @@ function App() {
                 <button ref={btnRef}>
                     I'm here
                 </button>
-                <Busy floatingTarget={btnRef} theme='danger' expanded={true} floatingPlacement='right' floatingOffset={10}>
+                <Busy floatingOn={btnRef} theme='danger' expanded={true} floatingPlacement='right' floatingOffset={10}>
                     loading...
                 </Busy>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
