@@ -607,16 +607,14 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     // rest props:
     const {
-        // remove states props:
-        
         // accessibilities:
-        pressed : _pressed,
+        pressed      : _pressed,      // remove
         
         
         
         // behaviors:
-        actionMouses : _actionMouses,
-        actionKeys   : _actionKeys,
+        actionMouses : _actionMouses, // remove
+        actionKeys   : _actionKeys,   // remove
     ...restControlProps} = props;
     
     
