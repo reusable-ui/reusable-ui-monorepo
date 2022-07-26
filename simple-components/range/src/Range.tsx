@@ -670,13 +670,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // remove props:
-        
-        // layouts:
-        orientation : _orientation,
-        
-        
-        
         // refs:
         elmRef,
         
@@ -684,6 +677,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         trackLowerRef,
         trackUpperRef,
         thumbRef,
+        
+        
+        
+        // layouts:
+        orientation  : _orientation,  // remove
         
         
         
@@ -696,7 +694,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // styles:
-        style,
         trackStyle,
         trackLowerStyle,
         trackUpperStyle,
@@ -704,11 +701,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
+        // accessibilities:
+        pressed      : _pressed,      // remove
+        disabled,
+        
         // still on <EditableControl> element
-        // // accessibilities:
         // autoFocus,
         // tabIndex,
         // enterKeyHint,
+        
+        
+        
+        // behaviors:
+        actionMouses : _actionMouses, // remove
+        actionKeys   : _actionKeys,   // remove
         
         
         
@@ -965,8 +971,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // preserves the original `style` (can overwrite the `rangeVars.valueRatio`):
-        ...style,
-    }), [rangeVars.valueRatio, valueRatio, style]);
+        ...props.style,
+    }), [rangeVars.valueRatio, valueRatio, props.style]);
     
     
     
@@ -1316,7 +1322,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             // accessibilities:
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
+            enabled={props.enabled ?? !(disabled ?? false)} // aliasing [disabled] => ![enabled]
             
             
             
