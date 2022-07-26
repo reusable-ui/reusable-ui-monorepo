@@ -242,6 +242,9 @@ export interface InputProps
             
             // layouts:
             |'size'                  // we use css way to resize
+            
+            // accessibilities:
+            |'disabled'              // we use [enabled] instead of [disabled]
         >
 {
     // validations:
@@ -339,7 +342,6 @@ const Input = (props: InputProps): JSX.Element|null => {
             
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
-            enabled={props.enabled ?? !(props.disabled ?? false)} // aliasing [disabled] => ![enabled]
         >
             <input
                 // refs:
