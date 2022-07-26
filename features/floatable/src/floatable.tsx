@@ -68,7 +68,7 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 // hooks:
 export interface FloatableProps
 {
-    // floatings:
+    // floatables:
     floatingOn         ?: React.RefObject<Element>|Element|null // getter ref
     floatingPlacement  ?: FloatingPlacement
     floatingMiddleware ?: FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>)
@@ -89,7 +89,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     // rest props:
     const {
-        // floatings:
+        // floatables:
         floatingOn,
         floatingPlacement   = 'top',
         floatingMiddleware,
@@ -112,7 +112,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     // classes:
     const classes = useMergeClasses(
-        // floatings:
+        // floatables:
         ( floatingOn                 || null) && 'overlay',
         ((floatingOn && floatingPos) || null) && floatingPos?.placement,
     );
@@ -139,7 +139,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         
-        // floatings:
+        // actions:
         handleFloatingUpdateInternal,
     );
     
@@ -217,7 +217,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         
-        // floatings:
+        // floatables:
         floatingOn,
         floatingPlacement,
         floatingMiddleware,
