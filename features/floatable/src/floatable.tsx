@@ -203,20 +203,20 @@ export const useFloatable = (props: FloatableProps) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!isVisible)   return; // <Popup> is fully hidden => no need to update
+        if (!isVisible)  return; // <floatingUi> is fully hidden => no need to update
         
-        const target      = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
-        if (!target)      return; // [floatingOn] was not specified => nothing to do
+        const target     = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
+        if (!target)     return; // [floatingOn] was not specified => nothing to do
         
-        const floatingElm = outerRef.current;
-        if (!floatingElm) return; // <Popup> was unloaded => nothing to do
+        const floatingUi = outerRef.current;
+        if (!floatingUi) return; // <floatingUi> was unloaded => nothing to do
         
         
         
         // handlers:
         const triggerFloatingUpdate = async () => {
-            // calculate the proper position of the <Popup>:
-            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingElm as unknown as HTMLElement, /*options: */{
+            // calculate the proper position of the <floatingUi>:
+            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
                 placement  : floatingPlacement,
                 middleware : await (async (): Promise<FloatingMiddleware[]> => {
                     if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
@@ -252,12 +252,12 @@ export const useFloatable = (props: FloatableProps) => {
         // setups:
         
         // the first trigger:
-        const cancelTimeout = setTimeout(() => { // wait until all cssfn (both for <Popup> and <Target>) are fully loaded
+        const cancelTimeout = setTimeout(() => { // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
             triggerFloatingUpdate();
         }, 0);
         
         // the live trigger:
-        const stopUpdate = autoUpdate(target, floatingElm as unknown as HTMLElement, triggerFloatingUpdate);
+        const stopUpdate = autoUpdate(target, floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
         
         
         
