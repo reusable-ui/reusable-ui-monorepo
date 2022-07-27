@@ -36,5 +36,8 @@
   },
   "dependencies": {
     "@cssfn/css-types": "^2.0.3"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.6"
   }
 }

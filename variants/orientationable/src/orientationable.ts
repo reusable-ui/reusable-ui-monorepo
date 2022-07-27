@@ -1,8 +1,16 @@
 // cssfn:
 import type {
     // cssfn properties:
+    CssRule,
+    
+    CssStyleCollection,
+    
     CssSelectorCollection,
 }                           from '@cssfn/css-types'         // cssfn css specific types
+import {
+    // rules:
+    rule,
+}                           from '@cssfn/cssfn'             // writes css in javascript
 
 
 
@@ -17,9 +25,12 @@ export interface OrientationableRules {
     
     orientationInlineSelector : CssSelectorCollection
     orientationBlockSelector  : CssSelectorCollection
+    
+    ifOrientationInline       : (styles: CssStyleCollection) => CssRule
+    ifOrientationBlock        : (styles: CssStyleCollection) => CssRule
 }
 
-export interface OrientationableOptions extends Partial<OrientationableRules> {}
+export type OrientationableOptions = Omit<Partial<OrientationableRules>, 'ifOrientationInline'|'ifOrientationBlock'>
 export const defaultInlineOrientationableOptions : OrientationableOptions = { defaultOrientation: 'inline' };
 export const defaultBlockOrientationableOptions  : OrientationableOptions = { defaultOrientation: 'block'  };
 
@@ -36,6 +47,9 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
         defaultOrientation,
         orientationInlineSelector,
         orientationBlockSelector,
+        
+        ifOrientationInline : (styles: CssStyleCollection) => rule(orientationInlineSelector, styles),
+        ifOrientationBlock  : (styles: CssStyleCollection) => rule(orientationBlockSelector , styles),
     };
 };
 
@@ -58,9 +72,14 @@ export interface OrientationableWithDirectionRules {
     orientationInlineEndSelector   : CssSelectorCollection
     orientationBlockStartSelector  : CssSelectorCollection
     orientationBlockEndSelector    : CssSelectorCollection
+    
+    ifOrientationInlineStart       : (styles: CssStyleCollection) => CssRule
+    ifOrientationInlineEnd         : (styles: CssStyleCollection) => CssRule
+    ifOrientationBlockStart        : (styles: CssStyleCollection) => CssRule
+    ifOrientationBlockEnd          : (styles: CssStyleCollection) => CssRule
 }
 
-export interface OrientationableWithDirectionOptions extends Partial<OrientationableWithDirectionRules> {}
+export type OrientationableWithDirectionOptions = Omit<Partial<OrientationableWithDirectionRules>, 'ifOrientationInlineStart'|'ifOrientationInlineEnd'|'ifOrientationBlockStart'|'ifOrientationBlockEnd'>
 export const defaultInlineStartOrientationableWithDirectionOptions : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-start' };
 export const defaultInlineEndOrientationableWithDirectionOptions   : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-end'   };
 export const defaultBlockStartOrientationableWithDirectionOptions  : OrientationableWithDirectionOptions = { defaultOrientation: 'block-start'  };
@@ -83,6 +102,11 @@ export const usesOrientationableWithDirection = (options?: OrientationableWithDi
         orientationInlineEndSelector,
         orientationBlockStartSelector,
         orientationBlockEndSelector,
+        
+        ifOrientationInlineStart : (styles: CssStyleCollection) => rule(orientationInlineStartSelector, styles),
+        ifOrientationInlineEnd   : (styles: CssStyleCollection) => rule(orientationInlineEndSelector  , styles),
+        ifOrientationBlockStart  : (styles: CssStyleCollection) => rule(orientationBlockStartSelector , styles),
+        ifOrientationBlockEnd    : (styles: CssStyleCollection) => rule(orientationBlockEndSelector   , styles),
     };
 };
 
