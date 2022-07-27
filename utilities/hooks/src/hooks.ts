@@ -121,8 +121,20 @@ export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Re
 
 
 
-export const useMergeClasses = <TValue>(...classes: SingleOrArray<Optional<string>>[]): Optional<string>[] => {
+export const useMergeClasses = (...classes: SingleOrArray<Optional<string>>[]): Optional<string>[] => {
     return useMemo<Optional<string>[]>(() => {
         return classes.flat();
     }, [...classes]);
+};
+
+
+
+export const useMergeStyles = (...styles: SingleOrArray<Optional<React.CSSProperties>>[]): React.CSSProperties => {
+    return useMemo<React.CSSProperties>(() => {
+        const mergedStyles : React.CSSProperties = {};
+        for (const style of styles) {
+            Object.assign(mergedStyles, style);
+        } // for
+        return mergedStyles;
+    }, [...styles]);
 };
