@@ -622,7 +622,7 @@ export interface ButtonComponentProps
     
     
     
-    // layouts:
+    // variants:
     buttonOrientation ?: OrientationName
     
     
