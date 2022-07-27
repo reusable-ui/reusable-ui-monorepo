@@ -2,11 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -48,6 +43,7 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -388,15 +384,15 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // styles:
-    const mergedStyle = useMemo(() => ({
+    const mergedStyle = useMergeStyles(
         // floatable:
-        ...floatable.style,
+        floatable.style,
         
         
         
         // preserves the original `style` (can overwrite the `floatable.style`):
-        ...props.style,
-    }), [floatable.style, props.style]);
+        props.style,
+    );
     
     
     
