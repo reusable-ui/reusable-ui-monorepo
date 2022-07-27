@@ -37,7 +37,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeEvents,
@@ -45,11 +45,25 @@ import {
     useMergeClasses,
     useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui features:
 import {
     // hooks:
     FloatableProps,
     useFloatable,
 }                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultBlockOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui states:
 import {
     // hooks:
     ifCollapsed,
@@ -58,6 +72,8 @@ import {
     CollapsibleProps,
     useCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui components:
 import {
     // react components:
     GenericProps,
@@ -65,13 +81,6 @@ import {
 }                           from '@reusable-ui/generic'         // a generic component
 import {
     // hooks:
-    OrientationName,
-    OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 
@@ -79,19 +88,19 @@ import {
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+//#endregion orientationable
 
 
 
 // styles:
-export const usesCollapseLayout = (options?: OrientationVariantOptions) => {
+export const usesCollapseLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     
     
     
@@ -262,11 +271,11 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
         // bases:
         GenericProps<TElement>,
         
-        // layouts:
-        OrientationVariant,
-        
         // features:
         FloatableProps,
+        
+        // variants:
+        OrientationableProps,
         
         // states:
         CollapsibleProps<TExpandedChangeEvent>
@@ -281,36 +290,36 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
 }
 const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapseProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useCollapseStyleSheet();
+    const styleSheet             = useCollapseStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationableVariant = useOrientationable(props);
+    const isOrientationBlock     = ((props.orientation ?? defaultOrientationableOptions.defaultOrientation) === 'block');
     
     
     
     // states:
-    const collapsibleState   = useCollapsible<TElement, TExpandedChangeEvent>(props);
-    const isVisible          = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const collapsibleState       = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const isVisible              = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
     
     
     // features:
-    const floatable          = useFloatable<TElement>(props, isVisible);
+    const floatable              = useFloatable<TElement>(props, isVisible);
     
     
     
     // rest props:
     const {
-        // layouts:
-        orientation        : _orientation, // remove
-        
-        
-        
         // behaviors:
         lazy               = false,
+        
+        
+        
+        // variants:
+        orientation        : _orientation,        // remove
         
         
         
@@ -360,7 +369,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
     );
     const stateClasses   = useMergeClasses(
         // preserves the original `stateClasses`:
@@ -456,5 +465,3 @@ export {
     Collapse,
     Collapse as default,
 }
-
-export type { OrientationName, OrientationVariant }
