@@ -12,18 +12,18 @@ import type {
 
 //#region orientationable
 export type OrientationName = 'inline'|'block'
-export interface OrientationMixin {
+export interface OrientationableRules {
     defaultOrientation        : OrientationName
     
     orientationInlineSelector : CssSelectorCollection,
     orientationBlockSelector  : CssSelectorCollection,
 }
 
-export interface OrientationVariantOptions extends Partial<OrientationMixin> {}
-export const defaultInlineOrientationVariantOptions : OrientationVariantOptions = { defaultOrientation: 'inline' };
-export const defaultBlockOrientationVariantOptions  : OrientationVariantOptions = { defaultOrientation: 'block'  };
+export interface OrientationableOptions extends Partial<OrientationableRules> {}
+export const defaultInlineOrientationableOptions : OrientationableOptions = { defaultOrientation: 'inline' };
+export const defaultBlockOrientationableOptions  : OrientationableOptions = { defaultOrientation: 'block'  };
 
-export const usesOrientationVariant = (options?: OrientationVariantOptions, defaultOptions = defaultBlockOrientationVariantOptions): OrientationMixin => {
+export const usesOrientationable = (options?: OrientationableOptions, defaultOptions = defaultBlockOrientationableOptions): OrientationableRules => {
     const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
     const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(.block)'  : '.inline');
     const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(.inline)' : '.block' );
@@ -41,17 +41,17 @@ export const usesOrientationVariant = (options?: OrientationVariantOptions, defa
 
 
 
-export interface OrientationVariant {
+export interface OrientationableProps {
     orientation ?: OrientationName
 }
-export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
+export const useOrientationable = ({orientation}: OrientationableProps) => ({
     class: orientation ?? null,
 });
 
 
 
 export type OrientationWithDirectionName = 'inline-start'|'inline-end'|'block-start'|'block-end'
-export interface OrientationWithDirectionMixin {
+export interface OrientationableWithDirectionRules {
     defaultOrientation             : OrientationWithDirectionName
     
     orientationInlineStartSelector : CssSelectorCollection
@@ -60,13 +60,13 @@ export interface OrientationWithDirectionMixin {
     orientationBlockEndSelector    : CssSelectorCollection
 }
 
-export interface OrientationWithDirectionVariantOptions extends Partial<OrientationWithDirectionMixin> {}
-export const defaultInlineStartOrientationWithDirectionVariantOptions : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-start' };
-export const defaultInlineEndOrientationWithDirectionVariantOptions   : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-end'   };
-export const defaultBlockStartOrientationWithDirectionVariantOptions  : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-start'  };
-export const defaultBlockEndOrientationWithDirectionVariantOptions    : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-end'    };
+export interface OrientationableWithDirectionOptions extends Partial<OrientationableWithDirectionRules> {}
+export const defaultInlineStartOrientationableWithDirectionOptions : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-start' };
+export const defaultInlineEndOrientationableWithDirectionOptions   : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-end'   };
+export const defaultBlockStartOrientationableWithDirectionOptions  : OrientationableWithDirectionOptions = { defaultOrientation: 'block-start'  };
+export const defaultBlockEndOrientationableWithDirectionOptions    : OrientationableWithDirectionOptions = { defaultOrientation: 'block-end'    };
 
-export const usesOrientationWithDirectionVariant = (options?: OrientationWithDirectionVariantOptions, defaultOptions = defaultBlockEndOrientationWithDirectionVariantOptions): OrientationWithDirectionMixin => {
+export const usesOrientationableWithDirection = (options?: OrientationableWithDirectionOptions, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions): OrientationableWithDirectionRules => {
     const defaultOrientation             = options?.defaultOrientation             ?? defaultOptions.defaultOrientation             ?? 'block-end';
     const orientationInlineStartSelector = options?.orientationInlineStartSelector ?? defaultOptions.orientationInlineStartSelector ?? ((defaultOrientation === 'inline-start') ? ':not(:is(.block-start, .block-end, .inline-end))'    : '.inline-start');
     const orientationInlineEndSelector   = options?.orientationInlineEndSelector   ?? defaultOptions.orientationInlineEndSelector   ?? ((defaultOrientation === 'inline-end'  ) ? ':not(:is(.block-start, .block-end, .inline-start))'  : '.inline-end'  );
@@ -88,10 +88,10 @@ export const usesOrientationWithDirectionVariant = (options?: OrientationWithDir
 
 
 
-export interface OrientationWithDirectionVariant {
+export interface OrientationableWithDirectionProps {
     orientation ?: OrientationWithDirectionName
 }
-export const useOrientationWithDirectionVariant = ({orientation}: OrientationWithDirectionVariant) => ({
+export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps) => ({
     class: orientation ?? null,
 });
 //#endregion orientationable
