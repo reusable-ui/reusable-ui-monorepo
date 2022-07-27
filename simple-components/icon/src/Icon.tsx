@@ -80,6 +80,7 @@ import {
 import {
     // hooks:
     useMergeClasses,
+    useMergeStyles,
 }                           from '@reusable-ui/hooks'       // react helper hooks
 import {
     // react components:
@@ -956,15 +957,15 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     
     // styles:
-    const mergedStyle = useMemo(() => ({
+    const mergedStyle = useMergeStyles(
         // appearances:
-        ...icon.style,
+        icon.style,
         
         
         
         // preserves the original `style` (can overwrite the `icon.style`):
-        ...props.style,
-    }), [icon.style, props.style]);
+        props.style,
+    );
     
     
     
