@@ -1,6 +1,7 @@
 {
   "packages": [
     "features/*",
+    "variants/*",
     "states/*",
     "utilities/*",
     

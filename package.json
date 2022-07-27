@@ -12,6 +12,7 @@
   "type": "module",
   "workspaces": [
     "features/*",
+    "variants/*",
     "states/*",
     "utilities/*",
     

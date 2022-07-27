@@ -13,7 +13,16 @@ features
     padding         usePadding      paddingVars
     animation       useAnimation    animationVars
     
-    floatable       useFloatable    floatVars
+    floatable       [done] useFloatable    floatVars
+
+variants
+    sizes           multi-options   useSizable          sizeVars
+    orientationable multi-options   useOrientationable  OrientationableVars
+    nude            toggle-option   useNudeable         nudeVars
+    themes          multi-options   useTheme            themeVars
+    gradient        toggle-option   useGradientable     gradientVars
+    outlined        toggle-option   use???              outlineVars
+    mild            toggle-option   useMildable         mildVars
 
 states
     excite          useExcitable    exciteVars
@@ -29,15 +38,6 @@ states
     validInvalid    useValidation   validVars
     
     expandCollapse  [done] useCollapsible  collapsibleVars
-
-variants
-    sizes           multi-options   useSizable      sizeVars
-    orientations    multi-options   use???          orientationVars
-    nude            toggle-option   useNudeable     nudeVars
-    themes          multi-options   useTheme        themeVars
-    gradient        toggle-option   useGradientable gradientVars
-    outlined        toggle-option   use???          outlineVars
-    mild            toggle-option   useMildable     mildVars
 
 
 fix <Alert> close button on mild={false}
