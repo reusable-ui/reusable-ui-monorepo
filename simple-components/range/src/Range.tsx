@@ -84,6 +84,7 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
 }                           from '@reusable-ui/hooks'                   // react helper hooks
 import {
     // hooks:
@@ -960,19 +961,23 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // styles:
-    const [, rangeVars] = usesRange();
-    const mergedStyle = useMemo(() => ({
+    const [, rangeVars]   = usesRange();
+    const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
         // values:
         [
             rangeVars.valueRatio
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ] : valueRatio,
+    }), [rangeVars.valueRatio, valueRatio]);
+    const mergedStyle     = useMergeStyles(
+        // values:
+        valueRatioStyle,
         
         
         
-        // preserves the original `style` (can overwrite the `rangeVars.valueRatio`):
-        ...props.style,
-    }), [rangeVars.valueRatio, valueRatio, props.style]);
+        // preserves the original `style` (can overwrite the `valueRatioStyle`):
+        props.style,
+    );
     
     
     
