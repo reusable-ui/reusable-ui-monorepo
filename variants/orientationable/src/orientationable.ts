@@ -15,8 +15,8 @@ export type OrientationName = 'inline'|'block'
 export interface OrientationableRules {
     defaultOrientation        : OrientationName
     
-    orientationInlineSelector : CssSelectorCollection,
-    orientationBlockSelector  : CssSelectorCollection,
+    orientationInlineSelector : CssSelectorCollection
+    orientationBlockSelector  : CssSelectorCollection
 }
 
 export interface OrientationableOptions extends Partial<OrientationableRules> {}
