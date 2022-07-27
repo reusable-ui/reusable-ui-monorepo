@@ -11,7 +11,6 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
     keyframes,
     fallbacks,
@@ -100,7 +99,7 @@ export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
 export const usesCollapseLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
     
     
     
@@ -119,11 +118,11 @@ export const usesCollapseLayout = (options?: OrientationableOptions) => {
         ...style({
             // customize:
             ...usesCssProps(collapses), // apply config's cssProps
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 // overwrites propName = propName{Inline}:
                 ...overwriteProps(collapses, usesSuffixedProps(collapses, 'inline')),
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 // overwrites propName = propName{Block}:
                 ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
             }),
