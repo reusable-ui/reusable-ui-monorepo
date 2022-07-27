@@ -66,6 +66,10 @@ const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordi
 
 
 // hooks:
+
+// features:
+
+//#region floatable
 export interface FloatableProps
 {
     // floatable:
@@ -245,3 +249,4 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
 };
 
 export type { FloatingPlacement, FloatingMiddleware, FloatingStrategy, FloatingPosition, FloatingSide }
+//#endregion floatable
