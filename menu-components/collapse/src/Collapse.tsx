@@ -366,7 +366,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         // variants:
         orientationVariant.class,
     );
-    const stateClasses = useMergeClasses(
+    const stateClasses   = useMergeClasses(
         // preserves the original `stateClasses`:
         props.stateClasses,
         
@@ -375,7 +375,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         // states:
         collapsibleState.class,
     );
-    const classes      = useMergeClasses(
+    const classes        = useMergeClasses(
         // preserves the original `classes`:
         props.classes,
         
