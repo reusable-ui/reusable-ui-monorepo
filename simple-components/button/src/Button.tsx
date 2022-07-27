@@ -35,7 +35,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
@@ -52,6 +52,19 @@ import {
     // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationName,
+    OrientationableOptions,
+    defaultInlineOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // types:
     SemanticTag,
@@ -65,13 +78,6 @@ import {
 import {
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    defaultInlineOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
     gradientOf,
     ifNotOutlined,
     outlinedOf,
@@ -120,11 +126,11 @@ const _defaultMild         : boolean      = false
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+//#endregion orientationable
 
 
 // appearances:
@@ -191,10 +197,10 @@ export const noBackground = () => {
     });
 };
 
-export const usesButtonLayout = (options?: OrientationVariantOptions) => {
+export const usesButtonLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
     
     
     
@@ -206,10 +212,10 @@ export const usesButtonLayout = (options?: OrientationVariantOptions) => {
         ...style({
             // layouts:
             display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'center',      // center items (text, icon, etc) horizontally
@@ -478,8 +484,8 @@ export interface ButtonProps
         // bases:
         SemanticButtonProps<HTMLButtonElement>,
         
-        // layouts:
-        OrientationVariant,
+        // variants:
+        OrientationableProps,
         
         // appearances:
         ButtonVariant
@@ -494,33 +500,30 @@ export interface ButtonProps
 }
 const Button = (props: ButtonProps): JSX.Element|null => {
     // styles:
-    const styleSheet         = useButtonStyleSheet();
+    const styleSheet             = useButtonStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationableVariant = useOrientationable(props);
+    const isOrientationBlock     = (props.orientation ?? defaultOrientationableOptions.defaultOrientation)?.startsWith('block') ?? false;
     
-    const buttonVariant      = useButtonVariant(props);
+    const buttonVariant          = useButtonVariant(props);
     
     
     
     // rest props:
     const {
-        // layouts:
-        orientation : _orientation, // remove
-        
-        
-        
         // appearances:
         buttonStyle : _buttonStyle, // remove
         
         
         
         // variants:
-        outlined = _defaultOutlined,
-        mild     = _defaultMild,
+        orientation : _orientation, // remove
+        
+        outlined    = _defaultOutlined,
+        mild        = _defaultMild,
         
         
         
@@ -555,7 +558,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
         buttonVariant.class,
     );
     
@@ -609,8 +612,6 @@ export {
     Button,
     Button as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 
 
