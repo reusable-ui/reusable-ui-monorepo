@@ -295,7 +295,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     // variants:
     const orientationableVariant = useOrientationable(props);
-    const isOrientationBlock     = ((props.orientation ?? defaultOrientationableOptions.defaultOrientation) === 'block');
+    const isOrientationBlock     = (props.orientation ?? defaultOrientationableOptions.defaultOrientation)?.startsWith('block') ?? false;
     
     
     
