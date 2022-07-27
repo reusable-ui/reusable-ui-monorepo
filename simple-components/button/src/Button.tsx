@@ -56,7 +56,6 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    OrientationName,
     OrientationableOptions,
     defaultInlineOrientationableOptions,
     usesOrientationable,
@@ -623,7 +622,7 @@ export interface ButtonComponentProps
     
     
     // variants:
-    buttonOrientation ?: OrientationName
+    buttonOrientation ?: ButtonProps['orientation']
     
     
     
