@@ -1,0 +1,44 @@
+{
+  "name": "@reusable-ui/orientationable",
+  "version": "5.0.0",
+  "description": "A capability of UI to rotate its layout.",
+  "keywords": [
+    "orientation",
+    "portrait",
+    "landscape",
+    "vertical",
+    "horizontal",
+    "inline",
+    "block",
+    "design",
+    "layouts"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/orientationable.js",
+  "types": "dist/orientationable.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/hooks": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
