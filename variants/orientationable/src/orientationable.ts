@@ -1,122 +1,8 @@
-// react:
-import {
-    // react:
-    default as React,
-    
-    
-    
-    // hooks:
-    useRef,
-    useEffect,
-}                           from 'react'
-
 // cssfn:
 import type {
-    // css values:
-    CssComplexBaseValueOf,
-    
-    
-    
-    // css custom properties:
-    CssCustomSimpleRef,
-    CssCustomRef,
-    CssCustomValue,
-    
-    
-    
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
     // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-    
     CssSelectorCollection,
 }                           from '@cssfn/css-types'         // cssfn css specific types
-import {
-    // rules:
-    rule,
-    variants,
-    states,
-    keyframes,
-    
-    
-    
-    // styles:
-    style,
-    vars,
-    imports,
-    
-    
-    
-    // utilities:
-    pascalCase,
-    solidBackg,
-}                           from '@cssfn/cssfn'             // writes css in javascript
-import {
-    // style sheets:
-    createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'       // writes css in react hook
-import {
-    // types:
-    ReadonlyCssCustomRefs,
-    
-    
-    
-    // utilities:
-    cssVar,
-    fallbacks,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
-import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
-
-// reusable-ui:
-import {
-    // configs:
-    colors,
-    themes as colorThemes,
-}                           from '@reusable-ui/colors'      // a color management system
-import {
-    // configs:
-    borders as borderStrokes,
-    borderRadiuses,
-}                           from '@reusable-ui/borders'     // a border (stroke) management system
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'     // a spacer (gap) management system
-import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'       // a typography management system
-import {
-    // hooks:
-    useTriggerRender,
-    useEvent,
-    useMergeClasses,
-}                           from '@reusable-ui/hooks'       // react helper hooks
-import {
-    // react components:
-    GenericProps,
-    Generic,
-}                           from '@reusable-ui/generic'     // a base component
 
 
 
@@ -125,9 +11,6 @@ import {
 // variants:
 
 //#region orientationable
-export const defaultInlineOrientationVariantOptions : OrientationVariantOptions = { defaultOrientation: 'inline' };
-export const defaultBlockOrientationVariantOptions  : OrientationVariantOptions = { defaultOrientation: 'block'  };
-
 export type OrientationName = 'inline'|'block'
 export interface OrientationMixin {
     defaultOrientation        : OrientationName
@@ -137,6 +20,9 @@ export interface OrientationMixin {
 }
 
 export interface OrientationVariantOptions extends Partial<OrientationMixin> {}
+export const defaultInlineOrientationVariantOptions : OrientationVariantOptions = { defaultOrientation: 'inline' };
+export const defaultBlockOrientationVariantOptions  : OrientationVariantOptions = { defaultOrientation: 'block'  };
+
 export const usesOrientationVariant = (options?: OrientationVariantOptions, defaultOptions = defaultBlockOrientationVariantOptions): OrientationMixin => {
     const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
     const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(.block)'  : '.inline');
@@ -155,10 +41,14 @@ export const usesOrientationVariant = (options?: OrientationVariantOptions, defa
 
 
 
-export const defaultInlineStartOrientationWithDirectionVariantOptions : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-start' };
-export const defaultInlineEndOrientationWithDirectionVariantOptions   : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-end'   };
-export const defaultBlockStartOrientationWithDirectionVariantOptions  : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-start'  };
-export const defaultBlockEndOrientationWithDirectionVariantOptions    : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-end'    };
+export interface OrientationVariant {
+    orientation ?: OrientationName
+}
+export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
+    class: orientation ?? null,
+});
+
+
 
 export type OrientationWithDirectionName = 'inline-start'|'inline-end'|'block-start'|'block-end'
 export interface OrientationWithDirectionMixin {
@@ -171,6 +61,11 @@ export interface OrientationWithDirectionMixin {
 }
 
 export interface OrientationWithDirectionVariantOptions extends Partial<OrientationWithDirectionMixin> {}
+export const defaultInlineStartOrientationWithDirectionVariantOptions : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-start' };
+export const defaultInlineEndOrientationWithDirectionVariantOptions   : OrientationWithDirectionVariantOptions = { defaultOrientation: 'inline-end'   };
+export const defaultBlockStartOrientationWithDirectionVariantOptions  : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-start'  };
+export const defaultBlockEndOrientationWithDirectionVariantOptions    : OrientationWithDirectionVariantOptions = { defaultOrientation: 'block-end'    };
+
 export const usesOrientationWithDirectionVariant = (options?: OrientationWithDirectionVariantOptions, defaultOptions = defaultBlockEndOrientationWithDirectionVariantOptions): OrientationWithDirectionMixin => {
     const defaultOrientation             = options?.defaultOrientation             ?? defaultOptions.defaultOrientation             ?? 'block-end';
     const orientationInlineStartSelector = options?.orientationInlineStartSelector ?? defaultOptions.orientationInlineStartSelector ?? ((defaultOrientation === 'inline-start') ? ':not(:is(.block-start, .block-end, .inline-end))'    : '.inline-start');
@@ -190,4 +85,13 @@ export const usesOrientationWithDirectionVariant = (options?: OrientationWithDir
         orientationBlockEndSelector,
     };
 };
+
+
+
+export interface OrientationWithDirectionVariant {
+    orientation ?: OrientationWithDirectionName
+}
+export const useOrientationWithDirectionVariant = ({orientation}: OrientationWithDirectionVariant) => ({
+    class: orientation ?? null,
+});
 //#endregion orientationable
