@@ -129,12 +129,14 @@ export const useMergeClasses = (...classes: SingleOrArray<Optional<string>>[]): 
 
 
 
-export const useMergeStyles = (...styles: SingleOrArray<Optional<React.CSSProperties>>[]): React.CSSProperties => {
-    return useMemo<React.CSSProperties>(() => {
+export const useMergeStyles = (...styles: SingleOrArray<Optional<React.CSSProperties>>[]): React.CSSProperties|undefined => {
+    return useMemo<React.CSSProperties|undefined>(() => {
         const mergedStyles : React.CSSProperties = {};
-        for (const style of styles) {
+        for (const style of styles.flat()) {
+            if (!style) continue;
             Object.assign(mergedStyles, style);
         } // for
+        if (!Object.keys(mergedStyles).length) return undefined;
         return mergedStyles;
     }, [...styles]);
 };
