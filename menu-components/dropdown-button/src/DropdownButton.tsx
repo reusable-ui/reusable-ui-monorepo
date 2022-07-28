@@ -324,7 +324,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    // layouts:
+                    // variants:
                     orientation      : dropdownComponent.props.orientation ?? dropdownOrientation,
                     
                     
