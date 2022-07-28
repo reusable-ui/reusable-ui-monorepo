@@ -72,6 +72,9 @@ export const useOrientationable = ({orientation}: OrientationableProps, defaultO
             false
         );
     },
+    get isOrientationVertical(): boolean {
+        return this.isOrientationBlock;
+    },
 });
 
 
