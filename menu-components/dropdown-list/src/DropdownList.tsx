@@ -4,7 +4,7 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useEvent,
@@ -18,6 +18,14 @@ import {
     setFocusPrev,
     setFocusNext,
 }                           from '@reusable-ui/focuses'         // focusing functions
+
+// reusable-ui variants:
+import {
+    // hooks:
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import type {
     // types:
     Role,
@@ -46,7 +54,7 @@ import {
     
     
     // hooks:
-    defaultOrientationRuleOptions as defaultListOrientationRuleOptions,
+    defaultOrientationableOptions as listDefaultOrientationableOptions,
     
     
     
@@ -187,6 +195,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // components:
         listRef,
         listOrientation,
+        listStyle,
         listComponent         = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children              : listItems,
         
@@ -198,7 +207,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     
     // variants:
-    const isListOrientationBlock = ((listOrientation ?? defaultListOrientationRuleOptions.defaultOrientation) === 'block');
+    const listOrientationableVariant = useOrientationable(props, listDefaultOrientationableOptions);
+    const listIsOrientationBlock     = listOrientationableVariant.isOrientationBlock;
     
     
     
@@ -248,14 +258,14 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             else if (                                     isKeyOf('home'      )) setFocusFirst(event.currentTarget);
             else if (                                     isKeyOf('end'       )) setFocusLast(event.currentTarget);
             
-            else if ( isListOrientationBlock &&           isKeyOf('arrowdown' )) setFocusNext(event.currentTarget);
-            else if ( isListOrientationBlock &&           isKeyOf('arrowup'   )) setFocusPrev(event.currentTarget);
+            else if ( listIsOrientationBlock &&           isKeyOf('arrowdown' )) setFocusNext(event.currentTarget);
+            else if ( listIsOrientationBlock &&           isKeyOf('arrowup'   )) setFocusPrev(event.currentTarget);
             
-            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setFocusNext(event.currentTarget);
-            else if (!isListOrientationBlock && !isRtl && isKeyOf('arrowright')) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationBlock && !isRtl && isKeyOf('arrowright')) setFocusPrev(event.currentTarget);
             
-            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowright')) setFocusNext(event.currentTarget);
-            else if (!isListOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationBlock &&  isRtl && isKeyOf('arrowright')) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setFocusPrev(event.currentTarget);
             else return false; // not handled
             
             
@@ -264,7 +274,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [isListOrientationBlock]);
+    }, [listIsOrientationBlock]);
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown` from `listComponent`:
         listComponent.props.onKeyDown,
@@ -292,7 +302,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // layouts:
+            // variants:
             orientation  : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
             
             
@@ -339,8 +349,9 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 
-                // layouts:
+                // variants:
                 orientation : listComponent.props.orientation ?? listOrientation,
+                listStyle   : listComponent.props.listStyle   ?? listStyle,
                 
                 
                 
