@@ -4,13 +4,15 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui components:
 import type {
     // hooks:
     OrientationName,
@@ -33,8 +35,9 @@ import {
     usesButtonLayout   as usesToggleButtonLayout,
     usesButtonVariants as usesToggleButtonVariants,
     usesButtonStates   as usesToggleButtonStates,
-}                           from '@reusable-ui/button'          // a base component
-import {
+    
+    
+    
     // react components:
     ButtonProps,
     Button,
@@ -85,6 +88,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         // components:
         buttonRef,
         buttonOrientation,
+        buttonStyle,
         buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
     ...restButtonProps} = props;
@@ -154,8 +158,9 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             
-            // layouts:
+            // variants:
             orientation     : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
+            buttonStyle     : buttonComponent.props.buttonStyle ?? buttonStyle,
             
             
             
