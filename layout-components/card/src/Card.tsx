@@ -40,12 +40,24 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultBlockOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // types:
     SemanticTag,
@@ -60,13 +72,6 @@ import {
 import {
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
     usesBorder,
     extendsBorder,
     usesAnim,
@@ -124,14 +129,12 @@ const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding 
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+//#endregion orientationable
 
-
-// appearances:
 
 //#region card style
 export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
@@ -245,12 +248,13 @@ export const usesCardBodyLayout    = () => {
 
 
 
-export const usesCardLayout = (options?: OrientationVariantOptions) => {
+export const usesCardLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    options = orientationableRules;
     
     
     
@@ -275,12 +279,12 @@ export const usesCardLayout = (options?: OrientationVariantOptions) => {
         ]),
         ...style({
             // layouts:
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 // layouts:
                 display        : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection  : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 // layouts:
                 display        : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection  : 'column',      // items are stacked vertically
@@ -631,10 +635,8 @@ export interface CardProps<TElement extends Element = HTMLElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // layouts:
-        OrientationVariant,
-        
-        // appearances:
+        // variants:
+        OrientationableProps,
         CardVariant
 {
     // children:
@@ -642,15 +644,13 @@ export interface CardProps<TElement extends Element = HTMLElement>
 }
 const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useCardStyleSheet();
+    const styleSheet             = useCardStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
-    
-    const cardVariant        = useCardVariant(props);
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const cardVariant            = useCardVariant(props);
     
     
     
@@ -662,7 +662,7 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
         cardVariant.class,
     );
     
@@ -693,7 +693,7 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
             semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
             semanticRole = {props.semanticRole ?? _defaultSemanticRole}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             
             
             
@@ -712,5 +712,3 @@ export {
     Card,
     Card as default,
 }
-
-export type { OrientationName, OrientationVariant }
