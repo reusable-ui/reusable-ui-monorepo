@@ -59,7 +59,9 @@ export interface OrientationableProps {
     orientation ?: OrientationName
 }
 export const useOrientationable = ({orientation}: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => ({
-    class: orientation ?? null,
+    get class() {
+        return orientation ?? null;
+    },
     
     get isOrientationBlock(): boolean {
         return(
