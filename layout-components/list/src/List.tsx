@@ -18,6 +18,8 @@ import type {
     // cssfn properties:
     CssRule,
     
+    CssStyleCollection,
+    
     CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
@@ -59,7 +61,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
@@ -81,6 +83,18 @@ import {
     // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultBlockOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // types:
     SemanticTag,
@@ -99,13 +113,6 @@ import {
 import {
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
     ThemeName,
     outlinedOf,
     mildOf,
@@ -216,14 +223,12 @@ const _defaultItemActionCtrl : boolean      = false
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+//#endregion orientationable
 
-
-// appearances:
 
 //#region list style
 export type ListBasicStyle = 'flat'|'flush'|'joined';
@@ -324,10 +329,10 @@ export const usesListItemInheritMildVariant = () => {
 
 
 
-export const usesListItemBaseLayout = (options?: OrientationVariantOptions) => {
+export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     /*
         a hack with :not(_)
         the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
@@ -361,9 +366,10 @@ export const usesListItemBaseLayout = (options?: OrientationVariantOptions) => {
         ]),
     });
 };
-export const usesListItemLayout = (options?: OrientationVariantOptions) => {
+export const usesListItemLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    options = orientationableRules;
     
     
     
@@ -452,11 +458,14 @@ export const useListItemStyleSheet = createUseStyleSheet(() => ({
 
 
 
-export const usesListSeparatorItemLayout = () => {
+export const usesListSeparatorItemLayout = (options?: OrientationableOptions) => {
     // options:
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(defaultOrientationRuleOptions);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
     
     
     
@@ -473,10 +482,10 @@ export const usesListSeparatorItemLayout = () => {
     return style({
         // layouts:
         display           : 'flex',   // use block flexbox, so it takes the entire wrapper's width
-        ...rule(parentOrientationInlineSelector, { // inline
+        ...ifParentOrientationInline({ // inline
             flexDirection : 'column', // items are stacked vertically
         }),
-        ...rule(parentOrientationBlockSelector , { // block
+        ...ifParentOrientationBlock({  // block
             flexDirection : 'row',    // items are stacked horizontally
         }),
         justifyContent    : 'center', // center items (text, icon, etc) horizontally
@@ -511,7 +520,7 @@ export const usesListSeparatorItemLayout = () => {
             // spacings:
             margin        : 0,
         }),
-        ...rule(parentOrientationInlineSelector, { // inline
+        ...ifParentOrientationInline({ // inline
             // children:
             ...children('hr', {
                 // appearances:
@@ -603,12 +612,15 @@ export const useListActionItemStyleSheet = createUseStyleSheet(() => ({
 
 
 
-export const usesListLayout = (options?: OrientationVariantOptions) => {
+export const usesListLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
+    options = orientationableRules;
     
     
     
@@ -630,11 +642,11 @@ export const usesListLayout = (options?: OrientationVariantOptions) => {
         ]),
         ...style({
             // layouts:
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 display       : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection : 'column',      // items are stacked vertically
             }),
@@ -690,7 +702,7 @@ export const usesListLayout = (options?: OrientationVariantOptions) => {
                     */
                     ...children(':not(_)', {
                         // borders:
-                        ...rule(parentOrientationInlineSelector, { // inline
+                        ...ifParentOrientationInline({ // inline
                             ...ifFirstVisibleChild({
                             // add rounded corners on left:
                             [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
@@ -702,7 +714,7 @@ export const usesListLayout = (options?: OrientationVariantOptions) => {
                             [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
                             }),
                         }),
-                        ...rule(parentOrientationBlockSelector , { // block
+                        ...ifParentOrientationBlock({  // block
                             ...ifFirstVisibleChild({
                             // add rounded corners on top:
                             [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
@@ -811,12 +823,14 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
         ], { specificityWeight }),
     });
 };
-export const usesListVariants = (options?: OrientationVariantOptions) => {
+export const usesListVariants = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
     
     
     
@@ -932,11 +946,11 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
             }),
             rule('.tab', {
                 // layouts:
-                ...rule(orientationInlineSelector, { // inline
+                ...ifOrientationInline({ // inline
                     // tab directions are inline (right) but <List> direction are block (down):
                     display                : 'flex',        // use block flexbox, so it takes the entire parent's width
                 }),
-                ...rule(orientationBlockSelector , { // block
+                ...ifOrientationBlock({  // block
                     // tab directions are block (down) but <List> direction are inline (right):
                     display                : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 }),
@@ -946,11 +960,11 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                 // children:
                 ...children(wrapperElm, {
                     // spacings:
-                    ...rule(parentOrientationInlineSelector, { // inline
+                    ...ifParentOrientationInline({ // inline
                         // shift the items to bottom a bit, so the `active item` can hide the `borderBottom`:
                         marginBlockEnd  : `calc(0px - ${borders.borderWidth})`,
                     }),
-                    ...rule(parentOrientationBlockSelector , { // block
+                    ...ifParentOrientationBlock({  // block
                         // shift the items to right a bit, so the `active item` can hide the `borderRight`:
                         marginInlineEnd : `calc(0px - ${borders.borderWidth})`,
                     }),
@@ -980,12 +994,12 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                             
                             
                             // borders:
-                            ...rule(parentOrientationInlineSelector, { // inline
+                            ...ifParentOrientationInline({ // inline
                                 // remove rounded corners on bottom:
                                 [borders.borderEndStartRadius] : '0px',
                                 [borders.borderEndEndRadius  ] : '0px',
                             }),
-                            ...rule(parentOrientationBlockSelector , { // block
+                            ...ifParentOrientationBlock({  // block
                                 // remove rounded corners on right:
                                 [borders.borderStartEndRadius] : '0px',
                                 [borders.borderEndEndRadius  ] : '0px',
@@ -1011,7 +1025,7 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                         }),
                         ...states([
                             ifPassive({
-                                ...rule(parentOrientationInlineSelector, { // inline
+                                ...ifParentOrientationInline({ // inline
                                     // borders:
                                     // kill border [left, top, right] surrounding tab:
                                     borderInlineWidth      : 0,
@@ -1028,7 +1042,7 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                                     paddingInline          : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
                                     paddingBlockStart      : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
                                 }),
-                                ...rule(parentOrientationBlockSelector , { // block
+                                ...ifParentOrientationBlock({  // block
                                     // borders:
                                     // kill border [top, left, bottom] surrounding tab:
                                     borderBlockWidth       : 0,
@@ -1047,7 +1061,7 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                                 }),
                             }),
                             ifActive({
-                                ...rule(parentOrientationInlineSelector, { // inline
+                                ...ifParentOrientationInline({ // inline
                                     // borders:
                                     // kill border on bottom:
                                     borderBlockEndWidth    : 0,
@@ -1058,7 +1072,7 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                                     // compensates the missing borders:
                                     paddingBlockEnd        : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
                                 }),
-                                ...rule(parentOrientationBlockSelector , { // block
+                                ...ifParentOrientationBlock({  // block
                                     // borders:
                                     // kill border on right:
                                     borderInlineEndWidth   : 0,
@@ -1117,7 +1131,7 @@ export const usesListVariants = (options?: OrientationVariantOptions) => {
                     
                     
                     // customize:
-                    ...rule(parentOrientationBlockSelector , { // block
+                    ...ifParentOrientationBlock({  // block
                         // overwrites propName = {breadcrumbSeparator}PropName{Block}:
                         ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
                     }),
@@ -1541,10 +1555,8 @@ export interface ListProps<TElement extends Element = HTMLElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // layouts:
-        OrientationVariant,
-        
-        // appearances:
+        // variants:
+        OrientationableProps,
         ListVariant,
         
         // behaviors:
@@ -1555,40 +1567,28 @@ export interface ListProps<TElement extends Element = HTMLElement>
 }
 const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useListStyleSheet();
+    const styleSheet             = useListStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
-    
-    const listVariant        = useListVariant(props);
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const listVariant            = useListVariant(props);
     
     
     
     // rest props:
     const {
-        // remove props:
-        
-        // layouts:
-        orientation : _orientation,
-        
-        
-        
-        // appearances:
-        listStyle    : _listStyle,
-        
-        
-        
         // variants:
-        outlined = _defaultOutlined,
-        mild     = _defaultMild,
+        outlined    = _defaultOutlined,
+        mild        = _defaultMild,
+        orientation : _orientation, // remove
+        listStyle   : _listStyle,   // remove
         
         
         
         // behaviors:
-        actionCtrl : defaultActionCtrl = _defaultActionCtrl,
+        actionCtrl  : defaultActionCtrl = _defaultActionCtrl,
         
         
         
@@ -1633,7 +1633,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
         listVariant.class,
     );
     
@@ -1664,7 +1664,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             semanticTag  = {semanticTag }
             semanticRole = {semanticRole}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             
             
             
@@ -1717,8 +1717,6 @@ export {
     List as default,
 }
 
-export type { OrientationName, OrientationVariant }
-
 
 
 export interface ListComponentProps<TElement extends Element = HTMLElement>
@@ -1729,7 +1727,8 @@ export interface ListComponentProps<TElement extends Element = HTMLElement>
     
     
     // layouts:
-    listOrientation ?: OrientationName
+    listOrientation ?: ListProps['orientation']
+    listStyle       ?: ListProps['listStyle']
     
     
     
