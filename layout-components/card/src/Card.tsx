@@ -654,6 +654,15 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
     
     
     
+    // rest props:
+    const {
+        // variants:
+        orientation : _orientation, // remove
+        cardStyle   : _cardStyle,   // remove
+    ...restIndicatorProps} = props;
+    
+    
+    
     // classes:
     const variantClasses = useMergeClasses(
         // preserves the original `variantClasses`:
@@ -685,7 +694,7 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
     return (
         <Indicator<TElement>
             // other props:
-            {...props}
+            {...restIndicatorProps}
             
             
             
