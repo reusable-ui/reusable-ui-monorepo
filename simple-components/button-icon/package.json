@@ -41,6 +41,7 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
+    "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/typos": "^5.0.0",
     "@types/react": "^18.0.10"
   },

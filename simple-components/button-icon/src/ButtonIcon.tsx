@@ -50,11 +50,19 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
+
+// reusable-ui variants:
+import type {
+    // hooks:
+    OrientationableOptions,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // types:
     VariantMixin,
@@ -66,10 +74,6 @@ import {
     ifSize          as basicIfSize,
     usesSizeVariant as basicUsesSizeVariant,
     useSizeVariant  as basicUseSizeVariant,
-    
-    OrientationName,
-    OrientationVariantOptions,
-    OrientationVariant,
     
     extendsBorder,
     extendsPadding,
@@ -163,7 +167,7 @@ export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props)
 
 
 // styles:
-export const usesButtonIconLayout = (options?: OrientationVariantOptions) => {
+export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // icon:
@@ -377,7 +381,5 @@ export {
     ButtonIcon,
     ButtonIcon as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
