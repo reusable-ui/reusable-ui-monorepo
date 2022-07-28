@@ -31,12 +31,6 @@ import type {
     Role,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // types:
-    OrientationName,
-    OrientationVariant,
-    
-    
-    
     // react components:
     DropdownActionType,
     DropdownExpandedChangeEvent,
@@ -402,8 +396,6 @@ export {
     DropdownList,
     DropdownList as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 export type { ListStyle, ListVariant }
 
