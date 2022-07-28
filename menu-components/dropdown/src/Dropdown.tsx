@@ -34,7 +34,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // styles:
     stripoutFocusableElement,
@@ -55,12 +55,22 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui states:
 import {
     // hooks:
     ExpandedChangeEvent,
     useCollapsible,
     ToggleCollapsibleProps,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui components:
 import type {
     // react components:
     GenericProps,
@@ -73,7 +83,7 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    defaultOrientationRuleOptions,
+    defaultOrientationableOptions,
     
     
     
@@ -92,11 +102,11 @@ import {
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export { defaultOrientationRuleOptions };
-//#endregion orientation
+//#region orientationable
+export { defaultOrientationableOptions };
+//#endregion orientationable
 
 
 
@@ -218,19 +228,19 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useDropdownStyleSheet();
-    const uiStyleSheet       = useDropdownUiStyleSheet();
+    const styleSheet             = useDropdownStyleSheet();
+    const uiStyleSheet           = useDropdownUiStyleSheet();
     
     
     
     // variants:
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
     
     
     
     // states:
-    const collapsibleState   = useCollapsible<TElement, TDropdownExpandedChangeEvent>(props);
-    const isExpanded         = collapsibleState.expanded;
+    const collapsibleState       = useCollapsible<TElement, TDropdownExpandedChangeEvent>(props);
+    const isExpanded             = collapsibleState.expanded;
     
     
     
@@ -475,7 +485,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             // floatable:
-            floatingPlacement ={props.floatingPlacement ?? (isOrientationBlock ? 'bottom' : 'right')}
+            floatingPlacement ={props.floatingPlacement ?? (orientationableVariant.isOrientationBlock ? 'bottom' : 'right')}
             floatingAutoFlip  ={props.floatingAutoFlip  ?? true}
             floatingAutoShift ={props.floatingAutoShift ?? true}
             
