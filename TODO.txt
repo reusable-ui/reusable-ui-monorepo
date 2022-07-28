@@ -2,6 +2,7 @@ TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
 
 TODO upgrade ButtonComponentProps of <DropdownButton> & <ToggleButton>
+TODO upgrade ListComponentProps   of <DropdownList> & <DropdownListButton>
 
 TODO: create a dedicated package of:
 FeatureMixin
