@@ -4,7 +4,7 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui components:
 import {
     // hooks:
     ButtonStyle,
