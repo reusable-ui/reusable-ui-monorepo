@@ -7,9 +7,6 @@ import {
 // reusable-ui:
 import {
     // hooks:
-    OrientationName,
-    OrientationVariant,
-    
     ButtonStyle,
     ButtonVariant,
     ButtonType,
@@ -59,7 +56,5 @@ export {
     CloseButton,
     CloseButton as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 export type { ButtonStyle, ButtonVariant, ButtonType, IconPosition }
