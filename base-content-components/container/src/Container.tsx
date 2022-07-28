@@ -68,7 +68,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borders as borderStrokes,
@@ -83,6 +83,16 @@ import {
     // rules:
     ifScreenWidthAtLeast,
 }                           from '@reusable-ui/breakpoints'     // a responsive management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultBlockOrientationableOptions,
+    usesOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // types:
     FeatureMixin,
@@ -90,10 +100,6 @@ import {
     
     
     // hooks:
-    OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
     usesBorder,
     extendsBorder,
     usesPadding,
@@ -130,11 +136,14 @@ export const ifNotSecondVisibleChild = (styles: CssStyleCollection): CssRule => 
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+//#endregion orientationable
+
+
+// layouts:
 
 //#region container
 export interface ContainerVars {
@@ -198,13 +207,14 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
 // borders:
 
 //#region border as container
-export interface BorderAsContainerOptions extends OrientationVariantOptions {
+export interface BorderAsContainerOptions extends OrientationableOptions {
     itemsSelector ?: CssSelectorCollection
 }
 export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRule => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
+    options = orientationableRules;
     const {
         itemsSelector = '*',
     } = options;
@@ -230,7 +240,7 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
         //     // borders:
         //     overflow : 'hidden', // clip the children at the rounded corners // bad idea, causing child's focus boxShadow to be clipped off
         // }),
-        ...iif(!!orientationInlineSelector, rule(orientationInlineSelector, {
+        ...ifOrientationInline({ // inline
             // children:
             ...children(itemsSelector, {
                 ...ifFirstVisibleChild({
@@ -280,8 +290,8 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     }),
                 }),
             }),
-        })),
-        ...iif(!!orientationBlockSelector , rule(orientationBlockSelector,  {
+        }),
+        ...ifOrientationBlock({  // block
             // children:
             ...children(itemsSelector, {
                 ...ifFirstVisibleChild({
@@ -331,13 +341,13 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     }),
                 }),
             }),
-        })),
+        }),
     });
 };
 //#endregion border as container
 
 //#region border as separator
-export interface BorderAsSeparatorOptions extends OrientationVariantOptions {
+export interface BorderAsSeparatorOptions extends OrientationableOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
@@ -473,18 +483,19 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
 };
 export const usesBorderAsSeparator = (options: BorderAsSeparatorOptions = {}): CssRule => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
+    options = orientationableRules;
     
     
     
     return style({
-        ...iif(!!orientationInlineSelector, rule(orientationInlineSelector,
+        ...ifOrientationInline( // inline
             usesBorderAsSeparatorOf(false, options)
-        )),
-        ...iif(!!orientationBlockSelector , rule(orientationBlockSelector,
+        ),
+        ...ifOrientationBlock(  // block
             usesBorderAsSeparatorOf(true, options)
-        )),
+        ),
     });
 };
 //#endregion border as separator
