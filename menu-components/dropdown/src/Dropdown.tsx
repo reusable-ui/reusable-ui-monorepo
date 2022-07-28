@@ -59,6 +59,7 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
+    OrientationableOptions,
     useOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
 
@@ -75,12 +76,6 @@ import type {
     // react components:
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
-import {
-    // hooks:
-    OrientationName,
-    OrientationVariantOptions,
-    OrientationVariant,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     defaultOrientationableOptions,
@@ -133,7 +128,7 @@ export const useDropdownUiStyleSheet = createUseStyleSheet(() => ({
 
 
 
-export const usesDropdownLayout = (options?: OrientationVariantOptions) => {
+export const usesDropdownLayout = (options?: OrientationableOptions) => {
     return style({
         ...imports([
             // layouts:
@@ -525,8 +520,6 @@ export {
     Dropdown as default,
 }
 
-export type { OrientationName, OrientationVariant }
-
 
 
 export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
@@ -537,7 +530,7 @@ export interface DropdownComponentProps<TElement extends Element = HTMLElement, 
     
     
     // layouts:
-    dropdownOrientation ?: OrientationName
+    dropdownOrientation ?: DropdownProps<TElement, TDropdownExpandedChangeEvent>['orientation']
     
     
     
