@@ -320,38 +320,38 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                 // props:
                 {
                     // refs:
-                    outerRef         : mergedDropdownRef,
+                    outerRef           : mergedDropdownRef,
                     
                     
                     
                     // variants:
-                    orientation      : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    orientation        : dropdownComponent.props.orientation ?? dropdownOrientation,
                     
                     
                     
                     // behaviors:
-                    lazy             : dropdownComponent.props.lazy            ?? lazy,
+                    lazy               : dropdownComponent.props.lazy            ?? lazy,
                     
                     
                     
                     // states:
-                    expanded         : dropdownComponent.props.expanded ?? isExpanded,
-                    onExpandedChange : handleExpandedChange,
+                    expanded           : dropdownComponent.props.expanded ?? isExpanded,
+                    onExpandedChange   : handleExpandedChange,
                     
                     
                     
                     // floatable:
-                    floatingOn          : dropdownComponent.props.floatingOn         ?? floatingOn         ?? buttonRefInternal,
-                    floatingPlacement   : dropdownComponent.props.floatingPlacement  ?? floatingPlacement,
-                    floatingMiddleware  : dropdownComponent.props.floatingMiddleware ?? floatingMiddleware,
-                    floatingStrategy    : dropdownComponent.props.floatingStrategy   ?? floatingStrategy,
+                    floatingOn         : dropdownComponent.props.floatingOn         ?? floatingOn         ?? buttonRefInternal,
+                    floatingPlacement  : dropdownComponent.props.floatingPlacement  ?? floatingPlacement,
+                    floatingMiddleware : dropdownComponent.props.floatingMiddleware ?? floatingMiddleware,
+                    floatingStrategy   : dropdownComponent.props.floatingStrategy   ?? floatingStrategy,
                     
-                    floatingAutoFlip    : dropdownComponent.props.floatingAutoFlip   ?? floatingAutoFlip,
-                    floatingAutoShift   : dropdownComponent.props.floatingAutoShift  ?? floatingAutoShift,
-                    floatingOffset      : dropdownComponent.props.floatingOffset     ?? floatingOffset,
-                    floatingShift       : dropdownComponent.props.floatingShift      ?? floatingShift,
+                    floatingAutoFlip   : dropdownComponent.props.floatingAutoFlip   ?? floatingAutoFlip,
+                    floatingAutoShift  : dropdownComponent.props.floatingAutoShift  ?? floatingAutoShift,
+                    floatingOffset     : dropdownComponent.props.floatingOffset     ?? floatingOffset,
+                    floatingShift      : dropdownComponent.props.floatingShift      ?? floatingShift,
                     
-                    onFloatingUpdate    : handleFloatingUpdate,
+                    onFloatingUpdate   : handleFloatingUpdate,
                 },
                 
                 
