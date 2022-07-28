@@ -504,8 +504,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     
     // variants:
-    const orientationableVariant = useOrientationable(props);
-    const isOrientationBlock     = (props.orientation ?? defaultOrientationableOptions.defaultOrientation)?.startsWith('block') ?? false;
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
     
     const buttonVariant          = useButtonVariant(props);
     
@@ -577,7 +576,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             tag          = {tag}
             role         = {role}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             aria-label      ={props['aria-label'] ?? label}
             
             
