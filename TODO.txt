@@ -1,3 +1,6 @@
+TODO: moved category:
+fooVariant => // appearances: => // variants:
+
 TODO: create a dedicated package of:
 FeatureMixin
 VariantMixin
