@@ -294,8 +294,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // variants:
-    const orientationableVariant = useOrientationable(props);
-    const isOrientationBlock     = (props.orientation ?? defaultOrientationableOptions.defaultOrientation)?.startsWith('block') ?? false;
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
     
     
     
@@ -431,7 +430,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             
             
             // semantics:
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? (orientationableVariant.isOrientationVertical ? 'vertical' : 'horizontal')}
             
             
             
