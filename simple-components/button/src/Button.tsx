@@ -612,6 +612,7 @@ export interface ButtonComponentProps
     
     // variants:
     buttonOrientation ?: ButtonProps['orientation']
+    buttonStyle       ?: ButtonProps['buttonStyle']
     
     
     
