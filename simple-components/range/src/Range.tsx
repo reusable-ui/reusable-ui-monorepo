@@ -26,6 +26,8 @@ import type {
     
     // cssfn properties:
     CssRule,
+    
+    CssStyleCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -64,7 +66,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
@@ -91,6 +93,18 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultInlineOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable'         // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // react components:
     Generic,
@@ -103,13 +117,6 @@ import {
     
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    defaultInlineOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
     mildOf,
     usesBackg,
     extendsBorder,
@@ -163,10 +170,6 @@ import {
 
 // layouts:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultInlineOrientationVariantOptions;
-//#endregion orientation
-
 //#region range
 export interface RangeVars {
     /**
@@ -204,6 +207,12 @@ export const usesRange = (): FeatureMixin<RangeVars> => {
 };
 //#endregion range
 
+// variants:
+
+//#region orientationable
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+//#endregion orientationable
+
 // states:
 
 //#region activePassive
@@ -225,12 +234,14 @@ export const trackLowerElm = '.tracklower'
 export const trackUpperElm = '.trackupper'
 export const thumbElm      = '.thumb'
 
-export const usesRangeLayout = (options?: OrientationVariantOptions) => {
+export const usesRangeLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
     
     
     
@@ -251,11 +262,11 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
         ]),
         ...style({
             // layouts:
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 display       : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection : 'row',         // items are stacked horizontally
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection : 'column',      // items are stacked vertically
             }),
@@ -276,7 +287,7 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
             
             
             // children:
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 ...children('::before', {
                     ...imports([
                         // layouts:
@@ -284,7 +295,7 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
                     ]),
                 }),
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 ...children('::before', {
                     ...imports([
                         // layouts:
@@ -366,10 +377,10 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
                         // sizes:
                         // the size grows in proportion to the given ratio, starting from the 1/2 size of <thumb>
                         // the size cannot shrink
-                        ...rule(parentOrientationInlineSelector, { // inline
+                        ...ifParentOrientationInline({ // inline
                             flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
                         }),
-                        ...rule(parentOrientationBlockSelector , { // block
+                        ...ifParentOrientationBlock({  // block
                             flex   : [[rangeVars.valueRatio, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
                         }),
                         
@@ -382,10 +393,10 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
                         // sizes:
                         // the size grows in proportion to the given ratio, starting from the 1/2 size of <thumb>
                         // the size cannot shrink
-                        ...rule(parentOrientationInlineSelector, { // inline
+                        ...ifParentOrientationInline({ // inline
                             flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbInlineSize} / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
                         }),
-                        ...rule(parentOrientationBlockSelector , { // block
+                        ...ifParentOrientationBlock({  // block
                             flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
                         }),
                         
@@ -473,11 +484,11 @@ export const usesRangeLayout = (options?: OrientationVariantOptions) => {
             
             // customize:
             ...usesCssProps(ranges), // apply config's cssProps
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 // overwrites propName = propName{Inline}:
                 ...overwriteProps(ranges, usesSuffixedProps(ranges, 'inline')),
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 // overwrites propName = propName{Block}:
                 ...overwriteProps(ranges, usesSuffixedProps(ranges, 'block')),
             }),
@@ -619,8 +630,8 @@ export interface RangeProps
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
         >,
         
-        // layouts:
-        OrientationVariant
+        // variants:
+        OrientationableProps
 {
     // refs:
     trackRef          ?: React.Ref<HTMLElement> // setter ref
@@ -653,20 +664,20 @@ export interface RangeProps
 }
 const Range = (props: RangeProps): JSX.Element|null => {
     // styles:
-    const styleSheet         = useRangeStyleSheet();
+    const styleSheet             = useRangeStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
     
     
     
     // states:
-    const focusBlurState     = useFocusBlurState<HTMLInputElement>(props);
-    const arriveLeaveState   = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
-    const pressReleaseState  = usePressReleaseState<HTMLInputElement>(props);
+    const focusBlurState         = useFocusBlurState<HTMLInputElement>(props);
+    const arriveLeaveState       = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
+    const pressReleaseState      = usePressReleaseState<HTMLInputElement>(props);
     
     
     
@@ -682,7 +693,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // layouts:
+        // variants:
         orientation  : _orientation,  // remove
         
         
@@ -909,7 +920,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
     );
     const stateClasses            = useMergeClasses(
         // preserves the original `stateClasses`:
@@ -1300,7 +1311,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             tag ={props.tag  ?? 'div'   }
             role={props.role ?? 'slider'}
             
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             aria-valuenow   ={props['aria-valuenow'   ] ?? valueNow}
             aria-valuemin   ={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
             aria-valuemax   ={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
@@ -1485,5 +1496,3 @@ export {
     Range,
     Range as default,
 }
-
-export type { OrientationName, OrientationVariant }
