@@ -58,8 +58,20 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
 export interface OrientationableProps {
     orientation ?: OrientationName
 }
-export const useOrientationable = ({orientation}: OrientationableProps) => ({
+export const useOrientationable = ({orientation}: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => ({
     class: orientation ?? null,
+    
+    get isOrientationBlock(): boolean {
+        return(
+            (
+                orientation
+                ??
+                defaultOptions.defaultOrientation
+            )?.startsWith('block')
+            ??
+            false
+        );
+    },
 });
 
 
