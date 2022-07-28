@@ -13,7 +13,12 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-}                           from '@cssfn/css-types'                 // cssfn css specific types
+    
+    
+    
+    // cssfn properties:
+    CssStyleCollection,
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -28,11 +33,11 @@ import {
     // styles:
     style,
     imports,
-}                           from '@cssfn/cssfn'                     // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'               // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
     
@@ -40,30 +45,35 @@ import {
     
     // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'                // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     spacers,
-}                           from '@reusable-ui/spacers'             // a spacer (gap) management system
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // hooks:
     useIsomorphicLayoutEffect,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'               // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    OrientationableOptions,
+    defaultBlockOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
+// reusable-ui components:
 import {
     // hooks:
     usesSizeVariant,
-    OrientationName,
-    OrientationVariantOptions,
-    defaultBlockOrientationVariantOptions,
-    normalizeOrientationVariantOptions,
-    usesOrientationVariant,
-    OrientationVariant,
-    useOrientationVariant,
-}                           from '@reusable-ui/basic'               // a base component
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesContentLayout,
@@ -74,7 +84,7 @@ import {
     // react components:
     ContentProps,
     Content,
-}                           from '@reusable-ui/content'             // a base component
+}                           from '@reusable-ui/content'         // a base component
 
 
 
@@ -86,21 +96,23 @@ const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'bor
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region orientation
-export const defaultOrientationRuleOptions = defaultBlockOrientationVariantOptions;
-//#endregion orientation
+//#region orientationable
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+//#endregion orientationable
 
 
 
 // styles:
-export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
+export const usesMasonryLayout = (options?: OrientationableOptions) => {
     // options:
-    options = normalizeOrientationVariantOptions(options, defaultOrientationRuleOptions);
-    const [orientationInlineSelector, orientationBlockSelector] = usesOrientationVariant(options);
+    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
     
     
     
@@ -111,8 +123,7 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
         ]),
         ...style({
             // layouts:
-            ...rule(orientationInlineSelector, { // inline
-                // layouts:
+            ...ifOrientationInline({ // inline
                 display             : 'inline-grid', // use css inline grid for layouting, the core of our Masonry layout
                 gridAutoFlow        : 'column',      // items direction is to block & masonry's direction is to inline
                 gridAutoColumns     : masonries.itemsRaiseRowHeight,
@@ -123,8 +134,7 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
              // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
                 justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
             }),
-            ...rule(orientationBlockSelector , { // block
-                // layouts:
+            ...ifOrientationBlock({  // block
                 display             : 'grid',        // use css block grid for layouting, the core of our Masonry layout
                 gridAutoFlow        : 'row',         // items direction is to inline & masonry's direction is to block
                 gridAutoRows        : masonries.itemsRaiseRowHeight,
@@ -139,15 +149,15 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
             
             
             // spacings:
-            ...rule(orientationInlineSelector, { // inline
+            ...ifOrientationInline({ // inline
                 gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with programatically_adjust_height_and_gap
             }),
-            ...rule(orientationBlockSelector , { // block
+            ...ifOrientationBlock({  // block
                 gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with programatically_adjust_height_and_gap
             }),
             ...children('*', {
                 ...rule(':not(.firstRow)', {
-                    ...rule(parentOrientationInlineSelector, { // inline
+                    ...ifParentOrientationInline({ // inline
                         /*
                         * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
                         * we use `marginInlineStart` instead of `marginInlineEnd`
@@ -156,7 +166,7 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
                         */
                         marginInlineStart : masonries.gapInline,
                     }),
-                    ...rule(parentOrientationBlockSelector , { // block
+                    ...ifParentOrientationBlock({  // block
                         /*
                         * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
                         * we use `marginBlockStart` instead of `marginBlockEnd`
@@ -173,10 +183,10 @@ export const usesMasonryLayout = (options?: OrientationVariantOptions) => {
             // children:
             ...children('*', {
                 // sizes:
-                ...rule(parentOrientationInlineSelector, { // inline
+                ...ifParentOrientationInline({ // inline
                     gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Masonry orientation="block"> (if was)
                 }),
-                ...rule(parentOrientationBlockSelector , { // block
+                ...ifParentOrientationBlock({  // block
                     gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Masonry orientation="inline"> (if was)
                 }),
             }),
@@ -285,30 +295,28 @@ export interface MasonryProps<TElement extends Element = HTMLElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // layouts:
-        OrientationVariant
+        // variants:
+        OrientationableProps
 {
     // children:
     children        ?: React.ReactNode
 }
 const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet        = useMasonryStyleSheet();
+    const styleSheet             = useMasonryStyleSheet();
     
     
     
     // variants:
-    const orientationVariant = useOrientationVariant(props);
-    const isOrientationBlock = ((props.orientation ?? defaultOrientationRuleOptions.defaultOrientation) === 'block');
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
     
     
     
     // rest props:
     const {
-        // remove props:
-        
-        // layouts:
-        orientation : _orientation,
+        // variants:
+        orientation : _orientation, // remove
         
         
         
@@ -577,7 +585,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         // variants:
-        orientationVariant.class,
+        orientationableVariant.class,
     );
     
     
@@ -596,7 +604,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             
             
             // semantics:
-            aria-orientation={props['aria-orientation'] ?? (isOrientationBlock ? 'vertical' : 'horizontal')}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             
             
             
@@ -610,5 +618,3 @@ export {
     Masonry,
     Masonry as default,
 }
-
-export type { OrientationName, OrientationVariant }
