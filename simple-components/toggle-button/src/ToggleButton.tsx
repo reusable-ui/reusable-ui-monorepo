@@ -13,11 +13,6 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui components:
-import type {
-    // hooks:
-    OrientationName,
-    OrientationVariant,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ToggleActiveProps,
@@ -183,8 +178,6 @@ export {
     ToggleButton,
     ToggleButton as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 export type { ButtonStyle, ButtonVariant, ButtonType }
 
