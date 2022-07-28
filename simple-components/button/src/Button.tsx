@@ -132,8 +132,6 @@ export const defaultOrientationableOptions = defaultInlineOrientationableOptions
 //#endregion orientationable
 
 
-// appearances:
-
 //#region button style
 export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
 export interface ButtonVariant {
@@ -485,8 +483,6 @@ export interface ButtonProps
         
         // variants:
         OrientationableProps,
-        
-        // appearances:
         ButtonVariant
 {
     // accessibilities:
@@ -505,23 +501,17 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     // variants:
     const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
-    
     const buttonVariant          = useButtonVariant(props);
     
     
     
     // rest props:
     const {
-        // appearances:
-        buttonStyle : _buttonStyle, // remove
-        
-        
-        
         // variants:
-        orientation : _orientation, // remove
-        
         outlined    = _defaultOutlined,
         mild        = _defaultMild,
+        orientation : _orientation, // remove
+        buttonStyle : _buttonStyle, // remove
         
         
         
