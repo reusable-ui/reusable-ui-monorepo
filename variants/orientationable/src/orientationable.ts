@@ -75,6 +75,15 @@ export const useOrientationable = ({orientation}: OrientationableProps, defaultO
     get isOrientationVertical(): boolean {
         return this.isOrientationBlock;
     },
+    get 'aria-orientation'() {
+        return (
+            this.isOrientationVertical
+            ?
+            'vertical'
+            :
+            'horizontal'
+        );
+    }
 });
 
 
