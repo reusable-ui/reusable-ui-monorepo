@@ -4,7 +4,7 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui components:
 import type {
     // react components:
     DropdownProps,
@@ -24,9 +24,6 @@ import {
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
     // types:
-    OrientationName,
-    OrientationVariant,
-    
     ButtonStyle,
     ButtonVariant,
     ButtonType,
@@ -131,12 +128,14 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
         // components:
         listRef,
         listOrientation,
+        listStyle,
         listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children          : listItems,
         
         dropdownComponent = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
             listRef={listRef}
             listOrientation={listOrientation}
+            listStyle={listStyle}
             listComponent={React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
                 {
@@ -185,8 +184,6 @@ export {
     DropdownListButton,
     DropdownListButton as default,
 }
-
-export type { OrientationName, OrientationVariant }
 
 export type { DropdownListActionType, DropdownListExpandedChangeEvent }
 
