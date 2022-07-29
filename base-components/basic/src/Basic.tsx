@@ -115,6 +115,7 @@ import {
 import {
     // hooks:
     usesResizable,
+    ResizableProps,
     useResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
 
@@ -1960,8 +1961,10 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         // bases:
         GenericProps<TElement>,
         
+        // variants:
+        ResizableProps,
+        
         // layouts:
-        SizeVariant,
         NudeVariant,
         
         // colors:
@@ -1993,17 +1996,17 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     
     // rest props:
     const {
-        // remove variant props:
+        // variants:
+        size     : _size,     // remove
         
         // layouts:
-        size     : _size,
-        nude     : _nude,
+        nude     : _nude,     // remove
         
         // colors:
-        theme    : _theme,
-        gradient : _gradient,
-        outlined : _outlined,
-        mild     : _mild,
+        theme    : _theme,    // remove
+        gradient : _gradient, // remove
+        outlined : _outlined, // remove
+        mild     : _mild,     // remove
     ...restGenericProps} = props;
     
     
