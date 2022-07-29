@@ -59,7 +59,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useIsomorphicLayoutEffect,
@@ -84,6 +84,14 @@ import {
     // react components:
     ValidationProps,
 }                           from '@reusable-ui/validations'     // a validation management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     StateMixin,
@@ -91,7 +99,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     ThemeName,
     usesThemeImportant,
     usesBackg,
@@ -544,8 +551,8 @@ export const usesEditableControlLayout = () => {
 export const usesEditableControlVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(editableControls);
+    // variants:
+    const {resizableRule} = usesResizable(editableControls);
     
     
     
@@ -553,9 +560,7 @@ export const usesEditableControlVariants = () => {
         ...imports([
             // variants:
             usesControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
