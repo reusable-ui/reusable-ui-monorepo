@@ -15,7 +15,7 @@ import {
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'       // writes css in react hook
 
-// reusable-ui:
+// reusable-ui components:
 import {
     // react components:
     GenericProps,
