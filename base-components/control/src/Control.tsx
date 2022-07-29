@@ -51,7 +51,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // styles:
     stripoutControl,
@@ -66,6 +66,14 @@ import {
     // hooks:
     usePropEnabled,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     StateMixin,
@@ -73,7 +81,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     ThemeName,
     usesThemeDefault as basicUsesThemeDefault,
     usesRing,
@@ -545,8 +552,8 @@ export const usesControlLayout = () => {
 export const usesControlVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(controls);
+    // variants:
+    const {resizableRule} = usesResizable(controls);
     
     
     
@@ -554,9 +561,7 @@ export const usesControlVariants = () => {
         ...imports([
             // variants:
             usesIndicatorVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
