@@ -29,17 +29,20 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
-    
-    
-    
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
+import {
     // styles:
     usesBasicLayout,
     usesBasicVariants,
@@ -60,7 +63,7 @@ import {
 
 // hooks:
 
-// appearances:
+// variants:
 
 //#region label style
 export type LabelStyle = 'content' // might be added more styles in the future
@@ -111,8 +114,8 @@ export const usesLabelLayout = () => {
 export const usesLabelVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(labels);
+    // variants:
+    const {resizableRule} = usesResizable(labels);
     
     
     
@@ -120,9 +123,7 @@ export const usesLabelVariants = () => {
         ...imports([
             // variants:
             usesBasicVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule('.content', { // content
@@ -177,7 +178,7 @@ export interface LabelProps<TElement extends Element = HTMLSpanElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // appearances:
+        // variants:
         LabelVariant
 {
     // children:
@@ -196,10 +197,8 @@ const Label = <TElement extends Element = HTMLSpanElement>(props: LabelProps<TEl
     
     // rest props:
     const {
-        // remove props:
-        
-        // appearances:
-        labelStyle : _labelStyle,
+        // variants:
+        labelStyle : _labelStyle, // remove
     ...restBasicProps} = props;
     
     
