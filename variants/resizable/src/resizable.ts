@@ -67,7 +67,7 @@ export interface ResizableRules { resizableRule: Factory<CssRule>, resizableVars
  * @param options Defines all available size options.
  * @returns A `ResizableRules` represents the sizing rules for each size in `options`.
  */
-export const usesResizable = <TConfigProps extends CssConfigProps, TSizeName extends string = SizeName>(resizableConfigProps : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableRules => {
+export const usesResizable = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(resizableConfigProps : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableRules => {
     return {
         resizableRule: () => style({
             ...variants([
