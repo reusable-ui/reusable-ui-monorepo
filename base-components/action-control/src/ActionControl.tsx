@@ -53,7 +53,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // utilities:
     isForwardRef,
@@ -70,6 +70,14 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     SemanticTag,
@@ -87,7 +95,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     usesAnim,
     fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
@@ -387,8 +394,8 @@ export const usesActionControlLayout = () => {
 export const usesActionControlVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(actionControls);
+    // variants:
+    const {resizableRule} = usesResizable(actionControls);
     
     
     
@@ -396,9 +403,7 @@ export const usesActionControlVariants = () => {
         ...imports([
             // variants:
             usesControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
