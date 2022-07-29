@@ -33,8 +33,6 @@ import type {
     CssRule,
     
     CssStyleCollection,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'         // cssfn css specific types
 import {
     // rules:
@@ -87,7 +85,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     colors,
@@ -112,6 +110,8 @@ import {
     useEvent,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'       // react helper hooks
+
+// reusable-ui components:
 import {
     // react components:
     GenericProps,
@@ -182,62 +182,6 @@ export const useSizeVariant = ({size}: SizeVariant) => ({
     class: size ? `sz${pascalCase(size)}` : null,
 });
 //#endregion sizes
-
-//#region orientation
-export type OrientationName = 'inline'|'block'
-
-
-
-export interface OrientationVariantOptions {
-    defaultOrientation        ?: OrientationName
-    orientationInlineSelector ?: CssSelectorCollection
-    orientationBlockSelector  ?: CssSelectorCollection
-}
-export const defaultInlineOrientationVariantOptions : OrientationVariantOptions = { defaultOrientation: 'inline' };
-export const defaultBlockOrientationVariantOptions  : OrientationVariantOptions = { defaultOrientation: 'block'  };
-export const normalizeOrientationVariantOptions = (options: OrientationVariantOptions|undefined, defaultOptions: OrientationVariantOptions): Required<OrientationVariantOptions> => {
-    const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
-    const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(.block)'  : '.inline');
-    const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(.inline)' : '.block' );
-    
-    
-    
-    return {
-        ...options, // preserves foreign props
-        
-        defaultOrientation,
-        orientationInlineSelector,
-        orientationBlockSelector,
-    };
-};
-
-
-
-export type OrientationMixin = readonly [CssSelectorCollection, CssSelectorCollection]
-export const usesOrientationVariant = (options?: OrientationVariantOptions): OrientationMixin => {
-    // options:
-    const {
-        orientationInlineSelector,
-        orientationBlockSelector,
-    } = normalizeOrientationVariantOptions(options, defaultBlockOrientationVariantOptions);
-    
-    
-    
-    return [
-        orientationInlineSelector,
-        orientationBlockSelector,
-    ];
-};
-
-
-
-export interface OrientationVariant {
-    orientation ?: OrientationName
-}
-export const useOrientationVariant = ({orientation}: OrientationVariant) => ({
-    class: orientation ?? null,
-});
-//#endregion orientation
 
 //#region nude
 export interface NudeVars {
@@ -2007,7 +1951,6 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         
         // layouts:
         SizeVariant,
-        // OrientationVariant, // not implemented yet
         NudeVariant,
         
         // colors:
