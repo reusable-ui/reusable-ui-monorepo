@@ -79,7 +79,7 @@ import {
     groupSelector,
 }                           from '@cssfn/css-selectors'         // manipulates css selectors
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     spacers,
@@ -89,13 +89,20 @@ import {
     stripoutFigure,
     stripoutImage,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import type {
     // types:
     Tag,
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesSizeVariant,
     extendsBorder,
     extendsPadding,
     
@@ -525,15 +532,15 @@ export const usesContentLayout = () => {
 export const usesContentBasicVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(contents);
+    // variants:
+    const {resizableRule} = usesResizable(contents);
     
     
     
     return style({
         ...imports([
-            // layouts:
-            sizeVariantRule,
+            // variants:
+            resizableRule,
         ]),
     });
 };
