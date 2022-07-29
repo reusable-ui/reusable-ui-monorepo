@@ -53,7 +53,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useEvent,
@@ -73,6 +73,14 @@ import {
     AccessibilityProps,
     AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     SemanticProps,
@@ -85,7 +93,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     ThemeName,
     usesThemeConditional,
     outlinedOf,
@@ -551,8 +558,8 @@ export const usesIndicatorLayout = () => {
 export const usesIndicatorVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(indicators);
+    // variants:
+    const {resizableRule} = usesResizable(indicators);
     
     
     
@@ -560,9 +567,7 @@ export const usesIndicatorVariants = () => {
         ...imports([
             // variants:
             usesBasicVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
