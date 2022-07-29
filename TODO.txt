@@ -1,9 +1,6 @@
 TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
 
-TODO upgrade ButtonComponentProps of <DropdownButton> & <ToggleButton>
-TODO upgrade ListComponentProps   of <DropdownList> & <DropdownListButton>
-
 TODO: create a dedicated package of:
 FeatureMixin
 VariantMixin
@@ -25,7 +22,7 @@ features
 
 variants
     sizes           multi-options   useSizable          sizeVars
-    orientationable multi-options   useOrientationable  OrientationableVars
+    orientationable [done] multi-options   useOrientationable  OrientationableVars
     nude            toggle-option   useNudeable         nudeVars
     themes          multi-options   useTheme            themeVars
     gradient        toggle-option   useGradientable     gradientVars
