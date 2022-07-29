@@ -54,12 +54,6 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'           // strongly typed of css variables
 import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
     cssConfig,
     
     
@@ -68,7 +62,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     colors,
@@ -82,6 +76,16 @@ import {
     useMergeClasses,
     useMergeStyles,
 }                           from '@reusable-ui/hooks'       // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+    ResizableProps,
+    useResizable,
+}                           from '@reusable-ui/resizable'   // size options of UI
+
+// reusable-ui components:
 import {
     // react components:
     GenericProps,
@@ -95,11 +99,6 @@ import {
     
     
     // hooks:
-    SizeVars,
-    ifSize          as basicIfSize,
-    usesSizeVariant as basicUsesSizeVariant,
-    useSizeVariant  as basicUseSizeVariant,
-    
     ThemeName,
     ThemeVars,
     ifTheme,
@@ -136,40 +135,19 @@ import type {
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region sizes
-export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em' | (string & {})
-export type { SizeVars }
-
+//#region resizable
+export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
 
 
-export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => basicIfSize(sizeName, styles);
-
-
-
-/**
- * Uses icon sizes.  
- * For example: `sm`, `nm`, `md`, `lg`, `1em`.
- * @param configProps Customize the sizing definitions from configuration for each size in `options`.
- * @param options Customize the size options.
- * @returns A `VariantMixin<SizeVars>` represents sizing definitions for each size in `options`.
- */
-export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => basicUsesSizeVariant(configProps, options);
 
 /**
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
 export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
-
-
-
-export interface SizeVariant {
-    size ?: SizeName
-}
-export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props);
-//#endregion sizes
+//#endregion resizable
 
 
 // colors:
@@ -687,8 +665,8 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
 export const usesIconVariants    = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule    ] = usesSizeVariant(icons);
+    // variants:
+    const {resizableRule      } = usesResizable<SizeName>(icons);
     
     // colors:
     const [themeVariantRule   ] = usesThemeVariant();
@@ -698,8 +676,8 @@ export const usesIconVariants    = () => {
     
     return style({
         ...imports([
-            // layouts:
-            sizeVariantRule,
+            // variants:
+            resizableRule,
             
             // colors:
             themeVariantRule,
@@ -879,8 +857,8 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // layouts:
-        SizeVariant,
+        // variants:
+        ResizableProps<SizeName>,
         
         // colors:
         ThemeVariant,
@@ -891,31 +869,27 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
 }
 const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useIconStyleSheet();
+    const styleSheet       = useIconStyleSheet();
     
     
     
     // variants:
-    
-    // layouts:
-    const sizeVariant     = useSizeVariant(props);
+    const resizableVariant = useResizable<SizeName>(props);
     
     // colors:
-    const themeVariant    = useThemeVariant(props);
-    const mildVariant     = useMildVariant(props);
+    const themeVariant     = useThemeVariant(props);
+    const mildVariant      = useMildVariant(props);
     
     
     
     // appearances:
-    const icon            = useIcon(props);
+    const icon             = useIcon(props);
     
     
     
     // rest props:
     const {
-        // variant props:
-        
-        // layouts:
+        // variants:
         size     : _size,  // remove
         
         // colors:
@@ -937,8 +911,8 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         
         
-        // layouts:
-        sizeVariant.class,
+        // variants:
+        resizableVariant.class,
         
         // colors:
         themeVariant.class,
