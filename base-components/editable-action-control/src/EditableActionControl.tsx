@@ -15,7 +15,7 @@ import {
     createUseStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeEvents,
@@ -25,6 +25,8 @@ import {
     // hooks:
     usePropEnabled,
 }                           from '@reusable-ui/accessibilities'     // an accessibility management system
+
+// reusable-ui components:
 import {
     // hooks:
     usePressReleaseState,
