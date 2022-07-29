@@ -9,21 +9,18 @@ import {
     useState,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useIsomorphicLayoutEffect,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-export type {
-    // hooks:
-    OrientationName,
-    OrientationVariant,
-}                           from '@reusable-ui/basic'           // a base component
+
+// reusable-ui components:
 import {
     // hooks:
     isClientSideLink,
 }                           from '@reusable-ui/action-control'  // a base component
-export {
+import {
     // hooks:
     ButtonStyle,
     ButtonVariant,
@@ -32,11 +29,12 @@ export {
     
     
     // styles:
-    usesButtonLayout   as usesNavButtonLayout,
-    usesButtonVariants as usesNavButtonVariants,
-    usesButtonStates   as usesNavButtonStates,
-}                           from '@reusable-ui/button'          // a base component
-import {
+    usesButtonLayout,
+    usesButtonVariants,
+    usesButtonStates,
+    
+    
+    
     // react components:
     ButtonProps,
     Button,
@@ -233,6 +231,15 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
 
 
 
+// styles:
+export {
+    usesButtonLayout   as usesNavButtonLayout,
+    usesButtonVariants as usesNavButtonVariants,
+    usesButtonStates   as usesNavButtonStates,
+}
+
+
+
 // react components:
 export interface NavButtonProps
     extends
@@ -288,3 +295,5 @@ export {
     NavButton,
     NavButton as default,
 }
+
+export type { ButtonStyle, ButtonVariant, ButtonType }
