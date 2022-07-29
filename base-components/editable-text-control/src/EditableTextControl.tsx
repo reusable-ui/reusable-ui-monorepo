@@ -53,7 +53,13 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'           // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     StateMixin,
@@ -61,7 +67,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     mildOf,
     usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
@@ -243,8 +248,8 @@ export const usesEditableTextControlLayout = () => {
 export const usesEditableTextControlVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(editableTextControls);
+    // variants:
+    const {resizableRule} = usesResizable(editableTextControls);
     
     
     
@@ -252,9 +257,7 @@ export const usesEditableTextControlVariants = () => {
         ...imports([
             // variants:
             usesEditableControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
