@@ -47,7 +47,7 @@ import {
 // variants:
 
 //#region resizable
-export type SizeName = 'sm'|'lg' | (string & {})
+export type SizeName = 'sm'|'lg'
 export interface ResizableVars {
     // empty (may be added soon)
 }
@@ -55,7 +55,7 @@ const [resizableVars] = cssVar<ResizableVars>();
 
 
 
-export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
+export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
 
 
 
@@ -67,7 +67,7 @@ export interface ResizableRules { resizableRule: Factory<CssRule>, resizableVars
  * @param options Defines all available size options.
  * @returns A `ResizableRules` represents the sizing rules for each size in `options`.
  */
-export const usesResizable = <TConfigProps extends CssConfigProps>(resizableConfigProps : Refs<TConfigProps>, options = sizeOptions()): ResizableRules => {
+export const usesResizable = <TConfigProps extends CssConfigProps, TSizeName extends string = SizeName>(resizableConfigProps : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableRules => {
     return {
         resizableRule: () => style({
             ...variants([
@@ -91,10 +91,10 @@ export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
 
 
 
-export interface ResizableProps {
-    size ?: SizeName
+export interface ResizableProps<TSizeName extends string = SizeName> {
+    size ?: TSizeName
 }
-export const useResizable = ({size}: ResizableProps) => ({
+export const useResizable = <TSizeName extends string = SizeName>({size}: ResizableProps<TSizeName>) => ({
     class: size ? `sz${pascalCase(size)}` : null,
 });
 //#endregion resizable
