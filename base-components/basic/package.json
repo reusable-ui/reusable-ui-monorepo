@@ -41,6 +41,7 @@
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
     "@reusable-ui/typos": "^5.0.0",
     "@types/react": "^18.0.10"

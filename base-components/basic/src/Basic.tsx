@@ -33,7 +33,7 @@ import type {
     CssRule,
     
     CssStyleCollection,
-}                           from '@cssfn/css-types'         // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -53,11 +53,11 @@ import {
     // utilities:
     pascalCase,
     solidBackg,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'       // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
     ReadonlyCssCustomRefs,
@@ -67,7 +67,7 @@ import {
     // utilities:
     cssVar,
     fallbacks,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
+}                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     // types:
     CssConfigProps,
@@ -83,40 +83,47 @@ import {
     usesCssProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
 import {
     // configs:
     colors,
     themes as colorThemes,
-}                           from '@reusable-ui/colors'      // a color management system
+}                           from '@reusable-ui/colors'          // a color management system
 import {
     // configs:
     borders as borderStrokes,
     borderRadiuses,
-}                           from '@reusable-ui/borders'     // a border (stroke) management system
+}                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
     // configs:
     spacers,
-}                           from '@reusable-ui/spacers'     // a spacer (gap) management system
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // configs:
     typos,
-}                           from '@reusable-ui/typos'       // a typography management system
+}                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
     useTriggerRender,
     useEvent,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'       // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+    useResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
 import {
     // react components:
     GenericProps,
     Generic,
-}                           from '@reusable-ui/generic'     // a base component
+}                           from '@reusable-ui/generic'         // a base component
 
 
 
@@ -1775,8 +1782,10 @@ export const usesBasicLayout = () => {
 export const usesBasicVariants = () => {
     // dependencies:
     
+    // variants:
+    const {resizableRule      } = usesResizable(basics);
+    
     // layouts:
-    const [sizeVariantRule    ] = usesSizeVariant(basics);
     const [nudeVariantRule    ] = usesNudeVariant();
     
     // colors:
@@ -1789,8 +1798,10 @@ export const usesBasicVariants = () => {
     
     return style({
         ...imports([
+            // variants:
+            resizableRule,
+            
             // layouts:
-            sizeVariantRule,
             nudeVariantRule,
             
             // colors:
@@ -1962,21 +1973,21 @@ export interface BasicProps<TElement extends Element = HTMLElement>
 }
 const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useBasicStyleSheet();
+    const styleSheet       = useBasicStyleSheet();
     
     
     
     // variants:
+    const resizableVariant = useResizable(props);
     
     // layouts:
-    const sizeVariant     = useSizeVariant(props);
-    const nudeVariant     = useNudeVariant(props);
+    const nudeVariant      = useNudeVariant(props);
     
     // colors:
-    const themeVariant    = useThemeVariant(props);
-    const gradientVariant = useGradientVariant(props);
-    const outlinedVariant = useOutlinedVariant(props);
-    const mildVariant     = useMildVariant(props);
+    const themeVariant     = useThemeVariant(props);
+    const gradientVariant  = useGradientVariant(props);
+    const outlinedVariant  = useOutlinedVariant(props);
+    const mildVariant      = useMildVariant(props);
     
     
     
@@ -2004,8 +2015,10 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         
         
         
+        // variants:
+        resizableVariant.class,
+        
         // layouts:
-        sizeVariant.class,
         nudeVariant.class,
         
         // colors:
