@@ -69,20 +69,12 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
     cssConfig,
     
     
     
     // utilities:
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
@@ -138,58 +130,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 // hooks:
 
 // layouts:
-
-//#region sizes
-export type SizeName = 'sm'|'lg' | (string & {})
-export interface SizeVars {
-    // empty (may be added soon)
-}
-const [sizes] = cssVar<SizeVars>();
-
-
-
-export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
-
-
-
-/**
- * Uses basic sizes.  
- * For example: `sm`, `lg`.
- * @param configProps Customize the sizing definitions from configuration for each size in `options`.
- * @param options Customize the size options.
- * @returns A `VariantMixin<SizeVars>` represents sizing definitions for each size in `options`.
- */
-export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => {
-    return [
-        () => style({
-            ...variants([
-                options.map((sizeName) =>
-                    ifSize(sizeName, {
-                        // overwrites propName = propName{SizeName}:
-                        ...overwriteProps(configProps, usesSuffixedProps(configProps, sizeName)),
-                    })
-                ),
-            ]),
-        }),
-        sizes,
-    ];
-};
-
-/**
- * Gets all available size options.
- * @returns A `SizeName[]` represents all available size options.
- */
-export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
-
-
-
-export interface SizeVariant {
-    size ?: SizeName
-}
-export const useSizeVariant = ({size}: SizeVariant) => ({
-    class: size ? `sz${pascalCase(size)}` : null,
-});
-//#endregion sizes
 
 //#region nude
 export interface NudeVars {
