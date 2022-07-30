@@ -93,6 +93,10 @@ import {
     OrientationableProps,
     useOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
 import {
@@ -112,7 +116,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesSizeVariant,
     ThemeName,
     outlinedOf,
     mildOf,
@@ -418,8 +421,8 @@ export const usesListItemLayout = (options?: OrientationableOptions) => {
 export const usesListItemVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(lists);
+    // variants:
+    const {resizableRule} = usesResizable(usesPrefixedProps(lists, 'item'));
     
     
     
@@ -428,9 +431,7 @@ export const usesListItemVariants = () => {
             // variants:
             usesIndicatorVariants(),
             usesListItemInheritMildVariant(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -836,8 +837,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule     ] = usesSizeVariant(lists);
+    // variants:
+    const {resizableRule       } = usesResizable(lists);
     
     // backgrounds:
     const [          , backgs  ] = usesBackg();
@@ -854,9 +855,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         ...imports([
             // variants:
             usesIndicatorVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule('.content', { // content
@@ -1580,10 +1579,11 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     // rest props:
     const {
         // variants:
-        outlined    = _defaultOutlined,
-        mild        = _defaultMild,
         orientation : _orientation, // remove
         listStyle   : _listStyle,   // remove
+        
+        outlined    = _defaultOutlined,
+        mild        = _defaultMild,
         
         
         
