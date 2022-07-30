@@ -40,7 +40,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useTriggerRender,
@@ -59,10 +59,14 @@ import {
     ValidationProps,
     ValidationProvider,
 }                           from '@reusable-ui/validations'         // a validation management system
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
-}                           from '@reusable-ui/basic'               // a base component
+    usesResizable,
+}                           from '@reusable-ui/resizable'           // size options of UI
+
+// reusable-ui components:
 import {
     // styles:
     usesContentLayout,
@@ -207,8 +211,8 @@ export const usesFormLayout = () => {
 export const usesFormVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(forms);
+    // variants:
+    const {resizableRule} = usesResizable(forms);
     
     
     
@@ -216,9 +220,7 @@ export const usesFormVariants = () => {
         ...imports([
             // variants:
             usesContentVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -323,13 +325,11 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // remove states props:
-        
         // validations:
-        enableValidation  : _enableValidation,
-        isValid           : _isValid,
-        inheritValidation : _inheritValidation,
-        customValidator   : _customValidator,
+        enableValidation  : _enableValidation,  // remove
+        isValid           : _isValid,           // remove
+        inheritValidation : _inheritValidation, // remove
+        customValidator   : _customValidator,   // remove
     ...restContentProps} = props;
     
     
