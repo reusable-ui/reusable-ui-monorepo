@@ -68,12 +68,12 @@ import {
     OrientationableProps,
     useOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-
-// reusable-ui components:
 import {
     // hooks:
-    usesSizeVariant,
-}                           from '@reusable-ui/basic'           // a base component
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // styles:
     usesContentLayout,
@@ -201,8 +201,8 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
 export const usesMasonryVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(masonries);
+    // variants:
+    const {resizableRule} = usesResizable(masonries);
     
     
     
@@ -210,9 +210,7 @@ export const usesMasonryVariants = () => {
         ...imports([
             // variants:
             usesContentVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
