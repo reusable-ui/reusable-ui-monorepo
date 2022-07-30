@@ -26,7 +26,7 @@ features
     floatable       [done] useFloatable    floatVars
 
 variants
-    resizable       multi-options   useResizable        resizableVars
+    resizable       [done] multi-options   useResizable        resizableVars
     orientationable [done] multi-options   useOrientationable  OrientationableVars
     nude            toggle-option   useNudeable         nudeVars
     themes          multi-options   useTheme            themeVars
