@@ -14,7 +14,7 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-}                           from '@cssfn/css-types'                     // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     //combinators:
     children,
@@ -30,11 +30,11 @@ import {
     
     // utilities:
     escapeSvg,
-}                           from '@cssfn/cssfn'                         // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'                   // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
     
@@ -42,28 +42,35 @@ import {
     
     // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'                    // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
-}                           from '@reusable-ui/borders'                 // a border (stroke) management system
+}                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
     // hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
-}                           from '@reusable-ui/hooks'                   // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
+import {
+    // hooks:
     usesBorder,
-}                           from '@reusable-ui/basic'                   // a base component
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     useToggleActive,
-}                           from '@reusable-ui/indicator'               // a base component
+}                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
     CheckStyle,
@@ -88,7 +95,7 @@ import {
     // react components:
     CheckProps,
     Check,
-}                           from '@reusable-ui/check'                   // a base component
+}                           from '@reusable-ui/check'           // a base component
 
 
 
@@ -134,8 +141,8 @@ export const usesRadioLayout = () => {
 export const usesRadioVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(radios);
+    // variants:
+    const {resizableRule} = usesResizable(radios);
     
     
     
@@ -143,9 +150,7 @@ export const usesRadioVariants = () => {
         ...imports([
             // variants:
             usesCheckVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
