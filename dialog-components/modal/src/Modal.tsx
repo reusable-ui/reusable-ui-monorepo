@@ -58,7 +58,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // styles:
     stripoutFocusableElement,
@@ -81,6 +81,8 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui states:
 import {
     // hooks:
     ifCollapsed,
@@ -90,6 +92,8 @@ import {
     useCollapsible,
     ToggleCollapsibleProps,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui components:
 import {
     // types:
     SemanticTag,
