@@ -8,13 +8,6 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // combinators:
@@ -36,12 +29,6 @@ import {
     fallbacks,
 }                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
     cssConfig,
     
     
@@ -61,20 +48,15 @@ import type {
     // hooks:
     OrientationableOptions,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+import {
+    // hooks:
+    usesResizable,
+    ResizableProps,
+}                           from '@reusable-ui/resizable'   // size options of UI
 
 // reusable-ui components:
 import {
-    // types:
-    VariantMixin,
-    
-    
-    
     // hooks:
-    SizeVars,
-    ifSize          as basicIfSize,
-    usesSizeVariant as basicUsesSizeVariant,
-    useSizeVariant  as basicUseSizeVariant,
-    
     extendsBorder,
     extendsPadding,
     
@@ -129,40 +111,19 @@ import {
 
 // hooks:
 
-// layouts:
+// variants:
 
-//#region sizes
-export type SizeName = 'xs'|'sm'|'lg'|'xl' | (string & {})
-export type { SizeVars }
-
+//#region resizable
+export type SizeName = 'xs'|'sm'|'lg'|'xl'
 
 
-export const ifSize = (sizeName: SizeName, styles: CssStyleCollection): CssRule => basicIfSize(sizeName, styles);
-
-
-
-/**
- * Uses button icon sizes.  
- * For example: `xs`, `sm`, `lg`, `xl`.
- * @param configProps Customize the sizing definitions from configuration for each size in `options`.
- * @param options Customize the size options.
- * @returns A `VariantMixin<SizeVars>` represents sizing definitions for each size in `options`.
- */
-export const usesSizeVariant = <TConfigProps extends CssConfigProps>(configProps : Refs<TConfigProps>, options = sizeOptions()): VariantMixin<SizeVars> => basicUsesSizeVariant(configProps, options);
 
 /**
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
 export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'lg', 'xl'];
-
-
-
-export interface SizeVariant {
-    size ?: SizeName
-}
-export const useSizeVariant = (props: SizeVariant) => basicUseSizeVariant(props);
-//#endregion sizes
+//#endregion resizable
 
 
 
@@ -228,8 +189,8 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
 export const usesButtonIconVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(buttonIcons);
+    // variants:
+    const {resizableRule} = usesResizable<SizeName>(buttonIcons);
     
     
     
@@ -237,9 +198,7 @@ export const usesButtonIconVariants = () => {
         ...imports([
             // variants:
             usesButtonVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -330,10 +289,12 @@ export interface ButtonIconComponentProps<TElement extends Element = HTMLSpanEle
 export interface ButtonIconProps
     extends
         // bases:
-        Omit<ButtonProps, 'size'>,
+        Omit<ButtonProps,
+            |'size' // we redefined `size` prop with more size options
+        >,
         
-        // layouts:
-        SizeVariant,
+        // variants:
+        ResizableProps<SizeName>,
         
         // components:
         ButtonIconComponentProps<Element>
@@ -347,6 +308,11 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
     
     // rest props:
     const {
+        // variants:
+        size,
+        
+        
+        
         // components:
         icon,
         iconPosition  = 'start',
@@ -365,6 +331,11 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         <Button
             // other props:
             {...restButtonProps}
+            
+            
+            
+            // variants:
+            size={size as ButtonProps['size']}
             
             
             
