@@ -103,6 +103,10 @@ import {
     OrientationableProps,
     useOrientationable,
 }                           from '@reusable-ui/orientationable'         // a capability of UI to rotate its layout
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'               // size options of UI
 
 // reusable-ui components:
 import {
@@ -116,7 +120,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     mildOf,
     usesBackg,
     extendsBorder,
@@ -498,8 +501,8 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
 export const usesRangeVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(ranges);
+    // variants:
+    const {resizableRule} = usesResizable(ranges);
     
     
     
@@ -507,9 +510,7 @@ export const usesRangeVariants = () => {
         ...imports([
             // variants:
             usesEditableControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
