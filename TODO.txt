@@ -1,6 +1,11 @@
 TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
 
+TODO: verify catoegory of:
+// reusable-ui features:
+// reusable-ui variants:
+// reusable-ui states:
+
 TODO: create a dedicated package of:
 FeatureMixin
 VariantMixin
