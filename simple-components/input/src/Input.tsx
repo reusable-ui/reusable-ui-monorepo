@@ -38,7 +38,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // styles:
     stripoutTextbox,
@@ -48,9 +48,16 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
+    usesResizable,
+}                           from '@reusable-ui/resizable'               // size options of UI
+
+// reusable-ui components:
+import {
+    // hooks:
     usesGradientVariant,
     extendsBorder,
     usesPadding,
@@ -158,8 +165,8 @@ export const usesInputLayout = () => {
 export const usesInputVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(inputs);
+    // variants:
+    const {resizableRule} = usesResizable(inputs);
     
     // colors:
     const [gradientVariantRule, gradients] = usesGradientVariant((toggle) => style({
@@ -175,9 +182,7 @@ export const usesInputVariants = () => {
         ...imports([
             // variants:
             usesEditableTextControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
             
             // colors:
             gradientVariantRule,
