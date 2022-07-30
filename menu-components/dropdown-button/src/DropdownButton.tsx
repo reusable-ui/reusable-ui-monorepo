@@ -57,7 +57,6 @@ import {
 }                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
 import {
     // react components:
-    ButtonIconProps,
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
@@ -146,7 +145,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         buttonRef,
         buttonOrientation,
         buttonStyle,
-        buttonComponent       = (<ButtonIcon iconPosition='end' icon={dropdownIsOrientationBlock ? 'dropdown' : 'dropright'} />   as React.ReactComponentElement<any, ButtonIconProps>),
+        buttonComponent       = (<ButtonIcon iconPosition='end' icon={dropdownIsOrientationBlock ? 'dropdown' : 'dropright'} />   as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
         
         toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
