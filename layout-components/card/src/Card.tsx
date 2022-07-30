@@ -56,6 +56,10 @@ import {
     OrientationableProps,
     useOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
 import {
@@ -71,7 +75,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesSizeVariant,
     usesBorder,
     extendsBorder,
     usesAnim,
@@ -280,12 +283,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         ...style({
             // layouts:
             ...ifOrientationInline({ // inline
-                // layouts:
                 display        : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
                 flexDirection  : 'row',         // items are stacked horizontally
             }),
             ...ifOrientationBlock({  // block
-                // layouts:
                 display        : 'flex',        // use block flexbox, so it takes the entire parent's width
                 flexDirection  : 'column',      // items are stacked vertically
             }),
@@ -369,8 +370,8 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
 export const usesCardVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(cards);
+    // variants:
+    const {resizableRule  } = usesResizable(cards);
     
     // borders:
     const [, borders      ] = usesBorder();
@@ -382,9 +383,7 @@ export const usesCardVariants = () => {
             // variants:
             usesIndicatorVariants(),
             usesContentVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule(['.flat', '.flush'], {
