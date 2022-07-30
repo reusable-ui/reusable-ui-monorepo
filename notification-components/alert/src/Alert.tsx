@@ -37,7 +37,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     spacers,
@@ -46,15 +46,21 @@ import {
     // hooks:
     useEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui states:
 import type {
     // type:
     ExpandedChangeEvent,
     ToggleCollapsibleProps,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-import {
-    // hooks:
-    usesSizeVariant,
-}                           from '@reusable-ui/basic'           // a base component
+
+// reusable-ui components:
 import {
     // styles:
     usesPopupLayout,
@@ -202,8 +208,8 @@ export const usesAlertLayout = () => {
 export const usesAlertVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(alerts);
+    // variants:
+    const {resizableRule} = usesResizable(alerts);
     
     
     
@@ -212,9 +218,7 @@ export const usesAlertVariants = () => {
             // variants:
             usesPopupVariants(),
             usesContentVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -371,7 +375,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
                 // props:
                 {
                     // variants:
-                    size    : controlComponent.props.size ?? _defaultControlSize,
+                    size    : controlComponent.props.size ?? (_defaultControlSize as ControlProps<Element>['size']),
                     
                     
                     
