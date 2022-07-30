@@ -55,14 +55,21 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
+import {
+    // hooks:
     ThemeName,
     mildOf,
     usesAnim,
@@ -92,13 +99,14 @@ import {
     // hooks:
     ifPress,
 }                           from '@reusable-ui/action-control'  // a base component
-export type {
-    // hooks:
+import {
+    // types:
     ButtonStyle,
     ButtonVariant,
     ButtonType,
-}                           from '@reusable-ui/toggle-button'   // a base component
-import {
+    
+    
+    
     // styles:
     usesToggleButtonLayout,
     usesToggleButtonVariants,
@@ -394,8 +402,8 @@ export const usesHamburgerMenuButtonLayout = () => {
 export const usesHamburgerMenuButtonVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(hamburgerMenuButtons);
+    // variants:
+    const {resizableRule} = usesResizable(hamburgerMenuButtons);
     
     
     
@@ -403,9 +411,7 @@ export const usesHamburgerMenuButtonVariants = () => {
         ...imports([
             // variants:
             usesToggleButtonVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -631,3 +637,5 @@ export {
     HamburgerMenuButton,
     HamburgerMenuButton as default,
 }
+
+export type { ButtonStyle, ButtonVariant, ButtonType }
