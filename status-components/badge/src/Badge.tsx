@@ -40,7 +40,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
@@ -58,13 +58,22 @@ import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui states:
 import type {
     // type:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui components:
 import {
     // hooks:
-    usesSizeVariant,
     ifNotNude,
     usesBorder,
     usesPadding,
@@ -87,7 +96,7 @@ import {
 
 // hooks:
 
-// appearances:
+// variants:
 
 //#region badge style
 export type BadgeStyle = 'pill'|'square'|'circle' // might be added more styles in the future
@@ -181,8 +190,8 @@ export const usesBadgeLayout = () => {
 export const usesBadgeVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(badges);
+    // variants:
+    const {resizableRule  } = usesResizable(badges);
     
     // borders:
     const [, borders      ] = usesBorder();
@@ -196,9 +205,7 @@ export const usesBadgeVariants = () => {
         ...imports([
             // variants:
             usesPopupVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule(['.pill', '.circle'], {
@@ -300,7 +307,7 @@ export interface BadgeProps<TElement extends Element = HTMLElement, TExpandedCha
         // bases:
         PopupProps<TElement, TExpandedChangeEvent>,
         
-        // appearances:
+        // variants:
         BadgeVariant
 {
     // accessibilities:
@@ -319,8 +326,8 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
-        // appearances:
-        badgeStyle : _badgeStyle,
+        // variants:
+        badgeStyle : _badgeStyle, // remove
         
         
         
