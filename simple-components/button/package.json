@@ -46,6 +46,7 @@
     "@reusable-ui/control": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/indicator": "^5.0.0",
+    "@reusable-ui/resizable": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

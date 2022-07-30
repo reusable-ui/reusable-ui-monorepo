@@ -62,6 +62,10 @@ import {
     OrientationableProps,
     useOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
 import {
@@ -76,7 +80,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesSizeVariant,
     gradientOf,
     ifNotOutlined,
     outlinedOf,
@@ -294,8 +297,8 @@ export const usesButtonLinkVariant = () => {
 export const usesButtonVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(buttons);
+    // variants:
+    const {resizableRule} = usesResizable(buttons);
     
     
     
@@ -303,9 +306,7 @@ export const usesButtonVariants = () => {
         ...imports([
             // variants:
             usesActionControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule(['.link', '.ghost'], {
@@ -508,10 +509,11 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // variants:
-        outlined    = _defaultOutlined,
-        mild        = _defaultMild,
         orientation : _orientation, // remove
         buttonStyle : _buttonStyle, // remove
+        
+        outlined    = _defaultOutlined,
+        mild        = _defaultMild,
         
         
         
