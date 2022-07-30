@@ -73,7 +73,7 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     borderRadiuses,
@@ -94,6 +94,14 @@ import {
     usePropEnabled,
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'               // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     StateMixin,
@@ -101,7 +109,6 @@ import {
     
     
     // hooks:
-    usesSizeVariant,
     ifNotNude,
     ifNude,
     usesMildVariant,
@@ -382,7 +389,7 @@ export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
 //#endregion checkClear
 
 
-// appearances:
+// variants:
 
 //#region check style
 export type CheckStyle = 'button'|'toggleButton'|'switch' // might be added more styles in the future
@@ -555,8 +562,8 @@ export const usesCheckLayout = () => {
 export const usesCheckVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(checks);
+    // variants:
+    const {resizableRule  } = usesResizable(checks);
     
     // foregrounds:
     const [, milds        ] = usesMildVariant();
@@ -571,9 +578,7 @@ export const usesCheckVariants = () => {
         ...imports([
             // variants:
             usesEditableActionControlVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
         ...variants([
             rule(['.button', '.toggleButton'], {
@@ -878,7 +883,7 @@ export interface CheckProps
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
         >,
         
-        // appearances:
+        // variants:
         CheckVariant,
         
         // accessibilities:
@@ -916,22 +921,17 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     // rest props:
     const {
-        // remove props:
-        
-        // appearances:
-        checkStyle  : _checkStyle,
-        
-        
-        
         // refs:
         elmRef,
         
         
         
         // variants:
-        nude     = _defaultNude,
-        outlined = _defaultOutlined,
-        mild     = _defaultMild,
+        checkStyle : _checkStyle, // remove
+        
+        nude       = _defaultNude,
+        outlined   = _defaultOutlined,
+        mild       = _defaultMild,
         
         
         
