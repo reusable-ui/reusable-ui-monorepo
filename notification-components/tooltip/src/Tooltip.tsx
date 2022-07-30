@@ -73,17 +73,17 @@ import {
     FloatingSide,
 }                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
 
-// reusable-ui states:
-import type {
-    // type:
-    ExpandedChangeEvent,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-
 // reusable-ui variants:
 import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui states:
+import type {
+    // type:
+    ExpandedChangeEvent,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
 import {
