@@ -51,7 +51,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // configs:
     typos,
@@ -63,6 +63,8 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui features:
 import {
     // types:
     FloatingPlacement,
@@ -70,19 +72,25 @@ import {
     FloatingPosition,
     FloatingSide,
 }                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
+
+// reusable-ui states:
 import type {
     // type:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui variants:
+import {
+    // hooks:
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // react components:
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
-import {
-    // hooks:
-    usesSizeVariant,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesPopupLayout,
@@ -181,8 +189,8 @@ export const usesTooltipLayout = () => {
 export const usesTooltipVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(tooltips);
+    // variants:
+    const {resizableRule} = usesResizable(tooltips);
     
     
     
@@ -190,9 +198,7 @@ export const usesTooltipVariants = () => {
         ...imports([
             // variants:
             usesPopupVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
