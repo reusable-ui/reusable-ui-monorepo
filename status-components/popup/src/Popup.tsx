@@ -34,7 +34,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeEvents,
@@ -55,12 +55,15 @@ import {
     CollapsibleProps,
     useCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
-    
-    
-    
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
+import {
     // styles:
     usesBasicLayout,
     usesBasicVariants,
@@ -97,8 +100,8 @@ export const usesPopupLayout = () => {
 export const usesPopupVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(popups);
+    // variants:
+    const {resizableRule} = usesResizable(popups);
     
     
     
@@ -106,9 +109,7 @@ export const usesPopupVariants = () => {
         ...imports([
             // variants:
             usesBasicVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
