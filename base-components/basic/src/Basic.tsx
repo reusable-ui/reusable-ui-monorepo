@@ -1802,11 +1802,6 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     const transitionDuration = '300ms';
     
     return {
-        // appearances:
-        opacity              : 1                            as CssKnownProps['opacity'],
-        
-        
-        
         // backgrounds:
         backg                : 'transparent'                as CssKnownProps['backg'],
         backgGrad            : [
