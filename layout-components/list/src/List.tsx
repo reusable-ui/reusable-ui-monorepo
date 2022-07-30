@@ -1726,7 +1726,7 @@ export interface ListComponentProps<TElement extends Element = HTMLElement>
     
     
     
-    // layouts:
+    // variants:
     listOrientation ?: ListProps<TElement>['orientation']
     listStyle       ?: ListProps<TElement>['listStyle']
     
