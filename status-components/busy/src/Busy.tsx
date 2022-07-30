@@ -27,15 +27,19 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui states:
 import type {
     // type:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
+// reusable-ui variants:
 import {
     // hooks:
-    usesSizeVariant,
-}                           from '@reusable-ui/basic'           // a base component
+    usesResizable,
+}                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui components:
 import {
     // types:
     BadgeStyle,
@@ -93,8 +97,8 @@ export const usesBusyLayout = () => {
 export const usesBusyVariants = () => {
     // dependencies:
     
-    // layouts:
-    const [sizeVariantRule] = usesSizeVariant(busies);
+    // variants:
+    const {resizableRule} = usesResizable(busies);
     
     
     
@@ -102,9 +106,7 @@ export const usesBusyVariants = () => {
         ...imports([
             // variants:
             usesBadgeVariants(),
-            
-            // layouts:
-            sizeVariantRule,
+            resizableRule,
         ]),
     });
 };
@@ -208,13 +210,9 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
             
             
             
-            // appearances:
+            // variants:
             nude={props.nude ?? true}
             outlined={props.outlined ?? true}
-            
-            
-            
-            // variants:
             badgeStyle={props.badgeStyle ?? 'circle'}
             
             
