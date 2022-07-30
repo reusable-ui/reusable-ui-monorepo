@@ -529,7 +529,7 @@ export interface DropdownComponentProps<TElement extends Element = HTMLElement, 
     
     
     
-    // layouts:
+    // variants:
     dropdownOrientation ?: DropdownProps<TElement, TDropdownExpandedChangeEvent>['orientation']
     
     
