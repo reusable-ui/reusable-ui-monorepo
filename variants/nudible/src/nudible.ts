@@ -18,27 +18,7 @@ import {
     
     // styles:
     style,
-    
-    
-    
-    // utilities:
-    pascalCase,
 }                           from '@cssfn/cssfn'             // writes css in javascript
-import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
-import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
-    // utilities:
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
 
 
