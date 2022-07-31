@@ -66,7 +66,7 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
-import {
+import type {
     // hooks:
     ThemeName,
 }                           from '@reusable-ui/themable'        // color options of UI
