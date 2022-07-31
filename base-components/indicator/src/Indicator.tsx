@@ -352,9 +352,9 @@ export const markActive = (): CssRule => style({
 });
 
 /**
- * Creates conditional color definitions at active state.
+ * Creates a conditional theme color rules at active state.
  * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents the conditional color definitions at active state.
+ * @returns A `CssRule` represents a conditional theme color rules at active state.
  */
 export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeConditional(themeName);
 
