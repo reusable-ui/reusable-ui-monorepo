@@ -1,0 +1,42 @@
+{
+  "name": "@reusable-ui/nudible",
+  "version": "5.0.0",
+  "description": "Nude variant of UI.",
+  "keywords": [
+    "nudible",
+    "nude",
+    "variants",
+    "design",
+    "layouts"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/nudible.js",
+  "types": "dist/nudible.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.13",
+    "@cssfn/types": "^2.0.1",
+    "@cssfn/css-types": "^2.0.3",
+    "@cssfn/css-var": "^2.0.4"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.6"
+  }
+}
