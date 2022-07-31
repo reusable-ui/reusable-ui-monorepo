@@ -84,6 +84,15 @@ import {
     ResizableProps,
     useResizable,
 }                           from '@reusable-ui/resizable'   // size options of UI
+import {
+    // hooks:
+    ThemeName,
+    ifHasTheme,
+    usesThemable as baseUsesThemable,
+    themeOptions,
+    ThemableProps,
+    useThemable,
+}                           from '@reusable-ui/themable'        // color options of UI
 
 // reusable-ui components:
 import {
@@ -99,15 +108,6 @@ import {
     
     
     // hooks:
-    ThemeName,
-    ThemeVars,
-    ifTheme,
-    ifHasTheme,
-    usesThemeVariant as basicUsesThemeVariant,
-    themeOptions,
-    ThemeVariant,
-    useThemeVariant,
-    
     usesOutlinedVariant,
     
     MildVars,
@@ -152,46 +152,35 @@ export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 
 // colors:
 
-//#region themes
-export {
-    ThemeName,
-    ThemeVars,
-    ifTheme,
-    themeOptions,
-    ThemeVariant,
-    useThemeVariant,
-}
-
-
-
+//#region themable
 /**
- * Uses theme colors.  
- * For example: `primary`, `secondary`, `danger`, `success`, etc.
- * @param factory Customize the callback to create theme color definitions for each theme in `options`.
- * @param options Customize the theme options.
- * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
+ * Uses theme (color) options.  
+ * For example: `primary`, `success`, `danger`.
+ * @param factory A callback to create a theme rules for each theme color in `options`.
+ * @param options Defines all available theme color options.
+ * @returns A `ThemableRules` represents the theme rules for each theme color in `options`.
  */
-export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => basicUsesThemeVariant(factory, options);
+export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()) => baseUsesThemable(factory, options);
 
 /**
- * Creates theme color definitions for the given `themeName`.
+ * Creates a theme rules for the given `themeName`.
  * @param themeName The theme name.
- * @returns A `CssRule` represents theme color definitions for the given `themeName`.
+ * @returns A `CssRule` represents a theme rules for the given `themeName`.
  */
 export const themeOf = (themeName: ThemeName): CssRule => {
     // dependencies:
-    const [, themes] = usesThemeVariant();
+    const {themableVars} = usesThemable();
     
     
     
     return style({
         ...vars({
-            [themes.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
-            [themes.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+            [themableVars.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
+            [themableVars.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
         }),
     });
 };
-//#endregion themes
+//#endregion themable
 
 //#region mild
 export {
@@ -211,25 +200,25 @@ export {
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [themeVariantRule, themes] = usesThemeVariant();
-    const [                , milds ] = basicUsesMildVariant(factory);
+    const {themableRule, themableVars} = usesThemable();
+    const [            , milds       ] = basicUsesMildVariant(factory);
     
     
     
     return [
         () => style({
             ...imports([
-                // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
-                // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeVariantRule,
+                // makes   `usesMildVariant()` implicitly `usesThemable()`
+                // because `usesMildVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themableRule,
             ]),
             ...vars({
                 [milds.altBackgFn] : fallbacks(
-                    themes.altBackgMildImpt, // first  priority // supports for validation on ancestor
-                    themes.altBackgMild,     // second priority
-                    themes.altBackgMildCond, // third  priority // supports for active state on ancestor
+                    themableVars.altBackgMildImpt, // first  priority // supports for validation on ancestor
+                    themableVars.altBackgMild,     // second priority
+                    themableVars.altBackgMildCond, // third  priority // supports for active state on ancestor
                     
-                    icons.color,             // default => uses config's color
+                    icons.color,                   // default => uses config's color
                 ),
             }),
             ...variants([
@@ -274,10 +263,10 @@ export {
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
-    const [, backgs   ] = basicUsesBackg();
-    const [, themes   ] = usesThemeVariant();
-    const [, outlineds] = usesOutlinedVariant();
-    const [, milds    ] = usesMildVariant();
+    const {themableVars} = usesThemable();
+    const [, backgs    ] = basicUsesBackg();
+    const [, outlineds ] = usesOutlinedVariant();
+    const [, milds     ] = usesMildVariant();
     
     
     
@@ -290,11 +279,11 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
                 ...vars({
                     [backgs.altBackgColorFn] : fallbacks(
-                        themes.altBackgImpt,    // first  priority // supports for validation on ancestor
-                        themes.altBackg,        // second priority
-                        themes.altBackgCond,    // third  priority // supports for active state on ancestor
+                        themableVars.altBackgImpt,    // first  priority // supports for validation on ancestor
+                        themableVars.altBackg,        // second priority
+                        themableVars.altBackgCond,    // third  priority // supports for active state on ancestor
                         
-                        icons.color,            // default => uses config's color
+                        icons.color,                  // default => uses config's color
                     ),
                 }),
             }),
@@ -667,9 +656,9 @@ export const usesIconVariants    = () => {
     
     // variants:
     const {resizableRule      } = usesResizable<SizeName>(icons);
+    const {themableRule       } = usesThemable();
     
     // colors:
-    const [themeVariantRule   ] = usesThemeVariant();
     const [mildVariantRule    ] = usesMildVariant();
     
     
@@ -678,9 +667,9 @@ export const usesIconVariants    = () => {
         ...imports([
             // variants:
             resizableRule,
+            themableRule,
             
             // colors:
-            themeVariantRule,
             mildVariantRule,
         ]),
     });
@@ -859,9 +848,9 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
         
         // variants:
         ResizableProps<SizeName>,
+        ThemableProps,
         
         // colors:
-        ThemeVariant,
         MildVariant
 {
     // appearances:
@@ -875,9 +864,9 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     // variants:
     const resizableVariant = useResizable<SizeName>(props);
+    const themableVariant  = useThemable(props);
     
     // colors:
-    const themeVariant     = useThemeVariant(props);
     const mildVariant      = useMildVariant(props);
     
     
@@ -913,9 +902,9 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         // variants:
         resizableVariant.class,
+        themableVariant.class,
         
         // colors:
-        themeVariant.class,
         mildVariant.class,
     );
     const classes        = useMergeClasses(
