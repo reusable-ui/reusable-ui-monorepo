@@ -889,17 +889,17 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     // rest props:
     const {
+        // appearances:
+        icon     : _icon,  // remove
+        
+        
+        
         // variants:
         size     : _size,  // remove
         
         // colors:
         theme    : _theme, // remove
         mild     : _mild,  // remove
-        
-        
-        
-        // appearances:
-        icon     : _icon,  // remove
     ...restGenericProps} = props;
     
     
