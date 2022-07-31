@@ -79,6 +79,11 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    ThemeName,
+    usesThemeConditional,
+}                           from '@reusable-ui/themable'        // color options of UI
 
 // reusable-ui components:
 import {
@@ -93,8 +98,6 @@ import {
     
     
     // hooks:
-    ThemeName,
-    usesThemeConditional,
     outlinedOf,
     mildOf,
     usesAnim,
