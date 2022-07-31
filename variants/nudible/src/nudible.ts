@@ -43,11 +43,12 @@ export interface NudibleRules { nudibleRule: Factory<CssRule> }
 export const usesNudible = (): NudibleRules => {
     // dependencies:
     
-    // borders:
-    const {borderVars } = usesBorder();
+    // TODO: to be continued
+    // // borders:
+    // const {borderVars } = usesBorder();
     
-    // spacings:
-    const {paddingVars} = usesPadding();
+    // // spacings:
+    // const {paddingVars} = usesPadding();
     
     
     
@@ -60,23 +61,24 @@ export const usesNudible = (): NudibleRules => {
                     
                     
                     
-                    // borders:
-                    [borderVars.borderWidth           ] : '0px', // discard border stroke
+                    // TODO: to be continued
+                    // // borders:
+                    // [borderVars.borderWidth           ] : '0px', // discard border stroke
                     
-                    // remove rounded corners on top:
-                    [borderVars.borderStartStartRadius] : '0px', // discard borderRadius
-                    [borderVars.borderStartEndRadius  ] : '0px', // discard borderRadius
-                    // remove rounded corners on bottom:
-                    [borderVars.borderEndStartRadius  ] : '0px', // discard borderRadius
-                    [borderVars.borderEndEndRadius    ] : '0px', // discard borderRadius
+                    // // remove rounded corners on top:
+                    // [borderVars.borderStartStartRadius] : '0px', // discard borderRadius
+                    // [borderVars.borderStartEndRadius  ] : '0px', // discard borderRadius
+                    // // remove rounded corners on bottom:
+                    // [borderVars.borderEndStartRadius  ] : '0px', // discard borderRadius
+                    // [borderVars.borderEndEndRadius    ] : '0px', // discard borderRadius
                     
-                    boxShadow : ['none', '!important'],          // no shadow & no focus animation
+                    // boxShadow : ['none', '!important'],          // no shadow & no focus animation
                     
                     
                     
-                    // spacings:
-                    [paddingVars.paddingInline] : '0px',         // discard padding
-                    [paddingVars.paddingBlock ] : '0px',         // discard padding
+                    // // spacings:
+                    // [paddingVars.paddingInline] : '0px',         // discard padding
+                    // [paddingVars.paddingBlock ] : '0px',         // discard padding
                 }),
             ]),
         }),
