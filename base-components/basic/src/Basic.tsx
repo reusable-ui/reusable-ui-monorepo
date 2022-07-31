@@ -110,6 +110,12 @@ import {
     ResizableProps,
     useResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    usesNudible,
+    NudibleProps,
+    useNudible,
+}                           from '@reusable-ui/nudible'         // nude variant of UI.
 
 // reusable-ui components:
 import {
@@ -128,83 +134,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-// layouts:
-
-//#region nude
-export interface NudeVars {
-    // empty (may be added soon)
-}
-const [nudes] = cssVar<NudeVars>();
-
-
-
-// by design: grandpa's `.nude` does not affect current `.nude`
-// parent not `.nude` -and- current not `.nude`:
-export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(.nude)&:where(:not(.nude))', styles);
-// parent is  `.nude` -or-  current is  `.nude`:
-export const ifNude    = (styles: CssStyleCollection): CssRule => rule(':is(.nude&, &.nude)'            , styles);
-
-
-
-/**
- * Uses toggleable nudeification (removes background, border & padding).
- * @returns A `VariantMixin<NudeVars>` represents nudeification definitions.
- */
-export const usesNudeVariant = (): VariantMixin<NudeVars> => {
-    // dependencies:
-    
-    // borders:
-    const [, borders ] = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    
-    
-    return [
-        () => style({
-            ...variants([
-                ifNude({
-                    // backgrounds:
-                    backg : [['none'], '!important'], // discard background, no valid/invalid animation
-                    
-                    
-                    
-                    // borders:
-                    [borders.borderWidth           ] : '0px', // discard border
-                    
-                    // remove rounded corners on top:
-                    [borders.borderStartStartRadius] : '0px', // discard borderRadius
-                    [borders.borderStartEndRadius  ] : '0px', // discard borderRadius
-                    // remove rounded corners on bottom:
-                    [borders.borderEndStartRadius  ] : '0px', // discard borderRadius
-                    [borders.borderEndEndRadius    ] : '0px', // discard borderRadius
-                    
-                    boxShadow : ['none', '!important'],       // no shadow & no focus animation
-                    
-                    
-                    
-                    // spacings:
-                    [paddings.paddingInline] : '0px', // discard padding
-                    [paddings.paddingBlock ] : '0px', // discard padding
-                }),
-            ]),
-        }),
-        nudes,
-    ];
-};
-
-
-
-export interface NudeVariant {
-    nude ?: boolean
-}
-export const useNudeVariant = ({nude}: NudeVariant) => ({
-    class: nude ? 'nude' : null,
-});
-//#endregion nude
-
 
 // colors:
 
@@ -1725,9 +1654,7 @@ export const usesBasicVariants = () => {
     
     // variants:
     const {resizableRule      } = usesResizable(basics);
-    
-    // layouts:
-    const [nudeVariantRule    ] = usesNudeVariant();
+    const {nudibleRule        } = usesNudible();
     
     // colors:
     const [themeVariantRule   ] = usesThemeVariant();
@@ -1741,9 +1668,7 @@ export const usesBasicVariants = () => {
         ...imports([
             // variants:
             resizableRule,
-            
-            // layouts:
-            nudeVariantRule,
+            nudibleRule,
             
             // colors:
             themeVariantRule,
@@ -1898,9 +1823,7 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         
         // variants:
         ResizableProps,
-        
-        // layouts:
-        NudeVariant,
+        NudibleProps,
         
         // colors:
         ThemeVariant,
@@ -1917,9 +1840,7 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     
     // variants:
     const resizableVariant = useResizable(props);
-    
-    // layouts:
-    const nudeVariant      = useNudeVariant(props);
+    const nudibleVariant   = useNudible(props);
     
     // colors:
     const themeVariant     = useThemeVariant(props);
@@ -1955,9 +1876,7 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         
         // variants:
         resizableVariant.class,
-        
-        // layouts:
-        nudeVariant.class,
+        nudibleVariant.class,
         
         // colors:
         themeVariant.class,
