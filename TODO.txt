@@ -29,7 +29,7 @@ variants
     resizable       [done] multi-options   useResizable        resizableVars
     orientationable [done] multi-options   useOrientationable  OrientationableVars
     nude            toggle-option   useNudible          nudibleVars
-    themes          multi-options   useTheme            themeVars
+    themes          [done] multi-options   useThemable         themableVars
     gradient        toggle-option   useGradientable     gradientVars
     outlined        toggle-option   use???              outlineVars
     mild            toggle-option   useMildable         mildVars
