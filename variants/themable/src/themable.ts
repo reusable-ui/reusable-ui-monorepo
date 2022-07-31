@@ -29,17 +29,6 @@ import {
     // utilities:
     cssVar,
 }                           from '@cssfn/css-var'           // strongly typed of css variables
-import {
-    // types:
-    CssConfigProps,
-    Refs,
-    
-    
-    
-    // utilities:
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
 
 // reusable-ui utilities:
 import {
@@ -233,7 +222,7 @@ const [themableVars] = cssVar<ThemableVars>();
 
 
 
-export const ifTheme = <TThemeName extends string = ThemeName>(themeName: TThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
+export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
 export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
         Object.keys(themes)
@@ -264,7 +253,7 @@ export interface ThemableRules { themableRule: Factory<CssRule>, themableVars: T
  * @param options Defines all available theme color options.
  * @returns A `ThemableRules` represents the theme rules for each theme color in `options`.
  */
-export const usesThemable = <TThemeName extends string = ThemeName>(factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : TThemeName[] = (themeOptions() as TThemeName[])): ThemableRules => {
+export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()): ThemableRules => {
     return {
         themableRule: () => style({
             ...variants([
@@ -313,10 +302,71 @@ export const themeOptions = (): ThemeName[] => Object.keys(themes) as ThemeName[
 
 
 
-export interface ThemableProps<TThemeName extends string = ThemeName> {
-    theme ?: TThemeName
+/**
+ * Creates a default theme color rules.
+ * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a default theme color rules.
+ */
+export const usesThemeDefault     = (themeName: ThemeName|null = null): CssRule => usesThemeConditional(themeName);
+
+/**
+ * Creates a conditional theme color rules for the given `themeName`.
+ * @param themeName The theme name as the conditional theme color -or- `null` for undefining the conditional.
+ * @returns A `CssRule` represents a conditional theme color rules for the given `themeName`.
+ */
+export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
+    ...vars({
+        [themableVars.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themableVars.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themableVars.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themableVars.altBackgCond        ] : themableVars.backgMildCond,
+        [themableVars.altForegCond        ] : themableVars.foregMildCond,
+        
+        [themableVars.foregOutlinedCond   ] : !themeName ? null : themableVars.backgCond,
+        [themableVars.altBackgOutlinedCond] : themableVars.backgCond,
+        [themableVars.altForegOutlinedCond] : themableVars.foregCond,
+        
+        [themableVars.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themableVars.foregMildCond       ] : !themeName ? null : themableVars.borderCond,
+        [themableVars.altBackgMildCond    ] : themableVars.backgCond,
+        [themableVars.altForegMildCond    ] : themableVars.foregCond,
+        
+        [themableVars.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+    }),
+});
+
+/**
+ * Creates an important conditional theme color rules for the given `themeName`.
+ * @param themeName The theme name as the important conditional theme color -or- `null` for undefining the important conditional.
+ * @returns A `CssRule` represents an important conditional theme color rules for the given `themeName`.
+ */
+export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => style({
+    ...vars({
+        [themableVars.backgImpt           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themableVars.foregImpt           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themableVars.borderImpt          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themableVars.altBackgImpt        ] : themableVars.backgMildImpt,
+        [themableVars.altForegImpt        ] : themableVars.foregMildImpt,
+        
+        [themableVars.foregOutlinedImpt   ] : !themeName ? null : themableVars.backgImpt,
+        [themableVars.altBackgOutlinedImpt] : themableVars.backgImpt,
+        [themableVars.altForegOutlinedImpt] : themableVars.foregImpt,
+        
+        [themableVars.backgMildImpt       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themableVars.foregMildImpt       ] : !themeName ? null : themableVars.borderImpt,
+        [themableVars.altBackgMildImpt    ] : themableVars.backgImpt,
+        [themableVars.altForegMildImpt    ] : themableVars.foregImpt,
+        
+        [themableVars.ringImpt            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+    }),
+});
+
+
+
+export interface ThemableProps {
+    theme ?: ThemeName
 }
-export const useThemable = <TThemeName extends string = ThemeName>({theme}: ThemableProps<TThemeName>) => ({
+export const useThemable = ({theme}: ThemableProps) => ({
     class: theme ? `th${pascalCase(theme)}` : null,
 });
 //#endregion themable
