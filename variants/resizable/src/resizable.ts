@@ -55,7 +55,7 @@ const [resizableVars] = cssVar<ResizableVars>();
 
 
 
-export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => rule(`.sz-${pascalCase(sizeName)}`, styles);
+export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => rule(`.sz${pascalCase(sizeName)}`, styles);
 
 
 
@@ -95,6 +95,6 @@ export interface ResizableProps<TSizeName extends string = SizeName> {
     size ?: TSizeName
 }
 export const useResizable = <TSizeName extends string = SizeName>({size}: ResizableProps<TSizeName>) => ({
-    class: size ? `sz-${pascalCase(size)}` : null,
+    class: size ? `sz${pascalCase(size)}` : null,
 });
 //#endregion resizable
