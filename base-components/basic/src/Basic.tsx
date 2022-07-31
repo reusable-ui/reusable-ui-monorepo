@@ -51,7 +51,6 @@ import {
     
     
     // utilities:
-    pascalCase,
     solidBackg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -81,7 +80,6 @@ import {
 import {
     // configs:
     colors,
-    themes as colorThemes,
 }                           from '@reusable-ui/colors'          // a color management system
 import {
     // configs:
@@ -112,10 +110,17 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
+    ifHasTheme,
+    usesThemable,
+    ThemableProps,
+    useThemable,
+}                           from '@reusable-ui/themable'        // color options of UI
+import {
+    // hooks:
     usesNudible,
     NudibleProps,
     useNudible,
-}                           from '@reusable-ui/nudible'         // nude variant of UI.
+}                           from '@reusable-ui/nudible'         // nude variant of UI
 
 // reusable-ui components:
 import {
@@ -136,336 +141,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 // hooks:
 
 // colors:
-
-//#region themes
-export type ThemeName = (keyof typeof colorThemes) | (string & {})
-export interface ThemeVars {
-    /**
-     * themed background color.
-     */
-    backg                : any
-    /**
-     * themed foreground color.
-     */
-    foreg                : any
-    /**
-     * themed border color.
-     */
-    border               : any
-    /**
-     * themed alternate background color.
-     */
-    altBackg             : any
-    /**
-     * themed alternate foreground color.
-     */
-    altForeg             : any
-    
-    /**
-     * themed foreground color - at outlined variant.
-     */
-    foregOutlined        : any
-    /**
-     * themed alternate background color - at outlined variant.
-     */
-    altBackgOutlined     : any
-    /**
-     * themed alternate foreground color - at outlined variant.
-     */
-    altForegOutlined     : any
-    
-    /**
-     * themed background color - at mild variant.
-     */
-    backgMild            : any
-    /**
-     * themed foreground color - at mild variant.
-     */
-    foregMild            : any
-    /**
-     * themed alternate background color - at mild variant.
-     */
-    altBackgMild         : any
-    /**
-     * themed alternate foreground color - at mild variant.
-     */
-    altForegMild         : any
-    
-    /**
-     * themed ring color.
-     */
-    ring                 : any
-    
-    
-    
-    /**
-     * conditional background color.
-     */
-    backgCond            : any
-    /**
-     * conditional foreground color.
-     */
-    foregCond            : any
-    /**
-     * conditional border color.
-     */
-    borderCond           : any
-    /**
-     * conditional alternate background color.
-     */
-    altBackgCond         : any
-    /**
-     * conditional alternate foreground color.
-     */
-    altForegCond         : any
-    
-    /**
-     * conditional foreground color - at outlined variant.
-     */
-    foregOutlinedCond    : any
-    /**
-     * conditional alternate background color - at outlined variant.
-     */
-    altBackgOutlinedCond : any
-    /**
-     * conditional alternate foreground color - at outlined variant.
-     */
-    altForegOutlinedCond : any
-    
-    /**
-     * conditional background color - at mild variant.
-     */
-    backgMildCond        : any
-    /**
-     * conditional foreground color - at mild variant.
-     */
-    foregMildCond        : any
-    /**
-     * conditional alternate background color - at mild variant.
-     */
-    altBackgMildCond     : any
-    /**
-     * conditional alternate foreground color - at mild variant.
-     */
-    altForegMildCond     : any
-    
-    /**
-     * conditional ring color.
-     */
-    ringCond             : any
-    
-    
-    
-    /**
-     * important conditional background color.
-     */
-    backgImpt            : any
-    /**
-     * important conditional foreground color.
-     */
-    foregImpt            : any
-    /**
-     * important conditional border color.
-     */
-    borderImpt           : any
-    /**
-     * important conditional alternate background color.
-     */
-    altBackgImpt         : any
-    /**
-     * important conditional alternate foreground color.
-     */
-    altForegImpt         : any
-    
-    /**
-     * important conditional foreground color - at outlined variant.
-     */
-    foregOutlinedImpt    : any
-    /**
-     * important conditional alternate background color - at outlined variant.
-     */
-    altBackgOutlinedImpt : any
-    /**
-     * important conditional alternate foreground color - at outlined variant.
-     */
-    altForegOutlinedImpt : any
-    
-    /**
-     * important conditional background color - at mild variant.
-     */
-    backgMildImpt        : any
-    /**
-     * important conditional foreground color - at mild variant.
-     */
-    foregMildImpt        : any
-    /**
-     * important conditional alternate background color - at mild variant.
-     */
-    altBackgMildImpt     : any
-    /**
-     * important conditional alternate foreground color - at mild variant.
-     */
-    altForegMildImpt     : any
-    
-    /**
-     * important conditional ring color.
-     */
-    ringImpt             : any
-}
-const [themes] = cssVar<ThemeVars>();
-
-
-
-export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
-export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
-    return rule(
-        Object.keys(colorThemes)
-        .map((themeName) => `.th${pascalCase(themeName)}`)
-        ,
-        styles
-    );
-};
-export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
-    return rule(
-        `:not(:is(${
-            Object.keys(colorThemes)
-            .map((themeName) => `.th${pascalCase(themeName)}`)
-            .join(', ')
-        }))`
-        ,
-        styles
-    );
-};
-
-
-
-/**
- * Uses theme colors.  
- * For example: `primary`, `secondary`, `danger`, `success`, etc.
- * @param factory Customize the callback to create theme color definitions for each theme in `options`.
- * @param options Customize the theme options.
- * @returns A `VariantMixin<ThemeVars>` represents theme color definitions for each theme in `options`.
- */
-export const usesThemeVariant = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options = themeOptions()): VariantMixin<ThemeVars> => {
-    return [
-        () => style({
-            ...variants([
-                options.map((themeName) =>
-                    ifTheme(themeName,
-                        factory(themeName)
-                    )
-                ),
-            ]),
-        }),
-        themes,
-    ];
-};
-
-/**
- * Creates theme color definitions for the given `themeName`.
- * @param themeName The theme name.
- * @returns A `CssRule` represents theme color definitions for the given `themeName`.
- */
-export const themeOf = (themeName: ThemeName): CssRule => style({
-    ...vars({
-        [themes.backg               ] : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themes.altBackg            ] : themes.backgMild,
-        [themes.altForeg            ] : themes.foregMild,
-        
-        [themes.foregOutlined       ] : themes.backg,
-        [themes.altBackgOutlined    ] : themes.backg,
-        [themes.altForegOutlined    ] : themes.foreg,
-        
-        [themes.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMild           ] : themes.border,
-        [themes.altBackgMild        ] : themes.backg,
-        [themes.altForegMild        ] : themes.foreg,
-        
-        [themes.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-/**
- * Gets all available theme options.
- * @returns A `ThemeName[]` represents all available theme options.
- */
-export const themeOptions = (): ThemeName[] => Object.keys(colorThemes) as ThemeName[];
-
-
-
-/**
- * Creates a default theme color definitions.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color definitions`.
- */
-export const usesThemeDefault     = (themeName: ThemeName|null = null): CssRule => usesThemeConditional(themeName);
-
-/**
- * Creates conditional color definitions for the given `themeName`.
- * @param themeName The theme name as the conditional color -or- `null` for undefining the conditional.
- * @returns A `CssRule` represents conditional color definitions for the given `themeName`.
- */
-export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
-    ...vars({
-        [themes.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themes.altBackgCond        ] : themes.backgMildCond,
-        [themes.altForegCond        ] : themes.foregMildCond,
-        
-        [themes.foregOutlinedCond   ] : !themeName ? null : themes.backgCond,
-        [themes.altBackgOutlinedCond] : themes.backgCond,
-        [themes.altForegOutlinedCond] : themes.foregCond,
-        
-        [themes.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildCond       ] : !themeName ? null : themes.borderCond,
-        [themes.altBackgMildCond    ] : themes.backgCond,
-        [themes.altForegMildCond    ] : themes.foregCond,
-        
-        [themes.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-/**
- * Creates important conditional color definitions for the given `themeName`.
- * @param themeName The theme name as the important conditional color -or- `null` for undefining the important conditional.
- * @returns A `CssRule` represents important conditional color definitions for the given `themeName`.
- */
-export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => style({
-    ...vars({
-        [themes.backgImpt           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themes.foregImpt           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themes.borderImpt          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themes.altBackgImpt        ] : themes.backgMildImpt,
-        [themes.altForegImpt        ] : themes.foregMildImpt,
-        
-        [themes.foregOutlinedImpt   ] : !themeName ? null : themes.backgImpt,
-        [themes.altBackgOutlinedImpt] : themes.backgImpt,
-        [themes.altForegOutlinedImpt] : themes.foregImpt,
-        
-        [themes.backgMildImpt       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themes.foregMildImpt       ] : !themeName ? null : themes.borderImpt,
-        [themes.altBackgMildImpt    ] : themes.backgImpt,
-        [themes.altForegMildImpt    ] : themes.foregImpt,
-        
-        [themes.ringImpt            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
-
-
-
-export interface ThemeVariant {
-    theme ?: ThemeName
-}
-export const useThemeVariant = ({theme}: ThemeVariant, themeDefault?: ThemeName) => {
-    const themeName = theme ?? themeDefault;
-    return {
-        class: themeName ? `th${pascalCase(themeName)}` : null,
-    };
-};
-//#endregion themes
 
 //#region gradient
 export interface GradientVars {
@@ -580,44 +255,44 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
  */
 export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
     // dependencies:
-    const [themeVariantRule, themes] = usesThemeVariant();
+    const {themableRule, themableVars} = usesThemable();
     
     
     
     return [
         () => style({
             ...imports([
-                // makes   `usesOutlinedVariant()` implicitly `usesThemeVariant()`
-                // because `usesOutlinedVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeVariantRule,
+                // makes   `usesOutlinedVariant()` implicitly `usesThemable()`
+                // because `usesOutlinedVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themableRule,
             ]),
             ...vars({
                 [outlineds.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 
                 [outlineds.foregFn   ] : fallbacks(
-                    themes.foregOutlinedImpt,    // first  priority
-                    themes.foregOutlined,        // second priority
-                    themes.foregOutlinedCond,    // third  priority
+                    themableVars.foregOutlinedImpt,    // first  priority
+                    themableVars.foregOutlined,        // second priority
+                    themableVars.foregOutlinedCond,    // third  priority
                     
-                    basics.foreg,                // default => uses config's foreground
+                    basics.foreg,                      // default => uses config's foreground
                 ),
                 
                 
                 
                 [outlineds.altBackgFn] : fallbacks(
-                    themes.altBackgOutlinedImpt, // first  priority
-                    themes.altBackgOutlined,     // second priority
-                    themes.altBackgOutlinedCond, // third  priority
+                    themableVars.altBackgOutlinedImpt, // first  priority
+                    themableVars.altBackgOutlined,     // second priority
+                    themableVars.altBackgOutlinedCond, // third  priority
                     
-                    colors.primary,              // default => uses primary text theme
+                    colors.primary,                    // default => uses primary text theme
                 ),
                 
                 [outlineds.altForegFn] : fallbacks(
-                    themes.altForegOutlinedImpt, // first  priority
-                    themes.altForegOutlined,     // second priority
-                    themes.altForegOutlinedCond, // third  priority
+                    themableVars.altForegOutlinedImpt, // first  priority
+                    themableVars.altForegOutlined,     // second priority
+                    themableVars.altForegOutlinedCond, // third  priority
                     
-                    colors.primaryText,          // default => uses primary text theme
+                    colors.primaryText,                // default => uses primary text theme
                 ),
             }),
             ...variants([
@@ -712,50 +387,50 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
  */
 export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
     // dependencies:
-    const [themeVariantRule, themes] = usesThemeVariant();
+    const {themableRule, themableVars} = usesThemable();
     
     
     
     return [
         () => style({
             ...imports([
-                // makes   `usesMildVariant()` implicitly `usesThemeVariant()`
-                // because `usesMildVariant()` requires   `usesThemeVariant()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themeVariantRule,
+                // makes   `usesMildVariant()` implicitly `usesThemable()`
+                // because `usesMildVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                themableRule,
             ]),
             ...vars({
                 [milds.backgFn   ] : fallbacks(
-                    themes.backgMildImpt,    // first  priority
-                    themes.backgMild,        // second priority
-                    themes.backgMildCond,    // third  priority
+                    themableVars.backgMildImpt,    // first  priority
+                    themableVars.backgMild,        // second priority
+                    themableVars.backgMildCond,    // third  priority
                     
-                    basics.backg,            // default => uses config's background
+                    basics.backg,                  // default => uses config's background
                 ),
                 
                 [milds.foregFn   ] : fallbacks(
-                    themes.foregMildImpt,    // first  priority
-                    themes.foregMild,        // second priority
-                    themes.foregMildCond,    // third  priority
+                    themableVars.foregMildImpt,    // first  priority
+                    themableVars.foregMild,        // second priority
+                    themableVars.foregMildCond,    // third  priority
                     
-                    basics.foreg,            // default => uses config's foreground
+                    basics.foreg,                  // default => uses config's foreground
                 ),
                 
                 
                 
                 [milds.altBackgFn] : fallbacks(
-                    themes.altBackgMildImpt, // first  priority
-                    themes.altBackgMild,     // second priority
-                    themes.altBackgMildCond, // third  priority
+                    themableVars.altBackgMildImpt, // first  priority
+                    themableVars.altBackgMild,     // second priority
+                    themableVars.altBackgMildCond, // third  priority
                     
-                    colors.primary,          // default => uses primary text theme
+                    colors.primary,                // default => uses primary text theme
                 ),
                 
                 [milds.altForegFn] : fallbacks(
-                    themes.altForegMildImpt, // first  priority
-                    themes.altForegMild,     // second priority
-                    themes.altForegMildCond, // third  priority
+                    themableVars.altForegMildImpt, // first  priority
+                    themableVars.altForegMild,     // second priority
+                    themableVars.altForegMildCond, // third  priority
                     
-                    colors.primaryText,      // default => uses primary text theme
+                    colors.primaryText,            // default => uses primary text theme
                 ),
             }),
             ...variants([
@@ -834,10 +509,10 @@ const [backgs] = cssVar<BackgVars>();
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
-    const [, themes   ] = usesThemeVariant();
-    const [, gradients] = usesGradientVariant();
-    const [, outlineds] = usesOutlinedVariant();
-    const [, milds    ] = usesMildVariant();
+    const {themableVars} = usesThemable();
+    const [, gradients ] = usesGradientVariant();
+    const [, outlineds ] = usesOutlinedVariant();
+    const [, milds     ] = usesMildVariant();
     
     
     
@@ -858,18 +533,18 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [backgs.backgColorFn   ] : fallbacks(
-                        themes.backgImpt,       // first  priority
-                        themes.backg,           // second priority
-                        themes.backgCond,       // third  priority
+                        themableVars.backgImpt,       // first  priority
+                        themableVars.backg,           // second priority
+                        themableVars.backgCond,       // third  priority
                         
-                        basics.backg,           // default => uses config's background
+                        basics.backg,                 // default => uses config's background
                     ),
                     [backgs.altBackgColorFn] : fallbacks(
-                        themes.altBackgImpt,    // first  priority
-                        themes.altBackg,        // second priority
-                        themes.altBackgCond,    // third  priority
+                        themableVars.altBackgImpt,    // first  priority
+                        themableVars.altBackg,        // second priority
+                        themableVars.altBackgCond,    // third  priority
                         
-                        colors.primary,         // default => uses primary text theme
+                        colors.primary,               // default => uses primary text theme
                     ),
                 }),
             }),
@@ -939,9 +614,9 @@ const [foregs] = cssVar<ForegVars>();
  */
 export const usesForeg = (): FeatureMixin<ForegVars> => {
     // dependencies:
-    const [, themes   ] = usesThemeVariant();
-    const [, outlineds] = usesOutlinedVariant();
-    const [, milds    ] = usesMildVariant();
+    const {themableVars} = usesThemable();
+    const [, outlineds ] = usesOutlinedVariant();
+    const [, milds     ] = usesMildVariant();
     
     
     
@@ -955,18 +630,18 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [foregs.foregFn   ] : fallbacks(
-                        themes.foregImpt,     // first  priority
-                        themes.foreg,         // second priority
-                        themes.foregCond,     // third  priority
+                        themableVars.foregImpt,     // first  priority
+                        themableVars.foreg,         // second priority
+                        themableVars.foregCond,     // third  priority
                         
-                        basics.foreg,         // default => uses config's foreground
+                        basics.foreg,               // default => uses config's foreground
                     ),
                     [foregs.altForegFn] : fallbacks(
-                        themes.altForegImpt,  // first  priority
-                        themes.altForeg,      // second priority
-                        themes.altForegCond,  // third  priority
+                        themableVars.altForegImpt,  // first  priority
+                        themableVars.altForeg,      // second priority
+                        themableVars.altForegCond,  // third  priority
                         
-                        colors.primaryText,   // default => uses primary text theme
+                        colors.primaryText,         // default => uses primary text theme
                     ),
                 }),
             }),
@@ -1041,8 +716,8 @@ const [borders] = cssVar<BorderVars>();
  */
 export const usesBorder = (): FeatureMixin<BorderVars> => {
     // dependencies:
-    const [, themes   ] = usesThemeVariant();
-    const [, outlineds] = usesOutlinedVariant();
+    const {themableVars} = usesThemable();
+    const [, outlineds ] = usesOutlinedVariant();
     
     
     
@@ -1055,11 +730,11 @@ export const usesBorder = (): FeatureMixin<BorderVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [borders.borderColorFn] : fallbacks(
-                        themes.borderImpt,     // first  priority
-                        themes.border,         // second priority
-                        themes.borderCond,     // third  priority
+                        themableVars.borderImpt,     // first  priority
+                        themableVars.border,         // second priority
+                        themableVars.borderCond,     // third  priority
                         
-                        basics.borderColor,    // default => uses config's border color
+                        basics.borderColor,          // default => uses config's border color
                     ),
                 }),
             }),
@@ -1154,7 +829,7 @@ const [rings] = cssVar<RingVars>();
  */
 export const usesRing = (): FeatureMixin<RingVars> => {
     // dependencies:
-    const [, themes] = usesThemeVariant();
+    const {themableVars} = usesThemable();
     
     
     
@@ -1167,11 +842,11 @@ export const usesRing = (): FeatureMixin<RingVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [rings.ringFn] : fallbacks(
-                        themes.ringImpt,      // first  priority
-                        themes.ring,          // second priority
-                        themes.ringCond,      // third  priority
+                        themableVars.ringImpt,      // first  priority
+                        themableVars.ring,          // second priority
+                        themableVars.ringCond,      // third  priority
                         
-                        colors.secondaryThin, // default => uses secondary theme, because its color is neutral
+                        colors.secondaryThin,       // default => uses secondary theme, because its color is neutral
                     ),
                 }),
             }),
@@ -1573,9 +1248,6 @@ export const usesBasicLayout = () => {
     
     return style({
         ...imports([
-            // colors:
-            usesThemeDefault(),
-            
             // backgrounds:
             backgRule,
             
@@ -1654,10 +1326,10 @@ export const usesBasicVariants = () => {
     
     // variants:
     const {resizableRule      } = usesResizable(basics);
+    const {themableRule       } = usesThemable();
     const {nudibleRule        } = usesNudible();
     
     // colors:
-    const [themeVariantRule   ] = usesThemeVariant();
     const [gradientVariantRule] = usesGradientVariant();
     const [outlinedVariantRule] = usesOutlinedVariant();
     const [mildVariantRule    ] = usesMildVariant();
@@ -1668,10 +1340,10 @@ export const usesBasicVariants = () => {
         ...imports([
             // variants:
             resizableRule,
+            themableRule,
             nudibleRule,
             
             // colors:
-            themeVariantRule,
             gradientVariantRule,
             outlinedVariantRule,
             mildVariantRule,
@@ -1823,10 +1495,10 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         
         // variants:
         ResizableProps,
+        ThemableProps,
         NudibleProps,
         
         // colors:
-        ThemeVariant,
         GradientVariant,
         OutlinedVariant,
         MildVariant
@@ -1840,10 +1512,10 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     
     // variants:
     const resizableVariant = useResizable(props);
+    const themableVariant  = useThemable(props);
     const nudibleVariant   = useNudible(props);
     
     // colors:
-    const themeVariant     = useThemeVariant(props);
     const gradientVariant  = useGradientVariant(props);
     const outlinedVariant  = useOutlinedVariant(props);
     const mildVariant      = useMildVariant(props);
@@ -1876,10 +1548,10 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         
         // variants:
         resizableVariant.class,
+        themableVariant.class,
         nudibleVariant.class,
         
         // colors:
-        themeVariant.class,
         gradientVariant.class,
         outlinedVariant.class,
         mildVariant.class,
