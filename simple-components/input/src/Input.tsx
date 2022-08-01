@@ -169,7 +169,7 @@ export const usesInputVariants = () => {
     
     // variants:
     const {resizableRule   } = usesResizable(inputs);
-    const {gradientableRule} = usesGradientable(inputs.backgGrad);
+    const {gradientableRule} = usesGradientable(inputs);
     
     
     
