@@ -4,6 +4,11 @@ import type {
     Factory,
 }                           from '@cssfn/types'             // cssfn general types
 import type {
+    // css custom properties:
+    CssCustomRef,
+    
+    
+    
     // cssfn properties:
     CssRule,
     
@@ -26,12 +31,17 @@ import {
 }                           from '@cssfn/css-var'           // strongly typed of css variables
 
 
+
 // hooks:
 
 // variants:
 
 //#region gradientable
 export interface GradientableVars {
+    /**
+     * defines background gradient.
+     */
+    backgGrad   : any
     /**
      * toggles_on background gradient - at gradient variant.
      */
@@ -54,9 +64,12 @@ export interface GradientableRules { gradientableRule: Factory<CssRule>, gradien
  * @param factory A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableRules` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableRules => {
+export const usesGradientable = (backgGrad?: CssCustomRef, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableRules => {
     return {
         gradientableRule: () => style({
+            ...vars({
+                [gradientableVars.backgGrad] : backgGrad,
+            }),
             ...variants([
                 ifNotGradient(factory(false)),
                 ifGradient(factory(true)),
@@ -74,7 +87,7 @@ export const usesGradientable = (factory : ((toggle: boolean|null) => CssStyleCo
 export const gradientOf = (toggle: boolean|null = true): CssRule => style({
     ...vars({
         // *toggle on/off* the background gradient prop:
-        [gradientableVars.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [gradientableVars.backgGradTg] : toggle ? gradientableVars.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 
