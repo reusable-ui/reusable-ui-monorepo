@@ -100,6 +100,11 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'               // size options of UI
+import {
+    // hooks:
+    ifNotNude,
+    ifNude,
+}                           from '@reusable-ui/nudible'                 // nude variant of UI
 
 // reusable-ui components:
 import {
@@ -109,8 +114,6 @@ import {
     
     
     // hooks:
-    ifNotNude,
-    ifNude,
     usesMildVariant,
     usesForeg,
     usesBorder,
