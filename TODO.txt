@@ -28,11 +28,11 @@ features
 variants
     resizable       [done] multi-options   useResizable        resizableVars
     orientationable [done] multi-options   useOrientationable  OrientationableVars
-    nude            toggle-option   useNudible          nudibleVars
     themes          [done] multi-options   useThemable         themableVars
-    gradient        toggle-option   useGradientable     gradientVars
+    gradient        [done] toggle-option   useGradientable     gradientableVars
     outlined        toggle-option   use???              outlineVars
     mild            toggle-option   useMildable         mildVars
+    nude            [prog] toggle-option   useNudible          nudibleVars
 
 states
     excite          useExcitable    exciteVars
