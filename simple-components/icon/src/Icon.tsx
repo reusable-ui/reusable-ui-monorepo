@@ -25,7 +25,7 @@ import type {
     CssRule,
     
     CssStyleCollection,
-}                           from '@cssfn/css-types'         // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -43,16 +43,16 @@ import {
     style,
     vars,
     imports,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'       // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
     cssVar,
     fallbacks,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
+}                           from '@cssfn/css-var'               // strongly typed of css variables
 import {
     cssConfig,
     
@@ -60,22 +60,22 @@ import {
     
     // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
 import {
     // configs:
     colors,
-}                           from '@reusable-ui/colors'      // a color management system
+}                           from '@reusable-ui/colors'          // a color management system
 import {
     // styles:
     fillTextLineHeightLayout,
-}                           from '@reusable-ui/layouts'     // common layouts
+}                           from '@reusable-ui/layouts'         // common layouts
 import {
     // hooks:
     useMergeClasses,
     useMergeStyles,
-}                           from '@reusable-ui/hooks'       // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui variants:
 import {
@@ -83,7 +83,7 @@ import {
     usesResizable,
     ResizableProps,
     useResizable,
-}                           from '@reusable-ui/resizable'   // size options of UI
+}                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
     ThemeName,
@@ -93,30 +93,31 @@ import {
     ThemableProps,
     useThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
+import {
+    // hooks:
+    ifNotMild,
+    ifMild,
+    MildableRules,
+    MildableConfig,
+    usesMildable as baseUsesMildable,
+    MildableProps,
+    useMildable,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
 import {
     // react components:
     GenericProps,
     Generic,
-}                           from '@reusable-ui/generic'     // a base component
+}                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
     FeatureMixin,
-    VariantMixin,
     
     
     
     // hooks:
     usesOutlinedVariant,
-    
-    MildVars,
-    ifNotMild,
-    ifMild,
-    usesMildVariant as basicUsesMildVariant,
-    MildVariant,
-    useMildVariant,
-    
     BackgVars,
     usesBackg as basicUsesBackg,
     
@@ -124,7 +125,7 @@ import {
     
     // configs:
     basics as basicCssConfigs,
-}                           from '@reusable-ui/basic'       // a base component
+}                           from '@reusable-ui/basic'           // a base component
 
 // internals:
 import type {
@@ -148,9 +149,6 @@ export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
  */
 export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 //#endregion resizable
-
-
-// colors:
 
 //#region themable
 /**
@@ -182,43 +180,33 @@ export const themeOf = (themeName: ThemeName): CssRule => {
 };
 //#endregion themable
 
-//#region mild
-export {
-    MildVars,
-    ifNotMild,
-    ifMild,
-    MildVariant,
-    useMildVariant,
-}
-
-
-
+//#region mildable
 /**
- * Uses toggleable mildification.
- * @param factory Customize the callback to create mildification definitions for each toggle state.
- * @returns A `VariantMixin<MildVars>` represents toggleable mildification definitions.
+ * Uses a toggleable mildification.  
+ * @param factory A callback to create a mildification rules for each toggle state.
+ * @returns A `MildableRules` represents the mildification rules for each toggle state.
  */
-export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
+export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): MildableRules => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
-    const [            , milds       ] = basicUsesMildVariant(factory);
+    const {              mildableVars} = baseUsesMildable(config, factory);
     
     
     
-    return [
-        () => style({
+    return {
+        mildableRule: () => style({
             ...imports([
-                // makes   `usesMildVariant()` implicitly `usesThemable()`
-                // because `usesMildVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                // makes   `usesMildable()` implicitly `usesThemable()`
+                // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
                 themableRule,
             ]),
             ...vars({
-                [milds.altBackgFn] : fallbacks(
+                [mildableVars.altBackgFn] : fallbacks(
                     themableVars.altBackgMildImpt, // first  priority // supports for validation on ancestor
                     themableVars.altBackgMild,     // second priority
                     themableVars.altBackgMildCond, // third  priority // supports for active state on ancestor
                     
-                    icons.color,                   // default => uses config's color
+                    ...(config?.defaultAltBackg ? [config.defaultAltBackg] : []), // default => uses config's alternate background
                 ),
             }),
             ...variants([
@@ -226,29 +214,29 @@ export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyle
                 ifMild(factory(true)),
             ]),
         }),
-        milds,
-    ];
+        mildableVars,
+    };
 };
 
 /**
- * Creates mildification definitions for the given `toggle`.
+ * Creates a mildification rules for the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
- * @returns A `CssRule` represents mildification definitions for the given `toggle`.
+ * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: (boolean|null) = true): CssRule => {
+export const mildOf = (toggle: boolean|null = true): CssRule => {
     // dependencies:
-    const [, milds] = basicUsesMildVariant();
+    const {mildableVars} = baseUsesMildable();
     
     
     
     return style({
         ...vars({
-            // *toggle on/off* the mildification props:
-            [milds.altBackgTg] : toggle ? milds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            // *toggle on/off* the mildification prop:
+            [mildableVars.altBackgTg] : toggle ? mildableVars.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
         }),
     });
 };
-//#endregion mild
+//#endregion mildable
 
 //#region backg
 export {
@@ -266,7 +254,7 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     const {themableVars} = usesThemable();
     const [, backgs    ] = basicUsesBackg();
     const [, outlineds ] = usesOutlinedVariant();
-    const [, milds     ] = usesMildVariant();
+    const {mildableVars} = usesMildable();
     
     
     
@@ -289,10 +277,10 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
-                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                    outlineds.altBackgTg,    // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
+                    mildableVars.altBackgTg, // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
+                    backgs.altBackgColorFn,  // default => uses our `backgColorFn`
                 ),
             }),
         }),
@@ -655,11 +643,11 @@ export const usesIconVariants    = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule      } = usesResizable<SizeName>(icons);
-    const {themableRule       } = usesThemable();
-    
-    // colors:
-    const [mildVariantRule    ] = usesMildVariant();
+    const {resizableRule} = usesResizable<SizeName>(icons);
+    const {themableRule } = usesThemable();
+    const {mildableRule } = usesMildable({
+        defaultAltBackg : icons.color, // default => uses config's foreground
+    });
     
     
     
@@ -668,9 +656,7 @@ export const usesIconVariants    = () => {
             // variants:
             resizableRule,
             themableRule,
-            
-            // colors:
-            mildVariantRule,
+            mildableRule,
         ]),
     });
 };
@@ -849,9 +835,7 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
         // variants:
         ResizableProps<SizeName>,
         ThemableProps,
-        
-        // colors:
-        MildVariant
+        MildableProps
 {
     // appearances:
     icon : IconList
@@ -865,9 +849,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     // variants:
     const resizableVariant = useResizable<SizeName>(props);
     const themableVariant  = useThemable(props);
-    
-    // colors:
-    const mildVariant      = useMildVariant(props);
+    const mildableVariant  = useMildable(props);
     
     
     
@@ -903,9 +885,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         // variants:
         resizableVariant.class,
         themableVariant.class,
-        
-        // colors:
-        mildVariant.class,
+        mildableVariant.class,
     );
     const classes        = useMergeClasses(
         // preserves the original `classes`:
