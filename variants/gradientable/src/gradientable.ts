@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'             // cssfn general types
 import type {
-    // css known (standard) properties:
-    CssKnownProps,
+    // css custom properties:
+    CssCustomRef,
     
     
     
@@ -60,7 +60,7 @@ export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 export interface GradientableRules { gradientableRule: Factory<CssRule>, gradientableVars: GradientableVars }
 export interface GradientableConfig {
-    backgGrad ?: CssKnownProps['backgroundImage']
+    backgGrad ?: CssCustomRef
 }
 /**
  * Uses a toggleable gradient.  
