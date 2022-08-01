@@ -123,6 +123,12 @@ import {
 }                           from '@reusable-ui/gradientable'    // gradient variant of UI
 import {
     // hooks:
+    usesMildable,
+    MildableProps,
+    useMildable,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+import {
+    // hooks:
     usesNudible,
     NudibleProps,
     useNudible,
@@ -279,144 +285,6 @@ export const useOutlinedVariant = ({outlined}: OutlinedVariant) => ({
 });
 //#endregion outlined
 
-//#region mild
-export interface MildVars {
-    /**
-     * functional background color - at mild variant.
-     */
-    backgFn    : any
-    /**
-     * toggles_on background color - at mild variant.
-     */
-    backgTg    : any
-    /**
-     * functional alternate background color - at mild variant.
-     */
-    altBackgFn : any
-    /**
-     * toggles_on alternate background color - at mild variant.
-     */
-    altBackgTg : any
-    
-    
-    
-    /**
-     * functional foreground color - at mild variant.
-     */
-    foregFn    : any
-    /**
-     * toggles_on foreground color - at mild variant.
-     */
-    foregTg    : any
-    /**
-     * functional alternate foreground color - at mild variant.
-     */
-    altForegFn : any
-    /**
-     * toggles_on alternate foreground color - at mild variant.
-     */
-    altForegTg : any
-}
-const [milds] = cssVar<MildVars>();
-
-
-
-// by design: grandpa's `.mild` does not affect current `.mild`
-// parent not `.mild` -and- current not `.mild`:
-export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(.mild)&:where(:not(.mild))', styles);
-// parent is  `.mild` -or-  current is  `.mild`:
-export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mild&, &.mild)'            , styles);
-
-
-
-/**
- * Uses toggleable mildification.
- * @param factory Customize the callback to create mildification definitions for each toggle state.
- * @returns A `VariantMixin<MildVars>` represents toggleable mildification definitions.
- */
-export const usesMildVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = mildOf): VariantMixin<MildVars> => {
-    // dependencies:
-    const {themableRule, themableVars} = usesThemable();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // makes   `usesMildVariant()` implicitly `usesThemable()`
-                // because `usesMildVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themableRule,
-            ]),
-            ...vars({
-                [milds.backgFn   ] : fallbacks(
-                    themableVars.backgMildImpt,    // first  priority
-                    themableVars.backgMild,        // second priority
-                    themableVars.backgMildCond,    // third  priority
-                    
-                    basics.backg,                  // default => uses config's background
-                ),
-                
-                [milds.foregFn   ] : fallbacks(
-                    themableVars.foregMildImpt,    // first  priority
-                    themableVars.foregMild,        // second priority
-                    themableVars.foregMildCond,    // third  priority
-                    
-                    basics.foreg,                  // default => uses config's foreground
-                ),
-                
-                
-                
-                [milds.altBackgFn] : fallbacks(
-                    themableVars.altBackgMildImpt, // first  priority
-                    themableVars.altBackgMild,     // second priority
-                    themableVars.altBackgMildCond, // third  priority
-                    
-                    colors.primary,                // default => uses primary text theme
-                ),
-                
-                [milds.altForegFn] : fallbacks(
-                    themableVars.altForegMildImpt, // first  priority
-                    themableVars.altForegMild,     // second priority
-                    themableVars.altForegMildCond, // third  priority
-                    
-                    colors.primaryText,            // default => uses primary text theme
-                ),
-            }),
-            ...variants([
-                ifNotMild(factory(false)),
-                ifMild(factory(true)),
-            ]),
-        }),
-        milds,
-    ];
-};
-
-/**
- * Creates mildification definitions for the given `toggle`.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
- * @returns A `CssRule` represents mildification definitions for the given `toggle`.
- */
-export const mildOf = (toggle: (boolean|null) = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the mildification props:
-        [milds.backgTg   ] : toggle ? milds.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [milds.foregTg   ] : toggle ? milds.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        
-        [milds.altBackgTg] : toggle ? milds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [milds.altForegTg] : toggle ? milds.altForegFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
-
-
-
-export interface MildVariant {
-    mild ?: boolean
-}
-export const useMildVariant = ({mild}: MildVariant) => ({
-    class: mild ? 'mild' : null,
-});
-//#endregion mild
-
 //#region backg
 export interface BackgVars {
     /**
@@ -461,7 +329,7 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     const {themableVars    } = usesThemable();
     const {gradientableVars} = usesGradientable();
     const [, outlineds     ] = usesOutlinedVariant();
-    const [, milds         ] = usesMildVariant();
+    const {mildableVars    } = usesMildable();
     
     
     
@@ -499,16 +367,16 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [backgs.backgColor     ] : fallbacks(
-                    outlineds.backgTg,      // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.backgTg,          // toggle mild     (if `usesMildVariant()` applied)
+                    outlineds.backgTg,       // toggle outlined (if `usesOutlinedVariant()` applied)
+                    mildableVars.backgTg,    // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.backgColorFn,    // default => uses our `backgColorFn`
+                    backgs.backgColorFn,     // default => uses our `backgColorFn`
                 ),
                 [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,   // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.altBackgTg,       // toggle mild     (if `usesMildVariant()` applied)
+                    outlineds.altBackgTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
+                    mildableVars.altBackgTg, // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.altBackgColorFn, // default => uses our `backgColorFn`
+                    backgs.altBackgColorFn,  // default => uses our `backgColorFn`
                 ),
             }),
             
@@ -565,7 +433,7 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
     // dependencies:
     const {themableVars} = usesThemable();
     const [, outlineds ] = usesOutlinedVariant();
-    const [, milds     ] = usesMildVariant();
+    const {mildableVars} = usesMildable();
     
     
     
@@ -596,16 +464,16 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [foregs.foreg     ] : fallbacks(
-                    outlineds.foregTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.foregTg,        // toggle mild     (if `usesMildVariant()` applied)
+                    outlineds.foregTg,       // toggle outlined (if `usesOutlinedVariant()` applied)
+                    mildableVars.foregTg,    // toggle mild     (if `usesMildable()` applied)
                     
-                    foregs.foregFn,       // default => uses our `foregFn`
+                    foregs.foregFn,          // default => uses our `foregFn`
                 ),
                 [foregs.altForeg  ] : fallbacks(
-                    outlineds.altForegTg, // toggle outlined (if `usesOutlinedVariant()` applied)
-                    milds.altForegTg,     // toggle mild     (if `usesMildVariant()` applied)
+                    outlineds.altForegTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
+                    mildableVars.altForegTg, // toggle mild     (if `usesMildable()` applied)
                     
-                    foregs.altForegFn,    // default => uses our `foregFn`
+                    foregs.altForegFn,       // default => uses our `foregFn`
                 ),
             }),
         }),
@@ -1277,11 +1145,16 @@ export const usesBasicVariants = () => {
     const {resizableRule      } = usesResizable(basics);
     const {themableRule       } = usesThemable();
     const {gradientableRule   } = usesGradientable(basics);
+    const {mildableRule       } = usesMildable({
+        defaultBackg    : basics.backg,       // default => uses config's background
+        defaultForeg    : basics.foreg,       // default => uses config's foreground
+        defaultAltBackg : colors.primary,     // default => uses primary background theme
+        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
+    });
     const {nudibleRule        } = usesNudible();
     
     // colors:
     const [outlinedVariantRule] = usesOutlinedVariant();
-    const [mildVariantRule    ] = usesMildVariant();
     
     
     
@@ -1291,11 +1164,11 @@ export const usesBasicVariants = () => {
             resizableRule,
             themableRule,
             gradientableRule,
+            mildableRule,
             nudibleRule,
             
             // colors:
             outlinedVariantRule,
-            mildVariantRule,
         ]),
     });
 };
@@ -1446,11 +1319,11 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         ResizableProps,
         ThemableProps,
         GradientableProps,
+        MildableProps,
         NudibleProps,
         
         // colors:
-        OutlinedVariant,
-        MildVariant
+        OutlinedVariant
 {
 }
 const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElement>): JSX.Element|null => {
@@ -1463,11 +1336,11 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     const resizableVariant    = useResizable(props);
     const themableVariant     = useThemable(props);
     const gradientableVariant = useGradientable(props);
+    const mildableVariant     = useMildable(props);
     const nudibleVariant      = useNudible(props);
     
     // colors:
     const outlinedVariant     = useOutlinedVariant(props);
-    const mildVariant         = useMildVariant(props);
     
     
     
@@ -1499,11 +1372,11 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         resizableVariant.class,
         themableVariant.class,
         gradientableVariant.class,
+        mildableVariant.class,
         nudibleVariant.class,
         
         // colors:
         outlinedVariant.class,
-        mildVariant.class,
     );
     
     
