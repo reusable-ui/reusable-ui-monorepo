@@ -1276,7 +1276,7 @@ export const usesBasicVariants = () => {
     // variants:
     const {resizableRule      } = usesResizable(basics);
     const {themableRule       } = usesThemable();
-    const {gradientableRule   } = usesGradientable(basics.backgGrad);
+    const {gradientableRule   } = usesGradientable(basics);
     const {nudibleRule        } = usesNudible();
     
     // colors:
