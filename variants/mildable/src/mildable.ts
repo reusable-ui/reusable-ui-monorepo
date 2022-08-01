@@ -115,8 +115,8 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
     return {
         mildableRule: () => style({
             ...imports([
-                // makes   `usesMildVariant()` implicitly `usesThemable()`
-                // because `usesMildVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+                // makes   `usesMildable()` implicitly `usesThemable()`
+                // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
                 themableRule,
             ]),
             ...vars({
