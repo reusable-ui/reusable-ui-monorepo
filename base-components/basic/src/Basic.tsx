@@ -521,7 +521,7 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
                     
                     // top layer:
                     fallbacks(
-                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientVariant()` applied)
+                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
                         
                         backgs.backgNone,             // default => no top layer
                     ),
