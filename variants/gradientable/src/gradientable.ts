@@ -59,16 +59,19 @@ export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 
 export interface GradientableRules { gradientableRule: Factory<CssRule>, gradientableVars: GradientableVars }
+export interface GradientableOptions {
+    backgGrad ?: CssCustomRef
+}
 /**
  * Uses a toggleable gradient.  
  * @param factory A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableRules` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (backgGrad?: CssCustomRef, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableRules => {
+export const usesGradientable = (options?: GradientableOptions, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableRules => {
     return {
         gradientableRule: () => style({
             ...vars({
-                [gradientableVars.backgGrad] : backgGrad,
+                [gradientableVars.backgGrad] : options?.backgGrad,
             }),
             ...variants([
                 ifNotGradient(factory(false)),
