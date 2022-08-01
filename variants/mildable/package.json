@@ -1,0 +1,44 @@
+{
+  "name": "@reusable-ui/mildable",
+  "version": "5.0.0",
+  "description": "Mild (soft color) variant of UI.",
+  "keywords": [
+    "mildable",
+    "mild",
+    "soft",
+    "colors",
+    "variants",
+    "design",
+    "layouts"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/mildable.js",
+  "types": "dist/mildable.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/types": "^2.0.1",
+    "@cssfn/css-types": "^2.0.3",
+    "@cssfn/css-var": "^2.0.4",
+    "@reusable-ui/themable": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.6"
+  }
+}
