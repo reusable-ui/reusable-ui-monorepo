@@ -66,6 +66,10 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    gradientOf,
+}                           from '@reusable-ui/gradientable'    // gradient variant of UI
 
 // reusable-ui components:
 import {
@@ -80,7 +84,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    gradientOf,
     ifNotOutlined,
     outlinedOf,
     usesBorder,
