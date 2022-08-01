@@ -25,10 +25,6 @@ import {
     pascalCase,
 }                           from '@cssfn/cssfn'             // writes css in javascript
 import {
-    // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'           // strongly typed of css variables
-import {
     // types:
     CssConfigProps,
     Refs,
@@ -48,10 +44,6 @@ import {
 
 //#region resizable
 export type SizeName = 'sm'|'lg'
-export interface ResizableVars {
-    // empty (may be added soon)
-}
-const [resizableVars] = cssVar<ResizableVars>();
 
 
 
@@ -59,7 +51,7 @@ export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName,
 
 
 
-export interface ResizableRules { resizableRule: Factory<CssRule>, resizableVars: ResizableVars }
+export interface ResizableRules { resizableRule: Factory<CssRule> }
 /**
  * Uses size options.  
  * For example: `sm`, `lg`.
@@ -79,7 +71,6 @@ export const usesResizable = <TSizeName extends string = SizeName, TConfigProps 
                 ),
             ]),
         }),
-        resizableVars,
     };
 };
 
