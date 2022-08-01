@@ -101,6 +101,10 @@ import type {
     // hooks:
     ThemeName,
 }                           from '@reusable-ui/themable'        // color options of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
 import {
@@ -121,7 +125,6 @@ import {
 import {
     // hooks:
     outlinedOf,
-    mildOf,
     usesBackg,
     usesBorder,
     extendsBorder,
