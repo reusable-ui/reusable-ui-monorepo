@@ -229,9 +229,9 @@ export const markValid   = (): CssRule => style({
     ]),
 });
 /**
- * Creates a conditional color definitions at valid state.
- * @param themeName The name of valid theme.
- * @returns A `CssRule` represents the conditional color definitions at valid state.
+ * Creates a conditional theme color rules at valid state.
+ * @param themeName The theme name at valid state.
+ * @returns A `CssRule` represents a conditional theme color rules at valid state.
  */
 export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImportant(themeName);
 
@@ -241,9 +241,9 @@ export const markInvalid = (): CssRule => style({
     ]),
 });
 /**
- * Creates a conditional color definitions at invalid state.
- * @param themeName The name of invalid theme.
- * @returns A `CssRule` represents the conditional color definitions at invalid state.
+ * Creates a conditional theme color rules at invalid state.
+ * @param themeName The theme name at invalid state.
+ * @returns A `CssRule` represents a conditional theme color rules at invalid state.
  */
 export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
 
