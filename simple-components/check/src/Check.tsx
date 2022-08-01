@@ -102,6 +102,10 @@ import {
 }                           from '@reusable-ui/resizable'               // size options of UI
 import {
     // hooks:
+    usesMildable,
+}                           from '@reusable-ui/mildable'                // mild (soft color) variant of UI
+import {
+    // hooks:
     ifNotNude,
     ifNude,
 }                           from '@reusable-ui/nudible'                 // nude variant of UI
@@ -114,7 +118,6 @@ import {
     
     
     // hooks:
-    usesMildVariant,
     usesForeg,
     usesBorder,
     usesPadding,
@@ -567,9 +570,9 @@ export const usesCheckVariants = () => {
     
     // variants:
     const {resizableRule  } = usesResizable(checks);
+    const {mildableVars   } = usesMildable();
     
     // foregrounds:
-    const [, milds        ] = usesMildVariant();
     const [, foregs       ] = usesForeg();
     
     // borders:
@@ -658,7 +661,7 @@ export const usesCheckVariants = () => {
             }),
             ifNude({
                 // foregrounds:
-                foreg     : [milds.foregFn, '!important'], // no valid/invalid animation
+                foreg     : [mildableVars.foregFn, '!important'], // no valid/invalid animation
             }),
         ], { specificityWeight: 2 }),
     });
