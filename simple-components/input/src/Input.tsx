@@ -22,7 +22,6 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
@@ -54,11 +53,14 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'               // size options of UI
+import {
+    // hooks:
+    usesGradientable,
+}                           from '@reusable-ui/gradientable'            // gradient variant of UI
 
 // reusable-ui components:
 import {
     // hooks:
-    usesGradientVariant,
     extendsBorder,
     usesPadding,
 }                           from '@reusable-ui/basic'                   // a base component
@@ -166,15 +168,8 @@ export const usesInputVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable(inputs);
-    
-    // colors:
-    const [gradientVariantRule, gradients] = usesGradientVariant((toggle) => style({
-        ...vars({
-            // *toggle on/off* the background gradient prop:
-            [gradients.backgGradTg] : toggle ? inputs.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        }),
-    }));
+    const {resizableRule   } = usesResizable(inputs);
+    const {gradientableRule} = usesGradientable(inputs.backgGrad);
     
     
     
@@ -183,9 +178,7 @@ export const usesInputVariants = () => {
             // variants:
             usesEditableTextControlVariants(),
             resizableRule,
-            
-            // colors:
-            gradientVariantRule,
+            gradientableRule,
         ]),
     });
 };
