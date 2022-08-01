@@ -84,6 +84,10 @@ import {
     ThemeName,
     usesThemeConditional,
 }                           from '@reusable-ui/themable'        // color options of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
 import {
@@ -99,7 +103,6 @@ import {
     
     // hooks:
     outlinedOf,
-    mildOf,
     usesAnim,
     fallbackNoneFilter,
     
