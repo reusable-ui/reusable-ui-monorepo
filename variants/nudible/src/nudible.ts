@@ -37,7 +37,7 @@ export const ifNude    = (styles: CssStyleCollection): CssRule => rule(':is(.nud
 
 export interface NudibleRules { nudibleRule: Factory<CssRule> }
 /**
- * Uses toggleable nudeification (removes background, border & padding).
+ * Uses a toggleable nudeification (removes background, border & padding).
  * @returns A `NudibleRules` represents the nudeification rules.
  */
 export const usesNudible = (): NudibleRules => {
