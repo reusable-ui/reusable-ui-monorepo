@@ -117,6 +117,12 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    usesGradientable,
+    GradientableProps,
+    useGradientable,
+}                           from '@reusable-ui/gradientable'    // gradient variant of UI
+import {
+    // hooks:
     usesNudible,
     NudibleProps,
     useNudible,
@@ -141,63 +147,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 // hooks:
 
 // colors:
-
-//#region gradient
-export interface GradientVars {
-    /**
-     * toggles_on background gradient - at gradient variant.
-     */
-    backgGradTg : any
-}
-const [gradients] = cssVar<GradientVars>();
-
-
-
-// grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(.gradient) :where(:not(.gradient)&:not(.gradient))', styles);
-// grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(.gradient &, .gradient&, &.gradient)'               , styles);
-
-
-
-/**
- * Uses toggleable gradient.
- * @param factory Customize the callback to create gradient definitions for each toggle state.
- * @returns A `VariantMixin<GradientVars>` represents toggleable gradient definitions.
- */
-export const usesGradientVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = gradientOf): VariantMixin<GradientVars> => {
-    return [
-        () => style({
-            ...variants([
-                ifNotGradient(factory(false)),
-                ifGradient(factory(true)),
-            ]),
-        }),
-        gradients,
-    ];
-};
-
-/**
- * Creates gradient definitions for the given `toggle`.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
- * @returns A `CssRule` represents gradient definitions for the given `toggle`.
- */
-export const gradientOf = (toggle: (boolean|null) = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the background gradient prop:
-        [gradients.backgGradTg] : toggle ? basics.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
-
-
-
-export interface GradientVariant {
-    gradient ?: boolean
-}
-export const useGradientVariant = ({gradient}: GradientVariant) => ({
-    class: gradient ? 'gradient' : null,
-});
-//#endregion gradient
 
 //#region outlined
 export interface OutlinedVars {
@@ -509,10 +458,10 @@ const [backgs] = cssVar<BackgVars>();
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
-    const {themableVars} = usesThemable();
-    const [, gradients ] = usesGradientVariant();
-    const [, outlineds ] = usesOutlinedVariant();
-    const [, milds     ] = usesMildVariant();
+    const {themableVars    } = usesThemable();
+    const {gradientableVars} = usesGradientable();
+    const [, outlineds     ] = usesOutlinedVariant();
+    const [, milds         ] = usesMildVariant();
     
     
     
@@ -572,9 +521,9 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
                     
                     // top layer:
                     fallbacks(
-                        gradients.backgGradTg, // toggle gradient (if `usesGradientVariant()` applied)
+                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientVariant()` applied)
                         
-                        backgs.backgNone,      // default => no top layer
+                        backgs.backgNone,             // default => no top layer
                     ),
                     
                     // bottom layer:
@@ -1327,10 +1276,10 @@ export const usesBasicVariants = () => {
     // variants:
     const {resizableRule      } = usesResizable(basics);
     const {themableRule       } = usesThemable();
+    const {gradientableRule   } = usesGradientable(basics.backgGrad);
     const {nudibleRule        } = usesNudible();
     
     // colors:
-    const [gradientVariantRule] = usesGradientVariant();
     const [outlinedVariantRule] = usesOutlinedVariant();
     const [mildVariantRule    ] = usesMildVariant();
     
@@ -1341,10 +1290,10 @@ export const usesBasicVariants = () => {
             // variants:
             resizableRule,
             themableRule,
+            gradientableRule,
             nudibleRule,
             
             // colors:
-            gradientVariantRule,
             outlinedVariantRule,
             mildVariantRule,
         ]),
@@ -1496,29 +1445,29 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         // variants:
         ResizableProps,
         ThemableProps,
+        GradientableProps,
         NudibleProps,
         
         // colors:
-        GradientVariant,
         OutlinedVariant,
         MildVariant
 {
 }
 const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useBasicStyleSheet();
+    const styleSheet          = useBasicStyleSheet();
     
     
     
     // variants:
-    const resizableVariant = useResizable(props);
-    const themableVariant  = useThemable(props);
-    const nudibleVariant   = useNudible(props);
+    const resizableVariant    = useResizable(props);
+    const themableVariant     = useThemable(props);
+    const gradientableVariant = useGradientable(props);
+    const nudibleVariant      = useNudible(props);
     
     // colors:
-    const gradientVariant  = useGradientVariant(props);
-    const outlinedVariant  = useOutlinedVariant(props);
-    const mildVariant      = useMildVariant(props);
+    const outlinedVariant     = useOutlinedVariant(props);
+    const mildVariant         = useMildVariant(props);
     
     
     
@@ -1549,10 +1498,10 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         // variants:
         resizableVariant.class,
         themableVariant.class,
+        gradientableVariant.class,
         nudibleVariant.class,
         
         // colors:
-        gradientVariant.class,
         outlinedVariant.class,
         mildVariant.class,
     );
