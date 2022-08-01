@@ -31,7 +31,7 @@ variants
     themes          [done] multi-options   useThemable         themableVars
     gradient        [done] toggle-option   useGradientable     gradientableVars
     outlined        toggle-option   use???              outlineVars
-    mild            toggle-option   useMildable         mildVars
+    mild            [done] toggle-option   useMildable         mildableVars
     nude            [prog] toggle-option   useNudible          nudibleVars
 
 states
