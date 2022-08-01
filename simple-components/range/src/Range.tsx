@@ -107,6 +107,10 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'               // size options of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'                // mild (soft color) variant of UI
 
 // reusable-ui components:
 import {
@@ -120,7 +124,6 @@ import {
     
     
     // hooks:
-    mildOf,
     usesBackg,
     extendsBorder,
     extendsPadding,
