@@ -64,6 +64,10 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    ifNotNude,
+}                           from '@reusable-ui/nudible'         // nude variant of UI
 
 // reusable-ui states:
 import type {
@@ -74,7 +78,6 @@ import type {
 // reusable-ui components:
 import {
     // hooks:
-    ifNotNude,
     usesBorder,
     usesPadding,
     extendsPadding,
