@@ -70,6 +70,11 @@ import {
     // hooks:
     gradientOf,
 }                           from '@reusable-ui/gradientable'    // gradient variant of UI
+import {
+    // hooks:
+    ifNotOutlined,
+    outlinedOf,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 
 // reusable-ui components:
 import {
@@ -84,8 +89,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    ifNotOutlined,
-    outlinedOf,
     usesBorder,
     usesPadding,
 }                           from '@reusable-ui/basic'           // a base component
