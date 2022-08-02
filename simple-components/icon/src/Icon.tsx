@@ -183,6 +183,7 @@ export const themeOf = (themeName: ThemeName): CssRule => {
 //#region mildable
 /**
  * Uses a toggleable mildification.  
+ * @param config  A configuration of `mildableRule`.
  * @param factory A callback to create a mildification rules for each toggle state.
  * @returns A `MildableRules` represents the mildification rules for each toggle state.
  */
