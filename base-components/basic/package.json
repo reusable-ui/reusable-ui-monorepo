@@ -36,7 +36,7 @@
     "@cssfn/cssfn-react": "^2.0.8",
     "@cssfn/css-config": "^2.0.13",
     "@cssfn/css-types": "^2.0.3",
-    "@cssfn/css-var": "^2.0.4",
+    "@cssfn/css-var": "^2.0.5",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/gradientable": "^5.0.0",
