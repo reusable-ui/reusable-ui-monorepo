@@ -126,7 +126,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.backgMild,        // second priority
                     themableVars.backgMildCond,    // third  priority
                     
-                    ...(config?.defaultBackg ? [config.defaultBackg] : []),       // default => uses config's background
+                    config?.defaultBackg,          // default => uses config's background
                 ),
                 
                 [mildableVars.foregFn   ] : fallbacks(
@@ -134,7 +134,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.foregMild,        // second priority
                     themableVars.foregMildCond,    // third  priority
                     
-                    ...(config?.defaultForeg ? [config.defaultForeg] : []),       // default => uses config's foreground
+                    config?.defaultForeg,          // default => uses config's foreground
                 ),
                 
                 
@@ -144,7 +144,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.altBackgMild,     // second priority
                     themableVars.altBackgMildCond, // third  priority
                     
-                    ...(config?.defaultAltBackg ? [config.defaultAltBackg] : []), // default => uses config's alternate background
+                    config?.defaultAltBackg,       // default => uses config's alternate background
                 ),
                 
                 [mildableVars.altForegFn] : fallbacks(
@@ -152,7 +152,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.altForegMild,     // second priority
                     themableVars.altForegMildCond, // third  priority
                     
-                    ...(config?.defaultAltForeg ? [config.defaultAltForeg] : []), // default => uses config's alternate foreground
+                    config?.defaultAltForeg,       // default => uses config's alternate foreground
                 ),
             }),
             ...variants([
