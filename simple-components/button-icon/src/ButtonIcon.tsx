@@ -27,7 +27,7 @@ import {
 import {
     // utilities:
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     

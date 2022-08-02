@@ -52,8 +52,8 @@ import {
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                       // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'                      // strongly typed of css variables
 import {
     cssConfig,
     
@@ -193,7 +193,7 @@ export interface RangeVars {
      */
     backg      : any
 }
-const [rangeVars] = cssVar<RangeVars>({ minify: false, prefix: 'range' }); // do not minify to make sure `style={{ --range-valueRatio: ... }}` is the same between in server (without `useRangeStyleSheet` rendered) & client (with `useRangeStyleSheet` rendered)
+const [rangeVars] = cssVars<RangeVars>({ minify: false, prefix: 'range' }); // do not minify to make sure `style={{ --range-valueRatio: ... }}` is the same between in server (without `useRangeStyleSheet` rendered) & client (with `useRangeStyleSheet` rendered)
 
 /**
  * Uses Range variables.

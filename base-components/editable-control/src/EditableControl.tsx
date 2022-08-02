@@ -48,8 +48,8 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -137,7 +137,7 @@ export interface ValidInvalidVars {
     animValid   : any
     animInvalid : any
 }
-const [valids] = cssVar<ValidInvalidVars>();
+const [valids] = cssVars<ValidInvalidVars>();
 
 {
     const [, , animRegistry] = usesAnim();

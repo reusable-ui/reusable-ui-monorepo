@@ -50,9 +50,9 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    cssVar,
+    cssVars,
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -256,7 +256,7 @@ export interface IconVars {
      */
     color : any
 }
-const [iconVars] = cssVar<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-img: ... }}` is the same between in server (without `useIconStyleSheet` rendered) & client (with `useIconStyleSheet` rendered)
+const [iconVars] = cssVars<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-img: ... }}` is the same between in server (without `useIconStyleSheet` rendered) & client (with `useIconStyleSheet` rendered)
 
 /**
  * Uses icon image and icon color.

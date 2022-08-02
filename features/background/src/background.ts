@@ -24,9 +24,9 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
-    cssVar,
+    cssVars,
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
 import {
@@ -86,7 +86,7 @@ export interface BackgroundVars {
      */
     backg           : any
 }
-const [backgroundVars] = cssVar<BackgroundVars>();
+const [backgroundVars] = cssVars<BackgroundVars>();
 
 
 

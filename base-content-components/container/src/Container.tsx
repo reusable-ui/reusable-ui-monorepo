@@ -55,8 +55,8 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -161,7 +161,7 @@ export interface ContainerVars {
     paddingInline          : any
     paddingBlock           : any
 }
-const [containerVars] = cssVar<ContainerVars>();
+const [containerVars] = cssVars<ContainerVars>();
 
 
 

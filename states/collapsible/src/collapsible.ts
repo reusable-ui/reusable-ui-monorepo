@@ -36,8 +36,8 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui:
 import {
@@ -71,7 +71,7 @@ export interface CollapsibleVars {
     filter : any
     anim   : any
 }
-const [collapsibleVars] = cssVar<CollapsibleVars>();
+const [collapsibleVars] = cssVars<CollapsibleVars>();
 
 {
     const [, , animRegistry] = usesAnim();

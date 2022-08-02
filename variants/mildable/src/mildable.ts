@@ -28,9 +28,9 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
-    cssVar,
+    cssVars,
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
 import {
@@ -82,7 +82,7 @@ export interface MildableVars {
      */
     altForegTg : any
 }
-const [mildableVars] = cssVar<MildableVars>();
+const [mildableVars] = cssVars<MildableVars>();
 
 
 

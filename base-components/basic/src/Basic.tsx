@@ -53,14 +53,14 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
-    ReadonlyCssCustomRefs,
+    CssVars,
     
     
     
     // utilities:
-    cssVar,
+    cssVars,
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -150,9 +150,9 @@ import {
 
 
 // types:
-export type FeatureMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
-export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
-export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, ReadonlyCssCustomRefs<TCssCustomProps>]
+export type FeatureMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
+export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
+export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
 
 
 
@@ -177,7 +177,7 @@ export interface ForegVars {
      */
     altForeg   : any
 }
-const [foregs] = cssVar<ForegVars>();
+const [foregs] = cssVars<ForegVars>();
 
 /**
  * Uses foreground color (text color).
@@ -277,7 +277,7 @@ export interface BorderVars {
      */
     borderEndEndRadius     : any
 }
-const [borders] = cssVar<BorderVars>();
+const [borders] = cssVars<BorderVars>();
 
 
 
@@ -392,7 +392,7 @@ export interface RingVars {
      */
     ring   : any
 }
-const [rings] = cssVar<RingVars>();
+const [rings] = cssVars<RingVars>();
 
 /**
  * Uses ring color (focus ring color).
@@ -447,7 +447,7 @@ export interface PaddingVars {
      */
     paddingBlock  : any
 }
-const [paddings] = cssVar<PaddingVars>();
+const [paddings] = cssVars<PaddingVars>();
 
 
 
@@ -536,7 +536,7 @@ export interface AnimVars {
      */
     anim          : any
 }
-const [anims] = cssVar<AnimVars>();
+const [anims] = cssVars<AnimVars>();
 
 
 
@@ -579,7 +579,7 @@ export type AnimRegistry = typeof animRegistry
 
 
 
-export type AnimMixin = readonly [() => CssRule, ReadonlyCssCustomRefs<AnimVars>, AnimRegistry]
+export type AnimMixin = readonly [() => CssRule, CssVars<AnimVars>, AnimRegistry]
 /**
  * Uses animation.
  * @returns A `AnimMixin` represents animation definitions.
@@ -651,7 +651,7 @@ export interface ExcitedVars {
     filter : any
     anim   : any
 }
-const [exciteds] = cssVar<ExcitedVars>();
+const [exciteds] = cssVars<ExcitedVars>();
 
 {
     const [, , animRegistry] = usesAnim();

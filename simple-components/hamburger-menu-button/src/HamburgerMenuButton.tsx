@@ -38,14 +38,14 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
-    ReadonlyCssCustomRefs,
+    CssVars,
     
     
     
     // utilities:
-    cssVar,
+    cssVars,
     fallbacks,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -200,11 +200,11 @@ export interface HamburgerAnimVars {
      */
     btmAnim      : any
 }
-const [hamburgerAnims] = cssVar<HamburgerAnimVars>();
+const [hamburgerAnims] = cssVars<HamburgerAnimVars>();
 
 
 
-export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, ReadonlyCssCustomRefs<HamburgerAnimVars>]
+export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, CssVars<HamburgerAnimVars>]
 /**
  * Uses hamburger animation.
  * @returns A `HamburgerAnimMixin` represents hamburger animation definitions.

@@ -40,8 +40,8 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -156,7 +156,7 @@ export interface FocusBlurVars {
      */
     boxShadowLy : any
 }
-const [focuses] = cssVar<FocusBlurVars>();
+const [focuses] = cssVars<FocusBlurVars>();
 
 {
     const [, , animRegistry] = usesAnim();
@@ -351,7 +351,7 @@ export interface ArriveLeaveVars {
     filter : any
     anim   : any
 }
-const [arrives] = cssVar<ArriveLeaveVars>();
+const [arrives] = cssVars<ArriveLeaveVars>();
 
 {
     const [, , animRegistry] = usesAnim();

@@ -27,8 +27,8 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui utilities:
 import {
@@ -218,7 +218,7 @@ export interface ThemableVars {
      */
     ringImpt             : any
 }
-const [themableVars] = cssVar<ThemableVars>();
+const [themableVars] = cssVars<ThemableVars>();
 
 
 

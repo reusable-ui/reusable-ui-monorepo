@@ -55,13 +55,13 @@ import {
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // types:
-    ReadonlyCssCustomRefs,
+    CssVars,
     
     
     
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'                       // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'                      // strongly typed of css variables
 import {
     cssConfig,
     
@@ -197,7 +197,7 @@ export interface CheckAnimVars {
      */
     anim   : any
 }
-const [checkAnims] = cssVar<CheckAnimVars>();
+const [checkAnims] = cssVars<CheckAnimVars>();
 
 
 
@@ -261,7 +261,7 @@ export type CheckAnimRegistry = typeof checkAnimRegistry
 
 
 
-export type CheckAnimMixin = readonly [() => CssRule, ReadonlyCssCustomRefs<CheckAnimVars>, CheckAnimRegistry]
+export type CheckAnimMixin = readonly [() => CssRule, CssVars<CheckAnimVars>, CheckAnimRegistry]
 /**
  * Uses check animation.
  * @returns A `CheckAnimMixin` represents check animation definitions.
@@ -329,7 +329,7 @@ export interface CheckClearVars {
     transfOut : any
     anim      : any
 }
-const [checkVars] = cssVar<CheckClearVars>();
+const [checkVars] = cssVars<CheckClearVars>();
 
 {
     const [, , checkAnimRegistry] = usesCheckAnim();

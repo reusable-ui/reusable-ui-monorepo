@@ -42,8 +42,8 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -142,7 +142,7 @@ export interface PressReleaseVars {
     filter : any
     anim   : any
 }
-const [presses] = cssVar<PressReleaseVars>();
+const [presses] = cssVars<PressReleaseVars>();
 
 {
     const [, , animRegistry] = usesAnim();

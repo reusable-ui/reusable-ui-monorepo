@@ -27,8 +27,8 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
-    cssVar,
-}                           from '@cssfn/css-var'               // strongly typed of css variables
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 
 
@@ -47,7 +47,7 @@ export interface GradientableVars {
      */
     backgGradTg : any
 }
-const [gradientableVars] = cssVar<GradientableVars>();
+const [gradientableVars] = cssVars<GradientableVars>();
 
 
 
