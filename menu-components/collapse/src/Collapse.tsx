@@ -138,7 +138,7 @@ export const usesCollapseStates = () => {
     // dependencies:
     
     // states:
-    const [collapsibleRule] = usesCollapsible(collapses);
+    const {collapsibleRule} = usesCollapsible(collapses);
     
     
     
