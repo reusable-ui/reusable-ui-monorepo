@@ -46,11 +46,6 @@ import {
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
-    solidBackg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
@@ -99,6 +94,12 @@ import {
     useEvent,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
 
 // reusable-ui variants:
 import {
@@ -156,125 +157,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-//#region backg
-export interface BackgVars {
-    /**
-     * none background.
-     */
-    backgNone       : any
-    
-    
-    
-    /**
-     * functional background color.
-     */
-    backgColorFn    : any
-    /**
-     * final background color.
-     */
-    backgColor      : any
-    /**
-     * functional alternate background color.
-     */
-    altBackgColorFn : any
-    /**
-     * final alternate background color.
-     */
-    altBackgColor   : any
-    
-    
-    
-    /**
-     * final background layers.
-     */
-    backg           : any
-}
-const [backgs] = cssVar<BackgVars>();
-
-/**
- * Uses background layer(s).
- * @returns A `FeatureMixin<BackgVars>` represents background layer(s) definitions.
- */
-export const usesBackg = (): FeatureMixin<BackgVars> => {
-    // dependencies:
-    const {themableVars    } = usesThemable();
-    const {gradientableVars} = usesGradientable();
-    const {outlineableVars } = usesOutlineable();
-    const {mildableVars    } = usesMildable();
-    
-    
-    
-    return [
-        () => style({
-            // constants:
-            ...vars({
-                [backgs.backgNone      ] : solidBackg('transparent'),
-            }),
-            
-            
-            
-            // color functions:
-            ...vars({
-                [backgs.backgColorFn   ] : 'inherit', // inherit to parent theme
-                [backgs.altBackgColorFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [backgs.backgColorFn   ] : fallbacks(
-                        themableVars.backgImpt,    // first  priority
-                        themableVars.backg,        // second priority
-                        themableVars.backgCond,    // third  priority
-                        
-                        basics.backg,              // default => uses config's background
-                    ),
-                    [backgs.altBackgColorFn] : fallbacks(
-                        themableVars.altBackgImpt, // first  priority
-                        themableVars.altBackg,     // second priority
-                        themableVars.altBackgCond, // third  priority
-                        
-                        colors.primary,            // default => uses primary text theme
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [backgs.backgColor     ] : fallbacks(
-                    outlineableVars.backgTg,    // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,       // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgs.backgColorFn,        // default => uses our `backgColorFn`
-                ),
-                [backgs.altBackgColor  ] : fallbacks(
-                    outlineableVars.altBackgTg, // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altBackgTg,    // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgs.altBackgColorFn,     // default => uses our `backgColorFn`
-                ),
-            }),
-            
-            
-            
-            // compositions:
-            ...vars({
-                [backgs.backg          ] : [
-                    // layering: backg1 | backg2 | backg3 ...
-                    
-                    // top layer:
-                    fallbacks(
-                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
-                        
-                        backgs.backgNone,             // default => no top layer
-                    ),
-                    
-                    // bottom layer:
-                    backgs.backgColor,
-                ],
-            }),
-        }),
-        backgs,
-    ];
-};
-//#endregion backg
 
 //#region foreg
 export interface ForegVars {
@@ -915,8 +797,11 @@ export const useExcitedState = <TElement extends Element = HTMLElement>(props: T
 export const usesBasicLayout = () => {
     // dependencies:
     
-    // backgrounds:
-    const [backgRule   , backgs] = usesBackg();
+    // features:
+    const {backgroundRule, backgroundVars} = usesBackground({
+        defaultBackg    : basics.backg,   // default => uses config's background
+        defaultAltBackg : colors.primary, // default => uses primary background theme
+    });
     
     // foregrounds:
     const [foregRule   , foregs] = usesForeg();
@@ -937,8 +822,8 @@ export const usesBasicLayout = () => {
     
     return style({
         ...imports([
-            // backgrounds:
-            backgRule,
+            // features:
+            backgroundRule,
             
             // foregrounds:
             foregRule,
@@ -969,18 +854,18 @@ export const usesBasicLayout = () => {
             // accessibilities:
             ...rule(['&::selection', '& ::selection'], { // ::selection on self and descendants
                     // backgrounds:
-                backg     : backgs.altBackgColor,
+                backg : backgroundVars.altBackgColor,
                 
                 
                 
                 // foregrounds:
-                foreg     : foregs.altForeg,
+                foreg : foregs.altForeg,
             }),
             
             
             
             // backgrounds:
-            backg     : backgs.backg,
+            backg     : backgroundVars.backg,
             
             
             
