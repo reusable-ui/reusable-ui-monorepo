@@ -9,18 +9,18 @@ import {
     // styles:
     style,
     imports,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     createUseStyleSheet,
-}                           from '@cssfn/cssfn-react'       // writes css in react hook
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui components:
 import {
     // react components:
     GenericProps,
     Generic,
-}                           from '@reusable-ui/generic'     // a base component
+}                           from '@reusable-ui/generic'         // a base component
 
 
 
