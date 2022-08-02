@@ -95,6 +95,10 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    usesOutlineable,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
     ifNotMild,
     ifMild,
     MildableRules,
@@ -117,7 +121,6 @@ import {
     
     
     // hooks:
-    usesOutlinedVariant,
     BackgVars,
     usesBackg as basicUsesBackg,
     
@@ -252,10 +255,10 @@ export {
  */
 export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
-    const {themableVars} = usesThemable();
-    const [, backgs    ] = basicUsesBackg();
-    const [, outlineds ] = usesOutlinedVariant();
-    const {mildableVars} = usesMildable();
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
+    const [, backgs       ] = basicUsesBackg();
     
     
     
@@ -268,20 +271,20 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
                 ...vars({
                     [backgs.altBackgColorFn] : fallbacks(
-                        themableVars.altBackgImpt,    // first  priority // supports for validation on ancestor
-                        themableVars.altBackg,        // second priority
-                        themableVars.altBackgCond,    // third  priority // supports for active state on ancestor
+                        themableVars.altBackgImpt, // first  priority // supports for validation on ancestor
+                        themableVars.altBackg,     // second priority
+                        themableVars.altBackgCond, // third  priority // supports for active state on ancestor
                         
-                        icons.color,                  // default => uses config's color
+                        icons.color,               // default => uses config's color
                     ),
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,    // toggle outlined (if `usesOutlinedVariant()` applied) // supports for outlined ancestor
-                    mildableVars.altBackgTg, // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.altBackgTg, // toggle outlined (if `usesOutlineable()` applied) // supports for outlined ancestor
+                    mildableVars.altBackgTg,    // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.altBackgColorFn,  // default => uses our `backgColorFn`
+                    backgs.altBackgColorFn,     // default => uses our `backgColorFn`
                 ),
             }),
         }),
