@@ -2,13 +2,13 @@
 import type {
     // types:
     Factory,
-}                           from '@cssfn/types'             // cssfn general types
+}                           from '@cssfn/types'                 // cssfn general types
 import type {
     // cssfn properties:
     CssRule,
     
     CssStyleCollection,
-}                           from '@cssfn/css-types'         // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -23,7 +23,7 @@ import {
     
     // utilities:
     pascalCase,
-}                           from '@cssfn/cssfn'             // writes css in javascript
+}                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // types:
     CssConfigProps,
@@ -34,7 +34,7 @@ import {
     // utilities:
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'        // reads/writes css variables configuration
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 
 
