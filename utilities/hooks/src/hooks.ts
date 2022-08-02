@@ -13,13 +13,13 @@ import type {
     // types:
     Optional,
     SingleOrArray,
-}                           from '@cssfn/types'             // cssfn general types
+}                           from '@cssfn/types'                 // cssfn general types
 
 // reusable-ui:
 import {
     // utilities:
     isClientSide,
-}                           from '@reusable-ui/utilities'   // common utility functions
+}                           from '@reusable-ui/utilities'       // common utility functions
 
 
 
