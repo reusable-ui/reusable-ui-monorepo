@@ -52,7 +52,7 @@ import {
     // hooks:
     usesResizable,
     ResizableProps,
-}                           from '@reusable-ui/resizable'   // size options of UI
+}                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
 import {
