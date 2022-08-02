@@ -293,7 +293,7 @@ export const usesBackdropStates = () => {
     // dependencies:
     
     // states:
-    const [collapsibleRule] = usesCollapsible(modals);
+    const {collapsibleRule} = usesCollapsible(modals);
     
     
     
