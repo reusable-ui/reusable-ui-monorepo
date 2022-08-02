@@ -84,6 +84,12 @@ import {
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -128,7 +134,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesBackg,
     usesBorder,
     extendsBorder,
     usesPadding,
@@ -849,8 +854,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     // variants:
     const {resizableRule       } = usesResizable(lists);
     
-    // backgrounds:
-    const [          , backgs  ] = usesBackg();
+    // features:
+    const {backgroundVars      } = usesBackground();
     
     // borders:
     const [borderRule, borders ] = usesBorder();
@@ -1106,7 +1111,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             ...imports([
                                 usesIconImage(
                                     /*img   : */lists.breadcrumbSeparatorImg,
-                                    /*color : */backgs.altBackgColor,
+                                    /*color : */backgroundVars.altBackgColor,
                                 ),
                             ]),
                             ...style({
