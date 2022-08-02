@@ -222,18 +222,18 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [backgs.backgColorFn   ] : fallbacks(
-                        themableVars.backgImpt,       // first  priority
-                        themableVars.backg,           // second priority
-                        themableVars.backgCond,       // third  priority
+                        themableVars.backgImpt,    // first  priority
+                        themableVars.backg,        // second priority
+                        themableVars.backgCond,    // third  priority
                         
-                        basics.backg,                 // default => uses config's background
+                        basics.backg,              // default => uses config's background
                     ),
                     [backgs.altBackgColorFn] : fallbacks(
-                        themableVars.altBackgImpt,    // first  priority
-                        themableVars.altBackg,        // second priority
-                        themableVars.altBackgCond,    // third  priority
+                        themableVars.altBackgImpt, // first  priority
+                        themableVars.altBackg,     // second priority
+                        themableVars.altBackgCond, // third  priority
                         
-                        colors.primary,               // default => uses primary text theme
+                        colors.primary,            // default => uses primary text theme
                     ),
                 }),
             }),
@@ -319,18 +319,18 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [foregs.foregFn   ] : fallbacks(
-                        themableVars.foregImpt,     // first  priority
-                        themableVars.foreg,         // second priority
-                        themableVars.foregCond,     // third  priority
+                        themableVars.foregImpt,    // first  priority
+                        themableVars.foreg,        // second priority
+                        themableVars.foregCond,    // third  priority
                         
-                        basics.foreg,               // default => uses config's foreground
+                        basics.foreg,              // default => uses config's foreground
                     ),
                     [foregs.altForegFn] : fallbacks(
-                        themableVars.altForegImpt,  // first  priority
-                        themableVars.altForeg,      // second priority
-                        themableVars.altForegCond,  // third  priority
+                        themableVars.altForegImpt, // first  priority
+                        themableVars.altForeg,     // second priority
+                        themableVars.altForegCond, // third  priority
                         
-                        colors.primaryText,         // default => uses primary text theme
+                        colors.primaryText,        // default => uses primary text theme
                     ),
                 }),
             }),
