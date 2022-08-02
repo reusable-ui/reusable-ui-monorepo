@@ -28,6 +28,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
+    CssVars,
     cssVars,
     fallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
@@ -94,7 +95,7 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
 
 
 
-export interface MildableRules { mildableRule: Factory<CssRule>, mildableVars: MildableVars }
+export interface MildableRules { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
 export interface MildableConfig {
     defaultBackg    ?: CssCustomRef
     defaultForeg    ?: CssCustomRef
