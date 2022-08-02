@@ -117,7 +117,7 @@ export const usesPopupStates = () => {
     // dependencies:
     
     // states:
-    const [collapsibleRule] = usesCollapsible(popups);
+    const {collapsibleRule} = usesCollapsible(popups);
     
     
     
