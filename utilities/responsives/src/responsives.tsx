@@ -27,7 +27,7 @@ import {
 import type {
     // types:
     SingleOrArray,
-}                           from '@cssfn/types'             // cssfn general types
+}                           from '@cssfn/types'                 // cssfn general types
 
 // reusable-ui:
 import {
@@ -35,7 +35,7 @@ import {
     useIsomorphicLayoutEffect,
     useTriggerRender,
     useMergeRefs as _useMergeRefs, // avoids eslint check
-}                           from '@reusable-ui/hooks'       // react helper hooks
+}                           from '@reusable-ui/hooks'           // react helper hooks
 
 
 
