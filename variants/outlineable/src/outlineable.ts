@@ -126,7 +126,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.foregOutlined,        // second priority
                     themableVars.foregOutlinedCond,    // third  priority
                     
-                    ...(config?.defaultForeg ? [config.defaultForeg] : []),       // default => uses config's foreground
+                    config?.defaultForeg,              // default => uses config's foreground
                 ),
                 
                 
@@ -136,7 +136,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.altBackgOutlined,     // second priority
                     themableVars.altBackgOutlinedCond, // third  priority
                     
-                    ...(config?.defaultAltBackg ? [config.defaultAltBackg] : []), // default => uses config's alternate background
+                    config?.defaultAltBackg,           // default => uses config's alternate background
                 ),
                 
                 [outlineableVars.altForegFn] : fallbacks(
@@ -144,7 +144,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.altForegOutlined,     // second priority
                     themableVars.altForegOutlinedCond, // third  priority
                     
-                    ...(config?.defaultAltForeg ? [config.defaultAltForeg] : []), // default => uses config's alternate foreground
+                    config?.defaultAltForeg,           // default => uses config's alternate foreground
                 ),
             }),
             ...variants([
