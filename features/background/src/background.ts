@@ -24,6 +24,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
+    CssVars,
     cssVars,
     fallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
@@ -90,7 +91,7 @@ const [backgroundVars] = cssVars<BackgroundVars>();
 
 
 
-export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: BackgroundVars }
+export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
 export interface BackgroundConfig {
     defaultBackg    ?: CssCustomRef
     defaultAltBackg ?: CssCustomRef
