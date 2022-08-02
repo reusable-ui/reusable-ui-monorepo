@@ -28,6 +28,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
+    CssVars,
     cssVars,
     fallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
@@ -93,7 +94,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 
 
-export interface OutlineableRules { outlineableRule: Factory<CssRule>, outlineableVars: OutlineableVars }
+export interface OutlineableRules { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
 export interface OutlineableConfig {
     defaultForeg    ?: CssCustomRef
     defaultAltBackg ?: CssCustomRef
