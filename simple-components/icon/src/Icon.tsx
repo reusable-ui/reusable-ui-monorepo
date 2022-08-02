@@ -77,6 +77,12 @@ import {
     useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -87,16 +93,11 @@ import {
 import {
     // hooks:
     ThemeName,
-    ifHasTheme,
     usesThemable as baseUsesThemable,
     themeOptions,
     ThemableProps,
     useThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
-import {
-    // hooks:
-    usesOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
     ifNotMild,
@@ -117,12 +118,6 @@ import {
 import {
     // types:
     FeatureMixin,
-    
-    
-    
-    // hooks:
-    BackgVars,
-    usesBackg as basicUsesBackg,
     
     
     
@@ -242,56 +237,7 @@ export const mildOf = (toggle: boolean|null = true): CssRule => {
 };
 //#endregion mildable
 
-//#region backg
-export {
-    BackgVars,
-}
 
-
-
-/**
- * Uses background color (icon color).
- * @returns A `FeatureMixin<BackgVars>` represents background color definitions.
- */
-export const usesBackg = (): FeatureMixin<BackgVars> => {
-    // dependencies:
-    const {themableVars   } = usesThemable();
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
-    const [, backgs       ] = basicUsesBackg();
-    
-    
-    
-    return [
-        () => style({
-            // color functions:
-            ...vars({
-                [backgs.altBackgColorFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Icon> has a dedicated theme:
-                ...vars({
-                    [backgs.altBackgColorFn] : fallbacks(
-                        themableVars.altBackgImpt, // first  priority // supports for validation on ancestor
-                        themableVars.altBackg,     // second priority
-                        themableVars.altBackgCond, // third  priority // supports for active state on ancestor
-                        
-                        icons.color,               // default => uses config's color
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [backgs.altBackgColor  ] : fallbacks(
-                    outlineableVars.altBackgTg, // toggle outlined (if `usesOutlineable()` applied) // supports for outlined ancestor
-                    mildableVars.altBackgTg,    // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgs.altBackgColorFn,     // default => uses our `backgColorFn`
-                ),
-            }),
-        }),
-        backgs,
-    ];
-};
-//#endregion backg
 
 //#region icon
 export interface IconVars {
@@ -319,16 +265,18 @@ const [iconVars] = cssVar<IconVars>({ minify: false, prefix: 'icon' }); // do no
 export const usesIcon = (): FeatureMixin<IconVars> => {
     // dependencies:
     
-    // backgrounds:
-    const [backgRule, backgs] = usesBackg();
+    // features:
+    const {backgroundRule, backgroundVars} = usesBackground({
+        defaultAltBackg : icons.color, // default => uses config's color
+    });
     
     
     
     return [
         () => style({
             ...imports([
-                // backgrounds:
-                backgRule,
+                // features:
+                backgroundRule,
             ]),
             ...vars({
                 // appearances:
@@ -342,10 +290,7 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
                 
                 
                 // backgrounds:
-                [iconVars.color] : fallbacks(
-                    backgs.altBackgColor, // first  priority // uses theme color (if any)
-                    icons.color,          // default => uses config's color
-                ),
+                [iconVars.color] : backgroundVars.altBackgColor,
             }),
         }),
         iconVars,
