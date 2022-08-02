@@ -207,7 +207,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.altBackgMild,     // second priority
                     themableVars.altBackgMildCond, // third  priority // supports for active state on ancestor
                     
-                    ...(config?.defaultAltBackg ? [config.defaultAltBackg] : []), // default => uses config's alternate background
+                    config?.defaultAltBackg,       // default => uses config's alternate background
                 ),
             }),
             ...variants([
