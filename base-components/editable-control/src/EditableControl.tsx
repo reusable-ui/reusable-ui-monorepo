@@ -85,6 +85,12 @@ import {
     ValidationProps,
 }                           from '@reusable-ui/validations'     // a validation management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -104,7 +110,6 @@ import {
     
     
     // hooks:
-    usesBackg,
     usesForeg,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
@@ -617,7 +622,7 @@ export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
 export const [editableControls, editableControlValues, cssEditableControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, {backg, altBackgColor}] = usesBackg();
+    const {backgroundVars: {backg, altBackgColor}} = usesBackground();
     const [, {foreg, altForeg     }] = usesForeg();
     
     
