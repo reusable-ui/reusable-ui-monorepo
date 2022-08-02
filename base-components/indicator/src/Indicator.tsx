@@ -86,6 +86,10 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    outlinedOf,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
     mildOf,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
@@ -102,7 +106,6 @@ import {
     
     
     // hooks:
-    outlinedOf,
     usesAnim,
     fallbackNoneFilter,
     
