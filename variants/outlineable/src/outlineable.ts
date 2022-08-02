@@ -101,6 +101,7 @@ export interface OutlineableConfig {
 }
 /**
  * Uses a toggleable outlining.  
+ * @param config  A configuration of `outlineableRule`.
  * @param factory A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableRules` represents the outlining rules for each toggle state.
  */
