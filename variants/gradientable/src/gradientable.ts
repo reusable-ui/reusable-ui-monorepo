@@ -64,6 +64,7 @@ export interface GradientableConfig {
 }
 /**
  * Uses a toggleable gradient.  
+ * @param config  A configuration of `gradientableRule`.
  * @param factory A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableRules` represents the gradient rules for each toggle state.
  */
