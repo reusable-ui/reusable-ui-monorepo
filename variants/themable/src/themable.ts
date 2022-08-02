@@ -27,6 +27,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
@@ -245,7 +246,7 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
 
 
 
-export interface ThemableRules { themableRule: Factory<CssRule>, themableVars: ThemableVars }
+export interface ThemableRules { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
