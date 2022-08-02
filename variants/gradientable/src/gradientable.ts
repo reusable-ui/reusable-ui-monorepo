@@ -27,6 +27,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
@@ -58,7 +59,7 @@ export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 
 
-export interface GradientableRules { gradientableRule: Factory<CssRule>, gradientableVars: GradientableVars }
+export interface GradientableRules { gradientableRule: Factory<CssRule>, gradientableVars: CssVars<GradientableVars> }
 export interface GradientableConfig {
     backgGrad ?: CssCustomRef
 }
