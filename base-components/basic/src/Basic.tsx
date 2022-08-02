@@ -37,7 +37,6 @@ import type {
 import {
     // rules:
     rule,
-    variants,
     states,
     keyframes,
     
@@ -123,6 +122,12 @@ import {
 }                           from '@reusable-ui/gradientable'    // gradient variant of UI
 import {
     // hooks:
+    usesOutlineable,
+    OutlineableProps,
+    useOutlineable,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
     usesMildable,
     MildableProps,
     useMildable,
@@ -151,139 +156,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-// colors:
-
-//#region outlined
-export interface OutlinedVars {
-    /**
-     * functional background color - at outlined variant.
-     */
-    backgFn    : any
-    /**
-     * toggles_on background color - at outlined variant.
-     */
-    backgTg    : any
-    /**
-     * functional alternate background color - at outlined variant.
-     */
-    altBackgFn : any
-    /**
-     * toggles_on alternate background color - at outlined variant.
-     */
-    altBackgTg : any
-    
-    
-    
-    /**
-     * functional foreground color - at outlined variant.
-     */
-    foregFn    : any
-    /**
-     * toggles_on foreground color - at outlined variant.
-     */
-    foregTg    : any
-    /**
-     * functional alternate foreground color - at outlined variant.
-     */
-    altForegFn : any
-    /**
-     * toggles_on alternate foreground color - at outlined variant.
-     */
-    altForegTg : any
-}
-const [outlineds] = cssVar<OutlinedVars>();
-
-
-
-// grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(.outlined) :where(:not(.outlined)&:not(.outlined))', styles);
-// grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(.outlined &, .outlined&, &.outlined)'               , styles);
-
-
-
-/**
- * Uses toggleable outlining.
- * @param factory Customize the callback to create outlining definitions for each toggle state.
- * @returns A `VariantMixin<OutlinedVars>` represents toggleable outlining definitions.
- */
-export const usesOutlinedVariant = (factory : ((toggle?: (boolean|null)) => CssStyleCollection) = outlinedOf): VariantMixin<OutlinedVars> => {
-    // dependencies:
-    const {themableRule, themableVars} = usesThemable();
-    
-    
-    
-    return [
-        () => style({
-            ...imports([
-                // makes   `usesOutlinedVariant()` implicitly `usesThemable()`
-                // because `usesOutlinedVariant()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themableRule,
-            ]),
-            ...vars({
-                [outlineds.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
-                
-                [outlineds.foregFn   ] : fallbacks(
-                    themableVars.foregOutlinedImpt,    // first  priority
-                    themableVars.foregOutlined,        // second priority
-                    themableVars.foregOutlinedCond,    // third  priority
-                    
-                    basics.foreg,                      // default => uses config's foreground
-                ),
-                
-                
-                
-                [outlineds.altBackgFn] : fallbacks(
-                    themableVars.altBackgOutlinedImpt, // first  priority
-                    themableVars.altBackgOutlined,     // second priority
-                    themableVars.altBackgOutlinedCond, // third  priority
-                    
-                    colors.primary,                    // default => uses primary text theme
-                ),
-                
-                [outlineds.altForegFn] : fallbacks(
-                    themableVars.altForegOutlinedImpt, // first  priority
-                    themableVars.altForegOutlined,     // second priority
-                    themableVars.altForegOutlinedCond, // third  priority
-                    
-                    colors.primaryText,                // default => uses primary text theme
-                ),
-            }),
-            ...variants([
-                ifNotOutlined(factory(false)),
-                ifOutlined(factory(true)),
-            ]),
-        }),
-        outlineds,
-    ];
-};
-
-/**
- * Creates outlining definitions for the given `toggle`.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
- * @returns A `CssRule` represents outlining definitions for the given `toggle`.
- */
-export const outlinedOf = (toggle: (boolean|null) = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the outlined props:
-        [outlineds.backgTg   ] : toggle ? outlineds.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineds.foregTg   ] : toggle ? outlineds.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        
-        [outlineds.altBackgTg] : toggle ? outlineds.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineds.altForegTg] : toggle ? outlineds.altForegFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
-
-
-
-export interface OutlinedVariant {
-    outlined ?: boolean
-}
-export const useOutlinedVariant = ({outlined}: OutlinedVariant) => ({
-    class: outlined ? 'outlined' : null,
-});
-//#endregion outlined
 
 //#region backg
 export interface BackgVars {
@@ -328,7 +200,7 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
     // dependencies:
     const {themableVars    } = usesThemable();
     const {gradientableVars} = usesGradientable();
-    const [, outlineds     ] = usesOutlinedVariant();
+    const {outlineableVars } = usesOutlineable();
     const {mildableVars    } = usesMildable();
     
     
@@ -367,16 +239,16 @@ export const usesBackg = (): FeatureMixin<BackgVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [backgs.backgColor     ] : fallbacks(
-                    outlineds.backgTg,       // toggle outlined (if `usesOutlinedVariant()` applied)
-                    mildableVars.backgTg,    // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.backgTg,    // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.backgTg,       // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.backgColorFn,     // default => uses our `backgColorFn`
+                    backgs.backgColorFn,        // default => uses our `backgColorFn`
                 ),
                 [backgs.altBackgColor  ] : fallbacks(
-                    outlineds.altBackgTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
-                    mildableVars.altBackgTg, // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.altBackgTg, // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.altBackgTg,    // toggle mild     (if `usesMildable()` applied)
                     
-                    backgs.altBackgColorFn,  // default => uses our `backgColorFn`
+                    backgs.altBackgColorFn,     // default => uses our `backgColorFn`
                 ),
             }),
             
@@ -431,9 +303,9 @@ const [foregs] = cssVar<ForegVars>();
  */
 export const usesForeg = (): FeatureMixin<ForegVars> => {
     // dependencies:
-    const {themableVars} = usesThemable();
-    const [, outlineds ] = usesOutlinedVariant();
-    const {mildableVars} = usesMildable();
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
     
     
     
@@ -464,16 +336,16 @@ export const usesForeg = (): FeatureMixin<ForegVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [foregs.foreg     ] : fallbacks(
-                    outlineds.foregTg,       // toggle outlined (if `usesOutlinedVariant()` applied)
-                    mildableVars.foregTg,    // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.foregTg,    // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.foregTg,       // toggle mild     (if `usesMildable()` applied)
                     
-                    foregs.foregFn,          // default => uses our `foregFn`
+                    foregs.foregFn,             // default => uses our `foregFn`
                 ),
                 [foregs.altForeg  ] : fallbacks(
-                    outlineds.altForegTg,    // toggle outlined (if `usesOutlinedVariant()` applied)
-                    mildableVars.altForegTg, // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.altForegTg, // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.altForegTg,    // toggle mild     (if `usesMildable()` applied)
                     
-                    foregs.altForegFn,       // default => uses our `foregFn`
+                    foregs.altForegFn,          // default => uses our `foregFn`
                 ),
             }),
         }),
@@ -533,8 +405,8 @@ const [borders] = cssVar<BorderVars>();
  */
 export const usesBorder = (): FeatureMixin<BorderVars> => {
     // dependencies:
-    const {themableVars} = usesThemable();
-    const [, outlineds ] = usesOutlinedVariant();
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
     
     
     
@@ -557,9 +429,9 @@ export const usesBorder = (): FeatureMixin<BorderVars> => {
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
                 [borders.borderColor  ] : fallbacks(
-                    outlineds.foregTg,     // toggle outlined (if `usesOutlinedVariant()` applied)
+                    outlineableVars.foregTg, // toggle outlined (if `usesOutlineable()` applied)
                     
-                    borders.borderColorFn, // default => uses our `borderColorFn`
+                    borders.borderColorFn,   // default => uses our `borderColorFn`
                 ),
             }),
             
@@ -1142,19 +1014,21 @@ export const usesBasicVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule      } = usesResizable(basics);
-    const {themableRule       } = usesThemable();
-    const {gradientableRule   } = usesGradientable(basics);
-    const {mildableRule       } = usesMildable({
+    const {resizableRule   } = usesResizable(basics);
+    const {themableRule    } = usesThemable();
+    const {gradientableRule} = usesGradientable(basics);
+    const {outlineableRule } = usesOutlineable({
+        defaultForeg    : basics.foreg,       // default => uses config's foreground
+        defaultAltBackg : colors.primary,     // default => uses primary background theme
+        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
+    });
+    const {mildableRule    } = usesMildable({
         defaultBackg    : basics.backg,       // default => uses config's background
         defaultForeg    : basics.foreg,       // default => uses config's foreground
         defaultAltBackg : colors.primary,     // default => uses primary background theme
         defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
     });
-    const {nudibleRule        } = usesNudible();
-    
-    // colors:
-    const [outlinedVariantRule] = usesOutlinedVariant();
+    const {nudibleRule     } = usesNudible();
     
     
     
@@ -1164,11 +1038,9 @@ export const usesBasicVariants = () => {
             resizableRule,
             themableRule,
             gradientableRule,
+            outlineableRule,
             mildableRule,
             nudibleRule,
-            
-            // colors:
-            outlinedVariantRule,
         ]),
     });
 };
@@ -1319,11 +1191,9 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         ResizableProps,
         ThemableProps,
         GradientableProps,
+        OutlineableProps,
         MildableProps,
-        NudibleProps,
-        
-        // colors:
-        OutlinedVariant
+        NudibleProps
 {
 }
 const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElement>): JSX.Element|null => {
@@ -1336,11 +1206,9 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     const resizableVariant    = useResizable(props);
     const themableVariant     = useThemable(props);
     const gradientableVariant = useGradientable(props);
+    const outlineableVariant  = useOutlineable(props);
     const mildableVariant     = useMildable(props);
     const nudibleVariant      = useNudible(props);
-    
-    // colors:
-    const outlinedVariant     = useOutlinedVariant(props);
     
     
     
@@ -1348,15 +1216,11 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     const {
         // variants:
         size     : _size,     // remove
-        
-        // layouts:
-        nude     : _nude,     // remove
-        
-        // colors:
         theme    : _theme,    // remove
         gradient : _gradient, // remove
         outlined : _outlined, // remove
         mild     : _mild,     // remove
+        nude     : _nude,     // remove
     ...restGenericProps} = props;
     
     
@@ -1372,11 +1236,9 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         resizableVariant.class,
         themableVariant.class,
         gradientableVariant.class,
+        outlineableVariant.class,
         mildableVariant.class,
         nudibleVariant.class,
-        
-        // colors:
-        outlinedVariant.class,
     );
     
     
