@@ -94,6 +94,12 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -124,7 +130,6 @@ import {
     
     
     // hooks:
-    usesBackg,
     extendsBorder,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
@@ -197,15 +202,15 @@ const [rangeVars] = cssVar<RangeVars>({ minify: false, prefix: 'range' }); // do
 export const usesRange = (): FeatureMixin<RangeVars> => {
     // dependencies:
     
-    // backgrounds:
-    const [, backgs] = usesBackg();
+    // features:
+    const {backgroundVars} = usesBackground();
     
     
     
     return [
         () => style({
             ...vars({
-                [rangeVars.backg] : backgs.backgColor,
+                [rangeVars.backg] : backgroundVars.backgColor,
             }),
         }),
         rangeVars,
