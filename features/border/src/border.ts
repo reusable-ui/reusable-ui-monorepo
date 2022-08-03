@@ -16,11 +16,6 @@ import {
     // styles:
     style,
     vars,
-    
-    
-    
-    // utilities:
-    solidBackg,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -106,7 +101,10 @@ const [borderVars] = cssVars<BorderVars>();
 
 export interface BorderRules { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
 export interface BorderConfig {
-    defaultBorderColor ?: CssCustomRef
+    defaultBorderStyle  ?: CssCustomRef
+    defaultBorderWidth  ?: CssCustomRef
+    defaultBorderColor  ?: CssCustomRef
+    defaultBorderRadius ?: CssCustomRef
 }
 /**
  * Uses border (strokes, colors, radiuses).
@@ -129,20 +127,19 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [borderVars.borderColorFn] : fallbacks(
-                        themableVars.borderImpt,        // first  priority
-                        themableVars.border,            // second priority
-                        themableVars.borderCond,        // third  priority
+                        themableVars.borderImpt,    // first  priority
+                        themableVars.border,        // second priority
+                        themableVars.borderCond,    // third  priority
                         
-                        config?.defaultBorderColor,     // default => uses config's border color
+                        config?.defaultBorderColor, // default => uses config's border color
                     ),
                 }),
             }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
+            ...vars({ // always re-declare the final function below, so the [outlined] can be toggled_on
                 [borderVars.borderColor  ] : fallbacks(
-                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
                     
-                    borderVars.borderColorFn,        // default => uses our `borderColorFn`
+                    borderVars.borderColorFn,       // default => uses our `borderColorFn`
                 ),
             }),
             
@@ -150,19 +147,26 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
             
             // compositions:
             ...vars({
-                [borderVars.backg          ] : [
-                    // layering: backg1 | backg2 | backg3 ...
-                    
-                    // top layer:
-                    fallbacks(
-                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
-                        
-                        borderVars.backgNone,         // default => no top layer
-                    ),
-                    
-                    // bottom layer:
+                [borderVars.borderStyle] : config?.defaultBorderStyle, // default => uses config's border style
+                [borderVars.borderWidth] : config?.defaultBorderWidth, // default => uses config's border width
+                [borderVars.border     ] : [[
+                    borderVars.borderStyle,
+                    borderVars.borderWidth,
                     borderVars.borderColor,
-                ],
+                ]],
+                
+                
+                
+                [borderVars.borderStartStartRadius] : config?.defaultBorderRadius,
+                [borderVars.borderStartEndRadius  ] : config?.defaultBorderRadius,
+                [borderVars.borderEndStartRadius  ] : config?.defaultBorderRadius,
+                [borderVars.borderEndEndRadius    ] : config?.defaultBorderRadius,
+                [borderVars.borderRadius] : [[
+                    borderVars.borderStartStartRadius,
+                    borderVars.borderStartEndRadius,
+                    borderVars.borderEndStartRadius,
+                    borderVars.borderEndEndRadius,
+                ]],
             }),
         }),
         borderVars,
