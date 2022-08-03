@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/foreground",
   "version": "5.0.0",
-  "description": "foreground (text color) stuff of UI.",
+  "description": "Foreground (text color) stuff of UI.",
   "keywords": [
     "foreground",
     "colors",
