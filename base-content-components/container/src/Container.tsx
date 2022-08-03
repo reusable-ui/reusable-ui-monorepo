@@ -84,6 +84,12 @@ import {
     ifScreenWidthAtLeast,
 }                           from '@reusable-ui/breakpoints'     // a responsive management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -100,8 +106,6 @@ import {
     
     
     // hooks:
-    usesBorder,
-    extendsBorder,
     usesPadding,
     extendsPadding,
     
@@ -172,8 +176,8 @@ const [containerVars] = cssVars<ContainerVars>();
 export const usesContainer = (): FeatureMixin<ContainerVars> => {
     // dependencies:
     
-    // borders:
-    const [, borders ] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     // spacings:
     const [, paddings] = usesPadding();
@@ -184,12 +188,12 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
         () => style({
             ...vars({
                 // borders:
-                [containerVars.borderWidth           ] : borders.borderWidth,
+                [containerVars.borderWidth           ] : borderVars.borderWidth,
                 
-                [containerVars.borderStartStartRadius] : borders.borderStartStartRadius,
-                [containerVars.borderStartEndRadius  ] : borders.borderStartEndRadius,
-                [containerVars.borderEndStartRadius  ] : borders.borderEndStartRadius,
-                [containerVars.borderEndEndRadius    ] : borders.borderEndEndRadius,
+                [containerVars.borderStartStartRadius] : borderVars.borderStartStartRadius,
+                [containerVars.borderStartEndRadius  ] : borderVars.borderStartEndRadius,
+                [containerVars.borderEndStartRadius  ] : borderVars.borderEndStartRadius,
+                [containerVars.borderEndEndRadius    ] : borderVars.borderEndEndRadius,
                 
                 
                 
@@ -223,11 +227,11 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
     
     // dependencies:
     
+    // features:
+    const {               borderVars   } = usesBorder();
+    
     // layouts:
     const [containerRule, containerVars] = usesContainer();
-    
-    // borders:
-    const [             , borders      ] = usesBorder();
     
     
     
@@ -260,8 +264,8 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     ...style({
                         // borders:
                         // add rounded corners on left:
-                        [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderStartStartRadius   ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndStartRadius     ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
                         
                         /* recursive calculation of borderRadius is not supported yet */
                     }),
@@ -283,8 +287,8 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     ...style({
                         // borders:
                         // add rounded corners on right:
-                        [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderStartEndRadius     ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndEndRadius       ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
                         
                         /* recursive calculation of borderRadius is not supported yet */
                     }),
@@ -311,8 +315,8 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     ...style({
                         // borders:
                         // add rounded corners on top:
-                        [borders.borderStartStartRadius      ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderStartEndRadius        ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderStartStartRadius   ] : `calc(${containerVars.borderStartStartRadius} - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderStartEndRadius     ] : `calc(${containerVars.borderStartEndRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
                         
                         /* recursive calculation of borderRadius is not supported yet */
                     }),
@@ -334,8 +338,8 @@ export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRu
                     ...style({
                         // borders:
                         // add rounded corners on bottom:
-                        [borders.borderEndStartRadius        ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
-                        [borders.borderEndEndRadius          ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndStartRadius     ] : `calc(${containerVars.borderEndStartRadius  } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndEndRadius       ] : `calc(${containerVars.borderEndEndRadius    } - ${containerVars.borderWidth} - min(${containerVars.borderWidth}, 0.5px))`,
                         
                         /* recursive calculation of borderRadius is not supported yet */
                     }),
@@ -362,11 +366,11 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
     
     // dependencies:
     
+    // features:
+    const {  borderVars   } = usesBorder();
+    
     // layouts:
     const [, containerVars] = usesContainer();
-    
-    // borders:
-    const [, borders      ] = usesBorder();
     
     
     
@@ -448,15 +452,15 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
                 style({
                     // borders:
                     // remove rounded corners on top:
-                    [borders.borderStartStartRadius] : '0px',
-                    [borders.borderStartEndRadius  ] : '0px',
+                    [borderVars.borderStartStartRadius] : '0px',
+                    [borderVars.borderStartEndRadius  ] : '0px',
                 })
                 :
                 style({
                     // borders:
                     // remove rounded corners on left:
-                    [borders.borderStartStartRadius] : '0px',
-                    [borders.borderEndStartRadius  ] : '0px',
+                    [borderVars.borderStartStartRadius] : '0px',
+                    [borderVars.borderEndStartRadius  ] : '0px',
                 })
             ),
         }),
@@ -467,15 +471,15 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
                 style({
                     // borders:
                     // remove rounded corners on bottom:
-                    [borders.borderEndStartRadius  ] : '0px',
-                    [borders.borderEndEndRadius    ] : '0px',
+                    [borderVars.borderEndStartRadius  ] : '0px',
+                    [borderVars.borderEndEndRadius    ] : '0px',
                 })
                 :
                 style({
                     // borders:
                     // remove rounded corners on right:
-                    [borders.borderStartEndRadius  ] : '0px',
-                    [borders.borderEndEndRadius    ] : '0px',
+                    [borderVars.borderStartEndRadius  ] : '0px',
+                    [borderVars.borderEndEndRadius    ] : '0px',
                 })
             ),
         }),
@@ -508,18 +512,27 @@ export const usesBorderAsSeparator = (options: BorderAsSeparatorOptions = {}): C
  * @returns A `CssRule` represents a responsive container layout.
  */
 export const usesResponsiveContainerLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {borderRule} = usesBorder({
+        defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
+        defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
+    });
+    
+    
+    
     return style({
-        // borders:
-        
-        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-        ...extendsBorder(containers),
-        
-        
-        
-        // spacings:
-        
-        // let's Reusable-UI system to manage paddingInline & paddingBlock:
-        ...extendsPadding(containers),
+        ...imports([
+            // features:
+            borderRule,
+        ]),
+        ...style({
+            // spacings:
+            
+            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+            ...extendsPadding(containers),
+        }),
     });
 };
 /**
@@ -529,41 +542,46 @@ export const usesResponsiveContainerLayout = () => {
 export const usesResponsiveContainerGridLayout = () => {
     // dependencies:
     
+    // features:
+    const {borderRule} = usesBorder({
+        defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
+        defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
+    });
+    
     // spacings:
     const [, paddings] = usesPadding();
     
     
     
     return style({
-        // layouts:
-        display             : 'grid', // use css grid for layouting
-        // define our logical paddings:
-        gridTemplateRows    : [[paddings.paddingBlock,  'auto', paddings.paddingBlock ]], // the height of each row
-        gridTemplateColumns : [[paddings.paddingInline, 'auto', paddings.paddingInline]], // the width of each column
-        gridTemplateAreas   : [[
-            '"........... blockStart ........."',
-            '"inlineStart  content   inlineEnd"',
-            '"...........  blockEnd  ........."',
-        ]],
-        
-        
-        
-        // borders:
-        
-        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-        ...extendsBorder(containers),
-        
-        
-        
-        // spacings:
-        
-        // let's Reusable-UI system to manage paddingInline & paddingBlock:
-        ...extendsPadding(containers),
-        
-        // since we have delegated the (logical) paddings to the grid, so the (actual) css paddings are no longer needed:
+        ...imports([
+            // features:
+            borderRule,
+        ]),
         ...style({
-            paddingInline : null, // turn off physical padding, use logical padding we've set above
-            paddingBlock  : null, // turn off physical padding, use logical padding we've set above
+            // layouts:
+            display             : 'grid', // use css grid for layouting
+            // define our logical paddings:
+            gridTemplateRows    : [[paddings.paddingBlock,  'auto', paddings.paddingBlock ]], // the height of each row
+            gridTemplateColumns : [[paddings.paddingInline, 'auto', paddings.paddingInline]], // the width of each column
+            gridTemplateAreas   : [[
+                '"........... blockStart ........."',
+                '"inlineStart  content   inlineEnd"',
+                '"...........  blockEnd  ........."',
+            ]],
+            
+            
+            
+            // spacings:
+            
+            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+            ...extendsPadding(containers),
+            
+            // since we have delegated the (logical) paddings to the grid, so the (actual) css paddings are no longer needed:
+            ...style({
+                paddingInline : null, // turn off physical padding, use logical padding we've set above
+                paddingBlock  : null, // turn off physical padding, use logical padding we've set above
+            }),
         }),
     });
 };
