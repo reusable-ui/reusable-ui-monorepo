@@ -40,6 +40,7 @@
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/editable-action-control": "^5.0.0",
+    "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",

@@ -95,6 +95,12 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesForeground,
+}                           from '@reusable-ui/foreground'              // foreground (text color) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -118,7 +124,6 @@ import {
     
     
     // hooks:
-    usesForeg,
     usesBorder,
     usesPadding,
     usesAnim,
@@ -420,8 +425,8 @@ export const labelElm = ':nth-child(1n+2)'
 export const usesCheckLayout = () => {
     // dependencies:
     
-    // foregrounds:
-    const [             , foregs    ] = usesForeg();
+    // features:
+    const {foregroundVars           } = usesForeground();
     
     // animations:
     const [checkAnimRule, checkAnims] = usesCheckAnim();
@@ -513,7 +518,7 @@ export const usesCheckLayout = () => {
                             // check indicator:
                             usesIconImage(
                                 /*img   : */checks.img,
-                                /*color : */foregs.foreg,
+                                /*color : */foregroundVars.foreg,
                             ),
                         ]),
                         ...style({
@@ -568,12 +573,12 @@ export const usesCheckLayout = () => {
 export const usesCheckVariants = () => {
     // dependencies:
     
+    // features:
+    const {foregroundVars } = usesForeground();
+    
     // variants:
     const {resizableRule  } = usesResizable(checks);
     const {mildableVars   } = usesMildable();
-    
-    // foregrounds:
-    const [, foregs       ] = usesForeg();
     
     // borders:
     const [, borders      ] = usesBorder();
@@ -651,7 +656,7 @@ export const usesCheckVariants = () => {
                 // children:
                 ...children(inputElm, {
                     // borders:
-                    [borders.borderColor] : foregs.foreg,  // make a contrast border between indicator & filler
+                    [borders.borderColor] : foregroundVars.foreg,  // make a contrast border between indicator & filler
                     
                     
                     
