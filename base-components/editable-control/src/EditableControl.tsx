@@ -90,6 +90,10 @@ import {
     // hooks:
     usesBackground,
 }                           from '@reusable-ui/background'      // background stuff of UI
+import {
+    // hooks:
+    usesForeground,
+}                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -110,7 +114,6 @@ import {
     
     
     // hooks:
-    usesForeg,
     usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -623,7 +626,7 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
     // dependencies:
     
     const {backgroundVars: {backg, altBackgColor}} = usesBackground();
-    const [, {foreg, altForeg     }] = usesForeg();
+    const {foregroundVars: {foreg, altForeg     }} = usesForeground();
     
     
     
