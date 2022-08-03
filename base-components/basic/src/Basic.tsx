@@ -614,8 +614,6 @@ export const usesBasicLayout = () => {
             // features:
             backgroundRule,
             foregroundRule,
-            
-            // borders:
             borderRule,
             
             // rings:
