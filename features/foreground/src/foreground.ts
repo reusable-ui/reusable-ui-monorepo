@@ -32,10 +32,6 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
-    usesGradientable,
-}                           from '@reusable-ui/gradientable'    // gradient variant of UI
-import {
-    // hooks:
     usesOutlineable,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
@@ -52,35 +48,21 @@ import {
 //#region foreground
 export interface ForegroundVars {
     /**
-     * none foreground.
-     */
-    foregNone       : any
-    
-    
-    
-    /**
      * functional foreground color.
      */
-    foregColorFn    : any
+    foregFn    : any
     /**
      * final foreground color.
      */
-    foregColor      : any
+    foreg      : any
     /**
      * functional alternate foreground color.
      */
-    altForegColorFn : any
+    altForegFn : any
     /**
      * final alternate foreground color.
      */
-    altForegColor   : any
-    
-    
-    
-    /**
-     * final foreground layers.
-     */
-    foreg           : any
+    altForeg   : any
 }
 const [foregroundVars] = cssVars<ForegroundVars>();
 
@@ -92,43 +74,35 @@ export interface ForegroundConfig {
     defaultAltForeg ?: CssCustomRef
 }
 /**
- * Uses foreground layer(s).
+ * Uses foreground color (text color).
  * @param config  A configuration of `foregroundRule`.
  * @returns A `ForegroundRules` represents the foreground rules.
  */
 export const usesForeground = (config?: ForegroundConfig): ForegroundRules => {
     // dependencies:
-    const {themableVars    } = usesThemable();
-    const {gradientableVars} = usesGradientable();
-    const {outlineableVars } = usesOutlineable();
-    const {mildableVars    } = usesMildable();
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
     
     
     
     return {
         foregroundRule: () => style({
-            // constants:
-            ...vars({
-                [foregroundVars.foregNone      ] : solidForeg('transparent'),
-            }),
-            
-            
-            
             // color functions:
             ...vars({
-                [foregroundVars.foregColorFn   ] : 'inherit', // inherit to parent theme
-                [foregroundVars.altForegColorFn] : 'inherit', // inherit to parent theme
+                [foregroundVars.foregFn   ] : 'inherit', // inherit to parent theme
+                [foregroundVars.altForegFn] : 'inherit', // inherit to parent theme
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [foregroundVars.foregColorFn   ] : fallbacks(
+                    [foregroundVars.foregFn   ] : fallbacks(
                         themableVars.foregImpt,     // first  priority
                         themableVars.foreg,         // second priority
                         themableVars.foregCond,     // third  priority
                         
                         config?.defaultForeg,       // default => uses config's foreground
                     ),
-                    [foregroundVars.altForegColorFn] : fallbacks(
+                    [foregroundVars.altForegFn] : fallbacks(
                         themableVars.altForegImpt,  // first  priority
                         themableVars.altForeg,      // second priority
                         themableVars.altForegCond,  // third  priority
@@ -138,37 +112,18 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundRules => {
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [foregroundVars.foregColor     ] : fallbacks(
+                [foregroundVars.foreg     ] : fallbacks(
                     outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.foregTg,           // toggle mild     (if `usesMildable()` applied)
                     
-                    foregroundVars.foregColorFn,    // default => uses our `foregColorFn`
+                    foregroundVars.foregFn,         // default => uses our `foregFn`
                 ),
-                [foregroundVars.altForegColor  ] : fallbacks(
+                [foregroundVars.altForeg  ] : fallbacks(
                     outlineableVars.altForegTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altForegTg,        // toggle mild     (if `usesMildable()` applied)
                     
-                    foregroundVars.altForegColorFn, // default => uses our `foregColorFn`
+                    foregroundVars.altForegFn,      // default => uses our `foregFn`
                 ),
-            }),
-            
-            
-            
-            // compositions:
-            ...vars({
-                [foregroundVars.foreg          ] : [
-                    // layering: foreg1 | foreg2 | foreg3 ...
-                    
-                    // top layer:
-                    fallbacks(
-                        gradientableVars.foregGradTg, // toggle gradient (if `usesGradientable()` applied)
-                        
-                        foregroundVars.foregNone,     // default => no top layer
-                    ),
-                    
-                    // bottom layer:
-                    foregroundVars.foregColor,
-                ],
             }),
         }),
         foregroundVars,
