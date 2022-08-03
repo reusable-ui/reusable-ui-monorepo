@@ -47,6 +47,12 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -75,8 +81,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesBorder,
-    extendsBorder,
     usesAnim,
     
     
@@ -263,8 +267,13 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // borders:
-    const [borderRule       ] = usesBorder();
+    // features:
+    const {borderRule, borderVars} = usesBorder({
+        defaultBorderStyle  : cards.borderStyle,  // default => uses config's border style
+        defaultBorderWidth  : cards.borderWidth,  // default => uses config's border width
+        defaultBorderColor  : cards.borderColor,  // default => uses config's border color
+        defaultBorderRadius : cards.borderRadius, // default => uses config's border radius
+    });
     
     // animations:
     const [animRule  , anims] = usesAnim();
@@ -273,8 +282,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     return style({
         ...imports([
-            // borders:
+            // features:
             borderRule,
+            
+            // borders:
             usesBorderAsContainer(options), // make a nicely rounded corners
             
             // animations:
@@ -283,29 +294,29 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         ...style({
             // layouts:
             ...ifOrientationInline({ // inline
-                display        : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
-                flexDirection  : 'row',         // items are stacked horizontally
+                display       : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
+                flexDirection : 'row',         // items are stacked horizontally
             }),
             ...ifOrientationBlock({  // block
-                display        : 'flex',        // use block flexbox, so it takes the entire parent's width
-                flexDirection  : 'column',      // items are stacked vertically
+                display       : 'flex',        // use block flexbox, so it takes the entire parent's width
+                flexDirection : 'column',      // items are stacked vertically
             }),
-            justifyContent : 'start',           // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'stretch',         // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
-            flexWrap       : 'nowrap',          // no wrapping
+            justifyContent    : 'start',       // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems        : 'stretch',     // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            flexWrap          : 'nowrap',      // no wrapping
             
             
             
             // sizes:
             // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
-            minInlineSize  : 0,
+            minInlineSize     : 0,
             
             
             
             // animations:
-            boxShadow : anims.boxShadow,
-            filter    : anims.filter,
-            anim      : anims.anim,
+            boxShadow         : anims.boxShadow,
+            filter            : anims.filter,
+            anim              : anims.anim,
             
             
             
@@ -324,7 +335,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
                     usesBorderAsSeparator({ // must be placed at the last
                         orientationInlineSelector : parentOrientationInlineSelector,
                         orientationBlockSelector  : parentOrientationBlockSelector,
-                        swapFirstItem : true,
+                        swapFirstItem             : true,
                     }),
                 ]),
             }),
@@ -361,20 +372,19 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             
             
             // borders:
-            
-            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-            ...extendsBorder(),
+            border            : borderVars.border,
+            borderRadius      : borderVars.borderRadius,
         }),
     });
 };
 export const usesCardVariants = () => {
     // dependencies:
     
-    // variants:
-    const {resizableRule  } = usesResizable(cards);
+    // features:
+    const {borderVars   } = usesBorder();
     
-    // borders:
-    const [, borders      ] = usesBorder();
+    // variants:
+    const {resizableRule} = usesResizable(cards);
     
     
     
@@ -389,21 +399,21 @@ export const usesCardVariants = () => {
             rule(['.flat', '.flush'], {
                 // borders:
                 // kill borders surrounding Card:
-                [borders.borderWidth           ] : '0px',
+                [borderVars.borderWidth           ] : '0px',
                 
                 // remove rounded corners on top:
-                [borders.borderStartStartRadius] : '0px',
-                [borders.borderStartEndRadius  ] : '0px',
+                [borderVars.borderStartStartRadius] : '0px',
+                [borderVars.borderStartEndRadius  ] : '0px',
                 // remove rounded corners on bottom:
-                [borders.borderEndStartRadius  ] : '0px',
-                [borders.borderEndEndRadius    ] : '0px',
+                [borderVars.borderEndStartRadius  ] : '0px',
+                [borderVars.borderEndEndRadius    ] : '0px',
             }),
             rule(['.flat', '.joined'], {
                 // children:
                 ...children([headerElm, footerElm, bodyElm], {
                     // borders:
                     // kill separator between items:
-                    [borders.borderWidth] : '0px',
+                    [borderVars.borderWidth] : '0px',
                 }),
             }),
         ]),
@@ -436,20 +446,31 @@ export const useCardStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
     return {
+        // borders:
+        borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle'],
+        borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth'],
+        borderColor    : basics.borderColor     as CssKnownProps['borderColor'],
+        
+        borderRadius   : basics.borderRadius    as CssKnownProps['borderRadius'],
+        borderRadiusSm : basics.borderRadiusSm  as CssKnownProps['borderRadius'],
+        borderRadiusLg : basics.borderRadiusLg  as CssKnownProps['borderRadius'],
+        
+        
+        
         // animations:
-        transition     : basics.transition  as CssKnownProps['transition'],
-        itemTransition : basics.transition  as CssKnownProps['transition'],
+        transition     : basics.transition      as CssKnownProps['transition'],
+        itemTransition : basics.transition      as CssKnownProps['transition'],
         
         
         
         // sizes:
-        boxSizing      : 'border-box'       as CssKnownProps['boxSizing'], // the final size is including borders & paddings
-        blockSize      : '100%'             as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
+        boxSizing      : 'border-box'           as CssKnownProps['boxSizing'], // the final size is including borders & paddings
+        blockSize      : '100%'                 as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
         
         
         
         // typos:
-        overflowWrap   : 'break-word'       as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
+        overflowWrap   : 'break-word'           as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
         
         
         
@@ -457,7 +478,7 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         captionFilter  : [[
             'brightness(70%)',
             'contrast(140%)',
-        ]]                                  as CssKnownProps['filter'],
+        ]]                                      as CssKnownProps['filter'],
     };
 }, { prefix: 'card' });
 

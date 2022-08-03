@@ -37,6 +37,7 @@
     "@cssfn/css-config": "^2.0.13",
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/cssfn-react": "^2.0.8",
+    "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/container": "^5.0.0",
     "@reusable-ui/content": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
