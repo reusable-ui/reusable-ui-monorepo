@@ -89,6 +89,10 @@ import {
     // hooks:
     usesBackground,
 }                           from '@reusable-ui/background'      // background stuff of UI
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -134,8 +138,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesBorder,
-    extendsBorder,
     usesPadding,
     
     
@@ -314,22 +316,30 @@ export const listItemElm = ':where(:first-child)' // zero specificity
 export const stripoutCommonBasicLayout = () => {
     // dependencies:
     
-    // borders:
-    const [, borders] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     
     
     return style({
         // borders:
         // undef border stroke:
-        [borders.border                ] : null,
-        [borders.borderWidth           ] : null,
+        [borderVars.borderStyle           ] : null, // always same as <List>
+        [borderVars.borderWidth           ] : null, // always same as <List>
+        /*
+        [borderVars.borderColorFn] // independent for each <ListItem>
+        [borderVars.borderColor  ] // independent for each <ListItem>
+        [borderVars.border       ] // independent for each <ListItem>
+        */
         
         // undef border radius:
-        [borders.borderStartStartRadius] : null,
-        [borders.borderStartEndRadius  ] : null,
-        [borders.borderEndStartRadius  ] : null,
-        [borders.borderEndEndRadius    ] : null,
+        [borderVars.borderStartStartRadius] : null, // always same as <List>
+        [borderVars.borderStartEndRadius  ] : null, // always same as <List>
+        [borderVars.borderEndStartRadius  ] : null, // always same as <List>
+        [borderVars.borderEndEndRadius    ] : null, // always same as <List>
+        /*
+        [borderVars.borderRadius ] // independent for each <ListItem>
+        */
     });
 };
 export const usesListItemInheritMildVariant = () => {
@@ -486,8 +496,8 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
     
     // dependencies:
     
-    // borders:
-    const [, borders ] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     // spacings:
     const [, paddings] = usesPadding();
@@ -528,7 +538,7 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
             
             
             // foregrounds:
-            foreg         : borders.borderColor,
+            foreg         : borderVars.borderColor,
             
             
             
@@ -641,8 +651,13 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // borders:
-    const [borderRule, borders] = usesBorder();
+    // features:
+    const {borderRule, borderVars} = usesBorder({
+        defaultBorderStyle  : lists.borderStyle,  // default => uses config's border style
+        defaultBorderWidth  : lists.borderWidth,  // default => uses config's border width
+        defaultBorderColor  : lists.borderColor,  // default => uses config's border color
+        defaultBorderRadius : lists.borderRadius, // default => uses config's border radius
+    });
     
     
     
@@ -680,7 +695,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             // borders:
             ...children(['&', wrapperElm], {
                 ...imports([
-                    // borders:
+                    // features:
                     borderRule, // dedicated border stroke for each <List> & <wrapper>s
                 ]),
             }),
@@ -719,26 +734,26 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                         // borders:
                         ...ifParentOrientationInline({ // inline
                             ...ifFirstVisibleChild({
-                            // add rounded corners on left:
-                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
+                                // add rounded corners on left:
+                                [borderVars.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
+                                [borderVars.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
                             }),
                             ...ifLastVisibleChild({
-                            // add rounded corners on right:
-                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
+                                // add rounded corners on right:
+                                [borderVars.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
+                                [borderVars.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
                             }),
                         }),
                         ...ifParentOrientationBlock({  // block
                             ...ifFirstVisibleChild({
-                            // add rounded corners on top:
-                            [borders.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
+                                // add rounded corners on top:
+                                [borderVars.borderStartStartRadius] : 'inherit', // copy wrapper's borderRadius
+                                [borderVars.borderStartEndRadius  ] : 'inherit', // copy wrapper's borderRadius
                             }),
                             ...ifLastVisibleChild({
-                            // add rounded corners on bottom:
-                            [borders.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
-                            [borders.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
+                                // add rounded corners on bottom:
+                                [borderVars.borderEndStartRadius  ] : 'inherit', // copy wrapper's borderRadius
+                                [borderVars.borderEndEndRadius    ] : 'inherit', // copy wrapper's borderRadius
                             }),
                         }),
                     }),
@@ -765,8 +780,9 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             
             // borders:
             ...children(['&', wrapperElm], {
-                // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                ...extendsBorder(),
+                // borders:
+                border       : borderVars.border,
+                borderRadius : borderVars.borderRadius,
             }),
             
             
@@ -807,8 +823,8 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
     
     // dependencies:
     
-    // borders:
-    const [, borders] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     
     
@@ -818,21 +834,21 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
                 // borders:
                 
                 // kill borders surrounding List:
-                [borders.borderWidth           ] : '0px',
+                [borderVars.borderWidth           ] : '0px',
                 
                 // remove rounded corners on top:
-                [borders.borderStartStartRadius] : '0px',
-                [borders.borderStartEndRadius  ] : '0px',
+                [borderVars.borderStartStartRadius] : '0px',
+                [borderVars.borderStartEndRadius  ] : '0px',
                 // remove rounded corners on bottom:
-                [borders.borderEndStartRadius  ] : '0px',
-                [borders.borderEndEndRadius    ] : '0px',
+                [borderVars.borderEndStartRadius  ] : '0px',
+                [borderVars.borderEndEndRadius    ] : '0px',
             }),
             rule(['.flat', '.joined', additionRemoveSeparatorSelector], {
                 // children:
                 ...children(wrapperElm, {
                     // borders:
                     // kill separator between items:
-                    [borders.borderWidth] : '0px',
+                    [borderVars.borderWidth] : '0px',
                 }),
             }),
         ], { specificityWeight }),
@@ -851,17 +867,22 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     
     // dependencies:
     
+    // features:
+    const {borderRule    , borderVars} = usesBorder({
+        defaultBorderStyle  : lists.borderStyle,  // default => uses config's border style
+        defaultBorderWidth  : lists.borderWidth,  // default => uses config's border width
+        defaultBorderColor  : lists.borderColor,  // default => uses config's border color
+        defaultBorderRadius : lists.borderRadius, // default => uses config's border radius
+    });
+    
     // variants:
-    const {resizableRule       } = usesResizable(lists);
+    const {resizableRule             } = usesResizable(lists);
     
     // features:
-    const {backgroundVars      } = usesBackground();
-    
-    // borders:
-    const [borderRule, borders ] = usesBorder();
+    const {backgroundVars            } = usesBackground();
     
     // spacings:
-    const [          , paddings] = usesPadding();
+    const [              , paddings  ] = usesPadding();
     
     
     
@@ -975,11 +996,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     // spacings:
                     ...ifParentOrientationInline({ // inline
                         // shift the items to bottom a bit, so the `active item` can hide the `borderBottom`:
-                        marginBlockEnd  : `calc(0px - ${borders.borderWidth})`,
+                        marginBlockEnd  : `calc(0px - ${borderVars.borderWidth})`,
                     }),
                     ...ifParentOrientationBlock({  // block
                         // shift the items to right a bit, so the `active item` can hide the `borderRight`:
-                        marginInlineEnd : `calc(0px - ${borders.borderWidth})`,
+                        marginInlineEnd : `calc(0px - ${borderVars.borderWidth})`,
                     }),
                     
                     
@@ -987,17 +1008,13 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     // children:
                     ...children(listItemElm, {
                         ...imports([
-                            // borders:
+                            // features:
                             borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
                         ]),
                         ...style({
                             // borders:
-                            
-                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                            ...extendsBorder(), // restore border stripped out by `stripoutCommonBasicLayout`
-                            
-                            [borders.borderColor] : 'inherit', // change borderColor independent to child's theme color
-                            backgroundClip        : 'padding-box',
+                            [borderVars.borderColor] : 'inherit', // change borderColor independent to child's theme color
+                            backgroundClip           : 'padding-box',
                             
                             
                             
@@ -1007,15 +1024,17 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
+                            border       : borderVars.border,       // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderRadius : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
                             ...ifParentOrientationInline({ // inline
                                 // remove rounded corners on bottom:
-                                [borders.borderEndStartRadius] : '0px',
-                                [borders.borderEndEndRadius  ] : '0px',
+                                [borderVars.borderEndStartRadius] : '0px',
+                                [borderVars.borderEndEndRadius  ] : '0px',
                             }),
                             ...ifParentOrientationBlock({  // block
                                 // remove rounded corners on right:
-                                [borders.borderStartEndRadius] : '0px',
-                                [borders.borderEndEndRadius  ] : '0px',
+                                [borderVars.borderStartEndRadius] : '0px',
+                                [borderVars.borderEndEndRadius  ] : '0px',
                             }),
                             
                             
@@ -1045,15 +1064,15 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     borderBlockStartWidth  : 0,
                                     
                                     // remove rounded corners on top:
-                                    [borders.borderStartStartRadius] : '0px',
-                                    [borders.borderStartEndRadius  ] : '0px',
+                                    [borderVars.borderStartStartRadius] : '0px',
+                                    [borderVars.borderStartEndRadius  ] : '0px',
                                     
                                     
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInline          : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
-                                    paddingBlockStart      : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    paddingInline          : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
+                                    paddingBlockStart      : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
                                 }),
                                 ...ifParentOrientationBlock({  // block
                                     // borders:
@@ -1062,15 +1081,15 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     borderInlineStartWidth : 0,
                                     
                                     // remove rounded corners on left:
-                                    [borders.borderStartStartRadius] : '0px',
-                                    [borders.borderEndStartRadius  ] : '0px',
+                                    [borderVars.borderStartStartRadius] : '0px',
+                                    [borderVars.borderEndStartRadius  ] : '0px',
                                     
                                     
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlock           : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
-                                    paddingInlineStart     : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    paddingBlock           : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
+                                    paddingInlineStart     : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
                                 }),
                             }),
                             ifActive({
@@ -1083,7 +1102,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlockEnd        : `calc(${paddings.paddingBlock } + ${borders.borderWidth})`,
+                                    paddingBlockEnd        : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
                                 }),
                                 ...ifParentOrientationBlock({  // block
                                     // borders:
@@ -1094,7 +1113,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInlineEnd       : `calc(${paddings.paddingInline} + ${borders.borderWidth})`,
+                                    paddingInlineEnd       : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
                                 }),
                             }),
                         ]),
@@ -1173,7 +1192,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     // children:
                     ...children(listItemElm, {
                         ...imports([
-                            // borders:
+                            // features:
                             borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
                         ]),
                         ...style({
@@ -1192,16 +1211,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            
-                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                            ...extendsBorder(), // restore border stripped out by `stripoutCommonBasicLayout`
-                            
                             // big rounded corners on top:
-                            [borders.borderStartStartRadius] : borderRadiuses.pill,
-                            [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                            [borderVars.borderStartStartRadius] : borderRadiuses.pill,
+                            [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
                             // big rounded corners on bottom:
-                            [borders.borderEndStartRadius  ] : borderRadiuses.pill,
-                            [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                            [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
+                            [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
                             
                             overflow       : 'hidden', // clip the children at the rounded corners
                             
@@ -1209,6 +1224,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             // customize:
                             ...usesCssProps(usesPrefixedProps(lists, 'bullet')), // apply config's cssProps starting with bullet***
+                            
+                            
+                            
+                            // borders:
+                            border       : borderVars.border,       // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderRadius : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
                         }),
                     }),
                 }),
@@ -1274,6 +1295,17 @@ export const useListStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [lists, listValues, cssListConfig] = cssConfig(() => {
     return {
+        // borders:
+        borderStyle       : basics.borderStyle                          as CssKnownProps['borderStyle'],
+        borderWidth       : basics.borderWidth                          as CssKnownProps['borderWidth'],
+        borderColor       : basics.borderColor                          as CssKnownProps['borderColor'],
+        
+        borderRadius      : basics.borderRadius                         as CssKnownProps['borderRadius'],
+        borderRadiusSm    : basics.borderRadiusSm                       as CssKnownProps['borderRadius'],
+        borderRadiusLg    : basics.borderRadiusLg                       as CssKnownProps['borderRadius'],
+        
+        
+        
         // animations:
         transition        : basics.transition                           as CssKnownProps['transition'],
         itemTransition    : basics.transition                           as CssKnownProps['transition'],
