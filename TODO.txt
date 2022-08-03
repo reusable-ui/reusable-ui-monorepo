@@ -16,7 +16,7 @@ TODO: upgrade <Masonry> to useOrientationableWithDirection
 
 features
     background      [done] useBackground   backgroundVars
-    foreground      useForeground   foregroundVars
+    foreground      [done] useForeground   foregroundVars
     border          useBorder       borderVars
     ring            useRing         ringVars
 
