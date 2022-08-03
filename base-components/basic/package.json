@@ -38,6 +38,7 @@
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/css-vars": "^2.0.7",
     "@reusable-ui/background": "^5.0.0",
+    "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/foreground": "^5.0.0",

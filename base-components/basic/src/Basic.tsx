@@ -104,6 +104,10 @@ import {
     // hooks:
     usesForeground,
 }                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -161,151 +165,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-//#region border
-export interface BorderVars {
-    /**
-     * functional border color.
-     */
-    borderColorFn          : any
-    /**
-     * final border color.
-     */
-    borderColor            : any
-    
-    
-    
-    /**
-     * final border mix (style, width, color, etc).
-     */
-    border                 : any
-    /**
-     * final border width.
-     */
-    borderWidth            : any
-    
-    
-    
-    /**
-     * top start (left) radius.
-     */
-    borderStartStartRadius : any
-    /**
-     * top end (right) radius.
-     */
-    borderStartEndRadius   : any
-    /**
-     * bottom start (left) radius.
-     */
-    borderEndStartRadius   : any
-    /**
-     * bottom end (right) radius.
-     */
-    borderEndEndRadius     : any
-}
-const [borders] = cssVars<BorderVars>();
-
-
-
-/**
- * Uses border (strokes, colors, radiuses).
- * @returns A `FeatureMixin<BorderVars>` represents border color definitions.
- */
-export const usesBorder = (): FeatureMixin<BorderVars> => {
-    // dependencies:
-    const {themableVars   } = usesThemable();
-    const {outlineableVars} = usesOutlineable();
-    
-    
-    
-    return [
-        () => style({
-            // color functions:
-            ...vars({
-                [borders.borderColorFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [borders.borderColorFn] : fallbacks(
-                        themableVars.borderImpt,     // first  priority
-                        themableVars.border,         // second priority
-                        themableVars.borderCond,     // third  priority
-                        
-                        basics.borderColor,          // default => uses config's border color
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [borders.borderColor  ] : fallbacks(
-                    outlineableVars.foregTg, // toggle outlined (if `usesOutlineable()` applied)
-                    
-                    borders.borderColorFn,   // default => uses our `borderColorFn`
-                ),
-            }),
-            
-            
-            
-            // compositions:
-            ...vars({
-                [borders.border                ] : basics.border,      // default => uses config's border
-                [borders.borderWidth           ] : basics.borderWidth, // default => uses config's border width
-                
-                
-                
-                [borders.borderStartStartRadius] : basics.borderRadius, // default => uses config's border radius
-                [borders.borderStartEndRadius  ] : basics.borderRadius, // default => uses config's border radius
-                [borders.borderEndStartRadius  ] : basics.borderRadius, // default => uses config's border radius
-                [borders.borderEndEndRadius    ] : basics.borderRadius, // default => uses config's border radius
-            }),
-        }),
-        borders,
-    ];
-};
-
-
-
-export interface CssBorderProps {
-    border       ?: CssCustomSimpleRef
-    borderWidth  ?: CssCustomSimpleRef
-    borderRadius ?: CssCustomSimpleRef
-}
-export const extendsBorder = (cssBorderProps?: CssBorderProps): CssRule => {
-    // dependencies:
-    
-    // borders:
-    const [, borders] = usesBorder();
-    
-    
-    
-    return style({
-        // border strokes:
-        // cssBorderProps.borderStroke** => ref.borderStroke**
-        ...vars({
-            [borders.border     ] : cssBorderProps?.border,
-            [borders.borderWidth] : cssBorderProps?.borderWidth,
-        }),
-        border      : borders.border,      // all border properties
-        borderColor : borders.borderColor, // overwrite color prop
-        borderWidth : borders.borderWidth, // overwrite width prop
-        
-        
-        
-        // border radiuses:
-        // cssBorderProps.borderRadius** => ref.borderRadius**
-        ...vars({
-            [borders.borderStartStartRadius] : cssBorderProps?.borderRadius,
-            [borders.borderStartEndRadius  ] : cssBorderProps?.borderRadius,
-            [borders.borderEndStartRadius  ] : cssBorderProps?.borderRadius,
-            [borders.borderEndEndRadius    ] : cssBorderProps?.borderRadius,
-        }),
-        borderRadius           : null,                           // `null` => delete `borderRadius` prop, `undefined` => preserves `borderRadius` prop
-        borderStartStartRadius : borders.borderStartStartRadius, // overwrite radius prop
-        borderStartEndRadius   : borders.borderStartEndRadius,   // overwrite radius prop
-        borderEndStartRadius   : borders.borderEndStartRadius,   // overwrite radius prop
-        borderEndEndRadius     : borders.borderEndEndRadius,     // overwrite radius prop
-    });
-};
-//#endregion border
 
 //#region ring
 export interface RingVars {
@@ -725,16 +584,19 @@ export const usesBasicLayout = () => {
     
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({
-        defaultBackg    : basics.backg,       // default => uses config's background
-        defaultAltBackg : colors.primary,     // default => uses primary background theme
+        defaultBackg        : basics.backg,        // default => uses config's background
+        defaultAltBackg     : colors.primary,      // default => uses primary background theme
     });
     const {foregroundRule, foregroundVars} = usesForeground({
-        defaultForeg    : basics.foreg,       // default => uses config's foreground
-        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
+        defaultForeg        : basics.foreg,        // default => uses config's foreground
+        defaultAltForeg     : colors.primaryText,  // default => uses primary foreground theme
     });
-    
-    // borders:
-    const [borderRule          ] = usesBorder();
+    const {borderRule    , borderVars    } = usesBorder({
+        defaultBorderStyle  : basics.borderStyle,  // default => uses config's border style
+        defaultBorderWidth  : basics.borderWidth,  // default => uses config's border width
+        defaultBorderColor  : basics.borderColor,  // default => uses config's border color
+        defaultBorderRadius : basics.borderRadius, // default => uses config's border radius
+    });
     
     // rings:
     const [ringRule            ] = usesRing();
@@ -767,7 +629,7 @@ export const usesBasicLayout = () => {
         ]),
         ...style({
             // layouts:
-            display   : 'block',
+            display      : 'block',
             
             
             
@@ -779,37 +641,36 @@ export const usesBasicLayout = () => {
             // accessibilities:
             ...rule(['&::selection', '& ::selection'], { // ::selection on self and descendants
                     // backgrounds:
-                backg : backgroundVars.altBackgColor,
+                backg    : backgroundVars.altBackgColor,
                 
                 
                 
                 // foregrounds:
-                foreg : foregroundVars.altForeg,
+                foreg    : foregroundVars.altForeg,
             }),
             
             
             
             // backgrounds:
-            backg     : backgroundVars.backg,
+            backg        : backgroundVars.backg,
             
             
             
             // foregrounds:
-            foreg     : foregroundVars.foreg,
+            foreg        : foregroundVars.foreg,
             
             
             
             // borders:
-            
-            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-            ...extendsBorder(basics),
+            border       : borderVars.border,
+            borderRadius : borderVars.borderRadius,
             
             
             
             // animations:
-            boxShadow : anims.boxShadow,
-            filter    : anims.filter,
-            anim      : anims.anim,
+            boxShadow    : anims.boxShadow,
+            filter       : anims.filter,
+            anim         : anims.anim,
             
             
             
@@ -917,9 +778,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // borders:
-        border               : [
-            [borderStrokes.style, borderStrokes.defaultWidth, borderStrokes.color],
-        ]                                                   as CssKnownProps['border'],
+        borderStyle          : borderStrokes.style          as CssKnownProps['borderStyle'],
         borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth'],
         borderColor          : borderStrokes.color          as CssKnownProps['borderColor'],
         
