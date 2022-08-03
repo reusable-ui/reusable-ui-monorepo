@@ -53,6 +53,12 @@ import {
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -89,7 +95,6 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    usesBorder,
     usesPadding,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -159,8 +164,8 @@ export const useButtonVariant = (props: ButtonVariant) => {
 export const noBackground = () => {
     // dependencies:
     
-    // borders:
-    const [, borders] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     
     
@@ -168,7 +173,7 @@ export const noBackground = () => {
         ...variants([
             ifNotOutlined({
                 // borders:
-                [borders.borderWidth]: '0px', // no_border if not explicitly `.outlined`
+                [borderVars.borderWidth]: '0px', // no_border if not explicitly `.outlined`
             }),
         ]),
         ...states([
@@ -248,8 +253,8 @@ export const usesButtonLayout = (options?: OrientationableOptions) => {
 export const usesButtonLinkVariant = () => {
     // dependencies:
     
-    // borders:
-    const [, borders ] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     // spacings:
     const [, paddings] = usesPadding();
@@ -267,11 +272,11 @@ export const usesButtonLinkVariant = () => {
         ...style({
             // borders:
             // small rounded corners on top:
-            [borders.borderStartStartRadius] : borderRadiuses.sm,
-            [borders.borderStartEndRadius  ] : borderRadiuses.sm,
+            [borderVars.borderStartStartRadius] : borderRadiuses.sm,
+            [borderVars.borderStartEndRadius  ] : borderRadiuses.sm,
             // small rounded corners on bottom:
-            [borders.borderEndStartRadius  ] : borderRadiuses.sm,
-            [borders.borderEndEndRadius    ] : borderRadiuses.sm,
+            [borderVars.borderEndStartRadius  ] : borderRadiuses.sm,
+            [borderVars.borderEndEndRadius    ] : borderRadiuses.sm,
             
             
             

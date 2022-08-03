@@ -38,6 +38,7 @@
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/action-control": "^5.0.0",
+    "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
