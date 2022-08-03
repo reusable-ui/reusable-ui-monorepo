@@ -161,11 +161,12 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
                 [borderVars.borderStartEndRadius  ] : config?.defaultBorderRadius,
                 [borderVars.borderEndStartRadius  ] : config?.defaultBorderRadius,
                 [borderVars.borderEndEndRadius    ] : config?.defaultBorderRadius,
+                // TODO: fix map to logical, not physical:
                 [borderVars.borderRadius] : [[
-                    borderVars.borderStartStartRadius,
-                    borderVars.borderStartEndRadius,
-                    borderVars.borderEndStartRadius,
-                    borderVars.borderEndEndRadius,
+                    borderVars.borderStartStartRadius, // top-left
+                    borderVars.borderStartEndRadius,   // top-right
+                    borderVars.borderEndEndRadius,     // bottom-right
+                    borderVars.borderEndStartRadius,   // bottom-left
                 ]],
             }),
         }),
