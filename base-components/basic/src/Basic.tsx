@@ -100,6 +100,10 @@ import {
     // hooks:
     usesBackground,
 }                           from '@reusable-ui/background'      // background stuff of UI
+import {
+    // hooks:
+    usesForeground,
+}                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -157,84 +161,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-//#region foreg
-export interface ForegVars {
-    /**
-     * functional foreground color.
-     */
-    foregFn    : any
-    /**
-     * final foreground color.
-     */
-    foreg      : any
-    /**
-     * functional alternate foreground color.
-     */
-    altForegFn : any
-    /**
-     * final alternate foreground color.
-     */
-    altForeg   : any
-}
-const [foregs] = cssVars<ForegVars>();
-
-/**
- * Uses foreground color (text color).
- * @returns A `FeatureMixin<ForegVars>` represents foreground color definitions.
- */
-export const usesForeg = (): FeatureMixin<ForegVars> => {
-    // dependencies:
-    const {themableVars   } = usesThemable();
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
-    
-    
-    
-    return [
-        () => style({
-            // color functions:
-            ...vars({
-                [foregs.foregFn   ] : 'inherit', // inherit to parent theme
-                [foregs.altForegFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [foregs.foregFn   ] : fallbacks(
-                        themableVars.foregImpt,    // first  priority
-                        themableVars.foreg,        // second priority
-                        themableVars.foregCond,    // third  priority
-                        
-                        basics.foreg,              // default => uses config's foreground
-                    ),
-                    [foregs.altForegFn] : fallbacks(
-                        themableVars.altForegImpt, // first  priority
-                        themableVars.altForeg,     // second priority
-                        themableVars.altForegCond, // third  priority
-                        
-                        colors.primaryText,        // default => uses primary text theme
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [foregs.foreg     ] : fallbacks(
-                    outlineableVars.foregTg,    // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.foregTg,       // toggle mild     (if `usesMildable()` applied)
-                    
-                    foregs.foregFn,             // default => uses our `foregFn`
-                ),
-                [foregs.altForeg  ] : fallbacks(
-                    outlineableVars.altForegTg, // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altForegTg,    // toggle mild     (if `usesMildable()` applied)
-                    
-                    foregs.altForegFn,          // default => uses our `foregFn`
-                ),
-            }),
-        }),
-        foregs,
-    ];
-};
-//#endregion foreg
 
 //#region border
 export interface BorderVars {
@@ -799,12 +725,13 @@ export const usesBasicLayout = () => {
     
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({
-        defaultBackg    : basics.backg,   // default => uses config's background
-        defaultAltBackg : colors.primary, // default => uses primary background theme
+        defaultBackg    : basics.backg,       // default => uses config's background
+        defaultAltBackg : colors.primary,     // default => uses primary background theme
     });
-    
-    // foregrounds:
-    const [foregRule   , foregs] = usesForeg();
+    const {foregroundRule, foregroundVars} = usesForeground({
+        defaultForeg    : basics.foreg,       // default => uses config's foreground
+        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
+    });
     
     // borders:
     const [borderRule          ] = usesBorder();
@@ -824,9 +751,7 @@ export const usesBasicLayout = () => {
         ...imports([
             // features:
             backgroundRule,
-            
-            // foregrounds:
-            foregRule,
+            foregroundRule,
             
             // borders:
             borderRule,
@@ -859,7 +784,7 @@ export const usesBasicLayout = () => {
                 
                 
                 // foregrounds:
-                foreg : foregs.altForeg,
+                foreg : foregroundVars.altForeg,
             }),
             
             
@@ -870,7 +795,7 @@ export const usesBasicLayout = () => {
             
             
             // foregrounds:
-            foreg     : foregs.foreg,
+            foreg     : foregroundVars.foreg,
             
             
             

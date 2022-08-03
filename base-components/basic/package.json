@@ -40,6 +40,7 @@
     "@reusable-ui/background": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
+    "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/gradientable": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
