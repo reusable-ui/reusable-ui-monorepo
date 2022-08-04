@@ -522,9 +522,7 @@ export const usesContentBasicLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        // TODO: use contents
-    });
+    const {borderRule, borderVars} = usesBorder(contents as any);
     
     
     
