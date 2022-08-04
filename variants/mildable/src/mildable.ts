@@ -97,10 +97,10 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
 
 export interface MildableRules { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
 export interface MildableConfig {
-    defaultBackg    ?: CssCustomRef
-    defaultForeg    ?: CssCustomRef
-    defaultAltBackg ?: CssCustomRef
-    defaultAltForeg ?: CssCustomRef
+    backg    ?: CssCustomRef
+    foreg    ?: CssCustomRef
+    altBackg ?: CssCustomRef
+    altForeg ?: CssCustomRef
 }
 /**
  * Uses a toggleable mildification.  
@@ -127,7 +127,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.backgMild,        // second priority
                     themableVars.backgMildCond,    // third  priority
                     
-                    config?.defaultBackg,          // default => uses config's background
+                    config?.backg,                 // default => uses config's background
                 ),
                 
                 [mildableVars.foregFn   ] : fallbacks(
@@ -135,7 +135,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.foregMild,        // second priority
                     themableVars.foregMildCond,    // third  priority
                     
-                    config?.defaultForeg,          // default => uses config's foreground
+                    config?.foreg,                 // default => uses config's foreground
                 ),
                 
                 
@@ -145,7 +145,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.altBackgMild,     // second priority
                     themableVars.altBackgMildCond, // third  priority
                     
-                    config?.defaultAltBackg,       // default => uses config's alternate background
+                    config?.altBackg,              // default => uses config's alternate background
                 ),
                 
                 [mildableVars.altForegFn] : fallbacks(
@@ -153,7 +153,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     themableVars.altForegMild,     // second priority
                     themableVars.altForegMildCond, // third  priority
                     
-                    config?.defaultAltForeg,       // default => uses config's alternate foreground
+                    config?.altForeg,              // default => uses config's alternate foreground
                 ),
             }),
             ...variants([
