@@ -67,6 +67,12 @@ import {
     usePropEnabled,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesRing,
+}                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -86,7 +92,6 @@ import {
     
     
     // hooks:
-    usesRing,
     usesAnim,
     fallbackNoneBoxShadow,
     fallbackNoneFilter,
@@ -195,7 +200,9 @@ export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([se
  */
 export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
     // dependencies:
-    const [, rings] = usesRing();
+    
+    // features:
+    const {ringVars} = usesRing();
     
     
     
@@ -209,7 +216,7 @@ export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
                     controls.boxShadowFocus,
                     
                     // ring color:
-                    rings.ring,
+                    ringVars.ring,
                 ]],
             }),
             ...states([
