@@ -104,6 +104,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -128,7 +132,6 @@ import {
     
     
     // hooks:
-    usesPadding,
     usesAnim,
     fallbackNoneFilter,
     fallbackNoneTransf,
@@ -429,13 +432,11 @@ export const usesCheckLayout = () => {
     // dependencies:
     
     // features:
-    const {foregroundVars           } = usesForeground();
+    const {foregroundVars} = usesForeground();
+    const {paddingVars   } = usesPadding();
     
     // animations:
-    const [checkAnimRule, checkAnims] = usesCheckAnim();
-    
-    // spacings:
-    const [             , paddings  ] = usesPadding();
+    const [checkAnimRule , checkAnims ] = usesCheckAnim();
     
     
     
@@ -506,8 +507,8 @@ export const usesCheckLayout = () => {
                     
                     
                     // spacings:
-                    [paddings.paddingInline] : '0px', // discard padding
-                    [paddings.paddingBlock ] : '0px', // discard padding
+                    [paddingVars.paddingInline] : '0px', // discard padding
+                    [paddingVars.paddingBlock ] : '0px', // discard padding
                     ...ifNotLastChild({
                         // spacing between input & label:
                         marginInlineEnd : checks.spacing, // we cannot place a `gap` on the parent flex because the existance of <dummyElm>

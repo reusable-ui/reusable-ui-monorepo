@@ -52,6 +52,7 @@
     "@reusable-ui/layouts": "^5.0.0",
     "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/nudible": "^5.0.0",
+    "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",
     "@types/react": "^18.0.10"
   },
