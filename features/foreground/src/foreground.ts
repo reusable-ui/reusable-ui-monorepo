@@ -70,8 +70,8 @@ const [foregroundVars] = cssVars<ForegroundVars>();
 
 export interface ForegroundRules { foregroundRule: Factory<CssRule>, foregroundVars: CssVars<ForegroundVars> }
 export interface ForegroundConfig {
-    defaultForeg    ?: CssCustomRef
-    defaultAltForeg ?: CssCustomRef
+    foreg    ?: CssCustomRef
+    altForeg ?: CssCustomRef
 }
 /**
  * Uses foreground color (text color).
@@ -100,14 +100,14 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundRules => {
                         themableVars.foreg,         // second priority
                         themableVars.foregCond,     // third  priority
                         
-                        config?.defaultForeg,       // default => uses config's foreground
+                        config?.foreg,              // default => uses config's foreground
                     ),
                     [foregroundVars.altForegFn] : fallbacks(
                         themableVars.altForegImpt,  // first  priority
                         themableVars.altForeg,      // second priority
                         themableVars.altForegCond,  // third  priority
                         
-                        config?.defaultAltForeg,    // default => uses config's alternate foreground
+                        config?.altForeg,           // default => uses config's alternate foreground
                     ),
                 }),
             }),
