@@ -101,10 +101,10 @@ const [borderVars] = cssVars<BorderVars>();
 
 export interface BorderRules { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
 export interface BorderConfig {
-    defaultBorderStyle  ?: CssCustomRef
-    defaultBorderWidth  ?: CssCustomRef
-    defaultBorderColor  ?: CssCustomRef
-    defaultBorderRadius ?: CssCustomRef
+    borderStyle  ?: CssCustomRef
+    borderWidth  ?: CssCustomRef
+    borderColor  ?: CssCustomRef
+    borderRadius ?: CssCustomRef
 }
 /**
  * Uses border (strokes, colors, radiuses).
@@ -127,19 +127,19 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [borderVars.borderColorFn] : fallbacks(
-                        themableVars.borderImpt,    // first  priority
-                        themableVars.border,        // second priority
-                        themableVars.borderCond,    // third  priority
+                        themableVars.borderImpt, // first  priority
+                        themableVars.border,     // second priority
+                        themableVars.borderCond, // third  priority
                         
-                        config?.defaultBorderColor, // default => uses config's border color
+                        config?.borderColor,     // default => uses config's border color
                     ),
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] can be toggled_on
                 [borderVars.borderColor  ] : fallbacks(
-                    outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
+                    outlineableVars.foregTg,     // toggle outlined (if `usesOutlineable()` applied)
                     
-                    borderVars.borderColorFn,       // default => uses our `borderColorFn`
+                    borderVars.borderColorFn,    // default => uses our `borderColorFn`
                 ),
             }),
             
@@ -147,8 +147,8 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
             
             // compositions:
             ...vars({
-                [borderVars.borderStyle] : config?.defaultBorderStyle, // default => uses config's border style
-                [borderVars.borderWidth] : config?.defaultBorderWidth, // default => uses config's border width
+                [borderVars.borderStyle] : config?.borderStyle, // default => uses config's border style
+                [borderVars.borderWidth] : config?.borderWidth, // default => uses config's border width
                 [borderVars.border     ] : [[
                     borderVars.borderStyle,
                     borderVars.borderWidth,
@@ -157,10 +157,10 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
                 
                 
                 
-                [borderVars.borderStartStartRadius] : config?.defaultBorderRadius,
-                [borderVars.borderStartEndRadius  ] : config?.defaultBorderRadius,
-                [borderVars.borderEndStartRadius  ] : config?.defaultBorderRadius,
-                [borderVars.borderEndEndRadius    ] : config?.defaultBorderRadius,
+                [borderVars.borderStartStartRadius] : config?.borderRadius,
+                [borderVars.borderStartEndRadius  ] : config?.borderRadius,
+                [borderVars.borderEndStartRadius  ] : config?.borderRadius,
+                [borderVars.borderEndEndRadius    ] : config?.borderRadius,
                 // TODO: fix map to logical, not physical:
                 [borderVars.borderRadius] : [[
                     borderVars.borderStartStartRadius, // top-left
