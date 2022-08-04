@@ -48,6 +48,7 @@
     "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/nudible": "^5.0.0",
     "@reusable-ui/outlineable": "^5.0.0",
+    "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/ring": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",

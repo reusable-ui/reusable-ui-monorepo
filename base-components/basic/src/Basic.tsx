@@ -112,6 +112,10 @@ import {
     // hooks:
     usesRing,
 }                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -168,66 +172,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-// spacings:
-
-//#region padding
-export interface PaddingVars {
-    /**
-     * left & right paddings.
-     */
-    paddingInline : any
-    /**
-     * top & bottom paddings.
-     */
-    paddingBlock  : any
-}
-const [paddings] = cssVars<PaddingVars>();
-
-
-
-/**
- * Uses paddings.
- * @returns A `FeatureMixin<PaddingVars>` represents paddings definitions.
- */
-export const usesPadding = (): FeatureMixin<PaddingVars> => {
-    return [
-        () => style({
-            ...vars({
-                [paddings.paddingInline] : basics.paddingInline, // default => uses config's padding inline
-                [paddings.paddingBlock ] : basics.paddingBlock,  // default => uses config's padding block
-            }),
-        }),
-        paddings,
-    ];
-};
-
-export interface CssPaddingProps {
-    paddingInline ?: CssCustomSimpleRef
-    paddingBlock  ?: CssCustomSimpleRef
-}
-export const extendsPadding = (cssProps?: CssPaddingProps): CssRule => {
-    // dependencies:
-    
-    // spacings:
-    const [, paddings] = usesPadding();
-    
-    
-    
-    return style({
-        // spacings:
-        // cssProps.padding** => ref.padding**
-        ...vars({
-            [paddings.paddingInline] : cssProps?.paddingInline,
-            [paddings.paddingBlock ] : cssProps?.paddingBlock,
-        }),
-        padding       : null,                   // `null` => delete `padding` prop, `undefined` => preserves `padding` prop
-        paddingInline : paddings.paddingInline, // overwrite padding prop
-        paddingBlock  : paddings.paddingBlock,  // overwrite padding prop
-    });
-};
-//#endregion padding
-
 
 // animations:
 
@@ -537,12 +481,10 @@ export const usesBasicLayout = () => {
     const {foregroundRule, foregroundVars} = usesForeground(basics);
     const {borderRule    , borderVars    } = usesBorder(basics);
     const {ringRule                      } = usesRing(basics);
+    const {paddingRule   , paddingVars   } = usesPadding(basics);
     
     // animations:
     const [animRule    , anims ] = usesAnim();
-    
-    // spacings:
-    const [paddingRule         ] = usesPadding();
     
     
     
@@ -553,12 +495,10 @@ export const usesBasicLayout = () => {
             foregroundRule,
             borderRule,
             ringRule,
+            paddingRule,
             
             // animations:
             animRule,
-            
-            // spacings:
-            paddingRule,
         ]),
         ...style({
             // layouts:
@@ -608,9 +548,7 @@ export const usesBasicLayout = () => {
             
             
             // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(basics),
+            padding      : paddingVars.padding,
         }),
     });
 };
