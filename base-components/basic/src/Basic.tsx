@@ -108,6 +108,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesRing,
+}                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
 
 // reusable-ui variants:
 import {
@@ -118,7 +122,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    ifHasTheme,
     usesThemable,
     ThemableProps,
     useThemable,
@@ -165,59 +168,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 
 // hooks:
-
-//#region ring
-export interface RingVars {
-    /**
-     * functional ring color.
-     */
-    ringFn : any
-    /**
-     * final ring color.
-     */
-    ring   : any
-}
-const [rings] = cssVars<RingVars>();
-
-/**
- * Uses ring color (focus ring color).
- * @returns A `FeatureMixin<RingVars>` represents ring color definitions.
- */
-export const usesRing = (): FeatureMixin<RingVars> => {
-    // dependencies:
-    const {themableVars} = usesThemable();
-    
-    
-    
-    return [
-        () => style({
-            // color functions:
-            ...vars({
-                [rings.ringFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [rings.ringFn] : fallbacks(
-                        themableVars.ringImpt,      // first  priority
-                        themableVars.ring,          // second priority
-                        themableVars.ringCond,      // third  priority
-                        
-                        colors.secondaryThin,       // default => uses secondary theme, because its color is neutral
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [rings.ring  ] : fallbacks(
-                    // no toggle outlined nor toggle mild yet (might be added in the future)
-                    
-                    rings.ringFn,         // default => uses our `ringFn`
-                ),
-            }),
-        }),
-        rings,
-    ];
-};
-//#endregion ring
 
 // spacings:
 
@@ -586,9 +536,7 @@ export const usesBasicLayout = () => {
     const {backgroundRule, backgroundVars} = usesBackground(basics);
     const {foregroundRule, foregroundVars} = usesForeground(basics);
     const {borderRule    , borderVars    } = usesBorder(basics);
-    
-    // rings:
-    const [ringRule            ] = usesRing();
+    const {ringRule                      } = usesRing(basics);
     
     // animations:
     const [animRule    , anims ] = usesAnim();
@@ -604,8 +552,6 @@ export const usesBasicLayout = () => {
             backgroundRule,
             foregroundRule,
             borderRule,
-            
-            // rings:
             ringRule,
             
             // animations:
@@ -765,6 +711,11 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
         borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
         borderRadiusLg       : borderRadiuses.lg            as CssKnownProps['borderRadius'],
+        
+        
+        
+        // rings:
+        ring                 : colors.secondaryThin         as CssKnownProps['color'],
         
         
         
