@@ -98,7 +98,11 @@ import {
 import {
     // hooks:
     usesBackground,
-}                           from '@reusable-ui/background'      // background stuff of UI
+}                           from '@reusable-ui/background'              // background stuff of UI
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -130,7 +134,6 @@ import {
     
     
     // hooks:
-    extendsBorder,
     extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
@@ -258,6 +261,21 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
+    // features:
+    const {
+        borderRule: trackBorderRule,
+        borderVars: trackBorderVars,
+    } = usesBorder({
+        defaultBorderRadius : ranges.trackBorderRadius,
+    });
+    
+    const {
+        borderRule: thumbBorderRule,
+        borderVars: thumbBorderVars,
+    } = usesBorder({
+        defaultBorderRadius : ranges.thumbBorderRadius,
+    });
+    
     // range:
     const [rangeRule, rangeVars] = usesRange();
     
@@ -322,6 +340,9 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             
             ...children(trackElm, {
                 ...imports([
+                    // features:
+                    trackBorderRule,
+                    
                     // borders:
                     usesBorderAsContainer({ // make a nicely rounded corners
                         orientationInlineSelector : parentOrientationInlineSelector,
@@ -363,12 +384,10 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            
-                            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                            ...extendsBorder(),
-                            ...style({
-                                border : 'none', // only setup borderRadius, no borderStroke
-                            }),
+                            // a fix for track(Lower|Upper) background corners:
+                            border       : trackBorderVars.border,
+                            borderRadius : trackBorderVars.borderRadius,
+                            [trackBorderVars.borderWidth] : '0px', // only setup borderRadius, no borderStroke
                             
                             
                             
@@ -422,47 +441,50 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         cursor: 'inherit',
                     }),
                     ...children(thumbElm, {
-                        // layouts:
-                        display   : 'inline-block', // use inline-block, so it takes the width & height as we set
-                        
-                        
-                        
-                        // positions:
-                        zIndex    : 1, // the <thumb> should at the top of <trackLower> & <trackUpper>
-                        
-                        
-                        
-                        // sizes:
-                        boxSizing : 'border-box', // the final size is including borders & paddings
-                        
-                        
-                        
-                        // customize:
-                        ...usesCssProps(usesPrefixedProps(ranges, 'thumb')), // apply config's cssProps starting with thumb***
-                        
-                        
-                        
-                        // borders:
-                        
-                        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                        ...extendsBorder({
-                            borderRadius  : ranges.thumbBorderRadius,
+                        ...imports([
+                            // features:
+                            thumbBorderRule,
+                        ]),
+                        ...style({
+                            // layouts:
+                            display   : 'inline-block', // use inline-block, so it takes the width & height as we set
+                            
+                            
+                            
+                            // positions:
+                            zIndex    : 1, // the <thumb> should at the top of <trackLower> & <trackUpper>
+                            
+                            
+                            
+                            // sizes:
+                            boxSizing : 'border-box', // the final size is including borders & paddings
+                            
+                            
+                            
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(ranges, 'thumb')), // apply config's cssProps starting with thumb***
+                            
+                            
+                            
+                            // borders:
+                            border       : thumbBorderVars.border,
+                            borderRadius : thumbBorderVars.borderRadius,
+                            
+                            
+                            
+                            // spacings:
+                            
+                            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+                            ...extendsPadding({
+                                paddingInline : ranges.thumbPaddingInline,
+                                paddingBlock  : ranges.thumbPaddingBlock,
+                            }),
+                            
+                            // cancel out <thumb>'s size with negative margin,
+                            // so the <trackLower> & <trackUpper> can meet on the middle of the <thumb>:
+                            marginInline : `calc(0px - (${ranges.thumbInlineSize}) / 2)`,
+                            marginBlock  : `calc(0px - (${ranges.thumbBlockSize }) / 2)`,
                         }),
-                        
-                        
-                        
-                        // spacings:
-                        
-                        // let's Reusable-UI system to manage paddingInline & paddingBlock:
-                        ...extendsPadding({
-                            paddingInline : ranges.thumbPaddingInline,
-                            paddingBlock  : ranges.thumbPaddingBlock,
-                        }),
-                        
-                        // cancel out <thumb>'s size with negative margin,
-                        // so the <trackLower> & <trackUpper> can meet on the middle of the <thumb>:
-                        marginInline : `calc(0px - (${ranges.thumbInlineSize}) / 2)`,
-                        marginBlock  : `calc(0px - (${ranges.thumbBlockSize }) / 2)`,
                     }),
                     
                     
@@ -473,11 +495,8 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     
                     
                     // borders:
-                    
-                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                    ...extendsBorder({
-                        borderRadius  : ranges.trackBorderRadius,
-                    }),
+                    border       : trackBorderVars.border,
+                    borderRadius : trackBorderVars.borderRadius,
                     
                     
                     
