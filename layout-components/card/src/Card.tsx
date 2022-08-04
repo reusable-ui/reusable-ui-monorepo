@@ -268,12 +268,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        defaultBorderStyle  : cards.borderStyle,  // default => uses config's border style
-        defaultBorderWidth  : cards.borderWidth,  // default => uses config's border width
-        defaultBorderColor  : cards.borderColor,  // default => uses config's border color
-        defaultBorderRadius : cards.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule, borderVars} = usesBorder(cards);
     
     // animations:
     const [animRule  , anims] = usesAnim();
