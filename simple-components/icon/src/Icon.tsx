@@ -51,7 +51,6 @@ import {
 import {
     // utilities:
     cssVars,
-    fallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -100,11 +99,7 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
-    ifNotMild,
-    ifMild,
-    MildableRules,
-    MildableConfig,
-    usesMildable as baseUsesMildable,
+    usesMildable,
     MildableProps,
     useMildable,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
@@ -177,65 +172,6 @@ export const themeOf = (themeName: ThemeName): CssRule => {
     });
 };
 //#endregion themable
-
-//#region mildable
-/**
- * Uses a toggleable mildification.  
- * @param config  A configuration of `mildableRule`.
- * @param factory A callback to create a mildification rules for each toggle state.
- * @returns A `MildableRules` represents the mildification rules for each toggle state.
- */
-export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): MildableRules => {
-    // dependencies:
-    const {themableRule, themableVars} = usesThemable();
-    const {              mildableVars} = baseUsesMildable(config, factory);
-    
-    
-    
-    return {
-        mildableRule: () => style({
-            ...imports([
-                // makes   `usesMildable()` implicitly `usesThemable()`
-                // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themableRule,
-            ]),
-            ...vars({
-                [mildableVars.altBackgFn] : fallbacks(
-                    themableVars.altBackgMildImpt, // first  priority // supports for validation on ancestor
-                    themableVars.altBackgMild,     // second priority
-                    themableVars.altBackgMildCond, // third  priority // supports for active state on ancestor
-                    
-                    config?.defaultAltBackg,       // default => uses config's alternate background
-                ),
-            }),
-            ...variants([
-                ifNotMild(factory(false)),
-                ifMild(factory(true)),
-            ]),
-        }),
-        mildableVars,
-    };
-};
-
-/**
- * Creates a mildification rules for the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
- * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
- */
-export const mildOf = (toggle: boolean|null = true): CssRule => {
-    // dependencies:
-    const {mildableVars} = baseUsesMildable();
-    
-    
-    
-    return style({
-        ...vars({
-            // *toggle on/off* the mildification prop:
-            [mildableVars.altBackgTg] : toggle ? mildableVars.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        }),
-    });
-};
-//#endregion mildable
 
 
 
@@ -594,9 +530,7 @@ export const usesIconVariants    = () => {
     // variants:
     const {resizableRule} = usesResizable<SizeName>(icons);
     const {themableRule } = usesThemable();
-    const {mildableRule } = usesMildable({
-        defaultAltBackg : icons.color, // default => uses config's foreground
-    });
+    const {mildableRule } = usesMildable({ altBackg : icons.color });
     
     
     
