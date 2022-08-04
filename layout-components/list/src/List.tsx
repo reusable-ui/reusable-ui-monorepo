@@ -93,6 +93,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -137,11 +141,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // hooks:
-    usesPadding,
-    
-    
-    
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
@@ -497,10 +496,8 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+    const {borderVars } = usesBorder();
+    const {paddingVars} = usesPadding();
     
     
     
@@ -520,8 +517,8 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
         
         
         // spacings:
-        [paddings.paddingInline] : '0px', // discard padding
-        [paddings.paddingBlock ] : '0px', // discard padding
+        [paddingVars.paddingInline] : '0px', // discard padding
+        [paddingVars.paddingBlock ] : '0px', // discard padding
         
         
         
@@ -865,16 +862,14 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule    , borderVars} = usesBorder(lists);
+    const {borderRule    , borderVars } = usesBorder(lists);
+    const {                paddingVars} = usesPadding();
     
     // variants:
-    const {resizableRule             } = usesResizable(lists);
+    const {resizableRule              } = usesResizable(lists);
     
     // features:
-    const {backgroundVars            } = usesBackground();
-    
-    // spacings:
-    const [              , paddings  ] = usesPadding();
+    const {backgroundVars             } = usesBackground();
     
     
     
@@ -1063,8 +1058,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInline          : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
-                                    paddingBlockStart      : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
+                                    paddingInline          : `calc(${paddingVars.paddingInline} + ${borderVars.borderWidth})`,
+                                    paddingBlockStart      : `calc(${paddingVars.paddingBlock } + ${borderVars.borderWidth})`,
                                 }),
                                 ...ifParentOrientationBlock({  // block
                                     // borders:
@@ -1080,8 +1075,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlock           : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
-                                    paddingInlineStart     : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
+                                    paddingBlock           : `calc(${paddingVars.paddingBlock } + ${borderVars.borderWidth})`,
+                                    paddingInlineStart     : `calc(${paddingVars.paddingInline} + ${borderVars.borderWidth})`,
                                 }),
                             }),
                             ifActive({
@@ -1094,7 +1089,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingBlockEnd        : `calc(${paddings.paddingBlock } + ${borderVars.borderWidth})`,
+                                    paddingBlockEnd        : `calc(${paddingVars.paddingBlock } + ${borderVars.borderWidth})`,
                                 }),
                                 ...ifParentOrientationBlock({  // block
                                     // borders:
@@ -1105,7 +1100,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                     
                                     // spacings:
                                     // compensates the missing borders:
-                                    paddingInlineEnd       : `calc(${paddings.paddingInline} + ${borderVars.borderWidth})`,
+                                    paddingInlineEnd       : `calc(${paddingVars.paddingInline} + ${borderVars.borderWidth})`,
                                 }),
                             }),
                         ]),
