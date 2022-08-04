@@ -90,6 +90,12 @@ import {
     stripoutImage,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -103,7 +109,6 @@ import type {
 }                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
-    extendsBorder,
     extendsPadding,
     
     
@@ -330,6 +335,13 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
     
     
     
+    // dependencies:
+    
+    // features:
+    const {borderRule, borderVars} = usesBorder();
+    
+    
+    
     return style({
         // children:
         
@@ -355,10 +367,15 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
                 
                 // children:
                 ...children('*', {
-                    // borders:
-                    
-                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                    ...extendsBorder(),
+                    ...imports([
+                        // features:
+                        borderRule, // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius
+                    ]),
+                    ...style({
+                        // borders:
+                        border       : borderVars.border,
+                        borderRadius : borderVars.borderRadius,
+                    }),
                 }),
             }),
         }),
@@ -400,10 +417,15 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
         // finally: styling top_level <figure> & top_level <media> as separator:
         ...children(mediaSelectorWithExcept, {
             ...style({
-                // borders:
-                
-                // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                ...extendsBorder(),
+                ...imports([
+                    // features:
+                    borderRule, // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius
+                ]),
+                ...style({
+                    // borders:
+                    border       : borderVars.border,
+                    borderRadius : borderVars.borderRadius,
+                }),
             }),
             ...imports([
                 // borders:
@@ -497,23 +519,37 @@ export const usesContentChildren             = (options: (ContentChildrenMediaOp
 };
 
 export const usesContentBasicLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {borderRule, borderVars} = usesBorder({
+        // TODO: use contents
+    });
+    
+    
+    
     return style({
-        // customize:
-        ...usesCssProps(contents), // apply config's cssProps
-        
-        
-        
-        // borders:
-        
-        // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-        ...extendsBorder(contents as any),
-        
-        
-        
-        // spacings:
-        
-        // let's Reusable-UI system to manage paddingInline & paddingBlock:
-        ...extendsPadding(contents),
+        ...imports([
+            // features:
+            borderRule,
+        ]),
+        ...style({
+            // customize:
+            ...usesCssProps(contents), // apply config's cssProps
+            
+            
+            
+            // borders:
+            border       : borderVars.border,
+            borderRadius : borderVars.borderRadius,
+            
+            
+            
+            // spacings:
+            
+            // let's Reusable-UI system to manage paddingInline & paddingBlock:
+            ...extendsPadding(contents),
+        }),
     });
 };
 export const usesContentLayout = () => {

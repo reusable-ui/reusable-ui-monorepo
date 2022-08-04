@@ -40,6 +40,7 @@
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",
     "@reusable-ui/container": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
