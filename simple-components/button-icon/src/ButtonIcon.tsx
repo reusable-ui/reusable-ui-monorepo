@@ -137,9 +137,7 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        defaultBorderRadius : buttonIcons.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule, borderVars} = usesBorder(buttonIcons);
     
     // icon:
     const [, iconVars] = usesIcon();
