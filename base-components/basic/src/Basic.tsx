@@ -585,12 +585,7 @@ export const usesBasicLayout = () => {
     // features:
     const {backgroundRule, backgroundVars} = usesBackground(basics);
     const {foregroundRule, foregroundVars} = usesForeground(basics);
-    const {borderRule    , borderVars    } = usesBorder({
-        defaultBorderStyle  : basics.borderStyle,  // default => uses config's border style
-        defaultBorderWidth  : basics.borderWidth,  // default => uses config's border width
-        defaultBorderColor  : basics.borderColor,  // default => uses config's border color
-        defaultBorderRadius : basics.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule    , borderVars    } = usesBorder(basics);
     
     // rings:
     const [ringRule            ] = usesRing();
