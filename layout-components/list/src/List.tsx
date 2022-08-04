@@ -652,12 +652,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        defaultBorderStyle  : lists.borderStyle,  // default => uses config's border style
-        defaultBorderWidth  : lists.borderWidth,  // default => uses config's border width
-        defaultBorderColor  : lists.borderColor,  // default => uses config's border color
-        defaultBorderRadius : lists.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule, borderVars} = usesBorder(lists);
     
     
     
@@ -870,12 +865,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule    , borderVars} = usesBorder({
-        defaultBorderStyle  : lists.borderStyle,  // default => uses config's border style
-        defaultBorderWidth  : lists.borderWidth,  // default => uses config's border width
-        defaultBorderColor  : lists.borderColor,  // default => uses config's border color
-        defaultBorderRadius : lists.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule    , borderVars} = usesBorder(lists);
     
     // variants:
     const {resizableRule             } = usesResizable(lists);
