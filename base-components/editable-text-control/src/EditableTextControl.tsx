@@ -53,6 +53,12 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'             // padding (inner spacing) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -61,17 +67,12 @@ import {
 import {
     // hooks:
     mildOf,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+}                           from '@reusable-ui/mildable'            // mild (soft color) variant of UI
 
 // reusable-ui components:
-import {
+import type {
     // types:
     StateMixin,
-    
-    
-    
-    // hooks:
-    usesPadding,
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // hooks:
@@ -188,8 +189,8 @@ export const iconElm = '::after'
 export const usesEditableTextControlLayout = () => {
     // dependencies:
     
-    // spacings:
-    const [, paddings] = usesPadding();
+    // features:
+    const {paddingVars} = usesPadding();
     
     // states:
     const [, valids  ] = usesValidInvalidState();
@@ -218,7 +219,7 @@ export const usesEditableTextControlLayout = () => {
                     
                     // positions:
                     position        : 'absolute',
-                    insetInlineEnd  : paddings.paddingInline,
+                    insetInlineEnd  : paddingVars.paddingInline,
                     insetBlockStart : `calc(50% - (${editableTextControls.iconSize} / 2))`,
                     maskPosition    : 'right', // align icon to the right
                     
