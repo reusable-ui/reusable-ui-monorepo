@@ -583,10 +583,7 @@ export const usesBasicLayout = () => {
     // dependencies:
     
     // features:
-    const {backgroundRule, backgroundVars} = usesBackground({
-        defaultBackg        : basics.backg,        // default => uses config's background
-        defaultAltBackg     : colors.primary,      // default => uses primary background theme
-    });
+    const {backgroundRule, backgroundVars} = usesBackground(basics);
     const {foregroundRule, foregroundVars} = usesForeground({
         defaultForeg        : basics.foreg,        // default => uses config's foreground
         defaultAltForeg     : colors.primaryText,  // default => uses primary foreground theme
