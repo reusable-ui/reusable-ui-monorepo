@@ -100,6 +100,10 @@ import {
     // hooks:
     usesForeground,
 }                           from '@reusable-ui/foreground'              // foreground (text color) stuff of UI
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -124,7 +128,6 @@ import {
     
     
     // hooks:
-    usesBorder,
     usesPadding,
     usesAnim,
     fallbackNoneFilter,
@@ -575,13 +578,11 @@ export const usesCheckVariants = () => {
     
     // features:
     const {foregroundVars } = usesForeground();
+    const {borderVars     } = usesBorder();
     
     // variants:
     const {resizableRule  } = usesResizable(checks);
     const {mildableVars   } = usesMildable();
-    
-    // borders:
-    const [, borders      ] = usesBorder();
     
     
     
@@ -633,11 +634,11 @@ export const usesCheckVariants = () => {
                     
                     // borders:
                     // circle corners on top:
-                    [borders.borderStartStartRadius] : borderRadiuses.pill,
-                    [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                    [borderVars.borderStartStartRadius] : borderRadiuses.pill,
+                    [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
                     // circle corners on bottom:
-                    [borders.borderEndStartRadius  ] : borderRadiuses.pill,
-                    [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                    [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
+                    [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
                     
                     
                     
@@ -656,7 +657,7 @@ export const usesCheckVariants = () => {
                 // children:
                 ...children(inputElm, {
                     // borders:
-                    [borders.borderColor] : foregroundVars.foreg,  // make a contrast border between indicator & filler
+                    [borderVars.borderColor] : foregroundVars.foreg,  // make a contrast border between indicator & filler
                     
                     
                     
