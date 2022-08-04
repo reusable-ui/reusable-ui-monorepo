@@ -48,6 +48,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import type {
@@ -62,11 +66,6 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
-    extendsPadding,
-    
-    
-    
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
@@ -137,7 +136,8 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder(buttonIcons);
+    const {borderRule , borderVars } = usesBorder(buttonIcons);
+    const {paddingRule, paddingVars} = usesPadding(buttonIcons);
     
     // icon:
     const [, iconVars] = usesIcon();
@@ -148,6 +148,7 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
         ...imports([
             // features:
             borderRule,
+            paddingRule,
             
             // layouts:
             usesButtonLayout(options),
@@ -190,9 +191,7 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
             
             
             // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(buttonIcons),
+            padding      : paddingVars.padding,
         }),
     });
 };
