@@ -48,6 +48,12 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities'         // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -61,7 +67,6 @@ import {
 // reusable-ui components:
 import {
     // hooks:
-    extendsBorder,
     usesPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
@@ -84,6 +89,9 @@ export const inputElm = ':first-child'
 
 export const usesInputLayout = () => {
     // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
     
     // spacings:
     const [, paddings] = usesPadding();
@@ -113,6 +121,7 @@ export const usesInputLayout = () => {
             // children:
             ...children(inputElm, {
                 ...imports([
+                    // resets:
                     stripoutTextbox(), // clear browser's default styles
                 ]),
                 ...style({
@@ -136,13 +145,10 @@ export const usesInputLayout = () => {
                     
                     
                     // borders:
-                    // affects for :autofill
-                    
-                    // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-                    ...extendsBorder(),
-                    ...style({
-                        border     : 'none', // only setup borderRadius, no borderStroke
-                    }),
+                    // a fix for :autofill corners:
+                    border       : borderVars.border,
+                    borderRadius : borderVars.borderRadius,
+                    [borderVars.borderWidth] : '0px', // only setup borderRadius, no borderStroke
                     
                     
                     
