@@ -56,6 +56,12 @@ import {
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -63,10 +69,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
-import {
-    // hooks:
-    usesBorder,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     useToggleActive,
@@ -103,8 +105,8 @@ import {
 export const usesRadioLayout = () => {
     // dependencies:
     
-    // borders:
-    const [, borders] = usesBorder();
+    // features:
+    const {borderVars} = usesBorder();
     
     
     
@@ -119,11 +121,11 @@ export const usesRadioLayout = () => {
                 ...style({
                     // borders:
                     // circle corners on top:
-                    [borders.borderStartStartRadius] : borderRadiuses.pill,
-                    [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                    [borderVars.borderStartStartRadius] : borderRadiuses.pill,
+                    [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
                     // circle corners on bottom:
-                    [borders.borderEndStartRadius  ] : borderRadiuses.pill,
-                    [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                    [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
+                    [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
                     
                     
                     
