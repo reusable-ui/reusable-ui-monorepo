@@ -687,12 +687,7 @@ export const usesBasicVariants = () => {
     const {themableRule    } = usesThemable();
     const {gradientableRule} = usesGradientable(basics);
     const {outlineableRule } = usesOutlineable(basics);
-    const {mildableRule    } = usesMildable({
-        defaultBackg    : basics.backg,       // default => uses config's background
-        defaultForeg    : basics.foreg,       // default => uses config's foreground
-        defaultAltBackg : colors.primary,     // default => uses primary background theme
-        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
-    });
+    const {mildableRule    } = usesMildable(basics);
     const {nudibleRule     } = usesNudible();
     
     
