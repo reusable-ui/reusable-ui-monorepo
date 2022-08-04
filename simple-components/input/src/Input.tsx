@@ -53,6 +53,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -65,10 +69,6 @@ import {
 }                           from '@reusable-ui/gradientable'            // gradient variant of UI
 
 // reusable-ui components:
-import {
-    // hooks:
-    usesPadding,
-}                           from '@reusable-ui/basic'                   // a base component
 import {
     // styles:
     usesEditableTextControlLayout,
@@ -91,10 +91,8 @@ export const usesInputLayout = () => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+    const {borderVars } = usesBorder();
+    const {paddingVars} = usesPadding();
     
     
     
@@ -136,7 +134,7 @@ export const usesInputLayout = () => {
                     boxSizing      : 'border-box', // the final size is including borders & paddings
                     inlineSize     : 'fill-available',
                     ...fallbacks({
-                        inlineSize : `calc(100% + (${paddings.paddingInline} * 2))`,
+                        inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
                     }),
                     
                     flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
@@ -154,12 +152,12 @@ export const usesInputLayout = () => {
                     
                     // spacings:
                     // cancel-out parent's padding with negative margin:
-                    marginInline   : `calc(0px - ${paddings.paddingInline})`,
-                    marginBlock    : `calc(0px - ${paddings.paddingBlock })`,
+                    marginInline   : `calc(0px - ${paddingVars.paddingInline})`,
+                    marginBlock    : `calc(0px - ${paddingVars.paddingBlock })`,
                     
                     // copy parent's paddings:
-                    paddingInline  : paddings.paddingInline,
-                    paddingBlock   : paddings.paddingBlock,
+                    paddingInline  : paddingVars.paddingInline,
+                    paddingBlock   : paddingVars.paddingBlock,
                 }),
             }),
             
