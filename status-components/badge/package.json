@@ -42,6 +42,7 @@
     "@cssfn/css-types": "^2.0.3",
     "@cssfn/cssfn-react": "^2.0.8",
     "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/collapsible": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",

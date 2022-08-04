@@ -59,6 +59,12 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -78,7 +84,6 @@ import type {
 // reusable-ui components:
 import {
     // hooks:
-    usesBorder,
     usesPadding,
     extendsPadding,
 }                           from '@reusable-ui/basic'           // a base component
@@ -193,14 +198,14 @@ export const usesBadgeLayout = () => {
 export const usesBadgeVariants = () => {
     // dependencies:
     
-    // variants:
-    const {resizableRule  } = usesResizable(badges);
+    // features:
+    const {borderVars   } = usesBorder();
     
-    // borders:
-    const [, borders      ] = usesBorder();
+    // variants:
+    const {resizableRule} = usesResizable(badges);
     
     // spacings:
-    const [, paddings     ] = usesPadding();
+    const [, paddings   ] = usesPadding();
     
     
     
@@ -214,11 +219,11 @@ export const usesBadgeVariants = () => {
             rule(['.pill', '.circle'], {
                 // borders:
                 // big rounded corners on top:
-                [borders.borderStartStartRadius] : borderRadiuses.pill,
-                [borders.borderStartEndRadius  ] : borderRadiuses.pill,
+                [borderVars.borderStartStartRadius] : borderRadiuses.pill,
+                [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
                 // big rounded corners on bottom:
-                [borders.borderEndStartRadius  ] : borderRadiuses.pill,
-                [borders.borderEndEndRadius    ] : borderRadiuses.pill,
+                [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
+                [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
             }),
             rule(['.square', '.circle'], {
                 ...ifNotNude({
