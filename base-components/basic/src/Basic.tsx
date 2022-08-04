@@ -584,10 +584,7 @@ export const usesBasicLayout = () => {
     
     // features:
     const {backgroundRule, backgroundVars} = usesBackground(basics);
-    const {foregroundRule, foregroundVars} = usesForeground({
-        defaultForeg        : basics.foreg,        // default => uses config's foreground
-        defaultAltForeg     : colors.primaryText,  // default => uses primary foreground theme
-    });
+    const {foregroundRule, foregroundVars} = usesForeground(basics);
     const {borderRule    , borderVars    } = usesBorder({
         defaultBorderStyle  : basics.borderStyle,  // default => uses config's border style
         defaultBorderWidth  : basics.borderWidth,  // default => uses config's border width
