@@ -95,6 +95,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -108,11 +112,6 @@ import type {
     Tag,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // hooks:
-    extendsPadding,
-    
-    
-    
     // styles:
     usesBasicLayout,
     usesBasicVariants,
@@ -522,7 +521,8 @@ export const usesContentBasicLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder(contents as any);
+    const {borderRule , borderVars } = usesBorder(contents as any);
+    const {paddingRule, paddingVars} = usesPadding(contents);
     
     
     
@@ -530,6 +530,7 @@ export const usesContentBasicLayout = () => {
         ...imports([
             // features:
             borderRule,
+            paddingRule,
         ]),
         ...style({
             // customize:
@@ -544,9 +545,7 @@ export const usesContentBasicLayout = () => {
             
             
             // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(contents),
+            padding      : paddingVars.padding,
         }),
     });
 };
