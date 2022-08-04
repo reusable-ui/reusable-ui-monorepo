@@ -89,6 +89,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -102,12 +106,6 @@ import {
 import {
     // types:
     FeatureMixin,
-    
-    
-    
-    // hooks:
-    usesPadding,
-    extendsPadding,
     
     
     
@@ -177,10 +175,8 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+    const {borderVars } = usesBorder();
+    const {paddingVars} = usesPadding();
     
     
     
@@ -198,8 +194,8 @@ export const usesContainer = (): FeatureMixin<ContainerVars> => {
                 
                 
                 // spacings:
-                [containerVars.paddingInline         ] : paddings.paddingInline,
-                [containerVars.paddingBlock          ] : paddings.paddingBlock,
+                [containerVars.paddingInline         ] : paddingVars.paddingInline,
+                [containerVars.paddingBlock          ] : paddingVars.paddingBlock,
             }),
         }),
         containerVars,
@@ -515,7 +511,8 @@ export const usesResponsiveContainerLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder(containers);
+    const {borderRule , borderVars } = usesBorder(containers);
+    const {paddingRule, paddingVars} = usesPadding(containers);
     
     
     
@@ -523,6 +520,7 @@ export const usesResponsiveContainerLayout = () => {
         ...imports([
             // features:
             borderRule,
+            paddingRule,
         ]),
         ...style({
             // borders:
@@ -532,9 +530,7 @@ export const usesResponsiveContainerLayout = () => {
             
             
             // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(containers),
+            padding      : paddingVars.padding,
         }),
     });
 };
@@ -546,10 +542,8 @@ export const usesResponsiveContainerGridLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder(containers);
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+    const {borderRule , borderVars } = usesBorder(containers);
+    const {paddingRule, paddingVars} = usesPadding(containers);
     
     
     
@@ -557,13 +551,14 @@ export const usesResponsiveContainerGridLayout = () => {
         ...imports([
             // features:
             borderRule,
+            paddingRule,
         ]),
         ...style({
             // layouts:
             display             : 'grid', // use css grid for layouting
             // define our logical paddings:
-            gridTemplateRows    : [[paddings.paddingBlock,  'auto', paddings.paddingBlock ]], // the height of each row
-            gridTemplateColumns : [[paddings.paddingInline, 'auto', paddings.paddingInline]], // the width of each column
+            gridTemplateRows    : [[paddingVars.paddingBlock,  'auto', paddingVars.paddingBlock ]], // the height of each row
+            gridTemplateColumns : [[paddingVars.paddingInline, 'auto', paddingVars.paddingInline]], // the width of each column
             gridTemplateAreas   : [[
                 '"........... blockStart ........."',
                 '"inlineStart  content   inlineEnd"',
@@ -575,19 +570,6 @@ export const usesResponsiveContainerGridLayout = () => {
             // borders:
             border       : borderVars.border,
             borderRadius : borderVars.borderRadius,
-            
-            
-            
-            // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(containers),
-            
-            // since we have delegated the (logical) paddings to the grid, so the (actual) css paddings are no longer needed:
-            ...style({
-                paddingInline : null, // turn off physical padding, use logical padding we've set above
-                paddingBlock  : null, // turn off physical padding, use logical padding we've set above
-            }),
         }),
     });
 };
