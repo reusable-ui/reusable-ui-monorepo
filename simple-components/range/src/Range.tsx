@@ -265,16 +265,16 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     const {
         borderRule: trackBorderRule,
         borderVars: trackBorderVars,
-    } = usesBorder({
-        defaultBorderRadius : ranges.trackBorderRadius,
-    });
+    } = usesBorder(
+        usesPrefixedProps(ranges, 'track'), // fetch config's cssProps starting with track***
+    );
     
     const {
         borderRule: thumbBorderRule,
         borderVars: thumbBorderVars,
-    } = usesBorder({
-        defaultBorderRadius : ranges.thumbBorderRadius,
-    });
+    } = usesBorder(
+        usesPrefixedProps(ranges, 'thumb'), // fetch config's cssProps starting with thumb***
+    );
     
     // range:
     const [rangeRule, rangeVars] = usesRange();
