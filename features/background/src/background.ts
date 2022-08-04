@@ -93,8 +93,8 @@ const [backgroundVars] = cssVars<BackgroundVars>();
 
 export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
 export interface BackgroundConfig {
-    defaultBackg    ?: CssCustomRef
-    defaultAltBackg ?: CssCustomRef
+    backg    ?: CssCustomRef
+    altBackg ?: CssCustomRef
 }
 /**
  * Uses background layer(s).
@@ -131,14 +131,14 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundRules => {
                         themableVars.backg,         // second priority
                         themableVars.backgCond,     // third  priority
                         
-                        config?.defaultBackg,       // default => uses config's background
+                        config?.backg,              // default => uses config's background
                     ),
                     [backgroundVars.altBackgColorFn] : fallbacks(
                         themableVars.altBackgImpt,  // first  priority
                         themableVars.altBackg,      // second priority
                         themableVars.altBackgCond,  // third  priority
                         
-                        config?.defaultAltBackg,    // default => uses config's alternate background
+                        config?.altBackg,           // default => uses config's alternate background
                     ),
                 }),
             }),
