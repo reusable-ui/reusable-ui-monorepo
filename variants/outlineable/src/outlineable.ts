@@ -96,9 +96,9 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 export interface OutlineableRules { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
 export interface OutlineableConfig {
-    defaultForeg    ?: CssCustomRef
-    defaultAltBackg ?: CssCustomRef
-    defaultAltForeg ?: CssCustomRef
+    foreg    ?: CssCustomRef
+    altBackg ?: CssCustomRef
+    altForeg ?: CssCustomRef
 }
 /**
  * Uses a toggleable outlining.  
@@ -127,7 +127,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.foregOutlined,        // second priority
                     themableVars.foregOutlinedCond,    // third  priority
                     
-                    config?.defaultForeg,              // default => uses config's foreground
+                    config?.foreg,                     // default => uses config's foreground
                 ),
                 
                 
@@ -137,7 +137,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.altBackgOutlined,     // second priority
                     themableVars.altBackgOutlinedCond, // third  priority
                     
-                    config?.defaultAltBackg,           // default => uses config's alternate background
+                    config?.altBackg,                  // default => uses config's alternate background
                 ),
                 
                 [outlineableVars.altForegFn] : fallbacks(
@@ -145,7 +145,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     themableVars.altForegOutlined,     // second priority
                     themableVars.altForegOutlinedCond, // third  priority
                     
-                    config?.defaultAltForeg,           // default => uses config's alternate foreground
+                    config?.altForeg,                  // default => uses config's alternate foreground
                 ),
             }),
             ...variants([
