@@ -43,6 +43,12 @@ import {
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui variants:
 import type {
     // hooks:
@@ -57,7 +63,6 @@ import {
 // reusable-ui components:
 import {
     // hooks:
-    extendsBorder,
     extendsPadding,
     
     
@@ -131,6 +136,11 @@ export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'lg', 'xl'];
 export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
+    // features:
+    const {borderRule} = usesBorder({
+        defaultBorderRadius : buttonIcons.borderRadius, // default => uses config's border radius
+    });
+    
     // icon:
     const [, iconVars] = usesIcon();
     
@@ -138,6 +148,9 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     
     return style({
         ...imports([
+            // features:
+            borderRule,
+            
             // layouts:
             usesButtonLayout(options),
         ]),
@@ -169,13 +182,6 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
             
             // customize:
             ...usesCssProps(buttonIcons), // apply config's cssProps
-            
-            
-            
-            // borders:
-            
-            // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius:
-            ...extendsBorder(buttonIcons),
             
             
             
