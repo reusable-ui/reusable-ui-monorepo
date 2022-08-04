@@ -686,11 +686,7 @@ export const usesBasicVariants = () => {
     const {resizableRule   } = usesResizable(basics);
     const {themableRule    } = usesThemable();
     const {gradientableRule} = usesGradientable(basics);
-    const {outlineableRule } = usesOutlineable({
-        defaultForeg    : basics.foreg,       // default => uses config's foreground
-        defaultAltBackg : colors.primary,     // default => uses primary background theme
-        defaultAltForeg : colors.primaryText, // default => uses primary foreground theme
-    });
+    const {outlineableRule } = usesOutlineable(basics);
     const {mildableRule    } = usesMildable({
         defaultBackg    : basics.backg,       // default => uses config's background
         defaultForeg    : basics.foreg,       // default => uses config's foreground
@@ -764,6 +760,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     return {
         // backgrounds:
         backg                : 'transparent'                as CssKnownProps['backg'],
+        altBackg             : colors.primary               as CssKnownProps['backg'],
         backgGrad            : [
             ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
         ]                                                   as CssKnownProps['backgroundImage'],
@@ -772,6 +769,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         // foregrounds:
         foreg                : 'currentColor'               as CssKnownProps['foreg'],
+        altForeg             : colors.primaryText           as CssKnownProps['foreg'],
         
         
         
