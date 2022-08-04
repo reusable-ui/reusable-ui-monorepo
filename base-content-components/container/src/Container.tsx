@@ -515,7 +515,7 @@ export const usesResponsiveContainerLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule} = usesBorder({
+    const {borderRule, borderVars} = usesBorder({
         defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
         defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
     });
@@ -528,6 +528,12 @@ export const usesResponsiveContainerLayout = () => {
             borderRule,
         ]),
         ...style({
+            // borders:
+            border       : borderVars.border,
+            borderRadius : borderVars.borderRadius,
+            
+            
+            
             // spacings:
             
             // let's Reusable-UI system to manage paddingInline & paddingBlock:
@@ -543,7 +549,7 @@ export const usesResponsiveContainerGridLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule} = usesBorder({
+    const {borderRule, borderVars} = usesBorder({
         defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
         defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
     });
@@ -569,6 +575,12 @@ export const usesResponsiveContainerGridLayout = () => {
                 '"inlineStart  content   inlineEnd"',
                 '"...........  blockEnd  ........."',
             ]],
+            
+            
+            
+            // borders:
+            border       : borderVars.border,
+            borderRadius : borderVars.borderRadius,
             
             
             
