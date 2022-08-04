@@ -58,6 +58,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -93,10 +97,6 @@ import {
     // hooks:
     useTestSemantic,
 }                           from '@reusable-ui/generic'         // a base component
-import {
-    // hooks:
-    usesPadding,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
     ifActive,
@@ -254,10 +254,8 @@ export const usesButtonLinkVariant = () => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
-    
-    // spacings:
-    const [, paddings] = usesPadding();
+    const {borderVars } = usesBorder();
+    const {paddingVars} = usesPadding();
     
     
     
@@ -281,8 +279,8 @@ export const usesButtonLinkVariant = () => {
             
             
             // spacings:
-            [paddings.paddingInline] : spacers.xs,
-            [paddings.paddingBlock ] : spacers.xs,
+            [paddingVars.paddingInline] : spacers.xs,
+            [paddingVars.paddingBlock ] : spacers.xs,
             
             
             
