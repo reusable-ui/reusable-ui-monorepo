@@ -515,10 +515,7 @@ export const usesResponsiveContainerLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
-        defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule, borderVars} = usesBorder(containers);
     
     
     
@@ -549,10 +546,7 @@ export const usesResponsiveContainerGridLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder({
-        defaultBorderWidth  : containers.borderWidth,  // default => uses config's border width
-        defaultBorderRadius : containers.borderRadius, // default => uses config's border radius
-    });
+    const {borderRule, borderVars} = usesBorder(containers);
     
     // spacings:
     const [, paddings] = usesPadding();
