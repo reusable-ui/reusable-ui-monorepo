@@ -202,9 +202,7 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
     // dependencies:
     
     // features:
-    const {backgroundRule, backgroundVars} = usesBackground({
-        defaultAltBackg : icons.color, // default => uses config's color
-    });
+    const {backgroundRule, backgroundVars} = usesBackground({ altBackg : icons.color });
     
     
     
