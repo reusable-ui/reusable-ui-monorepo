@@ -666,8 +666,10 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             // resets:
             stripoutList(),                 // clear browser's default styles
             
-            // borders:
+            // features:
             // borderRule,                  // moved out to dedicated border stroke for each list & wrapper
+            
+            // borders:
             usesBorderAsContainer(options), // make a nicely rounded corners
         ]),
         ...style({
