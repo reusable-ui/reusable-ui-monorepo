@@ -55,18 +55,18 @@ export interface ResizableRules { resizableRule: Factory<CssRule> }
 /**
  * Uses size options.  
  * For example: `sm`, `lg`.
- * @param resizableConfigProps A configuration that defines the variance of the css property for each size in `options`.
+ * @param config A configuration that defines the variance of the css property for each size in `options`.
  * @param options Defines all available size options.
  * @returns A `ResizableRules` represents the sizing rules for each size in `options`.
  */
-export const usesResizable = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(resizableConfigProps : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableRules => {
+export const usesResizable = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(config : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableRules => {
     return {
         resizableRule: () => style({
             ...variants([
                 options.map((sizeName) =>
                     ifSize(sizeName, {
                         // overwrites propName = propName{SizeName}:
-                        ...overwriteProps(resizableConfigProps, usesSuffixedProps(resizableConfigProps, sizeName)),
+                        ...overwriteProps(config, usesSuffixedProps(config, sizeName)),
                     })
                 ),
             ]),
