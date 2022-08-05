@@ -321,8 +321,8 @@ export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(v
 type BaseTypeOf<TComplexValue> = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
 export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => (isRef(item) && (item !== anims.boxShadowNone)) ? fallbacks(item, anims.boxShadowNone) : item;
 export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.filterNone)) ? fallbacks(subItem, anims.filterNone) : subItem);
-export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transf'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.transfNone)) ? fallbacks(subItem, anims.transfNone) : subItem);
-export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['anim'     ]>  ): typeof item => (isRef(item) && (item !== anims.animNone)) ? fallbacks(item, anims.animNone) : item;
+export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.transfNone)) ? fallbacks(subItem, anims.transfNone) : subItem);
+export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['animation']>  ): typeof item => (isRef(item) && (item !== anims.animNone)) ? fallbacks(item, anims.animNone) : item;
 //#endregion animations
 
 //#region excited
@@ -697,7 +697,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         ...keyframesExcitedRule,
         animExcited          : [
             ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited],
-        ]                                                   as CssKnownProps['anim'],
+        ]                                                   as CssKnownProps['animation'],
         
         
         
@@ -712,14 +712,14 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'],
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'],
-        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'],
-        fontFamily           : 'inherit'    as CssKnownProps['fontFamily'],
-        fontWeight           : 'inherit'    as CssKnownProps['fontWeight'],
-        fontStyle            : 'inherit'    as CssKnownProps['fontStyle'],
-        textDecoration       : 'inherit'    as CssKnownProps['textDecoration'],
-        lineHeight           : 'inherit'    as CssKnownProps['lineHeight'],
+        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'      ],
+        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'      ],
+        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'      ],
+        fontFamily           : 'inherit'                                                        as CssKnownProps['fontFamily'    ],
+        fontWeight           : 'inherit'                                                        as CssKnownProps['fontWeight'    ],
+        fontStyle            : 'inherit'                                                        as CssKnownProps['fontStyle'     ],
+        textDecoration       : 'inherit'                                                        as CssKnownProps['textDecoration'],
+        lineHeight           : 'inherit'                                                        as CssKnownProps['lineHeight'    ],
     };
 }, { prefix: 'bsc' });
 
