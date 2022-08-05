@@ -43,9 +43,10 @@ export interface PaddingVars {
     
     
     /**
+     * @deprecated Please use `paddingInline` & `paddingBlock`. The *logical* padding is not solved yet.
      * final padding (all 4 sides).
      */
-    padding       : any
+    __padding       : any
 }
 const [paddingVars] = cssVars<PaddingVars>();
 
@@ -69,7 +70,7 @@ export const usesPadding = (config?: PaddingConfig): PaddingRules => {
                 [paddingVars.paddingInline] : config?.paddingInline,
                 [paddingVars.paddingBlock ] : config?.paddingBlock,
                 // TODO: fix map to logical, not physical:
-                [paddingVars.padding] : [[
+                [paddingVars.__padding] : [[
                     paddingVars.paddingBlock,  // top-bottom
                     paddingVars.paddingInline, // left-right
                 ]],
