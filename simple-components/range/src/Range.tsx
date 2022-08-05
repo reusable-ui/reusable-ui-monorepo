@@ -400,7 +400,11 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             // borders:
                             // a fix for track(Lower|Upper) background corners:
                             border       : trackBorderVars.border,
-                            borderRadius : trackBorderVars.borderRadius,
+                         // borderRadius           : trackBorderVars.borderRadius,
+                            borderStartStartRadius : trackBorderVars.borderStartStartRadius,
+                            borderStartEndRadius   : trackBorderVars.borderStartEndRadius,
+                            borderEndStartRadius   : trackBorderVars.borderEndStartRadius,
+                            borderEndEndRadius     : trackBorderVars.borderEndEndRadius,
                             [trackBorderVars.borderWidth] : '0px', // only setup borderRadius, no borderStroke
                             
                             
@@ -483,7 +487,11 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             
                             // borders:
                             border        : thumbBorderVars.border,
-                            borderRadius  : thumbBorderVars.borderRadius,
+                         // borderRadius           : thumbBorderVars.borderRadius,
+                            borderStartStartRadius : thumbBorderVars.borderStartStartRadius,
+                            borderStartEndRadius   : thumbBorderVars.borderStartEndRadius,
+                            borderEndStartRadius   : thumbBorderVars.borderEndStartRadius,
+                            borderEndEndRadius     : thumbBorderVars.borderEndEndRadius,
                             
                             
                             
@@ -508,7 +516,11 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     
                     // borders:
                     border        : trackBorderVars.border,
-                    borderRadius  : trackBorderVars.borderRadius,
+                 // borderRadius           : trackBorderVars.borderRadius,
+                    borderStartStartRadius : trackBorderVars.borderStartStartRadius,
+                    borderStartEndRadius   : trackBorderVars.borderStartEndRadius,
+                    borderEndStartRadius   : trackBorderVars.borderEndStartRadius,
+                    borderEndEndRadius     : trackBorderVars.borderEndEndRadius,
                     
                     
                     
