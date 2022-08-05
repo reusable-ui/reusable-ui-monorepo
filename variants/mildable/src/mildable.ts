@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -97,10 +97,10 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
 
 export interface MildableRules { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
 export interface MildableConfig {
-    backg    ?: CssCustomRef
-    foreg    ?: CssCustomRef
-    altBackg ?: CssCustomRef
-    altForeg ?: CssCustomRef
+    backg    ?: CssKnownProps['backgroundColor']
+    foreg    ?: CssKnownProps['foreground'     ]
+    altBackg ?: CssKnownProps['backgroundColor']
+    altForeg ?: CssKnownProps['foreground'     ]
 }
 /**
  * Uses a toggleable mildification.  
