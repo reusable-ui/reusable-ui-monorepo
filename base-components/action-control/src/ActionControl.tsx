@@ -504,10 +504,10 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
         ...keyframesReleaseRule,
         animPress   : [
             ['150ms', 'ease-out', 'both', keyframesPress ],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
         animRelease : [
             ['300ms', 'ease-out', 'both', keyframesRelease],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
     };
 }, { prefix: 'act' });
 
