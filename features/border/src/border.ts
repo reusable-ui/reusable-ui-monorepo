@@ -91,10 +91,10 @@ export interface BorderVars {
     
     
     /**
-     * @deprecated Please use `borderStartStartRadius`, `borderStartEndRadius`, `borderEndStartRadius` & `borderEndEndRadius`. The *logical* borderRadius is not solved yet.
+     * @deprecated Please use `borderStartStartRadius`, `borderStartEndRadius`, `borderEndStartRadius` & `borderEndEndRadius`. The *logical* borderRadius is not solved yet.  
      * final border radiuses (all 4 corners).
      */
-    __borderRadius           : any
+    borderRadius           : any
 }
 const [borderVars] = cssVars<BorderVars>();
 
@@ -163,7 +163,7 @@ export const usesBorder = (config?: BorderConfig): BorderRules => {
                 [borderVars.borderEndStartRadius  ] : config?.borderRadius,
                 [borderVars.borderEndEndRadius    ] : config?.borderRadius,
                 // TODO: fix map to logical, not physical:
-                [borderVars.__borderRadius] : [[
+                [borderVars.borderRadius] : [[
                     borderVars.borderStartStartRadius, // top-left
                     borderVars.borderStartEndRadius,   // top-right
                     borderVars.borderEndEndRadius,     // bottom-right
