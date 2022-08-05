@@ -670,16 +670,16 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
         ...keyframesUninvalidRule,
         animValid     : [
             ['1000ms', 'ease-out', 'both', keyframesValid    ],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
         animInvalid   : [
             ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
         animUnvalid   : [
             [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
         animUninvalid : [
             [ '100ms', 'ease-out', 'both', keyframesUninvalid],
-        ]                       as CssKnownProps['anim'],
+        ]                       as CssKnownProps['animation'],
     };
 }, { prefix: 'edit' });
 
