@@ -185,13 +185,15 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
             
             
             // borders:
-            border       : borderVars.border,
-            borderRadius : borderVars.borderRadius,
+            border        : borderVars.border,
+            borderRadius  : borderVars.borderRadius,
             
             
             
             // spacings:
-            padding      : paddingVars.padding,
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
         }),
     });
 };
