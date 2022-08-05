@@ -732,16 +732,16 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
         ...keyframesLeaveRule,
         animFocus      : [
             ['150ms', 'ease-out', 'both', keyframesFocus ],
-        ]                               as CssKnownProps['anim'],
+        ]                               as CssKnownProps['animation'],
         animBlur       : [
             ['300ms', 'ease-out', 'both', keyframesBlur  ],
-        ]                               as CssKnownProps['anim'],
+        ]                               as CssKnownProps['animation'],
         animArrive     : [
             ['150ms', 'ease-out', 'both', keyframesArrive],
-        ]                               as CssKnownProps['anim'],
+        ]                               as CssKnownProps['animation'],
         animLeave      : [
             ['300ms', 'ease-out', 'both', keyframesLeave ],
-        ]                               as CssKnownProps['anim'],
+        ]                               as CssKnownProps['animation'],
     };
 }, { prefix: 'ctrl' });
 
