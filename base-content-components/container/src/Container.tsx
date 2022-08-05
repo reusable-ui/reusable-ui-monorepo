@@ -525,7 +525,11 @@ export const usesResponsiveContainerLayout = () => {
         ...style({
             // borders:
             border        : borderVars.border,
-            borderRadius  : borderVars.borderRadius,
+         // borderRadius           : borderVars.borderRadius,
+            borderStartStartRadius : borderVars.borderStartStartRadius,
+            borderStartEndRadius   : borderVars.borderStartEndRadius,
+            borderEndStartRadius   : borderVars.borderEndStartRadius,
+            borderEndEndRadius     : borderVars.borderEndEndRadius,
             
             
             
@@ -571,7 +575,11 @@ export const usesResponsiveContainerGridLayout = () => {
             
             // borders:
             border       : borderVars.border,
-            borderRadius : borderVars.borderRadius,
+         // borderRadius           : borderVars.borderRadius,
+            borderStartStartRadius : borderVars.borderStartStartRadius,
+            borderStartEndRadius   : borderVars.borderStartEndRadius,
+            borderEndStartRadius   : borderVars.borderEndStartRadius,
+            borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
     });
 };
