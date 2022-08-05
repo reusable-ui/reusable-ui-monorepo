@@ -480,25 +480,25 @@ export const useHamburgerMenuButtonStyleSheet = createUseStyleSheet(() => ({
 // configs:
 export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuButtonConfig] = cssConfig(() => {
     //#region keyframes
-    const topTransfHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
-    const topTransfHamburgerOver : CssKnownProps['transf'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    const topTransfHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const topTransfHamburgerOver : CssKnownProps['transform'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const topTransfCrossed       : CssKnownProps['transf'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    const topTransfCrossedOver   : CssKnownProps['transf'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    
-    
-    const midTransfHamburger     : CssKnownProps['transf'] = [[                  'scaleX(1)'   ,                       ]];
-    const midTransfHamburgerOver : CssKnownProps['transf'] = [[                  'scaleX(1.35)'                        ]];
-    
-    const midTransfCrossed       : CssKnownProps['transf'] = [[                  'scaleX(0)'   ,                       ]];
-    const midTransfCrossedOver   : CssKnownProps['transf'] = [[                  'scaleX(1.35)'                        ]];
+    const topTransfCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const topTransfCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
     
     
-    const btmTransfHamburger     : CssKnownProps['transf'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
-    const btmTransfHamburgerOver : CssKnownProps['transf'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    const midTransfHamburger     : CssKnownProps['transform'] = [[                  'scaleX(1)'   ,                       ]];
+    const midTransfHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
     
-    const btmTransfCrossed       : CssKnownProps['transf'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
-    const btmTransfCrossedOver   : CssKnownProps['transf'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const midTransfCrossed       : CssKnownProps['transform'] = [[                  'scaleX(0)'   ,                       ]];
+    const midTransfCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
+    
+    
+    const btmTransfHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const btmTransfHamburgerOver : CssKnownProps['transform'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    
+    const btmTransfCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const btmTransfCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
     
     
     
@@ -557,13 +557,13 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
     
     return {
         // animations:
-        hamburgerTopTransfIn  : topTransfCrossed        as CssKnownProps['transf'],
-        hamburgerMidTransfIn  : midTransfCrossed        as CssKnownProps['transf'],
-        hamburgerBtmTransfIn  : btmTransfCrossed        as CssKnownProps['transf'],
+        hamburgerTopTransfIn  : topTransfCrossed        as CssKnownProps['transform'],
+        hamburgerMidTransfIn  : midTransfCrossed        as CssKnownProps['transform'],
+        hamburgerBtmTransfIn  : btmTransfCrossed        as CssKnownProps['transform'],
         
-        hamburgerTopTransfOut : topTransfHamburger      as CssKnownProps['transf'],
-        hamburgerMidTransfOut : midTransfHamburger      as CssKnownProps['transf'],
-        hamburgerBtmTransfOut : btmTransfHamburger      as CssKnownProps['transf'],
+        hamburgerTopTransfOut : topTransfHamburger      as CssKnownProps['transform'],
+        hamburgerMidTransfOut : midTransfHamburger      as CssKnownProps['transform'],
+        hamburgerBtmTransfOut : btmTransfHamburger      as CssKnownProps['transform'],
         
         
         
@@ -578,22 +578,22 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
         
         hamburgerTopAnimIn    : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingTop    ],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
         hamburgerMidAnimIn    : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingMid    ],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
         hamburgerBtmAnimIn    : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingBtm    ],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
         hamburgerTopAnimOut   : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringTop],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
         hamburgerMidAnimOut   : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringMid],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
         hamburgerBtmAnimOut   : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringBtm],
-        ]                                               as CssKnownProps['anim'],
+        ]                                               as CssKnownProps['animation'],
     };
 }, { prefix: 'hbgmn' });
 
