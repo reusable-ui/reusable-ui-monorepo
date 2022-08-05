@@ -648,9 +648,9 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // borders:
-        borderStyle          : borderStrokes.style          as CssKnownProps['borderStyle'],
-        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth'],
-        borderColor          : borderStrokes.color          as CssKnownProps['borderColor'],
+        borderStyle          : borderStrokes.style          as CssKnownProps['borderStyle' ],
+        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth' ],
+        borderColor          : borderStrokes.color          as CssKnownProps['borderColor' ],
         
         borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
         borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
