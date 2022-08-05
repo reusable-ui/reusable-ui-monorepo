@@ -64,6 +64,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -82,11 +86,6 @@ import type {
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
-import {
-    // hooks:
-    usesPadding,
-    extendsPadding,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesPopupLayout,
@@ -124,8 +123,8 @@ export const useBadgeVariant = (props: BadgeVariant) => {
 export const usesBadgeLayout = () => {
     // dependencies:
     
-    // spacings:
-    const [, paddings] = usesPadding();
+    // features:
+    const {paddingRule, paddingVars} = usesPadding(badges);
     
     
     
@@ -133,6 +132,9 @@ export const usesBadgeLayout = () => {
         ...imports([
             // layouts:
             usesPopupLayout(),
+            
+            // features:
+            paddingRule,
         ]),
         ...style({
             // layouts:
@@ -172,7 +174,7 @@ export const usesBadgeLayout = () => {
             // spacings:
             ...ifEmpty({
                 // makes the width and height equal, by making `paddingInline === paddingBlock`:
-                [paddings.paddingInline] : paddings.paddingBlock,
+                [paddingVars.paddingInline] : paddingVars.paddingBlock,
             }),
             
             
@@ -189,9 +191,7 @@ export const usesBadgeLayout = () => {
             
             
             // spacings:
-            
-            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-            ...extendsPadding(badges),
+            padding       : paddingVars.padding,
         }),
     });
 };
@@ -200,12 +200,10 @@ export const usesBadgeVariants = () => {
     
     // features:
     const {borderVars   } = usesBorder();
+    const {paddingVars  } = usesPadding();
     
     // variants:
     const {resizableRule} = usesResizable(badges);
-    
-    // spacings:
-    const [, paddings   ] = usesPadding();
     
     
     
@@ -229,7 +227,7 @@ export const usesBadgeVariants = () => {
                 ...ifNotNude({
                     // spacings:
                     // makes the width and height equal, by making `paddingInline === paddingBlock`:
-                    [paddings.paddingInline] : paddings.paddingBlock,
+                    [paddingVars.paddingInline] : paddingVars.paddingBlock,
                 }),
             }),
             rule('.pill', {
