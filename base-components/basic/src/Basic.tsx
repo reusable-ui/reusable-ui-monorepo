@@ -633,8 +633,8 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     
     return {
         // backgrounds:
-        backg                : 'transparent'                as CssKnownProps['backg'],
-        altBackg             : colors.primary               as CssKnownProps['backg'],
+        backg                : 'transparent'                as CssKnownProps['background'],
+        altBackg             : colors.primary               as CssKnownProps['background'],
         backgGrad            : [
             ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
         ]                                                   as CssKnownProps['backgroundImage'],
@@ -642,8 +642,8 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // foregrounds:
-        foreg                : 'currentColor'               as CssKnownProps['foreg'],
-        altForeg             : colors.primaryText           as CssKnownProps['foreg'],
+        foreg                : 'currentColor'               as CssKnownProps['foreground'],
+        altForeg             : colors.primaryText           as CssKnownProps['foreground'],
         
         
         
