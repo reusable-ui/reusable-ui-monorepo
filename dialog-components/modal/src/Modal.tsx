@@ -355,7 +355,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
     
     return {
         // backgrounds:
-        backg            : 'rgba(0,0,0, 0.5)'                   as CssKnownProps['backg'],
+        backg            : 'rgba(0,0,0, 0.5)'                   as CssKnownProps['background'],
         modalUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]  as CssKnownProps['boxShadow'],
         
         
