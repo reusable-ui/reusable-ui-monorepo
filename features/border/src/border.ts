@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -102,10 +102,10 @@ const [borderVars] = cssVars<BorderVars>();
 
 export interface BorderRules { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
 export interface BorderConfig {
-    borderStyle  ?: CssCustomRef
-    borderWidth  ?: CssCustomRef
-    borderColor  ?: CssCustomRef
-    borderRadius ?: CssCustomRef
+    borderStyle  ?: CssKnownProps['borderStyle' ]
+    borderWidth  ?: CssKnownProps['borderWidth' ]
+    borderColor  ?: CssKnownProps['borderColor' ]
+    borderRadius ?: CssKnownProps['borderRadius']
 }
 /**
  * Uses border (strokes, colors, radiuses).
