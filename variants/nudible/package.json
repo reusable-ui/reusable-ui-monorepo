@@ -32,7 +32,9 @@
   },
   "dependencies": {
     "@cssfn/types": "^2.0.1",
-    "@cssfn/css-types": "^2.0.3"
+    "@cssfn/css-types": "^2.0.3",
+    "@reusable-ui/border": "^5.0.0",
+    "@reusable-ui/padding": "^5.0.0"
   },
   "peerDependencies": {
     "@cssfn/cssfn": "^2.0.6"

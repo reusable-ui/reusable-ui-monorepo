@@ -20,6 +20,16 @@ import {
     style,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
+
 
 
 // hooks:
@@ -43,12 +53,9 @@ export interface NudibleRules { nudibleRule: Factory<CssRule> }
 export const usesNudible = (): NudibleRules => {
     // dependencies:
     
-    // TODO: to be continued
-    // // borders:
-    // const {borderVars } = usesBorder();
-    
-    // // spacings:
-    // const {paddingVars} = usesPadding();
+    // features:
+    const {borderVars } = usesBorder();
+    const {paddingVars} = usesPadding();
     
     
     
@@ -61,24 +68,23 @@ export const usesNudible = (): NudibleRules => {
                     
                     
                     
-                    // TODO: to be continued
-                    // // borders:
-                    // [borderVars.borderWidth           ] : '0px', // discard border stroke
+                    // borders:
+                    [borderVars.borderWidth           ] : '0px', // discard border stroke
                     
-                    // // remove rounded corners on top:
-                    // [borderVars.borderStartStartRadius] : '0px', // discard borderRadius
-                    // [borderVars.borderStartEndRadius  ] : '0px', // discard borderRadius
-                    // // remove rounded corners on bottom:
-                    // [borderVars.borderEndStartRadius  ] : '0px', // discard borderRadius
-                    // [borderVars.borderEndEndRadius    ] : '0px', // discard borderRadius
+                    // remove rounded corners on top:
+                    [borderVars.borderStartStartRadius] : '0px', // discard borderRadius
+                    [borderVars.borderStartEndRadius  ] : '0px', // discard borderRadius
+                    // remove rounded corners on bottom:
+                    [borderVars.borderEndStartRadius  ] : '0px', // discard borderRadius
+                    [borderVars.borderEndEndRadius    ] : '0px', // discard borderRadius
                     
-                    // boxShadow : ['none', '!important'],          // no shadow & no focus animation
-                    
+                    boxShadow : ['none', '!important'],          // no shadow & no focus animation
                     
                     
-                    // // spacings:
-                    // [paddingVars.paddingInline] : '0px',         // discard padding
-                    // [paddingVars.paddingBlock ] : '0px',         // discard padding
+                    
+                    // spacings:
+                    [paddingVars.paddingInline] : '0px',         // discard padding
+                    [paddingVars.paddingBlock ] : '0px',         // discard padding
                 }),
             ]),
         }),
