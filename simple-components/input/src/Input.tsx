@@ -145,7 +145,11 @@ export const usesInputLayout = () => {
                     // borders:
                     // a fix for :autofill corners:
                     border       : borderVars.border,
-                    borderRadius : borderVars.borderRadius,
+                 // borderRadius             : borderVars.borderRadius,
+                    borderStartStartRadius   : borderVars.borderStartStartRadius,
+                    borderStartEndRadius     : borderVars.borderStartEndRadius,
+                    borderEndStartRadius     : borderVars.borderEndStartRadius,
+                    borderEndEndRadius       : borderVars.borderEndEndRadius,
                     [borderVars.borderWidth] : '0px', // only setup borderRadius, no borderStroke
                     
                     
