@@ -244,10 +244,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesCollapseRule,
         animExpand         : [
             ['300ms', 'ease-out', 'both', keyframesExpand  ],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
         animCollapse       : [
             ['500ms', 'ease-out', 'both', keyframesCollapse],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
         
         
         
@@ -255,10 +255,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesCollapseInlineRule,
         animExpandInline   : [
             ['300ms', 'ease-out', 'both', keyframesExpandInline  ],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
         animCollapseInline : [
             ['500ms', 'ease-out', 'both', keyframesCollapseInline],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
     };
 }, { prefix: 'clps' });
 
