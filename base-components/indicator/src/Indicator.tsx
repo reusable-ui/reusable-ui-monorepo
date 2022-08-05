@@ -704,16 +704,16 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
         ...keyframesPassiveRule,
         animEnable    : [
             ['300ms', 'ease-out', 'both', keyframesEnable ],
-        ]                           as CssKnownProps['anim'],
+        ]                           as CssKnownProps['animation'],
         animDisable   : [
             ['300ms', 'ease-out', 'both', keyframesDisable],
-        ]                           as CssKnownProps['anim'],
+        ]                           as CssKnownProps['animation'],
         animActive    : [
             ['150ms', 'ease-out', 'both', keyframesActive ],
-        ]                           as CssKnownProps['anim'],
+        ]                           as CssKnownProps['animation'],
         animPassive   : [
             ['300ms', 'ease-out', 'both', keyframesPassive],
-        ]                           as CssKnownProps['anim'],
+        ]                           as CssKnownProps['animation'],
     };
 }, { prefix: 'indi' });
 
