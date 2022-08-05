@@ -18,9 +18,9 @@ features
     background      [done] useBackground   backgroundVars
     foreground      [done] useForeground   foregroundVars
     border          [done] useBorder       borderVars
-    ring            useRing         ringVars
+    ring            [done] useRing         ringVars
 
-    padding         usePadding      paddingVars
+    padding         [done] usePadding      paddingVars
     animation       useAnimation    animationVars
     
     floatable       [done] useFloatable    floatVars
