@@ -829,10 +829,10 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         ...keyframesClearRule,
         animCheck         : [
             ['150ms', 'ease-out', 'both', keyframesCheck      ],
-        ]                             as CssKnownProps['anim'],
+        ]                             as CssKnownProps['animation'],
         animClear         : [
             ['150ms', 'ease-out', 'both', keyframesClear      ],
-        ]                             as CssKnownProps['anim'],
+        ]                             as CssKnownProps['animation'],
         
         
         switchFilterCheck : [[
@@ -852,10 +852,10 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         ...keyframesSwitchClearRule,
         switchAnimCheck   : [
             ['200ms', 'ease-out', 'both', keyframesSwitchCheck],
-        ]                             as CssKnownProps['anim'],
+        ]                             as CssKnownProps['animation'],
         switchAnimClear   : [
             ['200ms', 'ease-out', 'both', keyframesSwitchClear],
-        ]                             as CssKnownProps['anim'],
+        ]                             as CssKnownProps['animation'],
     };
 }, { prefix: 'chk' });
 
