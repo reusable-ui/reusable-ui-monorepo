@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cssfn/cssfn-react": "^2.0.8",
+    "@cssfn/cssfn-react": "^2.0.9",
     "@reusable-ui/borders": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
