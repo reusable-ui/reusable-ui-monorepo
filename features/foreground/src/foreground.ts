@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -70,8 +70,8 @@ const [foregroundVars] = cssVars<ForegroundVars>();
 
 export interface ForegroundRules { foregroundRule: Factory<CssRule>, foregroundVars: CssVars<ForegroundVars> }
 export interface ForegroundConfig {
-    foreg    ?: CssCustomRef
-    altForeg ?: CssCustomRef
+    foreg    ?: CssKnownProps['foreground']
+    altForeg ?: CssKnownProps['foreground']
 }
 /**
  * Uses foreground color (text color).
