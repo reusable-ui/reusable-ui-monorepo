@@ -279,11 +279,11 @@ export const [buttonIcons, buttonIconValues, cssButtonIconConfig] = cssConfig(()
         
         
         // typos:
-        fontSize          : typos.fontSizeNm                                                as CssKnownProps['fontSize'],
-        fontSizeXs        : typos.fontSizeSm                                                as CssKnownProps['fontSize'],
-        fontSizeSm        : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]   as CssKnownProps['fontSize'],
-        fontSizeLg        : typos.fontSizeMd                                                as CssKnownProps['fontSize'],
-        fontSizeXl        : typos.fontSizeLg                                                as CssKnownProps['fontSize'],
+        fontSize          : typos.fontSizeNm                                                as CssKnownProps['fontSize'      ],
+        fontSizeXs        : typos.fontSizeSm                                                as CssKnownProps['fontSize'      ],
+        fontSizeSm        : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]   as CssKnownProps['fontSize'      ],
+        fontSizeLg        : typos.fontSizeMd                                                as CssKnownProps['fontSize'      ],
+        fontSizeXl        : typos.fontSizeLg                                                as CssKnownProps['fontSize'      ],
     };
 }, { prefix: 'btni' });
 
