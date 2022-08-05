@@ -469,7 +469,7 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         
         
         // typos:
-        overflowWrap   : 'break-word'           as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
+        overflowWrap   : 'break-word'           as CssKnownProps['overflowWrap'  ], // prevents a long word from breaking Card layout
         
         
         
