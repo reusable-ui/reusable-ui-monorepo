@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -93,8 +93,10 @@ const [backgroundVars] = cssVars<BackgroundVars>();
 
 export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
 export interface BackgroundConfig {
-    backg    ?: CssCustomRef
-    altBackg ?: CssCustomRef
+    backg       ?: CssKnownProps['backgroundColor']
+    altBackg    ?: CssKnownProps['backgroundColor']
+    
+    backgImages ?: CssKnownProps['backgroundImage'][]
 }
 /**
  * Uses background layer(s).
@@ -170,6 +172,9 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundRules => {
                         
                         backgroundVars.backgNone,     // default => no top layer
                     ),
+                    
+                    // middle layer:
+                    ...(config?.backgImages ?? ([] as CssKnownProps['backgroundImage'][])),
                     
                     // bottom layer:
                     backgroundVars.backgColor,
