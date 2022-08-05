@@ -502,7 +502,7 @@ export const usesBasicLayout = () => {
         ]),
         ...style({
             // layouts:
-            display      : 'block',
+            display       : 'block',
             
             
             
@@ -514,41 +514,43 @@ export const usesBasicLayout = () => {
             // accessibilities:
             ...rule(['&::selection', '& ::selection'], { // ::selection on self and descendants
                     // backgrounds:
-                backg    : backgroundVars.altBackgColor,
+                backg     : backgroundVars.altBackgColor,
                 
                 
                 
                 // foregrounds:
-                foreg    : foregroundVars.altForeg,
+                foreg     : foregroundVars.altForeg,
             }),
             
             
             
             // backgrounds:
-            backg        : backgroundVars.backg,
+            backg         : backgroundVars.backg,
             
             
             
             // foregrounds:
-            foreg        : foregroundVars.foreg,
+            foreg         : foregroundVars.foreg,
             
             
             
             // borders:
-            border       : borderVars.border,
-            borderRadius : borderVars.borderRadius,
+            border        : borderVars.border,
+            borderRadius  : borderVars.borderRadius,
             
             
             
             // animations:
-            boxShadow    : anims.boxShadow,
-            filter       : anims.filter,
-            anim         : anims.anim,
+            boxShadow     : anims.boxShadow,
+            filter        : anims.filter,
+            anim          : anims.anim,
             
             
             
             // spacings:
-            padding      : paddingVars.padding,
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
         }),
     });
 };
