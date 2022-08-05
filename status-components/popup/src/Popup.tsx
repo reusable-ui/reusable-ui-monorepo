@@ -186,10 +186,10 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
         ...keyframesCollapseRule,
         animExpand       : [
             ['300ms', 'ease-out', 'both', keyframesExpand  ],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
         animCollapse     : [
             ['500ms', 'ease-out', 'both', keyframesCollapse],
-        ]                                                       as CssKnownProps['anim'],
+        ]                                                       as CssKnownProps['animation'],
     };
 }, { prefix: 'pop' });
 
