@@ -776,7 +776,11 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             ...children(['&', wrapperElm], {
                 // borders:
                 border       : borderVars.border,
-                borderRadius : borderVars.borderRadius,
+             // borderRadius           : borderVars.borderRadius,
+                borderStartStartRadius : borderVars.borderStartStartRadius,
+                borderStartEndRadius   : borderVars.borderStartEndRadius,
+                borderEndStartRadius   : borderVars.borderEndStartRadius,
+                borderEndEndRadius     : borderVars.borderEndEndRadius,
             }),
             
             
@@ -1011,8 +1015,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,       // restore border stripped out by `stripoutCommonBasicLayout`
-                            borderRadius : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            border       : borderVars.border,                 // restore border stripped out by `stripoutCommonBasicLayout`
+                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderStartStartRadius : borderVars.borderStartStartRadius,
+                            borderStartEndRadius   : borderVars.borderStartEndRadius,
+                            borderEndStartRadius   : borderVars.borderEndStartRadius,
+                            borderEndEndRadius     : borderVars.borderEndEndRadius,
                             ...ifParentOrientationInline({ // inline
                                 // remove rounded corners on bottom:
                                 [borderVars.borderEndStartRadius] : '0px',
@@ -1215,8 +1223,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,       // restore border stripped out by `stripoutCommonBasicLayout`
-                            borderRadius : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            border       : borderVars.border,                 // restore border stripped out by `stripoutCommonBasicLayout`
+                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderStartStartRadius : borderVars.borderStartStartRadius,
+                            borderStartEndRadius   : borderVars.borderStartEndRadius,
+                            borderEndStartRadius   : borderVars.borderEndStartRadius,
+                            borderEndEndRadius     : borderVars.borderEndEndRadius,
                         }),
                     }),
                 }),
