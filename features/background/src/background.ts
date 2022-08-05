@@ -96,7 +96,7 @@ export interface BackgroundConfig {
     backg       ?: CssKnownProps['backgroundColor']
     altBackg    ?: CssKnownProps['backgroundColor']
     
-    backgImages ?: CssKnownProps['backgroundImage'][]
+    backgImages ?: CssKnownProps['backgroundImage'] & Array<any>
 }
 /**
  * Uses background layer(s).
@@ -174,7 +174,7 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundRules => {
                     ),
                     
                     // middle layer:
-                    ...(config?.backgImages ?? ([] as CssKnownProps['backgroundImage'][])),
+                    ...(config?.backgImages ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
                     
                     // bottom layer:
                     backgroundVars.backgColor,
