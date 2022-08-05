@@ -32,7 +32,7 @@ variants
     gradient        [done] toggle-option   useGradientable     gradientableVars
     outlined        [done] toggle-option   useOutlineable      outlineableVars
     mild            [done] toggle-option   useMildable         mildableVars
-    nude            [prog] toggle-option   useNudible          nudibleVars
+    nude            [done] toggle-option   useNudible          nudibleVars
 
 states
     excite          useExcitable    exciteVars
