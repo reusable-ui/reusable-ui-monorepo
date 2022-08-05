@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -54,8 +54,8 @@ const [paddingVars] = cssVars<PaddingVars>();
 
 export interface PaddingRules { paddingRule: Factory<CssRule>, paddingVars: CssVars<PaddingVars> }
 export interface PaddingConfig {
-    paddingInline ?: CssCustomRef
-    paddingBlock  ?: CssCustomRef
+    paddingInline ?: CssKnownProps['paddingInline']
+    paddingBlock  ?: CssKnownProps['paddingBlock' ]
 }
 /**
  * Uses padding (inner spacing).
