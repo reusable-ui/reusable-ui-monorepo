@@ -103,6 +103,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesPadding,
+}                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
 
 // reusable-ui variants:
 import {
@@ -130,11 +134,6 @@ import {
 import {
     // types:
     FeatureMixin,
-    
-    
-    
-    // hooks:
-    extendsPadding,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
@@ -276,6 +275,20 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         usesPrefixedProps(ranges, 'thumb'), // fetch config's cssProps starting with thumb***
     );
     
+    const {
+        paddingRule: trackPaddingRule,
+        paddingVars: trackPaddingVars,
+    } = usesPadding(
+        usesPrefixedProps(ranges, 'track'), // fetch config's cssProps starting with track***
+    );
+    
+    const {
+        paddingRule: thumbPaddingRule,
+        paddingVars: thumbPaddingVars,
+    } = usesPadding(
+        usesPrefixedProps(ranges, 'thumb'), // fetch config's cssProps starting with thumb***
+    );
+    
     // range:
     const [rangeRule, rangeVars] = usesRange();
     
@@ -342,6 +355,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                 ...imports([
                     // features:
                     trackBorderRule,
+                    trackPaddingRule,
                     
                     // borders:
                     usesBorderAsContainer({ // make a nicely rounded corners
@@ -444,6 +458,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         ...imports([
                             // features:
                             thumbBorderRule,
+                            thumbPaddingRule,
                         ]),
                         ...style({
                             // layouts:
@@ -473,12 +488,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             
                             
                             // spacings:
-                            
-                            // let's Reusable-UI system to manage paddingInline & paddingBlock:
-                            ...extendsPadding({
-                                paddingInline : ranges.thumbPaddingInline,
-                                paddingBlock  : ranges.thumbPaddingBlock,
-                            }),
+                            padding      : thumbPaddingVars.padding,
                             
                             // cancel out <thumb>'s size with negative margin,
                             // so the <trackLower> & <trackUpper> can meet on the middle of the <thumb>:
@@ -501,12 +511,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     
                     
                     // spacings:
-                    
-                    // let's Reusable-UI system to manage paddingInline & paddingBlock:
-                    ...extendsPadding({
-                        paddingInline : ranges.trackPaddingInline,
-                        paddingBlock  : ranges.trackPaddingBlock,
-                    }),
+                    padding      : trackPaddingVars.padding,
                 }),
             }),
             
