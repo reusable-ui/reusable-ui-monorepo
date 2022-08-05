@@ -191,7 +191,9 @@ export const usesBadgeLayout = () => {
             
             
             // spacings:
-            padding       : paddingVars.padding,
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
         }),
     });
 };
