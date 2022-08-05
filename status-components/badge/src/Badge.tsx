@@ -281,9 +281,9 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
         
         
         // typos:
-        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'],
-        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'],
-        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'],
+        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'    ],
+        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'      ],
+        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'    ],
     };
     
     
@@ -302,8 +302,8 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'],
-        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'],
+        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'      ],
+        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'      ],
     };
 }, { prefix: 'bge' });
 
