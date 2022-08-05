@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -96,9 +96,9 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 export interface OutlineableRules { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
 export interface OutlineableConfig {
-    foreg    ?: CssCustomRef
-    altBackg ?: CssCustomRef
-    altForeg ?: CssCustomRef
+    foreg    ?: CssKnownProps['foreground'     ]
+    altBackg ?: CssKnownProps['backgroundColor']
+    altForeg ?: CssKnownProps['foreground'     ]
 }
 /**
  * Uses a toggleable outlining.  
