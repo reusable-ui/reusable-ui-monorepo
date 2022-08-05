@@ -138,7 +138,7 @@ export const useBusyStyleSheet = createUseStyleSheet(() => ({
 export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
     const basics = {
         // typos:
-        fontSize   : '1em'                                          as CssKnownProps['fontSize'],
+        fontSize   : '1em'                                          as CssKnownProps['fontSize'      ],
     };
     
     
@@ -149,8 +149,8 @@ export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'],
-        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'],
+        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'      ],
+        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'      ],
     };
 }, { prefix: 'busy' });
 
