@@ -17,8 +17,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomSimpleRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -108,8 +108,8 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 export interface CollapsibleRules { collapsibleRule: Factory<CssRule>, collapsibleVars: CssVars<CollapsibleVars> }
 export interface CollapsibleConfig {
-    animExpand   ?: CssCustomSimpleRef
-    animCollapse ?: CssCustomSimpleRef
+    animExpand   ?: CssKnownProps['anim']
+    animCollapse ?: CssKnownProps['anim']
 }
 /**
  * Adds a capability of UI to expand/reduce its size or toggle the visibility.
