@@ -4,8 +4,8 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
-    // css custom properties:
-    CssCustomRef,
+    // css known (standard) properties:
+    CssKnownProps,
     
     
     
@@ -54,7 +54,7 @@ const [ringVars] = cssVars<RingVars>();
 
 export interface RingRules { ringRule: Factory<CssRule>, ringVars: CssVars<RingVars> }
 export interface RingConfig {
-    ring ?: CssCustomRef
+    ring ?: CssKnownProps['color']
 }
 /**
  * Uses ring (focus indicator) color.
