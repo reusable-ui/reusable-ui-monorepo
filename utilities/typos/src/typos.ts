@@ -42,17 +42,17 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
          * The default is a solid color of `colors.backg`.  
          * It can be an image or gradient with the average color of `colors.backg`.
          */
-        backg                : colors.backg as CssKnownProps['backg'],
+        backg                : colors.backg as CssKnownProps['background'],
         
         
         
         // foregrounds:
-        foreg                : colors.foreg as CssKnownProps['foreg'],
+        foreg                : colors.foreg as CssKnownProps['foreground'],
         
         
         
         // typos:
-        fontSizeNm           : '1rem'       as CssKnownProps['fontSize'],
+        fontSizeNm           : '1rem'       as CssKnownProps['fontSize'      ],
         
         fontFamilySansSerief : [
             'system-ui',
@@ -68,7 +68,7 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"',
             '"Noto Color Emoji"',
-        ]                                   as CssKnownProps['fontFamily'],
+        ]                                   as CssKnownProps['fontFamily'    ],
         fontFamilyMonospace  : [
             'SFMono-Regular',
             'Menlo',
@@ -77,23 +77,23 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
             '"Liberation Mono"',
             '"Courier New"',
             'monospace',
-        ]                                   as CssKnownProps['fontFamily'],
+        ]                                   as CssKnownProps['fontFamily'    ],
         
-        fontWeightLighter    : 'lighter'    as CssKnownProps['fontWeight'],
-        fontWeightLight      : 300          as CssKnownProps['fontWeight'],
-        fontWeightNormal     : 400          as CssKnownProps['fontWeight'],
-        fontWeightSemibold   : 600          as CssKnownProps['fontWeight'],
-        fontWeightBold       : 700          as CssKnownProps['fontWeight'],
-        fontWeightBolder     : 'bolder'     as CssKnownProps['fontWeight'],
+        fontWeightLighter    : 'lighter'    as CssKnownProps['fontWeight'    ],
+        fontWeightLight      : 300          as CssKnownProps['fontWeight'    ],
+        fontWeightNormal     : 400          as CssKnownProps['fontWeight'    ],
+        fontWeightSemibold   : 600          as CssKnownProps['fontWeight'    ],
+        fontWeightBold       : 700          as CssKnownProps['fontWeight'    ],
+        fontWeightBolder     : 'bolder'     as CssKnownProps['fontWeight'    ],
         
-        fontStyle            : 'normal'     as CssKnownProps['fontStyle'],
+        fontStyle            : 'normal'     as CssKnownProps['fontStyle'     ],
         textDecoration       : 'none'       as CssKnownProps['textDecoration'],
         
-        lineHeightSm         : 1.25         as CssKnownProps['lineHeight'],
-        lineHeightNm         : 1.50         as CssKnownProps['lineHeight'],
-        lineHeightLg         : 2.00         as CssKnownProps['lineHeight'],
+        lineHeightSm         : 1.25         as CssKnownProps['lineHeight'    ],
+        lineHeightNm         : 1.50         as CssKnownProps['lineHeight'    ],
+        lineHeightLg         : 2.00         as CssKnownProps['lineHeight'    ],
         
-        overflowWrap         : 'break-word' as CssKnownProps['overflowWrap'],
+        overflowWrap         : 'break-word' as CssKnownProps['overflowWrap'  ],
     };
     
     return {
@@ -102,20 +102,20 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSizeXs           : [['calc(', basics.fontSizeNm, '*', 0.50  , ')']] as CssKnownProps['fontSize'],
-        fontSizeSm           : [['calc(', basics.fontSizeNm, '*', 0.75  , ')']] as CssKnownProps['fontSize'],
-        fontSize             :            basics.fontSizeNm                     as CssKnownProps['fontSize'],
-        fontSizeMd           : [['calc(', basics.fontSizeNm, '*', 1.25  , ')']] as CssKnownProps['fontSize'],
-        fontSizeLg           : [['calc(', basics.fontSizeNm, '*', 1.50  , ')']] as CssKnownProps['fontSize'],
-        fontSizeXl           : [['calc(', basics.fontSizeNm, '*', 1.75  , ')']] as CssKnownProps['fontSize'],
-        fontSizeXxl          : [['calc(', basics.fontSizeNm, '*', 2.00  , ')']] as CssKnownProps['fontSize'],
-        fontSizeXxxl         : [['calc(', basics.fontSizeNm, '*', 2.25  , ')']] as CssKnownProps['fontSize'],
+        fontSizeXs           : [['calc(', basics.fontSizeNm, '*', 0.50  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeSm           : [['calc(', basics.fontSizeNm, '*', 0.75  , ')']] as CssKnownProps['fontSize'      ],
+        fontSize             :            basics.fontSizeNm                     as CssKnownProps['fontSize'      ],
+        fontSizeMd           : [['calc(', basics.fontSizeNm, '*', 1.25  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeLg           : [['calc(', basics.fontSizeNm, '*', 1.50  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeXl           : [['calc(', basics.fontSizeNm, '*', 1.75  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeXxl          : [['calc(', basics.fontSizeNm, '*', 2.00  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeXxxl         : [['calc(', basics.fontSizeNm, '*', 2.25  , ')']] as CssKnownProps['fontSize'      ],
         
-        fontFamily           : basics.fontFamilySansSerief                      as CssKnownProps['fontFamily'],
+        fontFamily           : basics.fontFamilySansSerief                      as CssKnownProps['fontFamily'    ],
         
-        fontWeight           : basics.fontWeightNormal                          as CssKnownProps['fontWeight'],
+        fontWeight           : basics.fontWeightNormal                          as CssKnownProps['fontWeight'    ],
         
-        lineHeight           : basics.lineHeightNm                              as CssKnownProps['lineHeight'],
+        lineHeight           : basics.lineHeightNm                              as CssKnownProps['lineHeight'    ],
     };
 }, { prefix: '' });
 export { typos as default }

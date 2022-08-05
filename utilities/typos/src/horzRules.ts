@@ -47,15 +47,15 @@ export const [horzRules, horzRuleValues, cssHorzRuleConfig] = cssConfig(() => {
         
         
         // foregrounds:
-        foreg          : 'inherit'          as CssKnownProps['foreg'],
+        foreg          : 'inherit'          as CssKnownProps['foreground'],
         
         
         
         // spacings:
         marginInlineStart : '0em'           as CssKnownProps['marginInlineStart'],
-        marginInlineEnd   : '0em'           as CssKnownProps['marginInlineEnd'],
-        marginBlockStart  : spacers.default as CssKnownProps['marginBlockStart'],
-        marginBlockEnd    : spacers.default as CssKnownProps['marginBlockEnd'],
+        marginInlineEnd   : '0em'           as CssKnownProps['marginInlineEnd'  ],
+        marginBlockStart  : spacers.default as CssKnownProps['marginBlockStart' ],
+        marginBlockEnd    : spacers.default as CssKnownProps['marginBlockEnd'   ],
     };
 }, { prefix: 'hr' });
 export { horzRules as default }

@@ -44,25 +44,25 @@ import {
 export const [leads, leadValues, cssLeadConfig] = cssConfig(() => {
     return {
         // foregrounds:
-        foreg             : pargs.foreg             as CssKnownProps['foreg'],
+        foreg             : pargs.foreg             as CssKnownProps['foreground'],
         
         
         
         // spacings:
         marginInlineStart : pargs.marginInlineStart as CssKnownProps['marginInlineStart'],
-        marginInlineEnd   : pargs.marginInlineEnd   as CssKnownProps['marginInlineEnd'],
-        marginBlockStart  : pargs.marginBlockStart  as CssKnownProps['marginBlockStart'],
-        marginBlockEnd    : pargs.marginBlockEnd    as CssKnownProps['marginBlockEnd'],
+        marginInlineEnd   : pargs.marginInlineEnd   as CssKnownProps['marginInlineEnd'  ],
+        marginBlockStart  : pargs.marginBlockStart  as CssKnownProps['marginBlockStart' ],
+        marginBlockEnd    : pargs.marginBlockEnd    as CssKnownProps['marginBlockEnd'   ],
         
         
         
         // typos:
-        fontSize          : typos.fontSizeMd        as CssKnownProps['fontSize'],
-        fontFamily        : pargs.fontFamily        as CssKnownProps['fontFamily'],
-        fontWeight        : typos.fontWeightLight   as CssKnownProps['fontWeight'],
-        fontStyle         : pargs.fontStyle         as CssKnownProps['fontStyle'],
+        fontSize          : typos.fontSizeMd        as CssKnownProps['fontSize'      ],
+        fontFamily        : pargs.fontFamily        as CssKnownProps['fontFamily'    ],
+        fontWeight        : typos.fontWeightLight   as CssKnownProps['fontWeight'    ],
+        fontStyle         : pargs.fontStyle         as CssKnownProps['fontStyle'     ],
         textDecoration    : pargs.textDecoration    as CssKnownProps['textDecoration'],
-        lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'],
+        lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'    ],
     };
 }, { prefix: 'lead' });
 export { leads as default }
