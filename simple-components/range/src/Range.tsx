@@ -462,17 +462,17 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         ]),
                         ...style({
                             // layouts:
-                            display   : 'inline-block', // use inline-block, so it takes the width & height as we set
+                            display       : 'inline-block', // use inline-block, so it takes the width & height as we set
                             
                             
                             
                             // positions:
-                            zIndex    : 1, // the <thumb> should at the top of <trackLower> & <trackUpper>
+                            zIndex        : 1, // the <thumb> should at the top of <trackLower> & <trackUpper>
                             
                             
                             
                             // sizes:
-                            boxSizing : 'border-box', // the final size is including borders & paddings
+                            boxSizing     : 'border-box', // the final size is including borders & paddings
                             
                             
                             
@@ -482,18 +482,20 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : thumbBorderVars.border,
-                            borderRadius : thumbBorderVars.borderRadius,
+                            border        : thumbBorderVars.border,
+                            borderRadius  : thumbBorderVars.borderRadius,
                             
                             
                             
                             // spacings:
-                            padding      : thumbPaddingVars.padding,
+                         // padding       : thumbPaddingVars.padding,
+                            paddingInline : thumbPaddingVars.paddingInline,
+                            paddingBlock  : thumbPaddingVars.paddingBlock,
                             
                             // cancel out <thumb>'s size with negative margin,
                             // so the <trackLower> & <trackUpper> can meet on the middle of the <thumb>:
-                            marginInline : `calc(0px - (${ranges.thumbInlineSize}) / 2)`,
-                            marginBlock  : `calc(0px - (${ranges.thumbBlockSize }) / 2)`,
+                            marginInline  : `calc(0px - (${ranges.thumbInlineSize}) / 2)`,
+                            marginBlock   : `calc(0px - (${ranges.thumbBlockSize }) / 2)`,
                         }),
                     }),
                     
@@ -505,13 +507,15 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     
                     
                     // borders:
-                    border       : trackBorderVars.border,
-                    borderRadius : trackBorderVars.borderRadius,
+                    border        : trackBorderVars.border,
+                    borderRadius  : trackBorderVars.borderRadius,
                     
                     
                     
                     // spacings:
-                    padding      : trackPaddingVars.padding,
+                 // padding       : trackPaddingVars.padding,
+                    paddingInline : trackPaddingVars.paddingInline,
+                    paddingBlock  : trackPaddingVars.paddingBlock,
                 }),
             }),
             
