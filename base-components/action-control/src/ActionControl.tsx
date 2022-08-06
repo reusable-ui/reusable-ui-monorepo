@@ -71,6 +71,17 @@ import {
     usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneFilter,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -91,12 +102,6 @@ import {
 import {
     // types:
     StateMixin,
-    
-    
-    
-    // hooks:
-    usesAnim,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -145,9 +150,9 @@ export interface PressReleaseVars {
 const [presses] = cssVars<PressReleaseVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(presses.filter);
-    animRegistry.registerAnim(presses.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(presses.filter);
+    animationRegistry.registerAnim(presses.anim);
 }
 
 
@@ -452,8 +457,8 @@ export const useActionControlStyleSheet = createUseStyleSheet(() => ({
 export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
+    const {animationRegistry} = usesAnimation();
+    const filters = animationRegistry.filters;
     
     const [, {filter: filterPressRelease}] = usesPressReleaseState();
     
