@@ -89,11 +89,11 @@ const setsAnim          = new Set<CssCustomSimpleRef>();
 const animationRegistry = {
     get boxShadows      ():    CssCustomSimpleRef[]      {
         return [
-            // front-to-back order, the first placed on top, the last placed on bottom
+            // front-to-back order, the first is placed on top, the last is placed on bottom
             
             ...Array.from(setsBoxShadow),
             
-            // the *none* boxShadow, placed at the most back:
+            // the *none* boxShadow is placed at the most back:
             animationVars.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
         ];
     },
@@ -104,10 +104,12 @@ const animationRegistry = {
     
     get filters         ():    CssCustomSimpleRef[]      {
         return [
-            // the *none* filter, placed at the most front:
-            animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
+            // front-to-back order, the first is processed first, the last is processed last
             
             ...Array.from(setsFilter),
+            
+            // the *none* filter is placed at the most back:
+            animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
         ];
     },
     registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       },
@@ -117,12 +119,12 @@ const animationRegistry = {
     
     get anims           ():    CssCustomSimpleRef[]      {
         return [
-            // the order does not matter, front-to-back and back-to-front are equal
-            
-            // the *none* animation, placed at the most front:
-            animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
+            // front-to-back order, the first has the lowest specificity, the last has the highest specificity
             
             ...Array.from(setsAnim),
+            
+            // the *none* animation is placed at the most back:
+            animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
         ];
     },
     registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         },
@@ -174,41 +176,39 @@ export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
                     // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
                     
                     // layers:
-                    // front-to-back order, the first placed on top, the last placed on bottom
+                    // front-to-back order, the first is placed on top, the last is placed on bottom
                     
+                    // the config's boxShadow(s) are placed on top:
                     ...(config?.boxShadow ?? ([] as CssKnownProps['boxShadow'] & Array<any>)), // default => uses config's boxShadow
                     
-                    ...animationRegistry.boxShadows.slice(0, -1), // skip the last *none* boxShadow
-                    
-                    // the *none* boxShadow, placed at the most back:
-                    animationVars.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
+                    // the conditional boxShadow(s) are placed on bottom:
+                    ...animationRegistry.boxShadows,
                 ],
                 
                 [animationVars.filter   ] : [[
                     // combining: filter1 * filter2 * filter3 ...
                     
                     // combinations:
+                    // front-to-back order, the first is processed first, the last is processed last
                     
-                    // the *none* filter, placed at the most front:
-                    animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
-                    
+                    // the config's filter(s) are processed first:
                     ...(config?.filter ?? ([] as CssKnownProps['filter'] & Array<any>)), // default => uses config's filter
                     
-                    ...animationRegistry.filters.slice(1), // skip the first *none* filter
+                    // the conditional filter(s) are processed last:
+                    ...animationRegistry.filters,
                 ]],
                 
                 [animationVars.anim     ] : [
-                    // paralleling: anim1 | anim2 | anim3 ...
+                    // combining: anim1 | anim2 | anim3 ...
                     
-                    // parallels:
-                    // the order does not matter, front-to-back and back-to-front are equal
+                    // combinations:
+                    // front-to-back order, the first has the lowest specificity, the last has the highest specificity
                     
-                    // the *none* animation, placed at the most front:
-                    animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
-                    
+                    // the config's animation(s) have the lowest specificity:
                     ...(config?.anim ?? ([] as CssKnownProps['animation'] & Array<any>)), // default => uses config's animation
                     
-                    ...animationRegistry.anims.slice(1), // skip the first *none* animation
+                    // the conditional animation(s) have the highest specificity:
+                    ...animationRegistry.anims,
                 ],
             }),
         }),
