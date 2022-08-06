@@ -2,12 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -19,20 +13,15 @@ import type {
     
     // cssfn properties:
     CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
-    states,
-    keyframes,
     
     
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -42,11 +31,6 @@ import {
 import {
     // types:
     CssVars,
-    
-    
-    
-    // utilities:
-    cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -77,8 +61,6 @@ import {
 }                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
-    useTriggerRender,
-    useEvent,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
@@ -102,11 +84,6 @@ import {
 import {
     // hooks:
     usesAnimation,
-    
-    
-    
-    // utilities:
-    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 import {
     // hooks:
@@ -164,155 +141,6 @@ import {
 export type FeatureMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
 export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
 export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
-
-
-
-// hooks:
-
-//#region excited
-export interface ExcitedVars {
-    filter : any
-    anim   : any
-}
-const [exciteds] = cssVars<ExcitedVars>();
-
-{
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(exciteds.filter);
-    animationRegistry.registerAnim(exciteds.anim);
-}
-
-
-
-// parent not `.excited` -and- current not `.excited`:
-export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':not(:is(.excited&, &.excited))', styles);
-// parent is  `.excited` -or-  current is  `.excited`:
-export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(     ':is(.excited&, &.excited)' , styles);
-
-
-
-/**
- * Uses toggleable excited states.
- * @returns A `StateMixin<ExcitedVars>` represents excited state definitions.
- */
-export const usesExcitedState = (): StateMixin<ExcitedVars> => {
-    return [
-        () => style({
-            ...states([
-                ifExcited(
-                    vars({
-                        [exciteds.filter] : basics.filterExcited,
-                        [exciteds.anim  ] : basics.animExcited,
-                    }),
-                ),
-            ]),
-        }),
-        exciteds,
-    ];
-};
-
-
-
-export interface ToggleExcitedProps
-{
-    // accessibilities:
-    excited         ?: boolean
-    onExcitedChange ?: (newExcited: boolean) => void
-}
-export const useExcitedState = <TElement extends Element = HTMLElement>(props: ToggleExcitedProps) => {
-    // props:
-    const {
-        // accessibilities:
-        excited,
-        onExcitedChange,
-    } = props;
-    
-    
-    
-    /*
-     * the state is excited/normal based on [controllable excited]
-     */
-    const excitedFn : boolean = (excited /*controllable*/ ?? false);
-    
-    
-    
-    // states:
-    // local storages without causing to (re)render, we need to manual control the (re)render event:
-    /**
-     * `true`  => was excited  
-     * `false` => was normal
-     */
-    const wasExcited = useRef<boolean|null>(excitedFn);
-    
-    // manually controls the (re)render event:
-    const [triggerRender] = useTriggerRender();
-    
-    
-    
-    const asyncTriggerRender = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
-        };
-    }, []); // runs once on startup
-    
-    
-    
-    if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
-        const continueToRun = excitedFn && (wasExcited.current === null);
-        if (continueToRun) {
-            // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
-            
-            
-            
-            // wait until the non-excited `<Basic>` has been applied by browser ui, then re-render the excited `<Basic>`
-            asyncTriggerRender.current = requestIdleCallback(() => {
-                wasExcited.current = excitedFn; // remember the last change
-                triggerRender(); // re-render the excited `<Basic>`
-            });
-        }
-        else {
-            wasExcited.current = excitedFn; // remember the last change
-        } // if
-    } // if
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(excited)|(?<=[a-z])(Excited))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excited[Foo] or booExcited[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        const continueToRun = wasExcited.current;
-        wasExcited.current = null; // mark the animation need to restart
-        
-        Promise.resolve().then(() => { // trigger the event after the <Basic> has finished rendering (for controllable <Basic>)
-            onExcitedChange?.(false); // request to stop
-        });
-        if (continueToRun) {
-            triggerRender(); // need to restart the animation
-        } // if
-    }, [onExcitedChange]);
-    
-    
-    
-    return {
-        excited : wasExcited.current,
-        
-        class   : wasExcited.current ? 'excited' : null,
-        
-        handleAnimationEnd,
-    };
-};
-//#endregion excited
 
 
 
@@ -438,37 +266,6 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const {animationRegistry} = usesAnimation();
-    const filters = animationRegistry.filters;
-    
-    const [, {filter: filterExcited} ] = usesExcitedState();
-    
-    
-    
-    //#region keyframes
-    const [keyframesExcitedRule, keyframesExcited] = keyframes({
-        from : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-             // filterExcited, // missing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
-        to   : {
-            filter: [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-                filterExcited, // existing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
-        },
-    });
-    keyframesExcited.value = 'excited'; // the @keyframes name should contain 'excited' in order to be recognized by `useExcitedState`
-    //#endregion keyframes
-    
-    
-    
     const transitionDuration = '300ms';
     
     return {
@@ -529,15 +326,6 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
             // typos:
             ['font-size'    , transitionDuration, 'ease-out'],
         ]                                                   as CssKnownProps['transition'],
-        
-        filterExcited        : [[
-            'invert(80%)',
-        ]]                                                  as CssKnownProps['filter'],
-        
-        ...keyframesExcitedRule,
-        animExcited          : [
-            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcited],
-        ]                                                   as CssKnownProps['animation'],
         
         
         
