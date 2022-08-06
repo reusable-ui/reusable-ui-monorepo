@@ -52,6 +52,10 @@ import {
     // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
 import {
@@ -80,11 +84,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // hooks:
-    usesAnim,
-    
-    
-    
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
@@ -268,10 +267,8 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {borderRule, borderVars} = usesBorder(cards);
-    
-    // animations:
-    const [animRule  , anims] = usesAnim();
+    const {borderRule   , borderVars   } = usesBorder(cards);
+    const {animationRule, animationVars} = usesAnimation(cards as any);
     
     
     
@@ -279,12 +276,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         ...imports([
             // features:
             borderRule,
+            animationRule,
             
             // borders:
             usesBorderAsContainer(options), // make a nicely rounded corners
-            
-            // animations:
-            animRule,
         ]),
         ...style({
             // layouts:
@@ -309,9 +304,9 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             
             
             // animations:
-            boxShadow         : anims.boxShadow,
-            filter            : anims.filter,
-            anim              : anims.anim,
+            boxShadow         : animationVars.boxShadow,
+            filter            : animationVars.filter,
+            anim              : animationVars.anim,
             
             
             
