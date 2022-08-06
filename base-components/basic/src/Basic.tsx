@@ -12,18 +12,6 @@ import {
 
 // cssfn:
 import type {
-    // css values:
-    CssComplexBaseValueOf,
-    
-    
-    
-    // css custom properties:
-    CssCustomSimpleRef,
-    CssCustomRef,
-    CssCustomValue,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
     
@@ -59,7 +47,6 @@ import {
     
     // utilities:
     cssVars,
-    fallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -112,6 +99,15 @@ import {
     // hooks:
     usesRing,
 }                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
+import {
+    // hooks:
+    usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneFilter,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 import {
     // hooks:
     usesPadding,
@@ -173,158 +169,6 @@ export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, 
 
 // hooks:
 
-// animations:
-
-//#region animations
-export interface AnimVars {
-    /**
-     * none boxShadow.
-     */
-    boxShadowNone : any
-    /**
-     * final boxShadow layers.
-     */
-    boxShadow     : any
-    
-    
-    
-    /**
-     * none filter.
-     */
-    filterNone    : any
-    /**
-     * final filter.
-     */
-    filter        : any
-    
-    
-    
-    /**
-     * none transform.
-     */
-    transfNone    : any
-    
-    
-    
-    /**
-     * none animation.
-     */
-    animNone      : any
-    /**
-     * final animation.
-     */
-    anim          : any
-}
-const [anims] = cssVars<AnimVars>();
-
-
-
-const setsBoxShadow = new Set<CssCustomSimpleRef>();
-const setsFilter    = new Set<CssCustomSimpleRef>();
-const setsAnim      = new Set<CssCustomSimpleRef>();
-const animRegistry  = {
-    get boxShadows      ():    CssCustomSimpleRef[]      {
-        return [
-            anims.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
-            ...Array.from(setsBoxShadow)
-        ];
-    },
-    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    },
-    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) },
-    
-    
-    
-    get filters         ():    CssCustomSimpleRef[]      {
-        return [
-            anims.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
-            ...Array.from(setsFilter)
-        ];
-    },
-    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       },
-    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    },
-    
-    
-    
-    get anims           ():    CssCustomSimpleRef[]      {
-        return [
-            anims.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
-            ...Array.from(setsAnim)
-        ];
-    },
-    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         },
-    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      },
-};
-export type AnimRegistry = typeof animRegistry
-
-
-
-export type AnimMixin = readonly [() => CssRule, CssVars<AnimVars>, AnimRegistry]
-/**
- * Uses animation.
- * @returns A `AnimMixin` represents animation definitions.
- */
-export const usesAnim = (): AnimMixin => {
-    return [
-        () => style({
-            ...vars({
-                [anims.boxShadowNone] : [[0, 0, 'transparent']],
-                [anims.boxShadow    ] : [
-                    // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
-                    
-                    // layers:
-                    ...animRegistry.boxShadows,
-                ],
-                
-                
-                
-                [anims.filterNone   ] : 'brightness(100%)',
-                [anims.filter       ] : [[
-                    // combining: filter1 * filter2 * filter3 ...
-                    
-                    // layers:
-                    ...animRegistry.filters,
-                ]],
-                
-                
-                
-                [anims.transfNone   ] : 'translate(0)',
-                
-                
-                
-                [anims.animNone     ] : 'none',
-                [anims.anim         ] : [
-                    // layering: anim1 | anim2 | anim3 ...
-                    
-                    // layers:
-                    ...animRegistry.anims,
-                ],
-            }),
-            
-            
-            
-            // declare default values at lowest specificity (except for **None):
-            ...vars(Object.fromEntries([
-                ...animRegistry.boxShadows.filter((ref) => (ref !== anims.boxShadowNone)).map((ref) => [ ref, anims.boxShadowNone ]),
-                ...animRegistry.filters   .filter((ref) => (ref !== anims.filterNone   )).map((ref) => [ ref, anims.filterNone    ]),
-                ...animRegistry.anims     .filter((ref) => (ref !== anims.animNone     )).map((ref) => [ ref, anims.animNone      ]),
-            ])),
-        }),
-        anims,
-        animRegistry,
-    ];
-};
-
-
-
-export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
-
-type BaseTypeOf<TComplexValue> = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
-export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => (isRef(item) && (item !== anims.boxShadowNone)) ? fallbacks(item, anims.boxShadowNone) : item;
-export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.filterNone)) ? fallbacks(subItem, anims.filterNone) : subItem);
-export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== anims.transfNone)) ? fallbacks(subItem, anims.transfNone) : subItem);
-export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['animation']>  ): typeof item => (isRef(item) && (item !== anims.animNone)) ? fallbacks(item, anims.animNone) : item;
-//#endregion animations
-
 //#region excited
 export interface ExcitedVars {
     filter : any
@@ -333,9 +177,9 @@ export interface ExcitedVars {
 const [exciteds] = cssVars<ExcitedVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(exciteds.filter);
-    animRegistry.registerAnim(exciteds.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(exciteds.filter);
+    animationRegistry.registerAnim(exciteds.anim);
 }
 
 
@@ -481,10 +325,8 @@ export const usesBasicLayout = () => {
     const {foregroundRule, foregroundVars} = usesForeground(basics);
     const {borderRule    , borderVars    } = usesBorder(basics);
     const {ringRule                      } = usesRing(basics);
+    const {animationRule , animationVars } = usesAnimation(basics as any);
     const {paddingRule   , paddingVars   } = usesPadding(basics);
-    
-    // animations:
-    const [animRule    , anims ] = usesAnim();
     
     
     
@@ -495,10 +337,8 @@ export const usesBasicLayout = () => {
             foregroundRule,
             borderRule,
             ringRule,
+            animationRule,
             paddingRule,
-            
-            // animations:
-            animRule,
         ]),
         ...style({
             // layouts:
@@ -545,9 +385,9 @@ export const usesBasicLayout = () => {
             
             
             // animations:
-            boxShadow     : anims.boxShadow,
-            filter        : anims.filter,
-            anim          : anims.anim,
+            boxShadow     : animationVars.boxShadow,
+            filter        : animationVars.filter,
+            anim          : animationVars.anim,
             
             
             
@@ -600,8 +440,8 @@ export const useBasicStyleSheet = createUseStyleSheet(() => ({
 export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
+    const {animationRegistry} = usesAnimation();
+    const filters = animationRegistry.filters;
     
     const [, {filter: filterExcited} ] = usesExcitedState();
     
