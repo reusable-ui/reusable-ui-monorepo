@@ -150,9 +150,9 @@ export interface PressReleaseVars {
 const [presses] = cssVars<PressReleaseVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(presses.filter);
-    animationRegistry.registerAnim(presses.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(presses.filter);
+    registerAnim(presses.anim);
 }
 
 
@@ -457,9 +457,7 @@ export const useActionControlStyleSheet = createUseStyleSheet(() => ({
 export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry} = usesAnimation();
-    const filters = animationRegistry.filters;
-    
+    const {animationRegistry : {filters} } = usesAnimation();
     const [, {filter: filterPressRelease}] = usesPressReleaseState();
     
     
