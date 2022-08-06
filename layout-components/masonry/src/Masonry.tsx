@@ -36,7 +36,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -215,7 +215,7 @@ export const usesMasonryVariants = () => {
     });
 };
 
-export const useMasonryStyleSheet = createUseStyleSheet(() => ({
+export const useMasonryStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesMasonryLayout(),

@@ -22,7 +22,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -119,7 +119,7 @@ export const usesDropdownUiLayout = () => {
     });
 };
 
-export const useDropdownUiStyleSheet = createUseStyleSheet(() => ({
+export const useDropdownUiStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesDropdownUiLayout(),
@@ -163,7 +163,7 @@ export const usesDropdownStates = () => {
     });
 };
 
-export const useDropdownStyleSheet = createUseStyleSheet(() => ({
+export const useDropdownStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesDropdownLayout(),

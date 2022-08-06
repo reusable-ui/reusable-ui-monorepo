@@ -28,7 +28,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -256,7 +256,7 @@ export const usesBadgeStates = () => {
     });
 };
 
-export const useBadgeStyleSheet = createUseStyleSheet(() => ({
+export const useBadgeStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesBadgeLayout(),

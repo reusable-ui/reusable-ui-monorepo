@@ -26,7 +26,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
@@ -252,7 +252,7 @@ export const usesBasicVariants = () => {
     });
 };
 
-export const useBasicStyleSheet = createUseStyleSheet(() => ({
+export const useBasicStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesBasicLayout(),

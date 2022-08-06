@@ -38,7 +38,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
@@ -438,7 +438,7 @@ export const usesActionControlStates = () => {
     });
 };
 
-export const useActionControlStyleSheet = createUseStyleSheet(() => ({
+export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesActionControlLayout(),

@@ -36,7 +36,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
@@ -630,7 +630,7 @@ export const usesControlStates = () => {
     });
 };
 
-export const useControlStyleSheet = createUseStyleSheet(() => ({
+export const useControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesControlLayout(),

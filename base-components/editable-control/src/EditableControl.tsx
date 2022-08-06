@@ -44,7 +44,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
@@ -605,7 +605,7 @@ export const usesEditableControlStates = () => {
     });
 };
 
-export const useEditableControlStyleSheet = createUseStyleSheet(() => ({
+export const useEditableControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesEditableControlLayout(),

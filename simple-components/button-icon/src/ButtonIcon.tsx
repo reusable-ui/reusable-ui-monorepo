@@ -22,7 +22,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
@@ -226,7 +226,7 @@ export const usesButtonIconStates = () => {
     });
 };
 
-export const useButtonIconStyleSheet = createUseStyleSheet(() => ({
+export const useButtonIconStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesButtonIconLayout(),

@@ -25,7 +25,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -231,7 +231,7 @@ export const usesAlertStates = () => {
     });
 };
 
-export const useAlertStyleSheet = createUseStyleSheet(() => ({
+export const useAlertStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesAlertLayout(),

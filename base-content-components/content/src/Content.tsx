@@ -33,7 +33,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -601,7 +601,7 @@ export const usesContentVariants = () => {
     });
 };
 
-export const useContentStyleSheet = createUseStyleSheet(() => ({
+export const useContentStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesContentLayout(),

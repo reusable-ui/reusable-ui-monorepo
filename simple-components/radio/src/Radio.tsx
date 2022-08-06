@@ -33,7 +33,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -165,7 +165,7 @@ export const usesRadioStates = () => {
     });
 };
 
-export const useRadioStyleSheet = createUseStyleSheet(() => ({
+export const useRadioStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesRadioLayout(),

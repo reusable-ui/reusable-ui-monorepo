@@ -48,7 +48,7 @@ import {
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // utilities:
@@ -588,7 +588,7 @@ export const usesRangeStates = () => {
     });
 };
 
-export const useRangeStyleSheet = createUseStyleSheet(() => ({
+export const useRangeStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesRangeLayout(),

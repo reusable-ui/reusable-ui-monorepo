@@ -46,7 +46,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -218,7 +218,7 @@ export const usesBackdropUiStates = () => {
     });
 };
 
-export const useBackdropUiStyleSheet = createUseStyleSheet(() => ({
+export const useBackdropUiStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesBackdropUiLayout(),
@@ -326,7 +326,7 @@ export const usesBackdropStates = () => {
     });
 };
 
-export const useBackdropStyleSheet = createUseStyleSheet(() => ({
+export const useBackdropStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesBackdropLayout(),

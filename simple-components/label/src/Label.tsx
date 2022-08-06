@@ -18,7 +18,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -139,7 +139,7 @@ export const usesLabelVariants = () => {
     });
 };
 
-export const useLabelStyleSheet = createUseStyleSheet(() => ({
+export const useLabelStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesLabelLayout(),

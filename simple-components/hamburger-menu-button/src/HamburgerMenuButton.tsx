@@ -34,7 +34,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // types:
@@ -464,7 +464,7 @@ export const usesHamburgerMenuButtonStates = () => {
     });
 };
 
-export const useHamburgerMenuButtonStyleSheet = createUseStyleSheet(() => ({
+export const useHamburgerMenuButtonStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesHamburgerMenuButtonLayout(),

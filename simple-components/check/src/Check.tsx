@@ -51,7 +51,7 @@ import {
 }                           from '@cssfn/cssfn'                         // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // types:
@@ -706,7 +706,7 @@ export const usesCheckStates = () => {
     });
 };
 
-export const useCheckStyleSheet = createUseStyleSheet(() => ({
+export const useCheckStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesCheckLayout(),

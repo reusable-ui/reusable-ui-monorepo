@@ -46,7 +46,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
@@ -569,7 +569,7 @@ export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['ba
     });
 };
 
-export const useIconStyleSheet = createUseStyleSheet(() => ({
+export const useIconStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesIconLayout(),

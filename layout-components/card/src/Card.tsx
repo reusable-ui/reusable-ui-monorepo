@@ -28,7 +28,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -422,7 +422,7 @@ export const usesCardStates = () => {
     });
 };
 
-export const useCardStyleSheet = createUseStyleSheet(() => ({
+export const useCardStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesCardLayout(),

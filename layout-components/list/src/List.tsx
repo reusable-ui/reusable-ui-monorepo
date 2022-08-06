@@ -47,7 +47,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -467,7 +467,7 @@ export const usesListItemStates = () => {
     });
 };
 
-export const useListItemStyleSheet = createUseStyleSheet(() => ({
+export const useListItemStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListItemLayout(),
@@ -553,7 +553,7 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
     });
 };
 
-export const useListSeparatorItemStyleSheet = createUseStyleSheet(() => ({
+export const useListSeparatorItemStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListSeparatorItemLayout(),
@@ -619,7 +619,7 @@ export const usesListActionItemStates = () => {
     });
 };
 
-export const useListActionItemStyleSheet = createUseStyleSheet(() => ({
+export const useListActionItemStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListActionItemLayout(),
@@ -1276,7 +1276,7 @@ export const usesListStates = () => {
     });
 };
 
-export const useListStyleSheet = createUseStyleSheet(() => ({
+export const useListStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesListLayout(),

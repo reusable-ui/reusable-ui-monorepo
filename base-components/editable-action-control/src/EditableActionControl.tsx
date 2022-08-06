@@ -12,7 +12,7 @@ import {
 }                           from '@cssfn/cssfn'                     // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
 
 // reusable-ui utilities:
@@ -92,7 +92,7 @@ export const usesEditableActionControlStates = () => {
     });
 };
 
-export const useEditableActionControlStyleSheet = createUseStyleSheet(() => ({
+export const useEditableActionControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesEditableActionControlLayout(),

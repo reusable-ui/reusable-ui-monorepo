@@ -12,7 +12,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui components:
@@ -61,7 +61,7 @@ export const usesVisuallyHiddenLayout = () => {
     });
 };
 
-export const useVisuallyHiddenStyleSheet = createUseStyleSheet(() => ({
+export const useVisuallyHiddenStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesVisuallyHiddenLayout(),

@@ -39,7 +39,7 @@ import {
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
-    createUseStyleSheet,
+    dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     cssConfig,
@@ -211,7 +211,7 @@ export const usesTooltipStates = () => {
     });
 };
 
-export const useTooltipStyleSheet = createUseStyleSheet(() => ({
+export const useTooltipStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
         usesTooltipLayout(),
