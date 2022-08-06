@@ -51,6 +51,10 @@ import {
     FloatableProps,
     useFloatable,
 }                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
 import {
@@ -78,10 +82,6 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
-import {
-    // hooks:
-    usesAnim,
-}                           from '@reusable-ui/basic'           // a base component
 
 
 
@@ -105,15 +105,15 @@ export const usesCollapseLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // animations:
-    const [animRule, anims] = usesAnim();
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
     
     
     
     return style({
         ...imports([
-            // animations:
-            animRule,
+            // features:
+            animationRule,
         ]),
         ...style({
             // customize:
@@ -130,7 +130,7 @@ export const usesCollapseLayout = (options?: OrientationableOptions) => {
             
             
             // animations:
-            anim : anims.anim,
+            anim : animationVars.anim,
         }),
     });
 };
