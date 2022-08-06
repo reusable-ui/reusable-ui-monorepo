@@ -42,6 +42,7 @@
     "@cssfn/css-config": "^2.0.14",
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.9",
+    "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/collapsible": "^5.0.0",
     "@reusable-ui/focuses": "^5.0.0",

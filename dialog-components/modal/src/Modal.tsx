@@ -82,6 +82,12 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
+
 // reusable-ui states:
 import {
     // hooks:
@@ -107,7 +113,6 @@ import {
 }                           from '@reusable-ui/generic'         // a generic component
 import {
     // hooks:
-    usesAnim,
     useExcitedState,
     usesExcitedState,
 }                           from '@reusable-ui/basic'           // a base component
@@ -163,8 +168,8 @@ export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body
 export const usesBackdropUiLayout = () => {
     // dependencies:
     
-    // animations:
-    const [animRule, anims] = usesAnim();
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
     
     
     
@@ -173,8 +178,8 @@ export const usesBackdropUiLayout = () => {
             // resets:
             stripoutFocusableElement(), // clear browser's default styles
             
-            // animations:
-            animRule,
+            // features:
+            animationRule,
         ]),
         ...style({
             // customize:
@@ -183,7 +188,7 @@ export const usesBackdropUiLayout = () => {
             
             
             // animations:
-            anim : anims.anim,
+            anim : animationVars.anim,
         }),
     });
 };
@@ -218,15 +223,15 @@ export const useBackdropUiStyleSheet = createUseStyleSheet(() => ({
 export const usesBackdropLayout = () => {
     // dependencies:
     
-    // animations:
-    const [animRule, anims] = usesAnim();
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
     
     
     
     return style({
         ...imports([
-            // animations:
-            animRule,
+            // features:
+            animationRule,
         ]),
         ...style({
             // layouts:
@@ -263,7 +268,7 @@ export const usesBackdropLayout = () => {
             
             
             // animations:
-            anim         : anims.anim,
+            anim         : animationVars.anim,
         }),
     });
 };
