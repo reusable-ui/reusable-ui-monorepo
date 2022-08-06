@@ -72,6 +72,16 @@ import {
     // hooks:
     usesRing,
 }                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
+import {
+    // hooks:
+    usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneBoxShadow,
+    fallbackNoneFilter,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
 import {
@@ -88,13 +98,6 @@ import {
 import {
     // types:
     StateMixin,
-    
-    
-    
-    // hooks:
-    usesAnim,
-    fallbackNoneBoxShadow,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
@@ -164,9 +167,9 @@ export interface FocusBlurVars {
 const [focuses] = cssVars<FocusBlurVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerBoxShadow(focuses.boxShadow);
-    animRegistry.registerAnim(focuses.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerBoxShadow(focuses.boxShadow);
+    animationRegistry.registerAnim(focuses.anim);
 }
 
 
@@ -361,9 +364,9 @@ export interface ArriveLeaveVars {
 const [arrives] = cssVars<ArriveLeaveVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(arrives.filter);
-    animRegistry.registerAnim(arrives.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(arrives.filter);
+    animationRegistry.registerAnim(arrives.anim);
 }
 
 
@@ -646,9 +649,9 @@ export const useControlStyleSheet = createUseStyleSheet(() => ({
 export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , animRegistry] = usesAnim();
-    const boxShadows = animRegistry.boxShadows;
-    const filters    = animRegistry.filters;
+    const {animationRegistry} = usesAnimation();
+    const boxShadows = animationRegistry.boxShadows;
+    const filters    = animationRegistry.filters;
     
     const [, {boxShadow : boxShadowFocusBlur}] = usesFocusBlurState();
     const [, {filter    : filterArriveLeave }] = usesArriveLeaveState();
