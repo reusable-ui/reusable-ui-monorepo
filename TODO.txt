@@ -21,7 +21,7 @@ features
     ring            [done] useRing         ringVars
 
     padding         [done] usePadding      paddingVars
-    animation       useAnimation    animationVars
+    animation       [done] useAnimation    animationVars
     
     floatable       [done] useFloatable    floatVars
 
@@ -35,7 +35,7 @@ variants
     nude            [done] toggle-option   useNudible          nudibleVars
 
 states
-    excite          useExcitable    exciteVars
+    excite          useExcitable    excitableVars
     
     enableDisable   useEnableable   enableVars
     activePassive   useActivable    activeVars
