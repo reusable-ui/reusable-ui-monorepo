@@ -175,7 +175,6 @@ export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
                 [animationVars.boxShadow] : [
                     // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
                     
-                    // layers:
                     // front-to-back order, the first is placed on top, the last is placed on bottom
                     
                     // the config's boxShadow(s) are placed on top:
@@ -188,7 +187,6 @@ export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
                 [animationVars.filter   ] : [[
                     // combining: filter1 * filter2 * filter3 ...
                     
-                    // combinations:
                     // front-to-back order, the first is processed first, the last is processed last
                     
                     // the config's filter(s) are processed first:
@@ -199,9 +197,8 @@ export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
                 ]],
                 
                 [animationVars.anim     ] : [
-                    // combining: anim1 | anim2 | anim3 ...
+                    // paralleling: anim1 & anim2 & anim3 ...
                     
-                    // combinations:
                     // front-to-back order, the first has the lowest specificity, the last has the highest specificity
                     
                     // the config's animation(s) have the lowest specificity:
