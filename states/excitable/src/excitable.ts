@@ -71,9 +71,9 @@ export interface ExcitableVars {
 const [excitableVars] = cssVars<ExcitableVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(excitableVars.filter);
-    animationRegistry.registerAnim(excitableVars.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(excitableVars.filter);
+    registerAnim(excitableVars.anim);
 }
 
 
