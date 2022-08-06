@@ -167,9 +167,9 @@ export interface FocusBlurVars {
 const [focuses] = cssVars<FocusBlurVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerBoxShadow(focuses.boxShadow);
-    animationRegistry.registerAnim(focuses.anim);
+    const {animationRegistry: {registerBoxShadow, registerAnim}} = usesAnimation();
+    registerBoxShadow(focuses.boxShadow);
+    registerAnim(focuses.anim);
 }
 
 
@@ -364,9 +364,9 @@ export interface ArriveLeaveVars {
 const [arrives] = cssVars<ArriveLeaveVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(arrives.filter);
-    animationRegistry.registerAnim(arrives.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(arrives.filter);
+    registerAnim(arrives.anim);
 }
 
 
@@ -649,12 +649,9 @@ export const useControlStyleSheet = createUseStyleSheet(() => ({
 export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry} = usesAnimation();
-    const boxShadows = animationRegistry.boxShadows;
-    const filters    = animationRegistry.filters;
-    
-    const [, {boxShadow : boxShadowFocusBlur}] = usesFocusBlurState();
-    const [, {filter    : filterArriveLeave }] = usesArriveLeaveState();
+    const {animationRegistry : {boxShadows, filters}} = usesAnimation();
+    const [, {boxShadow : boxShadowFocusBlur}       ] = usesFocusBlurState();
+    const [, {filter    : filterArriveLeave }       ] = usesArriveLeaveState();
     
     
     
