@@ -1,5 +1,12 @@
+TODO: standarize useToggle___
+
 TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
+
+TODO remove:
+FeatureMixin
+VariantMixin
+StateMixin
 
 TODO: verify catoegory of:
 // reusable-ui features:
