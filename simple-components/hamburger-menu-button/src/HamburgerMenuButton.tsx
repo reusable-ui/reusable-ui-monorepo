@@ -61,6 +61,13 @@ import {
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    AnimationConfig,
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -77,11 +84,6 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
-    usesAnim,
-    
-    
-    
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
@@ -209,23 +211,23 @@ export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, CssVars
  * Uses hamburger animation.
  * @returns A `HamburgerAnimMixin` represents hamburger animation definitions.
  */
-export const usesHamburgerAnim = (): HamburgerAnimMixin => {
+export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin => {
     // dependencies:
     
-    // animations:
-    const [animRule, anims] = usesAnim();
+    // features:
+    const {animationRule, animationVars} = usesAnimation(config);
     
     
     
     // css vars:
     const transfNoneVars = () => vars({
-        [hamburgerAnims.topTransfIn ] : anims.transfNone,
-        [hamburgerAnims.midTransfIn ] : anims.transfNone,
-        [hamburgerAnims.btmTransfIn ] : anims.transfNone,
+        [hamburgerAnims.topTransfIn ] : animationVars.transfNone,
+        [hamburgerAnims.midTransfIn ] : animationVars.transfNone,
+        [hamburgerAnims.btmTransfIn ] : animationVars.transfNone,
         
-        [hamburgerAnims.topTransfOut] : anims.transfNone,
-        [hamburgerAnims.midTransfOut] : anims.transfNone,
-        [hamburgerAnims.btmTransfOut] : anims.transfNone,
+        [hamburgerAnims.topTransfOut] : animationVars.transfNone,
+        [hamburgerAnims.midTransfOut] : animationVars.transfNone,
+        [hamburgerAnims.btmTransfOut] : animationVars.transfNone,
     });
     const transfInVars   = () => vars({
         [hamburgerAnims.topTransfIn ] : hamburgerMenuButtons.hamburgerTopTransfIn,
@@ -239,9 +241,9 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
     });
     
     const animNoneVars   = () => vars({
-        [hamburgerAnims.topAnim     ] : anims.animNone,
-        [hamburgerAnims.midAnim     ] : anims.animNone,
-        [hamburgerAnims.btmAnim     ] : anims.animNone,
+        [hamburgerAnims.topAnim     ] : animationVars.animNone,
+        [hamburgerAnims.midAnim     ] : animationVars.animNone,
+        [hamburgerAnims.btmAnim     ] : animationVars.animNone,
     });
     const animInVars     = () => vars({
         [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.hamburgerTopAnimIn,
@@ -259,8 +261,8 @@ export const usesHamburgerAnim = (): HamburgerAnimMixin => {
     return [
         () => style({
             ...imports([
-                // animations:
-                animRule,
+                // features:
+                animationRule,
             ]),
             ...vars({
                 [hamburgerAnims.topTransf] : [[
@@ -332,7 +334,7 @@ export const usesHamburgerLayout = () => {
     // dependencies:
     
     // animations:
-    const [hamburgerAnimRule, , hamburgerAnims] = usesHamburgerAnim();
+    const [hamburgerAnimRule, , hamburgerAnims] = usesHamburgerAnim(hamburgerMenuButtons as any);
     
     
     
