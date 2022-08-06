@@ -51,16 +51,18 @@ import {
     EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
+
 // reusable-ui components:
 import {
     // types:
     SemanticProps,
     useSemantic,
 }                           from '@reusable-ui/generic'         // a base component
-import {
-    // hooks:
-    usesAnim,
-}                           from '@reusable-ui/basic'           // a base component
 
 
 
@@ -76,9 +78,9 @@ export interface CollapsibleVars {
 const [collapsibleVars] = cssVars<CollapsibleVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(collapsibleVars.filter);
-    animRegistry.registerAnim(collapsibleVars.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(collapsibleVars.filter);
+    animationRegistry.registerAnim(collapsibleVars.anim);
 }
 
 
