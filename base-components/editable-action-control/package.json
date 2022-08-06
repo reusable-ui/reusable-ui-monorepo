@@ -37,7 +37,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/cssfn-react": "^2.0.9",
+    "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/action-control": "^5.0.0",

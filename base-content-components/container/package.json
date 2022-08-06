@@ -39,7 +39,7 @@
     "@cssfn/css-config": "^2.0.14",
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/css-vars": "^2.0.9",
-    "@cssfn/cssfn-react": "^2.0.9",
+    "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/breakpoints": "^5.0.0",

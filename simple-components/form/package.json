@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@cssfn/css-config": "^2.0.14",
-    "@cssfn/cssfn-react": "^2.0.9",
+    "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/content": "^5.0.0",
     "@reusable-ui/editable-control": "^5.0.0",
