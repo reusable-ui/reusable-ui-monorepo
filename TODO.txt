@@ -42,7 +42,7 @@ variants
     nude            [done] toggle-option   useNudible          nudibleVars
 
 states
-    excite          useExcitable    excitableVars
+    excite          [done] useExcitable    excitableVars
     
     enableDisable   useEnableable   enableVars
     activePassive   useActivable    activeVars
