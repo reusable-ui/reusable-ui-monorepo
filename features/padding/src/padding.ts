@@ -52,7 +52,7 @@ const [paddingVars] = cssVars<PaddingVars>();
 
 
 
-export interface PaddingRules { paddingRule: Factory<CssRule>, paddingVars: CssVars<PaddingVars> }
+export interface PaddingStuff { paddingRule: Factory<CssRule>, paddingVars: CssVars<PaddingVars> }
 export interface PaddingConfig {
     paddingInline ?: CssKnownProps['paddingInline']
     paddingBlock  ?: CssKnownProps['paddingBlock' ]
@@ -60,9 +60,9 @@ export interface PaddingConfig {
 /**
  * Uses padding (inner spacing).
  * @param config  A configuration of `paddingRule`.
- * @returns A `PaddingRules` represents the padding rules.
+ * @returns A `PaddingStuff` represents the padding rules.
  */
-export const usesPadding = (config?: PaddingConfig): PaddingRules => {
+export const usesPadding = (config?: PaddingConfig): PaddingStuff => {
     return {
         paddingRule: () => style({
             // compositions:

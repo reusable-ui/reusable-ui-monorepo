@@ -246,15 +246,15 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
 
 
 
-export interface ThemableRules { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
+export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
  * @param factory A callback to create a theme rules for each theme color in `options`.
  * @param options Defines all available theme color options.
- * @returns A `ThemableRules` represents the theme rules for each theme color in `options`.
+ * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
-export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()): ThemableRules => {
+export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()): ThemableStuff => {
     return {
         themableRule: () => style({
             ...variants([

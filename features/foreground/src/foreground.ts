@@ -68,7 +68,7 @@ const [foregroundVars] = cssVars<ForegroundVars>();
 
 
 
-export interface ForegroundRules { foregroundRule: Factory<CssRule>, foregroundVars: CssVars<ForegroundVars> }
+export interface ForegroundStuff { foregroundRule: Factory<CssRule>, foregroundVars: CssVars<ForegroundVars> }
 export interface ForegroundConfig {
     foreg    ?: CssKnownProps['foreground']
     altForeg ?: CssKnownProps['foreground']
@@ -76,9 +76,9 @@ export interface ForegroundConfig {
 /**
  * Uses foreground color (text color).
  * @param config  A configuration of `foregroundRule`.
- * @returns A `ForegroundRules` represents the foreground rules.
+ * @returns A `ForegroundStuff` represents the foreground rules.
  */
-export const usesForeground = (config?: ForegroundConfig): ForegroundRules => {
+export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
     // dependencies:
     const {themableVars   } = usesThemable();
     const {outlineableVars} = usesOutlineable();

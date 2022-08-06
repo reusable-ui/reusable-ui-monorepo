@@ -95,7 +95,7 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mil
 
 
 
-export interface MildableRules { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
+export interface MildableStuff { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
 export interface MildableConfig {
     backg    ?: CssKnownProps['backgroundColor']
     foreg    ?: CssKnownProps['foreground'     ]
@@ -106,9 +106,9 @@ export interface MildableConfig {
  * Uses a toggleable mildification.  
  * @param config  A configuration of `mildableRule`.
  * @param factory A callback to create a mildification rules for each toggle state.
- * @returns A `MildableRules` represents the mildification rules for each toggle state.
+ * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
-export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): MildableRules => {
+export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): MildableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     

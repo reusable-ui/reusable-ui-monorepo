@@ -94,7 +94,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 
 
-export interface OutlineableRules { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
+export interface OutlineableStuff { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
 export interface OutlineableConfig {
     foreg    ?: CssKnownProps['foreground'     ]
     altBackg ?: CssKnownProps['backgroundColor']
@@ -104,9 +104,9 @@ export interface OutlineableConfig {
  * Uses a toggleable outlining.  
  * @param config  A configuration of `outlineableRule`.
  * @param factory A callback to create an outlining rules for each toggle state.
- * @returns An `OutlineableRules` represents the outlining rules for each toggle state.
+ * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = outlinedOf): OutlineableRules => {
+export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = outlinedOf): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     

@@ -20,7 +20,7 @@ import {
 
 //#region orientationable
 export type OrientationName = 'inline'|'block'
-export interface OrientationableRules {
+export interface OrientationableStuff {
     defaultOrientation        : OrientationName
     
     orientationInlineSelector : CssSelectorCollection
@@ -30,11 +30,11 @@ export interface OrientationableRules {
     ifOrientationBlock        : (styles: CssStyleCollection) => CssRule
 }
 
-export type OrientationableOptions = Omit<Partial<OrientationableRules>, 'ifOrientationInline'|'ifOrientationBlock'>
+export type OrientationableOptions = Omit<Partial<OrientationableStuff>, 'ifOrientationInline'|'ifOrientationBlock'>
 export const defaultInlineOrientationableOptions : OrientationableOptions = { defaultOrientation: 'inline' };
 export const defaultBlockOrientationableOptions  : OrientationableOptions = { defaultOrientation: 'block'  };
 
-export const usesOrientationable = (options?: OrientationableOptions, defaultOptions = defaultBlockOrientationableOptions): OrientationableRules => {
+export const usesOrientationable = (options?: OrientationableOptions, defaultOptions = defaultBlockOrientationableOptions): OrientationableStuff => {
     const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
     const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(:is(.block, .block-start, .block-end))'    : ':is(.inline, .inline-start, .inline-end)');
     const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(:is(.inline, .inline-start, .inline-end))' : ':is(.block, .block-start, .block-end)' );
@@ -89,7 +89,7 @@ export const useOrientationable = ({orientation}: OrientationableProps, defaultO
 
 
 export type OrientationWithDirectionName = 'inline-start'|'inline-end'|'block-start'|'block-end'
-export interface OrientationableWithDirectionRules {
+export interface OrientationableWithDirectionStuff {
     defaultOrientation             : OrientationWithDirectionName
     
     orientationInlineStartSelector : CssSelectorCollection
@@ -103,13 +103,13 @@ export interface OrientationableWithDirectionRules {
     ifOrientationBlockEnd          : (styles: CssStyleCollection) => CssRule
 }
 
-export type OrientationableWithDirectionOptions = Omit<Partial<OrientationableWithDirectionRules>, 'ifOrientationInlineStart'|'ifOrientationInlineEnd'|'ifOrientationBlockStart'|'ifOrientationBlockEnd'>
+export type OrientationableWithDirectionOptions = Omit<Partial<OrientationableWithDirectionStuff>, 'ifOrientationInlineStart'|'ifOrientationInlineEnd'|'ifOrientationBlockStart'|'ifOrientationBlockEnd'>
 export const defaultInlineStartOrientationableWithDirectionOptions : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-start' };
 export const defaultInlineEndOrientationableWithDirectionOptions   : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-end'   };
 export const defaultBlockStartOrientationableWithDirectionOptions  : OrientationableWithDirectionOptions = { defaultOrientation: 'block-start'  };
 export const defaultBlockEndOrientationableWithDirectionOptions    : OrientationableWithDirectionOptions = { defaultOrientation: 'block-end'    };
 
-export const usesOrientationableWithDirection = (options?: OrientationableWithDirectionOptions, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions): OrientationableWithDirectionRules & Pick<OrientationableRules, 'ifOrientationInline'|'ifOrientationBlock'> => {
+export const usesOrientationableWithDirection = (options?: OrientationableWithDirectionOptions, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions): OrientationableWithDirectionStuff & Pick<OrientationableStuff, 'ifOrientationInline'|'ifOrientationBlock'> => {
     const defaultOrientation             = options?.defaultOrientation             ?? defaultOptions.defaultOrientation             ?? 'block-end';
     const orientationInlineStartSelector = options?.orientationInlineStartSelector ?? defaultOptions.orientationInlineStartSelector ?? ((defaultOrientation === 'inline-start') ? ':not(:is(.block-start, .block-end, .inline-end))'    : '.inline-start');
     const orientationInlineEndSelector   = options?.orientationInlineEndSelector   ?? defaultOptions.orientationInlineEndSelector   ?? ((defaultOrientation === 'inline-end'  ) ? ':not(:is(.block-start, .block-end, .inline-start))'  : '.inline-end'  );

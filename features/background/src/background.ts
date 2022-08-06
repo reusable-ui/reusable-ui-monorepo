@@ -91,7 +91,7 @@ const [backgroundVars] = cssVars<BackgroundVars>();
 
 
 
-export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
+export interface BackgroundStuff { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
 export interface BackgroundConfig {
     backg           ?: CssKnownProps['backgroundColor']
     altBackg        ?: CssKnownProps['backgroundColor']
@@ -101,9 +101,9 @@ export interface BackgroundConfig {
 /**
  * Uses background layer(s).
  * @param config  A configuration of `backgroundRule`.
- * @returns A `BackgroundRules` represents the background rules.
+ * @returns A `BackgroundStuff` represents the background rules.
  */
-export const usesBackground = (config?: BackgroundConfig): BackgroundRules => {
+export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
     // dependencies:
     const {themableVars    } = usesThemable();
     const {gradientableVars} = usesGradientable();

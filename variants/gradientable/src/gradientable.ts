@@ -59,7 +59,7 @@ export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 
 
-export interface GradientableRules { gradientableRule: Factory<CssRule>, gradientableVars: CssVars<GradientableVars> }
+export interface GradientableStuff { gradientableRule: Factory<CssRule>, gradientableVars: CssVars<GradientableVars> }
 export interface GradientableConfig {
     backgGrad ?: CssKnownProps['backgroundImage']
 }
@@ -67,9 +67,9 @@ export interface GradientableConfig {
  * Uses a toggleable gradient.  
  * @param config  A configuration of `gradientableRule`.
  * @param factory A callback to create a gradient rules for each toggle state.
- * @returns A `GradientableRules` represents the gradient rules for each toggle state.
+ * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableRules => {
+export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableStuff => {
     return {
         gradientableRule: () => style({
             ...vars({

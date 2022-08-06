@@ -100,7 +100,7 @@ const [borderVars] = cssVars<BorderVars>();
 
 
 
-export interface BorderRules { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
+export interface BorderStuff { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
 export interface BorderConfig {
     borderStyle  ?: CssKnownProps['borderStyle' ]
     borderWidth  ?: CssKnownProps['borderWidth' ]
@@ -110,9 +110,9 @@ export interface BorderConfig {
 /**
  * Uses border (strokes, colors, radiuses).
  * @param config  A configuration of `borderRule`.
- * @returns A `BorderRules` represents the border rules.
+ * @returns A `BorderStuff` represents the border rules.
  */
-export const usesBorder = (config?: BorderConfig): BorderRules => {
+export const usesBorder = (config?: BorderConfig): BorderStuff => {
     // dependencies:
     const {themableVars   } = usesThemable();
     const {outlineableVars} = usesOutlineable();

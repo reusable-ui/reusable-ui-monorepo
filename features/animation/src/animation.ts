@@ -134,7 +134,7 @@ export type AnimationRegistry = typeof animationRegistry
 
 
 
-export interface AnimationRules { animationRule: Factory<CssRule>, animationVars: CssVars<AnimationVars>, animationRegistry : AnimationRegistry }
+export interface AnimationStuff { animationRule: Factory<CssRule>, animationVars: CssVars<AnimationVars>, animationRegistry : AnimationRegistry }
 export interface AnimationConfig {
     boxShadow ?: CssKnownProps['boxShadow'] & Array<any>
     filter    ?: CssKnownProps['filter'   ] & Array<any>
@@ -143,9 +143,9 @@ export interface AnimationConfig {
 /**
  * Uses Animation.
  * @param config  A configuration of `animationRule`.
- * @returns An `AnimationRules` represents the animation rules.
+ * @returns An `AnimationStuff` represents the animation rules.
  */
-export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
+export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
     return {
         animationRule: () => style({
             // constants:

@@ -52,16 +52,16 @@ const [ringVars] = cssVars<RingVars>();
 
 
 
-export interface RingRules { ringRule: Factory<CssRule>, ringVars: CssVars<RingVars> }
+export interface RingStuff { ringRule: Factory<CssRule>, ringVars: CssVars<RingVars> }
 export interface RingConfig {
     ring ?: CssKnownProps['color']
 }
 /**
  * Uses ring (focus indicator) color.
  * @param config  A configuration of `ringRule`.
- * @returns A `RingRules` represents the ring rules.
+ * @returns A `RingStuff` represents the ring rules.
  */
-export const usesRing = (config?: RingConfig): RingRules => {
+export const usesRing = (config?: RingConfig): RingStuff => {
     // dependencies:
     const {themableVars} = usesThemable();
     

@@ -106,7 +106,7 @@ export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule
 
 
 
-export interface CollapsibleRules { collapsibleRule: Factory<CssRule>, collapsibleVars: CssVars<CollapsibleVars> }
+export interface CollapsibleStuff { collapsibleRule: Factory<CssRule>, collapsibleVars: CssVars<CollapsibleVars> }
 export interface CollapsibleConfig {
     animExpand   ?: CssKnownProps['animation']
     animCollapse ?: CssKnownProps['animation']
@@ -114,9 +114,9 @@ export interface CollapsibleConfig {
 /**
  * Adds a capability of UI to expand/reduce its size or toggle the visibility.
  * @param config  A configuration of `collapsibleRule`.
- * @returns A `CollapsibleRules` represents a collapsible state.
+ * @returns A `CollapsibleStuff` represents a collapsible state.
  */
-export const usesCollapsible = (config?: CollapsibleConfig): CollapsibleRules => {
+export const usesCollapsible = (config?: CollapsibleConfig): CollapsibleStuff => {
     return {
         collapsibleRule: () => style({
             ...states([
