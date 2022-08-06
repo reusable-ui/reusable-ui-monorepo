@@ -74,6 +74,17 @@ import {
     AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneFilter,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
+
 // reusable-ui variants:
 import {
     // hooks:
@@ -105,12 +116,6 @@ import {
     
     
     
-    // hooks:
-    usesAnim,
-    fallbackNoneFilter,
-    
-    
-    
     // styles:
     usesBasicLayout,
     usesBasicVariants,
@@ -136,9 +141,9 @@ export interface EnableDisableVars {
 const [enables] = cssVars<EnableDisableVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(enables.filter);
-    animRegistry.registerAnim(enables.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(enables.filter);
+    animationRegistry.registerAnim(enables.anim);
 }
 
 
@@ -288,9 +293,9 @@ export interface ActivePassiveVars {
 const [actives] = cssVars<ActivePassiveVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerFilter(actives.filter);
-    animRegistry.registerAnim(actives.anim);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerFilter(actives.filter);
+    animationRegistry.registerAnim(actives.anim);
 }
 
 
@@ -624,8 +629,8 @@ export const useIndicatorStyleSheet = createUseStyleSheet(() => ({
 export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , animRegistry] = usesAnim();
-    const filters = animRegistry.filters;
+    const {animationRegistry} = usesAnimation();
+    const filters = animationRegistry.filters;
     
     const [, {filter: filterEnableDisable}] = usesEnableDisableState();
     const [, {filter: filterActivePassive}] = usesActivePassiveState();
