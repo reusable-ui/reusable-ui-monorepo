@@ -106,6 +106,16 @@ import {
 }                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
 import {
     // hooks:
+    usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneFilter,
+    fallbackNoneTransf,
+}                           from '@reusable-ui/animation'               // animation stuff of UI
+import {
+    // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
 
@@ -128,13 +138,6 @@ import {
 import {
     // types:
     StateMixin,
-    
-    
-    
-    // hooks:
-    usesAnim,
-    fallbackNoneFilter,
-    fallbackNoneTransf,
 }                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
@@ -219,13 +222,13 @@ const checkAnimRegistry = {
     get filters         ():    CssCustomSimpleRef[]      {
         // dependencies:
         
-        // animations:
-        const [, anims ] = usesAnim();
+        // features:
+        const {animationVars} = usesAnimation();
         
         
         
         return [
-            anims.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
+            animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
             ...Array.from(setsFilter)
         ];
     },
@@ -237,13 +240,13 @@ const checkAnimRegistry = {
     get transfs         ():    CssCustomSimpleRef[]      {
         // dependencies:
         
-        // animations:
-        const [, anims ] = usesAnim();
+        // features:
+        const {animationVars} = usesAnimation();
         
         
         
         return [
-            anims.transfNone, // the transform collection must contain at least 1 of *none* transform, so when rendered it produces a valid css value of transform property
+            animationVars.transfNone, // the transform collection must contain at least 1 of *none* transform, so when rendered it produces a valid css value of transform property
             ...Array.from(setsTransf)
         ];
     },
@@ -255,13 +258,13 @@ const checkAnimRegistry = {
     get anims           ():    CssCustomSimpleRef[]      {
         // dependencies:
         
-        // animations:
-        const [, anims ] = usesAnim();
+        // features:
+        const {animationVars} = usesAnimation();
         
         
         
         return [
-            anims.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
+            animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
             ...Array.from(setsAnim)
         ];
     },
@@ -280,8 +283,8 @@ export type CheckAnimMixin = readonly [() => CssRule, CssVars<CheckAnimVars>, Ch
 export const usesCheckAnim = (): CheckAnimMixin => {
     // dependencies:
     
-    // animations:
-    const [, anims ] = usesAnim();
+    // features:
+    const {animationVars} = usesAnimation();
     
     
     
@@ -318,9 +321,9 @@ export const usesCheckAnim = (): CheckAnimMixin => {
             
             // declare default values at lowest specificity (except for **None):
             ...vars(Object.fromEntries([
-                ...checkAnimRegistry.filters   .filter((ref) => (ref !== anims.filterNone   )).map((ref) => [ ref, anims.filterNone    ]),
-                ...checkAnimRegistry.transfs   .filter((ref) => (ref !== anims.transfNone   )).map((ref) => [ ref, anims.transfNone    ]),
-                ...checkAnimRegistry.anims     .filter((ref) => (ref !== anims.animNone     )).map((ref) => [ ref, anims.animNone      ]),
+                ...checkAnimRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
+                ...checkAnimRegistry.transfs   .filter((ref) => (ref !== animationVars.transfNone   )).map((ref) => [ ref, animationVars.transfNone    ]),
+                ...checkAnimRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
             ])),
         }),
         checkAnims,
