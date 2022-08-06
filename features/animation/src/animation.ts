@@ -18,6 +18,11 @@ import type {
     CssRule,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
+    // rules:
+    fallbacks,
+    
+    
+    
     // styles:
     style,
     vars,
@@ -153,11 +158,13 @@ export const usesAnimation = (config?: AnimationConfig): AnimationRules => {
             
             // reset functions:
             // declare default values at lowest specificity (except for **None):
-            ...vars(Object.fromEntries([
-                ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
-                ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
-                ...animationRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
-            ])),
+            ...fallbacks({
+                ...vars(Object.fromEntries([
+                    ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
+                    ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
+                    ...animationRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
+                ])),
+            }),
             
             
             
