@@ -77,6 +77,7 @@ import {
     // hooks:
     useTriggerRender,
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -86,6 +87,11 @@ import {
 import {
     // hooks:
     usesAnimation,
+    
+    
+    
+    // utilities:
+    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui states:
@@ -99,6 +105,13 @@ import {
     ToggleCollapsibleProps,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
+import {
+    // hooks:
+    usesExcitable,
+    ExcitedChangeEvent,
+    useToggleExcitable,
+}                           from '@reusable-ui/excitable'       // a capability of UI to highlight itself to attract user's attention
+
 // reusable-ui components:
 import {
     // types:
@@ -111,11 +124,6 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
-import {
-    // hooks:
-    useExcitedState,
-    usesExcitedState,
-}                           from '@reusable-ui/basic'           // a base component
 
 
 
@@ -196,14 +204,16 @@ export const usesBackdropUiStates = () => {
     // dependencies:
     
     // states:
-    const [excitedStateRule] = usesExcitedState();
+    const {excitableRule} = usesExcitable(
+        usesPrefixedProps(modals, 'modalUi') as any, // fetch config's cssProps starting with modalUi***
+    );
     
     
     
     return style({
         ...imports([
             // states:
-            excitedStateRule,
+            excitableRule,
         ]),
     });
 };
@@ -333,6 +343,13 @@ export const useBackdropStyleSheet = createUseStyleSheet(() => ({
 
 // configs:
 export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
+    // dependencies:
+    
+    const {animationRegistry : {filters}              } = usesAnimation();
+    const {excitableVars     : {filter: filterExcited}} = usesExcitable();
+    
+    
+    
     //#region keyframes
     const frameCollapsed    = style({
         filter : [[
@@ -354,6 +371,26 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         to    : frameCollapsed,
     });
     keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
+    
+    
+    
+    const [keyframesExciteRule, keyframesExcite] = keyframes({
+        from  : {
+            filter : [[
+                ...filters.filter((f) => (f !== filterExcited)),
+                
+             // filterExcited, // missing the last => let's the browser interpolated it
+            ]].map(fallbackNoneFilter),
+        },
+        to    : {
+            filter : [[
+                ...filters.filter((f) => (f !== filterExcited)),
+                
+                filterExcited, // existing the last => let's the browser interpolated it
+            ]].map(fallbackNoneFilter),
+        },
+    });
+    keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
     //#endregion keyframes
     
     
@@ -373,6 +410,11 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         ]                                                       as CssKnownProps['animation'],
         animCollapse     : [
             ['500ms', 'ease-out', 'both', keyframesCollapse],
+        ]                                                       as CssKnownProps['animation'],
+        
+        ...keyframesExciteRule,
+        animExcite       : [
+            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcite],
         ]                                                       as CssKnownProps['animation'],
     };
 }, { prefix: 'mdl' });
@@ -468,7 +510,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
     
     const [excitedDn, setExcitedDn] = useState(false);
-    const excitedState = useExcitedState<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: setExcitedDn });
+    const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
+        setExcitedDn(event.excited);
+    }, []);
+    const excitableState            = useToggleExcitable<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: handleExcitedChange });
     
     
     
@@ -537,7 +582,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // states:
-        excitedState.class,
+        excitableState.class,
     );
     
     
@@ -666,7 +711,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // states:
-        excitedState.handleAnimationEnd,
+        excitableState.handleAnimationEnd,
     );
     
     
