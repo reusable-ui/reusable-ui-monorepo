@@ -78,9 +78,9 @@ export interface CollapsibleVars {
 const [collapsibleVars] = cssVars<CollapsibleVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(collapsibleVars.filter);
-    animationRegistry.registerAnim(collapsibleVars.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(collapsibleVars.filter);
+    registerAnim(collapsibleVars.anim);
 }
 
 
