@@ -141,9 +141,9 @@ export interface EnableDisableVars {
 const [enables] = cssVars<EnableDisableVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(enables.filter);
-    animationRegistry.registerAnim(enables.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(enables.filter);
+    registerAnim(enables.anim);
 }
 
 
@@ -293,9 +293,9 @@ export interface ActivePassiveVars {
 const [actives] = cssVars<ActivePassiveVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerFilter(actives.filter);
-    animationRegistry.registerAnim(actives.anim);
+    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
+    registerFilter(actives.filter);
+    registerAnim(actives.anim);
 }
 
 
@@ -629,9 +629,7 @@ export const useIndicatorStyleSheet = createUseStyleSheet(() => ({
 export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry} = usesAnimation();
-    const filters = animationRegistry.filters;
-    
+    const {animationRegistry : {filters}  } = usesAnimation();
     const [, {filter: filterEnableDisable}] = usesEnableDisableState();
     const [, {filter: filterActivePassive}] = usesActivePassiveState();
     
