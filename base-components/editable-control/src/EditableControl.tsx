@@ -94,6 +94,10 @@ import {
     // hooks:
     usesForeground,
 }                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
 import {
@@ -110,11 +114,6 @@ import {
 import {
     // types:
     StateMixin,
-    
-    
-    
-    // hooks:
-    usesAnim,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
@@ -143,9 +142,9 @@ export interface ValidInvalidVars {
 const [valids] = cssVars<ValidInvalidVars>();
 
 {
-    const [, , animRegistry] = usesAnim();
-    animRegistry.registerAnim(valids.animValid);
-    animRegistry.registerAnim(valids.animInvalid);
+    const {animationRegistry} = usesAnimation();
+    animationRegistry.registerAnim(valids.animValid);
+    animationRegistry.registerAnim(valids.animInvalid);
 }
 
 
