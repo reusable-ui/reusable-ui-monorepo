@@ -4,8 +4,15 @@ import type {
     Factory,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
+    // css values:
+    CssComplexBaseValueOf,
+    
+    
+    
     // css custom properties:
     CssCustomSimpleRef,
+    CssCustomRef,
+    CssCustomValue,
     
     
     
@@ -31,6 +38,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
+    fallbacks as valueFallbacks,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 
@@ -213,4 +221,14 @@ export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
         animationRegistry,
     };
 };
+
+
+
+export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(value) === 'string') && value.startsWith('var(--');
+
+type BaseTypeOf<TComplexValue> = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
+export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item => (isRef(item) && (item !== animationVars.boxShadowNone)) ? valueFallbacks(item, animationVars.boxShadowNone) : item;
+export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.filterNone)) ? valueFallbacks(subItem, animationVars.filterNone) : subItem);
+export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.transfNone)) ? valueFallbacks(subItem, animationVars.transfNone) : subItem);
+export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['animation']>  ): typeof item => (isRef(item) && (item !== animationVars.animNone)) ? valueFallbacks(item, animationVars.animNone) : item;
 //#endregion animation
