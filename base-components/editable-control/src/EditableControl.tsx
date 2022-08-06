@@ -142,9 +142,9 @@ export interface ValidInvalidVars {
 const [valids] = cssVars<ValidInvalidVars>();
 
 {
-    const {animationRegistry} = usesAnimation();
-    animationRegistry.registerAnim(valids.animValid);
-    animationRegistry.registerAnim(valids.animInvalid);
+    const {animationRegistry: {registerAnim}} = usesAnimation();
+    registerAnim(valids.animValid);
+    registerAnim(valids.animInvalid);
 }
 
 
