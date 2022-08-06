@@ -93,10 +93,10 @@ const [backgroundVars] = cssVars<BackgroundVars>();
 
 export interface BackgroundRules { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
 export interface BackgroundConfig {
-    backg       ?: CssKnownProps['backgroundColor']
-    altBackg    ?: CssKnownProps['backgroundColor']
+    backg           ?: CssKnownProps['backgroundColor']
+    altBackg        ?: CssKnownProps['backgroundColor']
     
-    backgImages ?: CssKnownProps['backgroundImage'] & Array<any>
+    backgroundImage ?: CssKnownProps['backgroundImage'] & Array<any>
 }
 /**
  * Uses background layer(s).
@@ -174,7 +174,7 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundRules => {
                     ),
                     
                     // middle layer:
-                    ...(config?.backgImages ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
+                    ...(config?.backgroundImage ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
                     
                     // bottom layer:
                     backgroundVars.backgColor,
