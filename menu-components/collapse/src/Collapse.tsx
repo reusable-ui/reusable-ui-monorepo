@@ -98,8 +98,8 @@ export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
 // styles:
 export const usesCollapseLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
     
     
     

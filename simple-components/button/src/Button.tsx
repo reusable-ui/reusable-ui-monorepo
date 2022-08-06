@@ -210,8 +210,8 @@ export const noBackground = () => {
 
 export const usesButtonLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
     
     
     

@@ -249,8 +249,8 @@ export const thumbElm      = '.thumb'
 
 export const usesRangeLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);

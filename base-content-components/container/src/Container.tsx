@@ -212,9 +212,9 @@ export interface BorderAsContainerOptions extends OrientationableOptions {
 }
 export const usesBorderAsContainer = (options?: BorderAsContainerOptions): CssRule => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
-    options = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    options = orientationableStuff;
     const {
         itemsSelector = '*',
     } = options;
@@ -483,9 +483,9 @@ const usesBorderAsSeparatorOf = (block: boolean, options: BorderAsSeparatorOptio
 };
 export const usesBorderAsSeparator = (options: BorderAsSeparatorOptions = {}): CssRule => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableRules;
-    options = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    options = orientationableStuff;
     
     
     

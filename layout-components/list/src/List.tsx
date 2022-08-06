@@ -357,8 +357,8 @@ export const usesListItemInheritMildVariant = () => {
 
 export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     /*
         a hack with :not(_)
         the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
@@ -394,8 +394,8 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
 };
 export const usesListItemLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    options = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    options = orientationableStuff;
     
     
     
@@ -484,8 +484,8 @@ export const useListItemStyleSheet = createUseStyleSheet(() => ({
 
 export const usesListSeparatorItemLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&`;
     const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
@@ -636,13 +636,13 @@ export const useListActionItemStyleSheet = createUseStyleSheet(() => ({
 
 export const usesListLayout = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
     const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
-    options = orientationableRules;
+    options = orientationableStuff;
     
     
     
@@ -854,8 +854,8 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
 };
 export const usesListVariants = (options?: OrientationableOptions) => {
     // options:
-    const orientationableRules = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableRules;
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
     const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
