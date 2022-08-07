@@ -66,6 +66,16 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // types:
+    SemanticTag,
+    SemanticRole,
+    
+    
+    
+    // hooks:
+    useTestSemantic,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+import {
     // hooks:
     usePropEnabled,
     usePropReadOnly,
@@ -89,16 +99,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
-import {
-    // types:
-    SemanticTag,
-    SemanticRole,
-    
-    
-    
-    // hooks:
-    useTestSemantic,
-}                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
     StateMixin,
