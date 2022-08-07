@@ -11,6 +11,10 @@ import {
     useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import type {
+    // types:
+    Role,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // utilities:
     setFocusFirst,
@@ -26,10 +30,6 @@ import {
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
 
 // reusable-ui components:
-import type {
-    // types:
-    Role,
-}                           from '@reusable-ui/generic'         // a generic component
 import {
     // react components:
     DropdownActionType,
