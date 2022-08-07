@@ -69,7 +69,6 @@ import {
 import {
     // hooks:
     usePropAccessibility,
-    usePropEnabled,
     usePropActive,
     
     
@@ -109,6 +108,14 @@ import {
     mildOf,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
+// reusable-ui states:
+import {
+    // hooks:
+    usesDisableable,
+    DisableableProps,
+    useDisableable,
+}                           from '@reusable-ui/disableable'     // a capability of UI to being disabled
+
 // reusable-ui components:
 import {
     // types:
@@ -132,158 +139,6 @@ import {
 // hooks:
 
 // accessibilities:
-
-//#region enableDisable
-export interface EnableDisableVars {
-    filter : any
-    anim   : any
-}
-const [enables] = cssVars<EnableDisableVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
-    registerFilter(enables.filter);
-    registerAnim(enables.anim);
-}
-
-
-
-// if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
-// .enabling will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  = '.enabling'
-// [aria-disabled] = styled disable, :disabled = native disable:
-const selectorIfDisabling = ':is([aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
-// .disabled will be added after disabling-animation done:
-const selectorIfDisabled  = '.disabled'
-
-export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
-export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
-export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
-export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
-
-export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                                         ], styles);
-export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfDisabling, selectorIfDisabled], styles);
-export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling,                    selectorIfDisabling, selectorIfDisabled], styles);
-
-
-
-/**
- * Uses enable & disable states.
- * @returns A `StateMixin<EnableDisableVars>` represents enable & disable state definitions.
- */
-export const usesEnableDisableState = (): StateMixin<EnableDisableVars> => {
-    return [
-        () => style({
-            ...states([
-                ifEnabling({
-                    ...vars({
-                        [enables.filter] : indicators.filterDisable,
-                        [enables.anim  ] : indicators.animEnable,
-                    }),
-                }),
-                ifDisabling({
-                    ...vars({
-                        [enables.filter] : indicators.filterDisable,
-                        [enables.anim  ] : indicators.animDisable,
-                    }),
-                }),
-                ifDisabled({
-                    ...vars({
-                        [enables.filter] : indicators.filterDisable,
-                    }),
-                }),
-            ]),
-        }),
-        enables,
-    ];
-};
-
-
-
-const htmlCtrls = [
-    'button',
-    'fieldset',
-    'input',
-    'select',
-    'optgroup',
-    'option',
-    'textarea',
-];
-
-export const useEnableDisableState = <TElement extends Element = HTMLElement>(props: AccessibilityProps & SemanticProps) => {
-    // fn props:
-    const propEnabled = usePropEnabled(props);
-    const { tag }     = useSemantic(props);
-    
-    
-    
-    // states:
-    const [enabled,   setEnabled  ] = useState<boolean>(propEnabled); // true => enabled, false => disabled
-    const [animating, setAnimating] = useState<boolean|null>(null);   // null => no-animation, true => enabling-animation, false => disabling-animation
-    
-    
-    
-    /*
-     * state is enabled/disabled based on [controllable enabled]
-     * [uncontrollable enabled] is not supported
-     */
-    const enabledFn : boolean = propEnabled /*controllable*/;
-    
-    if (enabled !== enabledFn) { // change detected => apply the change & start animating
-        setEnabled(enabledFn);   // remember the last change
-        setAnimating(enabledFn); // start enabling-animation/disabling-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop enabling-animation/disabling-animation
-    }, []);
-    
-    
-    
-    return {
-        enabled  : enabled,
-        disabled : !enabled,
-        
-        class    : ((): string|null => {
-            // enabling:
-            if (animating === true)  return 'enabling';
-            
-            // disabling:
-            if (animating === false) return null; // uses :disabled or [aria-disabled]
-            
-            // fully disabled:
-            if (!enabled) return 'disabled';
-            
-            // fully enabled:
-            return null;
-        })(),
-        
-        props    : (() => {
-            if (enabled) return null;
-            
-            // use :disabled if <control>:
-            if (tag && htmlCtrls.includes(tag)) return { disabled: true };
-            
-            // else, use [aria-disabled]:
-            return { 'aria-disabled' : true };
-        })(),
-        
-        handleAnimationEnd,
-    };
-};
-//#endregion enableDisable
 
 //#region activePassive
 export interface ActivePassiveVars {
@@ -589,15 +444,15 @@ export const usesIndicatorStates = () => {
     // dependencies:
     
     // states:
-    const [enableDisableStateRule] = usesEnableDisableState();
+    const {disableableRule       } = usesDisableable(indicators);
     const [activePassiveStateRule] = usesActivePassiveState();
     
     
     
     return style({
         ...imports([
-            // accessibilities:
-            enableDisableStateRule,
+            // states:
+            disableableRule,
             activePassiveStateRule,
         ]),
         ...states([
@@ -629,25 +484,25 @@ export const useIndicatorStyleSheet = dynamicStyleSheet(() => ({
 export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry : {filters}  } = usesAnimation();
-    const [, {filter: filterEnableDisable}] = usesEnableDisableState();
-    const [, {filter: filterActivePassive}] = usesActivePassiveState();
+    const {animationRegistry : {filters}              } = usesAnimation();
+    const {disableableVars   : {filter: filterDisable}} = usesDisableable();
+    const [, {filter: filterActivePassive}            ] = usesActivePassiveState();
     
     
     
     //#region keyframes
     const frameEnabled  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
+            ...filters.filter((f) => (f !== filterDisable)),
             
-         // filterEnableDisable, // missing the last => let's the browser interpolated it
+         // filterDisable, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const frameDisabled = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterEnableDisable)),
+            ...filters.filter((f) => (f !== filterDisable)),
             
-            filterEnableDisable, // existing the last => let's the browser interpolated it
+            filterDisable, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const [keyframesDisableRule, keyframesDisable] = keyframes({
@@ -728,6 +583,9 @@ export interface IndicatorProps<TElement extends Element = HTMLElement>
         // bases:
         BasicProps<TElement>,
         
+        // states:
+        DisableableProps,
+        
         // accessibilities:
         AccessibilityProps
 {
@@ -739,9 +597,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     
     // states:
-    
-    // accessibilities:
-    const enableDisableState = useEnableDisableState<TElement>(props);
+    const disableableState   = useDisableable<TElement>(props);
     const activePassiveState = useActivePassiveState<TElement>(props);
     
     
@@ -753,17 +609,15 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     // rest props:
     const {
-        // remove states props:
+        // states:
+        enabled         : _enabled,         // remove
+        inheritEnabled  : _inheritEnabled,  // remove
         
-        // accessibilities:
-        enabled         : _enabled,
-        inheritEnabled  : _inheritEnabled,
+        readOnly        : _readOnly,        // remove
+        inheritReadOnly : _inheritReadOnly, // remove
         
-        readOnly        : _readOnly,
-        inheritReadOnly : _inheritReadOnly,
-        
-        active          : _active,
-        inheritActive   : _inheritActive,
+        active          : _active,          // remove
+        inheritActive   : _inheritActive,   // remove
         
         
         
@@ -780,8 +634,8 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         
         
         
-        // accessibilities:
-        enableDisableState.class,
+        // states:
+        disableableState.class,
         activePassiveState.class,
     );
     
@@ -795,9 +649,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         
         
         // states:
-        
-        // accessibilities:
-        enableDisableState.handleAnimationEnd,
+        disableableState.handleAnimationEnd,
         activePassiveState.handleAnimationEnd,
     );
     
@@ -823,7 +675,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
             
             
             // :disabled | [aria-disabled]
-            {...enableDisableState.props}
+            {...disableableState.props}
             
             // :checked | [aria-checked] | [aria-pressed] | [aria-selected]
             {...activePassiveState.props}
