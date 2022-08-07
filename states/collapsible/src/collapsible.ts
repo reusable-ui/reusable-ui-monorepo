@@ -50,19 +50,17 @@ import {
     useEvent,
     EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    SemanticProps,
+    useSemantic,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 
 // reusable-ui features:
 import {
     // hooks:
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui components:
-import {
-    // types:
-    SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/generic'         // a base component
 
 
 
