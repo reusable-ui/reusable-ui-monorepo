@@ -80,6 +80,10 @@ import {
 }                           from '@cssfn/css-selectors'         // manipulates css selectors
 
 // reusable-ui utilities:
+import type {
+    // types:
+    Tag,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // configs:
     spacers,
@@ -107,10 +111,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 
 // reusable-ui components:
-import type {
-    // types:
-    Tag,
-}                           from '@reusable-ui/generic'         // a base component
 import {
     // styles:
     usesBasicLayout,
