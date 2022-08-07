@@ -7,8 +7,6 @@ import {
     
     // hooks:
     useState,
-    useRef,
-    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -48,7 +46,6 @@ import {
 import {
     // hooks:
     useEvent,
-    EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -57,15 +54,12 @@ import {
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // hooks:
-    usePropAccessibility,
     usePropEnabled,
-    usePropActive,
     
     
     
     // react components:
     AccessibilityProps,
-    AccessibilityProvider,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // reusable-ui features:
@@ -118,6 +112,7 @@ export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([
 export interface DisableableStuff { disableableRule: Factory<CssRule>, disableableVars: CssVars<DisableableVars> }
 export interface DisableableConfig {
     filterDisable ?: CssKnownProps['filter'   ]
+    
     animEnable    ?: CssKnownProps['animation']
     animDisable   ?: CssKnownProps['animation']
 }
