@@ -8,11 +8,6 @@ FeatureMixin
 VariantMixin
 StateMixin
 
-TODO: verify catoegory of:
-// reusable-ui features:
-// reusable-ui variants:
-// reusable-ui states:
-
 TODO: create a dedicated package of:
 FeatureMixin
 VariantMixin
@@ -20,41 +15,6 @@ StateMixin
 
 TODO: upgrade <Masonry> to useOrientationableWithDirection
 
-
-features
-    background      [done] useBackground   backgroundVars
-    foreground      [done] useForeground   foregroundVars
-    border          [done] useBorder       borderVars
-    ring            [done] useRing         ringVars
-
-    padding         [done] usePadding      paddingVars
-    animation       [done] useAnimation    animationVars
-    
-    floatable       [done] useFloatable    floatVars
-
-variants
-    resizable       [done] multi-options   useResizable        resizableVars
-    orientationable [done] multi-options   useOrientationable  OrientationableVars
-    themes          [done] multi-options   useThemable         themableVars
-    gradient        [done] toggle-option   useGradientable     gradientableVars
-    outlined        [done] toggle-option   useOutlineable      outlineableVars
-    mild            [done] toggle-option   useMildable         mildableVars
-    nude            [done] toggle-option   useNudible          nudibleVars
-
-states
-    excite          [done] useExcitable    excitableVars
-    
-    enableDisable   useEnableable   enableVars
-    activePassive   useActivable    activeVars
-    
-    focusBlur       useFocusable    focusVars
-    arriveLeave     useArrivable    arriveVars
-    
-    pressRelease    usePressable    pressVars
-    
-    validInvalid    useValidation   validVars
-    
-    expandCollapse  [done] useCollapsible  collapsibleVars
 
 
 fix <Alert> close button on mild={false}
