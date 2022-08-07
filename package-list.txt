@@ -67,7 +67,7 @@
 [upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
 
 // abstracts:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/generic
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/generic
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/basic
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/indicator
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/control
