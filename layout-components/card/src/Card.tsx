@@ -46,6 +46,11 @@ import {
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import type {
+    // types:
+    SemanticTag,
+    SemanticRole,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 
 // reusable-ui features:
 import {
@@ -73,12 +78,6 @@ import {
 
 // reusable-ui components:
 import {
-    // types:
-    SemanticTag,
-    SemanticRole,
-    
-    
-    
     // react components:
     GenericProps,
     Generic,
