@@ -26,7 +26,6 @@
 [upgraded] [documented  ] [published] @reusable-ui/hooks
 [upgraded] [documented  ] [published] @reusable-ui/semantics
 [upgraded] [documented  ] [published] @reusable-ui/accessibilities
-[upgraded] [documented  ] [published] @reusable-ui/expandables
 [upgraded] [documented  ] [published] @reusable-ui/validations
 [upgraded] [undocumented] [published] @reusable-ui/dimensions
 [upgraded] [undocumented] [published] @reusable-ui/responsive
