@@ -68,7 +68,7 @@ import {
     isClientSide,
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
-import {
+import type {
     // types:
     SemanticTag,
     SemanticRole,
