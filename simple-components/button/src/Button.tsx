@@ -49,6 +49,16 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
+    // types:
+    SemanticTag,
+    SemanticRole,
+    
+    
+    
+    // hooks:
+    useTestSemantic,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+import {
     // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
@@ -87,16 +97,6 @@ import {
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 
 // reusable-ui components:
-import {
-    // types:
-    SemanticTag,
-    SemanticRole,
-    
-    
-    
-    // hooks:
-    useTestSemantic,
-}                           from '@reusable-ui/generic'         // a base component
 import {
     // hooks:
     ifActive,
