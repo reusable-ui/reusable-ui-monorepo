@@ -1,3 +1,4 @@
+// cssfn:
 [upgraded] [undocumented] [published] @cssfn/types
 [upgraded] [undocumented] [published] @cssfn/jss-plugin-extend
 [upgraded] [undocumented] [published] @cssfn/jss-plugin-short
@@ -11,86 +12,121 @@
 [upgraded] [undocumented] [modified ] @cssfn/css-config
 [upgraded] [undocumented] [published] @cssfn/react-cssfn
 
-[upgraded] [documented  ] [published] @nodestrap/colors
-[upgraded] [documented  ] [published] @nodestrap/borders
-[upgraded] [documented  ] [published] @nodestrap/spacers
-[upgraded] [documented  ] [published] @nodestrap/stripouts
-[upgraded] [documented  ] [published] @nodestrap/breakpoints
-[upgraded] [documented  ] [published] @nodestrap/layouts
-[upgraded] [documented  ] [published] @nodestrap/typos
+// reusable-ui configs:
+[upgraded] [documented  ] [published] @reusable-ui/colors
+[upgraded] [documented  ] [published] @reusable-ui/borders
+[upgraded] [documented  ] [published] @reusable-ui/spacers
+[upgraded] [documented  ] [published] @reusable-ui/stripouts
+[upgraded] [documented  ] [published] @reusable-ui/breakpoints
+[upgraded] [documented  ] [published] @reusable-ui/layouts
+[upgraded] [documented  ] [published] @reusable-ui/typos
 
-[upgraded] [documented  ] [published] @nodestrap/utilities
-[upgraded] [documented  ] [published] @nodestrap/hooks
-[upgraded] [documented  ] [published] @nodestrap/accessibilities
-[upgraded] [documented  ] [published] @nodestrap/expandables
-[upgraded] [documented  ] [published] @nodestrap/validations
-[upgraded] [undocumented] [published] @nodestrap/dimensions
-[upgraded] [undocumented] [published] @nodestrap/responsive
+// reusable-ui utilities:
+[upgraded] [documented  ] [published] @reusable-ui/utilities
+[upgraded] [documented  ] [published] @reusable-ui/hooks
+[upgraded] [documented  ] [published] @reusable-ui/semantics
+[upgraded] [documented  ] [published] @reusable-ui/accessibilities
+[upgraded] [documented  ] [published] @reusable-ui/expandables
+[upgraded] [documented  ] [published] @reusable-ui/validations
+[upgraded] [undocumented] [published] @reusable-ui/dimensions
+[upgraded] [undocumented] [published] @reusable-ui/responsive
+
+// reusable-ui features:
+@reusable-ui/background
+@reusable-ui/foreground
+@reusable-ui/border
+@reusable-ui/ring
+@reusable-ui/animation
+@reusable-ui/padding
+@reusable-ui/floatable
+
+// reusable-ui variants:
+@reusable-ui/orientationable
+@reusable-ui/resizable
+@reusable-ui/themable
+@reusable-ui/gradientable
+@reusable-ui/outlineable
+@reusable-ui/mildable
+@reusable-ui/nudible
+
+// reusable-ui states:
+@reusable-ui/excitable
+@reusable-ui/collapsible
+// TODO:
+    enableDisable   useEnableable   enableVars
+    activePassive   useActivable    activeVars
+    
+    focusBlur       useFocusable    focusVars
+    arriveLeave     useArrivable    arriveVars
+    
+    pressRelease    usePressable    pressVars
+    
+    validInvalid    useValidation   validVars
 
 // supports:
-[upgraded] [undocumented] [published] [full    compound] @nodestrap/react-router-link
+[upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
 
 // abstracts:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/generic
-[upgraded] [documented  ] [published] [          atomic] [full organized] @nodestrap/basic
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/indicator
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/action-control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-text-control   *icon
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-action-control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/generic
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/basic
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/indicator
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/action-control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-text-control   *icon
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-action-control
 
 // contents:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/container
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/content    *button
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/container
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/content    *button
 
 // simple components:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/visually-hidden
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/icon
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/label
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/button
-[upgraded] [new         ] [new      ] [full    compound] [semi organized] @nodestrap/toggle-button
-[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @nodestrap/nav-button
-[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @nodestrap/button-icon
-[upgraded] [documented  ] [published] [todo: compositing button & icon] [semi organized] @nodestrap/close-button
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/form
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/input
-[upgraded] [documented  ] [published] [todo: compositing track & thumb] [semi organized] @nodestrap/range
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/check
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/radio
-[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @nodestrap/hamburger-menu-button
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/visually-hidden
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/icon
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/label
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/button
+[upgraded] [new         ] [new      ] [full    compound] [semi organized] @reusable-ui/toggle-button
+[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @reusable-ui/nav-button
+[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @reusable-ui/button-icon
+[upgraded] [documented  ] [published] [todo: compositing button & icon] [semi organized] @reusable-ui/close-button
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/form
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/input
+[upgraded] [documented  ] [published] [todo: compositing track & thumb] [semi organized] @reusable-ui/range
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/check
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/radio
+[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @reusable-ui/hamburger-menu-button
 
 // layouts:
-[upgraded] [documented  ] [published] [todo: ListItem from Button] [semi organized] @nodestrap/list
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/card
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/masonry
+[upgraded] [documented  ] [published] [todo: ListItem from Button] [semi organized] @reusable-ui/list
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/card
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/masonry
 
 // statuses:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/popup
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/badge
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/busy
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/popup
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/badge
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/busy
 
 notifications:
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/alert
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/tooltip
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/alert
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/tooltip
 
 // menus:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/collapse
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/dropdown
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-button
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-list
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-list-button
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/collapse
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/dropdown
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-button
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-list
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-list-button
 
 // dialogs:
-[upgraded] [documented  ] [published] [partial compound] @nodestrap/modal
-[obsolete] [documented  ] [published] @nodestrap/modal-card
-[obsolete] [documented  ] [published] @nodestrap/modal-side
+[upgraded] [documented  ] [published] [partial compound] @reusable-ui/modal
+[obsolete] [documented  ] [published] @reusable-ui/modal-card
+[obsolete] [documented  ] [published] @reusable-ui/modal-side
 
 // composite components:
-[obsolete] [documented  ] [published] @nodestrap/progress
-[obsolete] [documented  ] [published] @nodestrap/nav
-[obsolete] [documented  ] [published] @nodestrap/navscroll
-[obsolete] [documented  ] [published] @nodestrap/accordion
-[obsolete] [documented  ] [published] @nodestrap/group
-[obsolete] [documented  ] [published] @nodestrap/carousel
-[obsolete] [documented  ] [published] @nodestrap/navbar
+[obsolete] [documented  ] [published] @reusable-ui/progress
+[obsolete] [documented  ] [published] @reusable-ui/nav
+[obsolete] [documented  ] [published] @reusable-ui/navscroll
+[obsolete] [documented  ] [published] @reusable-ui/accordion
+[obsolete] [documented  ] [published] @reusable-ui/group
+[obsolete] [documented  ] [published] @reusable-ui/carousel
+[obsolete] [documented  ] [published] @reusable-ui/navbar
