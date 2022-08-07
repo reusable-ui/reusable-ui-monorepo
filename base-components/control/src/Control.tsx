@@ -94,6 +94,12 @@ import {
     usesThemeDefault as baseUsesThemeDefault,
 }                           from '@reusable-ui/themable'        // color options of UI
 
+// reusable-ui states:
+import {
+    // hooks:
+    ifDisable,
+}                           from '@reusable-ui/disableable'     // a capability of UI to being disabled
+
 // reusable-ui components:
 import {
     // types:
@@ -101,7 +107,6 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    ifDisable,
     ifActive,
     markActive      as indicatorMarkActive,
     usesThemeActive as indicatorUsesThemeActive,

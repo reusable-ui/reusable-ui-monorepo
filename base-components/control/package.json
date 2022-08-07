@@ -41,6 +41,7 @@
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
+    "@reusable-ui/disableable": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/indicator": "^5.0.0",
