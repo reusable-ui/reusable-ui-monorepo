@@ -63,6 +63,11 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
+    SemanticProps,
+    useSemantic,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+import {
+    // hooks:
     usePropAccessibility,
     usePropEnabled,
     usePropActive,
@@ -105,11 +110,6 @@ import {
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
-import {
-    // types:
-    SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/generic'         // a base component
 import {
     // types:
     StateMixin,
