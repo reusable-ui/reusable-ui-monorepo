@@ -51,8 +51,8 @@
 // reusable-ui states:
 @reusable-ui/excitable
 @reusable-ui/collapsible
+@reusable-ui/disableable
 // TODO:
-    enableDisable   useEnableable   enableVars
     activePassive   useActivable    activeVars
     
     focusBlur       useFocusable    focusVars
