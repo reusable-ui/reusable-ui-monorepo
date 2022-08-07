@@ -1,0 +1,96 @@
+[upgraded] [undocumented] [published] @cssfn/types
+[upgraded] [undocumented] [published] @cssfn/jss-plugin-extend
+[upgraded] [undocumented] [published] @cssfn/jss-plugin-short
+[upgraded] [undocumented] [published] @cssfn/jss-plugin-camel-case
+[upgraded] [undocumented] [published] @cssfn/jss-plugin-vendor
+[upgraded] [undocumented] [published] @cssfn/css-selector
+[upgraded] [undocumented] [published] @cssfn/jss-plugin-nested
+[upgraded] [undocumented] [modified ] @cssfn/css-types
+[upgraded] [undocumented] [published] @cssfn/css-var
+[upgraded] [undocumented] [modified ] @cssfn/cssfn
+[upgraded] [undocumented] [modified ] @cssfn/css-config
+[upgraded] [undocumented] [published] @cssfn/react-cssfn
+
+[upgraded] [documented  ] [published] @nodestrap/colors
+[upgraded] [documented  ] [published] @nodestrap/borders
+[upgraded] [documented  ] [published] @nodestrap/spacers
+[upgraded] [documented  ] [published] @nodestrap/stripouts
+[upgraded] [documented  ] [published] @nodestrap/breakpoints
+[upgraded] [documented  ] [published] @nodestrap/layouts
+[upgraded] [documented  ] [published] @nodestrap/typos
+
+[upgraded] [documented  ] [published] @nodestrap/utilities
+[upgraded] [documented  ] [published] @nodestrap/hooks
+[upgraded] [documented  ] [published] @nodestrap/accessibilities
+[upgraded] [documented  ] [published] @nodestrap/expandables
+[upgraded] [documented  ] [published] @nodestrap/validations
+[upgraded] [undocumented] [published] @nodestrap/dimensions
+[upgraded] [undocumented] [published] @nodestrap/responsive
+
+// supports:
+[upgraded] [undocumented] [published] [full    compound] @nodestrap/react-router-link
+
+// abstracts:
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/generic
+[upgraded] [documented  ] [published] [          atomic] [full organized] @nodestrap/basic
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/indicator
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/action-control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-control
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-text-control   *icon
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/editable-action-control
+
+// contents:
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/container
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/content    *button
+
+// simple components:
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/visually-hidden
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/icon
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/label
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/button
+[upgraded] [new         ] [new      ] [full    compound] [semi organized] @nodestrap/toggle-button
+[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @nodestrap/nav-button
+[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @nodestrap/button-icon
+[upgraded] [documented  ] [published] [todo: compositing button & icon] [semi organized] @nodestrap/close-button
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/form
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/input
+[upgraded] [documented  ] [published] [todo: compositing track & thumb] [semi organized] @nodestrap/range
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/check
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/radio
+[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @nodestrap/hamburger-menu-button
+
+// layouts:
+[upgraded] [documented  ] [published] [todo: ListItem from Button] [semi organized] @nodestrap/list
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/card
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/masonry
+
+// statuses:
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/popup
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/badge
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/busy
+
+notifications:
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/alert
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/tooltip
+
+// menus:
+[upgraded] [documented  ] [published] [          atomic] [semi organized] @nodestrap/collapse
+[upgraded] [documented  ] [published] [partial compound] [semi organized] @nodestrap/dropdown
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-button
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-list
+[upgraded] [documented  ] [published] [full    compound] [semi organized] @nodestrap/dropdown-list-button
+
+// dialogs:
+[upgraded] [documented  ] [published] [partial compound] @nodestrap/modal
+[obsolete] [documented  ] [published] @nodestrap/modal-card
+[obsolete] [documented  ] [published] @nodestrap/modal-side
+
+// composite components:
+[obsolete] [documented  ] [published] @nodestrap/progress
+[obsolete] [documented  ] [published] @nodestrap/nav
+[obsolete] [documented  ] [published] @nodestrap/navscroll
+[obsolete] [documented  ] [published] @nodestrap/accordion
+[obsolete] [documented  ] [published] @nodestrap/group
+[obsolete] [documented  ] [published] @nodestrap/carousel
+[obsolete] [documented  ] [published] @nodestrap/navbar
