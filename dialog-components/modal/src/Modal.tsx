@@ -69,6 +69,11 @@ import {
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
+    // types:
+    SemanticTag,
+    SemanticRole,
+}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+import {
     // utilities:
     setFocusNext,
     isSelfOrDescendantOf,
@@ -114,12 +119,6 @@ import {
 
 // reusable-ui components:
 import {
-    // types:
-    SemanticTag,
-    SemanticRole,
-    
-    
-    
     // react components:
     GenericProps,
     Generic,
