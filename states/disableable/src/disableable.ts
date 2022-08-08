@@ -117,7 +117,7 @@ export interface DisableableConfig {
     animDisable   ?: CssKnownProps['animation']
 }
 /**
- * Adds a capability of UI to being disabled.
+ * Adds a capability of UI to be disabled.
  * @param config  A configuration of `disableableRule`.
  * @returns A `DisableableStuff` represents a disableable state.
  */
