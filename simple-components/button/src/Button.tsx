@@ -96,11 +96,13 @@ import {
     outlinedOf,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 
-// reusable-ui components:
+// reusable-ui states:
 import {
     // hooks:
     ifActive,
-}                           from '@reusable-ui/indicator'       // a base component
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
 import {
     // hooks:
     usesThemeActive,
