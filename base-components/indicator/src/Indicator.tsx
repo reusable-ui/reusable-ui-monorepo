@@ -114,7 +114,7 @@ import {
     usesDisableable,
     DisableableProps,
     useDisableable,
-}                           from '@reusable-ui/disableable'     // a capability of UI to being disabled
+}                           from '@reusable-ui/disableable'     // a capability of UI to be disabled
 
 // reusable-ui components:
 import {
