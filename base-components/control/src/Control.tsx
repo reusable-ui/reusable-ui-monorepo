@@ -99,6 +99,12 @@ import {
     // hooks:
     ifDisable,
 }                           from '@reusable-ui/disableable'     // a capability of UI to be disabled
+import {
+    // hooks:
+    ifActive,
+    markActive      as baseMarkActive,
+    usesThemeActive as baseUsesThemeActive,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 // reusable-ui components:
 import {
@@ -106,13 +112,6 @@ import {
     StateMixin,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // hooks:
-    ifActive,
-    markActive      as indicatorMarkActive,
-    usesThemeActive as indicatorUsesThemeActive,
-    
-    
-    
     // styles:
     usesIndicatorLayout,
     usesIndicatorVariants,
@@ -129,12 +128,12 @@ import {
 
 // hooks:
 
-// accessibilities:
+// states:
 
-//#region activePassive
+//#region activatable
 export const markActive = (): CssRule => style({
     ...imports([
-        indicatorMarkActive(),
+        baseMarkActive(),
         
         usesThemeActive(), // switch to active theme
     ]),
@@ -154,8 +153,8 @@ export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRu
  * @returns A `CssRule` represents a conditional theme color rules at active state.
  */
 // change default parameter from 'secondary' to 'primary':
-export const usesThemeActive  = (themeName: ThemeName|null = 'primary'): CssRule => indicatorUsesThemeActive(themeName);
-//#endregion activePassive
+export const usesThemeActive  = (themeName: ThemeName|null = 'primary'  ): CssRule => baseUsesThemeActive(themeName);
+//#endregion activatable
 
 //#region focusBlur
 export interface FocusBlurVars {
