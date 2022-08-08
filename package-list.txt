@@ -52,10 +52,9 @@
 @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/disableable
-// TODO:
-    activePassive   useActivable    activeVars
-    
-    focusBlur       useFocusable    focusVars
+@reusable-ui/activatable
+@reusable-ui/focusable
+// TODO:    
     arriveLeave     useArrivable    arriveVars
     
     pressRelease    usePressable    pressVars
