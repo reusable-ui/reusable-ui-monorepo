@@ -68,7 +68,7 @@
 // abstracts:
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/generic
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/basic
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/indicator
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/indicator
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/control
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/action-control
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-control
