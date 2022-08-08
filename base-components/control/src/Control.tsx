@@ -70,10 +70,6 @@ import {
 // reusable-ui features:
 import {
     // hooks:
-    usesRing,
-}                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
-import {
-    // hooks:
     usesAnimation,
     
     
@@ -105,6 +101,14 @@ import {
     markActive      as baseMarkActive,
     usesThemeActive as baseUsesThemeActive,
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+import {
+    // hooks:
+    ifBlurring,
+    ifFocus,
+    usesFocusable,
+    FocusableProps,
+    useFocusable,
+}                           from '@reusable-ui/focusable'       // a capability of UI to be focused
 
 // reusable-ui components:
 import {
@@ -155,210 +159,6 @@ export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRu
 // change default parameter from 'secondary' to 'primary':
 export const usesThemeActive  = (themeName: ThemeName|null = 'primary'  ): CssRule => baseUsesThemeActive(themeName);
 //#endregion activatable
-
-//#region focusBlur
-export interface FocusBlurVars {
-    boxShadow   : any
-    anim        : any
-    
-    
-    
-    /**
-     * final boxShadow single layer - at focused state.
-     */
-    boxShadowLy : any
-}
-const [focuses] = cssVars<FocusBlurVars>();
-
-{
-    const {animationRegistry: {registerBoxShadow, registerAnim}} = usesAnimation();
-    registerBoxShadow(focuses.boxShadow);
-    registerAnim(focuses.anim);
-}
-
-
-
-// .focused will be added after focusing-animation done:
-const selectorIfFocused  = '.focused'
-// .focusing = styled focus, :focus-within = native focus:
-// the .disabled, .disable are used to kill native :focus-within
-// the .focused, .blurring, .blurred are used to overwrite native :focus-within
-const selectorIfFocusing = ':is(.focusing, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
-// .blurring will be added after loosing focus and will be removed after blurring-animation done:
-const selectorIfBlurring = '.blurring'
-// if all above are not set => blurred:
-// optionally use .blurred to overwrite native :focus-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
-
-export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
-export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
-export const ifBlurring      = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurring, styles);
-export const ifBlurred       = (styles: CssStyleCollection): CssRule => rule(selectorIfBlurred , styles);
-
-export const ifFocus         = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused                                       ], styles);
-export const ifBlur          = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfBlurring, selectorIfBlurred], styles);
-export const ifFocusBlurring = (styles: CssStyleCollection): CssRule => rule([selectorIfFocusing, selectorIfFocused, selectorIfBlurring                   ], styles);
-
-
-
-/**
- * Uses focus & blur states.
- * @returns A `StateMixin<FocusBlurVars>` represents focus & blur state definitions.
- */
-export const usesFocusBlurState = (): StateMixin<FocusBlurVars> => {
-    // dependencies:
-    
-    // features:
-    const {ringVars} = usesRing();
-    
-    
-    
-    return [
-        () => style({
-            ...vars({
-                [focuses.boxShadowLy     ] : [[
-                    // combining: pos width spread color ...
-                    
-                    // boxShadowFocus pos, width, spread, etc:
-                    controls.boxShadowFocus,
-                    
-                    // ring color:
-                    ringVars.ring,
-                ]],
-            }),
-            ...states([
-                ifFocused({
-                    ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
-                    }),
-                }),
-                ifFocusing({
-                    ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
-                        [focuses.anim     ] : controls.animFocus,
-                    }),
-                }),
-                ifBlurring({
-                    ...vars({
-                        [focuses.boxShadow] : focuses.boxShadowLy,
-                        [focuses.anim     ] : controls.animBlur,
-                    }),
-                }),
-            ]),
-        }),
-        focuses,
-    ];
-};
-
-
-
-export const useFocusBlurState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>) => {
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const isControllableFocused = (props.focused !== undefined);
-    
-    
-    
-    // states:
-    const [focused,   setFocused  ] = useState<boolean>(props.focused ?? false); // true => focused, false => blurred
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => focusing-animation, false => blurring-animation
-    
-    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user focused, false => user blurred
-    
-    
-    
-    // resets:
-    if (focusDn && (!propEnabled || isControllableFocused)) {
-        setFocusDn(false); // lost focus because the control is disabled or controllable [focused] is set, when the control is re-enabled => still lost focus
-    } // if
-    
-    
-    
-    /*
-     * state is always blur if disabled
-     * state is focused/blurred based on [controllable focused] (if set) and fallback to [uncontrollable focused]
-     */
-    const focusedFn : boolean = propEnabled && (props.focused /*controllable*/ ?? focusDn /*uncontrollable*/);
-    
-    if (focused !== focusedFn) { // change detected => apply the change & start animating
-        setFocused(focusedFn);   // remember the last change
-        setAnimating(focusedFn); // start focusing-animation/blurring-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleFocus = useEvent<React.FocusEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
-        
-        
-        
-        setFocusDn(true);
-    }, [propEnabled, isControllableFocused]);
-    
-    const handleBlur  = useEvent<React.FocusEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
-        
-        
-        
-        setFocusDn(false);
-    }, [propEnabled, isControllableFocused]);
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop focusing-animation/blurring-animation
-    }, []);
-    
-    
-    
-    return {
-        focused,
-        
-        class : ((): string|null => {
-            // focusing:
-            if (animating === true) {
-                // focusing by controllable prop => use class .focusing
-                if (isControllableFocused) return 'focusing';
-                
-                // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
-                if ((props.tabIndex ?? 0) < 0) return 'focusing';
-                
-                // otherwise use pseudo :focus-within
-                return null;
-            } // if
-            
-            // blurring:
-            if (animating === false) return 'blurring';
-            
-            // fully focused:
-            if (focused) return 'focused';
-            
-            // fully blurred:
-            if (isControllableFocused) {
-                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-within
-            }
-            else {
-                return null; // discard all classes above
-            } // if
-        })(),
-        
-        handleFocus,
-        handleBlur,
-        handleAnimationEnd,
-    };
-};
-//#endregion focusBlur
 
 //#region arriveLeave
 export interface ArriveLeaveVars {
@@ -435,7 +235,7 @@ export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
 
 
 
-export const useArriveLeaveState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>, focusBlurState: Pick<ReturnType<typeof useFocusBlurState<TElement>>, 'focused'>) => {
+export const useArriveLeaveState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>, focusableState: Pick<ReturnType<typeof useFocusable<TElement>>, 'focused'>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableArrived = (props.arrived !== undefined);
@@ -461,7 +261,7 @@ export const useArriveLeaveState  = <TElement extends Element = HTMLElement>(pro
      * state is always left if disabled
      * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
      */
-    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusBlurState.focused /*uncontrollable*/));
+    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusableState.focused /*uncontrollable*/));
     
     if (arrived !== arrivedFn) { // change detected => apply the change & start animating
         setArrived(arrivedFn);   // remember the last change
@@ -586,7 +386,7 @@ export const usesControlStates = () => {
     // dependencies:
     
     // states:
-    const [focusBlurStateRule  ] = usesFocusBlurState();
+    const {focusableRule       } = usesFocusable(controls);
     const [arriveLeaveStateRule] = usesArriveLeaveState();
     
     
@@ -595,9 +395,7 @@ export const usesControlStates = () => {
         ...imports([
             // states:
             usesIndicatorStates(),
-            
-            // accessibilities:
-            focusBlurStateRule,
+            focusableRule,
             arriveLeaveStateRule,
         ]),
         ...states([
@@ -653,25 +451,25 @@ export const useControlStyleSheet = dynamicStyleSheet(() => ({
 export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry : {boxShadows, filters}} = usesAnimation();
-    const [, {boxShadow : boxShadowFocusBlur}       ] = usesFocusBlurState();
-    const [, {filter    : filterArriveLeave }       ] = usesArriveLeaveState();
+    const {animationRegistry : {boxShadows, filters       }} = usesAnimation();
+    const {focusableVars     : {boxShadow : boxShadowFocus}} = usesFocusable();
+    const [, {filter    : filterArriveLeave }              ] = usesArriveLeaveState();
     
     
     
     //#region keyframes
     const frameBlurred  = style({
         boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
+            ...boxShadows.filter((b) => (b !== boxShadowFocus)),
             
-         // boxShadowFocusBlur, // missing the last => let's the browser interpolated it
+         // boxShadowFocus, // missing the last => let's the browser interpolated it
         ].map(fallbackNoneBoxShadow),
     });
     const frameFocused = style({
         boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocusBlur)),
+            ...boxShadows.filter((b) => (b !== boxShadowFocus)),
             
-            boxShadowFocusBlur, // existing the last => let's the browser interpolated it
+            boxShadowFocus, // existing the last => let's the browser interpolated it
         ].map(fallbackNoneBoxShadow),
     });
     const [keyframesFocusRule, keyframesFocus] = keyframes({
@@ -755,12 +553,12 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
 export interface ControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        IndicatorProps<TElement>
+        IndicatorProps<TElement>,
+        
+        // states:
+        FocusableProps
 {
     // accessibilities:
-    focused  ?: boolean
-    tabIndex ?: number
-    
     arrived  ?: boolean
 }
 const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>): JSX.Element|null => {
@@ -770,10 +568,8 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
     
     
     // states:
-    
-    // accessibilities:
-    const focusBlurState   = useFocusBlurState<TElement>(props);
-    const arriveLeaveState = useArriveLeaveState<TElement>(props, focusBlurState);
+    const focusableState   = useFocusable<TElement>(props);
+    const arriveLeaveState = useArriveLeaveState<TElement>(props, focusableState);
     
     
     
@@ -802,8 +598,8 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         
-        // accessibilities:
-        focusBlurState.class,
+        // states:
+        focusableState.class,
         arriveLeaveState.class,
     );
     
@@ -817,9 +613,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleFocus,
+        focusableState.handleFocus,
     );
     const handleBlur         = useMergeEvents(
         // preserves the original `onBlur`:
@@ -828,9 +622,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleBlur,
+        focusableState.handleBlur,
     );
     const handleMouseEnter   = useMergeEvents(
         // preserves the original `onMouseEnter`:
@@ -861,9 +653,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleAnimationEnd,
+        focusableState.handleAnimationEnd,
         arriveLeaveState.handleAnimationEnd,
     );
     
