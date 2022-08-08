@@ -131,6 +131,11 @@ import {
     // hooks:
     ifActive,
 }                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
+import {
+    // hooks:
+    ifFocus,
+    useFocusable,
+}                           from '@reusable-ui/focusable'               // a capability of UI to be focused
 
 // reusable-ui components:
 import {
@@ -144,8 +149,6 @@ import {
 import {
     // hooks:
     markActive as baseMarkActive,
-    ifFocus,
-    useFocusBlurState,
     ifArrive,
     useArriveLeaveState,
 }                           from '@reusable-ui/control'                 // a base component
@@ -726,8 +729,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // states:
-    const focusBlurState         = useFocusBlurState<HTMLInputElement>(props);
-    const arriveLeaveState       = useArriveLeaveState<HTMLInputElement>(props, focusBlurState);
+    const focusableState         = useFocusable<HTMLInputElement>(props);
+    const arriveLeaveState       = useArriveLeaveState<HTMLInputElement>(props, focusableState);
     const pressReleaseState      = usePressReleaseState<HTMLInputElement>(props);
     
     
@@ -979,8 +982,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // accessibilities:
-        focusBlurState.class,
+        // states:
+        focusableState.class,
         arriveLeaveState.class,
     );
     const mergedTrackClasses      = useMergeClasses(
@@ -1051,9 +1054,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleFocus,
+        focusableState.handleFocus,
     );
     const handleBlur          = useMergeEvents(
         // preserves the original `onBlur`:
@@ -1062,9 +1063,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleBlur,
+        focusableState.handleBlur,
     );
     const handleMouseEnter    = useMergeEvents(
         // preserves the original `onMouseEnter`:
@@ -1095,9 +1094,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // states:
-        
-        // accessibilities:
-        focusBlurState.handleAnimationEnd,
+        focusableState.handleAnimationEnd,
         arriveLeaveState.handleAnimationEnd,
         pressReleaseState.handleAnimationEnd,
     );
@@ -1525,7 +1522,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     inheritReadOnly={true}
                     inheritActive={true}
                     
-                    focused={focusBlurState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
+                    focused={focusableState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
                     tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
                     arrived={arriveLeaveState.arrived}
                     
