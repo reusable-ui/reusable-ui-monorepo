@@ -7,6 +7,8 @@ import {
     
     // hooks:
     useState,
+    useRef,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -47,6 +49,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -55,6 +58,7 @@ import {
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // hooks:
+    usePropAccessibility,
     usePropActive,
     
     
@@ -271,5 +275,104 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
         
         handleAnimationEnd,
     };
+};
+
+
+
+export interface ActiveChangeEvent {
+    active : boolean
+}
+export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
+    extends
+        // accessibilities:
+        AccessibilityProps
+{
+    // accessibilities:
+    defaultActive  ?: boolean
+    onActiveChange ?: EventHandler<TActiveChangeEvent>
+}
+export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: ToggleActivatableProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+    // fn props:
+    const {enabled, readOnly, active} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
+    
+    
+    
+    // states:
+    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
+    
+    
+    
+    /*
+     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
+     */
+    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    
+    
+    
+    // states:
+    const isDisabledOrReadOnly   = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
+    isDisabledOrReadOnly.current = (!enabled || readOnly);
+    
+    const wasActiveFn            = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
+    wasActiveFn.current          = (activeFn);
+    
+    const onActiveChange         = useRef<EventHandler<TActiveChangeEvent>|undefined>(props.onActiveChange);
+    onActiveChange.current       = props.onActiveChange;
+    
+    
+    
+    // callbacks:
+    /*
+          controllable : setActive(new) => update state(old => old) => trigger Event(new)
+        uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
+    */
+    const triggerActiveChange = useCallback((active: boolean): void => {
+        Promise.resolve().then(() => { // trigger the event after the <Component> has finished rendering (for controllable <Component>)
+            // fire change synthetic event:
+            onActiveChange.current?.({ active } as TActiveChangeEvent);
+            
+            // fire change dom event:
+            if (changeEventTarget?.current) {
+                // *hack*: trigger `onChange` event:
+                // side effect: toggles the [checked] prop:
+                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+            } // if
+        });
+    }, []);
+    const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((active: React.SetStateAction<boolean>): void => {
+        // conditions:
+        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
+        
+        const newActive = (typeof(active) === 'function') ? active(wasActiveFn.current) : active;
+        if (newActive === wasActiveFn.current) return; // still the same => nothing to update
+        
+        
+        
+        // update:
+        setActiveTg(newActive);
+        triggerActiveChange(newActive);
+    }, []); // a stable callback, the `setActive` guaranteed to never change
+    const toggleActive : React.Dispatch<void> = useCallback((): void => {
+        // conditions:
+        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
+        
+        
+        
+        const newActive = !wasActiveFn.current;
+        
+        
+        
+        // update:
+        setActiveTg(newActive);
+        triggerActiveChange(newActive);
+    }, []); // a stable callback, the `toggleActive` guaranteed to never change
+    
+    
+    
+    return [
+        activeFn,
+        setActive,
+        toggleActive,
+    ];
 };
 //#endregion activatable
