@@ -44,6 +44,7 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/control": "^5.0.0",
     "@reusable-ui/editable-control": "^5.0.0",
+    "@reusable-ui/focusable": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
     "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",

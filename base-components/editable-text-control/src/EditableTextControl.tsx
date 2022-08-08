@@ -74,6 +74,10 @@ import {
     // hooks:
     ifActive,
 }                           from '@reusable-ui/activatable'         // a capability of UI to be highlighted/selected/activated
+import {
+    // hooks:
+    ifFocus,
+}                           from '@reusable-ui/focusable'           // a capability of UI to be focused
 
 // reusable-ui components:
 import type {
@@ -83,7 +87,6 @@ import type {
 import {
     // hooks:
     markActive as baseMarkActive,
-    ifFocus,
     ifArrive,
 }                           from '@reusable-ui/control'             // a base component
 import {
