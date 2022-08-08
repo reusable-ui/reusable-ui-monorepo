@@ -2,30 +2,15 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
-    useRef,
-    useCallback,
 }                           from 'react'
 
 // cssfn:
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
     keyframes,
     
@@ -33,17 +18,12 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    cssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -56,20 +36,12 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
-    useEvent,
-    EventHandler,
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
-    SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // hooks:
     usePropAccessibility,
-    usePropActive,
     
     
     
@@ -94,19 +66,6 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
-    ThemeName,
-    usesThemeConditional,
-}                           from '@reusable-ui/themable'        // color options of UI
-import {
-    // hooks:
-    outlinedOf,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
-    mildOf,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui states:
 import {
@@ -115,14 +74,17 @@ import {
     DisableableProps,
     useDisableable,
 }                           from '@reusable-ui/disableable'     // a capability of UI to be disabled
+import {
+    // hooks:
+    ifActive,
+    usesActivatable,
+    markActive,
+    ActivatableProps,
+    useActivatable,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 // reusable-ui components:
 import {
-    // types:
-    StateMixin,
-    
-    
-    
     // styles:
     usesBasicLayout,
     usesBasicVariants,
@@ -133,281 +95,6 @@ import {
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
-
-
-
-// hooks:
-
-// accessibilities:
-
-//#region activePassive
-export interface ActivePassiveVars {
-    filter : any
-    anim   : any
-}
-const [actives] = cssVars<ActivePassiveVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
-    registerFilter(actives.filter);
-    registerAnim(actives.anim);
-}
-
-
-
-// .actived will be added after activating-animation done:
-const selectorIfActived     = '.actived'
-// [aria-checked],[aria-pressed],[aria-selected] = styled active, :checked = native active:
-const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.actived)'
-// .passivating will be added after loosing active and will be removed after deactivating-animation done:
-const selectorIfPassivating = '.passivating'
-// if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
-
-
-
-export const ifActived           = (styles: CssStyleCollection): CssRule => rule(selectorIfActived    , styles);
-export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
-export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
-export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
-
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
-export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
-
-
-
-/**
- * Uses active & passive states.
- * @returns A `StateMixin<ActivePassiveVars>` represents active & passive state definitions.
- */
-export const usesActivePassiveState = (): StateMixin<ActivePassiveVars> => {
-    return [
-        () => style({
-            ...states([
-                ifActived({
-                    ...vars({
-                        [actives.filter] : indicators.filterActive,
-                    }),
-                }),
-                ifActivating({
-                    ...vars({
-                        [actives.filter] : indicators.filterActive,
-                        [actives.anim  ] : indicators.animActive,
-                    }),
-                }),
-                ifPassivating({
-                    ...vars({
-                        [actives.filter] : indicators.filterActive,
-                        [actives.anim  ] : indicators.animPassive,
-                    }),
-                }),
-            ]),
-        }),
-        actives,
-    ];
-};
-
-export const markActive = (): CssRule => style({
-    ...imports([
-        outlinedOf(false), // kill outlined variant
-        mildOf(false),     // kill mild     variant
-        
-        usesThemeActive(), // switch to active theme
-    ]),
-});
-
-/**
- * Creates a conditional theme color rules at active state.
- * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a conditional theme color rules at active state.
- */
-export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeConditional(themeName);
-
-
-
-const checkableCtrls = [
-    'checkbox',
-    'radio',
-];
-export const useActivePassiveState = <TElement extends Element = HTMLElement>(props: AccessibilityProps & SemanticProps) => {
-    // fn props:
-    const propActive    = usePropActive(props);
-    const { tag, role } = useSemantic(props);
-    
-    
-    
-    // states:
-    const [actived,   setActived  ] = useState<boolean>(propActive); // true => active, false => passive
-    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
-    
-    
-    
-    /*
-     * state is active/passive based on [controllable active]
-     * [uncontrollable active] is not supported
-     */
-    const activeFn : boolean = propActive /*controllable*/;
-    
-    if (actived !== activeFn) { // change detected => apply the change & start animating
-        setActived(activeFn);   // remember the last change
-        setAnimating(activeFn); // start activating-animation/deactivating-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop activating-animation/deactivating-animation
-    }, []);
-    
-    
-    
-    return {
-        active    : actived,
-        isVisible : actived || (animating !== null),
-        
-        class     : ((): string|null => {
-            // activating:
-            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
-            
-            // passivating:
-            if (animating === false) return 'passivating';
-            
-            // fully actived:
-            if (actived) return 'actived';
-            
-            // fully passived:
-            return null;
-        })(),
-        
-        props     : (() => {
-            if (!actived) return null;
-            
-            // use :checked if <input type="checkbox|radio">:
-            if ((tag === 'input') && checkableCtrls.includes((props as any).type)) return { checked: true };
-            
-            // use [aria-checked] if [role="checkbox|radio"]:
-            if (role && checkableCtrls.includes(role)) return { 'aria-checked': true };
-            
-            // use [aria-pressed] if <button> or [role="button"]:
-            if ((tag === 'button') || (role === 'button')) return { 'aria-pressed': true };
-            
-            // else, use [aria-selected]:
-            return { 'aria-selected' : true };
-        })(),
-        
-        handleAnimationEnd,
-    };
-};
-
-
-
-export interface ActiveChangeEvent {
-    active : boolean
-}
-export interface ToggleActiveProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
-    extends
-        // accessibilities:
-        AccessibilityProps
-{
-    // accessibilities:
-    defaultActive     ?: boolean
-    onActiveChange    ?: EventHandler<TActiveChangeEvent>
-}
-export const useToggleActive = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: ToggleActiveProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
-    // fn props:
-    const { enabled, readOnly, active } = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
-    
-    
-    
-    // states:
-    const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
-    
-    
-    
-    /*
-     * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
-     */
-    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
-    
-    
-    
-    // states:
-    const isDisabledOrReadOnly   = useRef<boolean>(!enabled || readOnly); // a stable reference used by 2 callbacks below
-    isDisabledOrReadOnly.current = (!enabled || readOnly);
-    
-    const wasActiveFn            = useRef<boolean>(activeFn); // a stable reference used by 2 callbacks below
-    wasActiveFn.current          = (activeFn);
-    
-    const onActiveChange         = useRef<EventHandler<TActiveChangeEvent>|undefined>(props.onActiveChange);
-    onActiveChange.current       = props.onActiveChange;
-    
-    
-    
-    // callbacks:
-    /*
-          controllable : setActive(new) => update state(old => old) => trigger Event(new)
-        uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
-    */
-    const triggerActiveChange = useCallback((active: boolean): void => {
-        Promise.resolve().then(() => { // trigger the event after the <Indicator> has finished rendering (for controllable <Indicator>)
-            // fire change synthetic event:
-            onActiveChange.current?.({ active } as TActiveChangeEvent);
-            
-            // fire change dom event:
-            if (changeEventTarget?.current) {
-                // *hack*: trigger `onChange` event:
-                // side effect: toggles the [checked] prop:
-                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-            } // if
-        });
-    }, []);
-    const setActive    : React.Dispatch<React.SetStateAction<boolean>> = useCallback((active: React.SetStateAction<boolean>): void => {
-        // conditions:
-        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
-        
-        const newActive = (typeof(active) === 'function') ? active(wasActiveFn.current) : active;
-        if (newActive === wasActiveFn.current) return; // still the same => nothing to update
-        
-        
-        
-        // update:
-        setActiveTg(newActive);
-        triggerActiveChange(newActive);
-    }, []); // a stable callback, the `setActive` guaranteed to never change
-    const toggleActive : React.Dispatch<void> = useCallback((): void => {
-        // conditions:
-        if (isDisabledOrReadOnly.current) return; // control is disabled or readOnly => no response required
-        
-        
-        
-        const newActive = !wasActiveFn.current;
-        
-        
-        
-        // update:
-        setActiveTg(newActive);
-        triggerActiveChange(newActive);
-    }, []); // a stable callback, the `toggleActive` guaranteed to never change
-    
-    
-    
-    return [
-        activeFn,
-        setActive,
-        toggleActive,
-    ];
-};
-//#endregion activePassive
 
 
 
@@ -444,8 +131,8 @@ export const usesIndicatorStates = () => {
     // dependencies:
     
     // states:
-    const {disableableRule       } = usesDisableable(indicators);
-    const [activePassiveStateRule] = usesActivePassiveState();
+    const {disableableRule} = usesDisableable(indicators);
+    const {activatableRule} = usesActivatable(indicators);
     
     
     
@@ -453,7 +140,7 @@ export const usesIndicatorStates = () => {
         ...imports([
             // states:
             disableableRule,
-            activePassiveStateRule,
+            activatableRule,
         ]),
         ...states([
             ifActive({
@@ -486,7 +173,7 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
     
     const {animationRegistry : {filters}              } = usesAnimation();
     const {disableableVars   : {filter: filterDisable}} = usesDisableable();
-    const [, {filter: filterActivePassive}            ] = usesActivePassiveState();
+    const {activatableVars   : {filter: filterActive }} = usesActivatable();
     
     
     
@@ -520,16 +207,16 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
     
     const framePassived = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
+            ...filters.filter((f) => (f !== filterActive)),
             
-         // filterActivePassive, // missing the last => let's the browser interpolated it
+         // filterActive, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const frameActived  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterActivePassive)),
+            ...filters.filter((f) => (f !== filterActive)),
             
-            filterActivePassive, // existing the last => let's the browser interpolated it
+            filterActive, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const [keyframesActiveRule , keyframesActive ] = keyframes({
@@ -585,6 +272,7 @@ export interface IndicatorProps<TElement extends Element = HTMLElement>
         
         // states:
         DisableableProps,
+        ActivatableProps,
         
         // accessibilities:
         AccessibilityProps
@@ -592,18 +280,18 @@ export interface IndicatorProps<TElement extends Element = HTMLElement>
 }
 const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet         = useIndicatorStyleSheet();
+    const styleSheet       = useIndicatorStyleSheet();
     
     
     
     // states:
-    const disableableState   = useDisableable<TElement>(props);
-    const activePassiveState = useActivePassiveState<TElement>(props);
+    const disableableState = useDisableable<TElement>(props);
+    const activatableState = useActivatable<TElement>(props);
     
     
     
     // fn props:
-    const propAccess         = usePropAccessibility(props);
+    const propAccess       = usePropAccessibility(props);
     
     
     
@@ -613,11 +301,11 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         enabled         : _enabled,         // remove
         inheritEnabled  : _inheritEnabled,  // remove
         
-        readOnly        : _readOnly,        // remove
-        inheritReadOnly : _inheritReadOnly, // remove
-        
         active          : _active,          // remove
         inheritActive   : _inheritActive,   // remove
+        
+        readOnly        : _readOnly,        // remove
+        inheritReadOnly : _inheritReadOnly, // remove
         
         
         
@@ -636,7 +324,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         
         // states:
         disableableState.class,
-        activePassiveState.class,
+        activatableState.class,
     );
     
     
@@ -650,7 +338,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         
         // states:
         disableableState.handleAnimationEnd,
-        activePassiveState.handleAnimationEnd,
+        activatableState.handleAnimationEnd,
     );
     
     
@@ -678,7 +366,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
             {...disableableState.props}
             
             // :checked | [aria-checked] | [aria-pressed] | [aria-selected]
-            {...activePassiveState.props}
+            {...activatableState.props}
             
             
             
