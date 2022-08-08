@@ -82,11 +82,7 @@ import {
     mildOf,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
-// reusable-ui components:
-import {
-    // configs:
-    basics,
-}                           from '@reusable-ui/basic'           // a base component
+// reusable-ui states:
 import {
     // hooks:
     ifActived,
@@ -94,12 +90,18 @@ import {
     ifPassivating,
     ifPassived,
     ifActive,
-}                           from '@reusable-ui/indicator'       // a base component
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
+import {
+    // configs:
+    basics,
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // hooks:
-    markActive       as controlMarkActive,
-    usesThemeDefault as controlUsesThemeDefault,
-    usesThemeActive  as controlUsesThemeActive,
+    markActive       as baseMarkActive,
+    usesThemeDefault as baseUsesThemeDefault,
+    usesThemeActive  as baseUsesThemeActive,
     ifFocus,
     ifArrive,
 }                           from '@reusable-ui/control'         // a base component
@@ -133,10 +135,10 @@ import {
 
 // states:
 
-//#region activePassive
+//#region activatable
 export const markActive = (): CssRule => style({
     ...imports([
-        controlMarkActive(),
+        baseMarkActive(),
         
         mildOf(null),      // keeps mild variant
         
@@ -150,7 +152,7 @@ export const markActive = (): CssRule => style({
  * @returns A `CssRule` represents a default theme color rules.
  */
 // change default parameter from 'secondary' to `null`:
-export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => controlUsesThemeDefault(themeName);
+export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => baseUsesThemeDefault(themeName);
 
 /**
  * Creates a conditional theme color rules at active state.
@@ -158,8 +160,8 @@ export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRu
  * @returns A `CssRule` represents a conditional theme color rules at active state.
  */
 // change default parameter from 'primary' to 'secondary':
-export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRule => controlUsesThemeActive(themeName);
-//#endregion activePassive
+export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRule => baseUsesThemeActive(themeName);
+//#endregion activatable
 
 
 // animations:
