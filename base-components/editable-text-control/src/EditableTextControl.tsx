@@ -69,6 +69,12 @@ import {
     mildOf,
 }                           from '@reusable-ui/mildable'            // mild (soft color) variant of UI
 
+// reusable-ui states:
+import {
+    // hooks:
+    ifActive,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
 // reusable-ui components:
 import type {
     // types:
@@ -76,11 +82,7 @@ import type {
 }                           from '@reusable-ui/basic'               // a base component
 import {
     // hooks:
-    ifActive,
-}                           from '@reusable-ui/indicator'           // a base component
-import {
-    // hooks:
-    markActive as controlMarkActive,
+    markActive as baseMarkActive,
     ifFocus,
     ifArrive,
 }                           from '@reusable-ui/control'             // a base component
@@ -114,17 +116,17 @@ import {
 
 // hooks:
 
-// accessibilities:
+// states:
 
-//#region activePassive
+//#region activatable
 export const markActive = (): CssRule => style({
     ...imports([
-        controlMarkActive(),
+        baseMarkActive(),
         
         mildOf(null), // keeps mild variant
     ]),
 });
-//#endregion activePassive
+//#endregion activatable
 
 
 // validations:
