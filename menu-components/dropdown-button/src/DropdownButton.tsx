@@ -31,12 +31,12 @@ import {
     ToggleCollapsibleProps,
     useToggleCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-
-// reusable-ui components:
 import type {
     // hooks:
     ActiveChangeEvent,
-}                           from '@reusable-ui/indicator'       // a base indicator control
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
 import type {
     // types:
     ButtonStyle,
