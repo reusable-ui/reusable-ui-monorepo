@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/disableable",
   "version": "5.0.0",
-  "description": "A capability of UI to being disabled.",
+  "description": "A capability of UI to be disabled.",
   "keywords": [
     "disableable",
     "enableable",
