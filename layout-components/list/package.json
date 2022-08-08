@@ -40,6 +40,7 @@
     "@cssfn/cssfn-react": "^2.0.10",
     "@cssfn/types": "^2.0.1",
     "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/activatable": "^5.0.0",
     "@reusable-ui/action-control": "^5.0.0",
     "@reusable-ui/background": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
