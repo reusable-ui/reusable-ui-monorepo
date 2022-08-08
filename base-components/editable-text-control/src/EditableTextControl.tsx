@@ -73,7 +73,7 @@ import {
 import {
     // hooks:
     ifActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+}                           from '@reusable-ui/activatable'         // a capability of UI to be highlighted/selected/activated
 
 // reusable-ui components:
 import type {
