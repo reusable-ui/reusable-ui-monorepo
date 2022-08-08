@@ -12,12 +12,14 @@ import {
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
-// reusable-ui components:
+// reusable-ui states:
 import {
     // hooks:
-    ToggleActiveProps,
-    useToggleActive,
-}                           from '@reusable-ui/indicator'       // a base component
+    ToggleActivatableProps,
+    useToggleActivatable,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
 import {
     // hooks:
     ButtonStyle,
@@ -57,8 +59,8 @@ export interface ToggleButtonProps
         // bases:
         ButtonProps,
         
-        // accessibilities:
-        ToggleActiveProps,
+        // states:
+        ToggleActivatableProps,
         
         // components:
         ButtonComponentProps
@@ -66,17 +68,15 @@ export interface ToggleButtonProps
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     // states:
-    const [isActive, , toggleActive] = useToggleActive(props);
+    const [isActive, , toggleActive] = useToggleActivatable(props);
     
     
     
     // rest props:
     const {
-        // remove props:
-        
-        // accessibilities:
-        defaultActive  : _defaultActive,  // take, already handled by `useToggleActive`
-        onActiveChange : _onActiveChange, // take, already handled by `useToggleActive`
+        // states:
+        defaultActive  : _defaultActive,  // take, already handled by `useToggleActivatable`
+        onActiveChange : _onActiveChange, // take, already handled by `useToggleActivatable`
         
         
         
@@ -159,7 +159,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             
-            // accessibilities:
+            // states:
             active          : buttonComponent.props.active ?? isActive,
             
             
