@@ -68,11 +68,13 @@ import {
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
 
-// reusable-ui components:
+// reusable-ui states:
 import {
     // hooks:
-    useToggleActive,
-}                           from '@reusable-ui/indicator'       // a base component
+    useToggleActivatable,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
 import {
     // hooks:
     CheckStyle,
@@ -212,10 +214,10 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         // accessibilities:
-        defaultActive,  // take, to be handled by `useToggleActive`
-        active,         // take, to be handled by `useToggleActive`
-        inheritActive,  // take, to be handled by `useToggleActive`
-        onActiveChange, // take, to be handled by `useToggleActive`
+        defaultActive,  // take, to be handled by `useToggleActivatable`
+        active,         // take, to be handled by `useToggleActivatable`
+        inheritActive,  // take, to be handled by `useToggleActivatable`
+        onActiveChange, // take, to be handled by `useToggleActivatable`
         
         
         
@@ -240,7 +242,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     // states:
-    const [isActive, setActive] = useToggleActive({
+    const [isActive, setActive] = useToggleActivatable({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
