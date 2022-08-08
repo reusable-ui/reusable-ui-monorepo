@@ -3,6 +3,14 @@ TODO: standarize useToggle___
 TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
 
+TODO:
+usesThemeDefaultNone
+usesThemeDefaultPrimary
+usesThemeDefaultSecondary
+usesThemeActiveNone
+usesThemeActivePrimary
+usesThemeActiveSecondary
+
 TODO remove:
 FeatureMixin
 VariantMixin
