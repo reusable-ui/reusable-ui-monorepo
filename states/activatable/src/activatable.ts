@@ -35,6 +35,7 @@ import {
     // styles:
     style,
     vars,
+    imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -67,6 +68,21 @@ import {
     // hooks:
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
+
+// reusable-ui variants:
+import {
+    // hooks:
+    ThemeName,
+    usesThemeConditional,
+}                           from '@reusable-ui/themable'        // color options of UI
+import {
+    // hooks:
+    outlinedOf,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 
 
@@ -149,6 +165,22 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
         activatableVars,
     };
 };
+
+export const markActive = (): CssRule => style({
+    ...imports([
+        outlinedOf(false), // kill outlined variant
+        mildOf(false),     // kill mild     variant
+        
+        usesThemeActive(), // switch to active theme
+    ]),
+});
+
+/**
+ * Creates a conditional theme color rules at active state.
+ * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
+ * @returns A `CssRule` represents a conditional theme color rules at active state.
+ */
+export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRule => usesThemeConditional(themeName);
 
 
 
