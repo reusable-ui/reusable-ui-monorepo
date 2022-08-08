@@ -134,20 +134,22 @@ import {
     ifNude,
 }                           from '@reusable-ui/nudible'                 // nude variant of UI
 
-// reusable-ui components:
-import {
-    // types:
-    StateMixin,
-}                           from '@reusable-ui/basic'                   // a base component
+// reusable-ui states:
 import {
     // hooks:
     ifActived,
     ifActivating,
     ifPassivating,
     ifPassived,
-    ToggleActiveProps,
-    useToggleActive,
-}                           from '@reusable-ui/indicator'               // a base component
+    ToggleActivatableProps,
+    useToggleActivatable,
+}                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
+
+// reusable-ui components:
+import type {
+    // types:
+    StateMixin,
+}                           from '@reusable-ui/basic'                   // a base component
 import {
     // hooks:
     usesFocusBlurState,
@@ -902,8 +904,8 @@ export interface CheckProps
         // variants:
         CheckVariant,
         
-        // accessibilities:
-        ToggleActiveProps
+        // states:
+        ToggleActivatableProps
 {
     // accessibilities:
     label          ?: string
@@ -951,6 +953,16 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         
         
+        // states:
+        defaultActive,  // take, to be handled by `useToggleActivatable`
+        active,         // take, to be handled by `useToggleActivatable`
+        inheritActive,  // take, to be handled by `useToggleActivatable`
+        onActiveChange, // take, to be handled by `useToggleActivatable`
+        
+        pressed,
+        
+        
+        
         // accessibilities:
         
         // still on <EditableActionControl> element
@@ -958,13 +970,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // tabIndex,
         // enterKeyHint,
         
-        defaultActive,  // take, to be handled by `useToggleActive`
-        active,         // take, to be handled by `useToggleActive`
-        inheritActive,  // take, to be handled by `useToggleActive`
-        onActiveChange, // take, to be handled by `useToggleActive`
-        
         label,
-        pressed,
         
         
         
@@ -1014,7 +1020,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // states:
-    const [isActive, , toggleActive] = useToggleActive({
+    const [isActive, , toggleActive] = useToggleActivatable({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
@@ -1154,15 +1160,15 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             
+            // states:
+            active={isActive}
+            pressed={pressedFn}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-            
-            
-            
-            // accessibilities:
-            active={isActive}
-            pressed={pressedFn}
             
             
             
