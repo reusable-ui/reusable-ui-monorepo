@@ -144,16 +144,16 @@ import {
     ToggleActivatableProps,
     useToggleActivatable,
 }                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
+import {
+    // hooks:
+    usesFocusable,
+}                           from '@reusable-ui/focusable'               // a capability of UI to be focused
 
 // reusable-ui components:
 import type {
     // types:
     StateMixin,
 }                           from '@reusable-ui/basic'                   // a base component
-import {
-    // hooks:
-    usesFocusBlurState,
-}                           from '@reusable-ui/control'                 // a base component
 import {
     // styles:
     usesEditableActionControlLayout,
@@ -682,8 +682,8 @@ export const usesCheckStates = () => {
     // dependencies:
     
     // states:
-    const [              , focuses] = usesFocusBlurState();
-    const [checkStateRule         ] = usesCheckClearState();
+    const {focusableVars } = usesFocusable();
+    const [checkStateRule] = usesCheckClearState();
     
     
     
@@ -700,8 +700,8 @@ export const usesCheckStates = () => {
             ...children(inputElm, {
                 ...vars({
                     // copy focus effect from parent:
-                    [focuses.boxShadow] : 'inherit',
-                    [focuses.anim     ] : 'inherit',
+                    [focusableVars.boxShadow] : 'inherit',
+                    [focusableVars.anim     ] : 'inherit',
                 }),
             }),
         }),
