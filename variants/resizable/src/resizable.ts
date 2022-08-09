@@ -83,6 +83,7 @@ export const sizeOptions = (): SizeName[] => ['sm', 'lg'];
 
 
 export interface ResizableProps<TSizeName extends string = SizeName> {
+    // variants:
     size ?: TSizeName
 }
 export const useResizable = <TSizeName extends string = SizeName>({size}: ResizableProps<TSizeName>) => ({
