@@ -99,6 +99,10 @@ import {
     // hooks:
     ifArrive,
 }                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
+import {
+    // hooks:
+    ifPress,
+}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
 // reusable-ui components:
 import {
@@ -111,10 +115,6 @@ import {
     usesThemeDefault as baseUsesThemeDefault,
     usesThemeActive  as baseUsesThemeActive,
 }                           from '@reusable-ui/control'         // a base component
-import {
-    // hooks:
-    ifPress,
-}                           from '@reusable-ui/action-control'  // a base component
 import {
     // types:
     ButtonStyle,
