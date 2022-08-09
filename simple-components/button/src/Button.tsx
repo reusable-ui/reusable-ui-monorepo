@@ -110,6 +110,10 @@ import {
     ifArrive,
     ifLeave,
 }                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
+import {
+    // hooks:
+    ifPress,
+}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
 // reusable-ui components:
 import {
@@ -118,7 +122,6 @@ import {
 }                           from '@reusable-ui/control'         // a base component
 import {
     // hooks:
-    ifPress,
     isClientSideLink,
     
     
