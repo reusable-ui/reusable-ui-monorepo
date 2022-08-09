@@ -87,7 +87,7 @@ export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(     '
 
 export interface ExcitableStuff { excitableRule: Factory<CssRule>, excitableVars: CssVars<ExcitableVars> }
 export interface ExcitableConfig {
-    filterExcite ?: CssKnownProps['filter']
+    filterExcite ?: CssKnownProps['filter'   ]
     
     animExcite   ?: CssKnownProps['animation']
 }
