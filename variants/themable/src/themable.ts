@@ -365,6 +365,7 @@ export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => styl
 
 
 export interface ThemableProps {
+    // variants:
     theme ?: ThemeName
 }
 export const useThemable = ({theme}: ThemableProps) => ({
