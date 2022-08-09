@@ -226,7 +226,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     // handlers:
-    const handleFocus = useEvent<React.FocusEventHandler<TElement>>(() => {
+    const handleFocus        = useEvent<React.FocusEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
@@ -236,7 +236,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         setFocusDn(true);
     }, [propEnabled, isControllableFocused]);
     
-    const handleBlur  = useEvent<React.FocusEventHandler<TElement>>(() => {
+    const handleBlur         = useEvent<React.FocusEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
