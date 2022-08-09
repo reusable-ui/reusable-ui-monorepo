@@ -26,13 +26,14 @@ import {
     usePropEnabled,
 }                           from '@reusable-ui/accessibilities'     // an accessibility management system
 
-// reusable-ui components:
+// reusable-ui states:
 import {
     // hooks:
-    usePressReleaseState,
-    
-    
-    
+    useClickable,
+}                           from '@reusable-ui/clickable'           // a capability of UI to be clicked
+
+// reusable-ui components:
+import {
     // styles:
     usesActionControlLayout,
     usesActionControlVariants,
@@ -117,17 +118,17 @@ export interface EditableActionControlProps<TElement extends Element = HTMLEleme
 }
 const EditableActionControl = <TElement extends Element = HTMLElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet        = useEditableActionControlStyleSheet();
+    const styleSheet     = useEditableActionControlStyleSheet();
     
     
     
     // states:
-    const pressReleaseState = usePressReleaseState<TElement>(props);
+    const clickableState = useClickable<TElement>(props);
     
     
     
     // fn props:
-    const propEnabled       = usePropEnabled(props);
+    const propEnabled    = usePropEnabled(props);
     
     
     
@@ -154,8 +155,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         
         
         
-        // accessibilities:
-        pressReleaseState.class,
+        // states:
+        clickableState.class,
     );
     
     
@@ -168,9 +169,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleMouseDown,
+        clickableState.handleMouseDown,
     );
     const handleKeyDown      = useMergeEvents(
         // preserves the original `onKeyDown`:
@@ -179,9 +178,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleKeyDown,
+        clickableState.handleKeyDown,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -190,9 +187,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleAnimationEnd,
+        clickableState.handleAnimationEnd,
     );
     
     

@@ -39,6 +39,7 @@
   "dependencies": {
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/clickable": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/action-control": "^5.0.0",
     "@reusable-ui/editable-control": "^5.0.0",
