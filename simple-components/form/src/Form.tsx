@@ -17,6 +17,10 @@ import {
 }                           from 'react'
 
 // cssfn:
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+}                           from '@cssfn/css-types'                 // cssfn css specific types
 import {
     // rules:
     states,
@@ -45,6 +49,7 @@ import {
     // hooks:
     useTriggerRender,
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -56,7 +61,6 @@ import {
     
     
     // react components:
-    ValidationProps,
     ValidationProvider,
 }                           from '@reusable-ui/validations'         // a validation management system
 
@@ -65,6 +69,19 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'           // size options of UI
+
+// reusable-ui states:
+import {
+    // hooks:
+    ifValid,
+    ifInvalid,
+    usesInvalidable,
+    markValid,
+    markInvalid,
+    ValidityChangeEvent,
+    InvalidableProps,
+    useInvalidable,
+}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state.
 
 // reusable-ui components:
 import {
@@ -79,23 +96,17 @@ import {
     Content,
 }                           from '@reusable-ui/content'             // a base component
 import {
-    // hooks:
-    ifValid,
-    ifInvalid,
-    usesValidInvalidState,
-    markValid,
-    markInvalid,
-    ValidatorHandler,
-    useValidInvalidState,
+    // configs:
+    editableControls,
 }                           from '@reusable-ui/editable-control'    // a base component
 
 
 
 // hooks:
 
-// validations:
+// states:
 
-//#region validInvalid
+//#region invalidable
 export type CustomValidatorHandler = (isValid: ValResult) => ValResult
 
 const isFormValid = (element: HTMLFormElement): ValResult => {
@@ -106,7 +117,7 @@ const isFormValid = (element: HTMLFormElement): ValResult => {
 
 export const useFormValidator      = (customValidator?: CustomValidatorHandler) => {
     // states:
-    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `validator` callback:
+    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `handleValidation` callback:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
     
     // manually controls the (re)render event:
@@ -122,9 +133,9 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
      * `true`  = valid.  
      * `false` = invalid.
      */
-    const validator = useCallback<ValidatorHandler>(() =>
-        isValid.current
-    , []);
+    const handleValidationInternal = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
+        if (event.isValid !== undefined) event.isValid = isValid.current;
+    }, []);
     
     
     
@@ -185,13 +196,13 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     
     return {
-        validator,
+        handleValidation: handleValidationInternal,
         
         handleInit,
         handleChange,
     };
 };
-//#endregion validInvalid
+//#endregion invalidable
 
 
 
@@ -228,14 +239,14 @@ export const usesFormStates = () => {
     // dependencies:
     
     // states:
-    const [validInvalidStateRule] = usesValidInvalidState();
+    const {invalidableRule} = usesInvalidable(forms);
     
     
     
     return style({
         ...imports([
-            // validations:
-            validInvalidStateRule,
+            // states:
+            invalidableRule,
         ]),
         ...states([
             ifValid({
@@ -270,7 +281,11 @@ export const useFormStyleSheet = dynamicStyleSheet(() => ({
 // configs:
 export const [forms, formValues, cssFormConfig] = cssConfig(() => {
     return {
-        /* no config props yet */
+        // animations:
+        animValid     : editableControls.animValid      as CssKnownProps['animation'],
+        animInvalid   : editableControls.animInvalid    as CssKnownProps['animation'],
+        animUnvalid   : editableControls.animUnvalid    as CssKnownProps['animation'],
+        animUninvalid : editableControls.animUninvalid  as CssKnownProps['animation'],
     };
 }, { prefix: 'frm' });
 
@@ -288,8 +303,8 @@ export interface FormProps
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // validations:
-        ValidationProps
+        // states:
+        InvalidableProps
 {
     // validations:
     customValidator ?: CustomValidatorHandler
@@ -311,16 +326,24 @@ const Form = (props: FormProps): JSX.Element|null => {
 };
 const FormInternal = (props: FormProps): JSX.Element|null => {
     // styles:
-    const styleSheet        = useFormStyleSheet();
+    const styleSheet       = useFormStyleSheet();
     
     
     
     // states:
-    
-    // validations:
-    const formValidator     = useFormValidator(props.customValidator);
-    const validInvalidState = useValidInvalidState<HTMLFormElement>(props, formValidator.validator);
-    
+    const formValidator    = useFormValidator(props.customValidator);
+    const invalidableState = useInvalidable<HTMLFormElement>({
+        // enabled           : props.enabled,
+        // inheritEnabled    : props.inheritEnabled,
+        
+        // readOnly          : props.readOnly,
+        // inheritReadOnly   : props.inheritReadOnly,
+        
+        enableValidation  : props.enableValidation,
+        isValid           : props.isValid,
+        inheritValidation : props.inheritValidation,
+        onValidation      : formValidator.handleValidation,
+    });
     
     
     // rest props:
@@ -361,8 +384,8 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         
         
         
-        // validations:
-        validInvalidState.class,
+        // states:
+        invalidableState.class,
     );
     
     
@@ -386,9 +409,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         
         
         // states:
-        
-        // validations:
-        validInvalidState.handleAnimationEnd,
+        invalidableState.handleAnimationEnd,
     );
     
     
