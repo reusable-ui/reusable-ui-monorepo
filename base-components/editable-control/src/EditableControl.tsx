@@ -107,9 +107,9 @@ import {
 
 // hooks:
 
-// validations:
+// states:
 
-//#region validInvalid
+//#region invalidable
 export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
 export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
 
@@ -204,7 +204,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
         handleChange,
     };
 };
-//#endregion validInvalid
+//#endregion invalidable
 
 
 
