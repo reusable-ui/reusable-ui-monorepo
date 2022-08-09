@@ -48,6 +48,7 @@
     "@reusable-ui/toggle-button": "^5.0.0",
     "@reusable-ui/control": "^5.0.0",
     "@reusable-ui/focusable": "^5.0.0",
+    "@reusable-ui/interactable": "^5.0.0",
     "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/typos": "^5.0.0",

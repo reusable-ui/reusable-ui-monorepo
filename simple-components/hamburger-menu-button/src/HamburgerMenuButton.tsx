@@ -95,6 +95,10 @@ import {
     // hooks:
     ifFocus,
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
+import {
+    // hooks:
+    ifArrive,
+}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
 
 // reusable-ui components:
 import {
@@ -106,7 +110,6 @@ import {
     markActive       as baseMarkActive,
     usesThemeDefault as baseUsesThemeDefault,
     usesThemeActive  as baseUsesThemeActive,
-    ifArrive,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // hooks:
