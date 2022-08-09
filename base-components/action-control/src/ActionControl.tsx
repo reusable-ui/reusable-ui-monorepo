@@ -2,30 +2,15 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
-    useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
     keyframes,
     
@@ -33,17 +18,12 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    cssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -60,7 +40,6 @@ import {
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
-    useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -78,7 +57,6 @@ import {
 import {
     // hooks:
     usePropEnabled,
-    usePropReadOnly,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // reusable-ui features:
@@ -98,11 +76,16 @@ import {
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
 
-// reusable-ui components:
+// reusable-ui states:
 import {
-    // types:
-    StateMixin,
-}                           from '@reusable-ui/basic'           // a base component
+    // hooks:
+    ifPress,
+    usesClickable,
+    ClickableProps,
+    useClickable,
+}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
+
+// reusable-ui components:
 import {
     // hooks:
     markActive,
@@ -130,251 +113,8 @@ import type {
 
 
 // defaults:
-const _defaultActionMouses : number[]|null = [0]       // left click
-const _defaultActionKeys   : string[]|null = ['space'] // space key
-
 const _defaultSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
 const _defaultSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-
-
-
-// hooks:
-
-// accessibilities:
-
-//#region pressRelease
-export interface PressReleaseVars {
-    filter : any
-    anim   : any
-}
-const [presses] = cssVars<PressReleaseVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
-    registerFilter(presses.filter);
-    registerAnim(presses.anim);
-}
-
-
-
-// .pressed will be added after pressing-animation done:
-const selectorIfPressed   = '.pressed'
-// .pressing = styled press, :active = native press:
-// the .disabled, .disable are used to kill native :active
-// the .pressed, .releasing, .released are used to overwrite native :active
-// const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
-const selectorIfPressing  = '.pressing'
-// .releasing will be added after loosing press and will be removed after releasing-animation done:
-const selectorIfReleasing = '.releasing'
-// if all above are not set => released:
-// optionally use .released to overwrite native :active
-// const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
-const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
-
-export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
-export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
-export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
-export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
-
-export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
-export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
-export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
-
-
-
-/**
- * Uses press & release states.
- * @returns A `StateMixin<PressReleaseVars>` represents press & release state definitions.
- */
-export const usesPressReleaseState = (): StateMixin<PressReleaseVars> => {
-    return [
-        () => style({
-            ...states([
-                ifPressed({
-                    ...vars({
-                        [presses.filter] : actionControls.filterPress,
-                    }),
-                }),
-                ifPressing({
-                    ...vars({
-                        [presses.filter] : actionControls.filterPress,
-                        [presses.anim  ] : actionControls.animPress,
-                    }),
-                }),
-                ifReleasing({
-                    ...vars({
-                        [presses.filter] : actionControls.filterPress,
-                        [presses.anim  ] : actionControls.animRelease,
-                    }),
-                }),
-            ]),
-        }),
-        presses,
-    ];
-};
-
-
-
-export const usePressReleaseState  = <TElement extends Element = HTMLElement>(props: ActionControlProps<TElement>) => {
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);
-    const propEditable          = propEnabled && !propReadOnly;
-    const isControllablePressed = (props.pressed !== undefined);
-    
-    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : _defaultActionMouses;
-    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : _defaultActionKeys;
-    
-    
-    
-    // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
-    
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
-    
-    
-    
-    // resets:
-    if (pressDn && (!propEditable || isControllablePressed)) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
-    } // if
-    
-    
-    
-    /*
-     * state is always released if (disabled || readOnly)
-     * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
-     */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
-    
-    if (pressed !== pressedFn) { // change detected => apply the change & start animating
-        setPressed(pressedFn);   // remember the last change
-        setAnimating(pressedFn); // start pressing-animation/releasing-animation
-    } // if
-    
-    
-    
-    // dom effects:
-    
-    const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously handleReleaseLate (if any):
-            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-        };
-    }, []); // runs once on startup
-    
-    useEffect(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        // handlers:
-        const handleRelease = (): void => {
-            setPressDn(false);
-        };
-        const handleReleaseLate = (): void => {
-            // cancel out previously handleReleaseLate (if any):
-            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-            
-            
-            
-            // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
-            asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
-            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
-        };
-        
-        
-        
-        // setups:
-        window.addEventListener('mouseup', handleReleaseLate);
-        window.addEventListener('keyup',   handleRelease);
-        
-        
-        
-        // cleanups:
-        return () => {
-            window.removeEventListener('mouseup', handleReleaseLate);
-            window.removeEventListener('keyup',   handleRelease);
-        };
-    }, [propEditable, isControllablePressed]);
-    
-    
-    
-    // handlers:
-    const handlePress     = useEvent<React.MouseEventHandler<TElement> & React.KeyboardEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        setPressDn(true);
-    }, [propEditable, isControllablePressed]);
-    
-    const handleMouseDown = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
-    }, [actionMouses, handlePress]);
-    
-    const handleKeyDown   = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
-    }, [actionKeys, handlePress]);
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop pressing-animation/releasing-animation
-    }, []);
-    
-    
-    
-    return {
-        pressed,
-        
-        class : ((): string|null => {
-            // pressing:
-            if (animating === true) {
-                // // pressing by controllable prop => use class .pressing
-                // if (isControllablePressed) return 'pressing';
-                //
-                // // otherwise use pseudo :active
-                // return null;
-                // support for pressing by [space key] that not triggering :active
-                return 'pressing';
-            } // if
-            
-            // releasing:
-            if (animating === false) return 'releasing';
-            
-            // fully pressed:
-            if (pressed) return 'pressed';
-            
-            // fully released:
-            // if (isControllablePressed) {
-            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // }
-            // else {
-            //     return null; // discard all classes above
-            // } // if
-            return null; // discard all classes above
-        })(),
-        
-        handleMouseDown,
-        handleKeyDown,
-        handleAnimationEnd,
-    };
-};
-//#endregion pressRelease
 
 
 
@@ -416,7 +156,7 @@ export const usesActionControlStates = () => {
     // dependencies:
     
     // states:
-    const [pressReleaseStateRule] = usesPressReleaseState();
+    const {clickableRule} = usesClickable(actionControls);
     
     
     
@@ -424,9 +164,7 @@ export const usesActionControlStates = () => {
         ...imports([
             // states:
             usesControlStates(),
-            
-            // accessibilities:
-            pressReleaseStateRule,
+            clickableRule,
         ]),
         ...states([
             ifPress({
@@ -457,24 +195,24 @@ export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
 export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
     
-    const {animationRegistry : {filters} } = usesAnimation();
-    const [, {filter: filterPressRelease}] = usesPressReleaseState();
+    const {animationRegistry : {filters            }} = usesAnimation();
+    const {clickableVars     : {filter: filterPress}} = usesClickable();
     
     
     
     //#region keyframes
     const frameReleased = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
+            ...filters.filter((f) => (f !== filterPress)),
             
-         // filterPressRelease, // missing the last => let's the browser interpolated it
+         // filterPress, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const framePressed  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterPressRelease)),
+            ...filters.filter((f) => (f !== filterPress)),
             
-            filterPressRelease, // existing the last => let's the browser interpolated it
+            filterPress, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const [keyframesPressRule  , keyframesPress  ] = keyframes({
@@ -584,32 +322,25 @@ export const handleClickDisabled : React.MouseEventHandler<Element> = (event) =>
 export interface ActionControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        ControlProps<TElement>
+        ControlProps<TElement>,
+        
+        // states:
+        ClickableProps
 {
-    // accessibilities:
-    pressed      ?: boolean
-    
-    
-    
-    // behaviors:
-    actionMouses ?: number[]|null
-    actionKeys   ?: string[]|null
 }
 const ActionControl = <TElement extends Element = HTMLElement>(props: ActionControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet        = useActionControlStyleSheet();
+    const styleSheet     = useActionControlStyleSheet();
     
     
     
     // states:
-    
-    // accessibilities:
-    const pressReleaseState = usePressReleaseState<TElement>(props);
+    const clickableState = useClickable<TElement>(props);
     
     
     
     // fn props:
-    const propEnabled       = usePropEnabled(props);
+    const propEnabled    = usePropEnabled(props);
     
     
     
@@ -634,8 +365,8 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         
-        // accessibilities:
-        pressReleaseState.class,
+        // states:
+        clickableState.class,
     );
     
     
@@ -648,9 +379,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleMouseDown,
+        clickableState.handleMouseDown,
     );
     const handleKeyDown      = useMergeEvents(
         // preserves the original `onKeyDown`:
@@ -659,9 +388,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleKeyDown,
+        clickableState.handleKeyDown,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -670,9 +397,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         // states:
-        
-        // accessibilities:
-        pressReleaseState.handleAnimationEnd,
+        clickableState.handleAnimationEnd,
     );
     
     
