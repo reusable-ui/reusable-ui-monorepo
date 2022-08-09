@@ -64,7 +64,7 @@ import {
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui states:
-import {
+import type {
     // hooks:
     useFocusable,
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
@@ -119,7 +119,7 @@ export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([se
 
 export interface InteractableStuff { interactableRule: Factory<CssRule>, interactableVars: CssVars<InteractableVars> }
 export interface InteractableConfig {
-    filterArrive ?: CssKnownProps['filter']
+    filterArrive ?: CssKnownProps['filter'   ]
     
     animArrive   ?: CssKnownProps['animation']
     animLeave    ?: CssKnownProps['animation']
