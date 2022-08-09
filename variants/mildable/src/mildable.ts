@@ -184,6 +184,7 @@ export const mildOf = (toggle: boolean|null = true): CssRule => style({
 
 
 export interface MildableProps {
+    // variants:
     mild ?: boolean
 }
 export const useMildable = ({mild}: MildableProps) => ({
