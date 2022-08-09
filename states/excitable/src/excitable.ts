@@ -115,11 +115,12 @@ export const usesExcitable = (config?: ExcitableConfig): ExcitableStuff => {
 
 
 export interface ExcitedChangeEvent {
+    // states:
     excited : boolean
 }
 export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
     extends
-        // accessibilities:
+        // states:
         Partial<Pick<TExcitedChangeEvent, 'excited'>>
 {
 }
@@ -128,15 +129,16 @@ export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent =
 
 export interface ToggleExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
     extends
+        // states:
         ExcitableProps<TExcitedChangeEvent>
 {
-    // accessibilities:
+    // states:
     onExcitedChange ?: EventHandler<TExcitedChangeEvent>
 }
 export const useToggleExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ToggleExcitableProps<TExcitedChangeEvent>) => {
     // props:
     const {
-        // accessibilities:
+        // states:
         excited,
         onExcitedChange,
     } = props;
