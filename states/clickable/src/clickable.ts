@@ -161,6 +161,7 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
 
 export interface ClickableProps
     extends
+        // states:
         Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>
 {
     // states:
