@@ -346,7 +346,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     // rest props:
     const {
-        // accessibilities:
+        // states:
         pressed      : _pressed,      // remove
         
         
