@@ -176,6 +176,7 @@ export const outlinedOf = (toggle: boolean|null = true): CssRule => style({
 
 
 export interface OutlineableProps {
+    // variants:
     outlined ?: boolean
 }
 export const useOutlineable = ({outlined}: OutlineableProps) => ({
