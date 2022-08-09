@@ -285,6 +285,9 @@ export interface ActiveChangeEvent {
 }
 export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
+        // states:
+        ActivatableProps,
+        
         // accessibilities:
         AccessibilityProps
 {
