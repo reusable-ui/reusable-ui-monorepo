@@ -141,6 +141,10 @@ import {
     ifArrive,
     useInteractable,
 }                           from '@reusable-ui/interactable'            // adds an interactive feel to a UI
+import {
+    // hooks:
+    useClickable,
+}                           from '@reusable-ui/clickable'               // a capability of UI to be clicked
 
 // reusable-ui components:
 import {
@@ -155,10 +159,6 @@ import {
     // hooks:
     markActive as baseMarkActive,
 }                           from '@reusable-ui/control'                 // a base component
-import {
-    // hooks:
-    usePressReleaseState,
-}                           from '@reusable-ui/action-control'          // a base component
 import {
     // styles:
     usesEditableControlLayout,
@@ -734,7 +734,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     // states:
     const focusableState         = useFocusable<HTMLInputElement>(props);
     const interactableState      = useInteractable<HTMLInputElement>(props, focusableState);
-    const pressReleaseState      = usePressReleaseState<HTMLInputElement>(props);
+    const clickableState         = useClickable<HTMLInputElement>(props);
     
     
     
@@ -1095,7 +1095,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         focusableState.handleAnimationEnd,
         interactableState.handleAnimationEnd,
-        pressReleaseState.handleAnimationEnd,
+        clickableState.handleAnimationEnd,
     );
     
     const isMouseActive       = useRef(false);
@@ -1191,7 +1191,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        pressReleaseState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
+        clickableState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
     }, [isOrientationBlock]);
     const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
@@ -1242,7 +1242,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             return true; // handled
         })()) {
-            pressReleaseState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
+            clickableState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     }, [propEnabled, propReadOnly, isOrientationBlock, minFn, maxFn]);
@@ -1532,7 +1532,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     
                     // states:
                     arrived={interactableState.arrived}
-                    pressed={pressReleaseState.pressed}
+                    pressed={clickableState.pressed}
                     
                     
                     
