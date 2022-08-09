@@ -200,7 +200,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     
     
     // handlers:
-    const handleMouseEnter = useEvent<React.MouseEventHandler<TElement>>(() => {
+    const handleMouseEnter   = useEvent<React.MouseEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
@@ -210,7 +210,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         setHoverDn(true);
     }, [propEnabled, isControllableArrived]);
     
-    const handleMouseLeave = useEvent<React.MouseEventHandler<TElement>>(() => {
+    const handleMouseLeave   = useEvent<React.MouseEventHandler<TElement>>(() => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
