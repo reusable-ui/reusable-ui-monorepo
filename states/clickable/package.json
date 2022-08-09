@@ -37,7 +37,6 @@
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
-    "@reusable-ui/ring": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
