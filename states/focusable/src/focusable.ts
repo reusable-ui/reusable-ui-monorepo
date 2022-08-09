@@ -183,11 +183,13 @@ export const usesFocusable = (config?: FocusableConfig): FocusableStuff => {
 
 export interface FocusableProps
     extends
+        // states:
         Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>,
         
-        // <HTMLControl>:
+        // accessibilities:
         Pick<React.ButtonHTMLAttributes<Element>, 'tabIndex'>
 {
+    // states:
     focused ?: boolean
 }
 export const useFocusable = <TElement extends Element = HTMLElement>(props: FocusableProps) => {
