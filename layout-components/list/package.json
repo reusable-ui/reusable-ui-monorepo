@@ -47,6 +47,7 @@
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/container": "^5.0.0",
     "@reusable-ui/content": "^5.0.0",
+    "@reusable-ui/clickable": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
     "@reusable-ui/focusable": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
