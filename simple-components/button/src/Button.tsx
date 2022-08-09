@@ -105,13 +105,16 @@ import {
     // hooks:
     ifFocus,
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
+import {
+    // hooks:
+    ifArrive,
+    ifLeave,
+}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
 
 // reusable-ui components:
 import {
     // hooks:
     usesThemeActive,
-    ifArrive,
-    ifLeave,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // hooks:
