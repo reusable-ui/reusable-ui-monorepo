@@ -160,8 +160,10 @@ export const usesInteractable = (config?: InteractableConfig): InteractableStuff
 
 export interface InteractableProps
     extends
+        // states:
         Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>
 {
+    // states:
     arrived ?: boolean
 }
 export const useInteractable = <TElement extends Element = HTMLElement>(props: InteractableProps, focusableState: Pick<ReturnType<typeof useFocusable<TElement>>, 'focused'>) => {
