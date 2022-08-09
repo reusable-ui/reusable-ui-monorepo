@@ -94,6 +94,7 @@ export const usesNudible = (): NudibleStuff => {
 
 
 export interface NudibleProps {
+    // variants:
     nude ?: boolean
 }
 export const useNudible = ({nude}: NudibleProps) => ({
