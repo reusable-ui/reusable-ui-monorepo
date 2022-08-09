@@ -56,6 +56,7 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
 
 
 export interface OrientationableProps {
+    // variants:
     orientation ?: OrientationName
 }
 export const useOrientationable = ({orientation}: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => ({
@@ -140,6 +141,7 @@ export const usesOrientationableWithDirection = (options?: OrientationableWithDi
 
 
 export interface OrientationableWithDirectionProps {
+    // variants:
     orientation ?: OrientationWithDirectionName
 }
 export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps) => ({
