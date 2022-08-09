@@ -190,6 +190,7 @@ export const usesThemeActive = (themeName: ThemeName|null = 'secondary'): CssRul
 
 export interface ActivatableProps
     extends
+        // states:
         Partial<Pick<AccessibilityProps, 'active'|'inheritActive'>>
 {
 }
@@ -287,7 +288,7 @@ export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeE
         // accessibilities:
         AccessibilityProps
 {
-    // accessibilities:
+    // states:
     defaultActive  ?: boolean
     onActiveChange ?: EventHandler<TActiveChangeEvent>
 }
