@@ -2,11 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useState,
 }                           from 'react'
 
 // cssfn:
@@ -18,12 +13,9 @@ import type {
     
     // cssfn properties:
     CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
     keyframes,
     
@@ -31,17 +23,12 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    cssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -58,7 +45,6 @@ import {
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // hooks:
-    useEvent,
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
@@ -109,12 +95,15 @@ import {
     FocusableProps,
     useFocusable,
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
+import {
+    // hooks:
+    ifArrive,
+    usesInteractable,
+    InteractableProps,
+    useInteractable,
+}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
 
 // reusable-ui components:
-import {
-    // types:
-    StateMixin,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesIndicatorLayout,
@@ -159,186 +148,6 @@ export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRu
 // change default parameter from 'secondary' to 'primary':
 export const usesThemeActive  = (themeName: ThemeName|null = 'primary'  ): CssRule => baseUsesThemeActive(themeName);
 //#endregion activatable
-
-//#region arriveLeave
-export interface ArriveLeaveVars {
-    filter : any
-    anim   : any
-}
-const [arrives] = cssVars<ArriveLeaveVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
-    registerFilter(arrives.filter);
-    registerAnim(arrives.anim);
-}
-
-
-
-/***  arriving = hover(ing) + focus(ing|ed)  ***/
-
-// .arrived will be added after arriving-animation done:
-const selectorIfArrived  = '.arrived'
-// .arriving = styled arrive, :hover = native arrive:
-// the .disabled, .disable are used to kill native :hover
-// the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
-// .leaving will be added after loosing arrive and will be removed after leaving-animation done:
-const selectorIfLeaving  = '.leaving'
-// if all above are not set => left:
-// optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
-
-
-
-export const ifArrived       = (styles: CssStyleCollection): CssRule => rule(selectorIfArrived , styles);
-export const ifArriving      = (styles: CssStyleCollection): CssRule => rule(selectorIfArriving, styles);
-export const ifLeaving       = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaving , styles);
-export const ifLeft          = (styles: CssStyleCollection): CssRule => rule(selectorIfLeft    , styles);
-
-export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                   ], styles);
-export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeft], styles);
-export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                ], styles);
-
-
-
-/**
- * Uses arrive (hover) & leave states.
- * @returns A `StateMixin<ArriveLeaveVars>` represents arrive (hover) & leave state definitions.
- */
-export const usesArriveLeaveState = (): StateMixin<ArriveLeaveVars> => {
-    return [
-        () => style({
-            ...states([
-                ifArrived({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                    }),
-                }),
-                ifArriving({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                        [arrives.anim  ] : controls.animArrive,
-                    }),
-                }),
-                ifLeaving({
-                    ...vars({
-                        [arrives.filter] : controls.filterArrive,
-                        [arrives.anim  ] : controls.animLeave,
-                    }),
-                }),
-            ]),
-        }),
-        arrives,
-    ];
-};
-
-
-
-export const useArriveLeaveState  = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>, focusableState: Pick<ReturnType<typeof useFocusable<TElement>>, 'focused'>) => {
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const isControllableArrived = (props.arrived !== undefined);
-    
-    
-    
-    // states:
-    const [arrived,   setArrived  ] = useState<boolean>(props.arrived ?? false); // true => arrived, false => left
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => arriving-animation, false => leaving-animation
-    
-    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user hovered, false => user left
-    
-    
-    
-    // resets:
-    if (hoverDn && (!propEnabled || isControllableArrived)) {
-        setHoverDn(false); // lost hover because the control is disabled or controllable [arrived] is set, when the control is re-enabled => still lost hover
-    } // if
-    
-    
-    
-    /*
-     * state is always left if disabled
-     * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
-     */
-    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusableState.focused /*uncontrollable*/));
-    
-    if (arrived !== arrivedFn) { // change detected => apply the change & start animating
-        setArrived(arrivedFn);   // remember the last change
-        setAnimating(arrivedFn); // start arriving-animation/leaving-animation
-    } // if
-    
-    
-    
-    // handlers:
-    const handleMouseEnter = useEvent<React.MouseEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
-        
-        
-        
-        setHoverDn(true);
-    }, [propEnabled, isControllableArrived]);
-    
-    const handleMouseLeave = useEvent<React.MouseEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
-        
-        
-        
-        setHoverDn(false);
-    }, [propEnabled, isControllableArrived]);
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop arriving-animation/leaving-animation
-    }, []);
-    
-    
-    
-    return {
-        arrived,
-        
-        class  : ((): string|null => {
-            // arriving:
-            if (animating === true) {
-                // arriving by controllable prop => use class .arriving
-                if (isControllableArrived) return 'arriving';
-                
-                // otherwise use a combination of :hover || (.focused || .focusing || :focus)
-                return null;
-            } // if
-            
-            // leaving:
-            if (animating === false) return 'leaving';
-            
-            // fully arrived:
-            if (arrived) return 'arrived';
-            
-            // fully left:
-            if (isControllableArrived) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus)]
-            }
-            else {
-                return null; // discard all classes above
-            } // if
-        })(),
-        
-        handleMouseEnter,
-        handleMouseLeave,
-        handleAnimationEnd,
-    };
-};
-//#endregion arriveLeave
 
 
 
@@ -386,8 +195,8 @@ export const usesControlStates = () => {
     // dependencies:
     
     // states:
-    const {focusableRule       } = usesFocusable(controls);
-    const [arriveLeaveStateRule] = usesArriveLeaveState();
+    const {focusableRule   } = usesFocusable(controls);
+    const {interactableRule} = usesInteractable(controls);
     
     
     
@@ -396,7 +205,7 @@ export const usesControlStates = () => {
             // states:
             usesIndicatorStates(),
             focusableRule,
-            arriveLeaveStateRule,
+            interactableRule,
         ]),
         ...states([
             ifDisable({
@@ -453,7 +262,7 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     const {animationRegistry : {boxShadows, filters       }} = usesAnimation();
     const {focusableVars     : {boxShadow : boxShadowFocus}} = usesFocusable();
-    const [, {filter    : filterArriveLeave }              ] = usesArriveLeaveState();
+    const {interactableVars  : {filter    : filterArrive  }} = usesInteractable();
     
     
     
@@ -487,16 +296,16 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     const frameLeft = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
+            ...filters.filter((f) => (f !== filterArrive)),
             
-         // filterArriveLeave, // missing the last => let's the browser interpolated it
+         // filterArrive, // missing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const frameArrived  = style({
         filter: [[
-            ...filters.filter((f) => (f !== filterArriveLeave)),
+            ...filters.filter((f) => (f !== filterArrive)),
             
-            filterArriveLeave, // existing the last => let's the browser interpolated it
+            filterArrive, // existing the last => let's the browser interpolated it
         ]].map(fallbackNoneFilter),
     });
     const [keyframesArriveRule, keyframesArrive] = keyframes({
@@ -556,37 +365,37 @@ export interface ControlProps<TElement extends Element = HTMLElement>
         IndicatorProps<TElement>,
         
         // states:
-        FocusableProps
+        FocusableProps,
+        InteractableProps
 {
-    // accessibilities:
-    arrived  ?: boolean
 }
 const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useControlStyleSheet();
+    const styleSheet        = useControlStyleSheet();
     
     
     
     // states:
-    const focusableState   = useFocusable<TElement>(props);
-    const arriveLeaveState = useArriveLeaveState<TElement>(props, focusableState);
+    const focusableState    = useFocusable<TElement>(props);
+    const interactableState = useInteractable<TElement>(props, focusableState);
     
     
     
     // fn props:
-    const propEnabled      = usePropEnabled(props);
+    const propEnabled       = usePropEnabled(props);
     
     
     
     // rest props:
     const {
-        // remove states props:
-        
         // accessibilities:
-        focused  : _focused,
-        tabIndex : _tabIndex,
+        tabIndex = (propEnabled ? 0 : -1), // makes any element type focusable
         
-        arrived  : _arrived,
+        
+        
+        // states:
+        focused  : _focused,  // remove
+        arrived  : _arrived,  // remove
     ...restIndicatorProps} = props;
     
     
@@ -600,7 +409,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         // states:
         focusableState.class,
-        arriveLeaveState.class,
+        interactableState.class,
     );
     
     
@@ -631,9 +440,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseEnter,
+        interactableState.handleMouseEnter,
     );
     const handleMouseLeave   = useMergeEvents(
         // preserves the original `onMouseLeave`:
@@ -642,9 +449,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseLeave,
+        interactableState.handleMouseLeave,
     );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -654,7 +459,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         // states:
         focusableState.handleAnimationEnd,
-        arriveLeaveState.handleAnimationEnd,
+        interactableState.handleAnimationEnd,
     );
     
     
@@ -676,7 +481,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
             // Control props:
             {...{
                 // accessibilities:
-                tabIndex : props.tabIndex ?? (propEnabled ? 0 : -1), // makes any element type focusable
+                tabIndex,
             }}
             
             
