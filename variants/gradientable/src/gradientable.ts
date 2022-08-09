@@ -99,6 +99,7 @@ export const gradientOf = (toggle: boolean|null = true): CssRule => style({
 
 
 export interface GradientableProps {
+    // variants:
     gradient ?: boolean
 }
 export const useGradientable = ({gradient}: GradientableProps) => ({
