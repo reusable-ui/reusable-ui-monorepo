@@ -56,8 +56,7 @@
 @reusable-ui/focusable
 @reusable-ui/interactable
 @reusable-ui/clickable
-// TODO:    
-    validInvalid    useValidation   validVars
+@reusable-ui/invalidable
 
 // supports:
 [upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
@@ -67,10 +66,10 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/basic
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/indicator
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/action-control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-control
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-text-control   *icon
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/editable-action-control
+[upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/action-control
+[upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/editable-control
+[upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/editable-text-control   *icon
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/editable-action-control
 
 // contents:
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/container
