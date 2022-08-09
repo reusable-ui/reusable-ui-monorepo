@@ -37,6 +37,7 @@ import {
     // styles:
     style,
     vars,
+    imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -65,6 +66,13 @@ import {
     // hooks:
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
+
+// reusable-ui variants:
+import {
+    // hooks:
+    ThemeName,
+    usesThemeImportant,
+}                           from '@reusable-ui/themable'        // color options of UI
 
 
 
@@ -135,35 +143,40 @@ export const ifNoValidation    = (styles: CssStyleCollection): CssRule => rule(s
 
 export interface InvalidableStuff { invalidableRule: Factory<CssRule>, invalidableVars: CssVars<InvalidableVars> }
 export interface InvalidableConfig {
-    filterPress ?: CssKnownProps['filter'   ]
+    animValid     ?: CssKnownProps['animation']
+    animUnvalid   ?: CssKnownProps['animation']
     
-    animPress   ?: CssKnownProps['animation']
-    animRelease ?: CssKnownProps['animation']
+    animInvalid   ?: CssKnownProps['animation']
+    animUninvalid ?: CssKnownProps['animation']
 }
 /**
- * Adds a capability of UI to be clicked.
+ * Adds a possibility of UI having an invalid state.
  * @param config  A configuration of `invalidableRule`.
- * @returns A `InvalidableStuff` represents a invalidable state.
+ * @returns A `InvalidableStuff` represents an invalidable state.
  */
 export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff => {
     return {
         invalidableRule: () => style({
             ...states([
-                ifPressed({
+                ifValidating({
                     ...vars({
-                        [invalidableVars.filter] : config?.filterPress,
+                        [invalidableVars.animValid]   : config?.animValid,
                     }),
                 }),
-                ifPressing({
+                ifUnvalidating({
                     ...vars({
-                        [invalidableVars.filter] : config?.filterPress,
-                        [invalidableVars.anim  ] : config?.animPress,
+                        [invalidableVars.animValid]   : config?.animUnvalid,
                     }),
                 }),
-                ifReleasing({
+                
+                ifInvalidating({
                     ...vars({
-                        [invalidableVars.filter] : config?.filterPress,
-                        [invalidableVars.anim  ] : config?.animRelease,
+                        [invalidableVars.animInvalid] : config?.animInvalid,
+                    }),
+                }),
+                ifUninvalidating({
+                    ...vars({
+                        [invalidableVars.animInvalid] : config?.animUninvalid,
                     }),
                 }),
             ]),
@@ -171,6 +184,30 @@ export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff =>
         invalidableVars,
     };
 };
+
+export const markValid   = (): CssRule => style({
+    ...imports([
+        usesThemeValid(),   // switch to valid theme
+    ]),
+});
+/**
+ * Creates a conditional theme color rules at valid state.
+ * @param themeName The theme name at valid state.
+ * @returns A `CssRule` represents a conditional theme color rules at valid state.
+ */
+export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImportant(themeName);
+
+export const markInvalid = (): CssRule => style({
+    ...imports([
+        usesThemeInvalid(), // switch to invalid theme
+    ]),
+});
+/**
+ * Creates a conditional theme color rules at invalid state.
+ * @param themeName The theme name at invalid state.
+ * @returns A `CssRule` represents a conditional theme color rules at invalid state.
+ */
+export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
 
 
 
