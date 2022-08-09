@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Factory,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -41,6 +45,7 @@ import {
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'                  // strongly typed of css variables
 import {
@@ -82,26 +87,22 @@ import {
     // hooks:
     ifArrive,
 }                           from '@reusable-ui/interactable'        // adds an interactive feel to a UI
+import {
+    // hooks:
+    InvalidableVars   as BaseInvalidableVars,
+    ifValid,
+    ifInvalid,
+    ifNoValidation,
+    InvalidableConfig as BaseInvalidableConfig,
+    usesInvalidable   as baseUsesInvalidable,
+}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state.
 
 // reusable-ui components:
-import type {
-    // types:
-    StateMixin,
-}                           from '@reusable-ui/basic'               // a base component
 import {
     // hooks:
     markActive as baseMarkActive,
 }                           from '@reusable-ui/control'             // a base component
 import {
-    // hooks:
-    ValidInvalidVars      as EditableControlValidInvalidVars,
-    ifValid,
-    ifInvalid,
-    ifNoValidation,
-    usesValidInvalidState as editableControlUsesValidInvalidState,
-    
-    
-    
     // styles:
     usesEditableControlLayout,
     usesEditableControlVariants,
@@ -135,59 +136,65 @@ export const markActive = (): CssRule => style({
 //#endregion activatable
 
 
-// validations:
-
-//#region validInvalid
-export interface ValidInvalidVars extends EditableControlValidInvalidVars {
+//#region invalidable
+export interface InvalidableVars extends BaseInvalidableVars {
     /**
      * final validation icon image.
      */
     iconImg : any
 }
-const [valids] = cssVars<ValidInvalidVars>();
+const [invalidableVars] = cssVars<InvalidableVars>();
 
 
 
+export interface InvalidableStuff { invalidableRule: Factory<CssRule>, invalidableVars: CssVars<InvalidableVars> }
+export interface InvalidableConfig extends BaseInvalidableConfig {
+    iconValid   ?: CssKnownProps['maskImage']
+    iconInvalid ?: CssKnownProps['maskImage']
+}
 /**
- * Uses valid & invalid states.
- * @returns A `StateMixin<ValidInvalidVars>` represents valid & invalid state definitions.
+ * Adds a possibility of UI having an invalid state.
+ * @param config  A configuration of `invalidableRule`.
+ * @returns A `InvalidableStuff` represents an invalidable state.
  */
-export const usesValidInvalidState = (): StateMixin<ValidInvalidVars> => {
+export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff => {
     // dependencies:
-    const [validInvalidStateRule] = editableControlUsesValidInvalidState();
+    
+    // states:
+    const {invalidableRule} = baseUsesInvalidable();
     
     
     
-    return [
-        () => style({
+    return {
+        invalidableRule: () => style({
             ...imports([
-                validInvalidStateRule,
+                invalidableRule,
             ]),
             
             
             
             ...vars({
-                [valids.iconImg] : 'none',
+                [invalidableVars.iconImg] : 'none',
             }),
             ...states([
                 ifValid({
                     ...vars({
                         // apply a *valid* icon indicator:
-                        [valids.iconImg] : editableTextControls.iconValid,
+                        [invalidableVars.iconImg] : config?.iconValid,
                     }),
                 }),
                 ifInvalid({
                     ...vars({
                         // apply an *invalid* icon indicator:
-                        [valids.iconImg] : editableTextControls.iconInvalid,
+                        [invalidableVars.iconImg] : config?.iconInvalid,
                     }),
                 }),
             ]),
         }),
-        valids,
-    ];
+        invalidableVars,
+    };
 };
-//#endregion validInvalid
+//#endregion invalidable
 
 
 
@@ -198,10 +205,10 @@ export const usesEditableTextControlLayout = () => {
     // dependencies:
     
     // features:
-    const {paddingVars} = usesPadding();
+    const {paddingVars    } = usesPadding();
     
     // states:
-    const [, valids  ] = usesValidInvalidState();
+    const {invalidableVars} = usesInvalidable();
     
     
     
@@ -215,7 +222,7 @@ export const usesEditableTextControlLayout = () => {
             ...children(iconElm, {
                 ...imports([
                     usesIconImage(
-                        /*img : */valids.iconImg,
+                        /*img : */invalidableVars.iconImg,
                     ),
                 ]),
                 ...style({
@@ -277,7 +284,7 @@ export const usesEditableTextControlStates = () => {
     // dependencies:
     
     // states:
-    const [validInvalidStateRule] = usesValidInvalidState();
+    const {invalidableRule} = usesInvalidable(editableTextControls);
     
     
     
@@ -285,9 +292,7 @@ export const usesEditableTextControlStates = () => {
         ...imports([
             // states:
             usesEditableControlStates(),
-            
-            // validations:
-            validInvalidStateRule,
+            invalidableRule,
         ]),
         ...states([
             ifActive({
