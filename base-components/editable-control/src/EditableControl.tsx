@@ -87,7 +87,7 @@ import {
     ValidityChangeEvent,
     InvalidableProps,
     useInvalidable,
-}                           from '@reusable-ui/invalidable'     // a capability of UI to be clicked
+}                           from '@reusable-ui/invalidable'     // a possibility of UI having an invalid state.
 
 // reusable-ui components:
 import {
