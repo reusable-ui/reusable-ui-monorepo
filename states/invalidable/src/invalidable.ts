@@ -7,8 +7,6 @@ import {
     
     // hooks:
     useState,
-    useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -48,7 +46,9 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
+    EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -60,6 +60,16 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    Result as ValResult,
+    usePropIsValid,
+    
+    
+    
+    // react components:
+    ValidationProps,
+}                           from '@reusable-ui/validations'     // a validation management system
 
 // reusable-ui features:
 import {
@@ -211,176 +221,226 @@ export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule
 
 
 
-export interface InvalidableProps
+export interface ValidityChangeEvent
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>
+        Required<Pick<ValidationProps, 'isValid'>>
 {
-    // states:
-    pressed      ?: boolean
-    
-    
-    
-    // behaviors:
-    actionMouses ?: number[]|null
-    actionKeys   ?: string[]|null
 }
-export const useInvalidable = <TElement extends Element = HTMLElement>(props: InvalidableProps) => {
+export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
+    extends
+        // states:
+        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>,
+        
+        // validations:
+        ValidationProps
+{
+    // validations:
+    onValidation ?: EventHandler<TValidityChangeEvent>
+}
+export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);       // supports for <Check>
-    const propEditable          = propEnabled && !propReadOnly; // supports for <Check>
-    const isControllablePressed = (props.pressed !== undefined);
+    const propReadOnly          = usePropReadOnly(props);
+    const propEditable          = propEnabled && !propReadOnly;
+    const propIsValid           = usePropIsValid(props);
+    const onValidation          = props.onValidation;
     
-    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : _defaultActionMouses;
-    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : _defaultActionKeys;
+    
+    
+    // defaults:
+    const defaultIsValid        : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
     
     
     
     // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
+    const [wasValid     , setWasValid     ] = useState<ValResult|undefined>((): (ValResult|undefined) => {
+        // if control is not editable => no validation
+        if (!propEditable)             return null;
+        
+        
+        
+        // if [isValid] was set => use [isValid] as the final result:
+        if (propIsValid !== undefined) return propIsValid;
+        
+        
+        
+        // if [onValidation] was provided, evaluate it at startup:
+        if (onValidation)              return undefined; // undefined means => evaluate the [onValidation] *at startup*
+        
+        
+        
+        // use default value as fallback:
+        return defaultIsValid;
+    });
     
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
-    
-    
-    
-    // resets:
-    if (pressDn && (!propEditable || isControllablePressed)) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
-    } // if
+    const [succAnimating, setSuccAnimating] = useState<boolean|null>(null); // null => no-succ-animation, true => succ-animation, false => unsucc-animation
+    const [errAnimating , setErrAnimating ] = useState<boolean|null>(null); // null => no-err-animation,  true => err-animation,  false => unerr-animation
     
     
     
     /*
-     * state is always released if (disabled || readOnly)
-     * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
+     * state is  as <ValidationProvider> if it's [isValid] was set
+     * state is  as [onValidation] callback returned
+     * otherwise undefined (represents no change needed)
      */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const isValidFn = ((): (ValResult|undefined) => {
+        // if control is not editable => no validation
+        if (!propEditable)             return null;
+        
+        
+        
+        // if [isValid] was set => use [isValid] as the final result:
+        if (propIsValid !== undefined) return propIsValid;
+        
+        
+        
+        if (wasValid !== undefined) { // (wasValid !== undefined) means => the validator is ready => evaluate it *now*
+            // conditions:
+            // if [onValidation] was provided, evaluate it:
+            if (!onValidation) return defaultIsValid;
+            
+            
+            
+            const event : ValidityChangeEvent = { isValid: null };
+            onValidation(event as TValidityChangeEvent);
+            return event.isValid;
+        } // if
+        
+        
+        
+        // no change needed:
+        return undefined;
+    })();
     
-    if (pressed !== pressedFn) { // change detected => apply the change & start animating
-        setPressed(pressedFn);   // remember the last change
-        setAnimating(pressedFn); // start pressing-animation/releasing-animation
+    if ((isValidFn !== undefined) && (wasValid !== isValidFn)) { // change detected => apply the change & start animating
+        setWasValid(isValidFn);                                  // remember the last change
+        
+        
+        
+        switch (isValidFn) {
+            case true: // success
+                // if was error => un-error:
+                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
+                
+                setSuccAnimating(true); // start succ-animation
+                break;
+            
+            case false: // error
+                // if was success => un-success:
+                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
+                
+                setErrAnimating(true);  // start err-animation
+                break;
+            
+            case null: // uncheck
+                // if was success => un-success:
+                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
+                
+                // if was error => un-error:
+                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
+                break;
+        } // switch
     } // if
     
     
     
     // dom effects:
     
-    const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously handleReleaseLate (if any):
-            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-        };
-    }, []); // runs once on startup
-    
-    useEffect(() => {
+    // watch the changes once (only at startup):
+    useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
+        if (wasValid !== undefined) return; // the effect should only run once
         
         
         
-        // handlers:
-        const handleRelease = (): void => {
-            setPressDn(false);
-        };
-        const handleReleaseLate = (): void => {
-            // cancel out previously handleReleaseLate (if any):
-            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-            
-            
-            
-            // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
-            asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
-            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
-        };
-        
-        
-        
-        // setups:
-        window.addEventListener('mouseup', handleReleaseLate);
-        window.addEventListener('keyup',   handleRelease);
-        
-        
-        
-        // cleanups:
-        return () => {
-            window.removeEventListener('mouseup', handleReleaseLate);
-            window.removeEventListener('keyup',   handleRelease);
-        };
-    }, [propEditable, isControllablePressed]);
+        // now validator has been loaded => re-*set the initial* state of `wasValid` with any values other than `undefined`
+        // once set, this effect will never be executed again
+        if (!onValidation) {
+            setWasValid(defaultIsValid);
+        }
+        else {
+            const event : ValidityChangeEvent = { isValid: null };
+            onValidation(event as TValidityChangeEvent);
+            setWasValid(event.isValid);
+        } // if
+    }, [wasValid, onValidation]); // the effect should only run once
     
     
     
     // handlers:
-    const handlePress        = useEvent<React.MouseEventHandler<TElement> & React.KeyboardEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        
-        
-        
-        setPressDn(true);
-    }, [propEditable, isControllablePressed]);
-    
-    const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
-    }, [actionMouses, handlePress]);
-    
-    const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
-    }, [actionKeys, handlePress]);
-    
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
         
         
         
-        // clean up finished animation
-        
-        setAnimating(null); // stop pressing-animation/releasing-animation
+        if (/((?<![a-z])(valid|unvalid)|(?<=[a-z])(Valid|Unvalid))(?![a-z])/.test(event.animationName)) { // if animation is (valid|unvalid)[Foo] or boo(Valid|Unvalid)[Foo]
+            // clean up finished animation
+            
+            setSuccAnimating(null); // stop succ-animation/unsucc-animation
+        }
+        else if (/((?<![a-z])(invalid|uninvalid)|(?<=[a-z])(Invalid|Uninvalid))(?![a-z])/.test(event.animationName)) { // if animation is (invalid|uninvalid)[Foo] or boo(Invalid|Uninvalid)[Foo]
+            // clean up finished animation
+            
+            setErrAnimating(null);  // stop err-animation/unerr-animation
+        } // if
     }, []);
     
     
     
+    const noValidation : boolean = (
+        !propEditable          // if control is not editable => no validation
+        ||
+        (propIsValid === null) // ([isValid] === null)       => no validation
+        ||
+        !onValidation          // no validator               => no validation
+    );
     return {
-        pressed,
+        /**
+         * `true`  : validating/validated
+         * `false` : invalidating/invalidated
+         * `null`  : uncheck/unvalidating/uninvalidating
+        */
+        isValid : (wasValid ?? defaultIsValid) as ValResult,
+        noValidation,
         
-        class : ((): string|null => {
-            // pressing:
-            if (animating === true) {
-                // // pressing by controllable prop => use class .pressing
-                // if (isControllablePressed) return 'pressing';
-                //
-                // // otherwise use pseudo :active
-                // return null;
-                // support for pressing by [space key] that not triggering :active
-                return 'pressing';
-            } // if
+        class   : [
+            // valid classes:
+            ((): string|null => {
+                if (succAnimating === true)  return 'validating';
+                if (succAnimating === false) return 'unvalidating';
+                
+                if (wasValid === true)       return 'validated';
+                
+                return null;
+            })(),
             
-            // releasing:
-            if (animating === false) return 'releasing';
             
-            // fully pressed:
-            if (pressed) return 'pressed';
             
-            // fully released:
-            // if (isControllablePressed) {
-            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // }
-            // else {
-            //     return null; // discard all classes above
-            // } // if
-            return null; // discard all classes above
-        })(),
+            // invalid classes:
+            ((): string|null => {
+                if (errAnimating === true)   return 'invalidating';
+                if (errAnimating === false)  return 'uninvalidating';
+                
+                if (wasValid === false)      return 'invalidated';
+                
+                return null;
+            })(),
+            
+            
+            
+            // neutral classes:
+            ((): string|null => {
+                if (noValidation) {
+                    return 'novalidation';
+                }
+                else {
+                    return null; // discard all classes above
+                } // if
+            })(),
+        ].filter((c) => !!c).join(' ') || null,
         
-        handleMouseDown,
-        handleKeyDown,
         handleAnimationEnd,
     };
 };
