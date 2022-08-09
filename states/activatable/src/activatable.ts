@@ -281,6 +281,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
 
 
 export interface ActiveChangeEvent {
+    // states:
     active : boolean
 }
 export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
