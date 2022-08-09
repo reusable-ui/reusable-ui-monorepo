@@ -136,6 +136,11 @@ import {
     ifFocus,
     useFocusable,
 }                           from '@reusable-ui/focusable'               // a capability of UI to be focused
+import {
+    // hooks:
+    ifArrive,
+    useInteractable,
+}                           from '@reusable-ui/interactable'            // adds an interactive feel to a UI
 
 // reusable-ui components:
 import {
@@ -149,8 +154,6 @@ import {
 import {
     // hooks:
     markActive as baseMarkActive,
-    ifArrive,
-    useArriveLeaveState,
 }                           from '@reusable-ui/control'                 // a base component
 import {
     // hooks:
@@ -730,7 +733,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     // states:
     const focusableState         = useFocusable<HTMLInputElement>(props);
-    const arriveLeaveState       = useArriveLeaveState<HTMLInputElement>(props, focusableState);
+    const interactableState      = useInteractable<HTMLInputElement>(props, focusableState);
     const pressReleaseState      = usePressReleaseState<HTMLInputElement>(props);
     
     
@@ -984,7 +987,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // states:
         focusableState.class,
-        arriveLeaveState.class,
+        interactableState.class,
     );
     const mergedTrackClasses      = useMergeClasses(
         // preserves the original `trackClasses`:
@@ -1072,9 +1075,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseEnter,
+        interactableState.handleMouseEnter,
     );
     const handleMouseLeave    = useMergeEvents(
         // preserves the original `onMouseLeave`:
@@ -1083,9 +1084,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // states:
-        
-        // accessibilities:
-        arriveLeaveState.handleMouseLeave,
+        interactableState.handleMouseLeave,
     );
     const handleAnimationEnd  = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -1095,7 +1094,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // states:
         focusableState.handleAnimationEnd,
-        arriveLeaveState.handleAnimationEnd,
+        interactableState.handleAnimationEnd,
         pressReleaseState.handleAnimationEnd,
     );
     
@@ -1485,7 +1484,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 inheritActive={true}
                 
                 tabIndex={-1} // focus on the whole <Range>, not the <Track>
-                arrived={arriveLeaveState.arrived}
+                
+                
+                
+                // states:
+                arrived={interactableState.arrived}
                 
                 
                 
@@ -1524,8 +1527,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     
                     focused={focusableState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
                     tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
-                    arrived={arriveLeaveState.arrived}
                     
+                    
+                    
+                    // states:
+                    arrived={interactableState.arrived}
                     pressed={pressReleaseState.pressed}
                     
                     
