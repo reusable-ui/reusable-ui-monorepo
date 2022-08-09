@@ -152,6 +152,7 @@ export const usesDisableable = (config?: DisableableConfig): DisableableStuff =>
 
 export interface DisableableProps
     extends
+        // states:
         Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>
 {
 }
