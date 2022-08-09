@@ -139,10 +139,12 @@ export const usesCollapsible = (config?: CollapsibleConfig): CollapsibleStuff =>
 
 
 export interface ExpandedChangeEvent {
+    // states:
     expanded : boolean
 }
 export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
+        // states:
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
 }
@@ -231,8 +233,10 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
 
 export interface ToggleCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
+        // states:
         CollapsibleProps<TExpandedChangeEvent>
 {
+    // states:
     defaultExpanded  ?: boolean
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
