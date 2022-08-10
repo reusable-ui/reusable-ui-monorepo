@@ -74,7 +74,11 @@ export interface AnimationVars {
     /**
      * none transform.
      */
-    transfNone    : any
+    transformNone : any
+    /**
+     * final transform.
+     */
+    transform     : any
     
     
     
@@ -93,6 +97,7 @@ const [animationVars] = cssVars<AnimationVars>();
 
 const setsBoxShadow     = new Set<CssCustomSimpleRef>();
 const setsFilter        = new Set<CssCustomSimpleRef>();
+const setsTransform     = new Set<CssCustomSimpleRef>();
 const setsAnim          = new Set<CssCustomSimpleRef>();
 const animationRegistry = {
     get boxShadows      ():    CssCustomSimpleRef[]      {
@@ -125,6 +130,21 @@ const animationRegistry = {
     
     
     
+    get transforms      ():    CssCustomSimpleRef[]      {
+        return [
+            // back-to-front order, the last is processed first, the first is processed last
+            
+            // the *none* transform is placed at the most front:
+            animationVars.transformNone, // the transform collection must contain at least 1 of *none* transform, so when rendered it produces a valid css value of transform property
+            
+            ...Array.from(setsTransform).reverse(), // reverse the order
+        ];
+    },
+    registerTransform   (item: CssCustomSimpleRef): void { setsTransform.add(item)    },
+    unregisterTransform (item: CssCustomSimpleRef): void { setsTransform.delete(item) },
+    
+    
+    
     get anims           ():    CssCustomSimpleRef[]      {
         return [
             // front-to-back order, the first has the lowest specificity, the last has the highest specificity
@@ -146,6 +166,7 @@ export interface AnimationStuff { animationRule: Factory<CssRule>, animationVars
 export interface AnimationConfig {
     boxShadow ?: CssKnownProps['boxShadow'] & Array<any>
     filter    ?: CssKnownProps['filter'   ] & Array<any>
+    transform ?: CssKnownProps['transform'] & Array<any>
     anim      ?: CssKnownProps['animation'] & Array<any>
 }
 /**
@@ -160,7 +181,7 @@ export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
             ...vars({
                 [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
                 [animationVars.filterNone   ] : 'brightness(100%)',
-                [animationVars.transfNone   ] : 'translate(0)',
+                [animationVars.transformNone] : 'translate(0)',
                 [animationVars.animNone     ] : 'none',
             }),
             
@@ -172,6 +193,7 @@ export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
                 ...vars(Object.fromEntries([
                     ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
                     ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
+                    ...animationRegistry.transforms.filter((ref) => (ref !== animationVars.transformNone)).map((ref) => [ ref, animationVars.transformNone ]),
                     ...animationRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
                 ])),
             }),
@@ -179,7 +201,7 @@ export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
             
             
             // animation functions:
-            ...vars({ // always re-declare the final function below, so the [boxShadow], [filter] and [animation] can be manipulated by corresponding state(s)
+            ...vars({ // always re-declare the final function below, so the [boxShadow], [filter], [transform] and [animation] can be manipulated by corresponding state(s)
                 [animationVars.boxShadow] : [
                     // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
                     
@@ -202,6 +224,18 @@ export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
                     
                     // the conditional filter(s) are processed last:
                     ...animationRegistry.filters,
+                ]],
+                
+                [animationVars.transform] : [[
+                    // combining: transform3 * transform2 * transform1 ...
+                    
+                    // back-to-front order, the last is processed first, the first is processed last
+                    
+                    // the conditional transform(s) are processed last:
+                    ...animationRegistry.transforms,
+                    
+                    // the config's transform(s) are processed first:
+                    ...(config?.transform ?? ([] as CssKnownProps['transform'] & Array<any>)), // default => uses config's transform
                 ]],
                 
                 [animationVars.anim     ] : [
@@ -229,6 +263,6 @@ export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(v
 type BaseTypeOf<TComplexValue>     = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
 export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item =>                       (isRef(item)    && (item    !== animationVars.boxShadowNone)) ? valueFallbacks(item   , animationVars.boxShadowNone) : item;
 export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.filterNone   )) ? valueFallbacks(subItem, animationVars.filterNone   ) : subItem);
-export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.transfNone   )) ? valueFallbacks(subItem, animationVars.transfNone   ) : subItem);
+export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.transformNone)) ? valueFallbacks(subItem, animationVars.transformNone) : subItem);
 export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['animation']>  ): typeof item =>                       (isRef(item)    && (item    !== animationVars.animNone     )) ? valueFallbacks(item   , animationVars.animNone     ) : item;
 //#endregion animation
