@@ -72,12 +72,12 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/editable-action-control
 
 // contents:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/container
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/content    *button
+[upgraded] [documented  ] [published] [          atomic] [skip organized] @reusable-ui/container
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/content    *button
 
 // simple components:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/visually-hidden
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/icon
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/visually-hidden
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/icon
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/label
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/button
 [upgraded] [new         ] [new      ] [full    compound] [semi organized] @reusable-ui/toggle-button
@@ -92,9 +92,9 @@
 [upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @reusable-ui/hamburger-menu-button
 
 // layouts:
-[upgraded] [documented  ] [published] [todo: ListItem from Button] [semi organized] @reusable-ui/list
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/card
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/masonry
+[upgraded] [documented  ] [published] [todo: ListItem from Button] [full organized] @reusable-ui/list
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/card
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/masonry
 
 // statuses:
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/popup
