@@ -141,7 +141,7 @@ export interface InvalidableVars extends BaseInvalidableVars {
     /**
      * final validation icon image.
      */
-    iconImg : any
+    iconImage : any
 }
 const [invalidableVars] = cssVars<InvalidableVars>();
 
@@ -174,19 +174,19 @@ export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff =>
             
             
             ...vars({
-                [invalidableVars.iconImg] : 'none',
+                [invalidableVars.iconImage] : 'none',
             }),
             ...states([
                 ifValid({
                     ...vars({
                         // apply a *valid* icon indicator:
-                        [invalidableVars.iconImg] : config?.iconValid,
+                        [invalidableVars.iconImage] : config?.iconValid,
                     }),
                 }),
                 ifInvalid({
                     ...vars({
                         // apply an *invalid* icon indicator:
-                        [invalidableVars.iconImg] : config?.iconInvalid,
+                        [invalidableVars.iconImage] : config?.iconInvalid,
                     }),
                 }),
             ]),
@@ -222,7 +222,7 @@ export const usesEditableTextControlLayout = () => {
             ...children(iconElm, {
                 ...imports([
                     usesIconImage(
-                        /*img : */invalidableVars.iconImg,
+                        /*image : */invalidableVars.iconImage,
                     ),
                 ]),
                 ...style({
