@@ -78,15 +78,15 @@
 // simple components:
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/visually-hidden
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/icon
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/label
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/button
-[upgraded] [new         ] [new      ] [full    compound] [semi organized] @reusable-ui/toggle-button
-[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @reusable-ui/nav-button
-[upgraded] [documented  ] [published] [todo: compositing button] [semi organized] @reusable-ui/button-icon
-[upgraded] [documented  ] [published] [todo: compositing button & icon] [semi organized] @reusable-ui/close-button
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/form
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/input
-[upgraded] [documented  ] [published] [todo: compositing track & thumb] [semi organized] @reusable-ui/range
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/label
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/button
+[upgraded] [new         ] [new      ] [full    compound] [full organized] @reusable-ui/toggle-button
+[upgraded] [documented  ] [published] [todo: compositing button] [half organized] @reusable-ui/nav-button
+[upgraded] [documented  ] [published] [todo: compositing button] [full organized] @reusable-ui/button-icon
+[upgraded] [documented  ] [published] [todo: compositing button & icon] [full organized] @reusable-ui/close-button
+[upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/form
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/input
+[upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/check
 [upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/radio
 [upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @reusable-ui/hamburger-menu-button
