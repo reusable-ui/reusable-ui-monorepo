@@ -138,9 +138,7 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // features:
     const {borderRule , borderVars } = usesBorder(buttonIcons);
     const {paddingRule, paddingVars} = usesPadding(buttonIcons);
-    
-    // icon:
-    const [, iconVars] = usesIcon();
+    const {             iconVars   } = usesIcon();
     
     
     
