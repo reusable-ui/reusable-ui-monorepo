@@ -263,6 +263,6 @@ export const isRef = (value: CssCustomValue): value is CssCustomRef => (typeof(v
 type BaseTypeOf<TComplexValue>     = TComplexValue extends CssComplexBaseValueOf<infer TValue>[][] ? (TValue|CssCustomRef) : never
 export const fallbackNoneBoxShadow = (item : BaseTypeOf<CssKnownProps['boxShadow']>  ): typeof item =>                       (isRef(item)    && (item    !== animationVars.boxShadowNone)) ? valueFallbacks(item   , animationVars.boxShadowNone) : item;
 export const fallbackNoneFilter    = (item : BaseTypeOf<CssKnownProps['filter'   ]>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.filterNone   )) ? valueFallbacks(subItem, animationVars.filterNone   ) : subItem);
-export const fallbackNoneTransf    = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.transformNone)) ? valueFallbacks(subItem, animationVars.transformNone) : subItem);
+export const fallbackNoneTransform = (item : BaseTypeOf<CssKnownProps['transform']>[]): typeof item => item.map((subItem) => (isRef(subItem) && (subItem !== animationVars.transformNone)) ? valueFallbacks(subItem, animationVars.transformNone) : subItem);
 export const fallbackNoneAnim      = (item : BaseTypeOf<CssKnownProps['animation']>  ): typeof item =>                       (isRef(item)    && (item    !== animationVars.animNone     )) ? valueFallbacks(item   , animationVars.animNone     ) : item;
 //#endregion animation
