@@ -259,24 +259,24 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
         
         
         
-        const iconImg    : string|null = (() => {
+        const iconImage    : string|null = (() => {
             const file = config.image.files.find((file) => getFileNameWithoutExtension(file) === icon);
             if (!file) return null;
             return concatUrl(config.image.path, file);
         })();
         
-        const isIconFont : boolean = !iconImg; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
+        const isIconFont : boolean = !iconImage; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
         
         
         
         // memorized a whole object:
         return {
             class: (() => {
-                if (iconImg)    return 'image'; // icon name is found in iconImage
+                if (iconImage)  return 'image'; // icon name is found in iconImage
                 
                 if (isIconFont) return 'font';  // icon name is found in iconFont
                 
-                return null; // icon name is not found in both iconImg & iconFont
+                return null; // icon name is not found in both iconImage & iconFont
             })(),
             
             style: {
@@ -285,16 +285,16 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                     iconVars.image
                     .slice(4, -1) // fix: var(--customProp) => --customProp
                 ]: (() => {
-                    if (iconImg)    return `url("${iconImg}")`; // the url of the icon's image
+                    if (iconImage)  return `url("${iconImage}")`; // the url of the icon's image
                     
                     if (isIconFont) return `"${icon}"`;         // the icon's name
                     
-                    return undefined; // icon name is not found in both iconImg & iconFont
+                    return undefined; // icon name is not found in both iconImage & iconFont
                 })(),
             },
             
-            children: (!!iconImg && (
-                <img key='icon-image' src={iconImg} alt='' />
+            children: (!!iconImage && (
+                <img key='icon-image' src={iconImage} alt='' />
             )),
         };
     }, [icon]);
