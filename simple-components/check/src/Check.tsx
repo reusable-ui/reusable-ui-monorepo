@@ -526,7 +526,7 @@ export const usesCheckLayout = () => {
                         ...imports([
                             // check indicator:
                             usesIconImage(
-                                /*img   : */checks.img,
+                                /*image : */checks.indicator,
                                 /*color : */foregroundVars.foreg,
                             ),
                         ]),
@@ -817,8 +817,8 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         
         // animations:
         // forked from Bootstrap 5:
-        img               : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
-        switchImg         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
+        indicator         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
+        switchIndicator   : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
         
         
         filterCheck       : [[
