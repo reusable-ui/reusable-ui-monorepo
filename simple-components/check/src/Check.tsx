@@ -11,8 +11,17 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Factory,
+}                           from '@cssfn/types'                         // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -45,6 +54,7 @@ import {
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'                      // strongly typed of css variables
 import {
@@ -135,10 +145,6 @@ import {
 }                           from '@reusable-ui/focusable'               // a capability of UI to be focused
 
 // reusable-ui components:
-import type {
-    // types:
-    StateMixin,
-}                           from '@reusable-ui/basic'                   // a base component
 import {
     // styles:
     usesEditableActionControlLayout,
@@ -200,55 +206,67 @@ const [checkableVars] = cssVars<CheckableVars>();
 
 
 
+export interface CheckableStuff { checkableRule: Factory<CssRule>, checkableVars: CssVars<CheckableVars> }
+export interface CheckableConfig {
+    filterCheck    ?: CssKnownProps['filter'   ]
+    filterClear    ?: CssKnownProps['filter'   ]
+    
+    transformCheck ?: CssKnownProps['transform']
+    transformClear ?: CssKnownProps['transform']
+    
+    animCheck      ?: CssKnownProps['animation']
+    animClear      ?: CssKnownProps['animation']
+}
 /**
- * Uses check & clear states.
- * @returns A `StateMixin<CheckableVars>` represents check & clear state definitions.
+ * Adds a capability of UI to be checked.
+ * @param config  A configuration of `checkableRule`.
+ * @returns A `CheckableStuff` represents a checkable state.
  */
-export const usesCheckClearState = (): StateMixin<CheckableVars> => {
-    return [
-        () => style({
+export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
+    return {
+        checkableRule: () => style({
             ...states([
                 ifActived({
                     ...vars({
-                        [checkableVars.filterIn    ] : checks.filterCheck,
+                        [checkableVars.filterIn    ] : config?.filterCheck,
                         
-                        [checkableVars.transformIn ] : checks.transformCheck,
+                        [checkableVars.transformIn ] : config?.transformCheck,
                     }),
                 }),
                 ifActivating({
                     ...vars({
-                        [checkableVars.filterIn    ] : checks.filterCheck,
-                        [checkableVars.filterOut   ] : checks.filterClear,
+                        [checkableVars.filterIn    ] : config?.filterCheck,
+                        [checkableVars.filterOut   ] : config?.filterClear,
                         
-                        [checkableVars.transformIn ] : checks.transformCheck,
-                        [checkableVars.transformOut] : checks.transformClear,
+                        [checkableVars.transformIn ] : config?.transformCheck,
+                        [checkableVars.transformOut] : config?.transformClear,
                         
-                        [checkableVars.anim        ] : checks.animCheck,
+                        [checkableVars.anim        ] : config?.animCheck,
                     }),
                 }),
                 
                 ifPassivating({
                     ...vars({
-                        [checkableVars.filterIn    ] : checks.filterCheck,
-                        [checkableVars.filterOut   ] : checks.filterClear,
+                        [checkableVars.filterIn    ] : config?.filterCheck,
+                        [checkableVars.filterOut   ] : config?.filterClear,
                         
-                        [checkableVars.transformIn ] : checks.transformCheck,
-                        [checkableVars.transformOut] : checks.transformClear,
+                        [checkableVars.transformIn ] : config?.transformCheck,
+                        [checkableVars.transformOut] : config?.transformClear,
                         
-                        [checkableVars.anim        ] : checks.animClear,
+                        [checkableVars.anim        ] : config?.animClear,
                     }),
                 }),
                 ifPassived({
                     ...vars({
-                        [checkableVars.filterOut   ] : checks.filterClear,
+                        [checkableVars.filterOut   ] : config?.filterClear,
                         
-                        [checkableVars.transformOut] : checks.transformClear,
+                        [checkableVars.transformOut] : config?.transformClear,
                     }),
                 }),
             ]),
         }),
         checkableVars,
-    ];
+    };
 };
 //#endregion checkable
 
@@ -281,7 +299,7 @@ export const usesCheckLayout = () => {
     // features:
     const {               foregroundVars} = usesForeground();
     const {               paddingVars   } = usesPadding();
-    const {animationRule, animationVars } = usesAnimation(checks as any);
+    const {animationRule, animationVars } = usesAnimation();
     
     
     
@@ -522,8 +540,8 @@ export const usesCheckStates = () => {
     // dependencies:
     
     // states:
-    const {focusableVars } = usesFocusable();
-    const [checkStateRule] = usesCheckClearState();
+    const {focusableVars} = usesFocusable();
+    const {checkableRule} = usesCheckable(checks);
     
     
     
@@ -531,9 +549,7 @@ export const usesCheckStates = () => {
         ...imports([
             // states:
             usesEditableActionControlStates(),
-            
-            // checks:
-            checkStateRule,
+            checkableRule,
         ]),
         ...style({
             // children:
@@ -568,7 +584,7 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     // dependencies:
     
     const {animationRegistry : {filters, transforms}} = usesAnimation();
-    const [, {filterIn: filterCheckClearIn, filterOut: filterCheckClearOut, transformIn: transformCheckClearIn, transformOut: transformCheckClearOut}] = usesCheckClearState();
+    const {checkableVars     : {filterIn: filterCheckClearIn, filterOut: filterCheckClearOut, transformIn: transformCheckClearIn, transformOut: transformCheckClearOut}} = usesCheckable();
     
     
     
@@ -603,12 +619,12 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         from  : frameCleared,
         to    : frameChecked,
     });
-    keyframesCheck.value = 'check'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckClearState`
+    keyframesCheck.value = 'check'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
     const [keyframesClearRule, keyframesClear] = keyframes({
         from  : frameChecked,
         to    : frameCleared,
     });
-    keyframesClear.value = 'clear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckClearState`
+    keyframesClear.value = 'clear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
     
     
     
@@ -635,13 +651,13 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         '75%' : frameChecking,
         to    : frameChecked,
     });
-    keyframesSwitchCheck.value = 'switchCheck'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckClearState`
+    keyframesSwitchCheck.value = 'switchCheck'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
     const [keyframesSwitchClearRule, keyframesSwitchClear] = keyframes({
         from  : frameChecked,
         '75%' : frameClearing,
         to    : frameCleared,
     });
-    keyframesSwitchClear.value = 'switchClear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckClearState`
+    keyframesSwitchClear.value = 'switchClear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
     //#endregion keyframes
     
     
