@@ -11,18 +11,8 @@ import {
 
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomSimpleRef,
-    
-    
-    
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -54,11 +44,6 @@ import {
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
-    // types:
-    CssVars,
-    
-    
-    
     // utilities:
     cssVars,
 }                           from '@cssfn/css-vars'                      // strongly typed of css variables
@@ -112,7 +97,7 @@ import {
     
     // utilities:
     fallbackNoneFilter,
-    fallbackNoneTransf,
+    fallbackNoneTransform,
 }                           from '@reusable-ui/animation'               // animation stuff of UI
 import {
     // hooks:
@@ -190,225 +175,82 @@ const _defaultMild     : boolean = false
 
 // hooks:
 
-// animations:
+// states:
 
-//#region check animations
-export interface CheckAnimVars {
-    /**
-     * final filter of the checkbox.
-     */
-    filter : any
+//#region checkable
+export interface CheckableVars {
+    filterIn     : any
+    filterOut    : any
     
+    transformIn  : any
+    transformOut : any
     
-    
-    /**
-     * final transform of the checkbox.
-     */
-    transf : any
-    
-    
-    
-    /**
-     * final animation of the checkbox.
-     */
-    anim   : any
+    anim         : any
 }
-const [checkAnims] = cssVars<CheckAnimVars>();
-
-
-
-const setsFilter        = new Set<CssCustomSimpleRef>();
-const setsTransf        = new Set<CssCustomSimpleRef>();
-const setsAnim          = new Set<CssCustomSimpleRef>();
-const checkAnimRegistry = {
-    get filters         ():    CssCustomSimpleRef[]      {
-        // dependencies:
-        
-        // features:
-        const {animationVars} = usesAnimation();
-        
-        
-        
-        return [
-            animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
-            ...Array.from(setsFilter)
-        ];
-    },
-    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)    },
-    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item) },
-    
-    
-    
-    get transfs         ():    CssCustomSimpleRef[]      {
-        // dependencies:
-        
-        // features:
-        const {animationVars} = usesAnimation();
-        
-        
-        
-        return [
-            animationVars.transfNone, // the transform collection must contain at least 1 of *none* transform, so when rendered it produces a valid css value of transform property
-            ...Array.from(setsTransf)
-        ];
-    },
-    registerTransf      (item: CssCustomSimpleRef): void { setsTransf.add(item)    },
-    unregisterTransf    (item: CssCustomSimpleRef): void { setsTransf.delete(item) },
-    
-    
-    
-    get anims           ():    CssCustomSimpleRef[]      {
-        // dependencies:
-        
-        // features:
-        const {animationVars} = usesAnimation();
-        
-        
-        
-        return [
-            animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
-            ...Array.from(setsAnim)
-        ];
-    },
-    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)      },
-    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)   },
-};
-export type CheckAnimRegistry = typeof checkAnimRegistry
-
-
-
-export type CheckAnimMixin = readonly [() => CssRule, CssVars<CheckAnimVars>, CheckAnimRegistry]
-/**
- * Uses check animation.
- * @returns A `CheckAnimMixin` represents check animation definitions.
- */
-export const usesCheckAnim = (): CheckAnimMixin => {
-    // dependencies:
-    
-    // features:
-    const {animationVars} = usesAnimation();
-    
-    
-    
-    return [
-        () => style({
-            ...vars({
-                [checkAnims.filter       ] : [[
-                    // combining: filter1 * filter2 * filter3 ...
-                    
-                    // layers:
-                    ...checkAnimRegistry.filters,
-                ]],
-                
-                
-                
-                [checkAnims.transf       ] : [[
-                    // combining: transf1 * transf2 * transf3 ...
-                    
-                    // layers:
-                    ...checkAnimRegistry.transfs,
-                ]],
-                
-                
-                
-                [checkAnims.anim         ] : [
-                    // layering: anim1 | anim2 | anim3 ...
-                    
-                    // layers:
-                    ...checkAnimRegistry.anims,
-                ],
-            }),
-            
-            
-            
-            // declare default values at lowest specificity (except for **None):
-            ...vars(Object.fromEntries([
-                ...checkAnimRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
-                ...checkAnimRegistry.transfs   .filter((ref) => (ref !== animationVars.transfNone   )).map((ref) => [ ref, animationVars.transfNone    ]),
-                ...checkAnimRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
-            ])),
-        }),
-        checkAnims,
-        checkAnimRegistry,
-    ];
-};
-//#endregion check animations
-
-
-// checks:
-
-//#region checkClear
-export interface CheckClearVars {
-    filterIn  : any
-    filterOut : any
-    transfIn  : any
-    transfOut : any
-    anim      : any
-}
-const [checkVars] = cssVars<CheckClearVars>();
+const [checkableVars] = cssVars<CheckableVars>();
 
 {
-    const [, , checkAnimRegistry] = usesCheckAnim();
-    checkAnimRegistry.registerFilter(checkVars.filterIn);
-    checkAnimRegistry.registerFilter(checkVars.filterOut);
-    checkAnimRegistry.registerTransf(checkVars.transfIn);
-    checkAnimRegistry.registerTransf(checkVars.transfOut);
-    checkAnimRegistry.registerAnim(checkVars.anim);
+    const {animationRegistry: {registerFilter, registerTransform, registerAnim}} = usesAnimation();
+    registerFilter(checkableVars.filterIn);
+    registerFilter(checkableVars.filterOut);
+    registerTransform(checkableVars.transformIn);
+    registerTransform(checkableVars.transformOut);
+    registerAnim(checkableVars.anim);
 }
 
 
 
 /**
  * Uses check & clear states.
- * @returns A `StateMixin<CheckClearVars>` represents check & clear state definitions.
+ * @returns A `StateMixin<CheckableVars>` represents check & clear state definitions.
  */
-export const usesCheckClearState = (): StateMixin<CheckClearVars> => {
+export const usesCheckClearState = (): StateMixin<CheckableVars> => {
     return [
         () => style({
             ...states([
                 ifActived({
                     ...vars({
-                        [checkVars.filterIn ] : checks.filterCheck,
+                        [checkableVars.filterIn    ] : checks.filterCheck,
                         
-                        [checkVars.transfIn ] : checks.transfCheck,
+                        [checkableVars.transformIn ] : checks.transformCheck,
                     }),
                 }),
                 ifActivating({
                     ...vars({
-                        [checkVars.filterIn ] : checks.filterCheck,
-                        [checkVars.filterOut] : checks.filterClear,
+                        [checkableVars.filterIn    ] : checks.filterCheck,
+                        [checkableVars.filterOut   ] : checks.filterClear,
                         
-                        [checkVars.transfIn ] : checks.transfCheck,
-                        [checkVars.transfOut] : checks.transfClear,
+                        [checkableVars.transformIn ] : checks.transformCheck,
+                        [checkableVars.transformOut] : checks.transformClear,
                         
-                        [checkVars.anim     ] : checks.animCheck,
+                        [checkableVars.anim        ] : checks.animCheck,
                     }),
                 }),
                 
                 ifPassivating({
                     ...vars({
-                        [checkVars.filterIn ] : checks.filterCheck,
-                        [checkVars.filterOut] : checks.filterClear,
+                        [checkableVars.filterIn    ] : checks.filterCheck,
+                        [checkableVars.filterOut   ] : checks.filterClear,
                         
-                        [checkVars.transfIn ] : checks.transfCheck,
-                        [checkVars.transfOut] : checks.transfClear,
+                        [checkableVars.transformIn ] : checks.transformCheck,
+                        [checkableVars.transformOut] : checks.transformClear,
                         
-                        [checkVars.anim     ] : checks.animClear,
+                        [checkableVars.anim        ] : checks.animClear,
                     }),
                 }),
                 ifPassived({
                     ...vars({
-                        [checkVars.filterOut] : checks.filterClear,
+                        [checkableVars.filterOut   ] : checks.filterClear,
                         
-                        [checkVars.transfOut] : checks.transfClear,
+                        [checkableVars.transformOut] : checks.transformClear,
                     }),
                 }),
             ]),
         }),
-        checkVars,
+        checkableVars,
     ];
 };
-//#endregion checkClear
+//#endregion checkable
 
 
 // variants:
@@ -437,11 +279,9 @@ export const usesCheckLayout = () => {
     // dependencies:
     
     // features:
-    const {foregroundVars} = usesForeground();
-    const {paddingVars   } = usesPadding();
-    
-    // animations:
-    const [checkAnimRule , checkAnims ] = usesCheckAnim();
+    const {               foregroundVars} = usesForeground();
+    const {               paddingVars   } = usesPadding();
+    const {animationRule, animationVars } = usesAnimation(checks as any);
     
     
     
@@ -449,9 +289,6 @@ export const usesCheckLayout = () => {
         ...imports([
             // layouts:
             usesEditableActionControlLayout(),
-            
-            // animations:
-            checkAnimRule,
         ]),
         ...style({
             // layouts:
@@ -524,6 +361,9 @@ export const usesCheckLayout = () => {
                     // children:
                     ...children(checkElm, {
                         ...imports([
+                            // features:
+                            animationRule,
+                            
                             // check indicator:
                             usesIconImage(
                                 /*image : */checks.indicator,
@@ -545,9 +385,9 @@ export const usesCheckLayout = () => {
                             
                             
                             // animations:
-                            filter    : checkAnims.filter,
-                            transf    : checkAnims.transf,
-                            anim      : checkAnims.anim,
+                            filter    : animationVars.filter,
+                            transform : animationVars.transform,
+                            anim      : animationVars.anim,
                         }),
                     }),
                     
@@ -727,40 +567,37 @@ export const useCheckStyleSheet = dynamicStyleSheet(() => ({
 export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     // dependencies:
     
-    const [, , checkAnimRegistry] = usesCheckAnim();
-    const filters = checkAnimRegistry.filters;
-    const transfs = checkAnimRegistry.transfs;
-    
-    const [, {filterIn: filterCheckClearIn, filterOut: filterCheckClearOut, transfIn: transfCheckClearIn, transfOut: transfCheckClearOut}] = usesCheckClearState();
+    const {animationRegistry : {filters, transforms}} = usesAnimation();
+    const [, {filterIn: filterCheckClearIn, filterOut: filterCheckClearOut, transformIn: transformCheckClearIn, transformOut: transformCheckClearOut}] = usesCheckClearState();
     
     
     
     //#region keyframes
     const frameCleared = style({
-        filter: [[
+        filter    : [[
             ...filters.filter((f) => ![filterCheckClearIn, filterCheckClearOut].includes(f)),
             
             filterCheckClearOut,
         ]].map(fallbackNoneFilter),
         
-        transf: [[
-            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+        transform : [[
+            ...transforms.filter((f) => ![transformCheckClearIn, transformCheckClearOut].includes(f)),
             
-            transfCheckClearOut,
-        ]].map(fallbackNoneTransf),
+            transformCheckClearOut,
+        ]].map(fallbackNoneTransform),
     });
     const frameChecked = style({
-        filter: [[
+        filter    : [[
             ...filters.filter((f) => ![filterCheckClearIn, filterCheckClearOut].includes(f)),
             
             filterCheckClearIn,
         ]].map(fallbackNoneFilter),
         
-        transf: [[
-            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+        transform : [[
+            ...transforms.filter((f) => ![transformCheckClearIn, transformCheckClearOut].includes(f)),
             
-            transfCheckClearIn,
-        ]].map(fallbackNoneTransf),
+            transformCheckClearIn,
+        ]].map(fallbackNoneTransform),
     });
     const [keyframesCheckRule, keyframesCheck] = keyframes({
         from  : frameCleared,
@@ -777,21 +614,21 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     
     const frameClearing = style({
         transformOrigin: 'right',
-        transf: [[
-            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+        transform : [[
+            ...transforms.filter((f) => ![transformCheckClearIn, transformCheckClearOut].includes(f)),
             
-            transfCheckClearOut,
+            transformCheckClearOut,
             'scaleX(1.2)', // add a bumpy effect
-        ]].map(fallbackNoneTransf),
+        ]].map(fallbackNoneTransform),
     });
     const frameChecking = style({
         transformOrigin: 'left', 
-        transf: [[
-            ...transfs.filter((f) => ![transfCheckClearIn, transfCheckClearOut].includes(f)),
+        transform : [[
+            ...transforms.filter((f) => ![transformCheckClearIn, transformCheckClearOut].includes(f)),
             
-            transfCheckClearIn,
+            transformCheckClearIn,
             'scaleX(1.2)', // add a bumpy effect
-        ]].map(fallbackNoneTransf),
+        ]].map(fallbackNoneTransform),
     });
     const [keyframesSwitchCheckRule, keyframesSwitchCheck] = keyframes({
         from  : frameCleared,
@@ -811,56 +648,56 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     
     return {
         // spacings:
-        spacing           : '0.3em'   as CssKnownProps['gapInline'],
+        spacing              : '0.3em'      as CssKnownProps['gapInline'],
         
         
         
         // animations:
         // forked from Bootstrap 5:
-        indicator         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
-        switchIndicator   : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
+        indicator            : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/></svg>")}")` as CssKnownProps['maskImage'],
+        switchIndicator      : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
         
         
-        filterCheck       : [[
+        filterCheck          : [[
             'opacity(100%)',
-        ]]                            as CssKnownProps['filter'],
-        filterClear       : [[
+        ]]                                  as CssKnownProps['filter'],
+        filterClear          : [[
             'opacity(0%)',
-        ]]                            as CssKnownProps['filter'],
-        transfCheck       : 'initial' as CssKnownProps['transform'],
-        transfClear       : 'initial' as CssKnownProps['transform'],
+        ]]                                  as CssKnownProps['filter'],
+        transformCheck       : 'initial'    as CssKnownProps['transform'],
+        transformClear       : 'initial'    as CssKnownProps['transform'],
         
         ...keyframesCheckRule,
         ...keyframesClearRule,
-        animCheck         : [
+        animCheck            : [
             ['150ms', 'ease-out', 'both', keyframesCheck      ],
-        ]                             as CssKnownProps['animation'],
-        animClear         : [
+        ]                                   as CssKnownProps['animation'],
+        animClear            : [
             ['150ms', 'ease-out', 'both', keyframesClear      ],
-        ]                             as CssKnownProps['animation'],
+        ]                                   as CssKnownProps['animation'],
         
         
-        switchFilterCheck : [[
+        switchFilterCheck    : [[
             'opacity(100%)',
-        ]]                            as CssKnownProps['filter'],
-        switchFilterClear : [[
+        ]]                                  as CssKnownProps['filter'],
+        switchFilterClear    : [[
             'opacity(50%)',
-        ]]                            as CssKnownProps['filter'],
-        switchTransfCheck : [[
+        ]]                                  as CssKnownProps['filter'],
+        switchTransformCheck : [[
             'translateX(0.5em)',
-        ]]                            as CssKnownProps['transform'],
-        switchTransfClear : [[
+        ]]                                  as CssKnownProps['transform'],
+        switchTransformClear : [[
             'translateX(-0.5em)',
-        ]]                            as CssKnownProps['transform'],
+        ]]                                  as CssKnownProps['transform'],
         
         ...keyframesSwitchCheckRule,
         ...keyframesSwitchClearRule,
-        switchAnimCheck   : [
+        switchAnimCheck      : [
             ['200ms', 'ease-out', 'both', keyframesSwitchCheck],
-        ]                             as CssKnownProps['animation'],
-        switchAnimClear   : [
+        ]                                   as CssKnownProps['animation'],
+        switchAnimClear      : [
             ['200ms', 'ease-out', 'both', keyframesSwitchClear],
-        ]                             as CssKnownProps['animation'],
+        ]                                   as CssKnownProps['animation'],
     };
 }, { prefix: 'chk' });
 
