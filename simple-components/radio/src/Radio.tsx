@@ -138,7 +138,7 @@ export const usesRadioLayout = () => {
         }),
         ...vars({
             // overwrite <Check>'s selected indicator:
-            [checks.img] : radios.img,
+            [checks.indicator] : radios.indicator,
         }),
     });
 };
@@ -187,7 +187,7 @@ export const [radios, radioValues, cssRadioConfig] = cssConfig(() => {
     return {
         // animations:
         // forked from Bootstrap 5:
-        img : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
+        indicator : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
     };
 }, { prefix: 'rad' });
 
