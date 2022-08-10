@@ -17,6 +17,7 @@ import {
 import type {
     // types:
     Optional,
+    Factory,
 }                           from '@cssfn/types'                         // cssfn general types
 import type {
     // css known (standard) properties:
@@ -52,6 +53,7 @@ import {
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'                      // strongly typed of css variables
 import {
@@ -152,10 +154,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'                 // a complement component
 import {
-    // types:
-    FeatureMixin,
-}                           from '@reusable-ui/basic'                   // a base component
-import {
     // hooks:
     markActive as baseMarkActive,
 }                           from '@reusable-ui/control'                 // a base component
@@ -201,15 +199,22 @@ export interface RangeVars {
     /**
      * final background layers of the Range.
      */
-    backg      : any
+    trackBackg : any
 }
 const [rangeVars] = cssVars<RangeVars>({ minify: false, prefix: 'range' }); // do not minify to make sure `style={{ --range-valueRatio: ... }}` is the same between in server (without `useRangeStyleSheet` rendered) & client (with `useRangeStyleSheet` rendered)
 
+
+
+export interface RangeStuff { rangeRule: Factory<CssRule>, rangeVars: CssVars<RangeVars> }
+export interface RangeConfig {
+    trackBackg ?: CssKnownProps['background']
+}
 /**
  * Uses Range variables.
- * @returns A `FeatureMixin<RangeVars>` represents Range variables definitions.
+ * @param config  A configuration of `rangeRule`.
+ * @returns A `RangeStuff` represents the Range variable rules.
  */
-export const usesRange = (): FeatureMixin<RangeVars> => {
+export const usesRange = (config?: RangeConfig): RangeStuff => {
     // dependencies:
     
     // features:
@@ -217,22 +222,24 @@ export const usesRange = (): FeatureMixin<RangeVars> => {
     
     
     
-    return [
-        () => style({
+    return {
+        rangeRule: () => style({
             ...vars({
-                [rangeVars.backg] : backgroundVars.backgColor,
+                [rangeVars.trackBackg] : config?.trackBackg ?? backgroundVars.backgColor,
             }),
         }),
         rangeVars,
-    ];
+    };
 };
 //#endregion range
+
 
 // variants:
 
 //#region orientationable
 export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
 //#endregion orientationable
+
 
 // states:
 
@@ -298,7 +305,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     );
     
     // range:
-    const [rangeRule, rangeVars] = usesRange();
+    const {rangeRule, rangeVars} = usesRange();
     
     
     
@@ -401,13 +408,13 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             
                             
                             // backgrounds:
-                            backg      : rangeVars.backg,
+                            backg      : rangeVars.trackBackg,
                             
                             
                             
                             // borders:
                             // a fix for track(Lower|Upper) background corners:
-                            border       : trackBorderVars.border,
+                            border     : trackBorderVars.border,
                          // borderRadius           : trackBorderVars.borderRadius,
                             borderStartStartRadius : trackBorderVars.borderStartStartRadius,
                             borderStartEndRadius   : trackBorderVars.borderStartEndRadius,
@@ -1029,7 +1036,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // styles:
-    const [, rangeVars]   = usesRange();
+    const {rangeVars}     = usesRange();
     const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
         // values:
         [
