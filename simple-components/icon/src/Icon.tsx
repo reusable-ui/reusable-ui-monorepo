@@ -11,11 +11,10 @@ import {
 
 // cssfn:
 import type {
-    // css custom properties:
-    CssCustomRef,
-    
-    
-    
+    // types:
+    Factory,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -50,6 +49,7 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
+    CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
@@ -111,11 +111,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
-    // types:
-    FeatureMixin,
-    
-    
-    
     // configs:
     basics as basicCssConfigs,
 }                           from '@reusable-ui/basic'           // a base component
@@ -149,7 +144,7 @@ export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
  * For example: `primary`, `success`, `danger`.
  * @param factory A callback to create a theme rules for each theme color in `options`.
  * @param options Defines all available theme color options.
- * @returns A `ThemableRules` represents the theme rules for each theme color in `options`.
+ * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
 export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()) => baseUsesThemable(factory, options);
 
@@ -166,7 +161,10 @@ export const themeOf = (themeName: ThemeName): CssRule => {
     
     return style({
         ...vars({
+            // altBackg     => backg:
             [themableVars.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
+            
+            // altBackgMild => backgMild:
             [themableVars.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
         }),
     });
@@ -175,12 +173,14 @@ export const themeOf = (themeName: ThemeName): CssRule => {
 
 
 
+// features:
+
 //#region icon
 export interface IconVars {
     /**
      * Icon image url or icon name.
      */
-    img   : any
+    image : any
     
     /**
      * Icon size.
@@ -192,13 +192,22 @@ export interface IconVars {
      */
     color : any
 }
-const [iconVars] = cssVars<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-img: ... }}` is the same between in server (without `useIconStyleSheet` rendered) & client (with `useIconStyleSheet` rendered)
+const [iconVars] = cssVars<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-image: ... }}` is the same between in server (without `useIconStyleSheet` rendered) & client (with `useIconStyleSheet` rendered)
 
+
+
+export interface IconStuff { iconRule: Factory<CssRule>, iconVars: CssVars<IconVars> }
+export interface IconConfig {
+    image ?: CssKnownProps['content'        ]
+    size  ?: CssKnownProps['blockSize'      ]
+    color ?: CssKnownProps['backgroundColor']
+}
 /**
  * Uses icon image and icon color.
- * @returns A `FeatureMixin<IconVars>` represents icon image and icon color definitions.
+ * @param config  A configuration of `iconRule`.
+ * @returns A `BackgroundStuff` represents the icon rules.
  */
-export const usesIcon = (): FeatureMixin<IconVars> => {
+export const usesIcon = (config?: IconConfig): IconStuff => {
     // dependencies:
     
     // features:
@@ -206,29 +215,29 @@ export const usesIcon = (): FeatureMixin<IconVars> => {
     
     
     
-    return [
-        () => style({
+    return {
+        iconRule: () => style({
             ...imports([
                 // features:
                 backgroundRule,
             ]),
             ...vars({
                 // appearances:
-                [iconVars.img  ] : 'initial',            // initially no image was defined
+                [iconVars.image] : config?.image,
                 
                 
                 
                 // sizes:
-                [iconVars.size ] : icons.size,           // default => uses config's size
+                [iconVars.size ] : config?.size,
                 
                 
                 
                 // backgrounds:
-                [iconVars.color] : backgroundVars.altBackgColor,
+                [iconVars.color] : config?.color ?? backgroundVars.altBackgColor,
             }),
         }),
         iconVars,
-    ];
+    };
 };
 
 
@@ -245,15 +254,15 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
     return useMemo(() => {
         // dependencies:
         
-        // icon:
-        const [, iconVars] = usesIcon();
+        // features:
+        const {iconVars} = usesIcon();
         
         
         
         const iconImg    : string|null = (() => {
-            const file = config.img.files.find((file) => getFileNameWithoutExtension(file) === icon);
+            const file = config.image.files.find((file) => getFileNameWithoutExtension(file) === icon);
             if (!file) return null;
-            return concatUrl(config.img.path, file);
+            return concatUrl(config.image.path, file);
         })();
         
         const isIconFont : boolean = !iconImg; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
@@ -263,9 +272,9 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
         // memorized a whole object:
         return {
             class: (() => {
-                if (iconImg)    return 'img';  // icon name is found in iconImg
+                if (iconImg)    return 'image'; // icon name is found in iconImage
                 
-                if (isIconFont) return 'font'; // icon name is found in iconFont
+                if (isIconFont) return 'font';  // icon name is found in iconFont
                 
                 return null; // icon name is not found in both iconImg & iconFont
             })(),
@@ -273,7 +282,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
             style: {
                 // appearances:
                 [
-                    iconVars.img
+                    iconVars.image
                     .slice(4, -1) // fix: var(--customProp) => --customProp
                 ]: (() => {
                     if (iconImg)    return `url("${iconImg}")`; // the url of the icon's image
@@ -285,7 +294,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
             },
             
             children: (!!iconImg && (
-                <img key='ico-img' src={iconImg} alt='' />
+                <img key='icon-image' src={iconImg} alt='' />
             )),
         };
     }, [icon]);
@@ -342,14 +351,14 @@ export const formatOf = (fileName: string): string|null => {
 export const usesIconLayout      = () => {
     // dependencies:
     
-    // icon:
-    const [iconRule, iconVars] = usesIcon();
+    // features:
+    const {iconRule, iconVars} = usesIcon();
     
     
     
     return style({
         ...imports([
-            // icon:
+            // features:
             iconRule,
         ]),
         ...style({
@@ -387,11 +396,11 @@ export const usesIconLayout      = () => {
         }),
     });
 };
-export const usesIconFontLayout  = (img?: CssCustomRef) => {
+export const usesIconFontLayout  = () => {
     // dependencies:
     
-    // icon:
-    const [, iconVars] = usesIcon();
+    // features:
+    const {iconVars} = usesIcon();
     
     
     
@@ -422,34 +431,34 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
             ]),
             ...style({
                 // layouts:
-                content       : img ?? iconVars.img, // put the icon's name here, the font system will replace the name to the actual image
-                display       : 'inline',            // use inline, so it takes the width & height automatically
+                content       : iconVars.image, // put the icon's name here, the font system will replace the name to the actual image
+                display       : 'inline',       // use inline, so it takes the width & height automatically
                 
                 
                 
                 // sizes:
-                fontSize      : iconVars.size,       // set icon's size
-                overflowY     : 'hidden',            // a hack: hides the pseudo-inherited underline
+                fontSize      : iconVars.size,  // set icon's size
+                overflowY     : 'hidden',       // a hack: hides the pseudo-inherited underline
                 
                 
                 
                 // accessibilities:
-                userSelect    : 'none',              // disable selecting icon's text
+                userSelect    : 'none',         // disable selecting icon's text
                 
                 
                 
                 // backgrounds:
-                backg         : 'transparent',       // set background as transparent
+                backg         : 'transparent',  // set background as transparent
                 
                 
                 
                 // foregrounds:
-                foreg         : iconVars.color,      // set icon's color
+                foreg         : iconVars.color, // set icon's color
                 
                 
                 
                 // animations:
-                transition    : 'inherit',           // inherit transition for smooth sizing changes
+                transition    : 'inherit',      // inherit transition for smooth sizing changes
                 
                 
                 
@@ -471,20 +480,20 @@ export const usesIconFontLayout  = (img?: CssCustomRef) => {
         }),
     });
 };
-export const usesIconImageLayout = (img?: CssCustomRef) => {
+export const usesIconImageLayout = () => {
     // dependencies:
     
-    // icon:
-    const [, iconVars] = usesIcon();
+    // features:
+    const {iconVars} = usesIcon();
     
     
     
     return style({
         // appearances:
-        maskSize      : 'contain',           // image's size is as big as possible without being cropped
-        maskRepeat    : 'no-repeat',         // just one image, no repetition
-        maskPosition  : 'center',            // place the image at the center
-        maskImage     : img ?? iconVars.img, // set icon's image
+        maskSize      : 'contain',       // image's size is as big as possible without being cropped
+        maskRepeat    : 'no-repeat',     // just one image, no repetition
+        maskPosition  : 'center',        // place the image at the center
+        maskImage     : iconVars.image,  // set icon's image
         
         
         
@@ -492,34 +501,34 @@ export const usesIconImageLayout = (img?: CssCustomRef) => {
         // a dummy element, for making the image's width
         ...children('img', {
             // layouts:
-            display    : 'inline-block',     // use inline-block, so it takes the width & height as we set
+            display    : 'inline-block', // use inline-block, so it takes the width & height as we set
             
             
             
             // appearances:
-            visibility : 'hidden',           // hide the element, but still consumes the dimension
+            visibility : 'hidden',       // hide the element, but still consumes the dimension
             
             
             
             // sizes:
-            inlineSize : 'auto',             // calculates the width by [blockSize * aspect_ratio]
-            blockSize  : '100%',             // set icon's height as tall as container
+            inlineSize : 'auto',         // calculates the width by [blockSize * aspect_ratio]
+            blockSize  : '100%',         // set icon's height as tall as container
             
             
             
             // accessibilities:
-            userSelect : 'none',             // disable selecting icon's img
+            userSelect : 'none',         // disable selecting icon's image
             
             
             
             // animations:
-            transition : 'inherit',          // inherit transition for smooth sizing changes
+            transition : 'inherit',      // inherit transition for smooth sizing changes
         }),
         
         
         
         // backgrounds:
-        backg         : iconVars.color,      // set icon's color
+        backg         : iconVars.color,  // set icon's color
     });
 };
 export const usesIconVariants    = () => {
@@ -541,31 +550,22 @@ export const usesIconVariants    = () => {
         ]),
     });
 };
-export const usesIconImage       = (img: CssCustomRef, color?: CssKnownProps['backgroundColor'], size?: CssKnownProps['inlineSize']) => {
+export const usesIconImage       = (image: CssKnownProps['content'], color?: CssKnownProps['backgroundColor'], size?: CssKnownProps['blockSize']) => {
     // dependencies:
     
-    // icon:
-    const [iconRule, iconVars] = usesIcon();
+    // features:
+    const {iconRule} = usesIcon({ image, size, color });
     
     
     
     return style({
         ...imports([
             // layouts:
-            usesIconImageLayout(img),
+            usesIconImageLayout(),
             
-            // icon:
+            // features:
             iconRule,
         ]),
-        ...vars({
-            // sizes:
-            [iconVars.size ] : size,  // overwrite icon's size
-            
-            
-            
-            // backgrounds:
-            [iconVars.color] : color, // overwrite icon's color
-        }),
     });
 };
 
@@ -584,7 +584,7 @@ export const useIconStyleSheet = dynamicStyleSheet(() => ({
                 usesIconFontLayout(),
             ]),
         }),
-        rule('.img', {
+        rule('.image', {
             ...imports([
                 // layouts:
                 usesIconImageLayout(),
@@ -604,7 +604,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         
         // sizes:
-        sizeNm : '24px'                                         as CssKnownProps['inlineSize'],
+        sizeNm : '24px'                                         as CssKnownProps['blockSize'],
     };
     
     
@@ -615,11 +615,11 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         
         // sizes:
-        size    :            basics.sizeNm                      as CssKnownProps['inlineSize'],
-        sizeSm  : [['calc(', basics.sizeNm, '*', 0.75  , ')']]  as CssKnownProps['inlineSize'],
-        sizeMd  : [['calc(', basics.sizeNm, '*', 1.50  , ')']]  as CssKnownProps['inlineSize'],
-        sizeLg  : [['calc(', basics.sizeNm, '*', 2.00  , ')']]  as CssKnownProps['inlineSize'],
-        size1em : '1em'                                         as CssKnownProps['inlineSize'],
+        size    :            basics.sizeNm                      as CssKnownProps['blockSize'],
+        sizeSm  : [['calc(', basics.sizeNm, '*', 0.75  , ')']]  as CssKnownProps['blockSize'],
+        sizeMd  : [['calc(', basics.sizeNm, '*', 1.50  , ')']]  as CssKnownProps['blockSize'],
+        sizeLg  : [['calc(', basics.sizeNm, '*', 2.00  , ')']]  as CssKnownProps['blockSize'],
+        size1em : '1em'                                         as CssKnownProps['blockSize'],
         
         
         
@@ -629,7 +629,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
 }, { prefix: 'ico' });
 
 export const config = {
-    font : {
+    font  : {
         /**
          * A `url directory` pointing to the collection of the icon's fonts.  
          * It's the `front-end url`, not the physical path on the server.
@@ -662,7 +662,7 @@ export const config = {
             textDecoration : 'none',
         }),
     },
-    img  : {
+    image : {
         /**
          * A `url directory` pointing to the collection of the icon's images.  
          * It's the `front-end url`, not the physical path on the server.
