@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Factory,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -18,6 +22,7 @@ import {
     // rules:
     states,
     keyframes,
+    fallbacks,
     ifNthChild,
     
     
@@ -44,7 +49,7 @@ import {
     
     // utilities:
     cssVars,
-    fallbacks,
+    fallbacks as switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -64,7 +69,6 @@ import {
 // reusable-ui features:
 import {
     // hooks:
-    AnimationConfig,
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
@@ -214,16 +218,34 @@ const [hamburgerableVars] = cssVars<HamburgerableVars>();
 
 
 
-export type HamburgerAnimMixin = readonly [() => CssRule, () => CssRule, CssVars<HamburgerableVars>]
+export interface HamburgerableStuff { hamburgerableRule: Factory<CssRule>, hamburgerableVars: CssVars<HamburgerableVars> }
+export interface HamburgerableConfig {
+    hamburgerTopTransformIn  ?: CssKnownProps['transform']
+    hamburgerMidTransformIn  ?: CssKnownProps['transform']
+    hamburgerBtmTransformIn  ?: CssKnownProps['transform']
+    
+    hamburgerTopTransformOut ?: CssKnownProps['transform']
+    hamburgerMidTransformOut ?: CssKnownProps['transform']
+    hamburgerBtmTransformOut ?: CssKnownProps['transform']
+    
+    hamburgerTopAnimIn       ?: CssKnownProps['animation']
+    hamburgerMidAnimIn       ?: CssKnownProps['animation']
+    hamburgerBtmAnimIn       ?: CssKnownProps['animation']
+    
+    hamburgerTopAnimOut      ?: CssKnownProps['animation']
+    hamburgerMidAnimOut      ?: CssKnownProps['animation']
+    hamburgerBtmAnimOut      ?: CssKnownProps['animation']
+}
 /**
  * Uses hamburger animation.
- * @returns A `HamburgerAnimMixin` represents hamburger animation definitions.
+ * @param config  A configuration of `hamburgerableRule`.
+ * @returns A `HamburgerableStuff` represents a hamburgerable state.
  */
-export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin => {
+export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableStuff => {
     // dependencies:
     
     // features:
-    const {animationRule, animationVars} = usesAnimation(config);
+    const {animationRule, animationVars} = usesAnimation();
     
     
     
@@ -238,14 +260,14 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
         [hamburgerableVars.btmTransformOut] : animationVars.transformNone,
     });
     const transformInVars   = () => vars({
-        [hamburgerableVars.topTransformIn ] : hamburgerMenuButtons.hamburgerTopTransformIn,
-        [hamburgerableVars.midTransformIn ] : hamburgerMenuButtons.hamburgerMidTransformIn,
-        [hamburgerableVars.btmTransformIn ] : hamburgerMenuButtons.hamburgerBtmTransformIn,
+        [hamburgerableVars.topTransformIn ] : config?.hamburgerTopTransformIn,
+        [hamburgerableVars.midTransformIn ] : config?.hamburgerMidTransformIn,
+        [hamburgerableVars.btmTransformIn ] : config?.hamburgerBtmTransformIn,
     });
     const transformOutVars  = () => vars({
-        [hamburgerableVars.topTransformOut] : hamburgerMenuButtons.hamburgerTopTransformOut,
-        [hamburgerableVars.midTransformOut] : hamburgerMenuButtons.hamburgerMidTransformOut,
-        [hamburgerableVars.btmTransformOut] : hamburgerMenuButtons.hamburgerBtmTransformOut,
+        [hamburgerableVars.topTransformOut] : config?.hamburgerTopTransformOut,
+        [hamburgerableVars.midTransformOut] : config?.hamburgerMidTransformOut,
+        [hamburgerableVars.btmTransformOut] : config?.hamburgerBtmTransformOut,
     });
     
     const animNoneVars      = () => vars({
@@ -254,51 +276,37 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
         [hamburgerableVars.btmAnim        ] : animationVars.animNone,
     });
     const animInVars        = () => vars({
-        [hamburgerableVars.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimIn,
-        [hamburgerableVars.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimIn,
-        [hamburgerableVars.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
+        [hamburgerableVars.topAnim        ] : config?.hamburgerTopAnimIn,
+        [hamburgerableVars.midAnim        ] : config?.hamburgerMidAnimIn,
+        [hamburgerableVars.btmAnim        ] : config?.hamburgerBtmAnimIn,
     });
     const animOutVars       = () => vars({
-        [hamburgerableVars.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimOut,
-        [hamburgerableVars.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimOut,
-        [hamburgerableVars.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
+        [hamburgerableVars.topAnim        ] : config?.hamburgerTopAnimOut,
+        [hamburgerableVars.midAnim        ] : config?.hamburgerMidAnimOut,
+        [hamburgerableVars.btmAnim        ] : config?.hamburgerBtmAnimOut,
     });
     
     
     
-    return [
-        () => style({
+    return {
+        hamburgerableRule: () => style({
             ...imports([
                 // features:
                 animationRule,
             ]),
-            ...vars({
-                [hamburgerableVars.topTransform] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerableVars.topTransformIn,
-                    hamburgerableVars.topTransformOut,
-                ]],
-                [hamburgerableVars.midTransform] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerableVars.midTransformIn,
-                    hamburgerableVars.midTransformOut,
-                ]],
-                [hamburgerableVars.btmTransform] : [[
-                    // combining: transform1 * transform2 * transform3 ...
-                    
-                    hamburgerableVars.btmTransformIn,
-                    hamburgerableVars.btmTransformOut,
-                ]],
+            
+            
+            
+            // reset functions:
+            // declare default values at lowest specificity:
+            ...fallbacks({
+                ...transformNoneVars(),
+                ...animNoneVars(),
             }),
-        }),
-        () => style({
-            ...imports([
-                // css vars:
-                transformNoneVars(),
-                animNoneVars(),
-            ]),
+            
+            
+            
+            // states:
             ...states([
                 ifActived({
                     ...imports([
@@ -327,9 +335,33 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
                     ]),
                 }),
             ]),
+            
+            
+            
+            // compositions:
+            ...vars({
+                [hamburgerableVars.topTransform] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerableVars.topTransformIn,
+                    hamburgerableVars.topTransformOut,
+                ]],
+                [hamburgerableVars.midTransform] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerableVars.midTransformIn,
+                    hamburgerableVars.midTransformOut,
+                ]],
+                [hamburgerableVars.btmTransform] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    hamburgerableVars.btmTransformIn,
+                    hamburgerableVars.btmTransformOut,
+                ]],
+            }),
         }),
         hamburgerableVars,
-    ];
+    };
 };
 //#endregion hamburgerable
 
@@ -341,15 +373,15 @@ const svgElm = 'svg'
 export const usesHamburgerLayout = () => {
     // dependencies:
     
-    // animations:
-    const [hamburgerAnimRule, , hamburgerableVars] = usesHamburgerAnim(hamburgerMenuButtons as any);
+    // states:
+    const {hamburgerableVars} = usesHamburgerable();
     
     
     
     return style({
         ...imports([
             // animations:
-            hamburgerAnimRule,
+            // hamburgerAnimRule,
         ]),
         ...style({
             // appearances:
@@ -360,7 +392,7 @@ export const usesHamburgerLayout = () => {
             // sizes:
             // fills the entire parent text's height:
             inlineSize : 'auto', // calculates the width by [blockSize * aspect_ratio]
-            blockSize  : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
+            blockSize  : `calc(1em * ${switchOf(basics.lineHeight, typos.lineHeight)})`,
             
             
             
@@ -434,8 +466,8 @@ export const usesHamburgerMenuButtonVariants = () => {
 export const usesHamburgerMenuButtonStates = () => {
     // dependencies:
     
-    // animations:
-    const [, hamburgerAnimStateRule] = usesHamburgerAnim();
+    // states:
+    const {hamburgerableRule} = usesHamburgerable(hamburgerMenuButtons);
     
     
     
@@ -443,9 +475,7 @@ export const usesHamburgerMenuButtonStates = () => {
         ...imports([
             // states:
             usesToggleButtonStates(),
-            
-            // animations:
-            hamburgerAnimStateRule,
+            hamburgerableRule,
         ]),
         ...states([
             ifActive({
@@ -595,6 +625,7 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
         hamburgerBtmAnimIn    : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingBtm    ],
         ]                                               as CssKnownProps['animation'],
+        
         hamburgerTopAnimOut   : [
             [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringTop],
         ]                                               as CssKnownProps['animation'],
