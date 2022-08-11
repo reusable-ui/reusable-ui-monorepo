@@ -57,6 +57,8 @@
 @reusable-ui/interactable
 @reusable-ui/clickable
 @reusable-ui/invalidable
+@reusable-ui/checkable
+@reusable-ui/hamburgerable
 
 // supports:
 [upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
@@ -89,7 +91,7 @@
 [upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/check
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/radio
-[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @reusable-ui/hamburger-menu-button
+[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [full organized] @reusable-ui/hamburger-menu-button
 
 // layouts:
 [upgraded] [documented  ] [published] [todo: ListItem from Button] [full organized] @reusable-ui/list
