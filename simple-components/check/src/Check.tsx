@@ -85,11 +85,6 @@ import {
     usesBorder,
 }                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
 import {
-    // utilities:
-    fallbackNoneFilter,
-    fallbackNoneTransform,
-}                           from '@reusable-ui/animation'               // animation stuff of UI
-import {
     // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
@@ -472,28 +467,28 @@ export const useCheckStyleSheet = dynamicStyleSheet(() => ({
 export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     // dependencies:
     
-    const {checkableVars     : {filterIn: checkFilterIn, filterOut: checkFilterOut, transformIn: checkTransformIn, transformOut: checkTransformOut}} = usesCheckable();
+    const {checkableVars : {filterIn: checkFilterIn, filterOut: checkFilterOut, transformIn: checkTransformIn, transformOut: checkTransformOut}} = usesCheckable();
     
     
     
     //#region keyframes
-    const frameCleared = style({
-        filter    : [[
-            checkFilterOut,
-        ]].map(fallbackNoneFilter),
-        
-        transform : [[
-            checkTransformOut,
-        ]].map(fallbackNoneTransform),
-    });
     const frameChecked = style({
         filter    : [[
             checkFilterIn,
-        ]].map(fallbackNoneFilter),
+        ]],
         
         transform : [[
             checkTransformIn,
-        ]].map(fallbackNoneTransform),
+        ]],
+    });
+    const frameCleared = style({
+        filter    : [[
+            checkFilterOut,
+        ]],
+        
+        transform : [[
+            checkTransformOut,
+        ]],
     });
     const [keyframesCheckRule, keyframesCheck] = keyframes({
         from  : frameCleared,
@@ -508,19 +503,19 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     
     
     
-    const frameClearing = style({
-        transformOrigin: 'right',
-        transform : [[
-            checkTransformOut,
-            'scaleX(1.2)', // add a bumpy effect
-        ]].map(fallbackNoneTransform),
-    });
     const frameChecking = style({
         transformOrigin: 'left', 
         transform : [[
             checkTransformIn,
             'scaleX(1.2)', // add a bumpy effect
-        ]].map(fallbackNoneTransform),
+        ]],
+    });
+    const frameClearing = style({
+        transformOrigin: 'right',
+        transform : [[
+            checkTransformOut,
+            'scaleX(1.2)', // add a bumpy effect
+        ]],
     });
     const [keyframesSwitchCheckRule, keyframesSwitchCheck] = keyframes({
         from  : frameCleared,
