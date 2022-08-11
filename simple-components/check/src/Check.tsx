@@ -22,6 +22,8 @@ import type {
     
     // cssfn properties:
     CssRule,
+    
+    CssSelectorCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
@@ -222,45 +224,53 @@ export interface CheckableConfig {
  * @param config  A configuration of `checkableRule`.
  * @returns A `CheckableStuff` represents a checkable state.
  */
-export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
+export const usesCheckable = (config?: CheckableConfig, checkableElm: CssSelectorCollection = '&'): CheckableStuff => {
     return {
         checkableRule: () => style({
             ...states([
                 ifActived({
-                    ...vars({
-                        [checkableVars.filterIn    ] : config?.filterCheck,
-                        
-                        [checkableVars.transformIn ] : config?.transformCheck,
+                    ...rule(checkableElm, {
+                        ...vars({
+                            [checkableVars.filterIn    ] : config?.filterCheck,
+                            
+                            [checkableVars.transformIn ] : config?.transformCheck,
+                        }),
                     }),
                 }),
                 ifActivating({
-                    ...vars({
-                        [checkableVars.filterIn    ] : config?.filterCheck,
-                        [checkableVars.filterOut   ] : config?.filterClear,
-                        
-                        [checkableVars.transformIn ] : config?.transformCheck,
-                        [checkableVars.transformOut] : config?.transformClear,
-                        
-                        [checkableVars.anim        ] : config?.animCheck,
+                    ...rule(checkableElm, {
+                        ...vars({
+                            [checkableVars.filterIn    ] : config?.filterCheck,
+                            [checkableVars.filterOut   ] : config?.filterClear,
+                            
+                            [checkableVars.transformIn ] : config?.transformCheck,
+                            [checkableVars.transformOut] : config?.transformClear,
+                            
+                            [checkableVars.anim        ] : config?.animCheck,
+                        }),
                     }),
                 }),
                 
                 ifPassivating({
-                    ...vars({
-                        [checkableVars.filterIn    ] : config?.filterCheck,
-                        [checkableVars.filterOut   ] : config?.filterClear,
-                        
-                        [checkableVars.transformIn ] : config?.transformCheck,
-                        [checkableVars.transformOut] : config?.transformClear,
-                        
-                        [checkableVars.anim        ] : config?.animClear,
+                    ...rule(checkableElm, {
+                        ...vars({
+                            [checkableVars.filterIn    ] : config?.filterCheck,
+                            [checkableVars.filterOut   ] : config?.filterClear,
+                            
+                            [checkableVars.transformIn ] : config?.transformCheck,
+                            [checkableVars.transformOut] : config?.transformClear,
+                            
+                            [checkableVars.anim        ] : config?.animClear,
+                        }),
                     }),
                 }),
                 ifPassived({
-                    ...vars({
-                        [checkableVars.filterOut   ] : config?.filterClear,
-                        
-                        [checkableVars.transformOut] : config?.transformClear,
+                    ...rule(checkableElm, {
+                        ...vars({
+                            [checkableVars.filterOut   ] : config?.filterClear,
+                            
+                            [checkableVars.transformOut] : config?.transformClear,
+                        }),
                     }),
                 }),
             ]),
@@ -541,7 +551,7 @@ export const usesCheckStates = () => {
     
     // states:
     const {focusableVars} = usesFocusable();
-    const {checkableRule} = usesCheckable(checks);
+    const {checkableRule} = usesCheckable(checks, `&>${inputElm}${checkElm}`);
     
     
     
