@@ -11,25 +11,13 @@ import {
 
 // cssfn:
 import type {
-    // types:
-    Factory,
-}                           from '@cssfn/types'                         // cssfn general types
-import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'                     // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
-    states,
     keyframes,
     ifNotLastChild,
     
@@ -54,11 +42,6 @@ import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
-import {
-    // utilities:
-    CssVars,
-    cssVars,
-}                           from '@cssfn/css-vars'                      // strongly typed of css variables
 import {
     cssConfig,
     
@@ -134,10 +117,6 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifActived,
-    ifActivating,
-    ifPassivating,
-    ifPassived,
     ToggleActivatableProps,
     useToggleActivatable,
 }                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
@@ -145,6 +124,10 @@ import {
     // hooks:
     usesFocusable,
 }                           from '@reusable-ui/focusable'               // a capability of UI to be focused
+import {
+    // hooks:
+    usesCheckable,
+}                           from '@reusable-ui/checkable'               // a capability of UI to be checked
 
 // reusable-ui components:
 import {
@@ -182,104 +165,6 @@ const _defaultMild     : boolean = false
 
 
 // hooks:
-
-// states:
-
-//#region checkable
-export interface CheckableVars {
-    filterIn     : any
-    filterOut    : any
-    
-    transformIn  : any
-    transformOut : any
-    
-    anim         : any
-}
-const [checkableVars] = cssVars<CheckableVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerTransform, registerAnim}} = usesAnimation();
-    registerFilter(checkableVars.filterIn);
-    registerFilter(checkableVars.filterOut);
-    registerTransform(checkableVars.transformIn);
-    registerTransform(checkableVars.transformOut);
-    registerAnim(checkableVars.anim);
-}
-
-
-
-export interface CheckableStuff { checkableRule: Factory<CssRule>, checkableVars: CssVars<CheckableVars> }
-export interface CheckableConfig {
-    filterCheck    ?: CssKnownProps['filter'   ]
-    filterClear    ?: CssKnownProps['filter'   ]
-    
-    transformCheck ?: CssKnownProps['transform']
-    transformClear ?: CssKnownProps['transform']
-    
-    animCheck      ?: CssKnownProps['animation']
-    animClear      ?: CssKnownProps['animation']
-}
-/**
- * Adds a capability of UI to be checked.
- * @param config  A configuration of `checkableRule`.
- * @returns A `CheckableStuff` represents a checkable state.
- */
-export const usesCheckable = (config?: CheckableConfig, checkableElm: CssSelectorCollection = '&'): CheckableStuff => {
-    return {
-        checkableRule: () => style({
-            ...states([
-                ifActived({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                        }),
-                    }),
-                }),
-                ifActivating({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                            [checkableVars.transformOut] : config?.transformClear,
-                            
-                            [checkableVars.anim        ] : config?.animCheck,
-                        }),
-                    }),
-                }),
-                
-                ifPassivating({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                            [checkableVars.transformOut] : config?.transformClear,
-                            
-                            [checkableVars.anim        ] : config?.animClear,
-                        }),
-                    }),
-                }),
-                ifPassived({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformOut] : config?.transformClear,
-                        }),
-                    }),
-                }),
-            ]),
-        }),
-        checkableVars,
-    };
-};
-//#endregion checkable
-
 
 // variants:
 
