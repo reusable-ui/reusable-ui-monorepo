@@ -87,8 +87,8 @@
 [upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/form
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/input
 [upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/check
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/radio
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/check
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/radio
 [upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [semi organized] @reusable-ui/hamburger-menu-button
 
 // layouts:
