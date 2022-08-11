@@ -37,15 +37,14 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/types": "^2.0.1",
     "@cssfn/css-config": "^2.0.14",
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/css-vars": "^2.0.9",
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/activatable": "^5.0.0",
-    "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/clickable": "^5.0.0",
+    "@reusable-ui/hamburgerable": "^5.0.0",
     "@reusable-ui/toggle-button": "^5.0.0",
     "@reusable-ui/control": "^5.0.0",
     "@reusable-ui/focusable": "^5.0.0",
