@@ -218,17 +218,23 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
                 [hamburgerableVars.topTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
+                    // back-to-front order, the last is processed first, the first is processed last
+                    
                     hamburgerableVars.topTransformIn,
                     hamburgerableVars.topTransformOut,
                 ]],
                 [hamburgerableVars.midTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
+                    // back-to-front order, the last is processed first, the first is processed last
+                    
                     hamburgerableVars.midTransformIn,
                     hamburgerableVars.midTransformOut,
                 ]],
                 [hamburgerableVars.btmTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
+                    
+                    // back-to-front order, the last is processed first, the first is processed last
                     
                     hamburgerableVars.btmTransformIn,
                     hamburgerableVars.btmTransformOut,
