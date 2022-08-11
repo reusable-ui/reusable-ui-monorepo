@@ -210,7 +210,7 @@ export interface HamburgerAnimVars {
      */
     btmAnim         : any
 }
-const [hamburgerAnims] = cssVars<HamburgerAnimVars>();
+const [hamburgerAnimVars] = cssVars<HamburgerAnimVars>();
 
 
 
@@ -229,39 +229,39 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
     
     // css vars:
     const transformNoneVars = () => vars({
-        [hamburgerAnims.topTransformIn ] : animationVars.transformNone,
-        [hamburgerAnims.midTransformIn ] : animationVars.transformNone,
-        [hamburgerAnims.btmTransformIn ] : animationVars.transformNone,
+        [hamburgerAnimVars.topTransformIn ] : animationVars.transformNone,
+        [hamburgerAnimVars.midTransformIn ] : animationVars.transformNone,
+        [hamburgerAnimVars.btmTransformIn ] : animationVars.transformNone,
         
-        [hamburgerAnims.topTransformOut] : animationVars.transformNone,
-        [hamburgerAnims.midTransformOut] : animationVars.transformNone,
-        [hamburgerAnims.btmTransformOut] : animationVars.transformNone,
+        [hamburgerAnimVars.topTransformOut] : animationVars.transformNone,
+        [hamburgerAnimVars.midTransformOut] : animationVars.transformNone,
+        [hamburgerAnimVars.btmTransformOut] : animationVars.transformNone,
     });
     const transformInVars   = () => vars({
-        [hamburgerAnims.topTransformIn ] : hamburgerMenuButtons.hamburgerTopTransformIn,
-        [hamburgerAnims.midTransformIn ] : hamburgerMenuButtons.hamburgerMidTransformIn,
-        [hamburgerAnims.btmTransformIn ] : hamburgerMenuButtons.hamburgerBtmTransformIn,
+        [hamburgerAnimVars.topTransformIn ] : hamburgerMenuButtons.hamburgerTopTransformIn,
+        [hamburgerAnimVars.midTransformIn ] : hamburgerMenuButtons.hamburgerMidTransformIn,
+        [hamburgerAnimVars.btmTransformIn ] : hamburgerMenuButtons.hamburgerBtmTransformIn,
     });
     const transformOutVars  = () => vars({
-        [hamburgerAnims.topTransformOut] : hamburgerMenuButtons.hamburgerTopTransformOut,
-        [hamburgerAnims.midTransformOut] : hamburgerMenuButtons.hamburgerMidTransformOut,
-        [hamburgerAnims.btmTransformOut] : hamburgerMenuButtons.hamburgerBtmTransformOut,
+        [hamburgerAnimVars.topTransformOut] : hamburgerMenuButtons.hamburgerTopTransformOut,
+        [hamburgerAnimVars.midTransformOut] : hamburgerMenuButtons.hamburgerMidTransformOut,
+        [hamburgerAnimVars.btmTransformOut] : hamburgerMenuButtons.hamburgerBtmTransformOut,
     });
     
     const animNoneVars      = () => vars({
-        [hamburgerAnims.topAnim        ] : animationVars.animNone,
-        [hamburgerAnims.midAnim        ] : animationVars.animNone,
-        [hamburgerAnims.btmAnim        ] : animationVars.animNone,
+        [hamburgerAnimVars.topAnim        ] : animationVars.animNone,
+        [hamburgerAnimVars.midAnim        ] : animationVars.animNone,
+        [hamburgerAnimVars.btmAnim        ] : animationVars.animNone,
     });
     const animInVars        = () => vars({
-        [hamburgerAnims.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimIn,
-        [hamburgerAnims.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimIn,
-        [hamburgerAnims.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
+        [hamburgerAnimVars.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimIn,
+        [hamburgerAnimVars.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimIn,
+        [hamburgerAnimVars.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
     });
     const animOutVars       = () => vars({
-        [hamburgerAnims.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimOut,
-        [hamburgerAnims.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimOut,
-        [hamburgerAnims.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
+        [hamburgerAnimVars.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimOut,
+        [hamburgerAnimVars.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimOut,
+        [hamburgerAnimVars.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
     });
     
     
@@ -273,23 +273,23 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
                 animationRule,
             ]),
             ...vars({
-                [hamburgerAnims.topTransform] : [[
+                [hamburgerAnimVars.topTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.topTransformIn,
-                    hamburgerAnims.topTransformOut,
+                    hamburgerAnimVars.topTransformIn,
+                    hamburgerAnimVars.topTransformOut,
                 ]],
-                [hamburgerAnims.midTransform] : [[
+                [hamburgerAnimVars.midTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.midTransformIn,
-                    hamburgerAnims.midTransformOut,
+                    hamburgerAnimVars.midTransformIn,
+                    hamburgerAnimVars.midTransformOut,
                 ]],
-                [hamburgerAnims.btmTransform] : [[
+                [hamburgerAnimVars.btmTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.btmTransformIn,
-                    hamburgerAnims.btmTransformOut,
+                    hamburgerAnimVars.btmTransformIn,
+                    hamburgerAnimVars.btmTransformOut,
                 ]],
             }),
         }),
@@ -328,7 +328,7 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
                 }),
             ]),
         }),
-        hamburgerAnims,
+        hamburgerAnimVars,
     ];
 };
 //#endregion hamburger animations
@@ -342,7 +342,7 @@ export const usesHamburgerLayout = () => {
     // dependencies:
     
     // animations:
-    const [hamburgerAnimRule, , hamburgerAnims] = usesHamburgerAnim(hamburgerMenuButtons as any);
+    const [hamburgerAnimRule, , hamburgerAnimVars] = usesHamburgerAnim(hamburgerMenuButtons as any);
     
     
     
@@ -376,16 +376,16 @@ export const usesHamburgerLayout = () => {
                 // animations:
                 transformOrigin : '50% 50%',
                 ...ifNthChild(0, 1, {
-                    transform : hamburgerAnims.topTransform,
-                    anim      : hamburgerAnims.topAnim,
+                    transform : hamburgerAnimVars.topTransform,
+                    anim      : hamburgerAnimVars.topAnim,
                 }),
                 ...ifNthChild(0, 2, {
-                    transform : hamburgerAnims.midTransform,
-                    anim      : hamburgerAnims.midAnim,
+                    transform : hamburgerAnimVars.midTransform,
+                    anim      : hamburgerAnimVars.midAnim,
                 }),
                 ...ifNthChild(0, 3, {
-                    transform : hamburgerAnims.btmTransform,
-                    anim      : hamburgerAnims.btmAnim,
+                    transform : hamburgerAnimVars.btmTransform,
+                    anim      : hamburgerAnimVars.btmAnim,
                 }),
             }),
         }),
