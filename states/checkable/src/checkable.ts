@@ -11,19 +11,18 @@ import type {
     
     // cssfn properties:
     CssRule,
-    
-    CssSelectorCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     states,
+    fallbacks,
     
     
     
     // styles:
     style,
     vars,
+    imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -60,87 +59,136 @@ export interface CheckableVars {
     transformIn  : any
     transformOut : any
     
+    /**
+     * final filter for the check indicator element.
+     */
+    filter       : any
+    
+    /**
+     * final transform for the check indicator element.
+     */
+    transform    : any
+    
+    /**
+     * final animation for the check indicator element.
+     */
     anim         : any
 }
 const [checkableVars] = cssVars<CheckableVars>();
-
-{
-    const {animationRegistry: {registerFilter, registerTransform, registerAnim}} = usesAnimation();
-    registerFilter(checkableVars.filterIn);
-    registerFilter(checkableVars.filterOut);
-    registerTransform(checkableVars.transformIn);
-    registerTransform(checkableVars.transformOut);
-    registerAnim(checkableVars.anim);
-}
 
 
 
 export interface CheckableStuff { checkableRule: Factory<CssRule>, checkableVars: CssVars<CheckableVars> }
 export interface CheckableConfig {
-    filterCheck    ?: CssKnownProps['filter'   ]
-    filterClear    ?: CssKnownProps['filter'   ]
+    checkFilterIn     ?: CssKnownProps['filter'   ]
+    checkFilterOut    ?: CssKnownProps['filter'   ]
     
-    transformCheck ?: CssKnownProps['transform']
-    transformClear ?: CssKnownProps['transform']
+    checkTransformIn  ?: CssKnownProps['transform']
+    checkTransformOut ?: CssKnownProps['transform']
     
-    animCheck      ?: CssKnownProps['animation']
-    animClear      ?: CssKnownProps['animation']
+    checkAnimIn       ?: CssKnownProps['animation']
+    checkAnimOut      ?: CssKnownProps['animation']
 }
 /**
  * Adds a capability of UI to be checked.
  * @param config  A configuration of `checkableRule`.
  * @returns A `CheckableStuff` represents a checkable state.
  */
-export const usesCheckable = (config?: CheckableConfig, checkableElm: CssSelectorCollection = '&'): CheckableStuff => {
+export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
+    // dependencies:
+    
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
+    
+    
+    
     return {
         checkableRule: () => style({
+            ...imports([
+                // features:
+                animationRule,
+            ]),
+            
+            
+            
+            // reset functions:
+            // declare default values at lowest specificity:
+            ...fallbacks({
+                ...vars({
+                    [checkableVars.filterIn    ] : animationVars.filterNone,
+                    [checkableVars.filterOut   ] : animationVars.filterNone,
+                    
+                    [checkableVars.transformIn ] : animationVars.transformNone,
+                    [checkableVars.transformOut] : animationVars.transformNone,
+                    
+                    [checkableVars.anim        ] : animationVars.animNone,
+                }),
+            }),
+            
+            
+            
             ...states([
                 ifActived({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                        }),
+                    ...vars({
+                        [checkableVars.filterIn    ] : config?.checkFilterIn,
+                        
+                        [checkableVars.transformIn ] : config?.checkTransformIn,
                     }),
                 }),
                 ifActivating({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                            [checkableVars.transformOut] : config?.transformClear,
-                            
-                            [checkableVars.anim        ] : config?.animCheck,
-                        }),
+                    ...vars({
+                        [checkableVars.filterIn    ] : config?.checkFilterIn,
+                        [checkableVars.filterOut   ] : config?.checkFilterOut,
+                        
+                        [checkableVars.transformIn ] : config?.checkTransformIn,
+                        [checkableVars.transformOut] : config?.checkTransformOut,
+                        
+                        [checkableVars.anim        ] : config?.checkAnimIn,
                     }),
                 }),
                 
                 ifPassivating({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterIn    ] : config?.filterCheck,
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformIn ] : config?.transformCheck,
-                            [checkableVars.transformOut] : config?.transformClear,
-                            
-                            [checkableVars.anim        ] : config?.animClear,
-                        }),
+                    ...vars({
+                        [checkableVars.filterIn    ] : config?.checkFilterIn,
+                        [checkableVars.filterOut   ] : config?.checkFilterOut,
+                        
+                        [checkableVars.transformIn ] : config?.checkTransformIn,
+                        [checkableVars.transformOut] : config?.checkTransformOut,
+                        
+                        [checkableVars.anim        ] : config?.checkAnimOut,
                     }),
                 }),
                 ifPassived({
-                    ...rule(checkableElm, {
-                        ...vars({
-                            [checkableVars.filterOut   ] : config?.filterClear,
-                            
-                            [checkableVars.transformOut] : config?.transformClear,
-                        }),
+                    ...vars({
+                        [checkableVars.filterOut   ] : config?.checkFilterOut,
+                        
+                        [checkableVars.transformOut] : config?.checkTransformOut,
                     }),
                 }),
             ]),
+            
+            
+            
+            // compositions:
+            ...vars({
+                [checkableVars.filter   ] : [[
+                    // combining: filter1 * filter2 * filter3 ...
+                    
+                    // front-to-back order, the first is processed first, the last is processed last
+                    
+                    checkableVars.filterIn,
+                    checkableVars.filterOut,
+                ]],
+                
+                [checkableVars.transform] : [[
+                    // combining: transform1 * transform2 * transform3 ...
+                    
+                    // back-to-front order, the last is processed first, the first is processed last
+                    
+                    checkableVars.transformIn,
+                    checkableVars.transformOut,
+                ]],
+            }),
         }),
         checkableVars,
     };
