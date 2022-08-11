@@ -174,41 +174,41 @@ export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRu
 
 //#region hamburger animations
 export interface HamburgerAnimVars {
-    topTransfIn  : any
-    midTransfIn  : any
-    btmTransfIn  : any
+    topTransformIn  : any
+    midTransformIn  : any
+    btmTransformIn  : any
     
-    topTransfOut : any
-    midTransfOut : any
-    btmTransfOut : any
+    topTransformOut : any
+    midTransformOut : any
+    btmTransformOut : any
     
     
     
     /**
      * final transform for the hamburger top.
      */
-    topTransf    : any
+    topTransform    : any
     /**
      * final transform for the hamburger middle.
      */
-    midTransf    : any
+    midTransform    : any
     /**
      * final transform for the hamburger bottom.
      */
-    btmTransf    : any
+    btmTransform    : any
     
     /**
      * final animation for the hamburger top.
      */
-    topAnim      : any
+    topAnim         : any
     /**
      * final animation for the hamburger middle.
      */
-    midAnim      : any
+    midAnim         : any
     /**
      * final animation for the hamburger bottom.
      */
-    btmAnim      : any
+    btmAnim         : any
 }
 const [hamburgerAnims] = cssVars<HamburgerAnimVars>();
 
@@ -228,40 +228,40 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
     
     
     // css vars:
-    const transfNoneVars = () => vars({
-        [hamburgerAnims.topTransfIn ] : animationVars.transfNone,
-        [hamburgerAnims.midTransfIn ] : animationVars.transfNone,
-        [hamburgerAnims.btmTransfIn ] : animationVars.transfNone,
+    const transformNoneVars = () => vars({
+        [hamburgerAnims.topTransformIn ] : animationVars.transformNone,
+        [hamburgerAnims.midTransformIn ] : animationVars.transformNone,
+        [hamburgerAnims.btmTransformIn ] : animationVars.transformNone,
         
-        [hamburgerAnims.topTransfOut] : animationVars.transfNone,
-        [hamburgerAnims.midTransfOut] : animationVars.transfNone,
-        [hamburgerAnims.btmTransfOut] : animationVars.transfNone,
+        [hamburgerAnims.topTransformOut] : animationVars.transformNone,
+        [hamburgerAnims.midTransformOut] : animationVars.transformNone,
+        [hamburgerAnims.btmTransformOut] : animationVars.transformNone,
     });
-    const transfInVars   = () => vars({
-        [hamburgerAnims.topTransfIn ] : hamburgerMenuButtons.hamburgerTopTransfIn,
-        [hamburgerAnims.midTransfIn ] : hamburgerMenuButtons.hamburgerMidTransfIn,
-        [hamburgerAnims.btmTransfIn ] : hamburgerMenuButtons.hamburgerBtmTransfIn,
+    const transformInVars   = () => vars({
+        [hamburgerAnims.topTransformIn ] : hamburgerMenuButtons.hamburgerTopTransformIn,
+        [hamburgerAnims.midTransformIn ] : hamburgerMenuButtons.hamburgerMidTransformIn,
+        [hamburgerAnims.btmTransformIn ] : hamburgerMenuButtons.hamburgerBtmTransformIn,
     });
-    const transfOutVars  = () => vars({
-        [hamburgerAnims.topTransfOut] : hamburgerMenuButtons.hamburgerTopTransfOut,
-        [hamburgerAnims.midTransfOut] : hamburgerMenuButtons.hamburgerMidTransfOut,
-        [hamburgerAnims.btmTransfOut] : hamburgerMenuButtons.hamburgerBtmTransfOut,
+    const transformOutVars  = () => vars({
+        [hamburgerAnims.topTransformOut] : hamburgerMenuButtons.hamburgerTopTransformOut,
+        [hamburgerAnims.midTransformOut] : hamburgerMenuButtons.hamburgerMidTransformOut,
+        [hamburgerAnims.btmTransformOut] : hamburgerMenuButtons.hamburgerBtmTransformOut,
     });
     
-    const animNoneVars   = () => vars({
-        [hamburgerAnims.topAnim     ] : animationVars.animNone,
-        [hamburgerAnims.midAnim     ] : animationVars.animNone,
-        [hamburgerAnims.btmAnim     ] : animationVars.animNone,
+    const animNoneVars      = () => vars({
+        [hamburgerAnims.topAnim        ] : animationVars.animNone,
+        [hamburgerAnims.midAnim        ] : animationVars.animNone,
+        [hamburgerAnims.btmAnim        ] : animationVars.animNone,
     });
-    const animInVars     = () => vars({
-        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.hamburgerTopAnimIn,
-        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.hamburgerMidAnimIn,
-        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
+    const animInVars        = () => vars({
+        [hamburgerAnims.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimIn,
+        [hamburgerAnims.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimIn,
+        [hamburgerAnims.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimIn,
     });
-    const animOutVars    = () => vars({
-        [hamburgerAnims.topAnim     ] : hamburgerMenuButtons.hamburgerTopAnimOut,
-        [hamburgerAnims.midAnim     ] : hamburgerMenuButtons.hamburgerMidAnimOut,
-        [hamburgerAnims.btmAnim     ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
+    const animOutVars       = () => vars({
+        [hamburgerAnims.topAnim        ] : hamburgerMenuButtons.hamburgerTopAnimOut,
+        [hamburgerAnims.midAnim        ] : hamburgerMenuButtons.hamburgerMidAnimOut,
+        [hamburgerAnims.btmAnim        ] : hamburgerMenuButtons.hamburgerBtmAnimOut,
     });
     
     
@@ -273,57 +273,57 @@ export const usesHamburgerAnim = (config?: AnimationConfig): HamburgerAnimMixin 
                 animationRule,
             ]),
             ...vars({
-                [hamburgerAnims.topTransf] : [[
+                [hamburgerAnims.topTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.topTransfIn,
-                    hamburgerAnims.topTransfOut,
+                    hamburgerAnims.topTransformIn,
+                    hamburgerAnims.topTransformOut,
                 ]],
-                [hamburgerAnims.midTransf] : [[
+                [hamburgerAnims.midTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.midTransfIn,
-                    hamburgerAnims.midTransfOut,
+                    hamburgerAnims.midTransformIn,
+                    hamburgerAnims.midTransformOut,
                 ]],
-                [hamburgerAnims.btmTransf] : [[
+                [hamburgerAnims.btmTransform] : [[
                     // combining: transform1 * transform2 * transform3 ...
                     
-                    hamburgerAnims.btmTransfIn,
-                    hamburgerAnims.btmTransfOut,
+                    hamburgerAnims.btmTransformIn,
+                    hamburgerAnims.btmTransformOut,
                 ]],
             }),
         }),
         () => style({
             ...imports([
                 // css vars:
-                transfNoneVars(),
+                transformNoneVars(),
                 animNoneVars(),
             ]),
             ...states([
                 ifActived({
                     ...imports([
-                        transfInVars(),
+                        transformInVars(),
                     ]),
                 }),
                 ifActivating({
                     ...imports([
-                        transfInVars(),
-                        transfOutVars(),
+                        transformInVars(),
+                        transformOutVars(),
                         
                         animInVars(),
                     ]),
                 }),
                 ifPassivating({
                     ...imports([
-                        transfInVars(),
-                        transfOutVars(),
+                        transformInVars(),
+                        transformOutVars(),
                         
                         animOutVars(),
                     ]),
                 }),
                 ifPassived({
                     ...imports([
-                        transfOutVars(),
+                        transformOutVars(),
                     ]),
                 }),
             ]),
@@ -376,16 +376,16 @@ export const usesHamburgerLayout = () => {
                 // animations:
                 transformOrigin : '50% 50%',
                 ...ifNthChild(0, 1, {
-                    transf : hamburgerAnims.topTransf,
-                    anim   : hamburgerAnims.topAnim,
+                    transform : hamburgerAnims.topTransform,
+                    anim      : hamburgerAnims.topAnim,
                 }),
                 ...ifNthChild(0, 2, {
-                    transf : hamburgerAnims.midTransf,
-                    anim   : hamburgerAnims.midAnim,
+                    transform : hamburgerAnims.midTransform,
+                    anim      : hamburgerAnims.midAnim,
                 }),
                 ...ifNthChild(0, 3, {
-                    transf : hamburgerAnims.btmTransf,
-                    anim   : hamburgerAnims.btmAnim,
+                    transform : hamburgerAnims.btmTransform,
+                    anim      : hamburgerAnims.btmAnim,
                 }),
             }),
         }),
@@ -490,74 +490,74 @@ export const useHamburgerMenuButtonStyleSheet = dynamicStyleSheet(() => ({
 // configs:
 export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuButtonConfig] = cssConfig(() => {
     //#region keyframes
-    const topTransfHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
-    const topTransfHamburgerOver : CssKnownProps['transform'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    const topTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const topTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const topTransfCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    const topTransfCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    
-    
-    const midTransfHamburger     : CssKnownProps['transform'] = [[                  'scaleX(1)'   ,                       ]];
-    const midTransfHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
-    
-    const midTransfCrossed       : CssKnownProps['transform'] = [[                  'scaleX(0)'   ,                       ]];
-    const midTransfCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
+    const topTransformCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const topTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
     
     
-    const btmTransfHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
-    const btmTransfHamburgerOver : CssKnownProps['transform'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    const midTransformHamburger     : CssKnownProps['transform'] = [[                  'scaleX(1)'   ,                       ]];
+    const midTransformHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
     
-    const btmTransfCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
-    const btmTransfCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const midTransformCrossed       : CssKnownProps['transform'] = [[                  'scaleX(0)'   ,                       ]];
+    const midTransformCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
+    
+    
+    const btmTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
+    const btmTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
+    
+    const btmTransformCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const btmTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
     
     
     
     // hamburger => crossed:
     const [keyframesCrossingTopRule    , keyframesCrossingTop    ] = keyframes({
-        from  : { transform: topTransfHamburger     },
-        '43%' : { transform: topTransfCrossed       },
-        '71%' : { transform: topTransfCrossedOver   },
-        to    : { transform: topTransfCrossed       },
+        from  : { transform: topTransformHamburger     },
+        '43%' : { transform: topTransformCrossed       },
+        '71%' : { transform: topTransformCrossedOver   },
+        to    : { transform: topTransformCrossed       },
     });
     
     // crossed => hamburger:
     const [keyframesHamburgeringTopRule, keyframesHamburgeringTop] = keyframes({
-        from  : { transform: topTransfCrossed       },
-        '43%' : { transform: topTransfHamburger     },
-        '71%' : { transform: topTransfHamburgerOver, transformOrigin : [['91.7%', '12.5%']] },
-        to    : { transform: topTransfHamburger     },
+        from  : { transform: topTransformCrossed       },
+        '43%' : { transform: topTransformHamburger     },
+        '71%' : { transform: topTransformHamburgerOver, transformOrigin : [['91.7%', '12.5%']] },
+        to    : { transform: topTransformHamburger     },
     });
     
     
     // hamburger => crossed:
     const [keyframesCrossingMidRule    , keyframesCrossingMid    ] = keyframes({
-        from  : { transform: midTransfHamburger     },
-        '19%' : { transform: midTransfCrossedOver   },
-        to    : { transform: midTransfCrossed       },
+        from  : { transform: midTransformHamburger     },
+        '19%' : { transform: midTransformCrossedOver   },
+        to    : { transform: midTransformCrossed       },
     });
     
     // crossed => hamburger:
     const [keyframesHamburgeringMidRule, keyframesHamburgeringMid] = keyframes({
-        from  : { transform: midTransfCrossed       },
-        '81%' : { transform: midTransfHamburgerOver },
-        to    : { transform: midTransfHamburger     },
+        from  : { transform: midTransformCrossed       },
+        '81%' : { transform: midTransformHamburgerOver },
+        to    : { transform: midTransformHamburger     },
     });
     
     
     // hamburger => crossed:
     const [keyframesCrossingBtmRule    , keyframesCrossingBtm    ] = keyframes({
-        from  : { transform: btmTransfHamburger     },
-        '43%' : { transform: btmTransfCrossed       },
-        '71%' : { transform: btmTransfCrossedOver   },
-        to    : { transform: btmTransfCrossed       },
+        from  : { transform: btmTransformHamburger     },
+        '43%' : { transform: btmTransformCrossed       },
+        '71%' : { transform: btmTransformCrossedOver   },
+        to    : { transform: btmTransformCrossed       },
     });
     
     // crossed => hamburger:
     const [keyframesHamburgeringBtmRule, keyframesHamburgeringBtm] = keyframes({
-        from  : { transform: btmTransfCrossed       },
-        '43%' : { transform: btmTransfHamburger     },
-        '71%' : { transform: btmTransfHamburgerOver, transformOrigin : [['91.7%', '87.5%']] },
-        to    : { transform: btmTransfHamburger     },
+        from  : { transform: btmTransformCrossed       },
+        '43%' : { transform: btmTransformHamburger     },
+        '71%' : { transform: btmTransformHamburgerOver, transformOrigin : [['91.7%', '87.5%']] },
+        to    : { transform: btmTransformHamburger     },
     });
     //#endregion keyframes
     
@@ -567,13 +567,13 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
     
     return {
         // animations:
-        hamburgerTopTransfIn  : topTransfCrossed        as CssKnownProps['transform'],
-        hamburgerMidTransfIn  : midTransfCrossed        as CssKnownProps['transform'],
-        hamburgerBtmTransfIn  : btmTransfCrossed        as CssKnownProps['transform'],
+        hamburgerTopTransformIn  : topTransformCrossed        as CssKnownProps['transform'],
+        hamburgerMidTransformIn  : midTransformCrossed        as CssKnownProps['transform'],
+        hamburgerBtmTransformIn  : btmTransformCrossed        as CssKnownProps['transform'],
         
-        hamburgerTopTransfOut : topTransfHamburger      as CssKnownProps['transform'],
-        hamburgerMidTransfOut : midTransfHamburger      as CssKnownProps['transform'],
-        hamburgerBtmTransfOut : btmTransfHamburger      as CssKnownProps['transform'],
+        hamburgerTopTransformOut : topTransformHamburger      as CssKnownProps['transform'],
+        hamburgerMidTransformOut : midTransformHamburger      as CssKnownProps['transform'],
+        hamburgerBtmTransformOut : btmTransformHamburger      as CssKnownProps['transform'],
         
         
         
