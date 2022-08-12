@@ -1,0 +1,46 @@
+{
+  "name": "@reusable-ui/groupable",
+  "version": "5.0.0",
+  "description": "Groups a list of UIs into a single UI.",
+  "keywords": [
+    "groupable",
+    "group",
+    "merge",
+    "joined",
+    "features",
+    "design",
+    "layouts"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/groupable.js",
+  "types": "dist/groupable.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/types": "^2.0.1",
+    "@cssfn/css-types": "^2.0.4",
+    "@cssfn/css-vars": "^2.0.9",
+    "@reusable-ui/border": "^5.0.0",
+    "@reusable-ui/orientationable": "^5.0.0",
+    "@reusable-ui/padding": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.7"
+  }
+}
