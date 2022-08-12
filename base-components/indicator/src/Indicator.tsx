@@ -174,10 +174,15 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
     
     //#region keyframes
     const frameEnabled  = style({
-        filter : [[...filters.filter((f) => (f !== filterDisable))]],
+        filter : [[
+            ...filters.filter((f) => (f !== filterDisable)), // the rest filter(s)
+        ]],
     });
     const frameDisabled = style({
-        filter : [[...filters.filter((f) => (f !== filterDisable)), filterDisable]],
+        filter : [[
+            ...filters.filter((f) => (f !== filterDisable)), // the rest filter(s)
+            filterDisable, // the interpolating filter
+        ]],
     });
     const [keyframesDisableRule, keyframesDisable] = keyframes({
         from : frameEnabled,
@@ -193,10 +198,15 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
     
     
     const framePassived = style({
-        filter : [[...filters.filter((f) => (f !== filterActive))]],
+        filter : [[
+            ...filters.filter((f) => (f !== filterActive)), // the rest filter(s)
+        ]],
     });
     const frameActived  = style({
-        filter : [[...filters.filter((f) => (f !== filterActive)), filterActive]],
+        filter : [[
+            ...filters.filter((f) => (f !== filterActive)), // the rest filter(s)
+            filterActive, // the interpolating filter
+        ]],
     });
     const [keyframesActiveRule , keyframesActive ] = keyframes({
         from : framePassived,
