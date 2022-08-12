@@ -506,15 +506,15 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     const frameChecking = style({
         transformOrigin: 'left', 
         transform : [[
-            checkTransformIn,
             'scaleX(1.2)', // add a bumpy effect
+            checkTransformIn,
         ]],
     });
     const frameClearing = style({
         transformOrigin: 'right',
         transform : [[
-            checkTransformOut,
             'scaleX(1.2)', // add a bumpy effect
+            checkTransformOut,
         ]],
     });
     const [keyframesSwitchCheckRule, keyframesSwitchCheck] = keyframes({
