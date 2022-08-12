@@ -226,7 +226,7 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
     
     return style({
         ...imports([
-            // borders:
+            // features:
             groupableRule, // make a nicely rounded corners
         ]),
         ...style({
