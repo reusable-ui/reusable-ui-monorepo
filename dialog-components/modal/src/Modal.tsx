@@ -370,18 +370,10 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
     
     const [keyframesExciteRule, keyframesExcite] = keyframes({
         from  : {
-            filter : [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-             // filterExcited, // missing the last => let's the browser interpolated it
-            ]],
+            filter : [[...filters.filter((f) => (f !== filterExcited))]],
         },
         to    : {
-            filter : [[
-                ...filters.filter((f) => (f !== filterExcited)),
-                
-                filterExcited, // existing the last => let's the browser interpolated it
-            ]],
+            filter : [[...filters.filter((f) => (f !== filterExcited)), filterExcited]],
         },
     });
     keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
