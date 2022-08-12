@@ -262,18 +262,10 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     //#region keyframes
     const frameBlurred  = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocus)),
-            
-         // boxShadowFocus, // missing the last => let's the browser interpolated it
-        ],
+        boxShadow : [...boxShadows.filter((b) => (b !== boxShadowFocus))],
     });
     const frameFocused = style({
-        boxShadow: [
-            ...boxShadows.filter((b) => (b !== boxShadowFocus)),
-            
-            boxShadowFocus, // existing the last => let's the browser interpolated it
-        ],
+        boxShadow : [...boxShadows.filter((b) => (b !== boxShadowFocus)), boxShadowFocus],
     });
     const [keyframesFocusRule, keyframesFocus] = keyframes({
         from : frameBlurred,
@@ -289,18 +281,10 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     
     const frameLeft = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterArrive)),
-            
-         // filterArrive, // missing the last => let's the browser interpolated it
-        ]],
+        filter : [[...filters.filter((f) => (f !== filterArrive))]],
     });
     const frameArrived  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterArrive)),
-            
-            filterArrive, // existing the last => let's the browser interpolated it
-        ]],
+        filter : [[...filters.filter((f) => (f !== filterArrive)), filterArrive]],
     });
     const [keyframesArriveRule, keyframesArrive] = keyframes({
         from : frameLeft,
