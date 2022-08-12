@@ -61,6 +61,10 @@ import {
     // hooks:
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
+import {
+    // hooks:
+    usesGroupable,
+}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
 
 // reusable-ui variants:
 import {
@@ -98,11 +102,6 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
-import {
-    // hooks:
-    usesBorderAsContainer,
-    usesBorderAsSeparator,
-}                           from '@reusable-ui/container'       // a neighbor component
 import {
     // styles:
     usesContentLayout,
@@ -268,6 +267,12 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     // features:
     const {borderRule   , borderVars   } = usesBorder(cards);
     const {animationRule, animationVars} = usesAnimation(cards as any);
+    const {groupableRule               } = usesGroupable(options);
+    const {separatorRule               } = usesGroupable({ // must be placed at the last
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+        swapFirstItem             : true,
+    });
     
     
     
@@ -276,9 +281,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             // features:
             borderRule,
             animationRule,
-            
-            // borders:
-            usesBorderAsContainer(options), // make a nicely rounded corners
+            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
             // layouts:
@@ -321,11 +324,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
                         A separator between CardItems.
                         Exploits the borders as a horizontal/vertical separator depending on the Card's orientation.
                     */
-                    usesBorderAsSeparator({ // must be placed at the last
-                        orientationInlineSelector : parentOrientationInlineSelector,
-                        orientationBlockSelector  : parentOrientationBlockSelector,
-                        swapFirstItem             : true,
-                    }),
+                    separatorRule, // must be placed at the last
                 ]),
             }),
             ...children([headerElm, footerElm], {
@@ -440,9 +439,9 @@ export const useCardStyleSheet = dynamicStyleSheet(() => ({
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
     return {
         // borders:
-        borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle'],
-        borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth'],
-        borderColor    : basics.borderColor     as CssKnownProps['borderColor'],
+        borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle' ],
+        borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth' ],
+        borderColor    : basics.borderColor     as CssKnownProps['borderColor' ],
         
         borderRadius   : basics.borderRadius    as CssKnownProps['borderRadius'],
         borderRadiusSm : basics.borderRadiusSm  as CssKnownProps['borderRadius'],
@@ -463,7 +462,7 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         
         
         // typos:
-        overflowWrap   : 'break-word'           as CssKnownProps['overflowWrap'  ], // prevents a long word from breaking Card layout
+        overflowWrap   : 'break-word'           as CssKnownProps['overflowWrap'], // prevents a long word from breaking Card layout
         
         
         
