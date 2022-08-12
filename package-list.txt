@@ -99,23 +99,23 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/masonry
 
 // statuses:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/popup
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/badge
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/busy
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/popup
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/badge
+[upgraded] [documented  ] [published] [partial compound] [full organized] @reusable-ui/busy
 
 notifications:
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/alert
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/tooltip
+[upgraded] [documented  ] [published] [partial compound] [full organized] @reusable-ui/alert
+[upgraded] [documented  ] [published] [partial compound] [full organized] @reusable-ui/tooltip
 
 // menus:
-[upgraded] [documented  ] [published] [          atomic] [semi organized] @reusable-ui/collapse
-[upgraded] [documented  ] [published] [partial compound] [semi organized] @reusable-ui/dropdown
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-button
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-list
-[upgraded] [documented  ] [published] [full    compound] [semi organized] @reusable-ui/dropdown-list-button
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/collapse
+[upgraded] [documented  ] [published] [partial compound] [full organized] @reusable-ui/dropdown
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/dropdown-button
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/dropdown-list
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/dropdown-list-button
 
 // dialogs:
-[upgraded] [documented  ] [published] [partial compound] @reusable-ui/modal
+[upgraded] [documented  ] [published] [partial compound] [full organized] @reusable-ui/modal
 [obsolete] [documented  ] [published] @reusable-ui/modal-card
 [obsolete] [documented  ] [published] @reusable-ui/modal-side
 
