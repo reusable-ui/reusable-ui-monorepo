@@ -284,15 +284,6 @@ const separatorRuleOf = (block: boolean, options: GroupableOptions = {}): CssRul
     
     
     return style({
-        // the container variables are already defined on `usesBorderAsContainer`
-        // if the `usesBorderAsContainer` was not defined => the `usesBorderAsSeparator` is effectively unused
-        // ...imports([
-        //     // layouts:
-        //     containerRule,
-        // ]),
-        
-        
-        
         ...vars({
             /*
                 if the_current_element is a container,
