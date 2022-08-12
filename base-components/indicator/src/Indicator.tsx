@@ -54,11 +54,6 @@ import {
 import {
     // hooks:
     usesAnimation,
-    
-    
-    
-    // utilities:
-    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
@@ -183,14 +178,14 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
             ...filters.filter((f) => (f !== filterDisable)),
             
          // filterDisable, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const frameDisabled = style({
         filter: [[
             ...filters.filter((f) => (f !== filterDisable)),
             
             filterDisable, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const [keyframesDisableRule, keyframesDisable] = keyframes({
         from : frameEnabled,
@@ -210,14 +205,14 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
             ...filters.filter((f) => (f !== filterActive)),
             
          // filterActive, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const frameActived  = style({
         filter: [[
             ...filters.filter((f) => (f !== filterActive)),
             
             filterActive, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const [keyframesActiveRule , keyframesActive ] = keyframes({
         from : framePassived,

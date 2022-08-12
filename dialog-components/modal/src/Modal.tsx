@@ -92,11 +92,6 @@ import {
 import {
     // hooks:
     usesAnimation,
-    
-    
-    
-    // utilities:
-    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui states:
@@ -379,14 +374,14 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
                 ...filters.filter((f) => (f !== filterExcited)),
                 
              // filterExcited, // missing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
+            ]],
         },
         to    : {
             filter : [[
                 ...filters.filter((f) => (f !== filterExcited)),
                 
                 filterExcited, // existing the last => let's the browser interpolated it
-            ]].map(fallbackNoneFilter),
+            ]],
         },
     });
     keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`

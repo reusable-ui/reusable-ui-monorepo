@@ -57,12 +57,6 @@ import {
 import {
     // hooks:
     usesAnimation,
-    
-    
-    
-    // utilities:
-    fallbackNoneBoxShadow,
-    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
@@ -272,14 +266,14 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
             ...boxShadows.filter((b) => (b !== boxShadowFocus)),
             
          // boxShadowFocus, // missing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
+        ],
     });
     const frameFocused = style({
         boxShadow: [
             ...boxShadows.filter((b) => (b !== boxShadowFocus)),
             
             boxShadowFocus, // existing the last => let's the browser interpolated it
-        ].map(fallbackNoneBoxShadow),
+        ],
     });
     const [keyframesFocusRule, keyframesFocus] = keyframes({
         from : frameBlurred,
@@ -299,14 +293,14 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
             ...filters.filter((f) => (f !== filterArrive)),
             
          // filterArrive, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const frameArrived  = style({
         filter: [[
             ...filters.filter((f) => (f !== filterArrive)),
             
             filterArrive, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const [keyframesArriveRule, keyframesArrive] = keyframes({
         from : frameLeft,

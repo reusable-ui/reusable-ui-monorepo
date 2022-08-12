@@ -63,11 +63,6 @@ import {
 import {
     // hooks:
     usesAnimation,
-    
-    
-    
-    // utilities:
-    fallbackNoneFilter,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
@@ -206,14 +201,14 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
             ...filters.filter((f) => (f !== filterPress)),
             
          // filterPress, // missing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const framePressed  = style({
         filter: [[
             ...filters.filter((f) => (f !== filterPress)),
             
             filterPress, // existing the last => let's the browser interpolated it
-        ]].map(fallbackNoneFilter),
+        ]],
     });
     const [keyframesPressRule  , keyframesPress  ] = keyframes({
         from : frameReleased,
