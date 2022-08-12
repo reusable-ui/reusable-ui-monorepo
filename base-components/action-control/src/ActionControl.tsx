@@ -197,18 +197,10 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
     
     //#region keyframes
     const frameReleased = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPress)),
-            
-         // filterPress, // missing the last => let's the browser interpolated it
-        ]],
+        filter : [[...filters.filter((f) => (f !== filterPress))]],
     });
     const framePressed  = style({
-        filter: [[
-            ...filters.filter((f) => (f !== filterPress)),
-            
-            filterPress, // existing the last => let's the browser interpolated it
-        ]],
+        filter : [[...filters.filter((f) => (f !== filterPress)), filterPress]],
     });
     const [keyframesPressRule  , keyframesPress  ] = keyframes({
         from : frameReleased,
