@@ -214,7 +214,7 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
     
     // features:
     const fillSelectorAndSelf = [fillSelector, fillSelfSelector];
-    const {separatorRule, groupableVars} = usesGroupable({ itemsSelector: fillSelectorAndSelf });
+    const {groupableRule, groupableVars} = usesGroupable({ itemsSelector: fillSelectorAndSelf });
     
     // spacings:
     const positivePaddingInline = groupableVars.paddingInline;
@@ -227,7 +227,7 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
     return style({
         ...imports([
             // borders:
-            separatorRule, // make a nicely rounded corners
+            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
             // children:
