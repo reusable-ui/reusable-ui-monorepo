@@ -103,6 +103,12 @@ import {
     // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
+import {
+    // hooks:
+    ifFirstVisibleChild,
+    ifLastVisibleChild,
+    usesGroupable,
+}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
 
 // reusable-ui variants:
 import {
@@ -127,18 +133,6 @@ import {
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // rules:
-    ifFirstVisibleChild,
-    ifLastVisibleChild,
-    
-    
-    
-    // hooks:
-    usesContainer,
-    usesBorderAsContainer,
-    usesBorderAsSeparator,
-}                           from '@reusable-ui/container'       // a neighbor component
 import {
     // react components:
     Button,
@@ -228,12 +222,12 @@ export const usesContentChildrenFill         = (options: ContentChildrenMediaOpt
     
     // dependencies:
     
-    // layouts:
-    const [, containerVars]     = usesContainer();
+    // features:
+    const {groupableRule, groupableVars} = usesGroupable({ itemsSelector: mediaSelectorWithExcept });
     
     // spacings:
-    const positivePaddingInline = containerVars.paddingInline;
-    const positivePaddingBlock  = containerVars.paddingBlock;
+    const positivePaddingInline = groupableVars.paddingInline;
+    const positivePaddingBlock  = groupableVars.paddingBlock;
     const negativePaddingInline = `calc(0px - ${positivePaddingInline})`;
     const negativePaddingBlock  = `calc(0px - ${positivePaddingBlock })`;
     
@@ -241,8 +235,8 @@ export const usesContentChildrenFill         = (options: ContentChildrenMediaOpt
     
     return style({
         ...imports([
-            // borders:
-            usesBorderAsContainer({ itemsSelector: mediaSelectorWithExcept }), // make a nicely rounded corners
+            // features:
+            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
             // children:
@@ -338,6 +332,12 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
     
     // features:
     const {borderRule, borderVars} = usesBorder();
+    const {groupableRule         } = usesGroupable();
+    const {separatorRule         } = usesGroupable({
+        orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
+        orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
+        itemsSelector             : mediaSelectorWithExceptZero
+    });
     
     
     
@@ -350,9 +350,9 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
                 // resets:
                 stripoutFigure(),        // clear browser's default styling on `<figure>`
                 
-                // borders:
+                // features:
                 // making the <figure> as border_container => the inner media can have a separator between them
-                usesBorderAsContainer(), // make a nicely rounded corners
+                groupableRule, // make a nicely rounded corners
             ]),
             ...style({
                 // layouts:
@@ -436,11 +436,7 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
             }),
             ...imports([
                 // borders:
-                usesBorderAsSeparator({ // must be placed at the last
-                    orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
-                    orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
-                    itemsSelector             : mediaSelectorWithExceptZero
-                }),
+                separatorRule, // must be placed at the last
             ]),
         }),
     });

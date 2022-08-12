@@ -42,7 +42,7 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",
-    "@reusable-ui/container": "^5.0.0",
+    "@reusable-ui/groupable": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/semantics": "^5.0.0",
