@@ -38,6 +38,7 @@
 @reusable-ui/animation
 @reusable-ui/padding
 @reusable-ui/floatable
+@reusable-ui/groupable
 
 // reusable-ui variants:
 @reusable-ui/orientationable
@@ -74,7 +75,7 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/editable-action-control
 
 // contents:
-[upgraded] [documented  ] [published] [          atomic] [skip organized] @reusable-ui/container
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/container
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/content    *button
 
 // simple components:
