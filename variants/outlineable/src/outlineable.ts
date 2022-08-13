@@ -30,7 +30,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -122,7 +122,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
             ...vars({
                 [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 
-                [outlineableVars.foregFn   ] : fallbacks(
+                [outlineableVars.foregFn   ] : switchOf(
                     themableVars.foregOutlinedImpt,    // first  priority
                     themableVars.foregOutlined,        // second priority
                     themableVars.foregOutlinedCond,    // third  priority
@@ -132,7 +132,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 
                 
                 
-                [outlineableVars.altBackgFn] : fallbacks(
+                [outlineableVars.altBackgFn] : switchOf(
                     themableVars.altBackgOutlinedImpt, // first  priority
                     themableVars.altBackgOutlined,     // second priority
                     themableVars.altBackgOutlinedCond, // third  priority
@@ -140,7 +140,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     config?.altBackg,                  // default => uses config's alternate background
                 ),
                 
-                [outlineableVars.altForegFn] : fallbacks(
+                [outlineableVars.altForegFn] : switchOf(
                     themableVars.altForegOutlinedImpt, // first  priority
                     themableVars.altForegOutlined,     // second priority
                     themableVars.altForegOutlinedCond, // third  priority
