@@ -146,22 +146,7 @@ const getViewportOrDefault = (modalViewport: React.RefObject<Element>|Element|nu
 
 
 
-// hooks:
-
-// behaviors:
-
-//#region backdrop style
-export type BackdropStyle = 'hidden'|'interactive'|'static' // might be added more styles in the future
-export interface BackdropVariant {
-    backdropStyle ?: BackdropStyle
-}
-export const useBackdropVariant = (props: BackdropVariant) => {
-    return {
-        class: props.backdropStyle ?? null,
-    };
-};
-//#endregion backdrop style
-
+// rules:
 export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body>*>&', styles);
 
 
@@ -332,6 +317,18 @@ export const useBackdropStyleSheet = dynamicStyleSheet(() => ({
         usesBackdropStates(),
     ]),
 }), { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type BackdropStyle = 'hidden'|'interactive'|'static' // might be added more styles in the future
+export interface BackdropVariant {
+    backdropStyle ?: BackdropStyle
+}
+export const useBackdropVariant = (props: BackdropVariant) => {
+    return {
+        class: props.backdropStyle ?? null,
+    };
+};
 
 
 
