@@ -16,8 +16,6 @@ import type {
     
     
     // cssfn properties:
-    CssRule,
-    
     CssStyleCollection,
     
     CssSelectorCollection,
@@ -130,10 +128,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    outlinedOf,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
     mildOf,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
@@ -142,6 +136,8 @@ import {
     // hooks:
     ifActive,
     ifPassive,
+    MarkActiveOptions,
+    markActive,
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 import {
     // hooks:
@@ -218,6 +214,7 @@ import {
 
 // defaults:
 export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: null, mild: null };
 
 const _defaultSemanticTag    : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
 const _defaultSemanticRole   : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
@@ -229,27 +226,6 @@ const _defaultActionCtrl     : boolean      = false
 const _defaultItemOutlined   : boolean      = false
 const _defaultItemMild       : boolean      = false
 const _defaultItemActionCtrl : boolean      = false
-
-
-
-// hooks:
-
-// states:
-
-//#region activatable
-export const markActive = (): CssRule => style({
-    ...imports([
-        outlinedOf(null),      // keeps outlined variant
-        mildOf(null),          // keeps mild     variant
-    ]),
-});
-export const dontMarkActive = (): CssRule => style({
-    ...imports([
-        outlinedOf(null),      // keeps outlined variant
-        mildOf(null),          // keeps mild     variant
-    ]),
-});
-//#endregion activatable
 
 
 
@@ -548,22 +524,22 @@ export const usesListActionItemStates = () => {
         ...states([
             ifActive({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifFocus({
                 ...imports([
-                    dontMarkActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifArrive({
                 ...imports([
-                    dontMarkActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifPress({
                 ...imports([
-                    dontMarkActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
         ]),
