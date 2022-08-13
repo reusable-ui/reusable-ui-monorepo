@@ -21,6 +21,7 @@ import type {
 import {
     // rules:
     states,
+    fallbacks,
     
     
     
@@ -87,12 +88,9 @@ import {
 }                           from '@reusable-ui/interactable'        // adds an interactive feel to a UI
 import {
     // hooks:
-    InvalidableVars   as BaseInvalidableVars,
     ifValid,
     ifInvalid,
     ifNoValidation,
-    InvalidableConfig as BaseInvalidableConfig,
-    usesInvalidable   as baseUsesInvalidable,
 }                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state.
 
 // reusable-ui components:
@@ -124,65 +122,59 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 // states:
 
-//#region invalidable
-export interface InvalidableVars extends BaseInvalidableVars {
+//#region validationIcon
+export interface ValidationIconVars {
     /**
      * final validation icon image.
      */
     iconImage : any
 }
-const [invalidableVars] = cssVars<InvalidableVars>();
+const [validationIconVars] = cssVars<ValidationIconVars>();
 
 
 
-export interface InvalidableStuff { invalidableRule: Factory<CssRule>, invalidableVars: CssVars<InvalidableVars> }
-export interface InvalidableConfig extends BaseInvalidableConfig {
+export interface ValidationIconStuff { validationIconRule: Factory<CssRule>, validationIconVars: CssVars<ValidationIconVars> }
+export interface ValidationIconConfig {
     iconValid   ?: CssKnownProps['maskImage']
     iconInvalid ?: CssKnownProps['maskImage']
 }
 /**
- * Adds a possibility of UI having an invalid state.
- * @param config  A configuration of `invalidableRule`.
- * @returns A `InvalidableStuff` represents an invalidable state.
+ * Uses validation icon.
+ * @param config  A configuration of `validationIconRule`.
+ * @returns A `ValidationIconStuff` represents the validation icon rules.
  */
-export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff => {
-    // dependencies:
-    
-    // states:
-    const {invalidableRule} = baseUsesInvalidable();
-    
-    
-    
+export const usesValidationIcon = (config?: ValidationIconConfig): ValidationIconStuff => {
     return {
-        invalidableRule: () => style({
-            ...imports([
-                invalidableRule,
-            ]),
-            
-            
-            
-            ...vars({
-                [invalidableVars.iconImage] : 'none',
+        validationIconRule: () => style({
+            // reset functions:
+            // declare default values at lowest specificity:
+            ...fallbacks({
+                ...vars({
+                    [validationIconVars.iconImage] : 'none',
+                }),
             }),
+            
+            
+            
             ...states([
                 ifValid({
                     ...vars({
                         // apply a *valid* icon indicator:
-                        [invalidableVars.iconImage] : config?.iconValid,
+                        [validationIconVars.iconImage] : config?.iconValid,
                     }),
                 }),
                 ifInvalid({
                     ...vars({
                         // apply an *invalid* icon indicator:
-                        [invalidableVars.iconImage] : config?.iconInvalid,
+                        [validationIconVars.iconImage] : config?.iconInvalid,
                     }),
                 }),
             ]),
         }),
-        invalidableVars,
+        validationIconVars,
     };
 };
-//#endregion invalidable
+//#endregion validationIcon
 
 
 
@@ -193,10 +185,10 @@ export const usesEditableTextControlLayout = () => {
     // dependencies:
     
     // features:
-    const {paddingVars    } = usesPadding();
+    const {paddingVars       } = usesPadding();
     
     // states:
-    const {invalidableVars} = usesInvalidable();
+    const {validationIconVars} = usesValidationIcon();
     
     
     
@@ -210,7 +202,7 @@ export const usesEditableTextControlLayout = () => {
             ...children(iconElm, {
                 ...imports([
                     usesIconImage(
-                        /*image : */invalidableVars.iconImage,
+                        /*image : */validationIconVars.iconImage,
                     ),
                 ]),
                 ...style({
@@ -272,7 +264,7 @@ export const usesEditableTextControlStates = () => {
     // dependencies:
     
     // states:
-    const {invalidableRule} = usesInvalidable(editableTextControls);
+    const {validationIconRule} = usesValidationIcon(editableTextControls);
     
     
     
@@ -280,7 +272,7 @@ export const usesEditableTextControlStates = () => {
         ...imports([
             // states:
             usesEditableControlStates(),
-            invalidableRule,
+            validationIconRule,
         ]),
         ...states([
             ifActive({
