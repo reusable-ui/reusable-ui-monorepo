@@ -226,6 +226,8 @@ import {
 
 
 // defaults:
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+
 const _defaultSemanticTag    : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
 const _defaultSemanticRole   : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
 
@@ -242,11 +244,6 @@ const _defaultItemActionCtrl : boolean      = false
 // hooks:
 
 // variants:
-
-//#region orientationable
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-//#endregion orientationable
-
 
 //#region list style
 export type ListBasicStyle = 'flat'|'flush'|'joined';
