@@ -69,15 +69,13 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'           // size options of UI
-import {
-    // hooks:
-    mildOf,
-}                           from '@reusable-ui/mildable'            // mild (soft color) variant of UI
 
 // reusable-ui states:
 import {
     // hooks:
     ifActive,
+    MarkActiveOptions,
+    markActive,
 }                           from '@reusable-ui/activatable'         // a capability of UI to be highlighted/selected/activated
 import {
     // hooks:
@@ -99,10 +97,6 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
-    markActive as baseMarkActive,
-}                           from '@reusable-ui/control'             // a base component
-import {
     // styles:
     usesEditableControlLayout,
     usesEditableControlVariants,
@@ -121,20 +115,14 @@ import {
 
 
 
+// defaults:
+const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: false, mild: null };
+
+
+
 // hooks:
 
 // states:
-
-//#region activatable
-export const markActive = (): CssRule => style({
-    ...imports([
-        baseMarkActive(),
-        
-        mildOf(null), // keeps mild variant
-    ]),
-});
-//#endregion activatable
-
 
 //#region invalidable
 export interface InvalidableVars extends BaseInvalidableVars {
@@ -297,17 +285,17 @@ export const usesEditableTextControlStates = () => {
         ...states([
             ifActive({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifFocus({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifArrive({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             
