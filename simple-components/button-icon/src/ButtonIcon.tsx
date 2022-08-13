@@ -203,7 +203,7 @@ export const usesButtonIconVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable<SizeName>(buttonIcons);
+    const {resizableRule} = usesResizable<SizeName>(buttonIcons, sizeOptions());
     
     
     
