@@ -150,24 +150,6 @@ const _defaultMild         : boolean      = false
 
 
 
-// hooks:
-
-// variants:
-
-//#region button style
-export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
-export interface ButtonVariant {
-    buttonStyle ?: ButtonStyle
-}
-export const useButtonVariant = (props: ButtonVariant) => {
-    return {
-        class: props.buttonStyle ?? null,
-    };
-};
-//#endregion button style
-
-
-
 // styles:
 export const noBackground = () => {
     // dependencies:
@@ -383,6 +365,18 @@ export const useButtonStyleSheet = dynamicStyleSheet(() => ({
         usesButtonStates(),
     ]),
 }), { id: '7rehb2h20q' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
+export interface ButtonVariant {
+    buttonStyle ?: ButtonStyle
+}
+export const useButtonVariant = (props: ButtonVariant) => {
+    return {
+        class: props.buttonStyle ?? null,
+    };
+};
 
 
 
