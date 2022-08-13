@@ -89,18 +89,10 @@ import {
 
 
 // defaults:
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+
 const _defaultMasonryResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' } // get the client size
 const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  } // get the offset size
-
-
-
-// hooks:
-
-// variants:
-
-//#region orientationable
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-//#endregion orientationable
 
 
 
