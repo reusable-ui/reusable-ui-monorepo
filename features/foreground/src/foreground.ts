@@ -96,13 +96,13 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [foregroundVars.foregFn   ] : switchOf(
-                        themableVars.foregImpt,     // first  priority
+                        themableVars.foregCond,     // first  priority
                         themableVars.foreg,         // second priority
                         
                         config?.foreg,              // default => uses config's foreground
                     ),
                     [foregroundVars.altForegFn] : switchOf(
-                        themableVars.altForegImpt,  // first  priority
+                        themableVars.altForegCond,  // first  priority
                         themableVars.altForeg,      // second priority
                         
                         config?.altForeg,           // default => uses config's alternate foreground

@@ -106,60 +106,60 @@ export interface ThemableVars {
     
     
     /**
-     * important conditional background color.
+     * conditional background color.
      */
-    backgImpt            : any
+    backgCond            : any
     /**
-     * important conditional foreground color.
+     * conditional foreground color.
      */
-    foregImpt            : any
+    foregCond            : any
     /**
-     * important conditional border color.
+     * conditional border color.
      */
-    borderImpt           : any
+    borderCond           : any
     /**
-     * important conditional alternate background color.
+     * conditional alternate background color.
      */
-    altBackgImpt         : any
+    altBackgCond         : any
     /**
-     * important conditional alternate foreground color.
+     * conditional alternate foreground color.
      */
-    altForegImpt         : any
+    altForegCond         : any
     
     /**
-     * important conditional foreground color - at outlined variant.
+     * conditional foreground color - at outlined variant.
      */
-    foregOutlinedImpt    : any
+    foregOutlinedCond    : any
     /**
-     * important conditional alternate background color - at outlined variant.
+     * conditional alternate background color - at outlined variant.
      */
-    altBackgOutlinedImpt : any
+    altBackgOutlinedCond : any
     /**
-     * important conditional alternate foreground color - at outlined variant.
+     * conditional alternate foreground color - at outlined variant.
      */
-    altForegOutlinedImpt : any
+    altForegOutlinedCond : any
     
     /**
-     * important conditional background color - at mild variant.
+     * conditional background color - at mild variant.
      */
-    backgMildImpt        : any
+    backgMildCond        : any
     /**
-     * important conditional foreground color - at mild variant.
+     * conditional foreground color - at mild variant.
      */
-    foregMildImpt        : any
+    foregMildCond        : any
     /**
-     * important conditional alternate background color - at mild variant.
+     * conditional alternate background color - at mild variant.
      */
-    altBackgMildImpt     : any
+    altBackgMildCond     : any
     /**
-     * important conditional alternate foreground color - at mild variant.
+     * conditional alternate foreground color - at mild variant.
      */
-    altForegMildImpt     : any
+    altForegMildCond     : any
     
     /**
-     * important conditional ring color.
+     * conditional ring color.
      */
-    ringImpt             : any
+    ringCond             : any
 }
 const [themableVars] = cssVars<ThemableVars>();
 
@@ -246,28 +246,28 @@ export const themeOptions = (): ThemeName[] => Object.keys(themes) as ThemeName[
 
 
 /**
- * Creates an important conditional theme color rules for the given `themeName`.
- * @param themeName The theme name as the important conditional theme color -or- `null` for undefining the important conditional.
- * @returns A `CssRule` represents an important conditional theme color rules for the given `themeName`.
+ * Creates an conditional theme color rules for the given `themeName`.
+ * @param themeName The theme name as the conditional theme color -or- `null` for undefining the conditional.
+ * @returns A `CssRule` represents an conditional theme color rules for the given `themeName`.
  */
-export const usesThemeImportant   = (themeName: ThemeName|null): CssRule => style({
+export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themableVars.backgImpt           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themableVars.foregImpt           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themableVars.borderImpt          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themableVars.altBackgImpt        ] : themableVars.backgMildImpt,
-        [themableVars.altForegImpt        ] : themableVars.foregMildImpt,
+        [themableVars.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themableVars.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themableVars.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themableVars.altBackgCond        ] : themableVars.backgMildCond,
+        [themableVars.altForegCond        ] : themableVars.foregMildCond,
         
-        [themableVars.foregOutlinedImpt   ] : !themeName ? null : themableVars.backgImpt,
-        [themableVars.altBackgOutlinedImpt] : themableVars.backgImpt,
-        [themableVars.altForegOutlinedImpt] : themableVars.foregImpt,
+        [themableVars.foregOutlinedCond   ] : !themeName ? null : themableVars.backgCond,
+        [themableVars.altBackgOutlinedCond] : themableVars.backgCond,
+        [themableVars.altForegOutlinedCond] : themableVars.foregCond,
         
-        [themableVars.backgMildImpt       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themableVars.foregMildImpt       ] : !themeName ? null : themableVars.borderImpt,
-        [themableVars.altBackgMildImpt    ] : themableVars.backgImpt,
-        [themableVars.altForegMildImpt    ] : themableVars.foregImpt,
+        [themableVars.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themableVars.foregMildCond       ] : !themeName ? null : themableVars.borderCond,
+        [themableVars.altBackgMildCond    ] : themableVars.backgCond,
+        [themableVars.altForegMildCond    ] : themableVars.foregCond,
         
-        [themableVars.ringImpt            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themableVars.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 

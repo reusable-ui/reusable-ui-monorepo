@@ -123,7 +123,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 
                 [outlineableVars.foregFn   ] : switchOf(
-                    themableVars.foregOutlinedImpt,    // first  priority
+                    themableVars.foregOutlinedCond,    // first  priority
                     themableVars.foregOutlined,        // second priority
                     
                     config?.foreg,                     // default => uses config's foreground
@@ -132,14 +132,14 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 
                 
                 [outlineableVars.altBackgFn] : switchOf(
-                    themableVars.altBackgOutlinedImpt, // first  priority
+                    themableVars.altBackgOutlinedCond, // first  priority
                     themableVars.altBackgOutlined,     // second priority
                     
                     config?.altBackg,                  // default => uses config's alternate background
                 ),
                 
                 [outlineableVars.altForegFn] : switchOf(
-                    themableVars.altForegOutlinedImpt, // first  priority
+                    themableVars.altForegOutlinedCond, // first  priority
                     themableVars.altForegOutlined,     // second priority
                     
                     config?.altForeg,                  // default => uses config's alternate foreground

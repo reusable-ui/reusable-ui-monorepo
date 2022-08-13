@@ -123,14 +123,14 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
             ]),
             ...vars({
                 [mildableVars.backgFn   ] : switchOf(
-                    themableVars.backgMildImpt,    // first  priority
+                    themableVars.backgMildCond,    // first  priority
                     themableVars.backgMild,        // second priority
                     
                     config?.backg,                 // default => uses config's background
                 ),
                 
                 [mildableVars.foregFn   ] : switchOf(
-                    themableVars.foregMildImpt,    // first  priority
+                    themableVars.foregMildCond,    // first  priority
                     themableVars.foregMild,        // second priority
                     
                     config?.foreg,                 // default => uses config's foreground
@@ -139,14 +139,14 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                 
                 
                 [mildableVars.altBackgFn] : switchOf(
-                    themableVars.altBackgMildImpt, // first  priority
+                    themableVars.altBackgMildCond, // first  priority
                     themableVars.altBackgMild,     // second priority
                     
                     config?.altBackg,              // default => uses config's alternate background
                 ),
                 
                 [mildableVars.altForegFn] : switchOf(
-                    themableVars.altForegMildImpt, // first  priority
+                    themableVars.altForegMildCond, // first  priority
                     themableVars.altForegMild,     // second priority
                     
                     config?.altForeg,              // default => uses config's alternate foreground

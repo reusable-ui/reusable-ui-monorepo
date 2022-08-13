@@ -76,7 +76,7 @@ export const usesRing = (config?: RingConfig): RingStuff => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [ringVars.ringFn] : switchOf(
-                        themableVars.ringImpt, // first  priority
+                        themableVars.ringCond, // first  priority
                         themableVars.ring,     // second priority
                         
                         config?.ring,          // default => uses config's ring

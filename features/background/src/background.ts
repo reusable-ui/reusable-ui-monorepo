@@ -129,13 +129,13 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [backgroundVars.backgColorFn   ] : switchOf(
-                        themableVars.backgImpt,     // first  priority
+                        themableVars.backgCond,     // first  priority
                         themableVars.backg,         // second priority
                         
                         config?.backg,              // default => uses config's background
                     ),
                     [backgroundVars.altBackgColorFn] : switchOf(
-                        themableVars.altBackgImpt,  // first  priority
+                        themableVars.altBackgCond,  // first  priority
                         themableVars.altBackg,      // second priority
                         
                         config?.altBackg,           // default => uses config's alternate background

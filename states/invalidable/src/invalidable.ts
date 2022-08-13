@@ -81,7 +81,7 @@ import {
 import {
     // hooks:
     ThemeName,
-    usesThemeImportant,
+    usesThemeConditional,
 }                           from '@reusable-ui/themable'        // color options of UI
 
 
@@ -205,7 +205,7 @@ export const markValid   = (): CssRule => style({
  * @param themeName The theme name at valid state.
  * @returns A `CssRule` represents a conditional theme color rules at valid state.
  */
-export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeImportant(themeName);
+export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeConditional(themeName);
 
 export const markInvalid = (): CssRule => style({
     ...imports([
@@ -217,7 +217,7 @@ export const markInvalid = (): CssRule => style({
  * @param themeName The theme name at invalid state.
  * @returns A `CssRule` represents a conditional theme color rules at invalid state.
  */
-export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeImportant(themeName);
+export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule => usesThemeConditional(themeName);
 
 
 

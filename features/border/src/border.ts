@@ -128,7 +128,7 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
                     [borderVars.borderColorFn] : switchOf(
-                        themableVars.borderImpt, // first  priority
+                        themableVars.borderCond, // first  priority
                         themableVars.border,     // second priority
                         
                         config?.borderColor,     // default => uses config's border color
