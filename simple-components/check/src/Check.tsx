@@ -154,24 +154,6 @@ const _defaultMild     : boolean = false
 
 
 
-// hooks:
-
-// variants:
-
-//#region check style
-export type CheckStyle = 'button'|'toggleButton'|'switch' // might be added more styles in the future
-export interface CheckVariant {
-    checkStyle ?: CheckStyle
-}
-export const useCheckVariant = (props: CheckVariant) => {
-    return {
-        class: props.checkStyle ?? null,
-    };
-};
-//#endregion check style
-
-
-
 // styles:
 export const dummyElm = '::before'
 export const inputElm = ':first-child'
@@ -460,6 +442,18 @@ export const useCheckStyleSheet = dynamicStyleSheet(() => ({
         usesCheckStates(),
     ]),
 }), { id: 'nx58strmq2' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type CheckStyle = 'button'|'toggleButton'|'switch' // might be added more styles in the future
+export interface CheckVariant {
+    checkStyle ?: CheckStyle
+}
+export const useCheckVariant = (props: CheckVariant) => {
+    return {
+        class: props.checkStyle ?? null,
+    };
+};
 
 
 
