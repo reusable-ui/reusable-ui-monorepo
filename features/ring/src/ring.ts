@@ -21,7 +21,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -75,7 +75,7 @@ export const usesRing = (config?: RingConfig): RingStuff => {
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [ringVars.ringFn] : fallbacks(
+                    [ringVars.ringFn] : switchOf(
                         themableVars.ringImpt, // first  priority
                         themableVars.ring,     // second priority
                         themableVars.ringCond, // third  priority
@@ -85,7 +85,7 @@ export const usesRing = (config?: RingConfig): RingStuff => {
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [ringVars.ring  ] : fallbacks(
+                [ringVars.ring  ] : switchOf(
                     // no toggle outlined nor toggle mild yet (might be added in the future)
                     
                     ringVars.ringFn,           // default => uses our `ringFn`
