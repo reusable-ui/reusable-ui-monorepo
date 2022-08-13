@@ -107,6 +107,13 @@ import {
     // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
+import {
+    // hooks:
+    ifFirstVisibleChild,
+    ifLastVisibleChild,
+    ifNotFirstVisibleChild,
+    usesGroupable,
+}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
 
 // reusable-ui variants:
 import {
@@ -190,18 +197,6 @@ import {
     // react components:
     ActionControl,
 }                           from '@reusable-ui/action-control'  // a base component
-import {
-    // rules:
-    ifFirstVisibleChild,
-    ifLastVisibleChild,
-    ifNotFirstVisibleChild,
-    
-    
-    
-    // hooks:
-    usesBorderAsContainer,
-    usesBorderAsSeparator,
-}                           from '@reusable-ui/container'       // a neighbor component
 import {
     // styles:
     usesContentBasicLayout,
@@ -379,6 +374,16 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     
     
     
+    // dependencies:
+    
+    // features:
+    const {separatorRule} = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+    });
+    
+    
+    
     return style({
         ...style({
             // spacings:
@@ -390,10 +395,7 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
                 Accordion supports: a separator between Accordion's header & body.
                 Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
             */
-            usesBorderAsSeparator({ // must be placed at the last
-                orientationInlineSelector : parentOrientationInlineSelector,
-                orientationBlockSelector  : parentOrientationBlockSelector,
-            }),
+            separatorRule, // must be placed at the last
         ]),
     });
 };
@@ -655,19 +657,22 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     // features:
     const {borderRule, borderVars} = usesBorder(lists);
+    const {groupableRule         } = usesGroupable(options);
+    const {separatorRule         } = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+    });
     
     
     
     return style({
         ...imports([
             // resets:
-            stripoutList(),                 // clear browser's default styles
+            stripoutList(), // clear browser's default styles
             
             // features:
-            // borderRule,                  // moved out to dedicated border stroke for each list & wrapper
-            
-            // borders:
-            usesBorderAsContainer(options), // make a nicely rounded corners
+            // borderRule,  // moved out to dedicated border stroke for each list & wrapper
+            groupableRule,  // make a nicely rounded corners
         ]),
         ...style({
             // layouts:
@@ -763,10 +768,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                         A separator between ListItems.
                         Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
                     */
-                    usesBorderAsSeparator({ // must be placed at the last
-                        orientationInlineSelector : parentOrientationInlineSelector,
-                        orientationBlockSelector  : parentOrientationBlockSelector,
-                    }),
+                    separatorRule, // must be placed at the last
                 ]),
             }),
             
