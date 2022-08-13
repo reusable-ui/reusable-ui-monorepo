@@ -165,10 +165,14 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
     };
 };
 
-export const markActive = (outlined: boolean|null = false, mild: boolean|null = false): CssRule => style({
+export interface MarkActiveOptions {
+    outlined ?: boolean|null
+    mild     ?: boolean|null
+}
+export const markActive = (options: MarkActiveOptions = { outlined: false, mild: false }): CssRule => style({
     ...imports([
-        outlinedOf(outlined), // kill outlined variant
-        mildOf(mild),         // kill mild     variant
+        outlinedOf(options.outlined), // kill outlined variant
+        mildOf(options.mild),         // kill mild     variant
     ]),
 });
 
