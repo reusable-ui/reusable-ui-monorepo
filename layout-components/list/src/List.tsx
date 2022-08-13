@@ -243,27 +243,6 @@ const _defaultItemActionCtrl : boolean      = false
 
 // hooks:
 
-// variants:
-
-//#region list style
-export type ListBasicStyle = 'flat'|'flush'|'joined';
-export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
-export interface ListVariant {
-    listStyle ?: SingleOrArray<ListStyle>
-}
-export const useListVariant = ({ listStyle }: ListVariant) => {
-    return {
-        class: (
-            (Array.isArray(listStyle) ? listStyle : [listStyle])
-            .filter((style) => !!style).join(' ')
-            ||
-            null
-        ),
-    };
-};
-//#endregion list style
-
-
 // states:
 
 //#region activatable
@@ -1292,6 +1271,24 @@ export const useListStyleSheet = dynamicStyleSheet(() => ({
         usesListStates(),
     ]),
 }), { id: 'dj4jw72kyr' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type ListBasicStyle = 'flat'|'flush'|'joined';
+export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export interface ListVariant {
+    listStyle ?: SingleOrArray<ListStyle>
+}
+export const useListVariant = ({ listStyle }: ListVariant) => {
+    return {
+        class: (
+            (Array.isArray(listStyle) ? listStyle : [listStyle])
+            .filter((style) => !!style).join(' ')
+            ||
+            null
+        ),
+    };
+};
 
 
 
