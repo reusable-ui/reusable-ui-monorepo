@@ -60,6 +60,7 @@
 @reusable-ui/invalidable
 @reusable-ui/checkable
 @reusable-ui/hamburgerable
+@reusable-ui/validation-icon
 
 // supports:
 [upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
