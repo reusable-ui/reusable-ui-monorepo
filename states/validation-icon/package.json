@@ -1,0 +1,45 @@
+{
+  "name": "@reusable-ui/validation-icon",
+  "version": "5.0.0",
+  "description": "An icon for indicating a validity status.",
+  "keywords": [
+    "validation",
+    "icon",
+    "indicator",
+    "validity",
+    "valid",
+    "invalid",
+    "design",
+    "layouts"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/validationIcon.js",
+  "types": "dist/validationIcon.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/types": "^2.0.1",
+    "@cssfn/css-types": "^2.0.4",
+    "@cssfn/css-vars": "^2.0.9",
+    "@reusable-ui/invalidable": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.7"
+  }
+}
