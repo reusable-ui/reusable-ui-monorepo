@@ -127,15 +127,13 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'               // size options of UI
-import {
-    // hooks:
-    mildOf,
-}                           from '@reusable-ui/mildable'                // mild (soft color) variant of UI
 
 // reusable-ui states:
 import {
     // hooks:
     ifActive,
+    MarkActiveOptions,
+    markActive,
 }                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
 import {
     // hooks:
@@ -157,10 +155,6 @@ import {
     // react components:
     Generic,
 }                           from '@reusable-ui/generic'                 // a complement component
-import {
-    // hooks:
-    markActive as baseMarkActive,
-}                           from '@reusable-ui/control'                 // a base component
 import {
     // styles:
     usesEditableControlLayout,
@@ -186,6 +180,7 @@ import type {
 
 // defaults:
 export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 
@@ -236,19 +231,6 @@ export const usesRange = (config?: RangeConfig): RangeStuff => {
     };
 };
 //#endregion range
-
-
-// states:
-
-//#region activatable
-export const markActive = (): CssRule => style({
-    ...imports([
-        baseMarkActive(),
-        
-        mildOf(null), // keeps mild variant
-    ]),
-});
-//#endregion activatable
 
 
 
@@ -584,17 +566,17 @@ export const usesRangeStates = () => {
         ...states([
             ifActive({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifFocus({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
             ifArrive({
                 ...imports([
-                    markActive(),
+                    markActive(_defaultMarkActiveOptions),
                 ]),
             }),
         ]),
