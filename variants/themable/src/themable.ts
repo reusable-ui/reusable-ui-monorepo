@@ -31,7 +31,7 @@ import {
     cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
-// reusable-ui utilities:
+// reusable-ui configs:
 import {
     // configs:
     colors,
