@@ -26,7 +26,7 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -158,7 +158,7 @@ export const usesButtonIconLayout = (options?: OrientationableOptions) => {
                     //#region <Icon>
                     // sizes:
                     // fills the entire parent text's height:
-                    [iconVars.size       ] : `calc(1em * ${fallbacks(basics.lineHeight, typos.lineHeight)})`,
+                    [iconVars.size       ] : `calc(1em * ${switchOf(basics.lineHeight, typos.lineHeight)})`,
                     
                     
                     
