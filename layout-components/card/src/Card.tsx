@@ -268,7 +268,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     const {borderRule   , borderVars   } = usesBorder(cards);
     const {animationRule, animationVars} = usesAnimation(cards as any);
     const {groupableRule               } = usesGroupable(options);
-    const {separatorRule               } = usesGroupable({ // must be placed at the last
+    const {separatorRule               } = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
         swapFirstItem             : true,
