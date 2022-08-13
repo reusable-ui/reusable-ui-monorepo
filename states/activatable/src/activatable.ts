@@ -169,12 +169,19 @@ export interface MarkActiveOptions {
     outlined ?: boolean|null
     mild     ?: boolean|null
 }
-export const markActive = (options: MarkActiveOptions = { outlined: false, mild: false }): CssRule => style({
-    ...imports([
-        outlinedOf(options.outlined), // kill outlined variant
-        mildOf(options.mild),         // kill mild     variant
-    ]),
-});
+export const markActive = (options?: MarkActiveOptions): CssRule => {
+    // options:
+    const { outlined = false, mild = false } = options ?? {};
+    
+    
+    
+    return style({
+        ...imports([
+            outlinedOf(outlined), // kill outlined variant
+            mildOf(mild),         // kill mild     variant
+        ]),
+    });
+};
 
 
 
