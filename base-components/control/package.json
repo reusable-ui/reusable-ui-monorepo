@@ -39,7 +39,6 @@
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
-    "@reusable-ui/activatable": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/disableable": "^5.0.0",
     "@reusable-ui/focusable": "^5.0.0",

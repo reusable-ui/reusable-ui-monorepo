@@ -8,11 +8,6 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -72,11 +67,6 @@ import {
 }                           from '@reusable-ui/disableable'     // a capability of UI to be disabled
 import {
     // hooks:
-    ifActive,
-    markActive      as baseMarkActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
     ifBlurring,
     ifFocus,
     usesFocusable,
@@ -85,7 +75,6 @@ import {
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
 import {
     // hooks:
-    ifArrive,
     usesInteractable,
     InteractableProps,
     useInteractable,
@@ -104,20 +93,6 @@ import {
     IndicatorProps,
     Indicator,
 }                           from '@reusable-ui/indicator'       // a base component
-
-
-
-// hooks:
-
-// states:
-
-//#region activatable
-export const markActive = (): CssRule => style({
-    ...imports([
-        baseMarkActive(),
-    ]),
-});
-//#endregion activatable
 
 
 
@@ -178,22 +153,6 @@ export const usesControlStates = () => {
             ifDisable({
                 // accessibilities:
                 cursor : controls.cursorDisable,
-            }),
-            
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(),
-                ]),
             }),
             
             ifFocus({
