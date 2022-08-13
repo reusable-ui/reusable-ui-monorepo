@@ -133,24 +133,6 @@ const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding 
 
 
 
-// hooks:
-
-// variants:
-
-//#region card style
-export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
-export interface CardVariant {
-    cardStyle ?: CardStyle
-}
-export const useCardVariant = (props: CardVariant) => {
-    return {
-        class: props.cardStyle ?? null,
-    };
-};
-//#endregion card style
-
-
-
 // styles:
 const headerElm = ':where(.header)' // zero specificity
 const footerElm = ':where(.footer)' // zero specificity
@@ -429,6 +411,18 @@ export const useCardStyleSheet = dynamicStyleSheet(() => ({
         usesCardStates(),
     ]),
 }), { id: 'wfc3nwgtcn' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
+export interface CardVariant {
+    cardStyle ?: CardStyle
+}
+export const useCardVariant = (props: CardVariant) => {
+    return {
+        class: props.cardStyle ?? null,
+    };
+};
 
 
 
