@@ -95,13 +95,8 @@ import {
 
 
 
-// hooks:
-
-// variants:
-
-//#region orientationable
+// defaults:
 export { defaultOrientationableOptions };
-//#endregion orientationable
 
 
 
