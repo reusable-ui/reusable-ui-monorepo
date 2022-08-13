@@ -91,8 +91,8 @@ export const usesInputLayout = () => {
     // dependencies:
     
     // features:
-    const {borderVars } = usesBorder();
-    const {paddingVars} = usesPadding();
+    const {borderRule, borderVars } = usesBorder({ borderWidth: '0px' });
+    const {            paddingVars} = usesPadding();
     
     
     
@@ -121,6 +121,9 @@ export const usesInputLayout = () => {
                 ...imports([
                     // resets:
                     stripoutTextbox(), // clear browser's default styles
+                    
+                    // features:
+                    borderRule,
                 ]),
                 ...style({
                     // layouts:
@@ -144,7 +147,7 @@ export const usesInputLayout = () => {
                     
                     // borders:
                     // a fix for :autofill corners:
-                    border       : borderVars.border,
+                    border                   : borderVars.border,
                  // borderRadius             : borderVars.borderRadius,
                     borderStartStartRadius   : borderVars.borderStartStartRadius,
                     borderStartEndRadius     : borderVars.borderStartEndRadius,
