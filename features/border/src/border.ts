@@ -130,7 +130,6 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
                     [borderVars.borderColorFn] : switchOf(
                         themableVars.borderImpt, // first  priority
                         themableVars.border,     // second priority
-                        themableVars.borderCond, // third  priority
                         
                         config?.borderColor,     // default => uses config's border color
                     ),

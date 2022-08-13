@@ -106,64 +106,6 @@ export interface ThemableVars {
     
     
     /**
-     * conditional background color.
-     */
-    backgCond            : any
-    /**
-     * conditional foreground color.
-     */
-    foregCond            : any
-    /**
-     * conditional border color.
-     */
-    borderCond           : any
-    /**
-     * conditional alternate background color.
-     */
-    altBackgCond         : any
-    /**
-     * conditional alternate foreground color.
-     */
-    altForegCond         : any
-    
-    /**
-     * conditional foreground color - at outlined variant.
-     */
-    foregOutlinedCond    : any
-    /**
-     * conditional alternate background color - at outlined variant.
-     */
-    altBackgOutlinedCond : any
-    /**
-     * conditional alternate foreground color - at outlined variant.
-     */
-    altForegOutlinedCond : any
-    
-    /**
-     * conditional background color - at mild variant.
-     */
-    backgMildCond        : any
-    /**
-     * conditional foreground color - at mild variant.
-     */
-    foregMildCond        : any
-    /**
-     * conditional alternate background color - at mild variant.
-     */
-    altBackgMildCond     : any
-    /**
-     * conditional alternate foreground color - at mild variant.
-     */
-    altForegMildCond     : any
-    
-    /**
-     * conditional ring color.
-     */
-    ringCond             : any
-    
-    
-    
-    /**
      * important conditional background color.
      */
     backgImpt            : any
@@ -302,32 +244,6 @@ export const themeOf = (themeName: ThemeName): CssRule => style({
 export const themeOptions = (): ThemeName[] => Object.keys(themes) as ThemeName[];
 
 
-
-/**
- * Creates a conditional theme color rules for the given `themeName`.
- * @param themeName The theme name as the conditional theme color -or- `null` for undefining the conditional.
- * @returns A `CssRule` represents a conditional theme color rules for the given `themeName`.
- */
-export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
-    ...vars({
-        [themableVars.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themableVars.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themableVars.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themableVars.altBackgCond        ] : themableVars.backgMildCond,
-        [themableVars.altForegCond        ] : themableVars.foregMildCond,
-        
-        [themableVars.foregOutlinedCond   ] : !themeName ? null : themableVars.backgCond,
-        [themableVars.altBackgOutlinedCond] : themableVars.backgCond,
-        [themableVars.altForegOutlinedCond] : themableVars.foregCond,
-        
-        [themableVars.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themableVars.foregMildCond       ] : !themeName ? null : themableVars.borderCond,
-        [themableVars.altBackgMildCond    ] : themableVars.backgCond,
-        [themableVars.altForegMildCond    ] : themableVars.foregCond,
-        
-        [themableVars.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
 
 /**
  * Creates an important conditional theme color rules for the given `themeName`.

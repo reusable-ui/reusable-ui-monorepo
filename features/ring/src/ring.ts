@@ -78,7 +78,6 @@ export const usesRing = (config?: RingConfig): RingStuff => {
                     [ringVars.ringFn] : switchOf(
                         themableVars.ringImpt, // first  priority
                         themableVars.ring,     // second priority
-                        themableVars.ringCond, // third  priority
                         
                         config?.ring,          // default => uses config's ring
                     ),

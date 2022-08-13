@@ -131,14 +131,12 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                     [backgroundVars.backgColorFn   ] : switchOf(
                         themableVars.backgImpt,     // first  priority
                         themableVars.backg,         // second priority
-                        themableVars.backgCond,     // third  priority
                         
                         config?.backg,              // default => uses config's background
                     ),
                     [backgroundVars.altBackgColorFn] : switchOf(
                         themableVars.altBackgImpt,  // first  priority
                         themableVars.altBackg,      // second priority
-                        themableVars.altBackgCond,  // third  priority
                         
                         config?.altBackg,           // default => uses config's alternate background
                     ),

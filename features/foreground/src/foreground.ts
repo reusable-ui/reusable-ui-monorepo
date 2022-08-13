@@ -98,14 +98,12 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
                     [foregroundVars.foregFn   ] : switchOf(
                         themableVars.foregImpt,     // first  priority
                         themableVars.foreg,         // second priority
-                        themableVars.foregCond,     // third  priority
                         
                         config?.foreg,              // default => uses config's foreground
                     ),
                     [foregroundVars.altForegFn] : switchOf(
                         themableVars.altForegImpt,  // first  priority
                         themableVars.altForeg,      // second priority
-                        themableVars.altForegCond,  // third  priority
                         
                         config?.altForeg,           // default => uses config's alternate foreground
                     ),
