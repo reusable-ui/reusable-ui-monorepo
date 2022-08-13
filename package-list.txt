@@ -16,12 +16,12 @@
 [upgraded] [documented  ] [published] @reusable-ui/colors
 [upgraded] [documented  ] [published] @reusable-ui/borders
 [upgraded] [documented  ] [published] @reusable-ui/spacers
-[upgraded] [documented  ] [published] @reusable-ui/stripouts
 [upgraded] [documented  ] [published] @reusable-ui/breakpoints
-[upgraded] [documented  ] [published] @reusable-ui/layouts
 [upgraded] [documented  ] [published] @reusable-ui/typos
 
 // reusable-ui utilities:
+[upgraded] [documented  ] [published] @reusable-ui/stripouts
+[upgraded] [documented  ] [published] @reusable-ui/layouts
 [upgraded] [documented  ] [published] @reusable-ui/utilities
 [upgraded] [documented  ] [published] @reusable-ui/hooks
 [upgraded] [documented  ] [published] @reusable-ui/semantics
