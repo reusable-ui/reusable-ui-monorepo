@@ -21,7 +21,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -127,7 +127,7 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [borderVars.borderColorFn] : fallbacks(
+                    [borderVars.borderColorFn] : switchOf(
                         themableVars.borderImpt, // first  priority
                         themableVars.border,     // second priority
                         themableVars.borderCond, // third  priority
@@ -137,7 +137,7 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] can be toggled_on
-                [borderVars.borderColor  ] : fallbacks(
+                [borderVars.borderColor  ] : switchOf(
                     outlineableVars.foregTg,     // toggle outlined (if `usesOutlineable()` applied)
                     
                     borderVars.borderColorFn,    // default => uses our `borderColorFn`
