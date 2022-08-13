@@ -11,7 +11,7 @@ import {
     useMemo,
 }                           from 'react'
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useIsomorphicLayoutEffect,
