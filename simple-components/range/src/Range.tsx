@@ -186,7 +186,7 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 // hooks:
 
-// layouts:
+// features:
 
 //#region range
 export interface RangeVars {
@@ -293,7 +293,6 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         itemsSelector             : [trackLowerElm, trackUpperElm],
     });
     
-    // range:
     const {rangeRule, rangeVars} = usesRange();
     
     
@@ -303,7 +302,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             // layouts:
             usesEditableControlLayout(),
             
-            // range:
+            // features:
             rangeRule,
         ]),
         ...style({
@@ -1015,8 +1014,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     
-    // styles:
+    // features:
     const {rangeVars}     = usesRange();
+    
+    
+    
+    // styles:
     const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
         // values:
         [
