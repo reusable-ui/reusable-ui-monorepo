@@ -79,15 +79,17 @@ import {
     groupSelector,
 }                           from '@cssfn/css-selectors'         // manipulates css selectors
 
+// reusable-ui configs:
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+
 // reusable-ui utilities:
 import type {
     // types:
     Tag,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 import {
     // styles:
     stripoutFigure,
