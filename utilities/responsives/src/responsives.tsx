@@ -29,7 +29,7 @@ import type {
     SingleOrArray,
 }                           from '@cssfn/types'                 // cssfn general types
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // hooks:
     useIsomorphicLayoutEffect,
