@@ -1,3 +1,5 @@
+^// hooks:
+
 TODO grouping:
 // reusable-ui configs:
 
@@ -13,14 +15,6 @@ usePropIsValid ???
 
 TODO: moved category:
 fooVariant => // layouts: or // appearances: => // variants:
-
-TODO:
-usesThemeDefaultNone
-usesThemeDefaultPrimary
-usesThemeDefaultSecondary
-usesThemeActiveNone
-usesThemeActivePrimary
-usesThemeActiveSecondary
 
 TODO remove:
 @reusable-ui/clickable => handle disabled click & handle space as click
