@@ -19,7 +19,7 @@ import {
     useLinkClickHandler,
 }                           from 'react-router-dom'
 
-// reusable-ui:
+// reusable-ui utilities:
 import {
     // utilities:
     isReusableUiComponent,
@@ -29,6 +29,8 @@ import {
     useEvent,
     useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui components:
 import type {
     // react components:
     GenericProps,
