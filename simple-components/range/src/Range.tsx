@@ -109,6 +109,10 @@ import {
     // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
+import {
+    // hooks:
+    usesGroupable,
+}                           from '@reusable-ui/groupable'               // groups a list of UIs into a single UI
 
 // reusable-ui variants:
 import {
@@ -177,11 +181,6 @@ import type {
     // types:
     InputHTMLAttributes,
 }                           from '@reusable-ui/input'                   // a neighbor component
-import {
-    // hooks:
-    usesBorderAsContainer,
-    usesBorderAsSeparator,
-}                           from '@reusable-ui/container'               // a neighbor component
 
 
 
@@ -304,6 +303,16 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         usesPrefixedProps(ranges, 'thumb'), // fetch config's cssProps starting with thumb***
     );
     
+    const {groupableRule} = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+    });
+    const {separatorRule} = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : [trackLowerElm, trackUpperElm],
+    });
+    
     // range:
     const {rangeRule, rangeVars} = usesRange();
     
@@ -371,12 +380,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     // features:
                     trackBorderRule,
                     trackPaddingRule,
-                    
-                    // borders:
-                    usesBorderAsContainer({ // make a nicely rounded corners
-                        orientationInlineSelector : parentOrientationInlineSelector,
-                        orientationBlockSelector  : parentOrientationBlockSelector,
-                    }),
+                    groupableRule, // make a nicely rounded corners
                 ]),
                 ...style({
                     // layouts:
@@ -429,11 +433,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         }),
                         ...imports([
                             // borders:
-                            usesBorderAsSeparator({ // must be placed at the last
-                                orientationInlineSelector : parentOrientationInlineSelector,
-                                orientationBlockSelector  : parentOrientationBlockSelector,
-                                itemsSelector             : [trackLowerElm, trackUpperElm],
-                            }),
+                            separatorRule, // must be placed at the last
                         ]),
                     }),
                     ...children(trackLowerElm, {
