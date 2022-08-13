@@ -32,7 +32,7 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
     // utilities:
-    fallbacks as switchOf,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
