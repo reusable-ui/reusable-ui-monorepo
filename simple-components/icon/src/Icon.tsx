@@ -535,7 +535,7 @@ export const usesIconVariants    = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable<SizeName>(icons);
+    const {resizableRule} = usesResizable<SizeName>(icons, sizeOptions());
     const {themableRule } = usesThemable();
     const {mildableRule } = usesMildable({ altBackg : icons.color });
     
