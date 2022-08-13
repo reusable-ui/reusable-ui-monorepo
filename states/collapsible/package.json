@@ -32,7 +32,7 @@
   "dependencies": {
     "@cssfn/types": "^2.0.1",
     "@cssfn/css-types": "^2.0.4",
-    "@cssfn/css-vars": "^2.0.9",
+    "@cssfn/css-vars": "^2.0.10",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/semantics": "^5.0.0",

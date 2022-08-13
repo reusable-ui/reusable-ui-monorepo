@@ -33,7 +33,7 @@
   "dependencies": {
     "@cssfn/types": "^2.0.1",
     "@cssfn/css-types": "^2.0.4",
-    "@cssfn/css-vars": "^2.0.9"
+    "@cssfn/css-vars": "^2.0.10"
   },
   "peerDependencies": {
     "@cssfn/cssfn": "^2.0.7"
