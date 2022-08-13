@@ -124,55 +124,6 @@ import type {
 
 // hooks:
 
-// variants:
-
-//#region resizable
-export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
-
-
-
-/**
- * Gets all available size options.
- * @returns A `SizeName[]` represents all available size options.
- */
-export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
-//#endregion resizable
-
-//#region themable
-/**
- * Uses theme (color) options.  
- * For example: `primary`, `success`, `danger`.
- * @param factory A callback to create a theme rules for each theme color in `options`.
- * @param options Defines all available theme color options.
- * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
- */
-export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()) => baseUsesThemable(factory, options);
-
-/**
- * Creates a theme rules for the given `themeName`.
- * @param themeName The theme name.
- * @returns A `CssRule` represents a theme rules for the given `themeName`.
- */
-export const themeOf = (themeName: ThemeName): CssRule => {
-    // dependencies:
-    const {themableVars} = usesThemable();
-    
-    
-    
-    return style({
-        ...vars({
-            // altBackg     => backg:
-            [themableVars.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
-            
-            // altBackgMild => backgMild:
-            [themableVars.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        }),
-    });
-};
-//#endregion themable
-
-
-
 // features:
 
 //#region icon
@@ -300,6 +251,54 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
     }, [icon]);
 };
 //#endregion icon
+
+
+// variants:
+
+//#region resizable
+export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
+
+
+
+/**
+ * Gets all available size options.
+ * @returns A `SizeName[]` represents all available size options.
+ */
+export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
+//#endregion resizable
+
+//#region themable
+/**
+ * Uses theme (color) options.  
+ * For example: `primary`, `success`, `danger`.
+ * @param factory A callback to create a theme rules for each theme color in `options`.
+ * @param options Defines all available theme color options.
+ * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
+ */
+export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()) => baseUsesThemable(factory, options);
+
+/**
+ * Creates a theme rules for the given `themeName`.
+ * @param themeName The theme name.
+ * @returns A `CssRule` represents a theme rules for the given `themeName`.
+ */
+export const themeOf = (themeName: ThemeName): CssRule => {
+    // dependencies:
+    const {themableVars} = usesThemable();
+    
+    
+    
+    return style({
+        ...vars({
+            // altBackg     => backg:
+            [themableVars.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
+            
+            // altBackgMild => backgMild:
+            [themableVars.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        }),
+    });
+};
+//#endregion themable
 
 
 
