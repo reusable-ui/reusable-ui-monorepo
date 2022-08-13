@@ -118,10 +118,6 @@ import {
 // reusable-ui components:
 import {
     // hooks:
-    usesThemeActive,
-}                           from '@reusable-ui/control'         // a base component
-import {
-    // hooks:
     isClientSideLink,
     
     
@@ -251,9 +247,6 @@ export const usesButtonLinkVariant = () => {
     
     return style({
         ...imports([
-            // colors:
-            usesThemeActive(), // set the active theme as the default theme
-            
             // backgrounds:
             noBackground(),
         ]),

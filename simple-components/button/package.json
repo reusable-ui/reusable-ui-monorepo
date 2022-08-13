@@ -45,7 +45,6 @@
     "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
-    "@reusable-ui/control": "^5.0.0",
     "@reusable-ui/focusable": "^5.0.0",
     "@reusable-ui/gradientable": "^5.0.0",
     "@reusable-ui/interactable": "^5.0.0",

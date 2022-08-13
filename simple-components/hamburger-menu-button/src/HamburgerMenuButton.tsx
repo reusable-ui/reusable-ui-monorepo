@@ -59,10 +59,6 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
-import type {
-    // hooks:
-    ThemeName,
-}                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
     mildOf,
@@ -98,7 +94,6 @@ import {
 import {
     // hooks:
     markActive       as baseMarkActive,
-    usesThemeActive  as baseUsesThemeActive,
 }                           from '@reusable-ui/control'         // a base component
 import {
     // types:
@@ -131,19 +126,9 @@ export const markActive = (): CssRule => style({
     ...imports([
         baseMarkActive(),
         
-        mildOf(null),      // keeps mild variant
-        
-        usesThemeActive(), // switch to active theme
+        mildOf(null), // keeps mild variant
     ]),
 });
-
-/**
- * Creates a conditional theme color rules at active state.
- * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a conditional theme color rules at active state.
- */
-// change default parameter from 'primary' to 'secondary':
-export const usesThemeActive  = (themeName: ThemeName|null = 'secondary'): CssRule => baseUsesThemeActive(themeName);
 //#endregion activatable
 
 
