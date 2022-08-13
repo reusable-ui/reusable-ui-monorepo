@@ -35,7 +35,7 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui configs:
 import {
     // configs:
     borderRadiuses,
@@ -44,6 +44,8 @@ import {
     // configs:
     spacers,
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+
+// reusable-ui utilities:
 import {
     // hooks:
     useMergeClasses,
