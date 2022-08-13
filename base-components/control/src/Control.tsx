@@ -67,7 +67,6 @@ import {
 import {
     // hooks:
     ThemeName,
-    usesThemeDefault as baseUsesThemeDefault,
 }                           from '@reusable-ui/themable'        // color options of UI
 
 // reusable-ui states:
@@ -127,14 +126,6 @@ export const markActive = (): CssRule => style({
 });
 
 /**
- * Creates a default theme color rules.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color rules.
- */
-// change default parameter from `null` to 'secondary':
-export const usesThemeDefault = (themeName: ThemeName|null = 'secondary'): CssRule => baseUsesThemeDefault(themeName);
-
-/**
  * Creates a conditional theme color rules at active state.
  * @param themeName The theme name as the active theme color -or- `null` for *auto* theme.
  * @returns A `CssRule` represents a conditional theme color rules at active state.
@@ -154,9 +145,6 @@ export const usesControlLayout = () => {
             
             // layouts:
             usesIndicatorLayout(),
-            
-            // colors:
-            usesThemeDefault(),
         ]),
         ...style({
             // positions:

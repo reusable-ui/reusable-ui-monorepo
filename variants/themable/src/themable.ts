@@ -304,13 +304,6 @@ export const themeOptions = (): ThemeName[] => Object.keys(themes) as ThemeName[
 
 
 /**
- * Creates a default theme color rules.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color rules.
- */
-export const usesThemeDefault     = (themeName: ThemeName|null = null): CssRule => usesThemeConditional(themeName);
-
-/**
  * Creates a conditional theme color rules for the given `themeName`.
  * @param themeName The theme name as the conditional theme color -or- `null` for undefining the conditional.
  * @returns A `CssRule` represents a conditional theme color rules for the given `themeName`.

@@ -183,7 +183,6 @@ import {
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // hooks:
-    usesThemeDefault as baseUsesThemeDefault,
     usesThemeActive  as baseUsesThemeActive,
 }                           from '@reusable-ui/control'         // a base component
 import {
@@ -262,14 +261,6 @@ export const dontMarkActive = (): CssRule => style({
         usesThemeActive(null), // keeps current theme
     ]),
 });
-
-/**
- * Creates a default theme color rules.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color rules.
- */
-// change default parameter from 'secondary' to `null`:
-export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => baseUsesThemeDefault(themeName);
 
 /**
  * Creates a conditional theme color rules at active state.
@@ -556,9 +547,6 @@ export const usesListActionItemLayout = () => {
             
             // resets:
             stripoutCommonBasicLayout(),
-            
-            // colors:
-            usesThemeDefault(),
         ]),
     });
 };

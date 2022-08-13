@@ -98,7 +98,6 @@ import {
 import {
     // hooks:
     markActive       as baseMarkActive,
-    usesThemeDefault as baseUsesThemeDefault,
     usesThemeActive  as baseUsesThemeActive,
 }                           from '@reusable-ui/control'         // a base component
 import {
@@ -137,14 +136,6 @@ export const markActive = (): CssRule => style({
         usesThemeActive(), // switch to active theme
     ]),
 });
-
-/**
- * Creates a default theme color rules.
- * @param themeName The theme name as the default theme color -or- `null` for *auto* theme.
- * @returns A `CssRule` represents a default theme color rules.
- */
-// change default parameter from 'secondary' to `null`:
-export const usesThemeDefault = (themeName: ThemeName|null = null       ): CssRule => baseUsesThemeDefault(themeName);
 
 /**
  * Creates a conditional theme color rules at active state.
@@ -212,9 +203,6 @@ export const usesHamburgerMenuButtonLayout = () => {
         ...imports([
             // layouts:
             usesToggleButtonLayout(),
-            
-            // colors:
-            usesThemeDefault(),
         ]),
         ...style({
             // children:
