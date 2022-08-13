@@ -72,7 +72,7 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/control
 [upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/action-control
 [upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/editable-control
-[upgraded] [documented  ] [published] [          atomic] [half organized] @reusable-ui/editable-text-control   *icon
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/editable-text-control   *icon
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/editable-action-control
 
 // contents:
