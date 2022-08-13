@@ -117,6 +117,8 @@ import {
 
 
 // defaults:
+export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
+
 const _defaultSemanticTag        : SemanticTag  = 'article' // uses <article>        as the default semantic
 const _defaultSemanticRole       : SemanticRole = 'article' // uses [role="article"] as the default semantic
 
@@ -134,11 +136,6 @@ const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding 
 // hooks:
 
 // variants:
-
-//#region orientationable
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-//#endregion orientationable
-
 
 //#region card style
 export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
