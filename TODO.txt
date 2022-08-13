@@ -1,3 +1,6 @@
+TODO grouping:
+// reusable-ui configs:
+
 TODO: standarize useToggle___
 
 TODO rename:
@@ -20,17 +23,7 @@ usesThemeActivePrimary
 usesThemeActiveSecondary
 
 TODO remove:
-FeatureMixin
-VariantMixin
-StateMixin
-
-TODO remove:
 @reusable-ui/clickable => handle disabled click & handle space as click
-
-TODO: create a dedicated package of:
-FeatureMixin
-VariantMixin
-StateMixin
 
 TODO: upgrade <Masonry> to useOrientationableWithDirection
 
