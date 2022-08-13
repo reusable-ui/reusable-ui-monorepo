@@ -13,6 +13,7 @@ import {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
+    useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui components:
@@ -38,6 +39,8 @@ import {
     // react components:
     ButtonProps,
     Button,
+    
+    ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a base component
 
 // other libs:
@@ -247,7 +250,10 @@ export interface NavButtonProps
         ButtonProps,
         
         // nav:
-        CurrentActiveProps
+        CurrentActiveProps,
+        
+        // components:
+        ButtonComponentProps
 {
 }
 const NavButton = (props: NavButtonProps): JSX.Element|null => {
@@ -263,32 +269,74 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         
         // accessibilities:
         active,
+        
+        
+        
+        // components:
+        buttonRef,
+        buttonOrientation,
+        buttonStyle,
+        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
+        buttonChildren,
     ...restButtonProps} = props;
+    
+    
+    
+    // refs:
+    const mergedButtonRef   = useMergeRefs(
+        // preserves the original `elmRef` from `buttonComponent`:
+        buttonComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `buttonRef` from `props`:
+        buttonRef,
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
+    );
     
     
     
     // fn props:
     const activeDn = useCurrentActive(props);
-    const activeFn = active /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const activeFn = (buttonComponent.props.active ?? active) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
     // jsx:
-    return (
-        <Button
+    /* <Button> */
+    return React.cloneElement<ButtonProps>(buttonComponent,
+        // props:
+        {
             // other props:
-            {...restButtonProps}
+            ...restButtonProps,
+            
+            
+            
+            // refs:
+            elmRef         : mergedButtonRef,
             
             
             
             // semantics:
-            aria-current={(activeFn || undefined) && (props['aria-current'] ?? 'page')}
+            'aria-current' : (activeFn || undefined) && (buttonComponent.props['aria-current'] ?? props['aria-current'] ?? 'page'),
+            
+            
+            
+            // variants:
+            orientation    : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
+            buttonStyle    : buttonComponent.props.buttonStyle ?? buttonStyle,
             
             
             
             // accessibilities:
-            active={activeFn}
-        />
+            active         : activeFn,
+        },
+        
+        
+        
+        // children:
+        buttonComponent.props.children ?? buttonChildren ?? props.children,
     );
 };
 export {
