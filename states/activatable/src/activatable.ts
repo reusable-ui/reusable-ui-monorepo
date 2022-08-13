@@ -165,10 +165,10 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
     };
 };
 
-export const markActive = (): CssRule => style({
+export const markActive = (outlined: boolean|null = false, mild: boolean|null = false): CssRule => style({
     ...imports([
-        outlinedOf(false), // kill outlined variant
-        mildOf(false),     // kill mild     variant
+        outlinedOf(outlined), // kill outlined variant
+        mildOf(mild),         // kill mild     variant
     ]),
 });
 
