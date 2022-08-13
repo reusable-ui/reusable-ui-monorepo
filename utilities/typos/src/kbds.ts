@@ -26,7 +26,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'    // reads/writes css variables configuration
 
-// reusable-ui:
+// reusable-ui configs:
 import {
     // configs:
     colors,
