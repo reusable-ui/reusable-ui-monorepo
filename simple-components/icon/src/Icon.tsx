@@ -61,11 +61,13 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui configs:
 import {
     // configs:
     colors,
 }                           from '@reusable-ui/colors'          // a color management system
+
+// reusable-ui utilities:
 import {
     // styles:
     fillTextLineHeightLayout,
