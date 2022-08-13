@@ -734,7 +734,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     
     
-    // appearances:
+    // features:
     const icon             = useIcon(props);
     
     
