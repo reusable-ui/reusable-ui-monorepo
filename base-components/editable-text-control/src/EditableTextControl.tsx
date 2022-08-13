@@ -116,7 +116,7 @@ import {
 
 
 // defaults:
-const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: false, mild: null };
+const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 
