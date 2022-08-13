@@ -8,7 +8,7 @@ TODO remove:
 
 TODO: upgrade <Masonry> to useOrientationableWithDirection
 
-
+TODO: fix blinky <NavButton> on NextJs
 
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
