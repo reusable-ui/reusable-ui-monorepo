@@ -51,11 +51,13 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui configs:
 import {
     // configs:
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
+
+// reusable-ui utilities:
 import {
     // hooks:
     useEvent,
