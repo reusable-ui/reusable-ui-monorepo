@@ -35,6 +35,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
 // reusable-ui utilities:
@@ -165,6 +166,19 @@ export const usesInputLayout = () => {
                     // copy parent's paddings:
                     paddingInline  : paddingVars.paddingInline,
                     paddingBlock   : paddingVars.paddingBlock,
+                    
+                    
+                    
+                    // children:
+                    ...children('::placeholder', {
+                        // foregrounds:
+                        foreg : 'currentColor',
+                        
+                        
+                        
+                        // customize:
+                        ...usesCssProps(usesPrefixedProps(inputs, 'placeholder')), // apply config's cssProps starting with placeholder***
+                    }),
                 }),
             }),
             
@@ -220,10 +234,15 @@ export const useInputStyleSheet = dynamicStyleSheet(() => ({
 // configs:
 export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
     return {
+        // appearances:
+        placeholderOpacity : 0.4    as CssKnownProps['opacity'],
+        
+        
+        
         // backgrounds:
         backgGrad : [
             ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
-        ] as CssKnownProps['backgroundImage'],
+        ]                           as CssKnownProps['backgroundImage'],
     };
 }, { prefix: 'inp' });
 
