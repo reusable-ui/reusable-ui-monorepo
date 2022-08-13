@@ -30,7 +30,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -122,7 +122,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                 themableRule,
             ]),
             ...vars({
-                [mildableVars.backgFn   ] : fallbacks(
+                [mildableVars.backgFn   ] : switchOf(
                     themableVars.backgMildImpt,    // first  priority
                     themableVars.backgMild,        // second priority
                     themableVars.backgMildCond,    // third  priority
@@ -130,7 +130,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     config?.backg,                 // default => uses config's background
                 ),
                 
-                [mildableVars.foregFn   ] : fallbacks(
+                [mildableVars.foregFn   ] : switchOf(
                     themableVars.foregMildImpt,    // first  priority
                     themableVars.foregMild,        // second priority
                     themableVars.foregMildCond,    // third  priority
@@ -140,7 +140,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                 
                 
                 
-                [mildableVars.altBackgFn] : fallbacks(
+                [mildableVars.altBackgFn] : switchOf(
                     themableVars.altBackgMildImpt, // first  priority
                     themableVars.altBackgMild,     // second priority
                     themableVars.altBackgMildCond, // third  priority
@@ -148,7 +148,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     config?.altBackg,              // default => uses config's alternate background
                 ),
                 
-                [mildableVars.altForegFn] : fallbacks(
+                [mildableVars.altForegFn] : switchOf(
                     themableVars.altForegMildImpt, // first  priority
                     themableVars.altForegMild,     // second priority
                     themableVars.altForegMildCond, // third  priority
