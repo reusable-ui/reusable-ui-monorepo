@@ -26,7 +26,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -128,14 +128,14 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [backgroundVars.backgColorFn   ] : fallbacks(
+                    [backgroundVars.backgColorFn   ] : switchOf(
                         themableVars.backgImpt,     // first  priority
                         themableVars.backg,         // second priority
                         themableVars.backgCond,     // third  priority
                         
                         config?.backg,              // default => uses config's background
                     ),
-                    [backgroundVars.altBackgColorFn] : fallbacks(
+                    [backgroundVars.altBackgColorFn] : switchOf(
                         themableVars.altBackgImpt,  // first  priority
                         themableVars.altBackg,      // second priority
                         themableVars.altBackgCond,  // third  priority
@@ -145,13 +145,13 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [backgroundVars.backgColor     ] : fallbacks(
+                [backgroundVars.backgColor     ] : switchOf(
                     outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
                     
                     backgroundVars.backgColorFn,    // default => uses our `backgColorFn`
                 ),
-                [backgroundVars.altBackgColor  ] : fallbacks(
+                [backgroundVars.altBackgColor  ] : switchOf(
                     outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
                     
@@ -167,7 +167,7 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                     // layering: backg1 | backg2 | backg3 ...
                     
                     // top layer:
-                    fallbacks(
+                    switchOf(
                         gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
                         
                         backgroundVars.backgNone,     // default => no top layer
