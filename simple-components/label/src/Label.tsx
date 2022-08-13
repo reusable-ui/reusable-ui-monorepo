@@ -61,24 +61,6 @@ import {
 
 
 
-// hooks:
-
-// variants:
-
-//#region label style
-export type LabelStyle = 'content' // might be added more styles in the future
-export interface LabelVariant {
-    labelStyle ?: LabelStyle
-}
-export const useLabelVariant = (props: LabelVariant) => {
-    return {
-        class: props.labelStyle ?? null,
-    };
-};
-//#endregion label style
-
-
-
 // styles:
 export const usesLabelLayout = () => {
     return style({
@@ -148,6 +130,18 @@ export const useLabelStyleSheet = dynamicStyleSheet(() => ({
         usesLabelVariants(),
     ]),
 }), { id: 'si01upz9vr' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type LabelStyle = 'content' // might be added more styles in the future
+export interface LabelVariant {
+    labelStyle ?: LabelStyle
+}
+export const useLabelVariant = (props: LabelVariant) => {
+    return {
+        class: props.labelStyle ?? null,
+    };
+};
 
 
 
