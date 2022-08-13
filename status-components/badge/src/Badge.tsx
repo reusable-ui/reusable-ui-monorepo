@@ -101,24 +101,6 @@ import {
 
 
 
-// hooks:
-
-// variants:
-
-//#region badge style
-export type BadgeStyle = 'pill'|'square'|'circle' // might be added more styles in the future
-export interface BadgeVariant {
-    badgeStyle ?: BadgeStyle
-}
-export const useBadgeVariant = (props: BadgeVariant) => {
-    return {
-        class: props.badgeStyle ?? null,
-    };
-};
-//#endregion badge style
-
-
-
 // styles:
 export const usesBadgeLayout = () => {
     // dependencies:
@@ -268,6 +250,18 @@ export const useBadgeStyleSheet = dynamicStyleSheet(() => ({
         usesBadgeStates(),
     ]),
 }), { id: 'a7wkthow0k' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type BadgeStyle = 'pill'|'square'|'circle' // might be added more styles in the future
+export interface BadgeVariant {
+    badgeStyle ?: BadgeStyle
+}
+export const useBadgeVariant = (props: BadgeVariant) => {
+    return {
+        class: props.badgeStyle ?? null,
+    };
+};
 
 
 
