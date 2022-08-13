@@ -21,7 +21,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
-    fallbacks,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 
 // reusable-ui variants:
@@ -95,14 +95,14 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
             }),
             ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
                 ...vars({
-                    [foregroundVars.foregFn   ] : fallbacks(
+                    [foregroundVars.foregFn   ] : switchOf(
                         themableVars.foregImpt,     // first  priority
                         themableVars.foreg,         // second priority
                         themableVars.foregCond,     // third  priority
                         
                         config?.foreg,              // default => uses config's foreground
                     ),
-                    [foregroundVars.altForegFn] : fallbacks(
+                    [foregroundVars.altForegFn] : switchOf(
                         themableVars.altForegImpt,  // first  priority
                         themableVars.altForeg,      // second priority
                         themableVars.altForegCond,  // third  priority
@@ -112,13 +112,13 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
                 }),
             }),
             ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
-                [foregroundVars.foreg     ] : fallbacks(
+                [foregroundVars.foreg     ] : switchOf(
                     outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.foregTg,           // toggle mild     (if `usesMildable()` applied)
                     
                     foregroundVars.foregFn,         // default => uses our `foregFn`
                 ),
-                [foregroundVars.altForeg  ] : fallbacks(
+                [foregroundVars.altForeg  ] : switchOf(
                     outlineableVars.altForegTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altForegTg,        // toggle mild     (if `usesMildable()` applied)
                     
