@@ -235,7 +235,7 @@ export const useInputStyleSheet = dynamicStyleSheet(() => ({
 export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
     return {
         // appearances:
-        placeholderOpacity : 0.4    as CssKnownProps['opacity'],
+        placeholderOpacity : 0.5    as CssKnownProps['opacity'],
         
         
         
