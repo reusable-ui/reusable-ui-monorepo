@@ -141,6 +141,8 @@ import {
 
 
 // defaults:
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+
 const _defaultSemanticTag  : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
 const _defaultSemanticRole : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
 const _defaultOutlined     : boolean      = false
@@ -151,11 +153,6 @@ const _defaultMild         : boolean      = false
 // hooks:
 
 // variants:
-
-//#region orientationable
-export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
-//#endregion orientationable
-
 
 //#region button style
 export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
