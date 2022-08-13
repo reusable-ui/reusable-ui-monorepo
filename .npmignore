@@ -1,13 +1,16 @@
 node_modules/
 
+configs/*/src/
+configs/*/__tests__/
+utilities/*/src/
+utilities/*/__tests__/
+
 features/*/src/
 features/*/__tests__/
 variants/*/src/
 variants/*/__tests__/
 states/*/src/
 states/*/__tests__/
-utilities/*/src/
-utilities/*/__tests__/
 
 base-components/*/src/
 base-components/*/__tests__/
@@ -29,6 +32,8 @@ dialog-components/*/__tests__/
 composite-components/*/src/
 composite-components/*/__tests__/
 
+
+package-lock.json
 
 lerna-debug.log
 npm-debug.log

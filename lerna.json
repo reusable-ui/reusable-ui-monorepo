@@ -1,9 +1,11 @@
 {
   "packages": [
+    "configs/*",
+    "utilities/*",
+    
     "features/*",
     "variants/*",
     "states/*",
-    "utilities/*",
     
     "base-components/*",
     "base-content-components/*",

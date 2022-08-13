@@ -1,9 +1,11 @@
 node_modules/
 
+configs/*/dist/
+utilities/*/dist/
+
 features/*/dist/
 variants/*/dist/
 states/*/dist/
-utilities/*/dist/
 
 base-components/*/dist/
 base-content-components/*/dist/
@@ -16,6 +18,8 @@ menu-components/*/dist/
 dialog-components/*/dist/
 composite-components/*/dist/
 
+
+package-lock.json
 
 lerna-debug.log
 npm-debug.log
