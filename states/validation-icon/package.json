@@ -19,8 +19,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/validationIcon.js",
-  "types": "dist/validationIcon.d.ts",
+  "main": "dist/validation-icon.js",
+  "types": "dist/validation-icon.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
