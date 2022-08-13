@@ -184,6 +184,11 @@ import type {
 
 
 
+// defaults:
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+
+
+
 // hooks:
 
 // layouts:
@@ -231,13 +236,6 @@ export const usesRange = (config?: RangeConfig): RangeStuff => {
     };
 };
 //#endregion range
-
-
-// variants:
-
-//#region orientationable
-export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
-//#endregion orientationable
 
 
 // states:
