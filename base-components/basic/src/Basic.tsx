@@ -8,11 +8,6 @@ import {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -29,10 +24,6 @@ import {
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
-    // types:
-    CssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
-import {
     cssConfig,
     
     
@@ -48,7 +39,7 @@ import {
 }                           from '@reusable-ui/colors'          // a color management system
 import {
     // configs:
-    borders as borderStrokes,
+    borders,
     borderRadiuses,
 }                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
@@ -134,13 +125,6 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
-
-
-
-// types:
-export type FeatureMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
-export type VariantMixin<TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
-export type StateMixin  <TCssCustomProps extends {}> = readonly [() => CssRule, CssVars<TCssCustomProps>]
 
 
 
@@ -270,38 +254,38 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     
     return {
         // backgrounds:
-        backg                : 'transparent'                as CssKnownProps['background'],
-        altBackg             : colors.primary               as CssKnownProps['background'],
+        backg                : 'transparent'        as CssKnownProps['background'],
+        altBackg             : colors.primary       as CssKnownProps['background'],
         backgGrad            : [
             ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
-        ]                                                   as CssKnownProps['backgroundImage'],
+        ]                                           as CssKnownProps['backgroundImage'],
         
         
         
         // foregrounds:
-        foreg                : 'currentColor'               as CssKnownProps['foreground'],
-        altForeg             : colors.primaryText           as CssKnownProps['foreground'],
+        foreg                : 'currentColor'       as CssKnownProps['foreground'],
+        altForeg             : colors.primaryText   as CssKnownProps['foreground'],
         
         
         
         // borders:
-        borderStyle          : borderStrokes.style          as CssKnownProps['borderStyle' ],
-        borderWidth          : borderStrokes.defaultWidth   as CssKnownProps['borderWidth' ],
-        borderColor          : borderStrokes.color          as CssKnownProps['borderColor' ],
+        borderStyle          : borders.style        as CssKnownProps['borderStyle' ],
+        borderWidth          : borders.defaultWidth as CssKnownProps['borderWidth' ],
+        borderColor          : borders.color        as CssKnownProps['borderColor' ],
         
-        borderRadius         : borderRadiuses.md            as CssKnownProps['borderRadius'],
-        borderRadiusSm       : borderRadiuses.sm            as CssKnownProps['borderRadius'],
-        borderRadiusLg       : borderRadiuses.lg            as CssKnownProps['borderRadius'],
+        borderRadius         : borderRadiuses.md    as CssKnownProps['borderRadius'],
+        borderRadiusSm       : borderRadiuses.sm    as CssKnownProps['borderRadius'],
+        borderRadiusLg       : borderRadiuses.lg    as CssKnownProps['borderRadius'],
         
         
         
         // rings:
-        ring                 : colors.secondaryThin         as CssKnownProps['color'],
+        ring                 : colors.secondaryThin as CssKnownProps['color'],
         
         
         
         // animations:
-        transitionDuration   : transitionDuration           as CssKnownProps['transitionDuration'],
+        transitionDuration   : transitionDuration   as CssKnownProps['transitionDuration'],
         transition           : [
             // appearances:
             ['opacity'      , transitionDuration, 'ease-out'],
@@ -325,7 +309,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
             
             // typos:
             ['font-size'    , transitionDuration, 'ease-out'],
-        ]                                                   as CssKnownProps['transition'],
+        ]                                           as CssKnownProps['transition'],
         
         
         
