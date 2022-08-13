@@ -40,20 +40,22 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui configs:
 import {
     // configs:
     borderRadiuses,
 }                           from '@reusable-ui/borders'         // a border (stroke) management system
 import {
+    // configs:
+    typos,
+}                           from '@reusable-ui/typos'           // a typography management system
+
+// reusable-ui utilities:
+import {
     // styles:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'         // reusable common layouts
-import {
-    // configs:
-    typos,
-}                           from '@reusable-ui/typos'           // a typography management system
 import {
     // hooks:
     useMergeClasses,
