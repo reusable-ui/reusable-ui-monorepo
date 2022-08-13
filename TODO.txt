@@ -1,21 +1,7 @@
 TODO:
 use CurrentActive
 
-TODO grouping:
-// reusable-ui configs:
-
 TODO: standarize useToggle___
-
-TODO rename:
-propEnabled => isEnabled
-propReadOnly => isReadOnly
-usePropActive => isActive
-usePropAccessibility ???
-usePropValidation ???
-usePropIsValid ???
-
-TODO: moved category:
-fooVariant => // layouts: or // appearances: => // variants:
 
 TODO remove:
 @reusable-ui/clickable => handle disabled click & handle space as click
@@ -33,8 +19,6 @@ fix fooElm constant with zero specificity:
 
 add <Range> with component based
 change <Range> ref from HTMLElement to Element
-
-fix peer dependencies for colors, borders, spacers, etc...
 
 fix touchStart/End on <ActionControl>
 fix press/release animation on keyboard press on <Range>
