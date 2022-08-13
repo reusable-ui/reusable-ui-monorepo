@@ -58,14 +58,12 @@ import {
 
 
 
-// hooks:
-
-// variants:
-
-//#region orientationable
+// defaults:
 export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-//#endregion orientationable
 
+
+
+// hooks:
 
 // features:
 
