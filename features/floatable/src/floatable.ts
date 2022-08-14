@@ -136,7 +136,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     // handlers:
     const handleFloatingUpdateInternal = useEvent<EventHandler<FloatingPosition>>((floatingPosition) => {
         setFloatingPos(floatingPosition);
-    }, []);
+    });
     const handleFloatingUpdate         = useMergeEvents(
         // preserves the original `onFloatingUpdate`:
         onFloatingUpdate,
