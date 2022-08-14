@@ -276,15 +276,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         setPressDn(true);
-    }, [propEditable, isControllablePressed]);
+    });
     
     const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
         if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
-    }, [actionMouses, handlePress]);
+    });
     
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
-    }, [actionKeys, handlePress]);
+    });
     
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
@@ -297,7 +297,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         // responses the onClick event:
         props.onClick?.(event);
-    }, [actionMouses, handlePress]);
+    });
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
@@ -309,7 +309,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // clean up finished animation
         
         setAnimating(null); // stop pressing-animation/releasing-animation
-    }, []);
+    });
     
     
     
