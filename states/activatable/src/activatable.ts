@@ -233,7 +233,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
         // clean up finished animation
         
         setAnimating(null); // stop activating-animation/deactivating-animation
-    }, []);
+    });
     
     
     
