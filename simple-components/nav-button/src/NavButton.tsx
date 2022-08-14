@@ -286,7 +286,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
     
     
     // fn props:
-    const propActive = usePropActive(props);
+    const propActive = usePropActive(props, null);
     const activeDn = useCurrentActive(props);
     const activeFn = (buttonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
