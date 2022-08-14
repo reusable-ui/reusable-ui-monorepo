@@ -381,7 +381,7 @@ export interface HamburgerMenuButtonProps
         // bases:
         Omit<ToggleButtonProps,
             // children:
-            |'children' // children is not supported
+            |'children'|'buttonChildren' // children is not supported
         >
 {
 }
