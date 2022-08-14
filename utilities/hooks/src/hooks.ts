@@ -5,6 +5,7 @@ import {
     useLayoutEffect,
     useReducer,
     useCallback,
+    useRef,
     useMemo,
 }                           from 'react'
 
@@ -45,7 +46,24 @@ export const useTriggerRender = () => {
 
 
 
-export { useCallback as useEvent };
+export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TCallback) => {
+    // refs:
+    const callbackRef = useRef<TCallback>(callback);
+    
+    
+    
+    // dom effects:
+    useLayoutEffect(() => {
+        // re-update the callbackRef:
+        callbackRef.current = callback;
+    }); // runs on every render
+    
+    
+    
+    return useCallback<TCallback>(((...args) => {
+        return callbackRef.current(...args);
+    }) as TCallback, []); // runs once on startup (and never re-created)
+};
 
 export type EventHandler<in TEvent> = (event: TEvent) => void;
 export const useMergeEvents = <TEvent>(...eventHandlers: Optional<EventHandler<TEvent>>[]): EventHandler<TEvent>|undefined => {
