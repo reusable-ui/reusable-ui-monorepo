@@ -93,7 +93,7 @@
 [upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/check
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/radio
-[upgraded] [documented  ] [published] [todo: use toggleButtonComponent] [full organized] @reusable-ui/hamburger-menu-button
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/hamburger-menu-button
 
 // layout-components:
 [upgraded] [documented  ] [published] [todo: ListItem from Button] [full organized] @reusable-ui/list
