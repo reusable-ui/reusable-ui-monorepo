@@ -128,6 +128,11 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // behaviors:
         actionMouses : _actionMouses, // remove
         actionKeys   : _actionKeys,   // remove
+        
+        
+        
+        // handlers:
+        onClick      : _onClick,      // remove
     ...restEditableControlProps} = props;
     
     
