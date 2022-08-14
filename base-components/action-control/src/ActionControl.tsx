@@ -54,10 +54,6 @@ import {
     // hooks:
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // hooks:
-    usePropEnabled,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // reusable-ui features:
 import {
@@ -302,13 +298,6 @@ export const isClientSideLink = (node: React.ReactNode): node is JsxClientSideLi
 
 
 
-// handlers:
-export const handleClickDisabled : React.MouseEventHandler<Element> = (event) => {
-    event.stopPropagation();
-};
-
-
-
 // react components:
 export interface ActionControlProps<TElement extends Element = HTMLElement>
     extends
@@ -316,7 +305,7 @@ export interface ActionControlProps<TElement extends Element = HTMLElement>
         ControlProps<TElement>,
         
         // states:
-        ClickableProps
+        ClickableProps<TElement>
 {
 }
 const ActionControl = <TElement extends Element = HTMLElement>(props: ActionControlProps<TElement>): JSX.Element|null => {
@@ -327,11 +316,6 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     // states:
     const clickableState = useClickable<TElement>(props);
-    
-    
-    
-    // fn props:
-    const propEnabled    = usePropEnabled(props);
     
     
     
@@ -381,6 +365,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         // states:
         clickableState.handleKeyDown,
     );
+    const handleClick        = clickableState.handleClick;
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -414,9 +399,9 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
             
             
             // handlers:
-            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
             onMouseDown    = {handleMouseDown   }
             onKeyDown      = {handleKeyDown     }
+            onClick        = {handleClick       }
             onAnimationEnd = {handleAnimationEnd}
         />
     );
