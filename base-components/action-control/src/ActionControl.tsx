@@ -329,6 +329,11 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         // behaviors:
         actionMouses : _actionMouses, // remove
         actionKeys   : _actionKeys,   // remove
+        
+        
+        
+        // handlers:
+        onClick      : _onClick,      // remove
     ...restControlProps} = props;
     
     
