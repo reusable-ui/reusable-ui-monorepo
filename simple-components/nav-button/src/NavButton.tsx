@@ -15,6 +15,10 @@ import {
     useIsomorphicLayoutEffect,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
+    usePropActive,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // reusable-ui components:
 import {
@@ -26,13 +30,6 @@ import {
     ButtonStyle,
     ButtonVariant,
     ButtonType,
-    
-    
-    
-    // styles:
-    usesButtonLayout,
-    usesButtonVariants,
-    usesButtonStates,
     
     
     
@@ -234,15 +231,6 @@ export const useCurrentActive = (props: CurrentActiveProps): boolean|undefined =
 
 
 
-// styles:
-export {
-    usesButtonLayout   as usesNavButtonLayout,
-    usesButtonVariants as usesNavButtonVariants,
-    usesButtonStates   as usesNavButtonStates,
-}
-
-
-
 // react components:
 export interface NavButtonProps
     extends
@@ -298,8 +286,9 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
     
     
     // fn props:
+    const propActive = usePropActive(props);
     const activeDn = useCurrentActive(props);
-    const activeFn = (buttonComponent.props.active ?? active) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const activeFn = (buttonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
@@ -329,7 +318,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             
             
             
-            // accessibilities:
+            // states:
             active         : activeFn,
         },
         
