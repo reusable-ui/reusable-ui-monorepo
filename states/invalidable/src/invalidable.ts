@@ -385,7 +385,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             
             setErrAnimating(null);  // stop err-animation/unerr-animation
         } // if
-    }, []);
+    });
     
     
     
