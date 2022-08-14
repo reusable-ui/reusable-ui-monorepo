@@ -210,7 +210,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         
         
         setHoverDn(true);
-    }, [propEnabled, isControllableArrived]);
+    });
     
     const handleMouseLeave   = useEvent<React.MouseEventHandler<TElement>>(() => {
         // conditions:
@@ -220,7 +220,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         
         
         setHoverDn(false);
-    }, [propEnabled, isControllableArrived]);
+    });
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
@@ -232,7 +232,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         // clean up finished animation
         
         setAnimating(null); // stop arriving-animation/leaving-animation
-    }, []);
+    });
     
     
     
