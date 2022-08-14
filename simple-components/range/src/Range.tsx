@@ -920,7 +920,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         trackUpperRef,
     );
     const mergedThumbRef      = useMergeRefs(
-        // preserves the original `thumbRef`:
+        // preserves the original `elmRef` from `thumbComponent`:
+        thumbComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `thumbRef` from `props`:
         thumbRef,
         
         
@@ -1056,7 +1061,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         'trackupper'
     );
     const mergedThumbClasses      = useMergeClasses(
-        // preserves the original `thumbClasses`:
+        // preserves the original `classes` from `thumbComponent`:
+        thumbComponent.props.classes,
+        
+        
+        
+        // preserves the original `thumbClasses` from `props`:
         thumbClasses,
         
         
@@ -1106,6 +1116,15 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // preserves the original `style` from `trackUpperComponent` (can overwrite the `trackUpperStyle`):
         trackUpperComponent.props.style,
+    );
+    const mergedThumbStyle      = useMergeStyles(
+        // preserves the original `thumbStyle` from `props`:
+        thumbStyle,
+        
+        
+        
+        // preserves the original `style` from `thumbComponent` (can overwrite the `thumbStyle`):
+        thumbComponent.props.style,
     );
     
     
@@ -1410,50 +1429,51 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
-    const thumb = (
-        <EditableActionControl<HTMLElement>
+    const thumb      = React.cloneElement<EditableActionControlProps>(thumbComponent,
+        // props:
+        {
             // refs:
-            elmRef={mergedThumbRef}
+            elmRef            : mergedThumbRef,
             
             
             
             // variants:
-            theme={theme}
-            mild={mildAlternate}
+            theme             : thumbComponent.props.theme ?? theme,
+            mild              : thumbComponent.props.mild  ?? mildAlternate,
             
             
             
             // classes:
-            classes={mergedThumbClasses}
+            classes           : mergedThumbClasses,
             
             
             
             // styles:
-            style={thumbStyle}
+            style             : mergedThumbStyle,
             
             
             
             // accessibilities:
-            inheritEnabled={true}
-            inheritReadOnly={true}
-            inheritActive={true}
+            inheritEnabled    : thumbComponent.props.inheritEnabled  ?? true,
+            inheritReadOnly   : thumbComponent.props.inheritReadOnly ?? true,
+            inheritActive     : thumbComponent.props.inheritActive   ?? true,
             
-            focused={focusableState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
-            tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
+            focused           : thumbComponent.props.focused  ?? focusableState.focused, // if the <Range> got focus => the <Thumb> has focus indicator too
+            tabIndex          : thumbComponent.props.tabIndex ?? -1,                     // focus on the whole <Range>, not the <Thumb>
             
             
             
             // states:
-            arrived={interactableState.arrived}
-            pressed={clickableState.pressed}
+            arrived           : thumbComponent.props.arrived ?? interactableState.arrived,
+            pressed           : thumbComponent.props.pressed ?? clickableState.pressed,
             
             
             
             // validations:
-            enableValidation={enableValidation}
-            isValid={isValid}
-            inheritValidation={inheritValidation}
-        />
+            enableValidation  : thumbComponent.props.enableValidation  ?? enableValidation,
+            isValid           : thumbComponent.props.isValid           ?? isValid,
+            inheritValidation : thumbComponent.props.inheritValidation ?? inheritValidation,
+        },
     );
     
     return (
