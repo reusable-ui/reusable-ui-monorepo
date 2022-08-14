@@ -203,7 +203,7 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
         // clean up finished animation
         
         setAnimating(null); // stop enabling-animation/disabling-animation
-    }, []);
+    });
     
     
     
