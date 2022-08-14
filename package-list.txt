@@ -90,7 +90,7 @@
 [upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/close-button
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/form
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/input
-[upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/check
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/radio
 [upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/hamburger-menu-button
