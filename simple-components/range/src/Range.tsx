@@ -155,6 +155,7 @@ import {
 // reusable-ui components:
 import {
     // react components:
+    GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'                 // a complement component
 import {
@@ -166,12 +167,13 @@ import {
     
     
     // react components:
+    EditableControlProps,
     EditableControl,
 }                           from '@reusable-ui/editable-control'        // a base component
 import {
     // react components:
-    EditableActionControl,
     EditableActionControlProps,
+    EditableActionControl,
 }                           from '@reusable-ui/editable-action-control' // a base component
 import type {
     // types:
@@ -648,6 +650,16 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
 
 
 // react components:
+export interface RangeSubComponentProps
+{
+    // components:
+    trackComponent      ?: React.ReactComponentElement<any, EditableControlProps>
+    trackLowerComponent ?: React.ReactComponentElement<any, GenericProps>
+    trackUpperComponent ?: React.ReactComponentElement<any, GenericProps>
+    
+    thumbComponent      ?: React.ReactComponentElement<any, EditableActionControlProps>
+}
+
 export interface RangeProps
     extends
         // bases:
@@ -676,7 +688,10 @@ export interface RangeProps
         >,
         
         // variants:
-        OrientationableProps
+        OrientationableProps,
+        
+        // components:
+        RangeSubComponentProps
 {
     // refs:
     trackRef          ?: React.Ref<HTMLElement> // setter ref
@@ -796,6 +811,14 @@ const Range = (props: RangeProps): JSX.Element|null => {
         min,
         max,
         step,
+        
+        
+        
+        // components:
+        trackComponent      = (<EditableControl />       as React.ReactComponentElement<any, EditableControlProps>),
+        trackLowerComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps>),
+        trackUpperComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps>),
+        thumbComponent      = (<EditableActionControl /> as React.ReactComponentElement<any, EditableActionControlProps>),
     ...restEditableControlProps}  = props;
     
     
@@ -858,11 +881,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // refs:
-    const inputRefInternal = useRef<HTMLInputElement|null>(null);
-    const trackRefInternal = useRef<HTMLElement|null>(null);
-    const thumbRefInternal = useRef<HTMLElement|null>(null);
+    const inputRefInternal    = useRef<HTMLInputElement|null>(null);
+    const trackRefInternal    = useRef<HTMLElement|null>(null);
+    const thumbRefInternal    = useRef<HTMLElement|null>(null);
     
-    const mergedInputRef   = useMergeRefs(
+    const mergedInputRef      = useMergeRefs(
         // preserves the original `elmRef`:
         elmRef,
         
@@ -870,7 +893,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         inputRefInternal,
     );
-    const mergedTrackRef   = useMergeRefs(
+    const mergedTrackRef      = useMergeRefs(
         // preserves the original `trackRef`:
         trackRef,
         
@@ -878,7 +901,25 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         trackRefInternal,
     );
-    const mergedThumbRef   = useMergeRefs(
+    const mergedTrackLowerRef = useMergeRefs(
+        // preserves the original `elmRef` from `trackLowerComponent`:
+        trackLowerComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `trackLowerRef` from `props`:
+        trackLowerRef,
+    );
+    const mergedTrackUpperRef = useMergeRefs(
+        // preserves the original `elmRef` from `trackUpperComponent`:
+        trackUpperComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `trackUpperRef` from `props`:
+        trackUpperRef,
+    );
+    const mergedThumbRef      = useMergeRefs(
         // preserves the original `thumbRef`:
         thumbRef,
         
@@ -987,7 +1028,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         'track'
     );
     const mergedTrackLowerClasses = useMergeClasses(
-        // preserves the original `trackLowerClasses`:
+        // preserves the original `classes` from `trackLowerComponent`:
+        trackLowerComponent.props.classes,
+        
+        
+        
+        // preserves the original `trackLowerClasses` from `props`:
         trackLowerClasses,
         
         
@@ -996,7 +1042,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         'tracklower'
     );
     const mergedTrackUpperClasses = useMergeClasses(
-        // preserves the original `trackUpperClasses`:
+        // preserves the original `classes` from `trackUpperComponent`:
+        trackUpperComponent.props.classes,
+        
+        
+        
+        // preserves the original `trackUpperClasses` from `props`:
         trackUpperClasses,
         
         
@@ -1022,14 +1073,14 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // styles:
-    const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
+    const valueRatioStyle       = useMemo<React.CSSProperties>(() => ({
         // values:
         [
             rangeVars.valueRatio
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ] : valueRatio,
     }), [rangeVars.valueRatio, valueRatio]);
-    const mergedStyle     = useMergeStyles(
+    const mergedStyle           = useMergeStyles(
         // values:
         valueRatioStyle,
         
@@ -1037,6 +1088,24 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // preserves the original `style` (can overwrite the `valueRatioStyle`):
         props.style,
+    );
+    const mergedTrackLowerStyle = useMergeStyles(
+        // preserves the original `trackLowerStyle` from `props`:
+        trackLowerStyle,
+        
+        
+        
+        // preserves the original `style` from `trackLowerComponent` (can overwrite the `trackLowerStyle`):
+        trackLowerComponent.props.style,
+    );
+    const mergedTrackUpperStyle = useMergeStyles(
+        // preserves the original `trackUpperStyle` from `props`:
+        trackUpperStyle,
+        
+        
+        
+        // preserves the original `style` from `trackUpperComponent` (can overwrite the `trackUpperStyle`):
+        trackUpperComponent.props.style,
     );
     
     
@@ -1305,37 +1374,85 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // jsx:
-    const trackLower = (
-        <Generic<HTMLElement>
+    const trackLower = React.cloneElement<GenericProps>(trackLowerComponent,
+        // props:
+        {
             // refs:
-            elmRef={trackLowerRef}
+            elmRef  : mergedTrackLowerRef,
             
             
             
             // classes:
-            classes={mergedTrackLowerClasses}
+            classes : mergedTrackLowerClasses,
             
             
             
             // styles:
-            style={trackLowerStyle}
-        />
+            style   : mergedTrackLowerStyle,
+        },
     );
     
-    const trackUpper = (
-        <Generic<HTMLElement>
+    const trackUpper = React.cloneElement<GenericProps>(trackUpperComponent,
+        // props:
+        {
             // refs:
-            elmRef={trackUpperRef}
+            elmRef  : mergedTrackUpperRef,
             
             
             
             // classes:
-            classes={mergedTrackUpperClasses}
+            classes : mergedTrackUpperClasses,
             
             
             
             // styles:
-            style={trackUpperStyle}
+            style   : mergedTrackUpperStyle,
+        },
+    );
+    
+    const thumb = (
+        <EditableActionControl<HTMLElement>
+            // refs:
+            elmRef={mergedThumbRef}
+            
+            
+            
+            // variants:
+            theme={theme}
+            mild={mildAlternate}
+            
+            
+            
+            // classes:
+            classes={mergedThumbClasses}
+            
+            
+            
+            // styles:
+            style={thumbStyle}
+            
+            
+            
+            // accessibilities:
+            inheritEnabled={true}
+            inheritReadOnly={true}
+            inheritActive={true}
+            
+            focused={focusableState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
+            tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
+            
+            
+            
+            // states:
+            arrived={interactableState.arrived}
+            pressed={clickableState.pressed}
+            
+            
+            
+            // validations:
+            enableValidation={enableValidation}
+            isValid={isValid}
+            inheritValidation={inheritValidation}
         />
     );
     
@@ -1490,49 +1607,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 inheritValidation={inheritValidation}
             >
                 { isOrientationBlock ? trackUpper : trackLower }
-                <EditableActionControl<HTMLElement>
-                    // refs:
-                    elmRef={mergedThumbRef}
-                    
-                    
-                    
-                    // variants:
-                    theme={theme}
-                    mild={mildAlternate}
-                    
-                    
-                    
-                    // classes:
-                    classes={mergedThumbClasses}
-                    
-                    
-                    
-                    // styles:
-                    style={thumbStyle}
-                    
-                    
-                    
-                    // accessibilities:
-                    inheritEnabled={true}
-                    inheritReadOnly={true}
-                    inheritActive={true}
-                    
-                    focused={focusableState.focused} // if the <Range> got focus => the <Thumb> has focus indicator too
-                    tabIndex={-1}                    // focus on the whole <Range>, not the <Thumb>
-                    
-                    
-                    
-                    // states:
-                    arrived={interactableState.arrived}
-                    pressed={clickableState.pressed}
-                    
-                    
-                    
-                    // validations:
-                    enableValidation={enableValidation}
-                    isValid={isValid}
-                    inheritValidation={inheritValidation}
-                />
+                { thumb }
                 { isOrientationBlock ? trackLower : trackUpper }
             </EditableControl>
         </EditableControl>
