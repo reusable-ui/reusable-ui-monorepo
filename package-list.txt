@@ -96,7 +96,7 @@
 [upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/hamburger-menu-button
 
 // layout-components:
-[upgraded] [documented  ] [published] [todo: ListItem from Button] [full organized] @reusable-ui/list
+[upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/list
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/card
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/masonry
 
