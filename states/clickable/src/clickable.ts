@@ -159,10 +159,13 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
 
 
 
-export interface ClickableProps
+export interface ClickableProps<TElement extends Element = HTMLElement>
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>
+        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>,
+        
+        // handlers:
+        Pick<React.DOMAttributes<TElement>, 'onClick'>
 {
     // states:
     pressed      ?: boolean
@@ -173,7 +176,7 @@ export interface ClickableProps
     actionMouses ?: number[]|null
     actionKeys   ?: string[]|null
 }
-export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps) => {
+export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);       // supports for <Check>
@@ -283,6 +286,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
     }, [actionKeys, handlePress]);
     
+    const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
+        // conditions:
+        if (!propEnabled) { // control is disabled => no response required
+            event.stopPropagation(); // prevent from bubbling
+            return; // nothing to do
+        } // if
+        
+        
+        
+        // responses the onClick event:
+        props.onClick?.(event);
+    }, [actionMouses, handlePress]);
+    
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
@@ -330,6 +346,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         handleMouseDown,
         handleKeyDown,
+        handleClick,
         handleAnimationEnd,
     };
 };
