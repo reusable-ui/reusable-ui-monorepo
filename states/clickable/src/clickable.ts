@@ -242,7 +242,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             
             // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
-            asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
+            // asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
+            asyncHandleRelease.current = setTimeout(handleRelease, 1); // 1 = runs immediately after all micro tasks & nextJS macro task finished
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
         
