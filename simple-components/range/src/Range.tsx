@@ -1476,6 +1476,53 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
+    const track = (
+        <EditableControl<HTMLElement>
+            // refs:
+            elmRef={mergedTrackRef}
+            
+            
+            
+            // variants:
+            mild={mild}
+            
+            
+            
+            // classes:
+            classes={mergedTrackClasses}
+            
+            
+            
+            // styles:
+            style={trackStyle}
+            
+            
+            
+            // accessibilities:
+            inheritEnabled={true}
+            inheritReadOnly={true}
+            inheritActive={true}
+            
+            tabIndex={-1} // focus on the whole <Range>, not the <Track>
+            
+            
+            
+            // states:
+            arrived={interactableState.arrived}
+            
+            
+            
+            // validations:
+            enableValidation={enableValidation}
+            isValid={isValid}
+            inheritValidation={inheritValidation}
+        >
+            { isOrientationBlock ? trackUpper : trackLower }
+            { thumb }
+            { isOrientationBlock ? trackLower : trackUpper }
+        </EditableControl>
+    );
+    
     return (
         <EditableControl<HTMLInputElement>
             // other props:
@@ -1586,50 +1633,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                     type : 'range',
                 }}
             />
-            <EditableControl<HTMLElement>
-                // refs:
-                elmRef={mergedTrackRef}
-                
-                
-                
-                // variants:
-                mild={mild}
-                
-                
-                
-                // classes:
-                classes={mergedTrackClasses}
-                
-                
-                
-                // styles:
-                style={trackStyle}
-                
-                
-                
-                // accessibilities:
-                inheritEnabled={true}
-                inheritReadOnly={true}
-                inheritActive={true}
-                
-                tabIndex={-1} // focus on the whole <Range>, not the <Track>
-                
-                
-                
-                // states:
-                arrived={interactableState.arrived}
-                
-                
-                
-                // validations:
-                enableValidation={enableValidation}
-                isValid={isValid}
-                inheritValidation={inheritValidation}
-            >
-                { isOrientationBlock ? trackUpper : trackLower }
-                { thumb }
-                { isOrientationBlock ? trackLower : trackUpper }
-            </EditableControl>
+            { track }
         </EditableControl>
     );
 };
