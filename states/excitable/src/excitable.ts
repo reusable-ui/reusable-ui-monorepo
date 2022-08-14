@@ -216,7 +216,7 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         if (continueToRun) {
             triggerRender(); // need to restart the animation
         } // if
-    }, [onExcitedChange]);
+    });
     
     
     
