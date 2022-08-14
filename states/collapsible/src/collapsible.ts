@@ -190,7 +190,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
         // clean up finished animation
         
         setAnimating(null); // stop expanding-animation/collapsing-animation
-    }, []);
+    });
     
     
     
