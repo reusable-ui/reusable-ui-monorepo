@@ -4,7 +4,7 @@ use CurrentActive
 TODO: standarize useToggle___
 
 TODO remove:
-@reusable-ui/clickable => handle disabled click & handle space as click
+@reusable-ui/clickable => handle space as click
 
 TODO: upgrade <Masonry> to useOrientationableWithDirection
 
