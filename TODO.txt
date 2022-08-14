@@ -15,18 +15,12 @@ test tree shake a Dropdown without Modal
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=.*?;
 
-add <Range> with component based
-change <Range> ref from HTMLElement to Element
 
 fix touchStart/End on <ActionControl>
 fix press/release animation on keyboard press on <Range>
 
 fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
 fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
-
-
-
-inline then block
 
 
 
@@ -74,9 +68,3 @@ group sequences:
 // children:
 
 // customize:
-
-
-
-(filter|boxShadow|anim|keyframes)(disable|focus|arrived|press)
-to
-(filter|boxShadow|anim|keyframes)(disabled|focused|arrived|pressed)
