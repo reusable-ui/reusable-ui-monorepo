@@ -102,6 +102,8 @@ import {
     // react components:
     ToggleButtonProps,
     ToggleButton,
+    
+    ToggleButtonComponentProps,
 }                           from '@reusable-ui/toggle-button'   // a base component
 
 
@@ -382,7 +384,10 @@ export interface HamburgerMenuButtonProps
         Omit<ToggleButtonProps,
             // children:
             |'children'|'buttonChildren' // children is not supported
-        >
+        >,
+        
+        // components:
+        ToggleButtonComponentProps
 {
 }
 const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null => {
@@ -391,28 +396,43 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
     
     
     
+    // rest props:
+    const {
+        // components:
+        toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
+    ...restToggleButtonProps} = props;
+    
+    
+    
     // jsx:
-    return (
-        <ToggleButton
+    /* <ToggleButton> */
+    return React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
+        // props:
+        {
             // other props:
-            {...props}
+            ...restToggleButtonProps,
             
             
             
             // accessibilities:
-            label={props.label ?? 'Toggle navigation'}
+            label     : toggleButtonComponent.props.label     ?? props.label     ?? 'Toggle navigation',
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-        >
+            mainClass : toggleButtonComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+        },
+        
+        
+        
+        // children:
+        toggleButtonComponent.props.children ?? (
             <svg viewBox='0 0 24 24'>
                 <polyline points='2,3 22,3' />
                 <polyline points='2,12 22,12' />
                 <polyline points='2,21 22,21' />
             </svg>
-        </ToggleButton>
+        ),
     );
 };
 export {
