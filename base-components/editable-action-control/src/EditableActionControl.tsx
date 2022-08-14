@@ -21,10 +21,6 @@ import {
     useMergeEvents,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'               // react helper hooks
-import {
-    // hooks:
-    usePropEnabled,
-}                           from '@reusable-ui/accessibilities'     // an accessibility management system
 
 // reusable-ui states:
 import {
@@ -38,11 +34,6 @@ import {
     usesActionControlLayout,
     usesActionControlVariants,
     usesActionControlStates,
-    
-    
-    
-    // handlers:
-    handleClickDisabled,
     
     
     
@@ -127,11 +118,6 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     
     
     
-    // fn props:
-    const propEnabled    = usePropEnabled(props);
-    
-    
-    
     // rest props:
     const {
         // states:
@@ -178,6 +164,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // states:
         clickableState.handleKeyDown,
     );
+    const handleClick        = clickableState.handleClick;
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -205,9 +192,9 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
             
             
             // handlers:
-            onClick        = {propEnabled ? props.onClick : handleClickDisabled}
             onMouseDown    = {handleMouseDown   }
             onKeyDown      = {handleKeyDown     }
+            onClick        = {handleClick       }
             onAnimationEnd = {handleAnimationEnd}
         />
     );
