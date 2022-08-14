@@ -43,6 +43,12 @@ import {
     typos,
 }                           from '@reusable-ui/typos'           // a typography management system
 
+// reusable-ui utilities:
+import {
+    // hooks:
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
 // reusable-ui features:
 import {
     // hooks:
@@ -92,6 +98,8 @@ import {
     // react components:
     ButtonProps,
     Button,
+    
+    ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a base component
 import {
     // hooks:
@@ -310,7 +318,8 @@ export interface ButtonIconProps
         ResizableProps<SizeName>,
         
         // components:
-        ButtonIconComponentProps<Element>
+        ButtonIconComponentProps<Element>,
+        ButtonComponentProps
 {
 }
 const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
@@ -331,6 +340,12 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         iconPosition  = 'start',
         iconComponent = icon && (<Icon<Element> icon={icon} /> as React.ReactComponentElement<any, IconProps<Element>>),
         
+        buttonRef,
+        buttonOrientation,
+        buttonStyle,
+        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
+        buttonChildren,
+        
         
         
         // children:
@@ -339,26 +354,57 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
     
     
     
+    // refs:
+    const mergedButtonRef   = useMergeRefs(
+        // preserves the original `elmRef` from `buttonComponent`:
+        buttonComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `buttonRef` from `props`:
+        buttonRef,
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
+    );
+    
+    
+    
     // jsx:
-    return (
-        <Button
+    /* <Button> */
+    return React.cloneElement<ButtonProps>(buttonComponent,
+        // props:
+        {
             // other props:
-            {...restButtonProps}
+            ...restButtonProps,
+            
+            
+            
+            // refs:
+            elmRef      : mergedButtonRef,
             
             
             
             // variants:
-            size={size as ButtonProps['size']}
+            orientation : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
+            buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
+            size        : buttonComponent.props.size        ?? (size as ButtonProps['size']),
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-        >
-            { (iconPosition === 'start') && iconComponent }
-            { children }
-            { (iconPosition === 'end'  ) && iconComponent }
-        </Button>
+            mainClass   : buttonComponent.props.mainClass   ?? props.mainClass ?? styleSheet.main,
+        },
+        
+        
+        
+        // children:
+        buttonComponent.props.children ?? (
+            <>
+                { (iconPosition === 'start') && iconComponent }
+                { buttonChildren ?? children }
+                { (iconPosition === 'end'  ) && iconComponent }
+            </>
+        ),
     );
 };
 export {

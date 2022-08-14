@@ -41,6 +41,7 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",
+    "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
     "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",
