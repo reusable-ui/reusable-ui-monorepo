@@ -894,7 +894,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         inputRefInternal,
     );
     const mergedTrackRef      = useMergeRefs(
-        // preserves the original `trackRef`:
+        // preserves the original `elmRef` from `trackComponent`:
+        trackComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `trackRef` from `props`:
         trackRef,
         
         
@@ -1024,7 +1029,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         interactableState.class,
     );
     const mergedTrackClasses      = useMergeClasses(
-        // preserves the original `trackClasses`:
+        // preserves the original `classes` from `trackComponent`:
+        trackComponent.props.classes,
+        
+        
+        
+        // preserves the original `trackClasses` from `props`:
         trackClasses,
         
         
@@ -1098,6 +1108,15 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // preserves the original `style` (can overwrite the `valueRatioStyle`):
         props.style,
+    );
+    const mergedTrackStyle      = useMergeStyles(
+        // preserves the original `trackStyle` from `props`:
+        trackStyle,
+        
+        
+        
+        // preserves the original `style` from `trackComponent` (can overwrite the `trackStyle`):
+        trackComponent.props.style,
     );
     const mergedTrackLowerStyle = useMergeStyles(
         // preserves the original `trackLowerStyle` from `props`:
@@ -1476,51 +1495,57 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
-    const track = (
-        <EditableControl<HTMLElement>
+    const track      = React.cloneElement<EditableControlProps>(trackComponent,
+        // props:
+        {
             // refs:
-            elmRef={mergedTrackRef}
+            elmRef            : mergedTrackRef,
             
             
             
             // variants:
-            mild={mild}
+            mild              : trackComponent.props.mild ?? mild,
             
             
             
             // classes:
-            classes={mergedTrackClasses}
+            classes           : mergedTrackClasses,
             
             
             
             // styles:
-            style={trackStyle}
+            style             : mergedTrackStyle,
             
             
             
             // accessibilities:
-            inheritEnabled={true}
-            inheritReadOnly={true}
-            inheritActive={true}
+            inheritEnabled    : trackComponent.props.inheritEnabled  ?? true,
+            inheritReadOnly   : trackComponent.props.inheritReadOnly ?? true,
+            inheritActive     : trackComponent.props.inheritActive   ?? true,
             
-            tabIndex={-1} // focus on the whole <Range>, not the <Track>
+            tabIndex          : trackComponent.props.tabIndex        ?? -1, // focus on the whole <Range>, not the <Track>
             
             
             
             // states:
-            arrived={interactableState.arrived}
+            arrived           : trackComponent.props.arrived ?? interactableState.arrived,
             
             
             
             // validations:
-            enableValidation={enableValidation}
-            isValid={isValid}
-            inheritValidation={inheritValidation}
-        >
+            enableValidation  : trackComponent.props.enableValidation  ?? enableValidation,
+            isValid           : trackComponent.props.isValid           ?? isValid,
+            inheritValidation : trackComponent.props.inheritValidation ?? inheritValidation,
+        },
+        
+        
+        
+        // children:
+        <>
             { isOrientationBlock ? trackUpper : trackLower }
             { thumb }
             { isOrientationBlock ? trackLower : trackUpper }
-        </EditableControl>
+        </>
     );
     
     return (
