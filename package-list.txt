@@ -85,9 +85,9 @@
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/label
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/button
 [upgraded] [new         ] [new      ] [full    compound] [full organized] @reusable-ui/toggle-button
-[upgraded] [documented  ] [published] [todo: compositing button] [half organized] @reusable-ui/nav-button
-[upgraded] [documented  ] [published] [todo: compositing button] [full organized] @reusable-ui/button-icon
-[upgraded] [documented  ] [published] [todo: compositing button & icon] [full organized] @reusable-ui/close-button
+[upgraded] [documented  ] [published] [full    compound] [half organized] @reusable-ui/nav-button
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/button-icon
+[upgraded] [documented  ] [published] [full    compound] [full organized] @reusable-ui/close-button
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/form
 [upgraded] [documented  ] [published] [          atomic] [full organized] @reusable-ui/input
 [upgraded] [documented  ] [published] [todo: compositing track & thumb] [full organized] @reusable-ui/range
