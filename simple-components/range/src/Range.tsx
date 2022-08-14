@@ -653,11 +653,11 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
 export interface RangeSubComponentProps
 {
     // components:
-    trackComponent      ?: React.ReactComponentElement<any, EditableControlProps>
-    trackLowerComponent ?: React.ReactComponentElement<any, GenericProps>
-    trackUpperComponent ?: React.ReactComponentElement<any, GenericProps>
+    trackComponent      ?: React.ReactComponentElement<any, EditableControlProps<Element>>
+    trackLowerComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
+    trackUpperComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
     
-    thumbComponent      ?: React.ReactComponentElement<any, EditableActionControlProps>
+    thumbComponent      ?: React.ReactComponentElement<any, EditableActionControlProps<Element>>
 }
 
 export interface RangeProps
@@ -694,10 +694,10 @@ export interface RangeProps
         RangeSubComponentProps
 {
     // refs:
-    trackRef          ?: React.Ref<HTMLElement> // setter ref
-    trackLowerRef     ?: React.Ref<HTMLElement> // setter ref
-    trackUpperRef     ?: React.Ref<HTMLElement> // setter ref
-    thumbRef          ?: React.Ref<HTMLElement> // setter ref
+    trackRef          ?: React.Ref<Element> // setter ref
+    trackLowerRef     ?: React.Ref<Element> // setter ref
+    trackUpperRef     ?: React.Ref<Element> // setter ref
+    thumbRef          ?: React.Ref<Element> // setter ref
     
     
     
@@ -815,10 +815,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // components:
-        trackComponent      = (<EditableControl />       as React.ReactComponentElement<any, EditableControlProps>),
-        trackLowerComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps>),
-        trackUpperComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps>),
-        thumbComponent      = (<EditableActionControl /> as React.ReactComponentElement<any, EditableActionControlProps>),
+        trackComponent      = (<EditableControl />       as React.ReactComponentElement<any, EditableControlProps<Element>>),
+        trackLowerComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps<Element>>),
+        trackUpperComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps<Element>>),
+        thumbComponent      = (<EditableActionControl /> as React.ReactComponentElement<any, EditableActionControlProps<Element>>),
     ...restEditableControlProps}  = props;
     
     
@@ -1412,7 +1412,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // jsx:
-    const trackLower = React.cloneElement<GenericProps>(trackLowerComponent,
+    const trackLower = React.cloneElement<GenericProps<Element>>(trackLowerComponent,
         // props:
         {
             // refs:
@@ -1430,7 +1430,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
-    const trackUpper = React.cloneElement<GenericProps>(trackUpperComponent,
+    const trackUpper = React.cloneElement<GenericProps<Element>>(trackUpperComponent,
         // props:
         {
             // refs:
@@ -1448,7 +1448,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
-    const thumb      = React.cloneElement<EditableActionControlProps>(thumbComponent,
+    const thumb      = React.cloneElement<EditableActionControlProps<Element>>(thumbComponent,
         // props:
         {
             // refs:
@@ -1495,7 +1495,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         },
     );
     
-    const track      = React.cloneElement<EditableControlProps>(trackComponent,
+    const track      = React.cloneElement<EditableControlProps<Element>>(trackComponent,
         // props:
         {
             // refs:
