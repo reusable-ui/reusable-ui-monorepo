@@ -236,7 +236,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         
         
         setFocusDn(true);
-    }, [propEnabled, isControllableFocused]);
+    });
     
     const handleBlur         = useEvent<React.FocusEventHandler<TElement>>(() => {
         // conditions:
@@ -246,7 +246,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         
         
         setFocusDn(false);
-    }, [propEnabled, isControllableFocused]);
+    });
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
@@ -258,7 +258,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         // clean up finished animation
         
         setAnimating(null); // stop focusing-animation/blurring-animation
-    }, []);
+    });
     
     
     
