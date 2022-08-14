@@ -28,28 +28,12 @@ import {
     
     
     
-    // styles:
-    usesButtonLayout   as usesToggleButtonLayout,
-    usesButtonVariants as usesToggleButtonVariants,
-    usesButtonStates   as usesToggleButtonStates,
-    
-    
-    
     // react components:
     ButtonProps,
     Button,
     
     ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a base component
-
-
-
-// styles:
-export {
-    usesToggleButtonLayout,
-    usesToggleButtonVariants,
-    usesToggleButtonStates,
-}
 
 
 
