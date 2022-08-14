@@ -133,6 +133,11 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     
     
     
+    // fn props:
+    const activeFn = (buttonComponent.props.active ?? isActive);
+    
+    
+    
     // jsx:
     /* <Button> */
     return React.cloneElement<ButtonProps>(buttonComponent,
@@ -149,7 +154,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // semantics:
-            'aria-expanded' : (isActive || undefined) && (buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isActive === false) and the default value of [aria-expanded] is true
+            'aria-expanded' : (activeFn || undefined) && (buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
             
             
             
@@ -160,7 +165,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // states:
-            active          : buttonComponent.props.active ?? isActive,
+            active          : activeFn,
             
             
             
