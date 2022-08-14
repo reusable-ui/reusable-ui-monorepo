@@ -93,12 +93,11 @@ import {
     
     
     // styles:
-    usesToggleButtonLayout,
-    usesToggleButtonVariants,
-    usesToggleButtonStates,
-    
-    
-    
+    usesButtonLayout,
+    usesButtonVariants,
+    usesButtonStates,
+}                           from '@reusable-ui/button'          // a base component
+import {
     // react components:
     ToggleButtonProps,
     ToggleButton,
@@ -167,7 +166,7 @@ export const usesHamburgerMenuButtonLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesToggleButtonLayout(),
+            usesButtonLayout(),
         ]),
         ...style({
             // children:
@@ -195,7 +194,7 @@ export const usesHamburgerMenuButtonVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesToggleButtonVariants(),
+            usesButtonVariants(),
             resizableRule,
         ]),
     });
@@ -211,7 +210,7 @@ export const usesHamburgerMenuButtonStates = () => {
     return style({
         ...imports([
             // states:
-            usesToggleButtonStates(),
+            usesButtonStates(),
             hamburgerableRule,
         ]),
         ...states([
