@@ -504,7 +504,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const [excitedDn, setExcitedDn] = useState(false);
     const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
         setExcitedDn(event.excited);
-    }, []);
+    });
     const excitableState            = useToggleExcitable<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: handleExcitedChange });
     
     
@@ -621,7 +621,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [isModal]);
+    });
     const handleKeyDown             = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -648,7 +648,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             handleExpandedChange?.({ expanded: false, actionType: 'backdrop' } as TModalExpandedChangeEvent);
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
-    }, [handleExpandedChange, backdropStyle]);
+    });
     const handleMouseDown           = useMergeEvents(
         // preserves the original `onMouseDown` from `props`:
         props.onMouseDown,
@@ -677,7 +677,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         // cancel the contextMenu:
         event.preventDefault(); // handled
-    }, []);
+    });
     const handleContextMenu         = useMergeEvents(
         // preserves the original `onContextMenu` from `props`:
         props.onContextMenu,
