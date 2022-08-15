@@ -1208,7 +1208,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         isMouseActive.current = ((event.buttons & 1) === 1); // only left button is pressed => true
-    }, [propEnabled, propReadOnly]);
+    });
     
     const isTouchActive       = useRef(false);
     const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
@@ -1224,7 +1224,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // already handled by css `touch-action: pinch-zoom`
         // event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
         // event.currentTarget.focus(); // un-prevent to focus()
-    }, [propEnabled, propReadOnly]);
+    });
     
     useEffect(() => {
         // conditions:
@@ -1291,7 +1291,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         clickableState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
-    }, [isOrientationBlock]);
+    });
     const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (event.touches.length !== 1) return; // only single touch
@@ -1303,7 +1303,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             clientX : event.touches[0].clientX,
             clientY : event.touches[0].clientY,
         } as React.MouseEvent<HTMLInputElement, MouseEvent>);
-    }, [handleMouseSlide]);
+    });
     const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (!propEnabled)           return; // control is disabled => no response required
@@ -1344,7 +1344,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             clickableState.handleKeyDown(event); // indicates the <Range> is currently being key pressed
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [propEnabled, propReadOnly, isOrientationBlock, minFn, maxFn]);
+    });
     
     const handleMouseDown     = useMergeEvents(
         // preserves the original `onMouseDown`:
@@ -1398,7 +1398,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
         /* nothing to do */
-    }, []);
+    });
     const handleChange        = useMergeEvents(
         // preserves the original `onChange`:
         onChange,
