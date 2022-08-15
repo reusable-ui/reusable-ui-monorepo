@@ -724,3 +724,23 @@ export {
     Card,
     Card as default,
 }
+
+
+
+export interface CardComponentProps<TElement extends Element = HTMLElement>
+{
+    // refs:
+    cardRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // variants:
+    cardOrientation ?: CardProps<TElement>['orientation']
+    cardStyle       ?: CardProps<TElement>['cardStyle']
+    
+    
+    
+    // components:
+    cardComponent   ?: React.ReactComponentElement<any, CardProps<TElement>>
+    cardChildren    ?: CardProps<TElement>['children']
+}
