@@ -538,7 +538,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         arrowStyle.right                = ''; /* reset */
         arrowStyle.bottom               = ''; /* reset */
         arrowStyle[invertBasePlacement] = '0px'; /* top => bottom:0px | bottom => top:0px | left => right:0px | right => left:0px */
-    }, []);
+    });
     const handleFloatingUpdate     = useMergeEvents(
         // preserves the original `onFloatingUpdate`:
         props.onFloatingUpdate,
