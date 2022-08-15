@@ -787,7 +787,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // actions:
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
-    }, []);
+    });
     const handleClick           = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
@@ -808,7 +808,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         if ((event.key === ' ') || (event.code === 'Space')) {
             event.preventDefault(); // prevents pressing space for scrolling page
         } // if
-    }, []);
+    });
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -830,7 +830,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
             toggleActive();         // handle click as toggle [active]
             event.preventDefault(); // handled
         } // if
-    }, []);
+    });
     const handleKeyUp           = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
@@ -843,7 +843,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     const handleChangeDummy     = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
         /* nothing to do */
-    }, []);
+    });
     const handleChange          = useMergeEvents(
         // preserves the original `onChange`:
         onChange,
