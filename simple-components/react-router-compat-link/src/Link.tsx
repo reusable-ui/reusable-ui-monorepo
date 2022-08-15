@@ -81,13 +81,13 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     
     // handlers:
-    const handleClickClientSide            = useLinkClickHandler(to, { replace, state, target });
-    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
+    const handleClickClientSide = useLinkClickHandler(to, { replace, state, target });
+    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
         if (!event.defaultPrevented && !reloadDocument) {
             handleClickClientSide(event);
         } // if
     });
-    const handleMergedClick = useMergeEvents(
+    const handleMergedClick     = useMergeEvents(
         // preserves the original `onClick` from `linkComponent`:
         linkComponent.props.onClick,
         
@@ -98,7 +98,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         
         
         
-        // handlers:
+        // actions:
         handleClickInternal,
     );
     
