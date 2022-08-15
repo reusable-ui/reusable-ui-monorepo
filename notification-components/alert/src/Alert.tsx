@@ -47,6 +47,7 @@ import {
 import {
     // hooks:
     useEvent,
+    useMergeEvents,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui variants:
@@ -319,8 +320,8 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     // handlers:
-    const handleExpandedChange      = onExpandedChange;
-    const defaultHandleControlClick = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handleExpandedChange       = onExpandedChange;
+    const handleControlClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -330,6 +331,15 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         handleExpandedChange?.({ expanded: false } as TExpandedChangeEvent); // handle click as request to close <Alert>
         event.preventDefault(); // handled
     });
+    const handleControlClick         = useMergeEvents(
+        // preserves the original `onClick` from `controlComponent`:
+        controlComponent.props.onClick,
+        
+        
+        
+        // actions:
+        handleControlClickInternal,
+    );
     
     
     
@@ -387,7 +397,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
                     
                     
                     // handlers:
-                    onClick : controlComponent.props.onClick ?? defaultHandleControlClick,
+                    onClick : handleControlClick,
                 },
             )}
         </Popup>
