@@ -120,7 +120,7 @@ export const isEditableControlElement = (element: Element): element is EditableC
 
 export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler) => {
     // states:
-    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `handleValidation` callback:
+    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
     
     // manually controls the (re)render event:
@@ -128,21 +128,8 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
     
     
     
-    // callbacks:
-    /**
-     * Handles the validation result.
-     * @returns  
-     * `null`  = uncheck.  
-     * `true`  = valid.  
-     * `false` = invalid.
-     */
-    const handleValidationInternal = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
-        if (event.isValid !== undefined) event.isValid = isValid.current;
-    });
+    // functions:
     
-    
-    
-    // handlers:
     const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
@@ -152,7 +139,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
         };
     }, []); // runs once on startup
     
-    const handleValidation = useCallback((element: TElement, immediately = false) => {
+    const validate = (element: TElement, immediately = false) => {
         const performUpdate = () => {
             // remember the validation result:
             const currentValidity = element.validity;
@@ -186,20 +173,35 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
                 (currentIsValid !== false) ? 300 : 600
             );
         } // if
-    }, [customValidator]);
+    };
     
-    const handleInit       = useCallback((element: TElement) => {
-        handleValidation(element, /*immediately =*/true);
-    }, [handleValidation]);
+    
+    
+    // handlers:
+    
+    /**
+     * Handles the validation result.
+     * @returns  
+     * `null`  = uncheck.  
+     * `true`  = valid.  
+     * `false` = invalid.
+     */
+    const handleValidation = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
+        if (event.isValid !== undefined) event.isValid = isValid.current;
+    });
+    
+    const handleInit       = useEvent<EventHandler<TElement>>((element) => {
+        validate(element, /*immediately =*/true);
+    });
     
     const handleChange     = useEvent<React.ChangeEventHandler<TElement>>(({target}) => {
-        handleValidation(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
+        validate(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
     });
     
     
     
     return {
-        handleValidation: handleValidationInternal,
+        handleValidation,
         handleInit,
         handleChange,
     };
