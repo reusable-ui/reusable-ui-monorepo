@@ -269,7 +269,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         // actions:
         setActive(true);        // handle click as selecting [active]
         event.preventDefault(); // handled
-    }, []);
+    });
     const handleClick           = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
@@ -291,7 +291,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
             setActive(true);        // handle click as selecting [active]
             event.preventDefault(); // handled
         } // if
-    }, []);
+    });
     const handleKeyUp           = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
@@ -347,7 +347,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         event.preventDefault(); // handled
-    }, []);
+    });
     const handleChange          = useMergeEvents(
         // preserves the original `onChange`:
         props.onChange,
