@@ -86,7 +86,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         if (!event.defaultPrevented && !reloadDocument) {
             handleClickClientSide(event);
         } // if
-    }, [handleClickClientSide, reloadDocument]);
+    });
     const handleMergedClick = useMergeEvents(
         // preserves the original `onClick` from `linkComponent`:
         linkComponent.props.onClick,
