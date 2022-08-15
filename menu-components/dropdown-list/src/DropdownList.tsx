@@ -268,7 +268,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         })()) {
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
-    }, [listIsOrientationBlock]);
+    });
     const handleKeyDown         = useMergeEvents(
         // preserves the original `onKeyDown` from `listComponent`:
         listComponent.props.onKeyDown,
@@ -437,7 +437,7 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
         // a <ListItem> was clicked => close the <DropdownList>:
         handleExpandedChange({ expanded: false, actionType: listIndex } as TDropdownListExpandedChangeEvent);
         event.preventDefault(); // mark as handled
-    }, [handleExpandedChange, listIndex]);
+    });
     const handleClick         = useMergeEvents(
         // preserves the original `onClick` from `listItemComponent`:
         listItemComponent.props.onClick,
