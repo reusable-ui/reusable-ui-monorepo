@@ -138,7 +138,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
      */
     const handleValidationInternal = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
         if (event.isValid !== undefined) event.isValid = isValid.current;
-    }, []);
+    });
     
     
     
@@ -194,7 +194,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
     
     const handleChange     = useEvent<React.ChangeEventHandler<TElement>>(({target}) => {
         handleValidation(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
-    }, [handleValidation]);
+    });
     
     
     
