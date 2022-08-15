@@ -117,7 +117,7 @@ const isFormValid = (element: HTMLFormElement): ValResult => {
 
 export const useFormValidator      = (customValidator?: CustomValidatorHandler) => {
     // states:
-    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value as `handleValidation` callback:
+    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
     
     // manually controls the (re)render event:
@@ -125,21 +125,8 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     
     
-    // callbacks:
-    /**
-     * Handles the validation result.
-     * @returns  
-     * `null`  = uncheck.  
-     * `true`  = valid.  
-     * `false` = invalid.
-     */
-    const handleValidationInternal = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
-        if (event.isValid !== undefined) event.isValid = isValid.current;
-    });
+    // functions:
     
-    
-    
-    // handlers:
     const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
@@ -149,7 +136,7 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
         };
     }, []); // runs once on startup
     
-    const handleValidation = useCallback((element: HTMLFormElement, immediately = false) => {
+    const validate = (element: HTMLFormElement, immediately = false) => {
         const performUpdate = () => {
             // remember the validation result:
             const currentIsValid = isFormValid(element);
@@ -183,21 +170,35 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
                 (currentIsValid !== false) ? 300 : 600
             );
         } // if
-    }, [customValidator]);
+    };
     
-    const handleInit       = useCallback((element: HTMLFormElement) => {
-        handleValidation(element, /*immediately =*/true);
-    }, [handleValidation]);
+    
+    
+    // handlers:
+    
+    /**
+     * Handles the validation result.
+     * @returns  
+     * `null`  = uncheck.  
+     * `true`  = valid.  
+     * `false` = invalid.
+     */
+    const handleValidation = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
+        if (event.isValid !== undefined) event.isValid = isValid.current;
+    });
+    
+    const handleInit       = useEvent<EventHandler<HTMLFormElement>>((element) => {
+        validate(element, /*immediately =*/true);
+    });
     
     const handleChange     = useEvent<React.FormEventHandler<HTMLFormElement>>(({currentTarget}) => {
-        handleValidation(currentTarget);
+        validate(currentTarget);
     });
     
     
     
     return {
-        handleValidation: handleValidationInternal,
-        
+        handleValidation,
         handleInit,
         handleChange,
     };
