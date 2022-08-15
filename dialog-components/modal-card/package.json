@@ -1,0 +1,52 @@
+{
+  "name": "@reusable-ui/modal-card",
+  "version": "5.0.0",
+  "description": "Overlays a card dialog to the entire site page.",
+  "keywords": [
+    "modal",
+    "dialog",
+    "overlays",
+    "card",
+    "popup",
+    "show",
+    "hide",
+    "component",
+    "element",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/ModalCard.js",
+  "types": "dist/ModalCard.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/modal": "^5.0.0",
+    "@reusable-ui/focuses": "^5.0.0",
+    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/card": "^5.0.0",
+    "@reusable-ui/orientationable": "^5.0.0",
+    "@reusable-ui/semantics": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
