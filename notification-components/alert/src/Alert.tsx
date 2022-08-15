@@ -329,7 +329,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         // actions:
         handleExpandedChange?.({ expanded: false } as TExpandedChangeEvent); // handle click as request to close <Alert>
         event.preventDefault(); // handled
-    }, [handleExpandedChange]);
+    });
     
     
     
