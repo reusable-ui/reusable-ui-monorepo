@@ -99,7 +99,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         // actions:
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
-    }, []);
+    });
     const handleClick         = useMergeEvents(
         // preserves the original `onClick` from `buttonComponent`:
         buttonComponent.props.onClick,
