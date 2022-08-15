@@ -135,7 +135,7 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
      */
     const handleValidationInternal = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
         if (event.isValid !== undefined) event.isValid = isValid.current;
-    }, []);
+    });
     
     
     
@@ -191,7 +191,7 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     const handleChange     = useEvent<React.FormEventHandler<HTMLFormElement>>(({currentTarget}) => {
         handleValidation(currentTarget);
-    }, [handleValidation]);
+    });
     
     
     
