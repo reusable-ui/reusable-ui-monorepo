@@ -220,7 +220,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     const handleExpandedChangeInternal   = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
         setExpanded(event.expanded);
     });
-    const forwardExpandedChangeByUi      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+    const handleExpandedChangeByUi       = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // create an expanded event:
         const expandedEvent = { expanded: event.active, actionType: 'ui' } as TDropdownExpandedChangeEvent;
         
@@ -241,7 +241,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         // forwards the original `onExpandedChange` from `props`:
-        forwardExpandedChangeByUi,
+        handleExpandedChangeByUi,
     );
     const handleExpandedChange           = useMergeEvents(
         // preserves the original `onExpandedChange` from `dropdownComponent`:
