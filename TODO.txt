@@ -1,8 +1,6 @@
 TODO:
 use CurrentActive
 
-TODO: standarize useToggle___
-
 TODO remove:
 @reusable-ui/clickable => handle space as click
 
