@@ -68,7 +68,7 @@ import {
 
 
 // defaults:
-const _defaultTabIndex   : number  = -1   // make the <List> programatically focusable
+const _defaultTabIndex   : number  = -1   // makes the <List> programatically focusable
 const _defaultActionCtrl : boolean = true // the default for <ListItem>(s) is clickable
 
 
@@ -99,30 +99,12 @@ export const calculateSemanticRole = <TElement extends Element = HTMLElement>(pr
 
 // react components:
 
-// ListItem => DropdownListItem
-export type {
+export {
     ListItemProps,
-    ListItemProps as DropdownListItemProps,
-    ListItemProps as ItemProps,
-}
-export {
     ListItem,
-    ListItem as DropdownListItem,
-    ListItem as Item,
-}
-
-
-
-// ListSeparatorItem => DropdownListSeparatorItem
-export type {
+    
     ListSeparatorItemProps,
-    ListSeparatorItemProps as DropdownListSeparatorItemProps,
-    ListSeparatorItemProps as SeparatorItemProps,
-}
-export {
     ListSeparatorItem,
-    ListSeparatorItem as DropdownListSeparatorItem,
-    ListSeparatorItem as SeparatorItem,
 }
 
 
