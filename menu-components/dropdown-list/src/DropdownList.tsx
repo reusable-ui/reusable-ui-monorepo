@@ -260,6 +260,24 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // actions:
         handleKeyDownInternal,
     );
+    const handleExpandedChange  = useMergeEvents(
+        // preserves the original `onExpandedChange` from `dropdownComponent`:
+        dropdownComponent.props.onExpandedChange,
+        
+        
+        
+        // actions:
+        onExpandedChange,
+    );
+    const handleFloatingUpdate  = useMergeEvents(
+        // preserves the original `onFloatingUpdate` from `dropdownComponent`:
+        dropdownComponent.props.onFloatingUpdate,
+        
+        
+        
+        // actions:
+        onFloatingUpdate,
+    );
     
     
     
@@ -269,28 +287,28 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // props:
         {
             // refs:
-            outerRef     : mergedDropdownRef,
+            outerRef         : mergedDropdownRef,
             
             
             
             // semantics:
-            semanticRole : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props),
+            semanticRole     : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props),
             
             
             
             // variants:
-            orientation  : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
+            orientation      : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
             
             
             
             // behaviors:
-            lazy,
+            lazy             : dropdownComponent.props.lazy ?? lazy,
             
             
             
             // states:
-            expanded,
-            onExpandedChange,
+            expanded         : dropdownComponent.props.expanded ?? expanded,
+            onExpandedChange : handleExpandedChange,
             
             
             
@@ -305,7 +323,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             floatingOffset,
             floatingShift,
             
-            onFloatingUpdate,
+            onFloatingUpdate : handleFloatingUpdate,
         },
         
         
