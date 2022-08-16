@@ -66,7 +66,10 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
+    useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
+    useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui components:
@@ -161,7 +164,7 @@ export const usesCardBackdropLayout = () => {
     // dependencies:
     
     // features:
-    const {modalCardRule} = usesModalCard(modalCards);
+    const {modalCardRule, modalCardVars} = usesModalCard(modalCards);
     
     
     
@@ -176,6 +179,12 @@ export const usesCardBackdropLayout = () => {
         ...style({
             // layouts:
          // display         : 'grid', // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
+            
+            
+            
+            // positions:
+            justifyItems : modalCardVars.horzAlign,
+            alignItems   : modalCardVars.vertAlign,
             
             
             
@@ -300,6 +309,9 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
             |'children' // we redefined `children` prop as <CardItem>(s)
         >,
         
+        // variants:
+        ModalCardVariant,
+        
         // components:
         Omit<CardComponentProps<Element>,
             // children:
@@ -310,20 +322,32 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
 }
 const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet = useCardBackdropStyleSheet();
+    const styleSheet       = useCardBackdropStyleSheet();
+    
+    
+    
+    // variants:
+    const modalCardVariant = useModalCardVariant(props);
     
     
     
     // rest props:
     const {
-        // behaviors:
-        lazy,
+        // variants:
+        modalCardStyle : _modalCardStyle, // remove
+        horzAlign      : _horzAlign,      // remove
+        vertAlign      : _vertAlign,      // remove
         
         
         
         // states:
         expanded,         // take, to be handled by <Modal>
         onExpandedChange, // take, to be handled by <Modal>
+        
+        
+        
+        // behaviors:
+        lazy,
         
         
         
@@ -366,39 +390,94 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     
     
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses` from `modalComponent`:
+        modalComponent.props.variantClasses,
+        
+        
+        
+        // preserves the original `variantClasses` from `props`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        modalCardVariant.class,
+    );
+    
+    
+    
+    // styles:
+    const mergedStyle    = useMergeStyles(
+        // variants:
+        modalCardVariant.style,
+        
+        
+        
+        // preserves the original `style` from `props`:
+        props.style,
+        
+        
+        
+        // preserves the original `style` from `modalComponent` (can overwrite the `style`):
+        modalComponent.props.style,
+    );
+    
+    
+    
+    // handlers:
+    const handleExpandedChange  = useMergeEvents(
+        // preserves the original `onExpandedChange` from `modalComponent`:
+        modalComponent.props.onExpandedChange,
+        
+        
+        
+        // actions:
+        onExpandedChange,
+    );
+    
+    
+    
     // jsx:
     /* <Modal> */
     return React.cloneElement<ModalProps<Element, TModalExpandedChangeEvent>>(modalComponent,
         // props:
         {
             // refs:
-            outerRef      : mergedModalRef,
+            outerRef         : mergedModalRef,
             
             
             
             // variants:
-            backdropStyle : modalComponent.props.backdropStyle ?? backdropStyle,
+            backdropStyle    : modalComponent.props.backdropStyle ?? backdropStyle,
             
             
             
             // classes:
-            mainClass     : props.mainClass ?? styleSheet.main,
+            mainClass        : modalComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            variantClasses,
             
             
             
-            // behaviors:
-            lazy,
+            // styles:
+            style            : mergedStyle,
             
             
             
             // states:
-            expanded,
-            onExpandedChange,
+            expanded         : modalComponent.props.expanded ?? expanded,
+            onExpandedChange : handleExpandedChange,
+            
+            
+            
+            // behaviors:
+            lazy             : modalComponent.props.lazy ?? lazy,
             
             
             
             // modals:
-            modalViewport : modalComponent.props.modalViewport ?? modalViewport,
+            modalViewport    : modalComponent.props.modalViewport ?? modalViewport,
         },
         
         
