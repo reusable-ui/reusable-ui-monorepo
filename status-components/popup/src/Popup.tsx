@@ -371,3 +371,11 @@ export {
     Popup,
     Popup as default,
 }
+
+
+
+export interface PopupComponentProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+{
+    // components:
+    popupComponent ?: React.ReactComponentElement<any, PopupProps<TElement, TExpandedChangeEvent>>
+}
