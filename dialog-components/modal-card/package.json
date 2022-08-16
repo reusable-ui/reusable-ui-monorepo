@@ -39,11 +39,8 @@
   },
   "dependencies": {
     "@reusable-ui/modal": "^5.0.0",
-    "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/card": "^5.0.0",
-    "@reusable-ui/orientationable": "^5.0.0",
-    "@reusable-ui/semantics": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
