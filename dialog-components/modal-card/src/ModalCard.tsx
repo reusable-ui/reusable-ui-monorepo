@@ -75,6 +75,9 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    usesModalUiLayout,
+    usesModalUiStates,
+    
     usesBackdropLayout,
     usesBackdropVariants,
     usesBackdropStates,
@@ -160,7 +163,86 @@ export const usesModalCard = (config?: ModalCardConfig): ModalCardStuff => {
 
 
 // styles:
-export const usesCardBackdropLayout = () => {
+export const usesModalCardLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesModalUiLayout(),
+        ]),
+        ...style({
+            // layouts:
+            display        : 'flex',
+            flexDirection  : 'column',
+            justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems     : 'center',  // center <Popup> horizontally
+            flexWrap       : 'nowrap',  // no wrapping
+            
+            
+            
+            // children:
+            ...children('*', { // <Card>
+                // customize:
+                ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
+            }),
+        }),
+    });
+};
+export const usesModalCardVariants = () => {
+    return style({
+        ...variants([
+            rule(':not(.scrollable)>&', {
+                // sizes:
+                flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                
+                boxSizing     : 'content-box',    // the final size is excluding borders & paddings
+                inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
+                blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
+            }),
+            rule('.scrollable>&', {
+                // sizes:
+                flex          : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
+                
+                
+                
+                // children:
+                ...children(['&', '*'], { // <Popup> & <Card>
+                    // sizes:
+                    boxSizing     : 'border-box',     // the final size is including borders & paddings
+                    inlineSize    : 'auto',           // follows the content's width, but
+                    maxInlineSize : '100%',           // up to the maximum available parent's width
+                    blockSize     : 'auto',           // follows the content's height, but
+                    maxBlockSize  : '100%',           // up to the maximum available parent's height
+                    overflow      : 'hidden',         // force the <Card> to scroll
+                }),
+            }),
+        ]),
+    });
+};
+export const usesModalCardStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesModalUiStates(),
+        ]),
+    });
+};
+
+export const useModalCardStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesModalCardLayout(),
+        
+        // variants:
+        usesModalCardVariants(),
+        
+        // states:
+        usesModalCardStates(),
+    ]),
+}), { specificityWeight: 0, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export const usesBackdropCardLayout = () => {
     // dependencies:
     
     // features:
@@ -205,7 +287,7 @@ export const usesCardBackdropLayout = () => {
         ]),
     });
 };
-export const usesCardBackdropVariants = () => {
+export const usesBackdropCardVariants = () => {
     return style({
         ...imports([
             // variants:
@@ -220,7 +302,7 @@ export const usesCardBackdropVariants = () => {
         ]),
     });
 };
-export const usesCardBackdropStates = () => {
+export const usesBackdropCardStates = () => {
     return style({
         ...imports([
             // states:
@@ -229,16 +311,16 @@ export const usesCardBackdropStates = () => {
     });
 };
 
-export const useCardBackdropStyleSheet = dynamicStyleSheet(() => ({
+export const useBackdropCardStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesCardBackdropLayout(),
+        usesBackdropCardLayout(),
         
         // variants:
-        usesCardBackdropVariants(),
+        usesBackdropCardVariants(),
         
         // states:
-        usesCardBackdropStates(),
+        usesBackdropCardStates(),
     ]),
 }), { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -322,7 +404,8 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
 }
 const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useCardBackdropStyleSheet();
+    const styleSheet       = useBackdropCardStyleSheet();
+    const cardStyleSheet   = useModalCardStyleSheet();
     
     
     
@@ -404,6 +487,15 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         // variants:
         modalCardVariant.class,
+    );
+    const cardClasses    = useMergeClasses(
+        // preserves the original `classes` from `cardComponent`:
+        cardComponent.props.classes,
+        
+        
+        
+        // styles:
+        cardStyleSheet.main,
     );
     
     
@@ -500,6 +592,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 // variants:
                 orientation : cardComponent.props.orientation ?? cardOrientation,
                 cardStyle   : cardComponent.props.cardStyle   ?? cardStyle,
+                
+                
+                
+                // classes:
+                classes     : cardClasses,
                 
                 
                 
