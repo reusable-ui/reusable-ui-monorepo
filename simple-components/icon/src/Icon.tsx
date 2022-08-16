@@ -158,7 +158,7 @@ export interface IconConfig {
 /**
  * Uses icon image and icon color.
  * @param config  A configuration of `iconRule`.
- * @returns A `BackgroundStuff` represents the icon rules.
+ * @returns A `IconStuff` represents the icon rules.
  */
 export const usesIcon = (config?: IconConfig): IconStuff => {
     // dependencies:
