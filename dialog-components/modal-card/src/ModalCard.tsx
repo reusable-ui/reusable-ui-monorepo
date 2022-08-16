@@ -185,34 +185,6 @@ export const usesCardBackdropLayout = () => {
                 gridArea    : 'content',
             }),
             
-            //#region psedudo elm for filling the end of horz & vert scroll
-            ...children(['::before', '::after'], {
-                // layouts:
-                content     : '""',
-                display     : 'block',
-                
-                
-                
-                // sizes:
-                // fills the entire grid area:
-                justifySelf : 'stretch',
-                alignSelf   : 'stretch',
-                
-                
-                
-                // appearances:
-                visibility  : 'hidden',
-            }),
-            ...children('::before', {
-                // layouts:
-                gridArea    : 'inlineEnd',
-            }),
-            ...children('::after', {
-                // layouts:
-                gridArea    : 'blockEnd',
-            }),
-            //#endregion psedudo elm for filling the end of horz & vert scroll
-            
             
             
             // customize:
