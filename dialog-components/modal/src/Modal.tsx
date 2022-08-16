@@ -920,6 +920,16 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     
+    // variants:
+    backdropStyle  ?: ModalProps<TElement, TModalExpandedChangeEvent>['backdropStyle']
+    
+    
+    
+    // modals:
+    modalViewport  ?: ModalProps<TElement, TModalExpandedChangeEvent>['modalViewport']
+    
+    
+    
     // components:
     modalComponent ?: React.ReactComponentElement<any, ModalProps<TElement, TModalExpandedChangeEvent>>
 }
