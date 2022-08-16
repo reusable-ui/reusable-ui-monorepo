@@ -14,6 +14,8 @@ import {
     HeadPortal,
 } from '@cssfn/cssfn-react'
 import { CardBody, CardFooter, CardHeader } from '@reusable-ui/card';
+import { Button } from '@reusable-ui/button';
+import CloseButton from '@reusable-ui/close-button';
 
 
 
@@ -52,9 +54,10 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalCard expanded={showModal} onExpandedChange={handleExpandedChange} backdropStyle='static'>
+                <ModalCard expanded={showModal} onExpandedChange={handleExpandedChange} backdropStyle='static' theme='primary'>
                     <CardHeader>
                         Test Modal Card
+                        <CloseButton data-modal-action-close />
                     </CardHeader>
                     <CardBody>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
@@ -63,6 +66,7 @@ function App() {
                     </CardBody>
                     <CardFooter>
                         Goodbye
+                        <Button data-modal-action-close>Close</Button>
                     </CardFooter>
                 </ModalCard>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
