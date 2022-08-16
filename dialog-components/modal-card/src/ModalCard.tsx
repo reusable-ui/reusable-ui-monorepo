@@ -42,6 +42,8 @@ const _defaultTabIndex   : number  = -1   // makes the <Card> programatically fo
 
 
 // react components:
+export { ModalExpandedChangeEvent }
+
 export interface ModalCardProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
     extends
         // bases:
