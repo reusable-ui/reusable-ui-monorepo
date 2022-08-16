@@ -424,7 +424,7 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
     children : React.ReactElement<GenericProps<TElement>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 
-export type ModalActionType = 'shortcut'|'backdrop'|{}
+export type ModalActionType = 'shortcut'|'backdrop'|'ui'|{}
 export interface ModalExpandedChangeEvent extends ExpandedChangeEvent {
     actionType : ModalActionType
 }
