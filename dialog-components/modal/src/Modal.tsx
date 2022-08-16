@@ -68,11 +68,6 @@ import {
     isClientSide,
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
-import type {
-    // types:
-    SemanticTag,
-    SemanticRole,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // utilities:
     setFocusNext,
@@ -118,12 +113,6 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
-
-
-
-// defaults:
-const _defaultModalUiSemanticTag  : SemanticTag  = [null, 'dialog'] // uses <div>           as the default semantic, fallbacks to <dialog>
-const _defaultModalUiSemanticRole : SemanticRole =        'dialog'  // uses [role="dialog"] as the default semantic
 
 
 
@@ -861,6 +850,13 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             
             
             
+            // semantics:
+            semanticRole={props.semanticRole ?? 'dialog'}
+            
+            aria-modal={props['aria-modal'] ?? (isModal || undefined)}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
@@ -881,17 +877,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                 {
                     // refs:
                     [isReusableUiModalComponent ? 'elmRef' : 'ref'] : mergedModalUiRef,
-                    
-                    
-                    
-                    // semantics:
-                    ...(isReusableUiModalComponent ? {
-                        semanticTag  : (modalUiComponent.props as GenericProps<Element>).semanticTag  ?? _defaultModalUiSemanticTag,
-                        semanticRole : (modalUiComponent.props as GenericProps<Element>).semanticRole ?? _defaultModalUiSemanticRole,
-                    } : {
-                        role         : modalUiComponent.props.role ?? _defaultModalUiSemanticRole,
-                    }),
-                    'aria-modal'     : modalUiComponent.props['aria-modal'] ?? (isModal || undefined),
                     
                     
                     

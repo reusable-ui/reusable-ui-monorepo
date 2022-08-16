@@ -48,7 +48,6 @@
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
-    "@reusable-ui/semantics": "^5.0.0",
     "@reusable-ui/stripouts": "^5.0.0",
     "@reusable-ui/utilities": "^5.0.0",
     "@types/react": "^18.0.10",
