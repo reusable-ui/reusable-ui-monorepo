@@ -426,25 +426,25 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
             |'children' // we redefined `children` prop as a <ModalUi> component
         >,
         
-        // behaviors:
-        BackdropVariant,
-        
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
         Pick<ToggleCollapsibleProps<TModalExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
         
+        // behaviors:
+        BackdropVariant,
+        
         // components:
         ModalUiComponentProps<Element>
 {
-    // modals:
-    modalViewport ?: React.RefObject<Element>|Element|null // getter ref
-    
-    
-    
     // behaviors:
     lazy          ?: boolean
+    
+    
+    
+    // modals:
+    modalViewport ?: React.RefObject<Element>|Element|null // getter ref
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -460,15 +460,15 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
-        // behaviors:
-        backdropStyle = undefined,
-        lazy          = false,
-        
-        
-        
         // states:
         expanded      : _expanded, // remove
         onExpandedChange,
+        
+        
+        
+        // behaviors:
+        backdropStyle = undefined,
+        lazy          = false,
         
         
         
