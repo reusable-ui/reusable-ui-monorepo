@@ -37,7 +37,7 @@ import {
 
 
 // defaults:
-const _defaultTabIndex   : number  = -1   // make the <Card> programatically focusable
+const _defaultTabIndex   : number  = -1   // makes the <Card> programatically focusable
 
 
 
@@ -62,7 +62,7 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
         // components:
         Omit<CardComponentProps<Element>,
             // children:
-            |'cardItems' // we redefined `children` prop as <CardItem>(s)
+            |'cardChildren' // we redefined `children` prop as <CardItem>(s)
         >,
         ModalComponentProps<Element, TModalExpandedChangeEvent>
 {
@@ -86,9 +86,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         cardOrientation,
         cardStyle,
         cardComponent    = (<Card<Element> /> as React.ReactComponentElement<any, CardProps<Element>>),
-        children         : cardItems,
+        children         : cardChildren,
         
         modalRef,
+        backdropStyle,
+        modalViewport,
         modalComponent   = (<Modal<Element, TModalExpandedChangeEvent> >{cardComponent}</Modal> as React.ReactComponentElement<any, ModalProps<Element, TModalExpandedChangeEvent>>),
     ...restCardProps} = props;
     
@@ -124,7 +126,12 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // props:
         {
             // refs:
-            outerRef     : mergedModalRef,
+            outerRef      : mergedModalRef,
+            
+            
+            
+            // variants:
+            backdropStyle : modalComponent.props.backdropStyle ?? backdropStyle,
             
             
             
@@ -136,6 +143,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             // states:
             expanded,
             onExpandedChange,
+            
+            
+            
+            // modals:
+            modalViewport : modalComponent.props.modalViewport ?? modalViewport,
         },
         
         
@@ -168,7 +180,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             // children:
-            cardComponent.props.children ?? cardItems,
+            cardComponent.props.children ?? cardChildren,
         )),
     );
 };
