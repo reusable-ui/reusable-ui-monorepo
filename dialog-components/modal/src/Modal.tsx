@@ -141,7 +141,7 @@ export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body
 
 
 // styles:
-export const usesBackdropUiLayout = () => {
+export const usesModalUiLayout = () => {
     // dependencies:
     
     // features:
@@ -168,7 +168,7 @@ export const usesBackdropUiLayout = () => {
         }),
     });
 };
-export const usesBackdropUiStates = () => {
+export const usesModalUiStates = () => {
     // dependencies:
     
     // states:
@@ -186,13 +186,13 @@ export const usesBackdropUiStates = () => {
     });
 };
 
-export const useBackdropUiStyleSheet = dynamicStyleSheet(() => ({
+export const useModalUiStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesBackdropUiLayout(),
+        usesModalUiLayout(),
         
         // states:
-        usesBackdropUiStates(),
+        usesModalUiStates(),
     ]),
 }), { specificityWeight: 0, id: 'u4teynvq1y' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -449,7 +449,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropStyleSheet();
-    const uiStyleSheet       = useBackdropUiStyleSheet();
+    const uiStyleSheet       = useModalUiStyleSheet();
     
     
     
