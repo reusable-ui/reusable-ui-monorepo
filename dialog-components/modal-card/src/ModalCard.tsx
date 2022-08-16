@@ -72,6 +72,11 @@ import {
     useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui states:
+import {
+    useCollapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
 // reusable-ui components:
 import {
     // styles:
@@ -96,6 +101,13 @@ import {
     // styles:
     usesResponsiveContainerGridLayout,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
+import {
+    // react components:
+    PopupProps,
+    Popup,
+    
+    PopupComponentProps,
+}                           from '@reusable-ui/popup'           // a base component
 import {
     // types:
     CardStyle,
@@ -399,6 +411,7 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
             // children:
             |'cardChildren' // we redefined `children` prop as <CardItem>(s)
         >,
+        PopupComponentProps<Element, TModalExpandedChangeEvent>,
         ModalComponentProps<Element, TModalExpandedChangeEvent>
 {
 }
@@ -411,6 +424,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     // variants:
     const modalCardVariant = useModalCardVariant(props);
+    
+    
+    
+    // states:
+    const collapsibleState = useCollapsible<TElement, TModalExpandedChangeEvent>(props);
     
     
     
@@ -440,6 +458,8 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         cardStyle,
         cardComponent    = (<Card<Element> /> as React.ReactComponentElement<any, CardProps<Element>>),
         children         : cardChildren,
+        
+        popupComponent   = (<Popup<Element, TModalExpandedChangeEvent> /> as React.ReactComponentElement<any, PopupProps<Element, TModalExpandedChangeEvent>>),
         
         modalRef,
         backdropStyle,
@@ -528,6 +548,20 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // actions:
         onExpandedChange,
     );
+    const handleAnimationEnd    = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `modalComponent`:
+        modalComponent.props.onAnimationEnd,
+        
+        
+        
+        // preserves the original `onAnimationEnd` from `props`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationEnd,
+    );
     
     
     
@@ -570,45 +604,61 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             // modals:
             modalViewport    : modalComponent.props.modalViewport ?? modalViewport,
+            
+            
+            
+            // handlers:
+            onAnimationEnd   : handleAnimationEnd,
         },
         
         
         
         // children:
-        /* <Card> */
-        ((modalComponent.props.children !== cardComponent) ? modalComponent.props.children : React.cloneElement<CardProps<Element>>(cardComponent,
+        /* <Popup> */
+        React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
             // props:
             {
-                // other props:
-                ...restCardProps,
-                
-                
-                
-                // refs:
-                elmRef      : mergedCardRef,
-                
-                
-                
-                // variants:
-                orientation : cardComponent.props.orientation ?? cardOrientation,
-                cardStyle   : cardComponent.props.cardStyle   ?? cardStyle,
-                
-                
-                
-                // classes:
-                classes     : cardClasses,
-                
-                
-                
-                // accessibilities:
-                tabIndex    : cardComponent.props.tabIndex    ?? _defaultTabIndex,
+                expanded: collapsibleState.expanded,
             },
             
             
             
             // children:
-            cardComponent.props.children ?? cardChildren,
-        )),
+            /* <Card> */
+            ((modalComponent.props.children !== cardComponent) ? modalComponent.props.children : React.cloneElement<CardProps<Element>>(cardComponent,
+                // props:
+                {
+                    // other props:
+                    ...restCardProps,
+                    
+                    
+                    
+                    // refs:
+                    elmRef      : mergedCardRef,
+                    
+                    
+                    
+                    // variants:
+                    orientation : cardComponent.props.orientation ?? cardOrientation,
+                    cardStyle   : cardComponent.props.cardStyle   ?? cardStyle,
+                    
+                    
+                    
+                    // classes:
+                    classes     : cardClasses,
+                    
+                    
+                    
+                    // accessibilities:
+                    tabIndex    : cardComponent.props.tabIndex    ?? _defaultTabIndex,
+                },
+                
+                
+                
+                // children:
+                cardComponent.props.children ?? cardChildren,
+            )),
+        ),
     );
 };
 export {
