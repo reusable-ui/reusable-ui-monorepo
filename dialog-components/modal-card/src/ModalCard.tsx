@@ -2,7 +2,66 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
+
+// cssfn:
+import type {
+    // types:
+    Factory,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
+    
+    CssStyleCollection,
+}                           from '@cssfn/css-types'             // cssfn css specific types
+import {
+    // rules:
+    rule,
+    variants,
+    states,
+    keyframes,
+    
+    
+    
+    //combinators:
+    children,
+    
+    
+    
+    // styles:
+    style,
+    vars,
+    imports,
+}                           from '@cssfn/cssfn'                 // writes css in javascript
+import {
+    // style sheets:
+    dynamicStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
+import {
+    // utilities:
+    CssVars,
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
+import {
+    cssConfig,
+    
+    
+    
+    // utilities:
+    usesCssProps,
+    usesPrefixedProps,
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
 import {
@@ -12,6 +71,13 @@ import {
 
 // reusable-ui components:
 import {
+    // styles:
+    usesBackdropLayout,
+    usesBackdropVariants,
+    usesBackdropStates,
+    
+    
+    
     // react components:
     ModalExpandedChangeEvent,
     
@@ -20,6 +86,10 @@ import {
     
     ModalComponentProps,
 }                           from '@reusable-ui/modal'           // a base component
+import {
+    // styles:
+    usesResponsiveContainerGridLayout,
+}                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 import {
     // types:
     CardStyle,
@@ -38,6 +108,203 @@ import {
 
 // defaults:
 const _defaultTabIndex   : number  = -1   // makes the <Card> programatically focusable
+
+
+
+// hooks:
+
+// features:
+
+//#region modalCard
+export interface ModalCardVars {
+    /**
+     * The horizontal alignment of the <Card>.
+     */
+    horzAlign : any
+    /**
+     * The vertical alignment of the <Card>.
+     */
+    vertAlign : any
+}
+const [modalCardVars] = cssVars<ModalCardVars>({ minify: false, prefix: 'modalCard' }); // do not minify to make sure `style={{ --modalCard-horzAlign: ... }}` is the same between in server
+
+
+
+export interface ModalCardStuff { modalCardRule: Factory<CssRule>, modalCardVars: CssVars<ModalCardVars> }
+export interface ModalCardConfig {
+    horzAlign ?: CssKnownProps['justifyItems']
+    vertAlign ?: CssKnownProps['alignItems'  ]
+}
+/**
+ * Uses modalCard variables.
+ * @param config  A configuration of `modalCardRule`.
+ * @returns A `ModalCardStuff` represents the modalCard rules.
+ */
+export const usesModalCard = (config?: ModalCardConfig): ModalCardStuff => {
+    return {
+        modalCardRule: () => style({
+            ...vars({
+                // positions:
+                [modalCardVars.horzAlign] : config?.horzAlign,
+                [modalCardVars.vertAlign] : config?.vertAlign,
+            }),
+        }),
+        modalCardVars,
+    };
+};
+//#endregion modalCard
+
+
+
+// styles:
+export const usesCardBackdropLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {modalCardRule} = usesModalCard(modalCards);
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            usesBackdropLayout(),
+            
+            // features:
+            modalCardRule,
+        ]),
+        ...style({
+            // layouts:
+         // display         : 'grid', // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
+            
+            
+            
+            // children:
+            ...children('*', { // <CardDialog>
+                // layouts:
+                gridArea    : 'content',
+            }),
+            
+            //#region psedudo elm for filling the end of horz & vert scroll
+            ...children(['::before', '::after'], {
+                // layouts:
+                content     : '""',
+                display     : 'block',
+                
+                
+                
+                // sizes:
+                // fills the entire grid area:
+                justifySelf : 'stretch',
+                alignSelf   : 'stretch',
+                
+                
+                
+                // appearances:
+                visibility  : 'hidden',
+            }),
+            ...children('::before', {
+                // layouts:
+                gridArea    : 'inlineEnd',
+            }),
+            ...children('::after', {
+                // layouts:
+                gridArea    : 'blockEnd',
+            }),
+            //#endregion psedudo elm for filling the end of horz & vert scroll
+            
+            
+            
+            // customize:
+            ...usesCssProps(modalCards), // apply config's cssProps
+        }),
+        ...imports([
+            // layouts:
+            usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
+        ]),
+    });
+};
+export const usesCardBackdropVariants = () => {
+    return style({
+        ...imports([
+            // variants:
+            usesBackdropVariants(),
+        ]),
+        ...variants([
+            rule(':not(.scrollable)', {
+                // scrolls:
+                // scroller at <ModalCard>'s layer
+                overflow : 'auto', // enable horz & vert scrolling on <ModalBackdrop>
+            }),
+        ]),
+    });
+};
+export const usesCardBackdropStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesBackdropStates(),
+        ]),
+    });
+};
+
+export const useCardBackdropStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesCardBackdropLayout(),
+        
+        // variants:
+        usesCardBackdropVariants(),
+        
+        // states:
+        usesCardBackdropStates(),
+    ]),
+}), { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type ModalCardStyle = 'scrollable' // might be added more styles in the future
+export interface ModalCardVariant {
+    modalCardStyle ?: ModalCardStyle
+    
+    horzAlign      ?: CssKnownProps['justifyItems']
+    vertAlign      ?: CssKnownProps['alignItems'  ]
+}
+export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
+    // dependencies:
+    
+    // features:
+    const {modalCardVars} = usesModalCard();
+    
+    
+    
+    return {
+        class : modalCardStyle ?? null,
+        
+        style : useMemo(() => ({
+            [
+                modalCardVars.horzAlign
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+            ] : horzAlign,
+            
+            [
+                modalCardVars.vertAlign
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+            ] : vertAlign,
+        }), [horzAlign, vertAlign]),
+    };
+};
+
+
+
+// configs:
+export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
+    return {
+        // positions:
+        horzAlign : 'center'    as CssKnownProps['justifyItems'],
+        vertAlign : 'center'    as CssKnownProps['alignItems'  ],
+    };
+}, { prefix: 'mdlcrd' });
 
 
 
@@ -70,6 +337,11 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
 {
 }
 const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
+    // styles:
+    const styleSheet = useCardBackdropStyleSheet();
+    
+    
+    
     // rest props:
     const {
         // behaviors:
@@ -134,6 +406,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             // variants:
             backdropStyle : modalComponent.props.backdropStyle ?? backdropStyle,
+            
+            
+            
+            // classes:
+            mainClass     : props.mainClass ?? styleSheet.main,
             
             
             
