@@ -1341,7 +1341,7 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
 
 
 // react components:
-interface ListItemProps<TElement extends Element = HTMLElement>
+export interface ListItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         SemanticButtonProps<TElement>
@@ -1365,7 +1365,7 @@ interface ListItemProps<TElement extends Element = HTMLElement>
     // children:
     children      ?: React.ReactNode
 }
-const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<TElement>): JSX.Element|null => {
+export const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet           = useListItemStyleSheet();
     const actionStyleSheet     = useListActionItemStyleSheet();
@@ -1485,24 +1485,16 @@ const ListItem = <TElement extends Element = HTMLElement>(props: ListItemProps<T
         />
     );
 };
-export type {
-    ListItemProps,
-    ListItemProps as ItemProps,
-}
-export {
-    ListItem,
-    ListItem as Item,
-}
 
 
 
-interface ListSeparatorItemProps<TElement extends Element = HTMLElement>
+export interface ListSeparatorItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         Pick<ListItemProps<TElement>, keyof IndicatorProps> // [actionCtrl] & related props are not supported
 {
 }
-const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
+export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet           = useListItemStyleSheet();
     const separatorStyleSheet  = useListSeparatorItemStyleSheet();
@@ -1524,14 +1516,6 @@ const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSe
         </ListItem>
     );
 };
-export type {
-    ListSeparatorItemProps,
-    ListSeparatorItemProps as SeparatorItemProps,
-}
-export {
-    ListSeparatorItem,
-    ListSeparatorItem as SeparatorItem,
-}
 
 
 
