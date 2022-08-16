@@ -52,30 +52,12 @@ import {
 
 // react components:
 
-// ListItem => DropdownListButtonItem
-export type {
+export {
     ListItemProps,
-    ListItemProps as DropdownListButtonItemProps,
-    ListItemProps as ItemProps,
-}
-export {
     ListItem,
-    ListItem as DropdownListButtonItem,
-    ListItem as Item,
-}
-
-
-
-// ListSeparatorItem => DropdownListButtonSeparatorItem
-export type {
+    
     ListSeparatorItemProps,
-    ListSeparatorItemProps as DropdownListButtonSeparatorItemProps,
-    ListSeparatorItemProps as SeparatorItemProps,
-}
-export {
     ListSeparatorItem,
-    ListSeparatorItem as DropdownListButtonSeparatorItem,
-    ListSeparatorItem as SeparatorItem,
 }
 
 
