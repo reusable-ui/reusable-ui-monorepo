@@ -95,11 +95,11 @@ import {
 }                           from '@reusable-ui/modal'           // a base component
 import {
     // react components:
-    PopupProps,
-    Popup,
+    CollapseProps,
+    Collapse,
     
-    PopupComponentProps,
-}                           from '@reusable-ui/popup'           // a base component
+    CollapseComponentProps,
+}                           from '@reusable-ui/collapse'        // a base component
 import {
     // styles:
     headerElm,
@@ -213,7 +213,7 @@ export const usesModalSideLayout = () => {
             
             
             // customize:
-            ...usesCssProps(usesPrefixedProps(modalSides, 'popup')), // apply config's cssProps starting with popup***
+            ...usesCssProps(usesPrefixedProps(modalSides, 'collapse')), // apply config's cssProps starting with collapse***
         }),
     });
 };
@@ -309,10 +309,33 @@ export const usesBackdropSideVariants = () => {
             usesBackdropVariants(),
         ]),
         ...variants([
-            rule(':not(.scrollable)', {
-                // scrolls:
-                // scroller at <ModalSide>'s layer
-                overflow : 'auto', // enable horz & vert scrolling on <ModalBackdrop>
+            rule('.blockStart', {
+                // layouts:
+                
+                // child default sizes:
+                justifyItems : 'stretch', // stretch   horizontally
+                alignItems   : 'start',   // align top vertically
+            }),
+            rule('.blockEnd', {
+                // layouts:
+                
+                // child default sizes:
+                justifyItems : 'stretch', // stretch   horizontally
+                alignItems   : 'end',     // align top vertically
+            }),
+            rule('.inlineStart', {
+                // layouts:
+                
+                // child default sizes:
+                justifyItems : 'start',   // align left horizontally
+                alignItems   : 'stretch', // stretch    vertically
+            }),
+            rule('.inlineEnd', {
+                // layouts:
+                
+                // child default sizes:
+                justifyItems : 'end',     // align left horizontally
+                alignItems   : 'stretch', // stretch    vertically
             }),
         ]),
     });
@@ -347,7 +370,7 @@ export interface ModalSideVariant {
 }
 export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
     return {
-        class : modalSideStyle ?? null,
+        class : modalSideStyle,
     };
 };
 
@@ -358,7 +381,7 @@ export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() =>
     return {
         // borders:
         // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
-        popupFilter: [
+        collapseFilter: [
             ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
         ]                                   as CssKnownProps['filter'],
         
@@ -367,7 +390,7 @@ export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() =>
         // spacings:
         cardCaptionGap : spacers.default    as CssKnownProps['gap'],
     };
-}, { prefix: 'mdlcrd' });
+}, { prefix: 'mdlsde' });
 
 
 
