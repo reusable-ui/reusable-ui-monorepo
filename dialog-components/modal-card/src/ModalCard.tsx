@@ -172,11 +172,11 @@ export const usesModalCardLayout = () => {
     return style({
         ...style({
             // layouts:
-            // display        : 'flex',
-            // flexDirection  : 'column',
-            // justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            // alignItems     : 'center',  // center <Popup> horizontally
-            // flexWrap       : 'nowrap',  // no wrapping
+            display        : 'flex',
+            flexDirection  : 'column',
+            justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems     : 'center',  // center <Popup> horizontally
+            flexWrap       : 'nowrap',  // no wrapping
             
             
             
@@ -409,7 +409,7 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
 const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet       = useBackdropCardStyleSheet();
-    const cardStyleSheet   = useModalCardStyleSheet();
+    const popupStyleSheet  = useModalCardStyleSheet();
     
     
     
@@ -499,14 +499,14 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // variants:
         modalCardVariant.class,
     );
-    const cardClasses    = useMergeClasses(
-        // preserves the original `classes` from `cardComponent`:
-        cardComponent.props.classes,
+    const popupClasses    = useMergeClasses(
+        // preserves the original `classes` from `popupComponent`:
+        popupComponent.props.classes,
         
         
         
         // styles:
-        cardStyleSheet.main,
+        popupStyleSheet.main,
     );
     
     
@@ -619,6 +619,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 
                 
                 
+                // classes:
+                classes      : popupClasses,
+                
+                
+                
                 // states:
                 expanded     : popupComponent.props.expanded ?? collapsibleState.expanded,
             },
@@ -643,11 +648,6 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                     // variants:
                     orientation : cardComponent.props.orientation ?? cardOrientation,
                     cardStyle   : cardComponent.props.cardStyle   ?? cardStyle,
-                    
-                    
-                    
-                    // classes:
-                    classes     : cardClasses,
                     
                     
                     
