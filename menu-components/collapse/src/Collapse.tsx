@@ -458,3 +458,11 @@ export {
     Collapse,
     Collapse as default,
 }
+
+
+
+export interface CollapseComponentProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+{
+    // components:
+    collapseComponent ?: React.ReactComponentElement<any, CollapseProps<TElement, TExpandedChangeEvent>>
+}
