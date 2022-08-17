@@ -236,6 +236,10 @@ export const usesModalCardLayout = () => {
                     // customize:
                     ...usesCssProps(usesPrefixedProps(modalCards, 'cardFooter')), // apply config's cssProps starting with cardFooter***
                 }),
+                ...children(bodyElm, {
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
+                }),
                 
                 
                 
@@ -262,11 +266,6 @@ export const usesModalCardVariants = () => {
                 blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
             }),
             rule('.scrollable>&', {
-                // sizes:
-                flex          : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
-                
-                
-                
                 // children:
                 ...children(['&', '*'], { // <Popup> & <Card>
                     // sizes:
