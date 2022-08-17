@@ -11,10 +11,6 @@ import {
 
 // cssfn:
 import type {
-    // types:
-    Factory,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -45,11 +41,6 @@ import {
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 import {
-    // utilities:
-    CssVars,
-    cssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
-import {
     cssConfig,
     
     
@@ -74,6 +65,12 @@ import {
     useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
+// reusable-ui features:
+import {
+    // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+
 // reusable-ui states:
 import {
     useCollapsible,
@@ -96,10 +93,6 @@ import {
     
     ModalComponentProps,
 }                           from '@reusable-ui/modal'           // a base component
-import {
-    // styles:
-    usesResponsiveContainerGridLayout,
-}                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 import {
     // react components:
     PopupProps,
@@ -132,51 +125,6 @@ const _defaultTabIndex   : number  = -1   // makes the <Card> programatically fo
 
 
 
-// hooks:
-
-// features:
-
-//#region modalSide
-export interface ModalSideVars {
-    /**
-     * The horizontal alignment of the <Card>.
-     */
-    horzAlign : any
-    /**
-     * The vertical alignment of the <Card>.
-     */
-    vertAlign : any
-}
-const [modalSideVars] = cssVars<ModalSideVars>({ minify: false, prefix: 'modalSide' }); // do not minify to make sure `style={{ --modalSide-horzAlign: ... }}` is the same between in server
-
-
-
-export interface ModalSideStuff { modalSideRule: Factory<CssRule>, modalSideVars: CssVars<ModalSideVars> }
-export interface ModalSideConfig {
-    horzAlign ?: CssKnownProps['justifyItems']
-    vertAlign ?: CssKnownProps['alignItems'  ]
-}
-/**
- * Uses modalSide variables.
- * @param config  A configuration of `modalSideRule`.
- * @returns A `ModalSideStuff` represents the modalSide rules.
- */
-export const usesModalSide = (config?: ModalSideConfig): ModalSideStuff => {
-    return {
-        modalSideRule: () => style({
-            ...vars({
-                // positions:
-                [modalSideVars.horzAlign] : config?.horzAlign,
-                [modalSideVars.vertAlign] : config?.vertAlign,
-            }),
-        }),
-        modalSideVars,
-    };
-};
-//#endregion modalSide
-
-
-
 // styles:
 export const usesModalSideLayout = () => {
     return style({
@@ -184,14 +132,29 @@ export const usesModalSideLayout = () => {
             // layouts:
             display        : 'flex',
             flexDirection  : 'column',
-            justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'center',  // center <Popup> horizontally
+            justifyContent : 'start',   // if <Collapse> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems     : 'stretch', // stretch <Collapse> horizontally
             flexWrap       : 'nowrap',  // no wrapping
             
             
             
             // children:
+            ...children(['&', '*'], { // <Collapse> & <Card>
+                // sizes:
+                boxSizing     : 'border-box',     // the final size is including borders & paddings
+                inlineSize    : 'auto',           // follows the content's width, but
+                maxInlineSize : '100%',           // up to the maximum available parent's width
+                blockSize     : 'auto',           // follows the content's height, but
+                maxBlockSize  : '100%',           // up to the maximum available parent's height
+                overflow      : 'hidden',         // force the <Card> to scroll
+            }),
             ...children('*', { // <Card>
+                // sizes:
+                // maximum height of <Card> when side-left & side-right:
+                flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
+                
+                
+                
                 // children:
                 ...children([headerElm, footerElm, bodyElm], {
                     // customize:
@@ -236,6 +199,10 @@ export const usesModalSideLayout = () => {
                     // customize:
                     ...usesCssProps(usesPrefixedProps(modalSides, 'cardFooter')), // apply config's cssProps starting with cardFooter***
                 }),
+                ...children(bodyElm, {
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
+                }),
                 
                 
                 
@@ -251,31 +218,49 @@ export const usesModalSideLayout = () => {
     });
 };
 export const usesModalSideVariants = () => {
+    // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
+    
+    
+    
     return style({
         ...variants([
-            rule(':not(.scrollable)>&', {
-                // sizes:
-                flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                
-                boxSizing     : 'content-box',    // the final size is excluding borders & paddings
-                inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
-                blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
-            }),
-            rule('.scrollable>&', {
-                // sizes:
-                flex          : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
-                
-                
-                
+            rule('.blockStart>&', {
                 // children:
-                ...children(['&', '*'], { // <Popup> & <Card>
-                    // sizes:
-                    boxSizing     : 'border-box',     // the final size is including borders & paddings
-                    inlineSize    : 'auto',           // follows the content's width, but
-                    maxInlineSize : '100%',           // up to the maximum available parent's width
-                    blockSize     : 'auto',           // follows the content's height, but
-                    maxBlockSize  : '100%',           // up to the maximum available parent's height
-                    overflow      : 'hidden',         // force the <Card> to scroll
+                ...children(['&', '*'], { // <Collapse> & <Card>
+                    // borders:
+                    // remove rounded corners on top:
+                    [borderVars.borderStartStartRadius] : '0px',
+                    [borderVars.borderStartEndRadius  ] : '0px',
+                }),
+            }),
+            rule('.blockEnd>&', {
+                // children:
+                ...children(['&', '*'], { // <Collapse> & <Card>
+                    // borders:
+                    // remove rounded corners on bottom:
+                    [borderVars.borderEndStartRadius  ] : '0px',
+                    [borderVars.borderEndEndRadius    ] : '0px',
+                }),
+            }),
+            rule('.inlineStart>&', {
+                // children:
+                ...children(['&', '*'], { // <Collapse> & <Card>
+                    // borders:
+                    // remove rounded corners on left:
+                    [borderVars.borderStartStartRadius] : '0px',
+                    [borderVars.borderEndStartRadius  ] : '0px',
+                }),
+            }),
+            rule('.inlineEnd>&', {
+                // children:
+                ...children(['&', '*'], { // <Collapse> & <Card>
+                    // borders:
+                    // remove rounded corners on right:
+                    [borderVars.borderStartEndRadius  ] : '0px',
+                    [borderVars.borderEndEndRadius    ] : '0px',
                 }),
             }),
         ]),
@@ -290,53 +275,31 @@ export const useModalSideStyleSheet = dynamicStyleSheet(() => ({
         // variants:
         usesModalSideVariants(),
     ]),
-}), { specificityWeight: 2, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { specificityWeight: 2, id: 'qvp7n6e4ck' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
 export const usesBackdropSideLayout = () => {
-    // dependencies:
-    
-    // features:
-    const {modalSideRule, modalSideVars} = usesModalSide(modalSides);
-    
-    
-    
     return style({
         ...imports([
             // layouts:
             usesBackdropLayout(),
-            
-            // features:
-            modalSideRule,
         ]),
         ...style({
             // layouts:
-         // display         : 'grid', // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
+            display         : 'grid', // use a grid for the layout, so we can align the <Card> both horizontally & vertically
             
             
             
             // positions:
-            justifyItems : modalSideVars.horzAlign,
-            alignItems   : modalSideVars.vertAlign,
-            
-            
-            
-            // children:
-            ...children('*', { // <CardDialog>
-                // layouts:
-                gridArea    : 'content',
-            }),
+         // justifyItems : 'start',   // align left horizontally // already defined in variant `.(inline|block)(Start|End)`
+         // alignItems   : 'stretch', // stretch    vertically   // already defined in variant `.(inline|block)(Start|End)`
             
             
             
             // customize:
             ...usesCssProps(modalSides), // apply config's cssProps
         }),
-        ...imports([
-            // layouts:
-            usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
-        ]),
     });
 };
 export const usesBackdropSideVariants = () => {
@@ -374,39 +337,17 @@ export const useBackdropSideStyleSheet = dynamicStyleSheet(() => ({
         // states:
         usesBackdropSideStates(),
     ]),
-}), { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'g93sfdvlhc' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
-export type ModalSideStyle = 'scrollable' // might be added more styles in the future
+export type ModalSideStyle = 'inlineStart'|'inlineEnd'|'blockStart'|'blockEnd' // might be added more styles in the future
 export interface ModalSideVariant {
-    modalSideStyle ?: ModalSideStyle
-    
-    horzAlign      ?: CssKnownProps['justifyItems']
-    vertAlign      ?: CssKnownProps['alignItems'  ]
+    modalSideStyle : ModalSideStyle // required prop
 }
-export const useModalSideVariant = ({ modalSideStyle, horzAlign, vertAlign }: ModalSideVariant) => {
-    // dependencies:
-    
-    // features:
-    const {modalSideVars} = usesModalSide();
-    
-    
-    
+export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
     return {
         class : modalSideStyle ?? null,
-        
-        style : useMemo(() => ({
-            [
-                modalSideVars.horzAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : horzAlign,
-            
-            [
-                modalSideVars.vertAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : vertAlign,
-        }), [horzAlign, vertAlign]),
     };
 };
 
@@ -415,12 +356,6 @@ export const useModalSideVariant = ({ modalSideStyle, horzAlign, vertAlign }: Mo
 // configs:
 export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
     return {
-        // positions:
-        horzAlign : 'center'                as CssKnownProps['justifyItems'],
-        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
-        
-        
-        
         // borders:
         // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
         popupFilter: [
@@ -489,8 +424,6 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     const {
         // variants:
         modalSideStyle : _modalSideStyle, // remove
-        horzAlign      : _horzAlign,      // remove
-        vertAlign      : _vertAlign,      // remove
         
         
         
@@ -573,24 +506,6 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     
     
-    // styles:
-    const mergedStyle    = useMergeStyles(
-        // variants:
-        modalSideVariant.style,
-        
-        
-        
-        // preserves the original `style` from `props`:
-        props.style,
-        
-        
-        
-        // preserves the original `style` from `modalComponent` (can overwrite the `style`):
-        modalComponent.props.style,
-    );
-    
-    
-    
     // handlers:
     const handleExpandedChange  = useMergeEvents(
         // preserves the original `onExpandedChange` from `modalComponent`:
@@ -639,11 +554,6 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             
-            // styles:
-            style            : mergedStyle,
-            
-            
-            
             // states:
             expanded         : modalComponent.props.expanded ?? expanded,
             onExpandedChange : handleExpandedChange,
@@ -667,7 +577,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         // children:
-        /* <Popup> */
+        /* <Collapse> */
         React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
             // props:
             {
