@@ -618,7 +618,13 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
             // props:
             {
-                expanded : popupComponent.props.expanded ?? collapsibleState.expanded,
+                // semantics:
+                semanticRole : popupComponent.props.semanticRole ?? '',
+                
+                
+                
+                // states:
+                expanded     : popupComponent.props.expanded ?? collapsibleState.expanded,
             },
             
             
