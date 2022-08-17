@@ -59,6 +59,12 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
+// reusable-ui configs:
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+
 // reusable-ui utilities:
 import {
     // hooks:
@@ -102,7 +108,11 @@ import {
     PopupComponentProps,
 }                           from '@reusable-ui/popup'           // a base component
 import {
-    // types:
+    // styles:
+    headerElm,
+    footerElm,
+    bodyElm,
+    
     CardStyle,
     CardVariant,
     
@@ -182,6 +192,53 @@ export const usesModalCardLayout = () => {
             
             // children:
             ...children('*', { // <Card>
+                // children:
+                ...children([headerElm, footerElm, bodyElm], {
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardItem')), // apply config's cssProps starting with cardItem***
+                }),
+                ...children([headerElm, footerElm], {
+                    // layouts:
+                    display        : 'flex',
+                    flexDirection  : 'row',
+                    flexWrap       : 'nowrap',  // no wrapping
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardCaption')), // apply config's cssProps starting with cardCaption***
+                }),
+                ...children(headerElm, {
+                    justifyContent : 'space-between', // separates between items as far as possible
+                    alignItems     : 'center',        // center <Control> vertically
+                    
+                    
+                    
+                    // children:
+                    ...children(['button', '[role="button"]'], {
+                        ...rule(':first-child:last-child', {
+                            // spacings:
+                            marginInlineStart : 'auto', // align to right
+                        }),
+                    }),
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardHeader')), // apply config's cssProps starting with cardHeader***
+                }),
+                ...children(footerElm, {
+                    justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+                    alignItems     : 'center',  // center <Control> vertically
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardFooter')), // apply config's cssProps starting with cardFooter***
+                }),
+                
+                
+                
                 // customize:
                 ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
             }),
@@ -359,8 +416,8 @@ export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }: Mo
 export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
     return {
         // positions:
-        horzAlign : 'center'    as CssKnownProps['justifyItems'],
-        vertAlign : 'center'    as CssKnownProps['alignItems'  ],
+        horzAlign : 'center'                as CssKnownProps['justifyItems'],
+        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
         
         
         
@@ -368,7 +425,12 @@ export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() =>
         // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
         popupFilter: [
             ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ] as CssKnownProps['filter'],
+        ]                                   as CssKnownProps['filter'],
+        
+        
+        
+        // spacings:
+        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
     };
 }, { prefix: 'mdlcrd' });
 
