@@ -172,11 +172,11 @@ export const usesModalCardLayout = () => {
     return style({
         ...style({
             // layouts:
-            display        : 'flex',
-            flexDirection  : 'column',
-            justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'center',  // center <Popup> horizontally
-            flexWrap       : 'nowrap',  // no wrapping
+            // display        : 'flex',
+            // flexDirection  : 'column',
+            // justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            // alignItems     : 'center',  // center <Popup> horizontally
+            // flexWrap       : 'nowrap',  // no wrapping
             
             
             
@@ -185,6 +185,11 @@ export const usesModalCardLayout = () => {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
             }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(modalCards, 'popup')), // apply config's cssProps starting with popup***
         }),
     });
 };
@@ -228,7 +233,7 @@ export const useModalCardStyleSheet = dynamicStyleSheet(() => ({
         // variants:
         usesModalCardVariants(),
     ]),
-}), { specificityWeight: 0, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { specificityWeight: 2, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
@@ -356,6 +361,14 @@ export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() =>
         // positions:
         horzAlign : 'center'    as CssKnownProps['justifyItems'],
         vertAlign : 'center'    as CssKnownProps['alignItems'  ],
+        
+        
+        
+        // borders:
+        // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
+        popupFilter: [
+            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
+        ] as CssKnownProps['filter'],
     };
 }, { prefix: 'mdlcrd' });
 
@@ -598,6 +611,11 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             {
                 // semantics:
                 semanticRole : popupComponent.props.semanticRole ?? '',
+                
+                
+                
+                // variants:
+                nude         : popupComponent.props.nude ?? true,
                 
                 
                 
