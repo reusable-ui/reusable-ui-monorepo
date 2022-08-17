@@ -1,0 +1,59 @@
+{
+  "name": "@reusable-ui/modal-side",
+  "version": "5.0.0",
+  "description": "Overlays a card dialog to the side of site's page.",
+  "keywords": [
+    "modal",
+    "dialog",
+    "overlays",
+    "card",
+    "popup",
+    "show",
+    "hide",
+    "component",
+    "element",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/ModalSide.js",
+  "types": "dist/ModalSide.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/types": "^2.0.1",
+    "@cssfn/css-config": "^2.0.14",
+    "@cssfn/css-types": "^2.0.4",
+    "@cssfn/css-vars": "^2.0.10",
+    "@cssfn/cssfn-react": "^2.0.10",
+    "@reusable-ui/card": "^5.0.0",
+    "@reusable-ui/collapsible": "^5.0.0",
+    "@reusable-ui/container": "^5.0.0",
+    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/modal": "^5.0.0",
+    "@reusable-ui/popup": "^5.0.0",
+    "@reusable-ui/spacers": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.7",
+    "react": "^18.1.0"
+  }
+}
