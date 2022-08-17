@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <style>
+        #indicator {
+            transform-origin: 50%;
+            animation: .75s linear infinite spin;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <path id="indicator" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" d="M12,22.5A10.5,10.5,0,1,1,22.5,12"/>
+</svg>
