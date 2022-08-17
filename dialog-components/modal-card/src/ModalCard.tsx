@@ -22,15 +22,11 @@ import type {
     
     // cssfn properties:
     CssRule,
-    
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
-    states,
-    keyframes,
     
     
     
@@ -80,9 +76,6 @@ import {
 // reusable-ui components:
 import {
     // styles:
-    usesModalUiLayout,
-    usesModalUiStates,
-    
     usesBackdropLayout,
     usesBackdropVariants,
     usesBackdropStates,
@@ -177,10 +170,6 @@ export const usesModalCard = (config?: ModalCardConfig): ModalCardStuff => {
 // styles:
 export const usesModalCardLayout = () => {
     return style({
-        ...imports([
-            // layouts:
-            usesModalUiLayout(),
-        ]),
         ...style({
             // layouts:
             display        : 'flex',
@@ -230,14 +219,6 @@ export const usesModalCardVariants = () => {
         ]),
     });
 };
-export const usesModalCardStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesModalUiStates(),
-        ]),
-    });
-};
 
 export const useModalCardStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
@@ -246,9 +227,6 @@ export const useModalCardStyleSheet = dynamicStyleSheet(() => ({
         
         // variants:
         usesModalCardVariants(),
-        
-        // states:
-        usesModalCardStates(),
     ]),
 }), { specificityWeight: 0, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
