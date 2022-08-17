@@ -134,9 +134,9 @@ const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding 
 
 
 // styles:
-const headerElm = ':where(.header)' // zero specificity
-const footerElm = ':where(.footer)' // zero specificity
-const bodyElm   = ':where(.body)'   // zero specificity
+export const headerElm = ':where(.header)' // zero specificity
+export const footerElm = ':where(.footer)' // zero specificity
+export const bodyElm   = ':where(.body)'   // zero specificity
 
 
 
