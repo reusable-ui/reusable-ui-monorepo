@@ -17,11 +17,15 @@ import type {
     
     // cssfn properties:
     CssRule,
+    
+    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
     variants,
+    states,
+    fallbacks,
     
     
     
@@ -53,6 +57,12 @@ import {
     // hooks:
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui features:
+import {
+    // hooks:
+    usesAnimation,
+}                           from '@reusable-ui/animation'       // animation stuff of UI
 
 // reusable-ui variants:
 import {
@@ -124,6 +134,84 @@ export const usesProgressBar = (config?: ProgressBarConfig): ProgressBarStuff =>
     };
 };
 //#endregion progressBar
+
+
+// states:
+
+//#region runnable
+export interface RunnableVars {
+    /**
+     * final animation for the progressbar element.
+     */
+    anim : any
+}
+const [runnableVars] = cssVars<RunnableVars>();
+
+
+
+export const ifNotRunning = (styles: CssStyleCollection) => rule(':not(.running)', styles);
+export const ifRunning    = (styles: CssStyleCollection) => rule(     '.running' , styles);
+
+
+
+export interface RunnableStuff { runnableRule: Factory<CssRule>, runnableVars: CssVars<RunnableVars> }
+export interface RunnableConfig {
+    animRunning ?: CssKnownProps['animation']
+}
+/**
+ * Adds a capability of UI to animate to indicate a running state.
+ * @param config  A configuration of `runnableRule`.
+ * @returns A `RunnableStuff` represents a runnable state.
+ */
+export const usesRunnable = (config?: RunnableConfig): RunnableStuff => {
+    // dependencies:
+    
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
+    
+    
+    
+    return {
+        runnableRule: () => style({
+            ...imports([
+                // features:
+                animationRule,
+            ]),
+            
+            
+            
+            // reset functions:
+            // declare default values at lowest specificity:
+            ...fallbacks({
+                ...vars({
+                    [runnableVars.anim] : animationVars.animNone,
+                }),
+            }),
+            
+            
+            
+            ...states([
+                ifRunning({
+                    ...vars({
+                        [runnableVars.anim] : config?.animRunning,
+                    }),
+                }),
+            ]),
+        }),
+        runnableVars,
+    };
+};
+
+
+
+export interface RunnableProps {
+    // states:
+    running ?: boolean
+}
+export const useRunnable = ({running}: RunnableProps) => ({
+    class: running ? 'running' : null,
+});
+//#endregion runnable
 
 
 
