@@ -50,6 +50,9 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
@@ -59,6 +62,10 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
+import {
+    // hooks:
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
 import {
     // hooks:
     usesAnimation,
@@ -90,6 +97,13 @@ import {
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // styles:
+    listItemElm,
+    usesListLayout,
+    usesListBasicVariants,
+    ListBasicStyle,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
@@ -216,34 +230,53 @@ export const useRunnable = ({running}: RunnableProps) => ({
 
 
 // styles:
-export const usesProgressLayout = () => {
+export const usesProgressLayout = (options?: OrientationableOptions) => {
+    // options:
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    options = orientationableStuff;
+    
+    
+    
+    // dependencies:
+    
+    // features:
+    const {backgroundVars} = usesBackground();
+    
+    
+    
     return style({
         ...imports([
             // layouts:
-            usesBasicLayout(),
+            usesListLayout(options),
         ]),
         ...style({
             // layouts:
-            display        : 'inline-flex',  // use inline flexbox, so it takes the width & height as we set
-            flexDirection  : 'row',          // items are stacked horizontally
-            justifyContent : 'center',       // center items (text, icon, etc) horizontally
-            alignItems     : 'center',       // center items (text, icon, etc) vertically
-            flexWrap       : 'wrap',         // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            ...ifOrientationInline({ // inline
+                display    : 'flex',        // use block flexbox, so it takes the entire parent's width
+            }),
+            ...ifOrientationBlock({  // block
+                display    : 'inline-flex', // use inline flexbox, so it takes the width & height as needed
+            }),
+            justifyContent : 'start',       // if wrappers are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first wrapper should be visible first
             
             
             
-            // positions:
-            verticalAlign  : 'baseline',     // <Progress>'s text should be aligned with sibling text, so the <Progress> behave like <span> wrapper
-            
-            
-            
-            // typos:
-            textAlign      : 'start',        // flow to the document's writing flow
+            // backgrounds:
+            backg          : backgroundVars.altBackgColor,
             
             
             
             // customize:
             ...usesCssProps(progresses),     // apply config's cssProps
+            ...ifOrientationInline({ // inline
+                // overwrites propName = propName{Inline}:
+                ...overwriteProps(progresses, usesSuffixedProps(progresses, 'inline')),
+            }),
+            ...ifOrientationBlock({  // block
+                // overwrites propName = propName{Block}:
+                ...overwriteProps(progresses, usesSuffixedProps(progresses, 'block')),
+            }),
         }),
     });
 };
@@ -259,6 +292,7 @@ export const usesProgressVariants = () => {
         ...imports([
             // variants:
             usesBasicVariants(),
+            usesListBasicVariants(),
             resizableRule,
         ]),
     });
@@ -272,11 +306,11 @@ export const useProgressStyleSheet = dynamicStyleSheet(() => ({
         // variants:
         usesProgressVariants(),
     ]),
-}), { id: 'si01upz9vr' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'vcm24axqvn' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
-export type ProgressStyle = 'content' // might be added more styles in the future
+export type ProgressStyle = ListBasicStyle // might be added more styles in the future
 export interface ProgressVariant {
     progressStyle ?: ProgressStyle
 }
@@ -288,10 +322,22 @@ export const useProgressVariant = (props: ProgressVariant) => {
 
 
 
+export type ProgressBarStyle = 'striped' // might be added more styles in the future
+export interface ProgressBarVariant {
+    progressBarStyle ?: ProgressBarStyle
+}
+export const useProgressBarVariant = (props: ProgressBarVariant) => {
+    return {
+        class: props.progressBarStyle ?? null,
+    };
+};
+
+
+
 // configs:
 export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
     return {
-        /* no config props yet */
+        // TODO: add config
     };
 }, { prefix: 'lb' });
 
