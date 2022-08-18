@@ -2,22 +2,12 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useMemo,
 }                           from 'react'
 
 // cssfn:
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -33,7 +23,6 @@ import {
     
     // styles:
     style,
-    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
@@ -62,7 +51,6 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
@@ -201,7 +189,7 @@ export const usesModalSideLayout = () => {
                 }),
                 ...children(bodyElm, {
                     // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
+                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardBody')), // apply config's cssProps starting with cardBody***
                 }),
                 
                 
@@ -422,24 +410,24 @@ export interface ModalSideProps<TElement extends Element = HTMLElement, TModalEx
             // children:
             |'cardChildren' // we redefined `children` prop as <CardItem>(s)
         >,
-        PopupComponentProps<Element, TModalExpandedChangeEvent>,
+        CollapseComponentProps<Element, TModalExpandedChangeEvent>,
         ModalComponentProps<Element, TModalExpandedChangeEvent>
 {
 }
 const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalSideProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useBackdropSideStyleSheet();
-    const popupStyleSheet  = useModalSideStyleSheet();
+    const styleSheet         = useBackdropSideStyleSheet();
+    const collapseStyleSheet = useModalSideStyleSheet();
     
     
     
     // variants:
-    const modalSideVariant = useModalSideVariant(props);
+    const modalSideVariant   = useModalSideVariant(props);
     
     
     
     // states:
-    const collapsibleState = useCollapsible<TElement, TModalExpandedChangeEvent>(props);
+    const collapsibleState   = useCollapsible<TElement, TModalExpandedChangeEvent>(props);
     
     
     
@@ -465,21 +453,21 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         cardRef,
         cardOrientation,
         cardStyle,
-        cardComponent    = (<Card<Element> /> as React.ReactComponentElement<any, CardProps<Element>>),
-        children         : cardChildren,
+        cardComponent     = (<Card<Element> /> as React.ReactComponentElement<any, CardProps<Element>>),
+        children          : cardChildren,
         
-        popupComponent   = (<Popup<Element, TModalExpandedChangeEvent> /> as React.ReactComponentElement<any, PopupProps<Element, TModalExpandedChangeEvent>>),
+        collapseComponent = (<Collapse<Element, TModalExpandedChangeEvent> /> as React.ReactComponentElement<any, CollapseProps<Element, TModalExpandedChangeEvent>>),
         
         modalRef,
         backdropStyle,
         modalViewport,
-        modalComponent   = (<Modal<Element, TModalExpandedChangeEvent> >{cardComponent}</Modal> as React.ReactComponentElement<any, ModalProps<Element, TModalExpandedChangeEvent>>),
+        modalComponent    = (<Modal<Element, TModalExpandedChangeEvent> >{cardComponent}</Modal> as React.ReactComponentElement<any, ModalProps<Element, TModalExpandedChangeEvent>>),
     ...restCardProps} = props;
     
     
     
     // refs:
-    const mergedCardRef  = useMergeRefs(
+    const mergedCardRef   = useMergeRefs(
         // preserves the original `elmRef` from `cardComponent`:
         cardComponent.props.elmRef,
         
@@ -488,7 +476,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // preserves the original `cardRef` from `props`:
         cardRef,
     );
-    const mergedModalRef = useMergeRefs(
+    const mergedModalRef  = useMergeRefs(
         // preserves the original `outerRef` from `modalComponent`:
         modalComponent.props.outerRef,
         
@@ -503,7 +491,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     
     // classes:
-    const variantClasses = useMergeClasses(
+    const variantClasses  = useMergeClasses(
         // preserves the original `variantClasses` from `modalComponent`:
         modalComponent.props.variantClasses,
         
@@ -517,14 +505,14 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // variants:
         modalSideVariant.class,
     );
-    const popupClasses    = useMergeClasses(
-        // preserves the original `classes` from `popupComponent`:
-        popupComponent.props.classes,
+    const collapseClasses = useMergeClasses(
+        // preserves the original `classes` from `collapseComponent`:
+        collapseComponent.props.classes,
         
         
         
         // styles:
-        popupStyleSheet.main,
+        collapseStyleSheet.main,
     );
     
     
@@ -601,26 +589,21 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         // children:
         /* <Collapse> */
-        React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
+        React.cloneElement<CollapseProps<Element, TModalExpandedChangeEvent>>(collapseComponent,
             // props:
             {
                 // semantics:
-                semanticRole : popupComponent.props.semanticRole ?? '',
-                
-                
-                
-                // variants:
-                nude         : popupComponent.props.nude ?? true,
+                semanticRole : collapseComponent.props.semanticRole ?? '',
                 
                 
                 
                 // classes:
-                classes      : popupClasses,
+                classes      : collapseClasses,
                 
                 
                 
                 // states:
-                expanded     : popupComponent.props.expanded ?? collapsibleState.expanded,
+                expanded     : collapseComponent.props.expanded ?? collapsibleState.expanded,
             },
             
             
