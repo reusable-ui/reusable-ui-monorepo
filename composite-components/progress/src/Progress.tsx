@@ -5,6 +5,19 @@ import {
 }                           from 'react'
 
 // cssfn:
+import type {
+    // types:
+    Factory,
+}                           from '@cssfn/types'                 // cssfn general types
+import type {
+    // css known (standard) properties:
+    CssKnownProps,
+    
+    
+    
+    // cssfn properties:
+    CssRule,
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -14,12 +27,18 @@ import {
     
     // styles:
     style,
+    vars,
     imports,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
+import {
+    // utilities:
+    CssVars,
+    cssVars,
+}                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
     
@@ -38,6 +57,14 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
+    OrientationableOptions,
+    defaultInlineOrientationableOptions,
+    usesOrientationable,
+    OrientationableProps,
+    useOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+import {
+    // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
 
@@ -53,6 +80,50 @@ import {
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
+
+
+
+// defaults:
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+
+
+
+// hooks:
+
+// features:
+
+//#region progressBar
+export interface ProgressBarVars {
+    /**
+     * ProgressBar's thumb ratio.
+     */
+    valueRatio : any
+}
+const [progressBarVars] = cssVars<ProgressBarVars>({ minify: false, prefix: 'progressBar' }); // do not minify to make sure `style={{ --progressBar-valueRatio: ... }}` is the same between in server
+
+
+
+export interface ProgressBarStuff { progressBarRule: Factory<CssRule>, progressBarVars: CssVars<ProgressBarVars> }
+export interface ProgressBarConfig {
+    valueRatio ?: number
+}
+/**
+ * Uses progressBar variables.
+ * @param config  A configuration of `progressBarRule`.
+ * @returns A `ProgressBarStuff` represents the progressBar rules.
+ */
+export const usesProgressBar = (config?: ProgressBarConfig): ProgressBarStuff => {
+    return {
+        progressBarRule: () => style({
+            ...vars({
+                // variables:
+                [progressBarVars.valueRatio] : config?.valueRatio,
+            }),
+        }),
+        progressBarVars,
+    };
+};
+//#endregion progressBar
 
 
 
