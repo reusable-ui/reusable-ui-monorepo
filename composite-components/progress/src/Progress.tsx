@@ -25,7 +25,13 @@ import {
     rule,
     variants,
     states,
+    keyframes,
     fallbacks,
+    
+    
+    
+    // combinators:
+    children,
     
     
     
@@ -68,6 +74,10 @@ import {
 }                           from '@reusable-ui/background'      // background stuff of UI
 import {
     // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
     usesAnimation,
 }                           from '@reusable-ui/animation'       // animation stuff of UI
 
@@ -84,12 +94,26 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    usesGradientable,
+}                           from '@reusable-ui/gradientable'    // gradient variant of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
 import {
     // styles:
     usesBasicLayout,
     usesBasicVariants,
+    
+    
+    
+    // configs:
+    basics,
+    basicValues,
     
     
     
@@ -170,7 +194,7 @@ export const ifRunning    = (styles: CssStyleCollection) => rule(     '.running'
 
 export interface RunnableStuff { runnableRule: Factory<CssRule>, runnableVars: CssVars<RunnableVars> }
 export interface RunnableConfig {
-    animRunning ?: CssKnownProps['animation']
+    itemAnimRunning ?: CssKnownProps['animation']
 }
 /**
  * Adds a capability of UI to animate to indicate a running state.
@@ -207,7 +231,7 @@ export const usesRunnable = (config?: RunnableConfig): RunnableStuff => {
             ...states([
                 ifRunning({
                     ...vars({
-                        [runnableVars.anim] : config?.animRunning,
+                        [runnableVars.anim] : config?.itemAnimRunning,
                     }),
                 }),
             ]),
@@ -322,6 +346,159 @@ export const useProgressVariant = (props: ProgressVariant) => {
 
 
 
+export const usesProgressBarInheritMildVariant = () => {
+    return style({
+        ...variants([
+            rule('.mild>&', { // .mild>*>.listItem => the specificity weight including parent = 2
+                ...imports([
+                    mildOf(true),
+                ]),
+            }),
+        ]),
+    });
+};
+
+
+
+export const usesProgressBarLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {                 borderVars     } = usesBorder();
+    const {progressBarRule, progressBarVars} = usesProgressBar();
+    
+    
+    
+    return style({
+        // sizes:
+        flex     : [[progressBarVars.valueRatio, progressBarVars.valueRatio, 0]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
+        overflow : 'hidden',
+        
+        
+        
+        // children:
+        ...children(listItemElm, {
+            ...imports([
+                // layouts:
+                usesBasicLayout(),
+                
+                // features:
+                progressBarRule,
+            ]),
+            ...style({
+                // layouts:
+                display        : 'flex',   // fills the entire wrapper's width
+                flexDirection  : 'row',    // items are stacked horizontally
+                justifyContent : 'center', // center items (text, icon, etc) horizontally
+                alignItems     : 'center', // center items (text, icon, etc) vertically
+                flexWrap       : 'nowrap', // no wrapping
+                
+                
+                
+                // borders:
+                [borderVars.borderWidth           ] : '0px', // discard border
+                // remove rounded corners on top:
+                [borderVars.borderStartStartRadius] : '0px',
+                [borderVars.borderStartEndRadius  ] : '0px',
+                // remove rounded corners on bottom:
+                [borderVars.borderEndStartRadius  ] : '0px',
+                [borderVars.borderEndEndRadius    ] : '0px',
+                
+                
+                
+                // sizes:
+                flex : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(progresses, 'item')), // apply config's cssProps starting with item***
+            }),
+        }),
+    });
+};
+export const usesProgressBarVariants = () => {
+    // dependencies:
+    
+    // features:
+    const {backgroundVars  } = usesBackground();
+    
+    // variants:
+    const {gradientableRule} = usesGradientable(progresses);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            gradientableRule,
+        ]),
+        ...style({
+            // children:
+            ...children(listItemElm, {
+                ...imports([
+                    // variants:
+                    usesProgressBarInheritMildVariant(),
+                ]),
+            }),
+        }),
+        ...variants([
+            rule('.striped', {
+                // children:
+                ...children(listItemElm, {
+                    // backgrounds:
+                    backg : [
+                        // layering: backg1 | backg2 | backg3 ...
+                        
+                        // top layer:
+                        `${progresses.itemBackgStripedImg} left/${progresses.itemBackgStripedSize} ${progresses.itemBackgStripedSize}`,
+                        
+                        // bottom layer:
+                        backgroundVars.backg,
+                    ],
+                }),
+            }),
+        ]),
+    });
+};
+export const usesProgressBarStates = () => {
+    // dependencies:
+    
+    // states:
+    const {runnableRule, runnableVars} = usesRunnable(progresses);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            runnableRule,
+        ]),
+        ...style({
+            // children:
+            ...children(listItemElm, {
+                // animations:
+                anim  : runnableVars.anim,
+            }),
+        }),
+    });
+};
+
+export const useProgressBarStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesProgressBarLayout(),
+        
+        // variants:
+        usesProgressBarVariants(),
+        
+        // states:
+        usesProgressBarStates(),
+    ]),
+}), { specificityWeight: 2, id: 'ymt3ybn64g' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
 export type ProgressBarStyle = 'striped' // might be added more styles in the future
 export interface ProgressBarVariant {
     progressBarStyle ?: ProgressBarStyle
@@ -336,10 +513,68 @@ export const useProgressBarVariant = (props: ProgressBarVariant) => {
 
 // configs:
 export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
+    //#region keyframes
+    const [keyframesItemRunningRule, keyframesItemRunning] = keyframes({
+        from  : {
+            backgroundPositionX : ['1rem', 0],
+        },
+        to    : {
+            backgroundPositionX : [0, 0],
+        },
+    });
+    keyframesItemRunning.value = 'running'; // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
+    
+    
+    
+    const [keyframesItemRunningBlockRule, keyframesItemRunningBlock] = keyframes({
+        from  : {
+            backgroundPositionY : ['1rem', 0],
+        },
+        to    : {
+            backgroundPositionY : [0, 0],
+        },
+    });
+    keyframesItemRunningBlock.value = 'runningBlock'; // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
+    //#endregion keyframes
+    
+    
+    
     return {
-        // TODO: add config
+        // sizes:
+        minInlineSize            : 'unset'      as CssKnownProps['minInlineSize'], // fills the entire parent's width:
+        minBlockSize             : 'auto'       as CssKnownProps['minBlockSize' ], // depends on ProgressBar's height
+        
+        minInlineSizeBlock       : 'auto'       as CssKnownProps['minInlineSize'], // depends on ProgressBar's width
+        minBlockSizeBlock        : '10rem'      as CssKnownProps['minBlockSize' ], // manually set the min height
+        
+        
+        
+        // backgrounds:
+        backgGrad      : basics.backgGrad       as CssKnownProps['backgroundImage'],
+        backgGradBlock : (() => {
+            const value = [[...(basicValues.backgGrad as Extract<CssKnownProps['backgroundImage'], any[][]>)[0]]] as Extract<CssKnownProps['backgroundImage'], any[][]>;
+            value[0][0] = value[0][0].toString().replace('180deg', '270deg');
+            return value;
+        })()                                    as CssKnownProps['backgroundImage'],
+        
+        itemBackgStripedImg      : 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)'   as CssKnownProps['backgroundImage'],
+        itemBackgStripedSize     : '1rem'       as CssKnownProps['backgroundSize'],
+        itemBackgStripedSizeSm   : '0.25rem'    as CssKnownProps['backgroundSize'],
+        itemBackgStripedSizeLg   : '3rem'       as CssKnownProps['backgroundSize'],
+        
+        
+        
+        // animations:
+        ...keyframesItemRunningRule,
+        ...keyframesItemRunningBlockRule,
+        itemAnimRunning          : [
+            ['1000ms', 'linear', 'both', 'infinite', keyframesItemRunning]
+        ]                                       as CssKnownProps['animation'],
+        itemAnimRunningBlock     : [
+            ['1000ms', 'linear', 'both', 'infinite', keyframesItemRunningBlock]
+        ]                                       as CssKnownProps['animation'],
     };
-}, { prefix: 'lb' });
+}, { prefix: 'prgs' });
 
 
 
