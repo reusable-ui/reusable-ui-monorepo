@@ -88,6 +88,11 @@ import {
     
     
     
+    // configs:
+    modals,
+    
+    
+    
     // react components:
     ModalExpandedChangeEvent,
     
@@ -187,6 +192,12 @@ export const usesModalCardLayout = () => {
             justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
             alignItems     : 'center',  // center <Popup> horizontally
             flexWrap       : 'nowrap',  // no wrapping
+            
+            
+            
+            // animations:
+            // a fix to overwrite <Popup>'s filter:
+            filter         : modals.modalUiFilter,
             
             
             
