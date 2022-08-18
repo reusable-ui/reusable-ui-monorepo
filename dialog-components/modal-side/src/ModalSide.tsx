@@ -59,6 +59,12 @@ import {
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
 
+// reusable-ui variants:
+import {
+    // hooks:
+    usesOrientationable,
+}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+
 // reusable-ui states:
 import {
     useCollapsible,
@@ -89,6 +95,11 @@ import {
     CollapseComponentProps,
 }                           from '@reusable-ui/collapse'        // a base component
 import {
+    // hooks:
+    defaultOrientationableOptions as cardDefaultOrientationableOptions,
+    
+    
+    
     // styles:
     headerElm,
     footerElm,
@@ -115,6 +126,11 @@ const _defaultTabIndex   : number  = -1   // makes the <Card> programatically fo
 
 // styles:
 export const usesModalSideLayout = () => {
+    const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    
+    
+    
     return style({
         ...style({
             // layouts:
@@ -137,6 +153,26 @@ export const usesModalSideLayout = () => {
                 overflow      : 'hidden',         // force the <Card> to scroll
             }),
             ...children('*', { // <Card>
+                // layouts:
+                // a fix for collapsing vertically, so the <CardBody> appears sliding:
+                ...rule(':is(.inlineStart, .blockStart)>&', {
+                    justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+                }),
+                ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
+                    ...children(bodyElm, {
+                        // sizes:
+                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                    }),
+                })}),
+                ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
+                    ...children(bodyElm, {
+                        // sizes:
+                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                    }),
+                })}),
+                
+                
+                
                 // sizes:
                 // maximum height of <Card> when side-left & side-right:
                 flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
@@ -594,6 +630,11 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             {
                 // semantics:
                 semanticRole : collapseComponent.props.semanticRole ?? '',
+                
+                
+                
+                // variants:
+                orientation  : collapseComponent.props.orientation ?? (modalSideVariant.class.startsWith('inline') ? 'inline' : 'block'),
                 
                 
                 

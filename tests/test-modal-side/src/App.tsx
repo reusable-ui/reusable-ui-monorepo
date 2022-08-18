@@ -39,7 +39,6 @@ function App() {
     }), []);
     
     const [isStatic, setStatic] = useState<boolean>(false);
-    const [scrollable, setScrollable] = useState<boolean>(false);
     const [wideContent, setWideContent] = useState<boolean>(false);
     const [tallContent, setTallContent] = useState<boolean>(false);
     
@@ -63,7 +62,7 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle={(scrollable || undefined) && 'scrollable'} backdropStyle={(isStatic || undefined) && 'static'} theme='primary'>
+                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary'>
                     <CardHeader>
                         Test Modal Card
                         <CloseButton onClick={handleClose} size='xs' />
@@ -73,7 +72,6 @@ function App() {
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p><Check theme='primary' checkStyle='switch' active={isStatic} onActiveChange={(e) => setStatic(e.active)}>static</Check></p>
-                        <p><Check theme='primary' checkStyle='switch' active={scrollable} onActiveChange={(e) => setScrollable(e.active)}>scrollable</Check></p>
                         <p><Check theme='primary' checkStyle='switch' active={wideContent} onActiveChange={(e) => setWideContent(e.active)}>simulate wide content</Check></p>
                         <p><Check theme='primary' checkStyle='switch' active={tallContent} onActiveChange={(e) => setTallContent(e.active)}>simulate tall content</Check></p>
                         { wideContent &&
