@@ -420,14 +420,6 @@ export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() =>
         
         
         
-        // borders:
-        // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
-        popupFilter: [
-            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ]                                   as CssKnownProps['filter'],
-        
-        
-        
         // spacings:
         cardCaptionGap : spacers.default    as CssKnownProps['gap'],
     };
