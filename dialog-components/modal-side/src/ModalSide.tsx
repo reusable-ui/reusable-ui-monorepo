@@ -403,14 +403,6 @@ export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
 // configs:
 export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
     return {
-        // borders:
-        // cardBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
-        collapseFilter: [
-            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ]                                   as CssKnownProps['filter'],
-        
-        
-        
         // spacings:
         cardCaptionGap : spacers.default    as CssKnownProps['gap'],
     };
