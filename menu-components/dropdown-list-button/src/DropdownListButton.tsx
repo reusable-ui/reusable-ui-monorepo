@@ -10,7 +10,7 @@ import type {
     DropdownProps,
 }                           from '@reusable-ui/dropdown'        // overlays contextual element such as lists, menus, and more
 import {
-    // types:
+    // styles:
     ListStyle,
     ListVariant,
     
@@ -23,7 +23,7 @@ import {
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
-    // types:
+    // styles:
     ButtonStyle,
     ButtonVariant,
     ButtonType,
