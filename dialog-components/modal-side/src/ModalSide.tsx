@@ -95,7 +95,7 @@ import {
     CollapseComponentProps,
 }                           from '@reusable-ui/collapse'        // a base component
 import {
-    // hooks:
+    // defaults:
     defaultOrientationableOptions as cardDefaultOrientationableOptions,
     
     
