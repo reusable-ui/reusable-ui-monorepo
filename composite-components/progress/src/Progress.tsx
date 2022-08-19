@@ -80,6 +80,7 @@ import {
 import {
     // hooks:
     useMergeClasses,
+    useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
@@ -858,15 +859,35 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
     
     
     
+    // styles:
+    const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
+        // values:
+        [
+            progressBarVars.valueRatio
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : valueRatio,
+    }), [valueRatio]);
+    const mergedStyle = useMergeStyles(
+        // values:
+        valueRatioStyle,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `valueRatioStyle`):
+        props.style,
+    );
+    
+    
+    
     // jsx:
     return (
         <Generic<TElement>
             // semantics:
             semanticRole={props.semanticRole ?? 'progressbar'}
             
-            aria-valuenow={props['aria-valuenow'   ] ?? valueFn}
-            aria-valuemin={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
-            aria-valuemax={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
+            aria-valuenow={props['aria-valuenow'] ?? valueFn}
+            aria-valuemin={props['aria-valuemin'] ?? (negativeFn ? maxFn : minFn)}
+            aria-valuemax={props['aria-valuemax'] ?? (negativeFn ? minFn : maxFn)}
             
             
             
@@ -874,6 +895,11 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
             stateClasses={stateClasses}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
         >
         </Generic>
     );
