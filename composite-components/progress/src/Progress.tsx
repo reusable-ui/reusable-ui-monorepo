@@ -90,6 +90,10 @@ import {
 }                           from '@reusable-ui/background'      // background stuff of UI
 import {
     // hooks:
+    usesForeground,
+}                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
+import {
+    // hooks:
     usesBorder,
 }                           from '@reusable-ui/border'          // border (stroke) stuff of UI
 import {
@@ -285,7 +289,8 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {backgroundVars} = usesBackground();
+    const {backgroundRule, backgroundVars} = usesBackground();
+    const {foregroundRule, foregroundVars} = usesForeground();
     
     
     
@@ -293,6 +298,10 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
         ...imports([
             // layouts:
             usesListLayout(options),
+            
+            // features:
+            backgroundRule,
+            foregroundRule,
         ]),
         ...style({
             // layouts:
@@ -307,7 +316,12 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
             
             
             // backgrounds:
-            backg          : backgroundVars.altBackgColor,
+            backg          : backgroundVars.altBackgColor, // the remaining area should lighter than the <ProgressBar>
+            
+            
+            
+            // foregrounds:
+            foreg          : foregroundVars.foreg,
             
             
             

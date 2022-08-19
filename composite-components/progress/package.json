@@ -39,6 +39,7 @@
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/background": "^5.0.0",
+    "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",

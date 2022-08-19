@@ -36,9 +36,27 @@ function App() {
                 <Progress theme='primary'>
                     <ProgressBar value='30'>30%</ProgressBar>
                 </Progress>
+                <br />
                 <Progress theme='success'>
                     <ProgressBar value='30'>30%</ProgressBar>
-                    <ProgressBar value='40' running>40%</ProgressBar>
+                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                </Progress>
+                <br />
+                <Progress theme='danger'>
+                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
+                </Progress>
+                <hr />
+                <Progress mild={true} theme='primary'>
+                    <ProgressBar value='30'>30%</ProgressBar>
+                </Progress>
+                <br />
+                <Progress mild={true} theme='success'>
+                    <ProgressBar value='30'>30%</ProgressBar>
+                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                </Progress>
+                <br />
+                <Progress mild={true} theme='danger'>
+                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
                 </Progress>
             </div>
         </>
