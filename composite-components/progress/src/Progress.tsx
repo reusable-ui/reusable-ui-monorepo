@@ -619,7 +619,7 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
 
 
 // utilities:
-const calculateValues = <TElement extends HTMLElement = HTMLElement>(props: ProgressBarProps<TElement>) => {
+const calculateValues = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>) => {
     // fn props:
     const valueFn    : number  = parseNumber(props.value)  ?? 0;
     const minFn      : number  = parseNumber(props.min)    ?? 0;
@@ -705,9 +705,9 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
     const remainingValueRatio = 1 - Math.min((
         React.Children.toArray(children).map((child) => {
             // <ProgressBar> component:
-            if (React.isValidElement<ProgressBarProps>(child)) {
+            if (React.isValidElement<ProgressBarProps<Element>>(child)) {
                 // fn props:
-                const {valueRatio} = calculateValues(child.props);
+                const {valueRatio} = calculateValues<Element>(child.props);
                 return valueRatio;
             }// if
             
@@ -752,22 +752,129 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
             
             
             // semantics:
+            semanticRole={props.semanticRole ?? 'group'}
             
-            
-            
-            // variants:
-            theme={props.theme ?? 'secondary'}
-            mild={props.mild ?? true}
+            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             
             
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-        />
+        >
+            { isOrientationBlock ? restProgressBar : null }
+            { isOrientationBlock ? React.Children.toArray(children).slice().reverse() : children }
+            { isOrientationBlock ? null : restProgressBar }
+        </Basic>
     );
 };
 export {
     Progress,
     Progress as default,
 }
+
+
+
+export interface ProgressBarProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        BasicProps<TElement>,
+        
+        // states:
+        RunnableProps,
+        
+        // variants:
+        ProgressBarVariant
+{
+    // values:
+    value ?: string | number
+    min   ?: string | number
+    max   ?: string | number
+}
+export const ProgressBar = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>): JSX.Element|null => {
+    // styles:
+    const styleSheet         = useProgressBarStyleSheet();
+    
+    
+    
+    // variants:
+    const progressBarVariant = useProgressBarVariant(props);
+    
+    
+    
+    // states:
+    const runnableState      = useRunnable(props);
+    
+    
+    
+    // rest props:
+    const {
+        // variants:
+        progressBarStyle : _progressBarStyle, // remove
+        
+        
+        
+        // states:
+        running          : _running,          // remove
+    ...restBasicProps} = props;
+    
+    
+    
+    // classes:
+    const variantClasses = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        progressBarVariant.class,
+    );
+    const stateClasses   = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        runnableState.class,
+    );
+    
+    
+    
+    // fn props:
+    const {
+        valueFn,
+        minFn,
+        maxFn,
+        negativeFn,
+        valueRatio,
+    } = calculateValues<TElement>(props);
+    
+    
+    
+    // features:
+    const {progressBarVars} = usesProgressBar();
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // semantics:
+            semanticRole={props.semanticRole ?? 'progressbar'}
+            
+            aria-valuenow={props['aria-valuenow'   ] ?? valueFn}
+            aria-valuemin={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
+            aria-valuemax={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+            variantClasses={variantClasses}
+            stateClasses={stateClasses}
+        >
+        </Generic>
+    );
+};
