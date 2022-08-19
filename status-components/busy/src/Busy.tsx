@@ -41,15 +41,12 @@ import {
 
 // reusable-ui components:
 import {
-    // types:
-    BadgeStyle,
-    
-    
-    
     // styles:
     usesBadgeLayout,
     usesBadgeVariants,
     usesBadgeStates,
+    
+    BadgeStyle,
     
     
     
