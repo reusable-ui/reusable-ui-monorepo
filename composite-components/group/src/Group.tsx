@@ -55,6 +55,10 @@ import {
 
 // reusable-ui utilities:
 import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
+import {
     // hooks:
     useIsomorphicLayoutEffect,
     useMergeRefs,
@@ -65,7 +69,7 @@ import {
 import {
     // hooks:
     OrientationableOptions,
-    defaultBlockOrientationableOptions,
+    defaultInlineOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
@@ -77,113 +81,53 @@ import {
 
 // reusable-ui components:
 import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'         // a generic component
+import {
     // styles:
-    usesContentLayout,
-    usesContentVariants,
+    usesListItemBaseLayout,
+    ListBasicStyle,
+    ListVariant,
     
     
     
     // react components:
-    ContentProps,
-    Content,
-}                           from '@reusable-ui/content'         // a base component
+    ListItem,
+    ListProps,
+    List,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
 // defaults:
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-
-const _defaultGroupResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' } // get the client size
-const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  } // get the offset size
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
 
 
 
 // styles:
-export const usesGroupLayout = (options?: OrientationableOptions) => {
+export const usesGroupItemLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
-    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
+    options = orientationableStuff;
     
     
     
     return style({
         ...imports([
             // layouts:
-            usesContentLayout(),
+            usesListItemBaseLayout(options),
         ]),
         ...style({
-            // layouts:
-            ...ifOrientationInline({ // inline
-                display             : 'inline-grid', // use css inline grid for layouting, the core of our Group layout
-                gridAutoFlow        : 'column',      // items direction is to block & group's direction is to inline
-                gridAutoColumns     : groups.itemsRaiseRowHeight,
-                gridTemplateRows    : `repeat(auto-fill, minmax(${groups.itemsMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                alignItems          : 'stretch',     // each item fills the entire Group's column height
-             // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
-                justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
-            ...ifOrientationBlock({  // block
-                display             : 'grid',        // use css block grid for layouting, the core of our Group layout
-                gridAutoFlow        : 'row',         // items direction is to inline & group's direction is to block
-                gridAutoRows        : groups.itemsRaiseRowHeight,
-                gridTemplateColumns : `repeat(auto-fill, minmax(${groups.itemsMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                justifyItems        : 'stretch',     // each item fills the entire Group's column width
-             // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
-                alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
+            // no layout modification needed.
+            // the layout is belong to the <Button>/<Radio>/<Check> itself.
             
             
             
-            // spacings:
-            ...ifOrientationInline({ // inline
-                gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...ifOrientationBlock({  // block
-                gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...children('*', {
-                ...rule(':not(.firstRow)', {
-                    ...ifParentOrientationInline({ // inline
-                        /*
-                        * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
-                        * we use `marginInlineStart` instead of `marginInlineEnd`
-                        * because looping grid's items at the first_group_row is much faster than at the last_group_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginInlineStart : groups.gapInline,
-                    }),
-                    ...ifParentOrientationBlock({  // block
-                        /*
-                        * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
-                        * we use `marginBlockStart` instead of `marginBlockEnd`
-                        * because looping grid's items at the first_group_row is much faster than at the last_group_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginBlockStart  : groups.gapBlock,
-                    }),
-                }),
-            }),
-            
-            
-            
-            // children:
-            ...children('*', {
-                // sizes:
-                ...ifParentOrientationInline({ // inline
-                    gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Group orientation="block"> (if was)
-                }),
-                ...ifParentOrientationBlock({  // block
-                    gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Group orientation="inline"> (if was)
-                }),
-            }),
+            // sizes:
+            // just a few tweak:
+            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
             
             
             
@@ -192,7 +136,7 @@ export const usesGroupLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
-export const usesGroupVariants = () => {
+export const usesGroupItemVariants = () => {
     // dependencies:
     
     // variants:
@@ -203,79 +147,100 @@ export const usesGroupVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesContentVariants(),
             resizableRule,
         ]),
     });
 };
 
-export const useGroupStyleSheet = dynamicStyleSheet(() => ({
+export const useGroupItemStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
         // layouts:
-        usesGroupLayout(),
+        usesGroupItemLayout(),
         
         // variants:
-        usesGroupVariants(),
+        usesGroupItemVariants(),
     ]),
-}), { id: 'fiuyy1jxpx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { specificityWeight: 2, id: 'd2scsx4yqe' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
 // configs:
 export const [groups, groupValues, cssGroupConfig] = cssConfig(() => {
     return {
-        // sizes:
-        itemsRaiseRowHeight   : '2px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightSm : '1px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightLg : '4px'               as CssKnownProps['blockSize'],
-        
-        itemsMinColumnWidth   : 'calc(5 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthSm : 'calc(3 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthLg : 'calc(8 * 40px)'    as CssKnownProps['columnWidth'],
-        
-        
-        
-        // spacings:
-        gapInline             : spacers.sm          as CssKnownProps['gapInline'],
-        gapInlineSm           : spacers.xs          as CssKnownProps['gapInline'],
-        gapInlineLg           : spacers.md          as CssKnownProps['gapInline'],
-        gapBlock              : spacers.sm          as CssKnownProps['gapBlock' ],
-        gapBlockSm            : spacers.xs          as CssKnownProps['gapBlock' ],
-        gapBlockLg            : spacers.md          as CssKnownProps['gapBlock' ],
+        /* no config props yet */
     };
-}, { prefix: 'msry' });
-
-
-
-// utilities:
-const isPartiallyResized = (oldSize: ResizeObserverSize|undefined, newSize: ResizeObserverSize, compareOrientationBlock: boolean): boolean => {
-    if (!oldSize) {
-        oldSize   = newSize;
-        return true;
-    }
-    else {
-        if (compareOrientationBlock) {
-            if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
-                oldSize   = newSize;
-                return true;
-            } // if
-        }
-        else {
-            if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
-                oldSize   = newSize;
-                return true;
-            } // if
-        } // if
-    } // if
-    
-    
-    
-    return false;
-};
+}, { prefix: 'grp' });
 
 
 
 // react components:
+
+interface GroupItemProps
+{
+    children : Exclude<React.ReactNode, Iterable<React.ReactNode>>
+}
+const GroupItem = ({children: child}: GroupItemProps): JSX.Element|number|boolean|null|undefined => {
+    // jsx:
+    if (!React.isValidElement(child)) return child; // unknown element or text or null|undefined
+    
+    return (
+        <ItemWrapper>
+            {child}
+        </ItemWrapper>
+    );
+};
+
+interface ItemWrapperProps
+{
+    // components:
+    children : React.ReactElement
+}
+const ItemWrapper = ({children: component}: ItemWrapperProps): JSX.Element => {
+    // styles:
+    const styleSheet = useGroupItemStyleSheet();
+    
+    
+    
+    // verifies:
+    const isReusableUiModalComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
+    
+    
+    
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes` from `component`:
+        (
+            isReusableUiModalComponent
+            ?
+            (component.props as GenericProps<Element>).classes
+            :
+            ((component.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
+        ),
+        
+        
+        
+        // styles:
+        styleSheet.main,
+    );
+    
+    
+    
+    // jsx:
+    return React.cloneElement(component,
+        // props:
+        {
+            // classes:
+            ...(isReusableUiModalComponent ? {
+                classes   : classes,
+            } : {
+                className : classes.filter((c) => !!c).join(' '),
+            }),
+        },
+    );
+};
+
+
+
 export interface GroupProps<TElement extends Element = HTMLElement>
     extends
         // bases:
