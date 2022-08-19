@@ -38,7 +38,7 @@ import type {
 
 // reusable-ui components:
 import type {
-    // types:
+    // styles:
     ButtonStyle,
     ButtonVariant,
     ButtonType,
