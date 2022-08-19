@@ -122,10 +122,10 @@
 [obsolete] [documented  ] [published] [full    compound] [full organized] @reusable-ui/modal-side
 
 // composite-components:
-[obsolete] [documented  ] [published] @reusable-ui/progress
+[obsolete] [documented  ] [published] [          atomic] [full organized] @reusable-ui/progress
+[obsolete] [documented  ] [published] @reusable-ui/group
 [obsolete] [documented  ] [published] @reusable-ui/nav
 [obsolete] [documented  ] [published] @reusable-ui/navscroll
 [obsolete] [documented  ] [published] @reusable-ui/accordion
-[obsolete] [documented  ] [published] @reusable-ui/group
 [obsolete] [documented  ] [published] @reusable-ui/carousel
 [obsolete] [documented  ] [published] @reusable-ui/navbar
