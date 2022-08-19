@@ -77,7 +77,7 @@ import type {
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // hooks:
+    // defaults:
     defaultOrientationableOptions,
     
     
