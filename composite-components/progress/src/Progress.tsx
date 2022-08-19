@@ -122,7 +122,6 @@ import {
 // reusable-ui components:
 import {
     // react components:
-    GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a complement component
 import {
@@ -313,7 +312,7 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
             
             
             // customize:
-            ...usesCssProps(progresses),     // apply config's cssProps
+            ...usesCssProps(progresses), // apply config's cssProps
             ...ifOrientationInline({ // inline
                 // overwrites propName = propName{Inline}:
                 ...overwriteProps(progresses, usesSuffixedProps(progresses, 'inline')),
@@ -600,8 +599,8 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         
         
         // spacings:
-        barPaddingInline         : 0            as CssKnownProps['paddingInline'],
-        barPaddingBlock          : 0            as CssKnownProps['paddingBlock' ],
+        barPaddingInline         : '0px'        as CssKnownProps['paddingInline'],
+        barPaddingBlock          : '0px'        as CssKnownProps['paddingBlock' ],
         
         
         
@@ -817,6 +816,13 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
         
         // states:
         running          : _running,          // remove
+        
+        
+        
+        // values:
+        value : _value, // remove
+        min   : _min,   // remove
+        max   : _max,   // remove
     ...restBasicProps} = props;
     
     
@@ -867,7 +873,7 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ] : valueRatio,
     }), [valueRatio]);
-    const mergedStyle = useMergeStyles(
+    const mergedStyle     = useMergeStyles(
         // values:
         valueRatioStyle,
         
@@ -901,6 +907,15 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
             // styles:
             style={mergedStyle}
         >
+        <Basic<TElement>
+            // other props:
+            {...restBasicProps}
+            
+            
+            
+            // variants:
+            mild={props.mild ?? false}
+        />
         </Generic>
     );
 };
