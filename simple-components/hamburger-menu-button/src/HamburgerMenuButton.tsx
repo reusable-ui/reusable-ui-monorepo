@@ -85,17 +85,14 @@ import {
     basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // types:
-    ButtonStyle,
-    ButtonVariant,
-    ButtonType,
-    
-    
-    
     // styles:
     usesButtonLayout,
     usesButtonVariants,
     usesButtonStates,
+    
+    ButtonStyle,
+    ButtonVariant,
+    ButtonType,
 }                           from '@reusable-ui/button'          // a base component
 import {
     // react components:
