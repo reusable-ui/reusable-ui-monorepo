@@ -78,18 +78,15 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
-    CheckStyle,
-    CheckVariant,
-    
-    
-    
     // styles:
     inputElm,
     
     usesCheckLayout,
     usesCheckVariants,
     usesCheckStates,
+    
+    CheckStyle,
+    CheckVariant,
     
     
     
