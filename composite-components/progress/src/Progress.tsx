@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -114,6 +119,11 @@ import {
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
+import {
+    // react components:
+    GenericProps,
+    Generic,
+}                           from '@reusable-ui/generic'         // a complement component
 import {
     // styles:
     usesBasicLayout,
@@ -660,7 +670,13 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
     // rest props:
     const {
         // variants:
+        orientation   : _orientation,   // remove
         progressStyle : _progressStyle, // remove
+        
+        
+        
+        // children:
+        children,
     ...restBasicProps} = props;
     
     
@@ -673,12 +689,61 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
         
         
         // variants:
+        orientationableVariant.class,
         progressVariant.class,
     );
     
     
     
+    // features:
+    const {progressBarVars} = usesProgressBar();
+    
+    
+    
     // jsx:
+    // get the (1 - sum(<ProgressBar>.valueRatio)):
+    const remainingValueRatio = 1 - Math.min((
+        React.Children.toArray(children).map((child) => {
+            // <ProgressBar> component:
+            if (React.isValidElement<ProgressBarProps>(child)) {
+                // fn props:
+                const {valueRatio} = calculateValues(child.props);
+                return valueRatio;
+            }// if
+            
+            
+            
+            // foreign component:
+            return 0;
+        })
+        .reduce((accum, valueRatio) => accum + valueRatio, /*initialAccum = */0) // sum
+    ), 1); // trim to 1 if the total > 1
+    
+    const restProgressBar = useMemo((): JSX.Element => {
+        return (
+            <Generic
+                // semantics:
+                aria-hidden={true} // just a dummy element, no meaningful content here
+                
+                
+                
+                // classes:
+                mainClass={barStyleSheet.main}
+                
+                
+                
+                // styles:
+                style={{
+                    // values:
+                    [
+                        progressBarVars.valueRatio
+                        .slice(4, -1) // fix: var(--customProp) => --customProp
+                    ] : remainingValueRatio,
+                }}
+            />
+        )
+    }, [remainingValueRatio]);
+    
     return (
         <Basic<TElement>
             // other props:
