@@ -60,7 +60,7 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
-    // hooks:
+    // defaults:
     defaultOrientationableOptions as dropdownDefaultOrientationableOptions,
     
     
