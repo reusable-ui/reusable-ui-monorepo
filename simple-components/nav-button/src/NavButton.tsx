@@ -26,7 +26,7 @@ import {
     isClientSideLink,
 }                           from '@reusable-ui/action-control'  // a base component
 import {
-    // hooks:
+    // styles:
     ButtonStyle,
     ButtonVariant,
     ButtonType,
