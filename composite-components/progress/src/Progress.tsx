@@ -61,7 +61,17 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
+// reusable-ui configs:
+import {
+    // configs:
+    spacers,
+}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
+
 // reusable-ui utilities:
+import {
+    // utilities:
+    parseNumber,
+}                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
     useMergeClasses,
@@ -194,7 +204,7 @@ export const ifRunning    = (styles: CssStyleCollection) => rule(     '.running'
 
 export interface RunnableStuff { runnableRule: Factory<CssRule>, runnableVars: CssVars<RunnableVars> }
 export interface RunnableConfig {
-    itemAnimRunning ?: CssKnownProps['animation']
+    barAnimRunning ?: CssKnownProps['animation']
 }
 /**
  * Adds a capability of UI to animate to indicate a running state.
@@ -231,7 +241,7 @@ export const usesRunnable = (config?: RunnableConfig): RunnableStuff => {
             ...states([
                 ifRunning({
                     ...vars({
-                        [runnableVars.anim] : config?.itemAnimRunning,
+                        [runnableVars.anim] : config?.barAnimRunning,
                     }),
                 }),
             ]),
@@ -412,7 +422,7 @@ export const usesProgressBarLayout = () => {
                 
                 
                 // customize:
-                ...usesCssProps(usesPrefixedProps(progresses, 'item')), // apply config's cssProps starting with item***
+                ...usesCssProps(usesPrefixedProps(progresses, 'bar')), // apply config's cssProps starting with bar***
             }),
         }),
     });
@@ -451,7 +461,7 @@ export const usesProgressBarVariants = () => {
                         // layering: backg1 | backg2 | backg3 ...
                         
                         // top layer:
-                        `${progresses.itemBackgStripedImg} left/${progresses.itemBackgStripedSize} ${progresses.itemBackgStripedSize}`,
+                        `${progresses.barBackgStripedImg} left/${progresses.barBackgStripedSize} ${progresses.barBackgStripedSize}`,
                         
                         // bottom layer:
                         backgroundVars.backg,
@@ -557,20 +567,40 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
             return value;
         })()                                    as CssKnownProps['backgroundImage'],
         
-        itemBackgStripedImg      : 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)'   as CssKnownProps['backgroundImage'],
-        itemBackgStripedSize     : '1rem'       as CssKnownProps['backgroundSize'],
-        itemBackgStripedSizeSm   : '0.25rem'    as CssKnownProps['backgroundSize'],
-        itemBackgStripedSizeLg   : '3rem'       as CssKnownProps['backgroundSize'],
+        barBackgStripedImg       : 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)'   as CssKnownProps['backgroundImage'],
+        barBackgStripedSize      : '1rem'       as CssKnownProps['backgroundSize' ],
+        barBackgStripedSizeSm    : '0.25rem'    as CssKnownProps['backgroundSize' ],
+        barBackgStripedSizeLg    : '3rem'       as CssKnownProps['backgroundSize' ],
+        
+        
+        
+        barBoxSizing             : 'border-box' as CssKnownProps['boxSizing'    ], // the final size is including borders & paddings
+        
+        barMinInlineSize         : 'unset'      as CssKnownProps['minInlineSize'],
+        barMinBlockSize          : spacers.md   as CssKnownProps['minBlockSize' ],
+        barMinBlockSizeSm        : spacers.xs   as CssKnownProps['minBlockSize' ],
+        barMinBlockSizeLg        : spacers.xl   as CssKnownProps['minBlockSize' ],
+        
+        barMinBlockSizeBlock     : 'unset'      as CssKnownProps['minBlockSize' ],
+        barMinInlineSizeBlock    : spacers.md   as CssKnownProps['minInlineSize'],
+        barMinInlineSizeBlockSm  : spacers.xs   as CssKnownProps['minInlineSize'],
+        barMinInlineSizeBlockLg  : spacers.xl   as CssKnownProps['minInlineSize'],
+        
+        
+        
+        // spacings:
+        barPaddingInline         : 0            as CssKnownProps['paddingInline'],
+        barPaddingBlock          : 0            as CssKnownProps['paddingBlock' ],
         
         
         
         // animations:
         ...keyframesItemRunningRule,
         ...keyframesItemRunningBlockRule,
-        itemAnimRunning          : [
+        barAnimRunning           : [
             ['1000ms', 'linear', 'both', 'infinite', keyframesItemRunning]
         ]                                       as CssKnownProps['animation'],
-        itemAnimRunningBlock     : [
+        barAnimRunningBlock      : [
             ['1000ms', 'linear', 'both', 'infinite', keyframesItemRunningBlock]
         ]                                       as CssKnownProps['animation'],
     };
@@ -578,26 +608,52 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
 
 
 
+// utilities:
+const calculateValues = <TElement extends HTMLElement = HTMLElement>(props: ProgressBarProps<TElement>) => {
+    // fn props:
+    const valueFn    : number  = parseNumber(props.value)  ?? 0;
+    const minFn      : number  = parseNumber(props.min)    ?? 0;
+    const maxFn      : number  = parseNumber(props.max)    ?? 100;
+    const negativeFn : boolean = (maxFn < minFn);
+    const valueRatio : number  = (valueFn - minFn) / (maxFn - minFn);
+    
+    
+    
+    return {
+        valueFn,
+        minFn,
+        maxFn,
+        negativeFn,
+        valueRatio,
+    };
+};
+
+
+
 // react components:
-export interface ProgressProps<TElement extends Element = HTMLSpanElement>
+export interface ProgressProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         BasicProps<TElement>,
         
         // variants:
+        OrientationableProps,
         ProgressVariant
 {
     // children:
     children ?: React.ReactNode
 }
-const Progress = <TElement extends Element = HTMLSpanElement>(props: ProgressProps<TElement>): JSX.Element|null => {
+const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useProgressStyleSheet();
+    const styleSheet             = useProgressStyleSheet();
+    const barStyleSheet          = useProgressBarStyleSheet();
     
     
     
     // variants:
-    const progressVariant = useProgressVariant(props);
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
+    const progressVariant        = useProgressVariant(props);
     
     
     
