@@ -41,14 +41,14 @@ import {
     DropdownComponentProps,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
-    // types:
+    // defaults:
+    defaultOrientationableOptions as listDefaultOrientationableOptions,
+    
+    
+    
+    // styles:
     ListStyle,
     ListVariant,
-    
-    
-    
-    // hooks:
-    defaultOrientationableOptions as listDefaultOrientationableOptions,
     
     
     
