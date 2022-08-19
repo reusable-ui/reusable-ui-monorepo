@@ -6,7 +6,7 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
+    // styles:
     ButtonStyle,
     ButtonVariant,
     ButtonType,
