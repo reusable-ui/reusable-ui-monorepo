@@ -1695,6 +1695,14 @@ export {
 
 
 
+export interface ListItemComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    listItemComponent ?: React.ReactComponentElement<any, ListItemProps<TElement>>
+}
+
+
+
 export interface ListComponentProps<TElement extends Element = HTMLElement>
 {
     // refs:
