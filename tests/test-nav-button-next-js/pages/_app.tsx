@@ -5,6 +5,9 @@ import {
   NavButton,
 } from '@reusable-ui/nav-button'
 import {
+  Nav, NavItem,
+} from '@reusable-ui/nav'
+import {
   Styles,
   HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -25,6 +28,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NavButton theme='primary'>
           <Link href="/expenses">Expenses</Link>
       </NavButton>
+      <article>
+          <Nav>
+              <NavItem theme='secondary'>
+                  <Link href="/">Home</Link>
+              </NavItem>
+              <NavItem theme='primary'>
+                  <Link href="/invoices">Invoices</Link>
+              </NavItem>
+              <NavItem theme='success'>
+              <Link href="/expenses">Expenses</Link>
+              </NavItem>
+          </Nav>
+      </article>
       <Component {...pageProps} />
     </>
   )

@@ -8,6 +8,9 @@ import {
     NavButton,
 } from '@reusable-ui/nav-button'
 import {
+    Nav, NavItem,
+} from '@reusable-ui/nav'
+import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -51,6 +54,19 @@ function App() {
                     <NavButton theme='primary'>
                         <Link to="/expenses">Expenses</Link>
                     </NavButton>
+                </article>
+                <article>
+                    <Nav>
+                        <NavItem theme='secondary'>
+                            <Link to="/">Home</Link>
+                        </NavItem>
+                        <NavItem theme='primary'>
+                            <Link to="/invoices">Invoices</Link>
+                        </NavItem>
+                        <NavItem theme='success'>
+                        <Link to="/expenses">Expenses</Link>
+                        </NavItem>
+                    </Nav>
                 </article>
                 <hr />
                 <Outlet />
