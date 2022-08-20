@@ -73,10 +73,17 @@ export interface NavItemProps<TElement extends Element = HTMLElement>
         // components:
         ListItemComponentProps<TElement>
 {
+    // accessibilities:
+    label ?: string
 }
-export const NavItem = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
+export const NavItem     = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
+        // accessibilities:
+        label,
+        
+        
+        
         // navigations:
         caseSensitive : _caseSensitive, // remove
         end           : _end,           // remove
@@ -86,8 +93,6 @@ export const NavItem = <TElement extends Element = HTMLElement>(props: NavItemPr
         // components:
         listItemComponent     = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
     ...restListItemProps} = props;
-    type T1 = typeof restListItemProps
-    type T2 = Omit<T1, keyof ListItemProps>
     
     
     
@@ -110,6 +115,7 @@ export const NavItem = <TElement extends Element = HTMLElement>(props: NavItemPr
             
             // semantics:
             'aria-current' : (activeFn || undefined) && (listItemComponent.props['aria-current'] ?? props['aria-current'] ?? 'page'),
+            'aria-label'   : listItemComponent.props['aria-label'] ?? label,
             
             
             
@@ -124,40 +130,78 @@ export const NavItem = <TElement extends Element = HTMLElement>(props: NavItemPr
     );
 };
 
-
-export interface CloseButtonProps
-    extends
-        // bases:
-        ButtonIconProps
-{
-}
-const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
+export const NavPrevItem = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
     // jsx:
     return (
-        <ButtonIcon
+        <NavItem<TElement>
             // other props:
             {...props}
             
             
             
-            // appearances:
-            icon={props.icon ?? 'close'}
-            
-            
-            
-            // variants:
-            buttonStyle={props.buttonStyle ?? 'link'}
+            // accessibilities:
+            label={props.label ?? 'Previous'}
+        >
+            {
+                props.children
+                ??
+                <Icon
+                    // appearances:
+                    icon='prev'
+                    
+                    
+                    
+                    // variants:
+                    size='1em'
+                />
+            }
+        </NavItem>
+    );
+};
+export const NavNextItem = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
+    // jsx:
+    return (
+        <NavItem<TElement>
+            // other props:
+            {...props}
             
             
             
             // accessibilities:
-            label={props.label ?? 'Close'}
-        />
+            label={props.label ?? 'Next'}
+        >
+            {
+                props.children
+                ??
+                <Icon
+                    // appearances:
+                    icon='next'
+                    
+                    
+                    
+                    // variants:
+                    size='1em'
+                />
+            }
+        </NavItem>
     );
 };
+
 export {
-    CloseButton,
-    CloseButton as default,
+    ListSeparatorItemProps,
+    ListSeparatorItem,
 }
 
-export type { ButtonStyle, ButtonVariant, ButtonType, IconPosition }
+
+
+export interface NavProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        ListProps<TElement>,
+        
+        // components:
+        ListComponentProps<TElement>
+{
+    // accessibilities:
+    label ?: string
+}
