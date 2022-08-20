@@ -59,11 +59,6 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         
         
         
-        // accessibilities:
-        active,
-        
-        
-        
         // components:
         buttonRef,
         buttonOrientation,
