@@ -2,9 +2,6 @@ merge fooComponent.fooStyle & fooStyle
 \w+Style\s*:\s*\w+Component\.props\.\w+Style\s*\?\?\s*\w+Style,?
 merged\w+Style
 
-TODO:
-use CurrentActive
-
 TODO remove:
 @reusable-ui/clickable => handle space as click
 
