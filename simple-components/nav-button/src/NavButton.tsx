@@ -17,7 +17,7 @@ import {
     // hooks:
     DetermineCurrentPageProps,
     useDetermineCurrentPage,
-}                           from '@reusable-ui/navigations'     // react helper hooks
+}                           from '@reusable-ui/navigations'     // a set of navigation functions
 
 // reusable-ui components:
 import {
