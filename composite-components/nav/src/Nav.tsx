@@ -17,11 +17,6 @@ import {
 
 // reusable-ui components:
 import {
-    // defaults:
-    defaultOrientationableOptions as listDefaultOrientationableOptions,
-    
-    
-    
     // styles:
     ListStyle,
     ListVariant,
@@ -42,21 +37,8 @@ import {
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
-    // hooks:
-    usesIcon,
-    
-    
-    
-    // configs:
-    icons,
-    
-    
-    
     // react components:
-    IconProps,
     Icon,
-    
-    IconComponentProps,
 }                           from '@reusable-ui/icon'            // an icon component
 
 
@@ -91,7 +73,7 @@ export const NavItem     = <TElement extends Element = HTMLElement>(props: NavIt
         
         
         // components:
-        listItemComponent     = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
     ...restListItemProps} = props;
     
     
@@ -200,8 +182,61 @@ export interface NavProps<TElement extends Element = HTMLElement>
         ListProps<TElement>,
         
         // components:
-        ListComponentProps<TElement>
+        Omit<ListComponentProps<TElement>,
+            // children:
+            |'listItems' // we redefined `children` prop as <ListItem>(s)
+        >
 {
     // accessibilities:
     label ?: string
 }
+const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // accessibilities:
+        label,
+        
+        
+        
+        // components:
+        listRef,
+        listOrientation,
+        listStyle,
+        listComponent = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
+    ...restListProps} = props;
+    
+    
+    
+    // jsx:
+    /* <List> */
+    return React.cloneElement<ListProps<TElement>>(listComponent,
+        // props:
+        {
+            // other props:
+            ...restListProps,
+            
+            
+            
+            // semantics:
+            semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag  ?? 'nav',
+            semanticRole : listComponent.props.semanticRole  ?? props.semanticRole ?? 'navigation',
+            'aria-label' : listComponent.props['aria-label'] ?? label,
+            
+            
+            
+            // behaviors:
+            actionCtrl   : listComponent.props.actionCtrl    ?? props.actionCtrl   ?? true,
+        },
+        
+        
+        
+        // children:
+        listComponent.props.children ?? props.children,
+    );
+};
+export {
+    Nav,
+    Nav as default,
+}
+
+export type { ListStyle, ListVariant }
