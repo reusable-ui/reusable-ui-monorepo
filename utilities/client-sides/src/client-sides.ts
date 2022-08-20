@@ -15,10 +15,17 @@ import type {
     // types:
     To,
 }                           from 'history'                      // a helper lib
+import {
+    // tests:
+    isBrowser,
+    isJsDom,
+}                           from 'is-in-browser'
 
 
 
 // utilities:
+export const isClientSide : boolean = isBrowser || isJsDom;
+
 export type JsxReactRouterLink = React.ReactElement<{
     // links:
     to            ?: To
