@@ -4,42 +4,9 @@ import {
     default as React,
 }                           from 'react'
 
-// other libs:
-import {
-    // tests:
-    isBrowser,
-    isJsDom,
-}                           from 'is-in-browser'
-
 
 
 // utilities:
-export const isClientSide : boolean = isBrowser || isJsDom;
-
-export const isTypeOf = <TProps>(element: React.ReactNode, funcComponent: React.JSXElementConstructor<TProps>): element is React.ReactElement<TProps, React.JSXElementConstructor<TProps>> => {
-    return (
-        React.isValidElement<TProps>(element)
-        &&
-        (
-            (element.type === funcComponent)
-            ||
-            (
-                (typeof(element.type) === 'function')
-                &&
-                element.type.prototype
-                &&
-                funcComponent.prototype
-                &&
-                (
-                    (element.type.prototype === funcComponent.prototype)
-                    ||
-                    (element.type.prototype instanceof funcComponent)
-                )
-            )
-        )
-    );
-};
-
 export const isForwardRef = (node: React.ReactNode): node is React.ReactElement => {
     return (
         React.isValidElement(node)                                                          // JSX element

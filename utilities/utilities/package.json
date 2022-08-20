@@ -29,8 +29,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@types/react": "^18.0.10",
-    "is-in-browser": "^2.0.0"
+    "@types/react": "^18.0.10"
   },
   "peerDependencies": {
     "react": "^18.1.0"
