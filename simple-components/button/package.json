@@ -42,6 +42,7 @@
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/clickable": "^5.0.0",
+    "@reusable-ui/client-sides": "^5.0.0",
     "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",

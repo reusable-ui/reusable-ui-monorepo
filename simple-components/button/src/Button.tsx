@@ -64,6 +64,10 @@ import {
     // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // utilities:
+    isClientSideLink,
+}                           from '@reusable-ui/client-sides'    // a set of client-side functions
 
 // reusable-ui features:
 import {
@@ -119,11 +123,6 @@ import {
 
 // reusable-ui components:
 import {
-    // hooks:
-    isClientSideLink,
-    
-    
-    
     // styles:
     usesActionControlLayout,
     usesActionControlVariants,
