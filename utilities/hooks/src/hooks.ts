@@ -20,7 +20,7 @@ import type {
 import {
     // utilities:
     isClientSide,
-}                           from '@reusable-ui/utilities'       // common utility functions
+}                           from '@reusable-ui/client-sides'    // a set of client-side functions
 
 
 

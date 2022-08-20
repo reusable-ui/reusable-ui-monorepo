@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@cssfn/types": "^2.0.1",
-    "@reusable-ui/utilities": "^5.0.0",
+    "@reusable-ui/client-sides": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
