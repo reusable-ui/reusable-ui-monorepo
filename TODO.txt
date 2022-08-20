@@ -2,13 +2,15 @@ merge fooComponent.fooStyle & fooStyle
 \w+Style\s*:\s*\w+Component\.props\.\w+Style\s*\?\?\s*\w+Style,?
 merged\w+Style
 
-TODO remove:
-@reusable-ui/clickable => handle space as click
+TODO:
+@reusable-ui/clickable => handle space & enter as click
 
-TODO: upgrade <Masonry> to useOrientationableWithDirection
+TODO: upgrade <Masonry> & <Dropdown(List)?Buton> to useOrientationableWithDirection
 
+TODO: color system
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
+
 test tree shake a Dropdown without Modal
 
 fix fooElm constant with zero specificity:
