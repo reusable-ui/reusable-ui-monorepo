@@ -14,12 +14,10 @@ import {
     // hooks:
     useIsomorphicLayoutEffect,
 }                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui components:
 import {
-    // hooks:
+    // utilities:
     isClientSideLink,
-}                           from '@reusable-ui/action-control'  // a base component
+}                           from '@reusable-ui/client-sides'    // a set of client-side functions
 
 // other libs:
 import {
