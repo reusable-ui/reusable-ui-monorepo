@@ -65,7 +65,6 @@ import {
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // utilities:
-    isClientSide,
     isReusableUiComponent,
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
@@ -73,6 +72,10 @@ import {
     setFocusNext,
     isSelfOrDescendantOf,
 }                           from '@reusable-ui/focuses'         // focusing functions
+import {
+    // utilities:
+    isClientSide,
+}                           from '@reusable-ui/client-sides'    // a set of client-side functions
 import {
     // hooks:
     useTriggerRender,
