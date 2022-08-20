@@ -73,10 +73,6 @@ import {
     isSelfOrDescendantOf,
 }                           from '@reusable-ui/focuses'         // focusing functions
 import {
-    // utilities:
-    isClientSide,
-}                           from '@reusable-ui/client-sides'    // a set of client-side functions
-import {
     // hooks:
     useTriggerRender,
     useEvent,
@@ -85,6 +81,10 @@ import {
     useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // utilities:
+    isClientSide,
+}                           from '@reusable-ui/client-sides'    // a set of client-side functions
 
 // reusable-ui features:
 import {
