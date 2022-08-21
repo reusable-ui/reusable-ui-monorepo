@@ -436,7 +436,96 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         // functions:
         const updateSelections = () => {
-
+            const findUncroppedSection    = (viewport: Viewport, children: Dimension[]): readonly [Dimension, number]|null => {
+                for (const [child, index] of children.map((child, index) => [child, index] as const)) {
+                    // find current:
+                    if (child.isFullyVisible(viewport)) return [child, index]; // found
+                    
+                    
+                    
+                    // find nested:
+                    const childCropped = child.isPartiallyVisible(viewport);
+                    if (childCropped) {
+                        const childViewport = childCropped.toViewport();
+                        const grandChildren = childViewport.children(scrollingSelector, scrollingFilter);
+                        if (grandChildren.length && findUncroppedSection(childViewport, grandChildren)) {
+                            return [childCropped, index]; // found in nested => return the parent instead of the grandChild
+                        } // if
+                    } // if
+                } // foreach child
+                
+                
+                
+                return null; // not found
+            };
+            const findVisibleChildIndices = (viewport: Viewport, accumResults: number[] = []): number[] => {
+                const children = viewport.children(scrollingSelector, scrollingFilter);
+                const visibleChild = ((): readonly [Dimension, number]|null => {
+                    if (scrollingInterpolation) {
+                        return (
+                            // at the end of scroll, the last section always win:
+                            ((viewport.isLastScroll || null) && findLast(children, (child) => child.isPartiallyVisible(viewport)))
+                            
+                            ??
+                            
+                            // the first uncropped section always win:
+                            findUncroppedSection(viewport, children)
+                            
+                            ??
+                            
+                            // the biggest cropped section always win:
+                            children
+                            .map((child, index) => {
+                                const partialVisible = child.isPartiallyVisible(viewport);
+                                
+                                return {
+                                    partialVisible,
+                                    
+                                    visibleArea    : (
+                                        partialVisible
+                                        ?
+                                        (partialVisible.offsetWidth * partialVisible.offsetHeight) // calculates the visible area
+                                        :
+                                        0
+                                    ),
+                                    
+                                    index          : index, // add index, so we can track the original index after sorted
+                                };
+                            })
+                            .filter((item) => item.partialVisible) // only visible children
+                            .sort((a, b) => b.visibleArea - a.visibleArea) // sort from biggest to smallest
+                            .map((item): readonly [Dimension, number] => [item.partialVisible!, item.index])
+                            [0] // find the biggest one
+                            
+                            ??
+                            
+                            // no winner:
+                            null
+                        );
+                    }
+                    else {
+                        return (
+                            // at the end of scroll, the last section always win:
+                            ((viewport.isLastScroll || null) && findLast(children, (child) => child.isPartiallyVisible(viewport)))
+                            
+                            ??
+                            
+                            // the first visible (cropped/uncropped) section always win:
+                            findFirst(children, (child) => child.isPartiallyVisible(viewport))
+                        );
+                    } // if
+                })();
+                
+                
+                
+                if (!visibleChild) return accumResults;
+                return findVisibleChildIndices(visibleChild[0].toViewport(), [...accumResults, visibleChild[1]]);
+            };
+            
+            
+            
+            const visibleChildIndices = findVisibleChildIndices(Viewport.from(/*element: */scrollingElm));
+            setActiveIndices(visibleChildIndices);
         };
     }, [scrollingOf, scrollingSelector, scrollingFilter, scrollingInterpolation]); // (re)run the setups & cleanups on every time the scrolling** changes
     
