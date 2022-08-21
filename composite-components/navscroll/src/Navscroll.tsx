@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useReducer,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -398,7 +399,7 @@ export interface NavscrollProps<TElement extends Element = HTMLElement>
     // scrolls:
     scrollingOf            ?: React.RefObject<HTMLElement>|HTMLElement|null // getter ref
     scrollingSelector      ?: CssSelector
-    scrollingFilter        ?: (element: Element) => boolean
+    scrollingFilter        ?: (element: HTMLElement) => boolean
     scrollingInterpolation ?: boolean
 }
 const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps<TElement>): JSX.Element|null => {
@@ -422,6 +423,22 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     ...restNavProps} = props;
     type T1 = typeof restNavProps
     type T2 = Omit<T1, keyof NavProps>
+    
+    
+    
+    // dom effects:
+    useEffect(() => {
+        // conditions:
+        const scrollingElm = (scrollingOf instanceof HTMLElement) ? scrollingOf : scrollingOf?.current;
+        if (!scrollingElm) return; // scrollingElm was not set => nothing to do
+        
+        
+        
+        // functions:
+        const updateSelections = () => {
+
+        };
+    }, [scrollingOf, scrollingSelector, scrollingFilter, scrollingInterpolation]); // (re)run the setups & cleanups on every time the scrolling** changes
     
     
     
