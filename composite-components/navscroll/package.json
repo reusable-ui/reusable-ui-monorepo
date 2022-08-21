@@ -1,0 +1,46 @@
+{
+  "name": "@reusable-ui/navscroll",
+  "version": "5.0.0",
+  "description": "A navigation component to navigate within current page, based on scroll position.",
+  "keywords": [
+    "navigation",
+    "menu",
+    "links",
+    "scroll",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Navscroll.js",
+  "types": "dist/Navscroll.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/icon": "^5.0.0",
+    "@reusable-ui/list": "^5.0.0",
+    "@reusable-ui/navigations": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
