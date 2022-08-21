@@ -34,9 +34,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "@cssfn/css-types": "^2.0.4",
     "@reusable-ui/accessibilities": "^5.0.0",
-    "@reusable-ui/icon": "^5.0.0",
-    "@reusable-ui/list": "^5.0.0",
+    "@reusable-ui/nav": "^5.0.0",
     "@reusable-ui/navigations": "^5.0.0",
     "@types/react": "^18.0.10"
   },
