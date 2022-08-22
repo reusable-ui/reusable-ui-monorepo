@@ -10,6 +10,7 @@
     "container",
     "toggle",
     "collapse",
+    "content",
     "accordion",
     "component",
     "styled",
@@ -39,7 +40,6 @@
   },
   "dependencies": {
     "@reusable-ui/accessibilities": "^5.0.0",
-    "@reusable-ui/icon": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
     "@reusable-ui/navigations": "^5.0.0",
     "@types/react": "^18.0.10"

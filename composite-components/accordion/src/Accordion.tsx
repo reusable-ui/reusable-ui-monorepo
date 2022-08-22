@@ -36,10 +36,6 @@ import {
     ListItemComponentProps,
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
-import {
-    // react components:
-    Icon,
-}                           from '@reusable-ui/icon'            // an icon component
 
 
 
