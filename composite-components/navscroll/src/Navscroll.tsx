@@ -729,7 +729,7 @@ interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
         Required<Pick<ListItemProps<TElement>, 'active'>>,
         
         // components:
-        ListItemComponentProps<TElement>
+        Required<ListItemComponentProps<TElement>>
 {
     // positions:
     deepLevels        : number[]
