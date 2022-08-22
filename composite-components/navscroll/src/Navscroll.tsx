@@ -615,6 +615,38 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     // handlers:
     const handleNavigate = useEvent<EventHandler<number[]>>((deepLevels) => {
+        // conditions:
+        const scrollingElm = (scrollingOf instanceof HTMLElement) ? scrollingOf : scrollingOf?.current;
+        if (!scrollingElm) return; // scrollingElm was not set => nothing to do
+        
+        
+        
+        const targetChildrenReverse = (() => {
+            const targetChildren: Dimension[] = [];
+            
+            
+            
+            let viewport = Viewport.from(scrollingElm);
+            for (const targetChildIndex of deepLevels) {
+                // inspects:
+                const children    = viewport.children(scrollingSelector, scrollingFilter);
+                const targetChild = children[targetChildIndex] as (Dimension|undefined);
+                if (!targetChild) break;
+                
+                
+                
+                // updates:
+                targetChildren.push(targetChild);
+                viewport = targetChild.toViewport();
+            } // for
+            
+            
+            
+            return targetChildren;
+        })()
+        .reverse()
+        ;
+        if (targetChildrenReverse.length === 0) return;
     });
     
     
@@ -694,7 +726,10 @@ export type { ListStyle, ListVariant }
 interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     extends
         // states:
-        Required<Pick<ListItemProps<TElement>, 'active'>>
+        Required<Pick<ListItemProps<TElement>, 'active'>>,
+        
+        // components:
+        ListItemComponentProps<TElement>
 {
     // positions:
     deepLevels        : number[]
@@ -703,11 +738,6 @@ interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     
     // handlers:
     handleNavigate   ?: EventHandler<number[]>
-    
-    
-    
-    // components:
-    listItemComponent : React.ReactElement<ListItemProps<TElement>>
 }
 const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLevels, active, handleNavigate, listItemComponent}: ListItemWithNavigationProps<TElement>) => {
     const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
