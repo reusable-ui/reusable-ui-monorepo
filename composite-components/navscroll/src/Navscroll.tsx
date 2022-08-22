@@ -587,6 +587,13 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 for (const removedItem of entry.removedNodes) {
                     handleItemRemoved(removedItem);
                 } // for
+                
+                
+                
+                if (entry.type === 'characterData') { // "text" node changed
+                    // refresh once:
+                    scheduleUpdateSections();
+                } // for
             } // for
         });
         const handleItemAdded = (item: Node) => {
