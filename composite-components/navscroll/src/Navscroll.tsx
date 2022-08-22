@@ -814,6 +814,11 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             
             
+            // defaults:
+            const actionCtrl = child.props.actionCtrl ?? props.actionCtrl ?? true;
+            
+            
+            
             // jsx:
             return (
                 <ListItemWithNavigation
@@ -833,14 +838,17 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     
                     // handlers:
-                    handleNavigate={((child.props.actionCtrl ?? props.actionCtrl ?? true) || undefined) && handleNavigate}
+                    handleNavigate={(actionCtrl || undefined) && handleNavigate}
                     
                     
                     
                     // components:
                     listItemComponent={React.cloneElement(child,
                         // props:
-                        undefined,
+                        {
+                            // behaviors:
+                            actionCtrl,
+                        },
                         
                         
                         
