@@ -621,7 +621,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         
-        const targetChildrenReverse = (() => {
+        const targetChildrenReversed = ((): Dimension[] => {
             const targetChildren: Dimension[] = [];
             
             
@@ -631,7 +631,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 // inspects:
                 const children    = viewport.children(scrollingSelector, scrollingFilter);
                 const targetChild = children[targetChildIndex] as (Dimension|undefined);
-                if (!targetChild) break;
+                if (!targetChild) break; // invalid index => break the iteration
                 
                 
                 
@@ -646,7 +646,57 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         })()
         .reverse()
         ;
-        if (targetChildrenReverse.length === 0) return;
+        if (targetChildrenReversed.length === 0) return;
+        
+        
+        
+        let [remainingScrollLeft, remainingScrollTop] = [
+            targetChildrenReversed[0].offsetLeft,
+            targetChildrenReversed[0].offsetTop
+        ];
+        
+        
+        
+        for (const targetChild of targetChildrenReversed) {
+            if (!remainingScrollLeft && !remainingScrollTop) break; // nothing more to scroll => stop the scrolling operation
+            
+            
+            
+            const viewport = targetChild.viewport;
+            if (!viewport) break; // no parent viewport => nothing more to scroll => stop the scrolling operation
+            
+            
+            
+            const [maxDeltaScrollLeft, maxDeltaScrollTop] = (() => {
+                const parent = viewport.element;
+                
+                return [
+                    (parent.scrollWidth  - parent.clientWidth ) - parent.scrollLeft,
+                    (parent.scrollHeight - parent.clientHeight) - parent.scrollTop,
+                ];
+            })();
+            
+            const [deltaScrollLeft, deltaScrollTop] = [
+                Math.min(remainingScrollLeft - viewport.offsetLeft, maxDeltaScrollLeft),
+                Math.min(remainingScrollTop  - viewport.offsetTop , maxDeltaScrollTop ),
+            ];
+            
+            
+            
+            // viewport.element.scrollLeft += deltaScrollLeft;
+            // viewport.element.scrollTop  += deltaScrollTop;
+            viewport.element.scrollBy({
+                left     : deltaScrollLeft,
+                top      : deltaScrollTop,
+                behavior : 'smooth',
+            });
+            
+            
+            
+            // accumulate the scrolling pos:
+            remainingScrollLeft -= deltaScrollLeft;
+            remainingScrollTop  -= deltaScrollTop;
+        } // for
     });
     
     
