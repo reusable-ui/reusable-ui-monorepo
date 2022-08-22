@@ -50,6 +50,8 @@ import {
     // react components:
     NavProps,
     Nav,
+    
+    NavComponentProps,
 }                           from '@reusable-ui/nav'             // a navigation component to navigate between pages
 
 
@@ -406,7 +408,11 @@ const activeIndicesReducer = (indices: number[], newIndices: number[]): number[]
 export interface NavscrollProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        NavProps<TElement>
+        NavProps<TElement>,
+        
+        // components:
+        NavComponentProps<TElement>,      // for factory
+        NavscrollComponentProps<TElement> // for detecting nested <Navscroll>
 {
     // scrolls:
     scrollingOf            ?: React.RefObject<HTMLElement>|HTMLElement|null // getter ref
@@ -435,9 +441,17 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         
+        // components:
+        navComponent       = (<Nav<TElement> />       as React.ReactComponentElement<any, NavProps<TElement>>),
+        navscrollComponent = (<Navscroll<TElement> /> as React.ReactComponentElement<any, NavscrollProps<TElement>>),
+        
+        
+        
         // children:
         children,
     ...restNavProps} = props;
+    type T1 = typeof restNavProps
+    type T2 = Omit<T1, keyof NavProps>
     const defaultNavProps : NavProps<TElement> = {
         // variants:
         orientation,
@@ -702,6 +716,32 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     
     // jsx functions:
+    const mutateNestedNavscroll = (nestNavProps: NavscrollProps, key: React.Key|null, deepLevelsParent: number[]) => {
+        // jsx:
+        // downgrade nested Navscroll to Nav:
+        return (
+            <Nav
+                // other props:
+                {...((): {} => {
+                    const combinedProps: { [name: string]: any } = { ...restProps, ...defaultProps, };
+                    
+                    for (const [name, value] of Object.entries(nestNavProps)) {
+                        if (value === undefined) continue;
+                        
+                        combinedProps[name] = value;
+                    } // for
+                    
+                    return combinedProps;
+                })()}
+                
+                
+                // essentials:
+                key={key}
+            >
+                { mutateListItems(nestNavProps.children, /*deepLevelsParent: */deepLevelsParent) }
+            </Nav>
+        );
+    };
     const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
         return React.Children.map(children, (child, index) => {
             // conditions:
@@ -754,14 +794,18 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     // jsx:
     /* <Nav> */
-    return (
-        <Nav<TElement>
+    return React.cloneElement<NavProps<TElement>>(navComponent,
+        // props:
+        {
             // other props:
-            {...defaultNavProps}
-            {...restNavProps}
-        >
-            { mutateListItems(children, /*deepLevelsParent: */[]) }
-        </Nav>
+            ...defaultNavProps,
+            ...restNavProps,
+        },
+        
+        
+        
+        // children:
+        navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */[]),
     );
 };
 export {
@@ -830,3 +874,11 @@ const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLev
         },
     );
 };
+
+
+
+export interface NavscrollComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    navscrollComponent ?: React.ReactComponentElement<any, NavscrollProps<TElement>>
+}
