@@ -717,6 +717,30 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     // jsx functions:
     const mutateNestedNavscroll = (nestNavProps: NavscrollProps, key: React.Key|null, deepLevelsParent: number[]) => {
+        // rest props:
+        const {
+            // scrolls:
+            scrollingOf            : _scrollingOf,            // remove
+            scrollingSelector      : _scrollingSelector,      // remove
+            scrollingFilter        : _scrollingFilter,        // remove
+            scrollingInterpolation : _scrollingInterpolation, // remove
+            
+            
+            
+            // components:
+            navComponent           : _navComponent,           // remove
+            navscrollComponent     : _navscrollComponent,     // remove
+            
+            
+            
+            // children:
+            children,
+        ...restNestedNavProps} = nestNavProps;
+        type T1 = typeof restNestedNavProps
+        type T2 = Omit<T1, keyof NavProps>
+        
+        
+        
         // jsx:
         /* downgrade nested <Navscroll> to <Nav> */
         return React.cloneElement<NavProps<TElement>>(navComponent,
@@ -726,19 +750,19 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 ...defaultNavProps,
                 ...restNavProps,
                 ...Object.fromEntries(
-                    Object.entries(nestNavProps).filter(([, value]) => (value !== undefined))
+                    Object.entries(restNestedNavProps).filter(([, value]) => (value !== undefined))
                 ),
                 
                 
                 
                 // identifiers:
-                key : navComponent.key,
+                key,
             },
             
             
             
             // children:
-            navComponent.props.children ?? mutateListItems(nestNavProps.children, /*deepLevelsParent: */deepLevelsParent),
+            navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */deepLevelsParent),
         );
     };
     const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
