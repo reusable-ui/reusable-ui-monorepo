@@ -750,7 +750,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 ...defaultNavProps,
                 ...restNavProps,
                 ...Object.fromEntries(
-                    Object.entries(restNestedNavProps).filter(([, value]) => (value !== undefined))
+                    Object.entries(restNestedNavProps).filter(([, value]) => (value !== undefined)) // prevents `undefined` props overwriting the existing ones
                 ),
                 
                 
@@ -800,20 +800,28 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     
                     // components:
-                    listItemComponent={child}
+                    listItemComponent={React.cloneElement(child,
+                        // props:
+                        undefined,
+                        
+                        
+                        
+                        // children:
+                        React.Children.map(child.props.children, (grandChild, grandIndex) => (
+                            (
+                                React.isValidElement<NavscrollProps>(grandChild)
+                                &&
+                                (grandChild.type === navscrollComponent.type)
+                                &&
+                                !grandChild.props.scrollingOf
+                            )
+                            ?
+                            mutateNestedNavscroll(grandChild.props, grandChild.key ?? grandIndex, /*deepLevelsParent: */deepLevelsCurrent)
+                            :
+                            grandChild
+                        )),
+                    )}
                 />
-            );
-            return (
-                <child.type
-                >
-                    {React.Children.map(child.props.children, (child, index) => (
-                        (isTypeOf(child, Navscroll) && (!child.props.targetRef))
-                        ?
-                        mutateNestedNavscroll(child.props, child.key ?? index, /*deepLevelsParent: */deepLevelsCurrent)
-                        :
-                        child
-                    ))}
-                </child.type>
             );
         });
     };
