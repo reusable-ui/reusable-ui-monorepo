@@ -591,11 +591,38 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 } // for
             } // for
         });
-        const handleItemAdded = (item: Element) => {
-            if (loaded) sectionsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
+        const handleItemAdded = (item: Node) => {
+            // conditions:
+            if (!loaded) return;
+            
+            
+            
+            if (item instanceof Element) {
+                // refresh periodically:
+                sectionsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
+            }
+            else {
+                // refresh once:
+                scheduleUpdateSections();
+            } // if
         };
-        const handleItemRemoved = (item: Element) => {
-            if (loaded) sectionsResizeObserver.unobserve(item);
+        const handleItemRemoved = (item: Node) => {
+            // conditions:
+            if (!loaded) return;
+            
+            
+            
+            if (item instanceof Element) {
+                // stop refresh periodically:
+                sectionsResizeObserver.unobserve(item);
+                
+                // refresh once:
+                scheduleUpdateSections();
+            }
+            else {
+                // refresh once:
+                scheduleUpdateSections();
+            } // if
         };
         sectionsMutationObserver.observe(scrollingElm, {
             childList  : true,  // watch  for child's DOM structure changes
@@ -603,6 +630,14 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             attributes : false, // ignore for any attribute changes
         });
+        for (const descendant of (Array.from(scrollingElm.querySelectorAll('*')) as HTMLElement[])) {
+            handleItemAdded(descendant)
+        } // for
+        
+        
+        
+        // refresh first time:
+        scheduleUpdateSections();
         
         
         
