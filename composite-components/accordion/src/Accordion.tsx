@@ -205,6 +205,14 @@ export const useAccordionItemStyleSheet = dynamicStyleSheet(() => ({
 
 
 
+// configs:
+export const [accordions, accordionValues, cssAccordionConfig] = cssConfig(() => {
+    return {
+        /* no config props yet */
+    };
+}, { prefix: 'accr' });
+
+
 
 // react components:
 export interface AccordionItemProps<TElement extends Element = HTMLElement>
