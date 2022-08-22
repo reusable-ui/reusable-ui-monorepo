@@ -38,12 +38,22 @@ import type {
     ListItemComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
+    // defaults:
+    defaultOrientationableOptions,
+    
+    
+    
     // react components:
     NavProps,
     Nav,
     
     NavComponentProps,
 }                           from '@reusable-ui/nav'             // a navigation component to navigate between pages
+
+
+
+// defaults:
+export { defaultOrientationableOptions };
 
 
 
