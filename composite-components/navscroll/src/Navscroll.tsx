@@ -22,11 +22,10 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
-    useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui components:
-import {
+import type {
     // styles:
     ListStyle,
     ListVariant,
@@ -35,16 +34,8 @@ import {
     
     // react components:
     ListItemProps,
-    ListItem,
-    
-    ListSeparatorItemProps,
-    ListSeparatorItem,
-    
-    ListProps,
-    List,
     
     ListItemComponentProps,
-    ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
     // react components:
@@ -450,8 +441,6 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         // children:
         children,
     ...restNavProps} = props;
-    type T1 = typeof restNavProps
-    type T2 = Omit<T1, keyof NavProps>
     const defaultNavProps : NavProps<TElement> = {
         // variants:
         orientation,
@@ -736,8 +725,6 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             // children:
             children,
         ...restNestedNavProps} = nestNavProps;
-        type T1 = typeof restNestedNavProps
-        type T2 = Omit<T1, keyof NavProps>
         
         
         
@@ -870,7 +857,7 @@ interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     handleNavigate   ?: EventHandler<number[]>
 }
 const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLevels, active, handleNavigate, listItemComponent}: ListItemWithNavigationProps<TElement>) => {
-    const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
