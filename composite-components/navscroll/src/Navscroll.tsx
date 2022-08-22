@@ -551,14 +551,44 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         // setups:
         const sectionsResizeObserver = new ResizeObserver(scheduleUpdateSections);
-        // sectionsResizeObserver.observe(scrollingElm, { box: 'border-box' }); // watch the offset size changes
+        
+        
+        
+        const sectionsMutationObserver = new MutationObserver((entries) => {
+            for (const entry of entries) {
+                for (const addedItem of entry.addedNodes) {
+                    if (!(addedItem instanceof Element)) continue;
+                    handleItemAdded(addedItem);
+                } // for
+                
+                
+                
+                for (const removedItem of entry.removedNodes) {
+                    if (!(removedItem instanceof Element)) continue;
+                    handleItemRemoved(removedItem);
+                } // for
+            } // for
+        });
+        const handleItemAdded = (item: Element) => {
+            if (loaded) sectionsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
+        };
+        const handleItemRemoved = (item: Element) => {
+            if (loaded) sectionsResizeObserver.unobserve(item);
+        };
+        sectionsMutationObserver.observe(scrollingElm, {
+            childList  : true,  // watch  for child's DOM structure changes
+            subtree    : true,  // watch  for grandchild's DOM structure changes
+            
+            attributes : false, // ignore for any attribute changes
+        });
         
         
         
         // cleanups:
         return () => {
-            sectionsResizeObserver.disconnect();
             loaded = false;
+            sectionsMutationObserver.disconnect();
+            sectionsResizeObserver.disconnect();
         };
     }, [scrollingOf, scrollingSelector, scrollingFilter, scrollingInterpolation]); // (re)run the setups & cleanups on every time the scrolling** changes
     
