@@ -17,6 +17,11 @@ import {
 
 // reusable-ui components:
 import {
+    // defaults:
+    defaultOrientationableOptions,
+    
+    
+    
     // styles:
     ListStyle,
     ListVariant,
@@ -36,6 +41,11 @@ import {
     ListItemComponentProps,
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
+
+
+
+// defaults:
+export { defaultOrientationableOptions };
 
 
 
