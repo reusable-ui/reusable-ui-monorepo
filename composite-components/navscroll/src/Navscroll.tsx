@@ -571,12 +571,36 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         
+        // handlers:
+        const handleScroll      = scheduleUpdateSections;
+        const handleResized     = scheduleUpdateSections;
+        const handleRemoved     = scheduleUpdateSections;
+        const handleTextChanged = scheduleUpdateSections;
+        
+        
+        
         // setups:
-        const descendantsResizeObserver = new ResizeObserver(scheduleUpdateSections);
+        scrollingElm.addEventListener('scroll', handleScroll, { capture: true }); // force `scroll` as bubbling
+        
+        
+        
+        const descendantsResizeObserver = new ResizeObserver(() => {
+            // conditions:
+            if (!loaded) return;
+            
+            
+            
+            handleResized();
+        });
         
         
         
         const descendantsMutationObserver = new MutationObserver((entries) => {
+            // conditions:
+            if (!loaded) return;
+            
+            
+            
             for (const entry of entries) {
                 for (const addedItem of entry.addedNodes) {
                     handleItemAdded(addedItem);
@@ -591,42 +615,28 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 
                 
                 if (entry.type === 'characterData') { // "text" node changed
-                    // refresh once:
-                    scheduleUpdateSections();
+                    handleTextChanged();
                 } // for
             } // for
         });
         const handleItemAdded = (item: Node) => {
-            // conditions:
-            if (!loaded) return;
-            
-            
-            
             if (item instanceof Element) { // <foo> element
                 // refresh periodically:
                 descendantsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
             }
             else { // "text" node
-                // refresh once:
-                scheduleUpdateSections();
+                handleTextChanged();
             } // if
         };
         const handleItemRemoved = (item: Node) => {
-            // conditions:
-            if (!loaded) return;
-            
-            
-            
             if (item instanceof Element) { // <foo> element
                 // stop refresh periodically:
                 descendantsResizeObserver.unobserve(item);
                 
-                // refresh once:
-                scheduleUpdateSections();
+                handleRemoved();
             }
             else { // "text" node
-                // refresh once:
-                scheduleUpdateSections();
+                handleTextChanged();
             } // if
         };
         descendantsMutationObserver.observe(scrollingElm, {
@@ -649,6 +659,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         // cleanups:
         return () => {
             loaded = false;
+            scrollingElm.removeEventListener('scroll', handleScroll, { capture: true });
             descendantsMutationObserver.disconnect();
             descendantsResizeObserver.disconnect();
         };
