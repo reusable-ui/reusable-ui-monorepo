@@ -572,21 +572,19 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         // setups:
-        const sectionsResizeObserver = new ResizeObserver(scheduleUpdateSections);
+        const descendantsResizeObserver = new ResizeObserver(scheduleUpdateSections);
         
         
         
-        const sectionsMutationObserver = new MutationObserver((entries) => {
+        const descendantsMutationObserver = new MutationObserver((entries) => {
             for (const entry of entries) {
                 for (const addedItem of entry.addedNodes) {
-                    if (!(addedItem instanceof Element)) continue;
                     handleItemAdded(addedItem);
                 } // for
                 
                 
                 
                 for (const removedItem of entry.removedNodes) {
-                    if (!(removedItem instanceof Element)) continue;
                     handleItemRemoved(removedItem);
                 } // for
             } // for
@@ -597,11 +595,11 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             
             
-            if (item instanceof Element) {
+            if (item instanceof Element) { // <foo> element
                 // refresh periodically:
-                sectionsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
+                descendantsResizeObserver.observe(item, { box: 'border-box' }); // watch the offset size changes
             }
-            else {
+            else { // "text" node
                 // refresh once:
                 scheduleUpdateSections();
             } // if
@@ -612,40 +610,40 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             
             
-            if (item instanceof Element) {
+            if (item instanceof Element) { // <foo> element
                 // stop refresh periodically:
-                sectionsResizeObserver.unobserve(item);
+                descendantsResizeObserver.unobserve(item);
                 
                 // refresh once:
                 scheduleUpdateSections();
             }
-            else {
+            else { // "text" node
                 // refresh once:
                 scheduleUpdateSections();
             } // if
         };
-        sectionsMutationObserver.observe(scrollingElm, {
-            childList  : true,  // watch  for child's DOM structure changes
-            subtree    : true,  // watch  for grandchild's DOM structure changes
+        descendantsMutationObserver.observe(scrollingElm, {
+            childList     : true,  // watch  for child's DOM structure changes
+            subtree       : true,  // watch  for grandchild's DOM structure changes
+            characterData : true,  // watch  for "text" node changes
             
-            attributes : false, // ignore for any attribute changes
+            attributes    : false, // ignore for any attribute changes
         });
+        
+        
+        
+        // refresh first time:
         for (const descendant of (Array.from(scrollingElm.querySelectorAll('*')) as HTMLElement[])) {
             handleItemAdded(descendant)
         } // for
         
         
         
-        // refresh first time:
-        scheduleUpdateSections();
-        
-        
-        
         // cleanups:
         return () => {
             loaded = false;
-            sectionsMutationObserver.disconnect();
-            sectionsResizeObserver.disconnect();
+            descendantsMutationObserver.disconnect();
+            descendantsResizeObserver.disconnect();
         };
     }, [scrollingOf, scrollingSelector, scrollingFilter, scrollingInterpolation]); // (re)run the setups & cleanups on every time the scrolling** changes
     
