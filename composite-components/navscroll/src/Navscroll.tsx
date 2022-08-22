@@ -435,7 +435,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         // functions:
-        const updateSelections = () => {
+        const updateSections = () => {
             const findUncroppedSection    = (viewport: Viewport, children: Dimension[]): readonly [Dimension, number]|null => {
                 for (const [child, index] of children.map((child, index) => [child, index] as const)) {
                     // find current:
@@ -526,6 +526,39 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             const visibleChildIndices = findVisibleChildIndices(Viewport.from(/*element: */scrollingElm));
             setActiveIndices(visibleChildIndices);
+        };
+        
+        let isScheduledUpdateSections = false;
+        let loaded = true;
+        const scheduleUpdateSections = () => {
+            // conditions:
+            if (isScheduledUpdateSections) return; // already scheduled => ignore
+            
+            
+            
+            isScheduledUpdateSections = true; // mark as being scheduled
+            requestAnimationFrame(() => {
+                if (!isScheduledUpdateSections) return; // already done => ignore
+                
+                
+                
+                isScheduledUpdateSections = false; // mark as already done
+                if (loaded) updateSections(); // update the sections if the <Navscroll> is still alive
+            });
+        };
+        
+        
+        
+        // setups:
+        const sectionsResizeObserver = new ResizeObserver(scheduleUpdateSections);
+        // sectionsResizeObserver.observe(scrollingElm, { box: 'border-box' }); // watch the offset size changes
+        
+        
+        
+        // cleanups:
+        return () => {
+            sectionsResizeObserver.disconnect();
+            loaded = false;
         };
     }, [scrollingOf, scrollingSelector, scrollingFilter, scrollingInterpolation]); // (re)run the setups & cleanups on every time the scrolling** changes
     
