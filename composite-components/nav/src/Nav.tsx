@@ -240,3 +240,11 @@ export {
 }
 
 export type { ListStyle, ListVariant }
+
+
+
+export interface NavComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    navComponent ?: React.ReactComponentElement<any, NavProps<TElement>>
+}
