@@ -718,28 +718,27 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     // jsx functions:
     const mutateNestedNavscroll = (nestNavProps: NavscrollProps, key: React.Key|null, deepLevelsParent: number[]) => {
         // jsx:
-        // downgrade nested Navscroll to Nav:
-        return (
-            <Nav
+        /* downgrade nested <Navscroll> to <Nav> */
+        return React.cloneElement<NavProps<TElement>>(navComponent,
+            // props:
+            {
                 // other props:
-                {...((): {} => {
-                    const combinedProps: { [name: string]: any } = { ...restProps, ...defaultProps, };
-                    
-                    for (const [name, value] of Object.entries(nestNavProps)) {
-                        if (value === undefined) continue;
-                        
-                        combinedProps[name] = value;
-                    } // for
-                    
-                    return combinedProps;
-                })()}
+                ...defaultNavProps,
+                ...restNavProps,
+                ...Object.fromEntries(
+                    Object.entries(nestNavProps).filter(([, value]) => (value !== undefined))
+                ),
                 
                 
-                // essentials:
-                key={key}
-            >
-                { mutateListItems(nestNavProps.children, /*deepLevelsParent: */deepLevelsParent) }
-            </Nav>
+                
+                // identifiers:
+                key : navComponent.key,
+            },
+            
+            
+            
+            // children:
+            navComponent.props.children ?? mutateListItems(nestNavProps.children, /*deepLevelsParent: */deepLevelsParent),
         );
     };
     const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
@@ -756,6 +755,11 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             // jsx:
             return (
                 <ListItemWithNavigation
+                    // identifiers:
+                    key={child.key}
+                    
+                    
+                    
                     // positions:
                     deepLevels={deepLevelsCurrent}
                     
