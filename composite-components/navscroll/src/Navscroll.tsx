@@ -19,13 +19,11 @@ import type {
 // reusable-ui utilities:
 import {
     // hooks:
-    usePropActive,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
-    DetermineCurrentPageProps,
-    useDetermineCurrentPage,
-}                           from '@reusable-ui/navigations'     // a set of navigation functions
+    useEvent,
+    EventHandler,
+    useMergeEvents,
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui components:
 import {
@@ -35,6 +33,20 @@ import {
     
     
     
+    // react components:
+    ListItemProps,
+    ListItem,
+    
+    ListSeparatorItemProps,
+    ListSeparatorItem,
+    
+    ListProps,
+    List,
+    
+    ListItemComponentProps,
+    ListComponentProps,
+}                           from '@reusable-ui/list'            // represents a series of content
+import {
     // react components:
     NavProps,
     Nav,
@@ -601,6 +613,63 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     
     
+    // handlers:
+    const handleNavigate = useEvent<EventHandler<number[]>>((deepLevels) => {
+    });
+    
+    
+    
+    // jsx functions:
+    const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
+        return React.Children.map(children, (child, index) => {
+            // conditions:
+            if (!React.isValidElement<ListItemProps<Element>>(child)) return child; // not a <ListItem> => ignore
+            
+            
+            
+            const deepLevelsCurrent = [...deepLevelsParent, index];
+            
+            
+            
+            // jsx:
+            return (
+                <ListItemWithNavigation
+                    // positions:
+                    deepLevels={deepLevelsCurrent}
+                    
+                    
+                    
+                    // states:
+                    active={(index === activeIndices[deepLevelsCurrent.length - 1])}
+                    
+                    
+                    
+                    // handlers:
+                    handleNavigate={((child.props.actionCtrl ?? props.actionCtrl ?? true) || undefined) && handleNavigate}
+                    
+                    
+                    
+                    // components:
+                    listItemComponent={child}
+                />
+            );
+            return (
+                <child.type
+                >
+                    {React.Children.map(child.props.children, (child, index) => (
+                        (isTypeOf(child, Navscroll) && (!child.props.targetRef))
+                        ?
+                        mutateNestedNavscroll(child.props, child.key ?? index, /*deepLevelsParent: */deepLevelsCurrent)
+                        :
+                        child
+                    ))}
+                </child.type>
+            );
+        });
+    };
+    
+    
+    
     // jsx:
     /* <Nav> */
     return (
@@ -619,3 +688,65 @@ export {
 }
 
 export type { ListStyle, ListVariant }
+
+
+
+interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
+    extends
+        // states:
+        Required<Pick<ListItemProps<TElement>, 'active'>>
+{
+    // positions:
+    deepLevels        : number[]
+    
+    
+    
+    // handlers:
+    handleNavigate   ?: EventHandler<number[]>
+    
+    
+    
+    // components:
+    listItemComponent : React.ReactElement<ListItemProps<TElement>>
+}
+const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLevels, active, handleNavigate, listItemComponent}: ListItemWithNavigationProps<TElement>) => {
+    const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // handlers:
+        if (handleNavigate) {
+            handleNavigate(deepLevels);
+            event.stopPropagation(); // do not bubbling click event from nested <Navscroll> to parent <Navscroll>
+            event.preventDefault();  // handled
+        } // if
+    });
+    const handleClick         = useMergeEvents(
+        // preserves the original `onClick` from `listItemComponent`:
+        listItemComponent.props.onClick,
+        
+        
+        
+        // handlers:
+        handleNavigate && handleClickInternal,
+    );
+    
+    
+    
+    // jsx:
+    /* <ListItem> */
+    return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+        // props:
+        {
+            // states:
+            active  : listItemComponent.props.active ?? active,
+            
+            
+            
+            // handlers:
+            onClick : handleClick,
+        },
+    );
+};
