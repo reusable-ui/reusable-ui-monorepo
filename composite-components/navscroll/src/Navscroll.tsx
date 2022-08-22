@@ -410,6 +410,11 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     // rest props:
     const {
+        // variants:
+        orientation = 'block',
+        
+        
+        
         // scrolls:
         scrollingOf,
         scrollingSelector      = '*',
@@ -421,8 +426,10 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         // children:
         children,
     ...restNavProps} = props;
-    type T1 = typeof restNavProps
-    type T2 = Omit<T1, keyof NavProps>
+    const defaultNavProps : NavProps<TElement> = {
+        // variants:
+        orientation,
+    };
     
     
     
@@ -599,9 +606,10 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     return (
         <Nav<TElement>
             // other props:
+            {...defaultNavProps}
             {...restNavProps}
         >
-            //
+            { mutateListItems(children, /*deepLevelsParent: */[]) }
         </Nav>
     );
 };
