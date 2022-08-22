@@ -165,6 +165,44 @@ export const usesAccordionItemLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
+export const usesAccordionItemVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(accordions);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesListItemVariants(),
+            resizableRule,
+        ]),
+    });
+};
+export const usesAccordionItemStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesCollapseStates(),
+        ]),
+    });
+};
+
+export const useAccordionItemStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesAccordionItemLayout(),
+        
+        // variants:
+        usesAccordionItemVariants(),
+        
+        // states:
+        usesAccordionItemStates(),
+    ]),
+}), { id: '3mq5z5qt4v' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
 
 
 
