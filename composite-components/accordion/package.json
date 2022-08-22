@@ -1,0 +1,50 @@
+{
+  "name": "@reusable-ui/accordion",
+  "version": "5.0.0",
+  "description": "Represents a series of toggleable collapsing content.",
+  "keywords": [
+    "list",
+    "group",
+    "series",
+    "layout",
+    "container",
+    "toggle",
+    "collapse",
+    "accordion",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Accordion.js",
+  "types": "dist/Accordion.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/icon": "^5.0.0",
+    "@reusable-ui/list": "^5.0.0",
+    "@reusable-ui/navigations": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
