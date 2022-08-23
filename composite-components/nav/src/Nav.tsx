@@ -7,8 +7,6 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
-    useEvent,
-    useMergeEvents,
     useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
