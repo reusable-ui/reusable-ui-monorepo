@@ -272,6 +272,29 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     
+    // forward props:
+    const {
+        // from <Basic>:
+        size,
+        nude,
+        theme,
+        gradient,
+        outlined,
+        mild,
+        
+        
+        
+        // from <Indicator>:
+        enabled,
+        inheritEnabled,
+        readOnly,
+        inheritReadOnly,
+        active,
+        inheritActive,
+    } = props;
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -400,13 +423,34 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             {React.cloneElement<ListItemProps<TElement>>(contentComponent,
                 // props:
                 {
+                    // variants:
+                    // from <Basic>:
+                    size            : contentComponent.props.size            ?? size,
+                    nude            : contentComponent.props.nude            ?? nude,
+                    theme           : contentComponent.props.theme           ?? theme,
+                    gradient        : contentComponent.props.gradient        ?? gradient,
+                    outlined        : contentComponent.props.outlined        ?? outlined,
+                    mild            : contentComponent.props.mild            ?? mild,
+                    
+                    
+                    
+                    // from <Indicator>:
+                    enabled         : contentComponent.props.enabled         ?? enabled,
+                    inheritEnabled  : contentComponent.props.inheritEnabled  ?? inheritEnabled,
+                    readOnly        : contentComponent.props.readOnly        ?? readOnly,
+                    inheritReadOnly : contentComponent.props.inheritReadOnly ?? inheritReadOnly,
+                    active          : contentComponent.props.active          ?? active,
+                    inheritActive   : contentComponent.props.inheritActive   ?? inheritActive,
+                    
+                    
+                    
                     // classes:
-                    mainClass : contentComponent.props.mainClass ?? styleSheet.main,
+                    mainClass       : contentComponent.props.mainClass       ?? styleSheet.main,
                     
                     
                     
                     // identifiers:
-                    id        : collapsibleId,
+                    id              : collapsibleId,
                 },
                 
                 
