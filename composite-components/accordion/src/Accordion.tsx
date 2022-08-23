@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useId,
 }                           from 'react'
 
 // cssfn:
@@ -237,7 +242,7 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemComponentProps<TElement>
 {
     // accessibilities:
-    label    ?: string
+    label    ?: React.ReactNode
     
     
     
@@ -250,6 +255,22 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
     children ?: React.ReactNode
 }
 export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+    // identifiers:
+    const id               = useId();
+    
+    
+    
+    // styles:
+    const styleSheet       = useAccordionItemStyleSheet();
+    
+    
+    
+    // states:
+    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -269,6 +290,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        
+        
+        
+        // children:
+        children,
     ...restListItemProps} = props;
     type T1 = typeof restListItemProps
     type T2 = Omit<T1, keyof ListItemProps>
@@ -277,35 +303,65 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     // fn props:
     const propActive = usePropActive(props, null);
-    const activeDn   = useDetermineCurrentPage(props);
+    const activeDn   = collapsibleState.expanded;
     const activeFn   = (listItemComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
     // jsx:
-    /* <ListItem> */
-    return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
-        // props:
-        {
-            // other props:
-            ...restListItemProps,
+    return (
+        <>
+            {/* <ListItem> */}
+            {React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+                // props:
+                {
+                    // other props:
+                    ...restListItemProps,
+                    
+                    
+                    
+                    // semantics:
+                    'aria-expanded' : (activeFn || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
+                    'aria-controls' : listItemComponent.props['aria-controls'] ?? id,
+                    
+                    
+                    
+                    // classes:
+                    mainClass       : listItemComponent.props.mainClass ?? styleSheet.main,
+                    
+                    
+                    
+                    // states:
+                    active          : activeFn,
+                },
+                
+                
+                
+                // children:
+                listItemComponent.props.children ?? label,
+            )}
             
             
             
-            // semantics:
-            'aria-current' : (activeFn || undefined) && (listItemComponent.props['aria-current'] ?? props['aria-current'] ?? 'page'),
-            'aria-label'   : listItemComponent.props['aria-label'] ?? label,
-            
-            
-            
-            // states:
-            active         : activeFn,
-        },
-        
-        
-        
-        // children:
-        listItemComponent.props.children ?? props.children,
+            {/* collapsible <ListItem> */}
+            {React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+                // props:
+                {
+                    // other props:
+                    ...restListItemProps,
+                    
+                    
+                    
+                    // identifiers:
+                    id : listItemComponent.props.id ?? id,
+                },
+                
+                
+                
+                // children:
+                listItemComponent.props.children ?? ((!lazy || isVisible) && children),
+            )}
+        </>
     );
 };
 
