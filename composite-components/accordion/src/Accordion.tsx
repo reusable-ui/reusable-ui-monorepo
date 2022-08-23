@@ -56,6 +56,16 @@ import {
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
 
+// reusable-ui states:
+import {
+    // hooks:
+    ifCollapsed,
+    usesCollapsible,
+    ExpandedChangeEvent,
+    CollapsibleProps,
+    useCollapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+
 // reusable-ui components:
 import {
     // defaults:
@@ -215,21 +225,31 @@ export const [accordions, accordionValues, cssAccordionConfig] = cssConfig(() =>
 
 
 // react components:
-export interface AccordionItemProps<TElement extends Element = HTMLElement>
+export interface AccordionItemProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
         ListItemProps<TElement>,
         
-        // navigations:
-        DetermineCurrentPageProps,
+        // states:
+        CollapsibleProps<TExpandedChangeEvent>,
         
         // components:
         ListItemComponentProps<TElement>
 {
     // accessibilities:
-    label ?: string
+    label    ?: string
+    
+    
+    
+    // behaviors:
+    lazy     ?: boolean
+    
+    
+    
+    // children:
+    children ?: React.ReactNode
 }
-export const AccordionItem     = <TElement extends Element = HTMLElement>(props: AccordionItemProps<TElement>): JSX.Element|null => {
+export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
@@ -237,15 +257,21 @@ export const AccordionItem     = <TElement extends Element = HTMLElement>(props:
         
         
         
-        // navigations:
-        caseSensitive : _caseSensitive, // remove
-        end           : _end,           // remove
+        // behaviors:
+        lazy     = false,
+        
+        
+        
+        // states:
+        expanded : _expanded, // remove
         
         
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
     ...restListItemProps} = props;
+    type T1 = typeof restListItemProps
+    type T2 = Omit<T1, keyof ListItemProps>
     
     
     
