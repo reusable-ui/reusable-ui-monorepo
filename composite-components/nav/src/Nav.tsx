@@ -222,7 +222,7 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
     
     
     // refs:
-    const mergedRef = useMergeRefs(
+    const mergedListRef = useMergeRefs(
         // preserves the original `elmRef` from `listComponent`:
         listComponent.props.elmRef,
         
@@ -245,7 +245,7 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
             
             
             // refs:
-            elmRef       : mergedRef,
+            elmRef       : mergedListRef,
             
             
             
