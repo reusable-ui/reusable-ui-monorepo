@@ -10,6 +10,10 @@ import {
 }                           from 'react'
 
 // cssfn:
+import type {
+    // types:
+    SingleOrArray,
+}                           from '@cssfn/types'                 // cssfn general types
 import {
     // styles:
     style,
@@ -32,33 +36,20 @@ import {
 
 // reusable-ui utilities:
 import {
-    // utilities:
-    isReusableUiComponent,
-}                           from '@reusable-ui/utilities'       // common utility functions
-import {
     // hooks:
-    useTriggerRender,
     useEvent,
-    EventHandler,
     useMergeEvents,
     useMergeRefs,
-    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
-    DetermineCurrentPageProps,
-    useDetermineCurrentPage,
-}                           from '@reusable-ui/navigations'     // a set of navigation functions
 
 // reusable-ui variants:
 import {
     // hooks:
     OrientationableOptions,
-    defaultInlineOrientationableOptions,
     usesOrientationable,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
 import {
@@ -69,10 +60,7 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifCollapsed,
-    usesCollapsible,
     ExpandedChangeEvent,
-    CollapsibleProps,
     useCollapsible,
     ToggleCollapsibleProps,
     useToggleCollapsible,
@@ -108,20 +96,9 @@ import {
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
-    // defaults:
-    defaultOrientationableOptions,
-    
-    
-    
     // styles:
     usesCollapseLayout,
     usesCollapseStates,
-    
-    
-    
-    // react components:
-    CollapseProps,
-    Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
 
 
@@ -207,6 +184,7 @@ export const usesAccordionItemStates = () => {
     return style({
         ...imports([
             // states:
+            usesListItemStates(),
             usesCollapseStates(),
         ]),
     });
@@ -473,10 +451,14 @@ export {
 
 
 
+export type ListStyleLimited = Exclude<ListStyle, 'tab'|'bullet'> // 'tab' and 'bullet' are not supported in <Accordion>
 export interface AccordionProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        ListProps<TElement>,
+        Omit<ListProps<TElement>,
+            // variants:
+            |'listStyle' // we downgraded the [listStyle] options
+        >,
         
         // components:
         Omit<ListComponentProps<TElement>,
@@ -484,8 +466,13 @@ export interface AccordionProps<TElement extends Element = HTMLElement>
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >
 {
+    // variants:
+    listStyle ?: SingleOrArray<ListStyleLimited>
+    
+    
+    
     // accessibilities:
-    label ?: string
+    label     ?: string
 }
 const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps<TElement>): JSX.Element|null => {
     // rest props:
@@ -504,6 +491,19 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
     
     
     
+    // refs:
+    const mergedListRef = useMergeRefs(
+        // preserves the original `elmRef` from `listComponent`:
+        listComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `listRef` from `props`:
+        listRef,
+    );
+    
+    
+    
     // jsx:
     /* <List> */
     return React.cloneElement<ListProps<TElement>>(listComponent,
@@ -514,13 +514,19 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
             
             
             
+            // refs:
+            elmRef       : mergedListRef,
+            
+            
+            
             // semantics:
             'aria-label' : listComponent.props['aria-label'] ?? label,
             
             
             
-            // behaviors:
-            actionCtrl   : listComponent.props.actionCtrl    ?? props.actionCtrl   ?? true,
+            // variants:
+            orientation  : listComponent.props.orientation ?? listOrientation,
+            listStyle    : listComponent.props.listStyle   ?? listStyle,
         },
         
         
@@ -534,4 +540,4 @@ export {
     Accordion as default,
 }
 
-export type { ListStyle, ListVariant }
+export type { ListVariant }
