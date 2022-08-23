@@ -303,7 +303,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // behaviors:
-        lazy = false,
+        actionCtrl = true,  // change default value to `true`
+        lazy       = false,
         
         
         
@@ -354,6 +355,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     // handlers:
     const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
+        if (!actionCtrl)            return; // not [actionCtrl] => no response
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
@@ -392,13 +394,15 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // semantics:
+                    semanticRole    : listItemComponent.props.semanticRole ?? 'heading',
+                    
                     'aria-expanded' : (activeFn || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
                     'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
                     
                     // behaviors:
-                    actionCtrl      : listItemComponent.props.actionCtrl ?? true, // change default value to `true`
+                    actionCtrl      : actionCtrl,
                     
                     
                     
