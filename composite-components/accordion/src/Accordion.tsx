@@ -69,6 +69,8 @@ import {
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
+    ToggleCollapsibleProps,
+    useToggleCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
@@ -236,7 +238,7 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemProps<TElement>,
         
         // states:
-        CollapsibleProps<TExpandedChangeEvent>,
+        ToggleCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
         ListItemComponentProps<TElement>
@@ -265,12 +267,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     
-    // states:
-    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
-    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    
-    
-    
     // rest props:
     const {
         // accessibilities:
@@ -284,7 +280,9 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // states:
-        expanded : _expanded, // remove
+        defaultExpanded,  // take, to be handled by `useToggleCollapsible`
+        expanded,         // take, to be handled by `useToggleCollapsible`
+        onExpandedChange, // take, to be handled by `useToggleCollapsible`
         
         
         
@@ -301,10 +299,50 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     
+    // states:
+    const [isExpanded, , toggleExpanded] = useToggleCollapsible({
+        defaultExpanded,
+        expanded,
+        onExpandedChange,
+    });
+    
+    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    
+    
     // fn props:
     const propActive = usePropActive(props, null);
-    const activeDn   = collapsibleState.expanded;
+    const activeDn   = isExpanded;
     const activeFn   = (listItemComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    
+    
+    
+    // handlers:
+    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        toggleActive();         // handle click as toggle [active]
+        event.preventDefault(); // handled
+    });
+    const handleClick         = useMergeEvents(
+        // preserves the original `onClick` from `buttonComponent`:
+        buttonComponent.props.onClick,
+        
+        
+        
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickInternal,
+    );
     
     
     
