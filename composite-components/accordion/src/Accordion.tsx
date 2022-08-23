@@ -37,6 +37,11 @@ import {
 }                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
+    useTriggerRender,
+    useEvent,
+    EventHandler,
+    useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -244,24 +249,24 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemComponentProps<TElement>
 {
     // accessibilities:
-    label    ?: React.ReactNode
+    label            ?: React.ReactNode
     
     
     
     // behaviors:
-    lazy     ?: boolean
+    lazy             ?: boolean
+    
+    
+    
+    // components:
+    contentComponent ?: ListItemComponentProps<TElement>['listItemComponent']
     
     
     
     // children:
-    children ?: React.ReactNode
+    children         ?: React.ReactNode
 }
 export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
-    // identifiers:
-    const id               = useId();
-    
-    
-    
     // styles:
     const styleSheet       = useAccordionItemStyleSheet();
     
@@ -275,7 +280,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // behaviors:
-        lazy     = false,
+        lazy = false,
         
         
         
@@ -288,14 +293,19 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        contentComponent  = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
         
         
         
         // children:
         children,
     ...restListItemProps} = props;
-    type T1 = typeof restListItemProps
-    type T2 = Omit<T1, keyof ListItemProps>
+    
+    
+    
+    // identifiers:
+    const defaultId     = useId();
+    const collapsibleId = contentComponent.props.id ?? defaultId;
     
     
     
@@ -319,19 +329,19 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // handlers:
-    const handleClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
         
         // actions:
-        toggleActive();         // handle click as toggle [active]
+        toggleExpanded();       // handle click as toggle [expanded]
         event.preventDefault(); // handled
     });
     const handleClick         = useMergeEvents(
-        // preserves the original `onClick` from `buttonComponent`:
-        buttonComponent.props.onClick,
+        // preserves the original `onClick` from `listItemComponent`:
+        listItemComponent.props.onClick,
         
         
         
@@ -360,17 +370,22 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     // semantics:
                     'aria-expanded' : (activeFn || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
-                    'aria-controls' : listItemComponent.props['aria-controls'] ?? id,
+                    'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
                     
-                    // classes:
-                    mainClass       : listItemComponent.props.mainClass ?? styleSheet.main,
+                    // behaviors:
+                    actionCtrl      : listItemComponent.props.actionCtrl ?? true, // change default value to `true`
                     
                     
                     
                     // states:
                     active          : activeFn,
+                    
+                    
+                    
+                    // handlers:
+                    onClick         : handleClick,
                 },
                 
                 
@@ -382,22 +397,22 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             
             
             {/* collapsible <ListItem> */}
-            {React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+            {React.cloneElement<ListItemProps<TElement>>(contentComponent,
                 // props:
                 {
-                    // other props:
-                    ...restListItemProps,
+                    // classes:
+                    mainClass : contentComponent.props.mainClass ?? styleSheet.main,
                     
                     
                     
                     // identifiers:
-                    id : listItemComponent.props.id ?? id,
+                    id        : collapsibleId,
                 },
                 
                 
                 
                 // children:
-                listItemComponent.props.children ?? ((!lazy || isVisible) && children),
+                contentComponent.props.children ?? ((!lazy || isVisible) && children),
             )}
         </>
     );
