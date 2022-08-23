@@ -7,6 +7,12 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
+    useEvent,
+    useMergeEvents,
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
     usePropActive,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 import {
@@ -217,6 +223,19 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
     
     
     
+    // refs:
+    const mergedRef = useMergeRefs(
+        // preserves the original `elmRef` from `listComponent`:
+        listComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `listRef` from `props`:
+        listRef,
+    );
+    
+    
+    
     // jsx:
     /* <List> */
     return React.cloneElement<ListProps<TElement>>(listComponent,
@@ -227,10 +246,21 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
             
             
             
+            // refs:
+            elmRef       : mergedRef,
+            
+            
+            
             // semantics:
             semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag  ?? 'nav',
             semanticRole : listComponent.props.semanticRole  ?? props.semanticRole ?? 'navigation',
             'aria-label' : listComponent.props['aria-label'] ?? label,
+            
+            
+            
+            // variants:
+            orientation  : listComponent.props.orientation ?? listOrientation,
+            listStyle    : listComponent.props.listStyle   ?? listStyle,
             
             
             
