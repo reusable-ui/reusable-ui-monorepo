@@ -86,7 +86,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
     
     // fn props:
     const propActive = usePropActive(props, null);
-    const activeDn   = useDetermineCurrentPage(props);
+    const activeDn   = useDetermineCurrentPage(props) ?? false /* server-side or <Link> was not defined */;
     const activeFn   = (buttonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
