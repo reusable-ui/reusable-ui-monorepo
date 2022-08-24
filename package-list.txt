@@ -127,7 +127,7 @@
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/progress
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/group
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/nav
-[obsolete] [documented  ] [published] [full    compound] @reusable-ui/navscroll
-[obsolete] [documented  ] [published] @reusable-ui/accordion
+[upgraded] [documented  ] [published] [full    compound] @reusable-ui/navscroll
+[upgraded] [documented  ] [published] [full    compound] @reusable-ui/accordion
 [obsolete] [documented  ] [published] @reusable-ui/carousel
 [obsolete] [documented  ] [published] @reusable-ui/navbar
