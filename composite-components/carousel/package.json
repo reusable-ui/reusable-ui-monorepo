@@ -1,0 +1,51 @@
+{
+  "name": "@reusable-ui/carousel",
+  "version": "5.0.0",
+  "description": "A slideshow component for cycling through images, slides, or another elements.",
+  "keywords": [
+    "carousel",
+    "slideshow",
+    "images",
+    "gallery",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Carousel.js",
+  "types": "dist/Carousel.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/css-config": "^2.0.14",
+    "@cssfn/css-types": "^2.0.4",
+    "@cssfn/cssfn-react": "^2.0.10",
+    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/orientationable": "^5.0.0",
+    "@reusable-ui/resizable": "^5.0.0",
+    "@reusable-ui/spacers": "^5.0.0",
+    "@reusable-ui/content": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "@cssfn/cssfn": "^2.0.7",
+    "react": "^18.1.0"
+  }
+}
