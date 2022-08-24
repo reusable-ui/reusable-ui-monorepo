@@ -221,6 +221,17 @@ export const useCarouselStyleSheet = dynamicStyleSheet(() => ({
 
 
 
+export interface CarouselVariant {
+    infiniteLoop ?: boolean
+}
+export const useCarouselVariant = (props: CarouselVariant) => {
+    return {
+        infiniteLoop: props.infiniteLoop ?? false,
+    };
+};
+
+
+
 // configs:
 export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
     return {
