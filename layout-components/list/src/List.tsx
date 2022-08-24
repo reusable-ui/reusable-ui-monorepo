@@ -218,16 +218,16 @@ import {
 export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
 const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: null, mild: null };
 
-const _defaultSemanticTag    : SemanticTag  = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
-const _defaultSemanticRole   : SemanticRole = ['list'    ] // uses [role="list"] as the default semantic
+const _defaultSemanticTag    : SemanticTag       = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticRole   : SemanticRole      = ['list'    ] // uses [role="list"] as the default semantic
 
-const _defaultOutlined       : boolean      = false
-const _defaultMild           : boolean      = true
-const _defaultActionCtrl     : boolean      = false
+const _defaultOutlined       : boolean           = false
+const _defaultMild           : boolean           = true
+const _defaultActionCtrl     : boolean|undefined = false
 
-const _defaultItemOutlined   : boolean      = false
-const _defaultItemMild       : boolean      = false
-const _defaultItemActionCtrl : boolean      = false
+const _defaultItemOutlined   : boolean           = false
+const _defaultItemMild       : boolean           = false
+const _defaultItemActionCtrl : boolean           = false
 
 
 
