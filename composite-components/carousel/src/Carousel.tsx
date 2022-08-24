@@ -125,12 +125,12 @@ import {
 // styles:
 
 // .carousel > .list > .item > .media
-const listElm    = ':where(.list)'; // zero specificity
-const dummyElm   = '.dummy';
-const itemElm    = '*';              // zero specificity
-const prevBtnElm = '.prevBtn';
-const nextBtnElm = '.nextBtn';
-const navElm     = '.nav';
+const listElm      = ':where(.list)'; // zero specificity
+const dummyListElm = '.dummy';
+const itemElm      = '*';              // zero specificity
+const prevBtnElm   = '.prevBtn';
+const nextBtnElm   = '.nextBtn';
+const navElm       = '.nav';
 
 
 
@@ -365,7 +365,7 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
                     usesCarouselListLayout(options),
                 ]),
             }),
-            ...children(dummyElm, {
+            ...children(dummyListElm, {
                 // appearances:
              // visibility : 'hidden', // causing onScroll doesn't work in Firefox
                 opacity    : 0,
@@ -606,31 +606,31 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     // dom effects:
     
-    // sync dummyElm scrolling position to listElm scrolling position, once, at startup:
+    // sync dummyListElm scrolling position to listElm scrolling position, once, at startup:
     useEffect(() => {
         if (!infiniteLoop) return; // only for infiniteLoop mode
         
-        const dummyElm = listDummyRef.current;
-        if (!dummyElm) return; // dummyElm must be exist to sync
+        const dummyListElm = dummyListRefInternal.current;
+        if (!dummyListElm) return; // dummyListElm must be exist to sync
         
-        const listElm = listRef.current;
-        if (!listElm) return; // listElm must be exist for syncing
+        const listElm      = listRefInternal.current;
+        if (!listElm)      return; // listElm must be exist for syncing
         
         
         
         // fn props:
         const listCurrent  = listElm.scrollLeft;
-        const ratio        = (dummyElm.scrollWidth - dummyElm.clientWidth) / (listElm.scrollWidth - listElm.clientWidth);
+        const ratio        = (dummyListElm.scrollWidth - dummyListElm.clientWidth) / (listElm.scrollWidth - listElm.clientWidth);
         const dummyCurrent = listCurrent * ratio;
         
         
         
         // setups:
-        dummyElm.scrollTo({
+        dummyListElm.scrollTo({
             left     : Math.round(
                 Math.min(Math.max(
                     dummyCurrent
-                , 0), (dummyElm.scrollWidth - dummyElm.clientWidth))
+                , 0), (dummyListElm.scrollWidth - dummyListElm.clientWidth))
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
