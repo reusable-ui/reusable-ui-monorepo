@@ -68,25 +68,24 @@ import {
 
 
 // defaults:
-const _defaultTabIndex   : number  = -1   // makes the <List> programatically focusable
-const _defaultActionCtrl : boolean = true // the default for <ListItem>(s) is clickable
+const _defaultTabIndex   : number            = -1   // makes the <List> programatically focusable
+const _defaultActionCtrl : boolean|undefined = true // the default for <ListItem>(s) is clickable
 
 
 
 // utilities:
-export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>): Role|null => {
+export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>, defaultActionCtrl: boolean|undefined): Role|null => {
     if (props.role) return null; // pre defined role => no need to determine the role automatically
     
     
     
     const listItems         = props.children;
-    const defaultActionCtrl = props.actionCtrl ?? true;
     if (React.Children.toArray(listItems).some((listItem) => {
         if (!React.isValidElement<ListItemProps<Element>>(listItem)) {
-            return !defaultActionCtrl;                                // if the default is not an actionCtrl => not a menu item => role='dialog'
+            return !(defaultActionCtrl ?? false);                              // if the default is not an actionCtrl => not a menu item => role='dialog'
         }
         else {
-            return !(listItem.props.actionCtrl ?? defaultActionCtrl); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
+            return !(listItem.props.actionCtrl ?? defaultActionCtrl ?? false); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
         } // if
     })) return 'dialog'; // one/some <ListItem>s are [actionCtrl=false] => role='dialog'
     
@@ -178,6 +177,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         dropdownRef,
         dropdownOrientation,
         dropdownComponent     = (<Dropdown<Element, TDropdownListExpandedChangeEvent> >{listComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListExpandedChangeEvent>>),
+        
+        
+        
+        // behaviors:
+        actionCtrl            : defaultActionCtrl = listComponent.props.actionCtrl ?? _defaultActionCtrl,
     ...restListProps} = props;
     
     
@@ -292,7 +296,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // semantics:
-            semanticRole     : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props),
+            semanticRole     : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props, defaultActionCtrl),
             
             
             
@@ -355,7 +359,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 // behaviors:
-                actionCtrl  : listComponent.props.actionCtrl  ?? _defaultActionCtrl,
+                actionCtrl  : defaultActionCtrl,
                 
                 
                 
@@ -368,9 +372,9 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             // children:
             React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
                 // conditions:
-                if (!onExpandedChange)                                                                    return listItem; // [onExpandedChange] was not set => ignore
-                if (!React.isValidElement<ListItemProps<Element>>(listItem))                              return listItem; // not a <ListItem>               => ignore
-                if (!(listItem.props.actionCtrl ?? listComponent.props.actionCtrl ?? _defaultActionCtrl)) return listItem; // <ListItem actionCtrl={false}>  => ignore
+                if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => ignore
+                if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => ignore
+                if (!(listItem.props.actionCtrl ?? defaultActionCtrl ?? false)) return listItem; // <ListItem actionCtrl={false}>  => ignore
                 // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
                 
                 
