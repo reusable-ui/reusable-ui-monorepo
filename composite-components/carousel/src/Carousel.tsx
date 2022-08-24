@@ -61,15 +61,13 @@ import {
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
-// reusable-ui variants:
+// reusable-ui features:
 import {
     // hooks:
-    OrientationableOptions,
-    defaultBlockOrientationableOptions,
-    usesOrientationable,
-    OrientationableProps,
-    useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+    usesPadding,
+}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
+
+// reusable-ui variants:
 import {
     // hooks:
     usesResizable,
@@ -78,6 +76,7 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    ContentChildrenMediaOptions,
     usesContentLayout,
     usesContentVariants,
     
@@ -90,23 +89,23 @@ import {
 
 
 
-// defaults:
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-
-const _defaultCarouselResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' } // get the client size
-const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  } // get the offset size
-
-
-
 // styles:
-export const usesCarouselLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
-    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
+
+// .carousel > .items > .item > .media
+const itemsElm   = ':where(.items)'; // zero specificity
+const dummyElm   = '.dummy';
+const itemElm    = '*';              // zero specificity
+const prevBtnElm = '.prevBtn';
+const nextBtnElm = '.nextBtn';
+const navElm     = '.nav';
+
+
+
+export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
+    // dependencies:
+    
+    // features:
+    const {paddingRule, paddingVars} = usesPadding(carousels);
     
     
     
@@ -114,81 +113,78 @@ export const usesCarouselLayout = (options?: OrientationableOptions) => {
         ...imports([
             // layouts:
             usesContentLayout(),
+            
+            // features:
+            paddingRule,
         ]),
         ...style({
             // layouts:
-            ...ifOrientationInline({ // inline
-                display             : 'inline-grid', // use css inline grid for layouting, the core of our Carousel layout
-                gridAutoFlow        : 'column',      // items direction is to block & carousel's direction is to inline
-                gridAutoColumns     : carousels.itemsRaiseRowHeight,
-                gridTemplateRows    : `repeat(auto-fill, minmax(${carousels.itemsMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                alignItems          : 'stretch',     // each item fills the entire Carousel's column height
-             // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
-                justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
-            ...ifOrientationBlock({  // block
-                display             : 'grid',        // use css block grid for layouting, the core of our Carousel layout
-                gridAutoFlow        : 'row',         // items direction is to inline & carousel's direction is to block
-                gridAutoRows        : carousels.itemsRaiseRowHeight,
-                gridTemplateColumns : `repeat(auto-fill, minmax(${carousels.itemsMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                justifyItems        : 'stretch',     // each item fills the entire Carousel's column width
-             // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
-                alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
+            display             : 'grid', // use css grid for layouting, so we can customize the desired area later.
             
+            // explicit areas:
+            gridTemplateRows    : [[
+                '1fr',
+                'min-content',
+            ]],
+            gridTemplateColumns : [['15%', '1fr', '15%']],
+            gridTemplateAreas   : [[
+                '"prevBtn main nextBtn"',
+                '"prevBtn nav  nextBtn"',
+            ]],
             
-            
-            // spacings:
-            ...ifOrientationInline({ // inline
-                gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...ifOrientationBlock({  // block
-                gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...children('*', {
-                ...rule(':not(.firstRow)', {
-                    ...ifParentOrientationInline({ // inline
-                        /*
-                        * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
-                        * we use `marginInlineStart` instead of `marginInlineEnd`
-                        * because looping grid's items at the first_carousel_row is much faster than at the last_carousel_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginInlineStart : carousels.gapInline,
-                    }),
-                    ...ifParentOrientationBlock({  // block
-                        /*
-                        * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
-                        * we use `marginBlockStart` instead of `marginBlockEnd`
-                        * because looping grid's items at the first_carousel_row is much faster than at the last_carousel_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginBlockStart  : carousels.gapBlock,
-                    }),
-                }),
-            }),
+            // child default sizes:
+            justifyItems        : 'stretch', // each section fills the entire area's width
+            alignItems          : 'stretch', // each section fills the entire area's height
             
             
             
             // children:
-            ...children('*', {
-                // sizes:
-                ...ifParentOrientationInline({ // inline
-                    gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Carousel orientation="block"> (if was)
-                }),
-                ...ifParentOrientationBlock({  // block
-                    gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Carousel orientation="inline"> (if was)
-                }),
+            ...children(itemsElm, {
+                ...imports([
+                    usesCarouselItemsLayout(options),
+                ]),
+            }),
+            ...children(dummyElm, {
+                // appearances:
+             // visibility : 'hidden', // causing onScroll doesn't work in Firefox
+                opacity    : 0,
+                position   : 'relative',
+                zIndex     : -1,
+            }),
+            
+            ...children([prevBtnElm, nextBtnElm], {
+                ...imports([
+                    usesNavBtnLayout(),
+                ]),
+            }),
+            ...children(prevBtnElm, {
+                ...imports([
+                    usesPrevBtnLayout(),
+                ]),
+            }),
+            ...children(nextBtnElm, {
+                ...imports([
+                    usesNextBtnLayout(),
+                ]),
+            }),
+            
+            ...children(navElm, {
+                ...imports([
+                    usesNavLayout(),
+                ]),
             }),
             
             
             
             // customize:
             ...usesCssProps(carousels), // apply config's cssProps
+            
+            
+            
+            // spacings:
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
         }),
     });
 };
