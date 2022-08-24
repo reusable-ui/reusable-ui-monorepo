@@ -1,3 +1,5 @@
+add <AccordionItemGroup maxExpanded={1}>
+
 calculateSemanticRole => test add <ListSeparatorItem> => should still role="menu"
 
 merge fooComponent.fooStyle & fooStyle
