@@ -45,6 +45,7 @@ import {
     
     // utilities:
     usesCssProps,
+    usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui configs:
@@ -105,6 +106,52 @@ const nextBtnElm = '.nextBtn';
 const navElm     = '.nav';
 
 
+
+export const usesNavBtnLayout = () => {
+    return style({
+        // customize:
+        ...usesCssProps(usesPrefixedProps(contents, 'navBtn')), // apply config's cssProps starting with navBtn***
+    });
+};
+export const usesPrevBtnLayout = () => {
+    return style({
+        // layouts:
+        gridArea : 'prevBtn',
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(contents, 'prevBtn')), // apply config's cssProps starting with prevBtn***
+    });
+};
+export const usesNextBtnLayout = () => {
+    return style({
+        // layouts:
+        gridArea : 'nextBtn',
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(contents, 'nextBtn')), // apply config's cssProps starting with nextBtn***
+    });
+};
+
+export const usesNavLayout = () => {
+    return style({
+        // layouts:
+        gridArea    : 'nav',
+        
+        
+        
+        // sizes:
+        justifySelf : 'center', // do not stretch the nav, just place it at the center horizontally
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(contents, 'nav')), // apply config's cssProps starting with nav***
+    });
+};
 
 export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
     // dependencies:
