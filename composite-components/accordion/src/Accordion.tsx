@@ -106,6 +106,7 @@ import {
 
 // defaults:
 export { defaultOrientationableOptions };
+const _defaultItemActionCtrl : boolean = true
 
 
 
@@ -282,7 +283,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // behaviors:
-        actionCtrl = true,  // change default value to `true`
+        actionCtrl = _defaultItemActionCtrl,
         lazy       = false,
         
         
@@ -344,7 +345,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // hacks:
-        ((!activeFn || null) && 'last-visible-child'),
+        ((!isVisible || null) && 'last-visible-child'),
     );
     const contentStateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `listItemComponent`:
