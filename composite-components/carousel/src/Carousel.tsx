@@ -22,6 +22,7 @@ import type {
 import {
     // rules:
     rule,
+    fallbacks,
     
     
     
@@ -56,6 +57,12 @@ import {
 
 // reusable-ui utilities:
 import {
+    // styles:
+    stripoutList,
+    stripoutScrollbar,
+    stripoutImage,
+}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
+import {
     // hooks:
     useIsomorphicLayoutEffect,
     useMergeRefs,
@@ -78,6 +85,7 @@ import {
 import {
     // styles:
     ContentChildrenMediaOptions,
+    usesContentChildrenMediaOptions,
     usesContentLayout,
     usesContentVariants,
     
@@ -106,6 +114,148 @@ const nextBtnElm = '.nextBtn';
 const navElm     = '.nav';
 
 
+
+export const usesCarouselItemsLayout = (options?: ContentChildrenMediaOptions) => {
+    // dependencies:
+    
+    // features:
+    const {paddingVars} = usesPadding(carousels);
+    
+    
+    
+    return style({
+        ...imports([
+            // resets:
+            stripoutList(),      // clear browser's default styles
+            stripoutScrollbar(), // hides browser's scrollbar
+        ]),
+        ...style({
+            // layouts:
+            gridArea       : '1 / 1 / -1 / -1', // fills the entire grid areas, from the first row/column to the last row/column
+            display        : 'flex',            // use block flexbox, so it takes the entire parent's width
+            flexDirection  : 'row',             // items are stacked horizontally
+            justifyContent : 'start',           // items are placed starting from the left, so the first item is initially visible
+            alignItems     : 'stretch',         // items height are follow the tallest one
+            flexWrap       : 'nowrap',          // no wrapping, so the sliding works
+            
+            
+            
+            // positions:
+            position       : 'relative', // (optional) makes calculating slide's offsetLeft/offsetTop faster
+            
+            
+            
+            // spacings:
+            // cancel-out parent's padding with negative margin:
+            marginInline   : `calc(0px - ${paddingVars.paddingInline})`,
+            marginBlock    : `calc(0px - ${paddingVars.paddingBlock})`,
+            
+            
+            
+            // scrolls:
+            overflowX      : 'scroll',                  // enable horizontal scrolling
+            scrollSnapType : [['inline', 'mandatory']], // enable horizontal scroll snap
+            scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
+            WebkitOverflowScrolling : 'touch',          // supports for iOS Safari
+            
+            
+            
+            // children:
+            ...children(itemElm, {
+                ...imports([
+                    usesCarouselItemLayout(options),
+                ]),
+            }),
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(contents, 'items')), // apply config's cssProps starting with items***
+        }),
+    });
+};
+export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}) => {
+    // options:
+    const {
+        mediaSelectorWithExcept,
+    } = usesContentChildrenMediaOptions(options);
+    
+    
+    
+    return style({
+        // layouts:
+        display         : 'flex',   // use block flexbox, so it takes the entire parent's width
+        flexDirection   : 'column', // the flex direction to vert
+        justifyContent  : 'center', // center items vertically
+        alignItems      : 'center', // center items horizontally
+        flexWrap        : 'nowrap', // no wrapping
+        
+        
+        
+        // sizes:
+        flex            : [[0, 0, '100%']], // ungrowable, unshrinkable, initial 100% parent's width
+        // (important) force the media follow the <li> width, so it doesn't break the flex width:
+        boxSizing       : 'border-box',     // the final size is including borders & paddings
+        inlineSize      : '100%',           // fills the entire parent's width
+        
+        
+        
+        // scrolls:
+        scrollSnapAlign : 'center', // put a magnet at the center
+        scrollSnapStop  : 'normal', // scrolls one by one or multiple at once
+        
+        
+        
+        // children:
+        ...children(mediaSelectorWithExcept, {
+            ...imports([
+                usesCarouselMediaLayout(),
+            ]),
+        }),
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(contents, 'item')), // apply config's cssProps starting with item***
+    });
+};
+export const usesCarouselMediaLayout = () => {
+    return style({
+        ...imports([
+            stripoutImage(), // removes browser's default styling on image
+        ]),
+        ...style({
+            // layouts:
+            ...rule(':where(:first-child:last-child)', { // only one child
+                display : 'block', // fills the entire parent's width
+                
+                
+                
+                // sizes:
+                // span to maximum width/height while keeps aspect-ratio:
+                boxSizing         : 'border-box', // the final size is including borders & paddings
+                maxInlineSize     : 'fill-available',
+                maxBlockSize      : 'fill-available',
+                ...fallbacks({
+                    maxInlineSize : '100%',
+                    maxBlockSize  : '100%',
+                }),
+                inlineSize        : 'auto',
+                blockSize         : 'auto',
+            }),
+            
+            
+            
+            // sizes:
+            flex                  : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(contents, 'media')), // apply config's cssProps starting with media***
+        }),
+    });
+};
 
 export const usesNavBtnLayout = () => {
     return style({
