@@ -1,3 +1,5 @@
+calculateSemanticRole => test add <ListSeparatorItem> => should still role="menu"
+
 merge fooComponent.fooStyle & fooStyle
 \w+Style\s*:\s*\w+Component\.props\.\w+Style\s*\?\?\s*\w+Style,?
 merged\w+Style
