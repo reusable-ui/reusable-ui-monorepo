@@ -223,7 +223,7 @@ const _defaultSemanticRole   : SemanticRole      = ['list'    ] // uses [role="l
 
 const _defaultOutlined       : boolean           = false
 const _defaultMild           : boolean           = true
-const _defaultActionCtrl     : boolean|undefined = false
+const _defaultActionCtrl     : boolean|undefined = undefined
 
 const _defaultItemOutlined   : boolean           = false
 const _defaultItemMild       : boolean           = false
