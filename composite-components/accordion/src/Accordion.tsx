@@ -319,7 +319,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         onExpandedChange,
     });
     
-    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
+    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
     
@@ -332,7 +332,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // classes:
-    const classes = useMergeClasses(
+    const listClasses         = useMergeClasses(
         // preserves the original `classes` from `listItemComponent`:
         listItemComponent.props.classes,
         
@@ -344,13 +344,27 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // hacks:
-        ((activeFn || null) && 'last-visible-child'),
+        ((!activeFn || null) && 'last-visible-child'),
+    );
+    const contentStateClasses = useMergeClasses(
+        // preserves the original `stateClasses` from `listItemComponent`:
+        listItemComponent.props.stateClasses,
+        
+        
+        
+        // preserves the original `stateClasses` from `props`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        collapsibleState.class,
     );
     
     
     
     // handlers:
-    const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const listHandleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (!actionCtrl)            return; // not [actionCtrl] => no response
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -361,7 +375,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         toggleExpanded();       // handle click as toggle [expanded]
         event.preventDefault(); // handled
     });
-    const handleClick         = useMergeEvents(
+    const listHandleClick           = useMergeEvents(
         // preserves the original `onClick` from `listItemComponent`:
         listItemComponent.props.onClick,
         
@@ -373,7 +387,21 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // actions:
-        handleClickInternal,
+        listHandleClickInternal,
+    );
+    const contentHandleAnimationEnd = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `listItemComponent`:
+        listItemComponent.props.onAnimationEnd,
+        
+        
+        
+        // preserves the original `onAnimationEnd` from `props`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationEnd,
     );
     
     
@@ -399,7 +427,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // classes:
-                    classes         : classes,
+                    classes         : listClasses,
                     
                     
                     
@@ -414,7 +442,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // handlers:
-                    onClick         : handleClick,
+                    onClick         : listHandleClick,
                 },
                 
                 
@@ -429,6 +457,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             {React.cloneElement<ListItemProps<TElement>>(contentComponent,
                 // props:
                 {
+                    // identifiers:
+                    id              : collapsibleId,
+                    
+                    
+                    
                     // variants:
                     // from <Basic>:
                     size            : contentComponent.props.size            ?? size,
@@ -452,11 +485,12 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     // classes:
                     mainClass       : contentComponent.props.mainClass       ?? styleSheet.main,
+                    stateClasses    : contentStateClasses,
                     
                     
                     
-                    // identifiers:
-                    id              : collapsibleId,
+                    // handlers:
+                    onAnimationEnd  : contentHandleAnimationEnd,
                 },
                 
                 
