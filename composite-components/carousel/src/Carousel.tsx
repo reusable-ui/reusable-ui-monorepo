@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -123,8 +124,8 @@ import {
 
 // styles:
 
-// .carousel > .items > .item > .media
-const itemsElm   = ':where(.items)'; // zero specificity
+// .carousel > .list > .item > .media
+const listElm    = ':where(.list)'; // zero specificity
 const dummyElm   = '.dummy';
 const itemElm    = '*';              // zero specificity
 const prevBtnElm = '.prevBtn';
@@ -133,7 +134,7 @@ const navElm     = '.nav';
 
 
 
-export const usesCarouselItemsLayout = (options?: ContentChildrenMediaOptions) => {
+export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) => {
     // dependencies:
     
     // features:
@@ -188,7 +189,7 @@ export const usesCarouselItemsLayout = (options?: ContentChildrenMediaOptions) =
             
             
             // customize:
-            ...usesCssProps(usesPrefixedProps(contents, 'items')), // apply config's cssProps starting with items***
+            ...usesCssProps(usesPrefixedProps(contents, 'list')), // apply config's cssProps starting with list***
         }),
     });
 };
@@ -359,9 +360,9 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
             
             
             // children:
-            ...children(itemsElm, {
+            ...children(listElm, {
                 ...imports([
-                    usesCarouselItemsLayout(options),
+                    usesCarouselListLayout(options),
                 ]),
             }),
             ...children(dummyElm, {
@@ -557,11 +558,6 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
-    // fn props:
-    const itemsCount = React.Children.count(children);
-    
-    
-    
     // refs:
     const listRefInternal      = useRef<TElement|null>(null);
     const mergedListRef        = useMergeRefs(
@@ -590,241 +586,56 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
-    // dom effects:
-    const itemsRaiseSizeCache = useRef<number>(1);
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        const carousel = carouselRefInternal.current;
-        if (!carousel) return; // carousel was unloaded => nothing to do
-        
-        
-        
-        // setups:
-        const cancelRequest = requestAnimationFrame(() => { // wait until the cssfn is fully loaded
-            itemsRaiseSizeCache.current = Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
-                Number.parseInt(
-                    isOrientationBlock
-                    ?
-                    getComputedStyle(carousel).gridAutoRows
-                    :
-                    getComputedStyle(carousel).gridAutoColumns
-                )
-                ||
-                1 // if parsing error (NaN) => falsy => default to 1px
-            );
-        });
-        
-        
-        
-        // cleanups:
-        return () => {
-            cancelAnimationFrame(cancelRequest);
-        };
-    }, [isOrientationBlock, props.size]); // rebuild the itemsRaiseSizeCache if [orientation] or [size] changed
+    // fn props:
+    const itemsCount = React.Children.count(children);
     
-    useIsomorphicLayoutEffect(() => {
+    
+    
+    // states:
+    const dummyDiff = useRef<number>(0);
+    const updateDummyDiff = (diff: number) => {
         // conditions:
-        const carousel = carouselRefInternal.current;
-        if (!carousel) return; // carousel was unloaded => nothing to do
+        if (!itemsCount) return;
         
         
         
-        // DOM manipulation functions:
-        const updateItemHeight = (item: Element) => {
-            // measuring dom:
-            // note: side effect of measuring dom: force_reflow
-            const totalSize : number = (() => {
-                const style = getComputedStyle(item);
-                
-                if (isOrientationBlock) {
-                    return (
-                        Number.parseInt(style.marginBlockStart)
-                        +
-                        Number.parseInt(style.blockSize)
-                        +
-                        Number.parseInt(style.marginBlockEnd)
-                    );
-                }
-                else {
-                    return (
-                        Number.parseInt(style.marginInlineStart)
-                        +
-                        Number.parseInt(style.inlineSize)
-                        +
-                        Number.parseInt(style.marginInlineEnd)
-                    );
-                } // if
-            })();
-            
-            
-            
-            // update the item's height by modifying item's inline css:
-            requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
-                const style = (item as HTMLElement|SVGElement).style;
-                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSizeCache.current)}`;
-                if (isOrientationBlock) {
-                    style.gridRowEnd    = spanWidth;
-                    style.gridColumnEnd = ''; // clear from residual effect from <Carousel orientation="inline"> (if was)
-                }
-                else {
-                    style.gridRowEnd    = ''; // clear from residual effect from <Carousel orientation="block"> (if was)
-                    style.gridColumnEnd = spanWidth;
-                } // if
-            });
-        };
+        dummyDiff.current = (((dummyDiff.current - diff) % itemsCount) + itemsCount) % itemsCount;
+    };
+    
+    
+    
+    // dom effects:
+    
+    // sync dummyElm scrolling position to listElm scrolling position, once, at startup:
+    useEffect(() => {
+        if (!infiniteLoop) return; // only for infiniteLoop mode
         
-        let firstRowItems: Element[] = [];
-        const updateFirstRowItems = () => {
-            const newFirstRowItems = (() => {
-                const items = Array.from(carousel.children);
-                let selectionIndex = -1;
-                let prevPos = -1;
-                for (const item of items) {
-                    const { left, top, width, height } = item.getBoundingClientRect();
-                    
-                    
-                    
-                    /*
-                        select the items in the first_carousel_row by comparing the left/top to the prev one.
-                        if equal/greater than prev => the item is still in the same row,
-                        otherwise => the item in the next row
-                     */
-                    const currentPos = (isOrientationBlock ? left : top);
-                    if (currentPos < prevPos) break;
-                    
-                    
-                    
-                    prevPos = currentPos + (isOrientationBlock ? width : height);
-                    selectionIndex++;
-                } // for
-                
-                
-                
-                // here the items in the first_carousel_row:
-                return items.slice(0, selectionIndex + 1); // select the first_item to the last_item in the first_carousel_row
-            })();
-            
-            
-            
-            // diffing the newFirstRowItems vs firstRowItems:
-            const removedItems =    firstRowItems.filter((item) => !newFirstRowItems.includes(item)); // old_items are not exist   in new_items
-            const addedItems   = newFirstRowItems.filter((item) =>    !firstRowItems.includes(item)); // new_items are not already in old_items
-            
-            removedItems.forEach((removedItem) => removedItem.classList.remove('firstRow'));
-            addedItems.forEach((addedItem)     =>   addedItem.classList.add('firstRow'));
-            
-            firstRowItems = newFirstRowItems; // update newFirstRowItems => (old)firstRowItems
-        };
+        const dummyElm = listDummyRef.current;
+        if (!dummyElm) return; // dummyElm must be exist to sync
+        
+        const listElm = listRef.current;
+        if (!listElm) return; // listElm must be exist for syncing
+        
+        
+        
+        // fn props:
+        const listCurrent  = listElm.scrollLeft;
+        const ratio        = (dummyElm.scrollWidth - dummyElm.clientWidth) / (listElm.scrollWidth - listElm.clientWidth);
+        const dummyCurrent = listCurrent * ratio;
         
         
         
         // setups:
-        let oldCarouselSize : ResizeObserverSize|undefined = undefined;
-        const carouselResizeObserver = new ResizeObserver((entries) => {
-            // conditions:
-            if (!entries[0].target.parentElement) return; // the <Carousel> is being removed => ignore
+        dummyElm.scrollTo({
+            left     : Math.round(
+                Math.min(Math.max(
+                    dummyCurrent
+                , 0), (dummyElm.scrollWidth - dummyElm.clientWidth))
+            ),
             
-            
-            
-            const newCarouselSize = entries[0].contentBoxSize[0]; // get the client size
-            if (isPartiallyResized(oldCarouselSize, newCarouselSize, isOrientationBlock)) {
-                oldCarouselSize = newCarouselSize;
-                
-                handleCarouselResize();
-            } // if
+            behavior : ('instant' as any) // no scrolling animation during sync
         });
-        
-        let overallResize = true;
-        const handleCarouselResize = () => {
-            overallResize = true;
-            updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-            
-            setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
-                overallResize = false;
-            }, 0);
-        };
-        
-        carouselResizeObserver.observe(carousel, _defaultCarouselResizeObserverOptions);
-        
-        
-        
-        const oldItemSizes = new Map<Element, ResizeObserverSize>();
-        const itemResizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                // conditions:
-                const item = entry.target;
-                if (!item.parentElement) continue; // the item is being removed => ignore
-                
-                
-                
-                const newItemSize = entry.borderBoxSize[0]; // get the offset size
-                if (isPartiallyResized(oldItemSizes.get(item), newItemSize, !isOrientationBlock)) {
-                    oldItemSizes.set(item, newItemSize);
-                    
-                    handleItemResize(item);
-                } // if
-            } // for
-        });
-        
-        const handleItemResize = (item: Element) => {
-            if (!overallResize) updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-            updateItemHeight(item);                    // side effect: dynamically compute css => force_reflow at the first_loop
-        };
-        
-        for (const item of Array.from(carousel.children)) {
-            itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
-        } // for
-        
-        
-        
-        // in case of the <Carousel>'s children are modified using *vanilla* way,
-        // we detect the changes by `MutationObserver`:
-        const mutationObserver = new MutationObserver((entries) => {
-            updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-            
-            
-            
-            for (const entry of entries) {
-                for (const addedItem of entry.addedNodes) {
-                    if (!(addedItem instanceof Element)) continue;
-                    handleItemAdded(addedItem);
-                } // for
-                
-                
-                
-                for (const removedItem of entry.removedNodes) {
-                    if (!(removedItem instanceof Element)) continue;
-                    handleItemRemoved(removedItem);
-                } // for
-            } // for
-        });
-        
-        const handleItemAdded = (item: Element) => {
-            itemResizeObserver.observe(item, _defaultItemResizeObserverOptions);
-        };
-        const handleItemRemoved = (item: Element) => {
-            itemResizeObserver.unobserve(item);
-        };
-        mutationObserver.observe(carousel, {
-            childList  : true,  // watch  for child's DOM structure changes
-            subtree    : false, // ignore for grandchild's DOM structure changes
-            
-            attributes : false, // ignore for any attribute changes
-        });
-        
-        
-        
-        // cleanups:
-        return () => {
-            oldCarouselSize = undefined;
-            carouselResizeObserver.disconnect();
-            
-            oldItemSizes.clear();
-            itemResizeObserver.disconnect();
-            
-            mutationObserver.disconnect();
-        };
-    }, [isOrientationBlock]);
+    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
     
     
