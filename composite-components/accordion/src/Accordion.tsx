@@ -345,7 +345,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // hacks:
-        ((!isVisible || null) && 'last-visible-child'),
+        ((!activeFn || null) && 'last-visible-child'),
     );
     const contentStateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `listItemComponent`:
