@@ -82,6 +82,11 @@ import {
     
     
     
+    // configs:
+    contents,
+    
+    
+    
     // react components:
     ContentProps,
     Content,
@@ -231,54 +236,20 @@ export const useCarouselVariant = (props: CarouselVariant) => {
 // configs:
 export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
     return {
-        // sizes:
-        itemsRaiseRowHeight   : '2px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightSm : '1px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightLg : '4px'               as CssKnownProps['blockSize'],
-        
-        itemsMinColumnWidth   : 'calc(5 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthSm : 'calc(3 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthLg : 'calc(8 * 40px)'    as CssKnownProps['columnWidth'],
+        // borders:
+        navBtnBorderRadius  : '0px'                     as CssKnownProps['borderRadius'],
         
         
         
         // spacings:
-        gapInline             : spacers.sm          as CssKnownProps['gapInline'],
-        gapInlineSm           : spacers.xs          as CssKnownProps['gapInline'],
-        gapInlineLg           : spacers.md          as CssKnownProps['gapInline'],
-        gapBlock              : spacers.sm          as CssKnownProps['gapBlock' ],
-        gapBlockSm            : spacers.xs          as CssKnownProps['gapBlock' ],
-        gapBlockLg            : spacers.md          as CssKnownProps['gapBlock' ],
+        paddingInline       : '0px'                     as CssKnownProps['paddingInline'],
+        paddingBlock        : '0px'                     as CssKnownProps['paddingBlock' ],
+        
+        navMarginBlockEnd   : contents.paddingBlock     as CssKnownProps['marginBlockEnd'],
+        navMarginBlockEndSm : contents.paddingBlockSm   as CssKnownProps['marginBlockEnd'],
+        navMarginBlockEndLg : contents.paddingBlockLg   as CssKnownProps['marginBlockEnd'],
     };
 }, { prefix: 'crsl' });
-
-
-
-// utilities:
-const isPartiallyResized = (oldSize: ResizeObserverSize|undefined, newSize: ResizeObserverSize, compareOrientationBlock: boolean): boolean => {
-    if (!oldSize) {
-        oldSize   = newSize;
-        return true;
-    }
-    else {
-        if (compareOrientationBlock) {
-            if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
-                oldSize   = newSize;
-                return true;
-            } // if
-        }
-        else {
-            if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
-                oldSize   = newSize;
-                return true;
-            } // if
-        } // if
-    } // if
-    
-    
-    
-    return false;
-};
 
 
 
