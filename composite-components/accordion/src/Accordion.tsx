@@ -40,6 +40,7 @@ import {
     useEvent,
     useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -147,7 +148,7 @@ export const usesAccordionItemLayout = (options?: OrientationableOptions) => {
     return style({
         ...imports([
             // layouts:
-            usesCollapseLayout(options2),
+            usesCollapseLayout(options2), // `usesCollapseLayout` first then `usesListItemLayout`, so any conflict the `usesListItemLayout` wins
             usesListItemLayout(options), // the options are already handled internally by `usesListItemBaseLayout`
         ]),
         ...style({
@@ -330,6 +331,24 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes` from `listItemComponent`:
+        listItemComponent.props.classes,
+        
+        
+        
+        // preserves the original `classes` from `props`:
+        props.classes,
+        
+        
+        
+        // hacks:
+        ((activeFn || null) && 'last-visible-child'),
+    );
+    
+    
+    
     // handlers:
     const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
@@ -376,6 +395,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     'aria-expanded' : (activeFn || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
                     'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
+                    
+                    
+                    
+                    // classes:
+                    classes         : classes,
                     
                     
                     
