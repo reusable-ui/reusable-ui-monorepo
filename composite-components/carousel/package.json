@@ -37,6 +37,8 @@
     "@cssfn/css-config": "^2.0.14",
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.10",
+    "@reusable-ui/button": "^5.0.0",
+    "@reusable-ui/button-icon": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",

@@ -100,6 +100,24 @@ import {
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'         // a base component
+import {
+    // react components:
+    ButtonProps,
+    Button,
+    
+    ButtonComponentProps,
+}                           from '@reusable-ui/button'          // a button component for initiating an action
+import {
+    // react components:
+    ButtonIcon,
+}                           from '@reusable-ui/button-icon'     // a button component with a nice icon
+import {
+    // react components:
+    NavscrollProps,
+    Navscroll,
+    
+    NavscrollComponentProps,
+}                           from '@reusable-ui/navscroll'       // a navigation component to navigate within current page, based on scroll position
 
 
 
@@ -456,40 +474,63 @@ export interface CarouselProps<TElement extends Element = HTMLElement>
         // bases:
         ContentProps<TElement>,
         
-        // <div>:
-        Omit<React.HTMLAttributes<TElement>,
-            // semantics:
-            |'role' // we redefined [role] in <Generic>
-        >,
-        
         // variants:
-        OrientationableProps
+        CarouselVariant,
+        
+        // components:
+        NavscrollComponentProps
 {
+    // refs:
+    scrollingRef        ?: React.Ref<Element> // setter ref
+    
+    
+    
+    // components:
+    prevButtonComponent ?: ButtonComponentProps['buttonComponent']
+    nextButtonComponent ?: ButtonComponentProps['buttonComponent']
+    
+    
+    
     // children:
-    children        ?: React.ReactNode
+    children            ?: React.ReactNode
 }
 const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet             = useCarouselStyleSheet();
+    const styleSheet      = useCarouselStyleSheet();
     
     
     
     // variants:
-    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
-    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
+    const carouselVariant = useCarouselVariant(props);
+    const infiniteLoop    = carouselVariant.infiniteLoop;
     
     
     
     // rest props:
     const {
-        // variants:
-        orientation : _orientation, // remove
-        
-        
-        
         // refs:
         elmRef,
+        scrollingRef,
+        
+        
+        
+        // variants:
+        infiniteLoop : _infiniteLoop, // remove
+        
+        
+        
+        // components:
+        prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
+        nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
+        navscrollComponent  = (<Navscroll<TElement> orientation='inline' nude={true} />                                                       as React.ReactComponentElement<any, NavscrollProps<TElement>>),
+        
+        
+        
+        // children:
+        children,
     ...restContentProps} = props;
+    type T1 = typeof restContentProps
+    type T2 = Omit<T1, keyof ContentProps>
     
     
     
