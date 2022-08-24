@@ -506,6 +506,29 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
+    // forward props:
+    const {
+        // from <Basic>:
+        size,
+        nude,
+        theme,
+        gradient,
+        outlined,
+        mild,
+        
+        
+        
+        // from <Indicator>:
+        enabled,
+        inheritEnabled,
+        readOnly,
+        inheritReadOnly,
+        active,
+        inheritActive,
+    } = props;
+    
+    
+    
     // rest props:
     const {
         // refs:
@@ -534,15 +557,35 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
+    // fn props:
+    const itemsCount = React.Children.count(children);
+    
+    
+    
     // refs:
-    const carouselRefInternal = useRef<TElement|null>(null);
-    const mergedElmRef       = useMergeRefs(
+    const listRefInternal      = useRef<TElement|null>(null);
+    const mergedListRef        = useMergeRefs(
         // preserves the original `elmRef`:
         elmRef,
         
         
         
-        carouselRefInternal,
+        // preserves the original `scrollingRef` (conditionally):
+        (!infiniteLoop || undefined) && scrollingRef,
+        
+        
+        
+        listRefInternal,
+    );
+    
+    const dummyListRefInternal = useRef<TElement|null>(null);
+    const mergedDummyListRef   = useMergeRefs(
+        // preserves the original `scrollingRef` (conditionally):
+        (infiniteLoop || undefined) && scrollingRef,
+        
+        
+        
+        dummyListRefInternal,
     );
     
     
