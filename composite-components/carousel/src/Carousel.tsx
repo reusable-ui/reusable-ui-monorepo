@@ -12,6 +12,10 @@ import {
 
 // cssfn:
 import type {
+    // types:
+    Optional,
+}                           from '@cssfn/types'                         // cssfn general types
+import type {
     // css known (standard) properties:
     CssKnownProps,
     
@@ -86,6 +90,14 @@ import {
 
 // reusable-ui components:
 import {
+    // react components:
+    Generic,
+}                           from '@reusable-ui/generic'         // a base component
+import type {
+    // react components:
+    BasicProps,
+}                           from '@reusable-ui/basic'           // a base component
+import {
     // styles:
     ContentChildrenMediaOptions,
     usesContentChildrenMediaOptions,
@@ -129,12 +141,18 @@ import {
 
 
 
+// defaults:
+const _defaultListElmClasses      : Optional<string>[] = ['list']
+const _defaultDummyListElmClasses : Optional<string>[] = ['list', 'dummy']
+
+
+
 // styles:
 
 // .carousel > .list > .item > .media
 const listElm      = ':where(.list)'; // zero specificity
 const dummyListElm = '.dummy';
-const itemElm      = '*';              // zero specificity
+const itemElm      = '*';             // zero specificity
 const prevBtnElm   = '.prevBtn';
 const nextBtnElm   = '.nextBtn';
 const navElm       = '.nav';
@@ -523,16 +541,6 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         gradient,
         outlined,
         mild,
-        
-        
-        
-        // from <Indicator>:
-        enabled,
-        inheritEnabled,
-        readOnly,
-        inheritReadOnly,
-        active,
-        inheritActive,
     } = props;
     
     
@@ -560,8 +568,6 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // children:
         children,
     ...restContentProps} = props;
-    type T1 = typeof restContentProps
-    type T2 = Omit<T1, keyof ContentProps>
     
     
     
@@ -854,7 +860,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     // handlers:
-    const handlePrev = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handlePrev        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         if (!event.defaultPrevented) {
             const dummyListElm = dummyListRefInternal.current;
             const listElm      = listRefInternal.current;
@@ -928,7 +934,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
             } // if
         } // if
     });
-    const handleNext = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handleNext        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         if (!event.defaultPrevented) {
             const dummyListElm = dummyListRefInternal.current;
             const listElm      = listRefInternal.current;
@@ -1002,10 +1008,43 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
             } // if
         } // if
     });
+    const dummyHandleScroll = useEvent<React.UIEventHandler<TElement>>((event) => {
+        const dummyCurrentDiff = dummyDiff.current;
+        if (!dummyCurrentDiff) return; // no difference => nothing to do
+        
+        
+        
+        const dummyListElm = dummyListRefInternal.current;
+        if (!dummyListElm) return; // dummyListElm must be exist for syncing
+        
+        const listElm      = listRefInternal.current;
+        if (!listElm)      return; // listElm must be exist to sync
+        
+        
+        
+        // set the dummyListElm's scrollPos to the correct image:
+        const dummyListStyle = getComputedStyle(dummyListElm);
+        const frameWidth     = dummyListElm.clientWidth - (Number.parseInt(dummyListStyle.paddingLeft) || 0) - (Number.parseInt(dummyListStyle.paddingRight ) || 0);
+        if ((dummyListElm.scrollLeft % frameWidth) >= 0.5) return; // not an exact step (fragment step) => scrolling is still in progress => abort
+        
+        
+        
+        // sync listElm scrolling position to dummyListElm scrolling position:
+        normalizeListItems(listElm);
+    });
     
     
     
     // jsx:
+    const colorSystemProps : BasicProps<TElement> = {
+        // from <Basic>:
+        size,
+        nude,
+        theme,
+        gradient,
+        outlined,
+        mild,
+    };
     return (
         <Content<TElement>
             // other props:
@@ -1015,7 +1054,69 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-        />
+        >
+            {children && <>
+                {/* .list */}
+                <Generic<TElement>
+                    // refs:
+                    elmRef={mergedListRef}
+                    
+                    
+                    
+                    // semantics:
+                    tag='ul'
+                    
+                    
+                    
+                    // classes:
+                    classes={_defaultListElmClasses}
+                >
+                    {React.Children.map(children, (child, index) =>
+                        /* .item */
+                        <Generic<TElement>
+                            // identifiers:
+                            key={index}
+                            
+                            
+                            
+                            // semantics:
+                            tag='li'
+                        >
+                            {child}
+                        </Generic>
+                    )}
+                </Generic>
+                
+                {/* .dummy */}
+                {infiniteLoop && <Generic<TElement>
+                    // refs:
+                    elmRef={mergedDummyListRef}
+                    
+                    
+                    
+                    // semantics:
+                    aria-hidden={true} // just a dummy element, no meaningful content here
+                    
+                    
+                    
+                    // classes:
+                    classes={_defaultDummyListElmClasses}
+                    
+                    
+                    
+                    // handlers:
+                    onScroll={dummyHandleScroll}
+                >
+                    {React.Children.map(children, (_child, index) =>
+                        /* .dummy-item */
+                        <div
+                            // identifiers:
+                            key={index}
+                        />
+                    )}
+                </Generic>}
+            </>}
+        </Content>
     );
 };
 export {
