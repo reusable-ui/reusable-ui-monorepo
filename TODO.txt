@@ -15,6 +15,9 @@ TODO: color system
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}
 
+fix <Carousel> fast clicking [prev] & [next] button
+fix <Carousel> touch scroll sync with <Navscroll>
+
 test tree shake a Dropdown without Modal
 
 fix fooElm constant with zero specificity:
