@@ -728,6 +728,51 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
+    // functions:
+    const normalizeListItems = (listElm: Element) => {
+        if (!itemsCount) return; // empty items => nothing to do
+        
+        const dummyCurrentDiff = dummyDiff.current;
+        if (!dummyCurrentDiff) return; // no difference => nothing to do
+        
+        
+        
+        // remember the current listElm's scrollPos before modifying:
+        const listCurrentPos = listElm.scrollLeft;
+        
+        
+        
+        // decide which side to be moved:
+        const modifLeft = dummyCurrentDiff <= (itemsCount / 2);
+        if (modifLeft) { // modify the left side
+            Array.from(listElm.childNodes).slice(0, dummyCurrentDiff) // take nth elements from the left
+            .forEach((item) => listElm.append(item));                 // insert the items at the end
+        }
+        else { // modify the right side
+            Array.from(listElm.childNodes).slice(-(itemsCount - dummyCurrentDiff))     // take nth elements from the right
+            .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
+            .forEach((item) => listElm.insertBefore(item, listElm.firstElementChild)); // insert the items at the beginning
+        } // if
+        
+        
+        
+        // set the listElm's scrollPos to the correct image:
+        const style = getComputedStyle(listElm);
+        const step  = listElm.clientWidth - (Number.parseInt(style.paddingLeft) || 0) - (Number.parseInt(style.paddingRight ) || 0);
+        const move  = modifLeft ? (itemsCount - dummyCurrentDiff) : (-dummyCurrentDiff);
+        listElm.scrollTo({
+            left     : listCurrentPos + (step * move),
+            behavior : ('instant' as any) // no scrolling animation during sync
+        });
+        
+        
+        
+        // reset the diff of listElm & dummyListElm:
+        dummyDiff.current = 0;
+    };
+    
+    
+    
     // jsx:
     return (
         <Content<TElement>
