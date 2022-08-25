@@ -630,27 +630,101 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // setups:
         dummyListElm.scrollTo({
             left     : Math.round(
-                Math.min(Math.max( // make sure the `dummyCurrentPos` doesn't exceed the range of 0 - `dummyMaxPos`
+                Math.min(Math.max(
                     dummyCurrentPos
-                , 0), dummyMaxPos)
+                , 0), dummyMaxPos) // make sure the `dummyCurrentPos` doesn't exceed the range of 0 - `dummyMaxPos`
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
         });
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
-    
-    
-    // classes:
-    const variantClasses = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
+    // sync listElm scrolling position to dummyListElm scrolling position, every `scrollBy()`/`scrollTo()` called:
+    useEffect(() => {
+        if (!infiniteLoop) return; // only for infiniteLoop mode
+        
+        const dummyListElm = dummyListRefInternal.current;
+        if (!dummyListElm) return; // dummyListElm must be exist for syncing
         
         
         
-        // variants:
-        orientationableVariant.class,
-    );
+        // functions:
+        const calculateListScrollPos = (dummyListElm: Element, listElm: Element, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
+            const dummyCurrentPos = relative ? dummyListElm.scrollLeft : 0;
+            const dummyLeft       =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
+            const dummyBehavior   = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
+            
+            const listMaxPos      = listElm.scrollWidth - listElm.clientWidth;
+            const dummyMaxPos     = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const ratio           = listMaxPos / dummyMaxPos;
+            const listCurrentPos  = dummyCurrentPos * ratio;
+            const listLeft        = dummyLeft       * ratio;
+            const listDiff        = (dummyDiff.current * listElm.clientWidth); // converts logical diff to physical diff
+            const listLeftLoop    = listCurrentPos + listLeft + listDiff;      // current scroll + scroll by + diff
+            const listLeftAbs     = listLeftLoop % listElm.scrollWidth;        // wrap overflowed left
+            
+            return {
+                left     : Math.round(
+                    Math.min(Math.max(
+                        listLeftAbs
+                    , 0), listMaxPos) // make sure the `listLeftAbs` doesn't exceed the range of 0 - `listMaxPos`
+                    -
+                    (relative ? listElm.scrollLeft : 0) // if relative, substract the result by the relativity
+                ),
+                
+                behavior : dummyBehavior,
+            };
+        };
+        
+        
+        
+        // setups:
+        
+        const oriScrollBy = dummyListElm.scrollBy;
+        dummyListElm.scrollBy = (function(this: Element, optionsOrX?: ScrollToOptions|number, y?: number) {
+            const listElm = listRefInternal.current;
+            if (listElm) { // listElm must be exist to sync
+                listElm.scrollBy(calculateListScrollPos(this, listElm, optionsOrX, true));
+            } // if
+            
+            
+            
+            // call the original:
+            if (typeof(optionsOrX) !== 'number') {
+                (oriScrollBy as any).call(this, optionsOrX);
+            }
+            else {
+                (oriScrollBy as any).call(this, optionsOrX, y);
+            } // if
+        } as any);
+        
+        const oriScrollTo = dummyListElm.scrollTo;
+        dummyListElm.scrollTo = (function(this: Element, optionsOrX?: ScrollToOptions|number, y?: number) {
+            const listElm = listRefInternal.current;
+            if (listElm) { // listElm must be exist to sync
+                listElm.scrollTo(calculateListScrollPos(this, listElm, optionsOrX, false));
+            } // if
+            
+            
+            
+            // call the original:
+            if (typeof(optionsOrX) !== 'number') {
+                (oriScrollTo as any).call(this, optionsOrX);
+            }
+            else {
+                (oriScrollTo as any).call(this, optionsOrX, y);
+            } // if
+        } as any);
+        
+        
+        
+        // cleanups:
+        return () => {
+            // restore the hacked to the original (back to prototype):
+            delete (dummyListElm as any).scrollBy;
+            delete (dummyListElm as any).scrollTo;
+        };
+    }, [infiniteLoop]); // (re)run the setups & cleanups on every time the infiniteLoop mode changes
     
     
     
@@ -662,19 +736,8 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
             
             
             
-            // refs:
-            elmRef={mergedElmRef}
-            
-            
-            
-            // semantics:
-            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
         />
     );
 };
