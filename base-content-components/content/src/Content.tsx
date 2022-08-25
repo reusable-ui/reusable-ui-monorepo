@@ -126,14 +126,14 @@ import {
     
     
     
+    // configs:
+    basics,
+    
+    
+    
     // react components:
     BasicProps,
     Basic,
-    
-    
-    
-    // configs:
-    basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // react components:
