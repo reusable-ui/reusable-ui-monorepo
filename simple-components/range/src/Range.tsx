@@ -1039,7 +1039,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // id:
+        // identifiers:
         'track'
     );
     const mergedTrackLowerClasses = useMergeClasses(
@@ -1053,7 +1053,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // id:
+        // identifiers:
         'tracklower'
     );
     const mergedTrackUpperClasses = useMergeClasses(
@@ -1067,7 +1067,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // id:
+        // identifiers:
         'trackupper'
     );
     const mergedThumbClasses      = useMergeClasses(
@@ -1081,7 +1081,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // id:
+        // identifiers:
         'thumb'
     );
     
