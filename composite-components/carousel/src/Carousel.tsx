@@ -144,6 +144,8 @@ import {
 // defaults:
 const _defaultListElmClasses      : Optional<string>[] = ['list']
 const _defaultDummyListElmClasses : Optional<string>[] = ['list', 'dummy']
+const _defaultPrevButtonClasses   : Optional<string>[] = ['prevBtn']
+const _defaultNextButtonClasses   : Optional<string>[] = ['nextBtn']
 
 
 
@@ -621,6 +623,8 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     // sync dummyListElm scrolling position to listElm scrolling position, once, at startup:
     useEffect(() => {
+        // conditions:
+        
         if (!infiniteLoop) return; // only for infiniteLoop mode
         
         const dummyListElm = dummyListRefInternal.current;
@@ -654,6 +658,8 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     // sync listElm scrolling position to dummyListElm scrolling position, every `scrollBy()`/`scrollTo()` called:
     useEffect(() => {
+        // conditions:
+        
         if (!infiniteLoop) return; // only for infiniteLoop mode
         
         const dummyListElm = dummyListRefInternal.current;
@@ -859,156 +865,202 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     
+    // classes:
+    const mergedPrevButtonClasses = useMergeClasses(
+        // preserves the original `classes` from `prevButtonComponent`:
+        prevButtonComponent.props.classes,
+        
+        
+        
+        // identifiers:
+        ..._defaultPrevButtonClasses,
+    );
+    const mergedNextButtonClasses = useMergeClasses(
+        // preserves the original `classes` from `nextButtonComponent`:
+        nextButtonComponent.props.classes,
+        
+        
+        
+        // identifiers:
+        ..._defaultNextButtonClasses,
+    );
+    
+    
+    
     // handlers:
-    const handlePrev        = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        if (!event.defaultPrevented) {
-            const dummyListElm = dummyListRefInternal.current;
-            const listElm      = listRefInternal.current;
-            
-            
-            
-            if (infiniteLoop && dummyListElm) {
-                let itemsShifted = false;
-                if (listElm && isBeginOfScroll(listElm)) {
-                    // move the last item to the first:
-                    const item = listElm.lastElementChild;
-                    if (item) {
-                        // remember the current scrollPos before modifying:
-                        const scrollPos = listElm.scrollLeft;
-                        
-                        
-                        
-                        listElm.insertBefore(item, listElm.firstElementChild); // insert the items at the beginning
-                        itemsShifted = true;
-                        
-                        
-                        
-                        // set the current scrollPos to the next item, so the scrolling effect can occur:
-                        listElm.scrollTo({ left: (scrollPos + listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
-                    } // if
+    const handlePrevClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return;
+        
+        
+        
+        const dummyListElm = dummyListRefInternal.current;
+        const listElm      = listRefInternal.current;
+        
+        
+        
+        if (infiniteLoop && dummyListElm) {
+            let itemsShifted = false;
+            if (listElm && isBeginOfScroll(listElm)) {
+                // move the last item to the first:
+                const item = listElm.lastElementChild;
+                if (item) {
+                    // remember the current scrollPos before modifying:
+                    const scrollPos = listElm.scrollLeft;
                     
                     
                     
-                    // calculate the diff of listElm & dummyListElm:
-                    updateDummyDiff(-1);
+                    listElm.insertBefore(item, listElm.firstElementChild); // insert the items at the beginning
+                    itemsShifted = true;
+                    
+                    
+                    
+                    // set the current scrollPos to the next item, so the scrolling effect can occur:
+                    listElm.scrollTo({ left: (scrollPos + listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
                 } // if
                 
                 
                 
-                const doScroll = () => {
-                    if (isBeginOfScroll(dummyListElm)) {
-                        // scroll to last:
-                        scrollTo(dummyListElm.lastElementChild as (HTMLElement|null));
-                    }
-                    else {
-                        // scroll to previous:
-                        scrollBy(dummyListElm, false);
-                    } // if
-                };
-                if (itemsShifted) {
-                    setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
-                }
-                else {
-                    doScroll();
-                } // if
-                
-                
-                
-                // all necessary task has been performed, no further action needed:
-                event.preventDefault();
-            }
-            else if (listElm) {
-                if (isBeginOfScroll(listElm)) {
+                // calculate the diff of listElm & dummyListElm:
+                updateDummyDiff(-1);
+            } // if
+            
+            
+            
+            const doScroll = () => {
+                if (isBeginOfScroll(dummyListElm)) {
                     // scroll to last:
-                    scrollTo(listElm.lastElementChild as (HTMLElement|null));
+                    scrollTo(dummyListElm.lastElementChild as (HTMLElement|null));
                 }
                 else {
                     // scroll to previous:
-                    scrollBy(listElm, false);
+                    scrollBy(dummyListElm, false);
                 } // if
-                
-                
-                
-                // all necessary task has been performed, no further action needed:
-                event.preventDefault();
+            };
+            if (itemsShifted) {
+                setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
+            }
+            else {
+                doScroll();
             } // if
+            
+            
+            
+            // all necessary task has been performed, no further action needed:
+            event.preventDefault();
+        }
+        else if (listElm) {
+            if (isBeginOfScroll(listElm)) {
+                // scroll to last:
+                scrollTo(listElm.lastElementChild as (HTMLElement|null));
+            }
+            else {
+                // scroll to previous:
+                scrollBy(listElm, false);
+            } // if
+            
+            
+            
+            // all necessary task has been performed, no further action needed:
+            event.preventDefault();
         } // if
     });
-    const handleNext        = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        if (!event.defaultPrevented) {
-            const dummyListElm = dummyListRefInternal.current;
-            const listElm      = listRefInternal.current;
-            
-            
-            
-            if (infiniteLoop && dummyListElm) {
-                let itemsShifted = false;
-                if (listElm && isEndOfScroll(listElm)) {
-                    // move the first item to the last:
-                    const item = listElm.firstElementChild;
-                    if (item) {
-                        // remember the current scrollPos before modifying:
-                        const scrollPos = listElm.scrollLeft;
-                        
-                        
-                        
-                        listElm.append(item); // insert the items at the end
-                        itemsShifted = true;
-                        
-                        
-                        
-                        // set the current scrollPos to the prev item, so the scrolling effect can occur:
-                        listElm.scrollTo({ left: (scrollPos - listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
-                    } // if
+    const handlePrevClick         = useMergeEvents(
+        // preserves the original `onClick` from `prevButtonComponent`:
+        prevButtonComponent.props.onClick,
+        
+        
+        
+        // actions:
+        handlePrevClickInternal,
+    );
+    const handleNextClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return;
+        
+        
+        
+        const dummyListElm = dummyListRefInternal.current;
+        const listElm      = listRefInternal.current;
+        
+        
+        
+        if (infiniteLoop && dummyListElm) {
+            let itemsShifted = false;
+            if (listElm && isEndOfScroll(listElm)) {
+                // move the first item to the last:
+                const item = listElm.firstElementChild;
+                if (item) {
+                    // remember the current scrollPos before modifying:
+                    const scrollPos = listElm.scrollLeft;
                     
                     
                     
-                    // calculate the diff of listElm & dummyListElm:
-                    updateDummyDiff(1);
+                    listElm.append(item); // insert the items at the end
+                    itemsShifted = true;
+                    
+                    
+                    
+                    // set the current scrollPos to the prev item, so the scrolling effect can occur:
+                    listElm.scrollTo({ left: (scrollPos - listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
                 } // if
                 
                 
                 
-                const doScroll = () => {
-                    if (isEndOfScroll(dummyListElm)) {
-                        // scroll to first:
-                        scrollTo(dummyListElm.firstElementChild as (HTMLElement|null));
-                    }
-                    else {
-                        // scroll to next:
-                        scrollBy(dummyListElm, true);
-                    } // if
-                };
-                if (itemsShifted) {
-                    setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
-                }
-                else {
-                    doScroll();
-                } // if
-                
-                
-                
-                // all necessary task has been performed, no further action needed:
-                event.preventDefault();
-            }
-            else if (listElm) {
-                if (isEndOfScroll(listElm)) {
+                // calculate the diff of listElm & dummyListElm:
+                updateDummyDiff(1);
+            } // if
+            
+            
+            
+            const doScroll = () => {
+                if (isEndOfScroll(dummyListElm)) {
                     // scroll to first:
-                    scrollTo(listElm.firstElementChild as (HTMLElement|null));
+                    scrollTo(dummyListElm.firstElementChild as (HTMLElement|null));
                 }
                 else {
                     // scroll to next:
-                    scrollBy(listElm, true);
+                    scrollBy(dummyListElm, true);
                 } // if
-                
-                
-                
-                // all necessary task has been performed, no further action needed:
-                event.preventDefault();
+            };
+            if (itemsShifted) {
+                setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
+            }
+            else {
+                doScroll();
             } // if
+            
+            
+            
+            // all necessary task has been performed, no further action needed:
+            event.preventDefault();
+        }
+        else if (listElm) {
+            if (isEndOfScroll(listElm)) {
+                // scroll to first:
+                scrollTo(listElm.firstElementChild as (HTMLElement|null));
+            }
+            else {
+                // scroll to next:
+                scrollBy(listElm, true);
+            } // if
+            
+            
+            
+            // all necessary task has been performed, no further action needed:
+            event.preventDefault();
         } // if
     });
-    const dummyHandleScroll = useEvent<React.UIEventHandler<TElement>>((event) => {
+    const handleNextClick         = useMergeEvents(
+        // preserves the original `onClick` from `nextButtonComponent`:
+        nextButtonComponent.props.onClick,
+        
+        
+        
+        // actions:
+        handleNextClickInternal,
+    );
+    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>((event) => {
         const dummyCurrentDiff = dummyDiff.current;
         if (!dummyCurrentDiff) return; // no difference => nothing to do
         
@@ -1036,7 +1088,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     // jsx:
-    const colorSystemProps : BasicProps<TElement> = {
+    const colorSystemProps : BasicProps<any> = {
         // from <Basic>:
         size,
         nude,
@@ -1116,6 +1168,62 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
                     )}
                 </Generic>}
             </>}
+            
+            {React.cloneElement<ButtonProps>(prevButtonComponent,
+                // props:
+                {
+                    // color system props:
+                    ...colorSystemProps,
+                    
+                    
+                    
+                    // other props:
+                    ...prevButtonComponent.props,
+                    
+                    
+                    
+                    // classes:
+                    classes : mergedPrevButtonClasses,
+                    
+                    
+                    
+                    // accessibilities:
+                    label   : prevButtonComponent.props.label ?? 'Previous',
+                    
+                    
+                    
+                    // handlers:
+                    onClick : handlePrevClick,
+                },
+            )}
+            
+            {React.cloneElement<ButtonProps>(nextButtonComponent,
+                // props:
+                {
+                    // color system props:
+                    ...colorSystemProps,
+                    
+                    
+                    
+                    // other props:
+                    ...nextButtonComponent.props,
+                    
+                    
+                    
+                    // classes:
+                    classes : mergedNextButtonClasses,
+                    
+                    
+                    
+                    // accessibilities:
+                    label   : nextButtonComponent.props.label ?? 'Next',
+                    
+                    
+                    
+                    // handlers:
+                    onClick : handleNextClick,
+                },
+            )}
         </Content>
     );
 };
