@@ -113,6 +113,11 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
+    // utilities:
+    Dimension,
+    
+    
+    
     // react components:
     NavscrollProps,
     Navscroll,
@@ -482,7 +487,7 @@ export interface CarouselProps<TElement extends Element = HTMLElement>
         NavscrollComponentProps
 {
     // refs:
-    scrollingRef        ?: React.Ref<Element> // setter ref
+    scrollingRef        ?: React.Ref<TElement> // setter ref
     
     
     
@@ -649,7 +654,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         
         
         // functions:
-        const calculateListScrollPos = (dummyListElm: Element, listElm: Element, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
+        const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
             const dummyCurrentPos = relative ? dummyListElm.scrollLeft : 0;
             const dummyLeft       =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
             const dummyBehavior   = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
@@ -681,7 +686,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // setups:
         
         const oriScrollBy = dummyListElm.scrollBy;
-        dummyListElm.scrollBy = (function(this: Element, optionsOrX?: ScrollToOptions|number, y?: number) {
+        dummyListElm.scrollBy = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
             const listElm = listRefInternal.current;
             if (listElm) { // listElm must be exist to sync
                 listElm.scrollBy(calculateListScrollPos(this, listElm, optionsOrX, true));
@@ -699,7 +704,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         } as any);
         
         const oriScrollTo = dummyListElm.scrollTo;
-        dummyListElm.scrollTo = (function(this: Element, optionsOrX?: ScrollToOptions|number, y?: number) {
+        dummyListElm.scrollTo = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
             const listElm = listRefInternal.current;
             if (listElm) { // listElm must be exist to sync
                 listElm.scrollTo(calculateListScrollPos(this, listElm, optionsOrX, false));
@@ -729,7 +734,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
     
     
     // functions:
-    const normalizeListItems = (listElm: Element) => {
+    const normalizeListItems = (listElm: TElement) => {
         if (!itemsCount) return; // empty items => nothing to do
         
         const dummyCurrentDiff = dummyDiff.current;
@@ -757,11 +762,11 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         
         
         // set the listElm's scrollPos to the correct image:
-        const style = getComputedStyle(listElm);
-        const step  = listElm.clientWidth - (Number.parseInt(style.paddingLeft) || 0) - (Number.parseInt(style.paddingRight ) || 0);
-        const move  = modifLeft ? (itemsCount - dummyCurrentDiff) : (-dummyCurrentDiff);
+        const listStyle  = getComputedStyle(listElm);
+        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        const steps      = modifLeft ? (itemsCount - dummyCurrentDiff) : (-dummyCurrentDiff);
         listElm.scrollTo({
-            left     : listCurrentPos + (step * move),
+            left     : listCurrentPos + (frameWidth * steps),
             behavior : ('instant' as any) // no scrolling animation during sync
         });
         
@@ -770,6 +775,79 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // reset the diff of listElm & dummyListElm:
         dummyDiff.current = 0;
     };
+    
+    const scrollBy = (listElm: TElement, nextSlide: boolean) => {
+        const parent = listElm;
+        
+        
+        
+        // calculate the limit of the allowed scrolling distances:
+        const [minLeft, maxLeft, minTop, maxTop] = [
+            -parent.scrollLeft,
+            (parent.scrollWidth  - parent.clientWidth ) - parent.scrollLeft,
+            
+            -parent.scrollTop,
+            (parent.scrollHeight - parent.clientHeight) - parent.scrollTop,
+        ];
+        
+        // calculate the scrolling distance:
+        const parentStyle = getComputedStyle(parent);
+        const [scrollLeft, scrollRight] = [
+            Math.min(Math.max((listElm.clientWidth  - (Number.parseInt(parentStyle.paddingLeft) || 0)  - (Number.parseInt(parentStyle.paddingRight ) || 0)) * (nextSlide ? 1 : -1), minLeft), maxLeft),
+            Math.min(Math.max((listElm.clientHeight - (Number.parseInt(parentStyle.paddingTop ) || 0)  - (Number.parseInt(parentStyle.paddingBottom) || 0)) * (nextSlide ? 1 : -1), minTop ), maxTop ),
+        ];
+        
+        
+        
+        parent.scrollBy({
+            left     : scrollLeft,
+            top      : scrollRight,
+            behavior : 'smooth',
+        });
+    };
+    const scrollTo = (targetSlide: HTMLElement|null) => {
+        if (!targetSlide) return;
+        const parent = targetSlide.parentElement;
+        if (!parent) return;
+        
+        
+        
+        // calculate the limit of the allowed scrolling distances:
+        const [minLeft, maxLeft, minTop, maxTop] = [
+            -parent.scrollLeft,
+            (parent.scrollWidth  - parent.clientWidth ) - parent.scrollLeft,
+            
+            -parent.scrollTop,
+            (parent.scrollHeight - parent.clientHeight) - parent.scrollTop,
+        ];
+        
+        // calculate the scrolling distance:
+        const parentStyle = getComputedStyle(parent);
+        const dimension = Dimension.from(targetSlide);
+        const [scrollLeft, scrollRight] = [
+            Math.min(Math.max(dimension.offsetLeft - (Number.parseInt(parentStyle.paddingLeft) || 0), minLeft), maxLeft),
+            Math.min(Math.max(dimension.offsetTop  - (Number.parseInt(parentStyle.paddingTop ) || 0), minTop ), maxTop ),
+        ];
+        
+        
+        
+        parent.scrollBy({
+            left     : scrollLeft,
+            top      : scrollRight,
+            behavior : 'smooth',
+        });
+    };
+    
+    const isBeginOfScroll = (listElm: TElement) => (
+        (listElm.scrollLeft <= 0.5)
+        &&
+        (listElm.scrollTop  <= 0.5)
+    );
+    const isEndOfScroll   = (listElm: TElement) => (
+        (((listElm.scrollWidth  - listElm.clientWidth ) - listElm.scrollLeft) <= 0.5)
+        &&
+        (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5)
+    );
     
     
     
