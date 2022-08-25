@@ -257,7 +257,7 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
             
             
             // variants:
-            orientation  : listComponent.props.orientation ?? listOrientation,
+            orientation  : listComponent.props.orientation ?? listOrientation ?? props.orientation,
             listStyle    : listComponent.props.listStyle   ?? listStyle,
             
             
