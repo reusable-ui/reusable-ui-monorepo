@@ -38,7 +38,7 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Carousel theme='primary' style={style}>
+                <Carousel theme='primary' style={style} infiniteLoop={true}>
                     <img key={0} alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
                     <img key={1} alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
                     <img key={2} alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
