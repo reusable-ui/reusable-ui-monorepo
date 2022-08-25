@@ -18,11 +18,6 @@ import type {
 import type {
     // css known (standard) properties:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssStyleCollection,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
@@ -54,12 +49,6 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
-import {
-    // configs:
-    spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
 // reusable-ui utilities:
 import {
     // styles:
@@ -73,7 +62,6 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    useMergeStyles,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
@@ -115,10 +103,9 @@ import {
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'         // a base component
-import {
+import type {
     // react components:
     ButtonProps,
-    Button,
     
     ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a button component for initiating an action
@@ -146,6 +133,7 @@ const _defaultListElmClasses      : Optional<string>[] = ['list']
 const _defaultDummyListElmClasses : Optional<string>[] = ['list', 'dummy']
 const _defaultPrevButtonClasses   : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses   : Optional<string>[] = ['nextBtn']
+const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
 
 
 
@@ -497,7 +485,7 @@ export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
 
 
 // react components:
-export interface CarouselProps<TElement extends Element = HTMLElement>
+export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
     extends
         // bases:
         ContentProps<TElement>,
@@ -506,7 +494,7 @@ export interface CarouselProps<TElement extends Element = HTMLElement>
         CarouselVariant,
         
         // components:
-        NavscrollComponentProps
+        NavscrollComponentProps<Element>
 {
     // refs:
     scrollingRef        ?: React.Ref<TElement> // setter ref
@@ -522,7 +510,7 @@ export interface CarouselProps<TElement extends Element = HTMLElement>
     // children:
     children            ?: React.ReactNode
 }
-const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<TElement>): JSX.Element|null => {
+const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet      = useCarouselStyleSheet();
     
@@ -563,7 +551,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // components:
         prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
         nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
-        navscrollComponent  = (<Navscroll<TElement> orientation='inline' nude={true} />                                                       as React.ReactComponentElement<any, NavscrollProps<TElement>>),
+        navscrollComponent  = (<Navscroll<Element> orientation='inline' nude={true} />                                                        as React.ReactComponentElement<any, NavscrollProps<Element>>),
         
         
         
@@ -790,7 +778,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         dummyDiff.current = 0;
     };
     
-    const scrollBy = (listElm: TElement, nextSlide: boolean) => {
+    const scrollBy           = (listElm: TElement, nextSlide: boolean) => {
         const parent = listElm;
         
         
@@ -819,7 +807,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
             behavior : 'smooth',
         });
     };
-    const scrollTo = (targetSlide: HTMLElement|null) => {
+    const scrollTo           = (targetSlide: HTMLElement|null) => {
         if (!targetSlide) return;
         const parent = targetSlide.parentElement;
         if (!parent) return;
@@ -852,12 +840,12 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         });
     };
     
-    const isBeginOfScroll = (listElm: TElement) => (
+    const isBeginOfScroll    = (listElm: TElement) => (
         (listElm.scrollLeft <= 0.5)
         &&
         (listElm.scrollTop  <= 0.5)
     );
-    const isEndOfScroll   = (listElm: TElement) => (
+    const isEndOfScroll      = (listElm: TElement) => (
         (((listElm.scrollWidth  - listElm.clientWidth ) - listElm.scrollLeft) <= 0.5)
         &&
         (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5)
@@ -884,11 +872,20 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // identifiers:
         ..._defaultNextButtonClasses,
     );
+    const mergedNavscrollClasses  = useMergeClasses(
+        // preserves the original `classes` from `navscrollComponent`:
+        navscrollComponent.props.classes,
+        
+        
+        
+        // identifiers:
+        ..._defaultNavscrollClasses,
+    );
     
     
     
     // handlers:
-    const handlePrevClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return;
         
@@ -974,7 +971,7 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         // actions:
         handlePrevClickInternal,
     );
-    const handleNextClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return;
         
@@ -1222,6 +1219,30 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
                     
                     // handlers:
                     onClick : handleNextClick,
+                },
+            )}
+            
+            {React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
+                // props:
+                {
+                    // color system props:
+                    ...colorSystemProps,
+                    
+                    
+                    
+                    // other props:
+                    ...navscrollComponent.props,
+                    
+                    
+                    
+                    // classes:
+                    classes                : mergedNavscrollClasses,
+                    
+                    
+                    
+                    // scrolls:
+                    scrollingOf            : navscrollComponent.props.scrollingOf            ?? (infiniteLoop ? dummyListRefInternal : listRefInternal),
+                    scrollingInterpolation : navscrollComponent.props.scrollingInterpolation ?? true,
                 },
             )}
         </Content>
