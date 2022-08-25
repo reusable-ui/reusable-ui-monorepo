@@ -378,6 +378,11 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
             
             
             
+            // borders:
+            overflow            : 'hidden', // clip the children at the rounded corners
+            
+            
+            
             // children:
             ...children(listElm, {
                 ...imports([
