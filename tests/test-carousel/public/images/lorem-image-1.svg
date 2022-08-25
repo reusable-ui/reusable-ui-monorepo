@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 200" preserveAspectRatio="none">
+    <defs>
+        <linearGradient id="a" x1="-0.12" y1="199.82" x2="299.5" y2="0.59" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ff8080" />
+            <stop offset="0.2" stop-color="#ffff80" />
+            <stop offset="0.4" stop-color="#80ff80" />
+            <stop offset="0.6" stop-color="#80ffff" />
+            <stop offset="0.8" stop-color="#8080ff" />
+            <stop offset="1" stop-color="#ed95bb" />
+        </linearGradient>
+        <clipPath id="b">
+            <rect width="300" height="200" fill="none" />
+        </clipPath>
+        <linearGradient id="c" x1="110.16" y1="98.26" x2="160.06" y2="98.26" gradientTransform="translate(14.84 -37.78) scale(1 1.4)" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity="0.4" />
+            <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="d" x1="207.28" y1="58.27" x2="257.17" y2="58.27" gradientTransform="translate(29.86 18.28) scale(1 1.4)" xlink:href="#c" />
+        <linearGradient id="e" x1="11.53" y1="138.87" x2="61.42" y2="138.87" gradientTransform="translate(-0.42 -94.73) scale(1 1.4)" xlink:href="#c" />
+    </defs>
+    <rect width="300" height="200" fill="url(#a)" />
+    <g clip-path="url(#b)">
+        <rect x="125" y="-50" width="50" height="300" transform="translate(70.1 -61.6) rotate(30)" fill="url(#c)" />
+        <rect x="237.14" y="-50" width="50" height="300" transform="translate(85.12 -117.67) rotate(30)" fill="url(#d)" />
+        <rect x="11.11" y="-50" width="50" height="300" transform="translate(54.84 -4.66) rotate(30)" fill="url(#e)" />
+    </g>
+</svg>
