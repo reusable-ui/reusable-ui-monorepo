@@ -43,6 +43,7 @@
     "@reusable-ui/button-icon": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/list": "^5.0.0",
     "@reusable-ui/navscroll": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",

@@ -125,6 +125,10 @@ import {
     
     NavscrollComponentProps,
 }                           from '@reusable-ui/navscroll'       // a navigation component to navigate within current page, based on scroll position
+import {
+    // react components:
+    ListItem,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
@@ -204,7 +208,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             
             
             // customize:
-            ...usesCssProps(usesPrefixedProps(contents, 'list')), // apply config's cssProps starting with list***
+            ...usesCssProps(usesPrefixedProps(carousels, 'list')), // apply config's cssProps starting with list***
         }),
     });
 };
@@ -250,7 +254,7 @@ export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}
         
         
         // customize:
-        ...usesCssProps(usesPrefixedProps(contents, 'item')), // apply config's cssProps starting with item***
+        ...usesCssProps(usesPrefixedProps(carousels, 'item')), // apply config's cssProps starting with item***
     });
 };
 export const usesCarouselMediaLayout = () => {
@@ -286,7 +290,7 @@ export const usesCarouselMediaLayout = () => {
             
             
             // customize:
-            ...usesCssProps(usesPrefixedProps(contents, 'media')), // apply config's cssProps starting with media***
+            ...usesCssProps(usesPrefixedProps(carousels, 'media')), // apply config's cssProps starting with media***
         }),
     });
 };
@@ -294,7 +298,7 @@ export const usesCarouselMediaLayout = () => {
 export const usesNavBtnLayout = () => {
     return style({
         // customize:
-        ...usesCssProps(usesPrefixedProps(contents, 'navBtn')), // apply config's cssProps starting with navBtn***
+        ...usesCssProps(usesPrefixedProps(carousels, 'navBtn')), // apply config's cssProps starting with navBtn***
     });
 };
 export const usesPrevBtnLayout = () => {
@@ -305,7 +309,7 @@ export const usesPrevBtnLayout = () => {
         
         
         // customize:
-        ...usesCssProps(usesPrefixedProps(contents, 'prevBtn')), // apply config's cssProps starting with prevBtn***
+        ...usesCssProps(usesPrefixedProps(carousels, 'prevBtn')), // apply config's cssProps starting with prevBtn***
     });
 };
 export const usesNextBtnLayout = () => {
@@ -316,7 +320,7 @@ export const usesNextBtnLayout = () => {
         
         
         // customize:
-        ...usesCssProps(usesPrefixedProps(contents, 'nextBtn')), // apply config's cssProps starting with nextBtn***
+        ...usesCssProps(usesPrefixedProps(carousels, 'nextBtn')), // apply config's cssProps starting with nextBtn***
     });
 };
 
@@ -333,7 +337,7 @@ export const usesNavLayout = () => {
         
         
         // customize:
-        ...usesCssProps(usesPrefixedProps(contents, 'nav')), // apply config's cssProps starting with nav***
+        ...usesCssProps(usesPrefixedProps(carousels, 'nav')), // apply config's cssProps starting with nav***
     });
 };
 
@@ -551,7 +555,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // components:
         prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
         nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
-        navscrollComponent  = (<Navscroll<Element> orientation='inline' nude={true} />                                                        as React.ReactComponentElement<any, NavscrollProps<Element>>),
+        navscrollComponent  = (<Navscroll<Element> orientation='inline' listStyle='bullet' />                                                        as React.ReactComponentElement<any, NavscrollProps<Element>>),
         
         
         
@@ -1244,6 +1248,28 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     scrollingOf            : navscrollComponent.props.scrollingOf            ?? (infiniteLoop ? dummyListRefInternal : listRefInternal),
                     scrollingInterpolation : navscrollComponent.props.scrollingInterpolation ?? true,
                 },
+                
+                
+                
+                // children:
+                navscrollComponent.props.children ?? React.Children.map(children, (child, index) => (
+                    <ListItem
+                        // identifiers:
+                        key={index}
+                        
+                        
+                        
+                        // semantics:
+                        tag='button'
+                        
+                        
+                        
+                        // accessibilities:
+                        {...(React.isValidElement<React.HTMLAttributes<HTMLElement>>(child) ? ({
+                            title : child.props.title,
+                        } as React.HTMLAttributes<HTMLElement>) : null)}
+                    />
+                )),
             )}
         </Content>
     );
