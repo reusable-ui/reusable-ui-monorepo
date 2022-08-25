@@ -619,18 +619,20 @@ const Carousel = <TElement extends Element = HTMLElement>(props: CarouselProps<T
         
         
         // fn props:
-        const listCurrent  = listElm.scrollLeft;
-        const ratio        = (dummyListElm.scrollWidth - dummyListElm.clientWidth) / (listElm.scrollWidth - listElm.clientWidth);
-        const dummyCurrent = listCurrent * ratio;
+        const listCurrentPos  = listElm.scrollLeft;
+        const listMaxPos      = listElm.scrollWidth - listElm.clientWidth;
+        const dummyMaxPos     = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+        const ratio           = dummyMaxPos / listMaxPos;
+        const dummyCurrentPos = listCurrentPos * ratio;
         
         
         
         // setups:
         dummyListElm.scrollTo({
             left     : Math.round(
-                Math.min(Math.max(
-                    dummyCurrent
-                , 0), (dummyListElm.scrollWidth - dummyListElm.clientWidth))
+                Math.min(Math.max( // make sure the `dummyCurrentPos` doesn't exceed the range of 0 - `dummyMaxPos`
+                    dummyCurrentPos
+                , 0), dummyMaxPos)
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
