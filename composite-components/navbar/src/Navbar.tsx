@@ -13,10 +13,6 @@ import {
 
 // cssfn:
 import type {
-    // types:
-    Optional,
-}                           from '@cssfn/types'                         // cssfn general types
-import type {
     // css known (standard) properties:
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
@@ -51,12 +47,6 @@ import {
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
-import {
-    // styles:
-    stripoutList,
-    stripoutScrollbar,
-    stripoutImage,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
 import {
     // hooks:
     useEvent,
@@ -95,10 +85,6 @@ import {
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
-import {
-    // react components:
-    Generic,
-}                           from '@reusable-ui/generic'         // a base component
 import type {
     // react components:
     BasicProps,
@@ -106,7 +92,6 @@ import type {
 import {
     // styles:
     ContentChildrenMediaOptions,
-    usesContentChildrenMediaOptions,
     usesContentLayout,
     usesContentVariants,
     
@@ -121,32 +106,6 @@ import {
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'         // a base component
-import type {
-    // react components:
-    ButtonProps,
-    
-    ButtonComponentProps,
-}                           from '@reusable-ui/button'          // a button component for initiating an action
-import {
-    // react components:
-    ButtonIcon,
-}                           from '@reusable-ui/button-icon'     // a button component with a nice icon
-import {
-    // utilities:
-    Dimension,
-    
-    
-    
-    // react components:
-    NavscrollProps,
-    Navscroll,
-    
-    NavscrollComponentProps,
-}                           from '@reusable-ui/navscroll'       // a navigation component to navigate within current page, based on scroll position
-import {
-    // react components:
-    ListItem,
-}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
@@ -156,17 +115,6 @@ const _defaultResponsiveFallbacks : Fallbacks<boolean> = [true, false]
 
 
 // styles:
-
-// .navbar > .list > .item > .media
-const listElm      = ':where(.list)'; // zero specificity
-const dummyListElm = '.dummy';
-const itemElm      = '*';             // zero specificity
-const prevBtnElm   = '.prevBtn';
-const nextBtnElm   = '.nextBtn';
-const navElm       = '.nav';
-
-
-
 export const usesNavbarLayout = (options?: ContentChildrenMediaOptions) => {
     // dependencies:
     
@@ -286,7 +234,13 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 
 
 // react components:
+export type ColorSystemProps = Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'>
 export interface NavbarParams {
+    // variants:
+    colorSystemProps : ColorSystemProps
+    
+    
+    
     // states:
     navbarExpanded   : boolean
     menuExpanded     : boolean
@@ -351,7 +305,6 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     const {
         // from <Basic>:
         size,
-        nude,
         theme,
         gradient,
         outlined,
@@ -388,10 +341,9 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // jsx:
-    const colorSystemProps : Pick<BasicProps, 'size'|'nude'|'theme'|'gradient'|'outlined'|'mild'> = {
+    const colorSystemProps : Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'> = {
         // from <Basic>:
         size,
-        nude,
         theme,
         gradient,
         outlined,
@@ -408,6 +360,11 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             mainClass={props.mainClass ?? styleSheet.main}
         >
             {(typeof(children) !== 'function') ? children : children({
+                // variants:
+                colorSystemProps,
+                
+                
+                
                 // states:
                 navbarExpanded,
                 menuExpanded,
