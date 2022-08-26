@@ -50,20 +50,23 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Navbar>{({
+                <Navbar theme='primary'>{({
                     colorSystemProps,
                     navbarExpanded,
                     menuExpanded,
                     handleClickAsToggleMenu,
                 }) => <>
-                    <img {...colorSystemProps} className='logo' src='/test-logo.png' alt='logo' />
+                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
                     <Nav orientation={navbarExpanded ? 'inline' : 'block'}>
                         <NavItem>
-                            <Link to='/'>Menu 1</Link>
+                            <Link to='/'>Home</Link>
                         </NavItem>
                         <NavItem>
-                            <Link to='/docs'>Menu 2</Link>
+                            <Link to='/expenses'>Expenses</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/invoices'>Invoices</Link>
                         </NavItem>
                         <NavItem href='https://github.com/nodestrap' target='_blank'>
                             Menu 3
