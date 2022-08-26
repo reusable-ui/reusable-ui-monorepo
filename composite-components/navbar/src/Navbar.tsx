@@ -83,6 +83,10 @@ import {
     CollapsibleProps,
     useCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+import type {
+    // hooks:
+    ActiveChangeEvent,
+}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 // reusable-ui components:
 import type {
@@ -249,6 +253,7 @@ export interface NavbarParams {
     
     // handlers:
     handleToggleMenu        : EventHandler<boolean|undefined>
+    handleActiveChange      : EventHandler<ActiveChangeEvent>
     handleClickAsToggleMenu : React.MouseEventHandler<Element>
 }
 export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.ReactNode)
@@ -335,9 +340,19 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // handlers:
-    const handleToggleMenu = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+    const handleToggleMenu        = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+        // conditions:
+        if (navbarExpanded) return; // the expand/collapse functionality is only for the mobile version of <Navbar>
+        
+        
+        
+        // actions:
         setMenuExpanded(newMenuExpanded ?? menuExpanded);
     }) as ((newMenuExpanded ?: boolean) => void);
+    const handleActiveChange      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // actions:
+        handleToggleMenu(event.active);
+    });
     const handleClickAsToggleMenu = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -348,6 +363,21 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         handleToggleMenu();
         event.preventDefault(); // handled
     });
+    
+    
+    
+    // dom effects:
+    // collapses the <Navbar>'s menu if <Navbar expanded={false}>:
+    useEffect(() => {
+        // conditions:
+        if (navbarExpanded) return; // the <Navbar> is in desktop version       => ignore
+        if (menuExpanded)   return; // the <Navbar>'s menu is already collapsed => ignore
+        
+        
+        
+        // setups:
+        setMenuExpanded(false); // collapsing the <Navbar>'s menu
+    }, [navbarExpanded, menuExpanded]);
     
     
     
@@ -384,6 +414,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
                 
                 // handlers:
                 handleToggleMenu,
+                handleActiveChange,
                 handleClickAsToggleMenu,
             })}
         </Content>
