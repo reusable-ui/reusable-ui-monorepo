@@ -237,18 +237,19 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 export type ColorSystemProps = Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'>
 export interface NavbarParams {
     // variants:
-    colorSystemProps : ColorSystemProps
+    colorSystemProps        : ColorSystemProps
     
     
     
     // states:
-    navbarExpanded   : boolean
-    menuExpanded     : boolean
+    navbarExpanded          : boolean
+    menuExpanded            : boolean
     
     
     
     // handlers:
-    handleToggleMenu : EventHandler<boolean|undefined>
+    handleToggleMenu        : EventHandler<boolean|undefined>
+    handleClickAsToggleMenu : React.MouseEventHandler<Element>
 }
 export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.ReactNode)
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
@@ -336,6 +337,16 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     // handlers:
     const handleToggleMenu = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
         setMenuExpanded(newMenuExpanded ?? menuExpanded);
+    }) as ((newMenuExpanded ?: boolean) => void);
+    const handleClickAsToggleMenu = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        handleToggleMenu();
+        event.preventDefault(); // handled
     });
     
     
@@ -373,6 +384,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
                 
                 // handlers:
                 handleToggleMenu,
+                handleClickAsToggleMenu,
             })}
         </Content>
     );
