@@ -41,6 +41,7 @@
     "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/button": "^5.0.0",
     "@reusable-ui/button-icon": "^5.0.0",
+    "@reusable-ui/collapsible": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",

@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useEffect,
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -59,6 +60,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -81,6 +83,16 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+
+// reusable-ui states:
+import {
+    // hooks:
+    ifCollapsed,
+    usesCollapsible,
+    ExpandedChangeEvent,
+    CollapsibleProps,
+    useCollapsible,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
 import {
@@ -139,7 +151,7 @@ import {
 
 
 // defaults:
-const _defaultResponsiveFallbacks : Fallbacks<boolean> = [false, true]
+const _defaultResponsiveFallbacks : Fallbacks<boolean> = [true, false]
 
 
 
@@ -274,7 +286,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 
 
 // react components:
-export interface NavbarProps<TElement extends Element = HTMLElement>
+export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
         ContentProps<TElement>,
@@ -285,24 +297,32 @@ export interface NavbarProps<TElement extends Element = HTMLElement>
             |'role' // we redefined [role] in <Generic>
         >,
         
-        // components:
-        NavscrollComponentProps<Element>
+        // states:
+        CollapsibleProps<TExpandedChangeEvent>
 {
     // children:
     children ?: React.ReactNode
 }
-const Navbar = <TElement extends Element = HTMLElement>(props: NavbarProps<TElement>): JSX.Element|null => {
+const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+    // fn props:
+    const expanded = props.expanded;
+    
+    
+    
     // jsx:
+    if (expanded !== undefined) return (
+        <NavbarInternal {...props} expanded={expanded} />
+    );
+    
     // wrap the actual <NavbarInternal> into <ResponsiveProvider>,
     // so the hooks are controlled by <ResponsiveProvider>
     return (
         <ResponsiveProvider fallbacks={_defaultResponsiveFallbacks}>{(fallback) => (
-            <NavbarInternal {...props} />
-        )}
-        </ResponsiveProvider>
+            <NavbarInternal {...props} expanded={fallback} />
+        )}</ResponsiveProvider>
     );
 };
-const NavbarInternal = <TElement extends Element = HTMLElement>(props: NavbarProps<TElement>): JSX.Element|null => {
+const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet = useNavbarStyleSheet();
     
@@ -323,11 +343,28 @@ const NavbarInternal = <TElement extends Element = HTMLElement>(props: NavbarPro
     
     // rest props:
     const {
+        // states:
+        expanded : navbarExpanded, // take
+        
+        
+        
         // children:
         children,
     ...restContentProps} = props;
     type T1 = typeof restContentProps
     type T2 = Omit<T1, keyof ContentProps<TElement> | keyof React.HTMLAttributes<TElement>>
+    
+    
+    
+    // states:
+    const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
+    
+    
+    
+    // handlers:
+    const onToggleMenu = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+        setMenuExpanded(newMenuExpanded ?? menuExpanded);
+    });
     
     
     
