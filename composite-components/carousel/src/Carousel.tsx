@@ -499,6 +499,12 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
         // bases:
         ContentProps<TElement>,
         
+        // <div>:
+        Omit<React.HTMLAttributes<TElement>,
+            // semantics:
+            |'role' // we redefined [role] in <Generic>
+        >,
+        
         // variants:
         CarouselVariant,
         
