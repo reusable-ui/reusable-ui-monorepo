@@ -286,22 +286,41 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 
 
 // react components:
+export interface NavbarParams {
+    // states:
+    navbarExpanded   : boolean
+    menuExpanded     : boolean
+    
+    
+    
+    // handlers:
+    handleToggleMenu : EventHandler<boolean|undefined>
+}
+export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.ReactNode)
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        ContentProps<TElement>,
+        Omit<ContentProps<TElement>,
+            // children:
+            |'children' // we redefined `children` prop as `NavbarChildren`
+        >,
         
         // <div>:
         Omit<React.HTMLAttributes<TElement>,
             // semantics:
             |'role' // we redefined [role] in <Generic>
+            
+            
+            
+            // children:
+            |'children' // we redefined `children` prop as `NavbarChildren`
         >,
         
         // states:
         CollapsibleProps<TExpandedChangeEvent>
 {
     // children:
-    children ?: React.ReactNode
+    children ?: NavbarChildren
 }
 const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // fn props:
@@ -344,7 +363,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     // rest props:
     const {
         // states:
-        expanded : navbarExpanded, // take
+        expanded : navbarExpanded = false, // take
         
         
         
@@ -362,14 +381,14 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // handlers:
-    const onToggleMenu = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+    const handleToggleMenu = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
         setMenuExpanded(newMenuExpanded ?? menuExpanded);
     });
     
     
     
     // jsx:
-    const colorSystemProps : BasicProps<any> = {
+    const colorSystemProps : Pick<BasicProps, 'size'|'nude'|'theme'|'gradient'|'outlined'|'mild'> = {
         // from <Basic>:
         size,
         nude,
@@ -388,7 +407,16 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            //
+            {(typeof(children) !== 'function') ? children : children({
+                // states:
+                navbarExpanded,
+                menuExpanded,
+                
+                
+                
+                // handlers:
+                handleToggleMenu,
+            })}
         </Content>
     );
 };
