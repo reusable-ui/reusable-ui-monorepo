@@ -147,15 +147,15 @@ export const usesNavbarLayout = () => {
         ]),
         ...style({
             // children:
-            ...descendants('logo', {
+            ...descendants('.logo', {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'logo')), // apply config's cssProps starting with logo***
             }),
-            ...descendants('toggler', {
+            ...descendants('.toggler', {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'toggler')), // apply config's cssProps starting with toggler***
             }),
-            ...descendants('nav', {
+            ...descendants('.nav', {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'nav')), // apply config's cssProps starting with nav***
             }),
