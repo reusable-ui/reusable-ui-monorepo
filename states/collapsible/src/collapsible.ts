@@ -35,12 +35,28 @@ import {
     // styles:
     style,
     vars,
+    
+    
+    
+    // utilities:
+    iif,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
     CssVars,
     cssVars,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
+import {
+    // types:
+    CssConfigProps,
+    Refs,
+    
+    
+    
+    // utilities:
+    usesSuffixedProps,
+    overwriteProps,
+}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui utilities:
 import {
@@ -114,7 +130,7 @@ export interface CollapsibleConfig {
  * @param config  A configuration of `collapsibleRule`.
  * @returns A `CollapsibleStuff` represents a collapsible state.
  */
-export const usesCollapsible = (config?: CollapsibleConfig): CollapsibleStuff => {
+export const usesCollapsible = <TConfigProps extends CssConfigProps = CssConfigProps>(config?: CollapsibleConfig & Refs<TConfigProps>): CollapsibleStuff => {
     return {
         collapsibleRule: () => style({
             ...states([
@@ -126,6 +142,19 @@ export const usesCollapsible = (config?: CollapsibleConfig): CollapsibleStuff =>
                 ifCollapsing({
                     ...vars({
                         [collapsibleVars.anim] : config?.animCollapse,
+                    }),
+                }),
+                
+                
+                
+                iif(!!config, {
+                    ...ifExpand({
+                        // overwrites propName = propName{'Expand'}:
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Expand')),
+                    }),
+                    ...ifCollapse({
+                        // overwrites propName = propName{'Collapse'}:
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Collapse')),
                     }),
                 }),
             ]),
