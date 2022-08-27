@@ -89,27 +89,31 @@ import type {
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 // reusable-ui components:
-import type {
+import {
+    // configs:
+    basics,
+    
+    
+    
     // react components:
     BasicProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
-    ContentChildrenMediaOptions,
-    usesContentLayout,
-    usesContentVariants,
+    usesContainerLayout,
+    usesContainerVariants,
     
     
     
     // configs:
-    contents,
+    containers,
     
     
     
     // react components:
-    ContentProps,
-    Content,
-}                           from '@reusable-ui/content'         // a base component
+    ContainerProps,
+    Container,
+}                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 
 
 
@@ -119,7 +123,7 @@ const _defaultResponsiveFallbacks : Fallbacks<boolean> = [true, false]
 
 
 // styles:
-export const usesNavbarLayout = (options?: ContentChildrenMediaOptions) => {
+export const usesNavbarLayout = () => {
     // dependencies:
     
     // features:
@@ -130,7 +134,7 @@ export const usesNavbarLayout = (options?: ContentChildrenMediaOptions) => {
     return style({
         ...imports([
             // layouts:
-            usesContentLayout(),
+            usesContainerLayout(),
             
             // features:
             paddingRule,
@@ -188,7 +192,7 @@ export const usesNavbarVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesContentVariants(),
+            usesContainerVariants(),
             resizableRule,
         ]),
     });
@@ -221,17 +225,16 @@ export const useNavbarVariant = (props: NavbarVariant) => {
 export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
     return {
         // borders:
-        navBtnBorderRadius  : '0px'                     as CssKnownProps['borderRadius'],
+        borderWidth   : '0px'                       as CssKnownProps['borderWidth' ],
+        borderRadius  : '0px'                       as CssKnownProps['borderRadius'],
         
         
         
         // spacings:
-        paddingInline       : '0px'                     as CssKnownProps['paddingInline'],
-        paddingBlock        : '0px'                     as CssKnownProps['paddingBlock' ],
-        
-        navMarginBlockEnd   : contents.paddingBlock     as CssKnownProps['marginBlockEnd'],
-        navMarginBlockEndSm : contents.paddingBlockSm   as CssKnownProps['marginBlockEnd'],
-        navMarginBlockEndLg : contents.paddingBlockLg   as CssKnownProps['marginBlockEnd'],
+        paddingInline : containers.paddingInline    as CssKnownProps['paddingInline'],
+        paddingBlock  : basics.paddingBlock         as CssKnownProps['paddingBlock' ],
+        gapInline     : basics.paddingInline        as CssKnownProps['gapInline'    ],
+        gapBlock      : basics.paddingBlock         as CssKnownProps['gapBlock'     ]
     };
 }, { prefix: 'navb' });
 
@@ -240,7 +243,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 // react components:
 export type ColorSystemProps = Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'>
 export interface NavbarParams {
-    // variants:
+    // color system props:
     colorSystemProps        : ColorSystemProps
     
     
@@ -260,7 +263,7 @@ export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        Omit<ContentProps<TElement>,
+        Omit<ContainerProps<TElement>,
             // children:
             |'children' // we redefined `children` prop as `NavbarChildren`
         >,
@@ -314,7 +317,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         theme,
         gradient,
         outlined,
-        mild,
+        mild = false,
     } = props;
     
     
@@ -328,9 +331,9 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         // children:
         children,
-    ...restContentProps} = props;
-    type T1 = typeof restContentProps
-    type T2 = Omit<T1, keyof ContentProps<TElement> | keyof React.HTMLAttributes<TElement>>
+    ...restContainerProps} = props;
+    type T1 = typeof restContainerProps
+    type T2 = Omit<T1, keyof ContainerProps<TElement> | keyof React.HTMLAttributes<TElement>>
     
     
     
@@ -391,9 +394,14 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         mild,
     };
     return (
-        <Content<TElement>
+        <Container<TElement>
+            // color system props:
+            {...colorSystemProps}
+            
+            
+            
             // other props:
-            {...restContentProps}
+            {...restContainerProps}
             
             
             
@@ -401,7 +409,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             mainClass={props.mainClass ?? styleSheet.main}
         >
             {(typeof(children) !== 'function') ? children : children({
-                // variants:
+                // color system props:
                 colorSystemProps,
                 
                 
@@ -417,7 +425,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
                 handleActiveChange,
                 handleClickAsToggleMenu,
             })}
-        </Content>
+        </Container>
     );
 };
 export {
