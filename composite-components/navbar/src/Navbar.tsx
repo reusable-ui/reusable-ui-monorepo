@@ -65,6 +65,10 @@ import {
 // reusable-ui features:
 import {
     // hooks:
+    usesBorder,
+}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
+import {
+    // hooks:
     usesPadding,
 }                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
 
@@ -127,6 +131,7 @@ export const usesNavbarLayout = () => {
     // dependencies:
     
     // features:
+    const {borderRule , borderVars } = usesBorder(navbars);
     const {paddingRule, paddingVars} = usesPadding(navbars);
     
     
@@ -137,40 +142,22 @@ export const usesNavbarLayout = () => {
             usesContainerLayout(),
             
             // features:
+            borderRule,
             paddingRule,
         ]),
         ...style({
-            // layouts:
-            display             : 'grid', // use css grid for layouting, so we can customize the desired area later.
-            
-            // explicit areas:
-            gridTemplateRows    : [[
-                '1fr',
-                'min-content',
-            ]],
-            gridTemplateColumns : [['15%', '1fr', '15%']],
-            gridTemplateAreas   : [[
-                '"prevBtn main nextBtn"',
-                '"prevBtn nav  nextBtn"',
-            ]],
-            
-            // child default sizes:
-            justifyItems        : 'stretch', // each section fills the entire area's width
-            alignItems          : 'stretch', // each section fills the entire area's height
+            // customize:
+            ...usesCssProps(navbars), // apply config's cssProps
             
             
             
             // borders:
-            overflow            : 'hidden', // clip the children at the rounded corners
-            
-            
-            
-            // children:
-            
-            
-            
-            // customize:
-            ...usesCssProps(navbars), // apply config's cssProps
+            border        : borderVars.border,
+         // borderRadius           : borderVars.borderRadius,
+            borderStartStartRadius : borderVars.borderStartStartRadius,
+            borderStartEndRadius   : borderVars.borderStartEndRadius,
+            borderEndStartRadius   : borderVars.borderEndStartRadius,
+            borderEndEndRadius     : borderVars.borderEndEndRadius,
             
             
             
@@ -207,17 +194,6 @@ export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
         usesNavbarVariants(),
     ]),
 }), { id: 'xf4hlnf0au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export interface NavbarVariant {
-    infiniteLoop ?: boolean
-}
-export const useNavbarVariant = (props: NavbarVariant) => {
-    return {
-        infiniteLoop: props.infiniteLoop ?? false,
-    };
-};
 
 
 
