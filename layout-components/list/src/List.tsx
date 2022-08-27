@@ -1401,7 +1401,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         semanticRole,
         
         tag  : buttonTag,
-        role,
+        role : buttonRole,
         isSemanticButton,
         
         type : buttonType,
@@ -1409,8 +1409,9 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
     
     // prevents for defaulting [tag] to <button>:
     const isDefaultButton = isSemanticButton && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
-    const tag  = (isDefaultButton ? (props.tag ?? '') : buttonTag );
-    const type = (isDefaultButton ?  props.type       : buttonType);
+    const tag  = (isDefaultButton ? (props.tag  ?? 'div'   ) : buttonTag );
+    const role = (isDefaultButton ? (props.role ?? 'button') : buttonRole);
+    const type = (isDefaultButton ?  props.type              : buttonType);
     
     
     
