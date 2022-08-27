@@ -33,11 +33,6 @@ function App() {
         setValue(value + 1);
     };
     
-    const [pressed, setPressed] = useState(false);
-    const handleTogglePressed = () => {
-        setPressed(!pressed);
-    };
-    
     
     return (
         <>
@@ -56,9 +51,9 @@ function App() {
                     menuExpanded,
                     handleClickAsToggleMenu,
                 }) => <>
-                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' />
+                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' style={{height: '30px'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Nav orientation={navbarExpanded ? 'inline' : 'block'}>
+                    <Nav {...colorSystemProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                         <NavItem>
                             <Link to='/'>Home</Link>
                         </NavItem>
