@@ -33,7 +33,10 @@ export interface GenericProps<TElement extends Element = HTMLElement>
     extends
         // bases:
         React.DOMAttributes<TElement>,
-        SemanticProps
+        SemanticProps,
+        
+        // classes:
+        Pick<React.HTMLAttributes<TElement>, 'className'>
 {
     // refs:
     elmRef         ?: React.Ref<TElement> // setter ref
@@ -89,6 +92,7 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
         classes,
         variantClasses,
         stateClasses,
+        className,
     ...restAriaDomProps} = props;
     
     
@@ -109,7 +113,7 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
     
     
     // classes:
-    const className = useMemo((): string|undefined => {
+    const mergedClassName = useMemo((): string|undefined => {
         return (
             Array.from(new Set([
                 // main:
@@ -129,6 +133,11 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
                 
                 // states:
                 ...(stateClasses ?? []),
+                
+                
+                
+                // React's legacy:
+                className?.split(' '),
             ].filter((c) => !!c))).join(' ')
             ||
             undefined
@@ -168,7 +177,7 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
             
             
             // classes:
-            className={className}
+            className={mergedClassName}
         />
     );
 };
