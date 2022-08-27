@@ -184,6 +184,21 @@ export const usesNavbarVariants = () => {
         ]),
     });
 };
+export const usesNavbarStates = () => {
+    // dependencies:
+    
+    // states:
+    const {collapsibleRule} = usesCollapsible(navbars);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            collapsibleRule,
+        ]),
+    });
+};
 
 export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
@@ -192,6 +207,9 @@ export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
         
         // variants:
         usesNavbarVariants(),
+        
+        // states:
+        usesNavbarStates(),
     ]),
 }), { id: 'xf4hlnf0au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -200,6 +218,20 @@ export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
 // configs:
 export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
     return {
+        // layouts:
+        // display         : 'flex'                    as CssKnownProps['display'],
+        // flexDirection   : 'row'                     as CssKnownProps['flexDirection'],
+        // justifyContent  : 'space-between'           as CssKnownProps['justifyContent'],
+        // alignItems      : 'center'                  as CssKnownProps['alignItems'],
+        // flexWrap        : 'nowrap'                  as CssKnownProps['flexWrap'],
+        display         : 'grid'                    as CssKnownProps['display'        ],
+        gridAutoFlow    : 'column'                  as CssKnownProps['gridAutoFlow'   ],
+        gridAutoColumns : 'auto'                    as CssKnownProps['gridAutoColumns'],
+        justifyContent  : 'space-between'           as CssKnownProps['justifyContent' ],
+        alignContent    : 'center'                  as CssKnownProps['alignContent'   ],
+        
+        
+        
         // positions:
         zIndex          : 1020                      as CssKnownProps['zIndex'         ],
         position        : 'sticky'                  as CssKnownProps['position'       ],

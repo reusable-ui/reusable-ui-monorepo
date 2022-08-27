@@ -51,7 +51,7 @@ function App() {
                     menuExpanded,
                     handleClickAsToggleMenu,
                 }) => <>
-                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' style={{height: '30px'}} />
+                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
                     <Nav {...colorSystemProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                         <NavItem>
