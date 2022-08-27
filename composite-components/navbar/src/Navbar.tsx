@@ -243,8 +243,10 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         display         : 'grid'                    as CssKnownProps['display'        ],
         gridAutoFlow    : 'column'                  as CssKnownProps['gridAutoFlow'   ],
         gridAutoColumns : 'auto'                    as CssKnownProps['gridAutoColumns'],
-        justifyContent  : 'space-between'           as CssKnownProps['justifyContent' ],
-        alignContent    : 'center'                  as CssKnownProps['alignContent'   ],
+        justifyContent  : 'space-between'           as CssKnownProps['justifyContent' ], // separates each items as far as possible
+        alignContent    : 'center'                  as CssKnownProps['alignContent'   ], // the excess vertical space placed at the top & bottom
+        justifyItems    : 'center'                  as CssKnownProps['justifyItems'   ], // prevents from stretching
+        alignItems      : 'center'                  as CssKnownProps['alignItems'     ], // prevents from stretching
         
         
         
@@ -278,7 +280,8 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // nav:
-        navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace'],
+        navAlignSelf    : 'stretch'                 as CssKnownProps['alignSelf'  ],
+        navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace' ],
         navMarginBlock  : [[
             'calc(0px - ', basics.paddingBlock, ')',
         ]]                                          as CssKnownProps['marginBlock'],
