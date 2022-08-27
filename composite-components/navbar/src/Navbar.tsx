@@ -224,17 +224,32 @@ export const useNavbarVariant = (props: NavbarVariant) => {
 // configs:
 export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
     return {
+        // positions:
+        zIndex          : 1020                      as CssKnownProps['zIndex'         ],
+        position        : 'sticky'                  as CssKnownProps['position'       ],
+        insetBlockStart : '0px'                     as CssKnownProps['insetBlockStart'],
+        
+        
+        
+        // sizes:
+        blockSize       : 'auto'                    as CssKnownProps['blockSize'],
+        
+        
+        
         // borders:
-        borderWidth   : '0px'                       as CssKnownProps['borderWidth' ],
-        borderRadius  : '0px'                       as CssKnownProps['borderRadius'],
+        borderWidth     : '0px'                     as CssKnownProps['borderWidth' ],
+        borderRadius    : '0px'                     as CssKnownProps['borderRadius'],
+        boxShadow       : [
+            [0, 0, '10px', 'rgba(0,0,0,0.5)'],
+        ]                                           as CssKnownProps['boxShadow'   ],
         
         
         
         // spacings:
-        paddingInline : containers.paddingInline    as CssKnownProps['paddingInline'],
-        paddingBlock  : basics.paddingBlock         as CssKnownProps['paddingBlock' ],
-        gapInline     : basics.paddingInline        as CssKnownProps['gapInline'    ],
-        gapBlock      : basics.paddingBlock         as CssKnownProps['gapBlock'     ]
+        paddingInline   : containers.paddingInline  as CssKnownProps['paddingInline'],
+        paddingBlock    : basics.paddingBlock       as CssKnownProps['paddingBlock' ],
+        gapInline       : basics.paddingInline      as CssKnownProps['gapInline'    ],
+        gapBlock        : basics.paddingBlock       as CssKnownProps['gapBlock'     ],
     };
 }, { prefix: 'navb' });
 
