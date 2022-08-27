@@ -279,6 +279,9 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         // nav:
         navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace'],
+        navMarginBlock  : [[
+            'calc(0px - ', basics.paddingBlock, ')',
+        ]]                                          as CssKnownProps['marginBlock'],
     };
 }, { prefix: 'navb' });
 
