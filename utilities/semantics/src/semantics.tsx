@@ -86,52 +86,11 @@ export const useSemantic     = (props: SemanticProps, options: SemanticOptions =
         // eslint-disable-next-line
     }, [preferredTag, separatorSym, preferredRole, separatorSym, semanticTag, separatorSym, semanticRole].flat());
 };
-export const useTestSemantic = (props: SemanticProps, options: SemanticOptions): SemanticData => {
-    const {
-        semanticTag  : props_semanticTag,
-        semanticRole : props_semanticRole,
-    } = props;
-    
-    const {
-        semanticTag  : options_semanticTag,
-        semanticRole : options_semanticRole,
-    } = options;
-    
-    const newOptions = useMemo((): SemanticOptions => {
-        const semanticTag = ((): SemanticTag => {
-            if (!props_semanticTag) return options_semanticTag;
-            
-            
-            
-            if (props_semanticTag === options_semanticTag) return options_semanticTag;
-            
-            const semanticTag1  = [  props_semanticTag].flat();
-            const semanticTag2  = [options_semanticTag].flat();
-            const intersectTag = semanticTag1.filter((item) => semanticTag2.includes(item));
-            return intersectTag.length ? intersectTag : null;
-        })();
-        
-        const semanticRole = ((): SemanticRole => {
-            if (!props_semanticRole) return options_semanticRole;
-            
-            
-            
-            if (props_semanticRole === options_semanticRole) return options_semanticRole;
-            
-            const semanticRole1  = [  props_semanticRole].flat();
-            const semanticRole2  = [options_semanticRole].flat();
-            const intersectRole =  semanticRole1.filter((item) => semanticRole2.includes(item));
-            return intersectRole.length ? intersectRole : null;
-        })();
-        
-        return {
-            semanticTag,
-            semanticRole,
-        };
-        // eslint-disable-next-line
-    }, [props_semanticTag, separatorSym, props_semanticRole, separatorSym, options_semanticTag, separatorSym, options_semanticRole].flat());
-    
-    
-    
-    return useSemantic(props, newOptions);
+export const useTestSemantic = (props: SemanticProps, expected: SemanticOptions): SemanticData => {
+    const {tag, role} = useSemantic(props);
+    return useSemantic({
+        ...expected,
+        tag  : tag  || undefined,
+        role : role || undefined,
+    });
 };
