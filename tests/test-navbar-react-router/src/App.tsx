@@ -45,13 +45,13 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Navbar theme='primary'>{({
+                <Navbar theme='primary' expanded={true}>{({
                     colorSystemProps,
                     navbarExpanded,
                     menuExpanded,
                     handleClickAsToggleMenu,
                 }) => <>
-                    <img {...colorSystemProps} className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
+                    <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
                     <Nav {...colorSystemProps} className='nav' orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                         <NavItem>

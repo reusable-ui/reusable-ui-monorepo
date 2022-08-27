@@ -241,8 +241,11 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         // alignItems      : 'center'                  as CssKnownProps['alignItems'],
         // flexWrap        : 'nowrap'                  as CssKnownProps['flexWrap'],
         display         : 'grid'                    as CssKnownProps['display'        ],
-        gridAutoFlow    : 'column'                  as CssKnownProps['gridAutoFlow'   ],
-        gridAutoColumns : 'auto'                    as CssKnownProps['gridAutoColumns'],
+        gridAutoFlow    : 'column'                  as CssKnownProps['gridAutoFlow'   ], // the excess items flows automatically to a new column
+        gridAutoColumns : 'auto'                    as CssKnownProps['gridAutoColumns'], // a new column
+        gridTemplateRows : [[
+            '1fr', // limiting only one row, so the excess items flows automatically to a new column
+        ]]                                          as CssKnownProps['gridTemplateRows'],
         justifyContent  : 'space-between'           as CssKnownProps['justifyContent' ], // separates each items as far as possible
         alignContent    : 'center'                  as CssKnownProps['alignContent'   ], // the excess vertical space placed at the top & bottom
         justifyItems    : 'center'                  as CssKnownProps['justifyItems'   ], // prevents from stretching
@@ -280,6 +283,9 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // nav:
+        navGridArea       : '-1/1/-1/-3'            as CssKnownProps['gridArea'   ],
+        navGridAreaExpand : 'unset'                   as CssKnownProps['gridArea'   ],
+        navJustifySelf  : 'stretch'                 as CssKnownProps['justifySelf'],
         navAlignSelf    : 'stretch'                 as CssKnownProps['alignSelf'  ],
         navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace' ],
         navMarginBlock  : [[
@@ -356,7 +362,12 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
 };
 const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet = useNavbarStyleSheet();
+    const styleSheet       = useNavbarStyleSheet();
+    
+    
+    
+    // states:
+    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
     
     
     
@@ -384,6 +395,19 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     ...restContainerProps} = props;
     type T1 = typeof restContainerProps
     type T2 = Omit<T1, keyof ContainerProps<TElement> | keyof React.HTMLAttributes<TElement>>
+    
+    
+    
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        collapsibleState.class,
+    );
     
     
     
@@ -457,6 +481,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            stateClasses={stateClasses}
         >
             {(typeof(children) !== 'function') ? children : children({
                 // color system props:
