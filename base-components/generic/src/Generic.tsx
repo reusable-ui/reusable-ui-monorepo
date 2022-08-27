@@ -143,7 +143,7 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
             undefined
         );
         // eslint-disable-next-line
-    }, [mainClass, classes, variantClasses, stateClasses].flat());
+    }, [mainClass, classes, variantClasses, stateClasses, className].flat());
     
     
     
