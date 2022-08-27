@@ -95,6 +95,20 @@ export interface BorderVars {
      * final border radiuses (all 4 corners).
      */
     borderRadius           : any
+    
+    
+    
+    // specifics:
+    borderInlineWidth      : any
+    borderBlockWidth       : any
+    
+    
+    
+    // more specifics:
+    borderInlineStartWidth : any
+    borderInlineEndWidth   : any
+    borderBlockStartWidth  : any
+    borderBlockEndWidth    : any
 }
 const [borderVars] = cssVars<BorderVars>();
 
@@ -102,10 +116,25 @@ const [borderVars] = cssVars<BorderVars>();
 
 export interface BorderStuff { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
 export interface BorderConfig {
-    borderStyle  ?: CssKnownProps['borderStyle' ]
-    borderWidth  ?: CssKnownProps['borderWidth' ]
-    borderColor  ?: CssKnownProps['borderColor' ]
-    borderRadius ?: CssKnownProps['borderRadius']
+    // generals:
+    borderStyle            ?: CssKnownProps['borderStyle' ]
+    borderWidth            ?: CssKnownProps['borderWidth' ]
+    borderColor            ?: CssKnownProps['borderColor' ]
+    borderRadius           ?: CssKnownProps['borderRadius']
+    
+    
+    
+    // specifics:
+    borderInlineWidth      ?: CssKnownProps['borderInlineWidth']
+    borderBlockWidth       ?: CssKnownProps['borderBlockWidth' ]
+    
+    
+    
+    // more specifics:
+    borderInlineStartWidth ?: CssKnownProps['borderInlineStartWidth']
+    borderInlineEndWidth   ?: CssKnownProps['borderInlineEndWidth'  ]
+    borderBlockStartWidth  ?: CssKnownProps['borderBlockStartWidth' ]
+    borderBlockEndWidth    ?: CssKnownProps['borderBlockEndWidth'   ]
 }
 /**
  * Uses border (strokes, colors, radiuses).
@@ -168,6 +197,24 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
                     borderVars.borderEndEndRadius,     // bottom-right
                     borderVars.borderEndStartRadius,   // bottom-left
                 ]],
+            }),
+            
+            
+            
+            // specifics:
+            ...vars({
+                [borderVars.borderInlineWidth     ] : config?.borderInlineWidth,
+                [borderVars.borderBlockWidth      ] : config?.borderBlockWidth,
+            }),
+            
+            
+            
+            // more specifics:
+            ...vars({
+                [borderVars.borderInlineStartWidth] : config?.borderInlineStartWidth,
+                [borderVars.borderInlineEndWidth  ] : config?.borderInlineEndWidth,
+                [borderVars.borderBlockStartWidth ] : config?.borderBlockStartWidth,
+                [borderVars.borderBlockEndWidth   ] : config?.borderBlockEndWidth,
             }),
         }),
         borderVars,
