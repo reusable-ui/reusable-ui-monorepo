@@ -235,62 +235,67 @@ export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
 export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
     return {
         // layouts:
-        // display         : 'flex'                    as CssKnownProps['display'],
-        // flexDirection   : 'row'                     as CssKnownProps['flexDirection'],
-        // justifyContent  : 'space-between'           as CssKnownProps['justifyContent'],
-        // alignItems      : 'center'                  as CssKnownProps['alignItems'],
-        // flexWrap        : 'nowrap'                  as CssKnownProps['flexWrap'],
-        display         : 'grid'                    as CssKnownProps['display'        ],
-        gridAutoFlow    : 'column'                  as CssKnownProps['gridAutoFlow'   ], // the excess items flows automatically to a new column
-        gridAutoColumns : 'auto'                    as CssKnownProps['gridAutoColumns'], // a new column
-        gridTemplateRows : [[
+        // display               : 'flex'                      as CssKnownProps['display'],
+        // flexDirection         : 'row'                       as CssKnownProps['flexDirection'],
+        // justifyContent        : 'space-between'             as CssKnownProps['justifyContent'],
+        // alignItems            : 'center'                    as CssKnownProps['alignItems'],
+        // flexWrap              : 'nowrap'                    as CssKnownProps['flexWrap'],
+        display               : 'grid'                      as CssKnownProps['display'         ],
+        gridAutoFlow          : 'column'                    as CssKnownProps['gridAutoFlow'    ], // the excess items flows automatically to a new column
+        gridAutoColumns       : 'auto'                      as CssKnownProps['gridAutoColumns' ], // a new column
+        gridTemplateRows      : [[
             '1fr', // limiting only one row, so the excess items flows automatically to a new column
-        ]]                                          as CssKnownProps['gridTemplateRows'],
-        justifyContent  : 'space-between'           as CssKnownProps['justifyContent' ], // separates each items as far as possible
-        alignContent    : 'center'                  as CssKnownProps['alignContent'   ], // the excess vertical space placed at the top & bottom
-        justifyItems    : 'center'                  as CssKnownProps['justifyItems'   ], // prevents from stretching
-        alignItems      : 'center'                  as CssKnownProps['alignItems'     ], // prevents from stretching
+        ]]                                                  as CssKnownProps['gridTemplateRows'],
+        justifyContent        : 'space-between'             as CssKnownProps['justifyContent'  ], // separates each items as far as possible
+        alignContent          : 'center'                    as CssKnownProps['alignContent'    ], // the excess vertical space placed at the top & bottom
+        justifyItems          : 'center'                    as CssKnownProps['justifyItems'    ], // prevents from stretching
+        alignItems            : 'center'                    as CssKnownProps['alignItems'      ], // prevents from stretching
         
         
         
         // positions:
-        zIndex          : 1020                      as CssKnownProps['zIndex'         ],
-        position        : 'sticky'                  as CssKnownProps['position'       ],
-        insetBlockStart : '0px'                     as CssKnownProps['insetBlockStart'],
+        zIndex                : 1020                        as CssKnownProps['zIndex'         ],
+        position              : 'sticky'                    as CssKnownProps['position'       ],
+        insetBlockStart       : '0px'                       as CssKnownProps['insetBlockStart'],
         
         
         
         // sizes:
-        blockSize       : 'auto'                    as CssKnownProps['blockSize'],
+        blockSize             : 'auto'                      as CssKnownProps['blockSize'],
         
         
         
         // borders:
-        borderWidth     : '0px'                     as CssKnownProps['borderWidth' ],
-        borderRadius    : '0px'                     as CssKnownProps['borderRadius'],
-        boxShadow       : [
+        borderWidth           : '0px'                       as CssKnownProps['borderWidth' ],
+        borderRadius          : '0px'                       as CssKnownProps['borderRadius'],
+        boxShadow             : [
             [0, 0, '10px', 'rgba(0,0,0,0.5)'],
-        ]                                           as CssKnownProps['boxShadow'   ],
+        ]                                                   as CssKnownProps['boxShadow'   ],
         
         
         
         // spacings:
-        paddingInline   : containers.paddingInline  as CssKnownProps['paddingInline'],
-        paddingBlock    : basics.paddingBlock       as CssKnownProps['paddingBlock' ],
-        gapInline       : basics.paddingInline      as CssKnownProps['gapInline'    ],
-        gapBlock        : basics.paddingBlock       as CssKnownProps['gapBlock'     ],
+        paddingInline         : containers.paddingInline    as CssKnownProps['paddingInline'],
+        paddingBlock          : basics.paddingBlock         as CssKnownProps['paddingBlock' ],
+        gapInline             : basics.paddingInline        as CssKnownProps['gapInline'    ],
+        gapBlock              : basics.paddingBlock         as CssKnownProps['gapBlock'     ],
         
         
         
         // nav:
-        navGridArea       : '-1/1/-1/-3'            as CssKnownProps['gridArea'   ],
-        navGridAreaExpand : 'unset'                   as CssKnownProps['gridArea'   ],
-        navJustifySelf  : 'stretch'                 as CssKnownProps['justifySelf'],
-        navAlignSelf    : 'stretch'                 as CssKnownProps['alignSelf'  ],
-        navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace' ],
-        navMarginBlock  : [[
+        navGridArea           : '-1/1/-1/-3'                as CssKnownProps['gridArea'    ],
+        navGridAreaExpand     : 'unset'                     as CssKnownProps['gridArea'    ],
+        navJustifySelf        : 'stretch'                   as CssKnownProps['justifySelf' ],
+        navAlignSelf          : 'stretch'                   as CssKnownProps['alignSelf'   ],
+        navWhiteSpace         : 'nowrap'                    as CssKnownProps['whiteSpace'  ],
+        navMarginInline       : [[
+            'calc(0px - ', containers.paddingInline, ')',
+        ]]                                                  as CssKnownProps['marginInline'],
+        navMarginInlineExpand : 'unset'                     as CssKnownProps['marginInline'],
+        navMarginBlock        : 'unset'                     as CssKnownProps['marginBlock' ],
+        navMarginBlockExpand  : [[
             'calc(0px - ', basics.paddingBlock, ')',
-        ]]                                          as CssKnownProps['marginBlock'],
+        ]]                                                  as CssKnownProps['marginBlock' ],
     };
 }, { prefix: 'navb' });
 
