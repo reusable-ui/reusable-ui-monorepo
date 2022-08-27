@@ -81,6 +81,7 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // types:
+    Tag,
     SemanticTag,
     SemanticRole,
     
@@ -1578,7 +1579,6 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     const semanticTag  = props.semanticTag  ?? _defaultSemanticTag ;
     const semanticRole = props.semanticRole ?? _defaultSemanticRole;
     const {
-        isDesiredType : isListType,
         isSemanticTag : isSemanticList,
     } = useTestSemantic(
         // test:
@@ -1595,9 +1595,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             semanticRole : _defaultSemanticRole,
         }
     );
-    
-    const wrapperSemanticTag  : SemanticTag  = (isSemanticList ? 'li'       : '');
-    const wrapperSemanticRole : SemanticRole = (isListType     ? 'listitem' : '');
+    const wrapperTag : Tag = (isSemanticList ? 'li' : 'div');
     
     
     
@@ -1667,8 +1665,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                     
                     
                     // semantics:
-                    semanticTag ={wrapperSemanticTag }
-                    semanticRole={wrapperSemanticRole}
+                    tag={wrapperTag}
                 >
                     {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
                         // props:
