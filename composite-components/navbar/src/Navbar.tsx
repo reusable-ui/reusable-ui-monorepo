@@ -24,7 +24,7 @@ import {
     
     
     // combinators:
-    children,
+    descendants,
     
     
     
@@ -146,6 +146,22 @@ export const usesNavbarLayout = () => {
             paddingRule,
         ]),
         ...style({
+            // children:
+            ...descendants('logo', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(navbars, 'logo')), // apply config's cssProps starting with logo***
+            }),
+            ...descendants('toggler', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(navbars, 'toggler')), // apply config's cssProps starting with toggler***
+            }),
+            ...descendants('nav', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(navbars, 'nav')), // apply config's cssProps starting with nav***
+            }),
+            
+            
+            
             // customize:
             ...usesCssProps(navbars), // apply config's cssProps
             
@@ -258,6 +274,11 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         paddingBlock    : basics.paddingBlock       as CssKnownProps['paddingBlock' ],
         gapInline       : basics.paddingInline      as CssKnownProps['gapInline'    ],
         gapBlock        : basics.paddingBlock       as CssKnownProps['gapBlock'     ],
+        
+        
+        
+        // nav:
+        navWhiteSpace   : 'nowrap'                  as CssKnownProps['whiteSpace'],
     };
 }, { prefix: 'navb' });
 
