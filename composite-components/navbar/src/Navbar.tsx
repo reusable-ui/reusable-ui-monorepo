@@ -366,11 +366,6 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     
-    // states:
-    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
-    
-    
-    
     // forward props:
     const {
         // from <Basic>:
@@ -406,7 +401,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // states:
-        collapsibleState.class,
+        (navbarExpanded || undefined) && 'expanded',
     );
     
     
