@@ -70,7 +70,6 @@ import {
 import {
     // utilities:
     setFocusNext,
-    isSelfOrDescendantOf,
 }                           from '@reusable-ui/focuses'         // focusing functions
 import {
     // hooks:
@@ -729,9 +728,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     if (!focusedElm) return; // nothing was focused => nothing to do
                     
                     const modalUi = modalUiRefInternal.current;
-                    if (                                                        // neither
-                        !(modalUi && isSelfOrDescendantOf(focusedElm, modalUi)) // the current focused element is inside the <Modal>
-                    ) return;                                                   // => nothing to focus
+                    if (                                 // neither
+                        !(modalUi?.contains(focusedElm)) // the current focused element is inside the <Modal>
+                    ) return;                            // => nothing to focus
                     
                     
                     
