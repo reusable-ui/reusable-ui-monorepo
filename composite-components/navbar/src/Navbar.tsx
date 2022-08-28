@@ -155,17 +155,13 @@ export const usesNavbarLayout = () => {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'toggler')), // apply config's cssProps starting with toggler***
             }),
-            ...descendants('.menus', {
-                // children:
-                ...descendants(':is(.menu, .button, button, [role="button"])', {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(navbars, 'menu')), // apply config's cssProps starting with menu***
-                }),
-                
-                
-                
+            ...descendants('.list', {
                 // customize:
-                ...usesCssProps(usesPrefixedProps(navbars, 'menus')), // apply config's cssProps starting with menus***
+                ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
+            }),
+            ...descendants(':is(.menu, .button, button, [role="button"])', {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(navbars, 'menu')), // apply config's cssProps starting with menu***
             }),
             
             
@@ -285,17 +281,17 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         
-        // menus:
-        menusGridArea           : '-1/1/-1/-3'              as CssKnownProps['gridArea'    ],
-        menusGridAreaExpand     : 'unset'                   as CssKnownProps['gridArea'    ],
-        menusJustifySelf        : 'stretch'                 as CssKnownProps['justifySelf' ],
-        menusAlignSelf          : 'stretch'                 as CssKnownProps['alignSelf'   ],
-        menusMarginInline       : [[
+        // list:
+        listGridArea            : '-1/1/-1/-3'              as CssKnownProps['gridArea'    ],
+        listGridAreaExpand      : 'unset'                   as CssKnownProps['gridArea'    ],
+        listJustifySelf         : 'stretch'                 as CssKnownProps['justifySelf' ],
+        listAlignSelf           : 'stretch'                 as CssKnownProps['alignSelf'   ],
+        listMarginInline        : [[
             'calc(0px - ', containers.paddingInline, ')',
         ]]                                                  as CssKnownProps['marginInline'],
-        menusMarginInlineExpand : 'unset'                   as CssKnownProps['marginInline'],
-        menusMarginBlock        : 'unset'                   as CssKnownProps['marginBlock' ],
-        menusMarginBlockExpand  : [[
+        listMarginInlineExpand  : 'unset'                   as CssKnownProps['marginInline'],
+        listMarginBlock         : 'unset'                   as CssKnownProps['marginBlock' ],
+        listMarginBlockExpand   : [[
             'calc(0px - ', basics.paddingBlock, ')',
         ]]                                                  as CssKnownProps['marginBlock' ],
         

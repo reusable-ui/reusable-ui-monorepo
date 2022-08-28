@@ -53,7 +53,7 @@ function App() {
                 }) => <>
                     <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Nav tag='div' {...colorSystemProps} className='menus' orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
+                    <Nav tag='ul' role='' {...colorSystemProps} className='list' orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                         <NavItem>
                             <Link to='/'>Home</Link>
                         </NavItem>
