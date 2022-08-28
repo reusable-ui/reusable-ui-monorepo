@@ -50,7 +50,7 @@ function App() {
                 }) => <>
                     <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Collapse className='list' expanded={navbarExpanded || menuExpanded}>
+                    <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={menuExpanded}>
                         <Nav tag='ul' role='' {...colorSystemProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                             <NavItem>
                                 <Link to='/'>Home</Link>
