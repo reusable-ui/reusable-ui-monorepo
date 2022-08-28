@@ -16,10 +16,7 @@ import {
 import {
     HamburgerMenuButton,
 } from '@reusable-ui/hamburger-menu-button'
-import {
-    Styles,
-    HeadPortal,
-} from '@cssfn/cssfn-react'
+import '@cssfn/cssfn-dom' // side effect for cssfn
 import {
     // Link,
     Outlet,
@@ -39,9 +36,6 @@ function App() {
     
     return (
         <>
-            <HeadPortal>
-                <Styles />
-            </HeadPortal>
             <div className="App">
                 <article className='actions'>
                     <button onClick={handleTriggerRerender}>

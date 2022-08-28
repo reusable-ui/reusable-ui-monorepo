@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reusable-ui/navbar": "^5.0.0",
-    "@reusable-ui/nav": "^5.0.0",
+    "@cssfn/cssfn-dom": "^2.0.6",
     "@reusable-ui/collapse": "^5.0.0",
     "@reusable-ui/hamburger-menu-button": "^5.0.0",
+    "@reusable-ui/nav": "^5.0.0",
+    "@reusable-ui/navbar": "^5.0.0",
     "@reusable-ui/react-router-compat-link": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

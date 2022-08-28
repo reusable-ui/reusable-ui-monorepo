@@ -6,8 +6,6 @@ import {
     
     
     // hooks:
-    useRef,
-    useEffect,
     useState,
 }                           from 'react'
 
@@ -49,6 +47,7 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -464,7 +463,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     // dom effects:
     // collapses the <Navbar>'s menu if <Navbar expanded={false}>:
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         // conditions:
         if (navbarExpanded) return; // the <Navbar> is in desktop version       => ignore
         if (menuExpanded)   return; // the <Navbar>'s menu is already collapsed => ignore
