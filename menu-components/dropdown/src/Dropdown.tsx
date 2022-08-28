@@ -383,7 +383,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                         !(dropdownUi?.contains(focusedElm)) // the current focused element is inside the <Dropdown>
                         &&                                  // nor
                         !target.contains(focusedElm)        // the current focused element is inside the <floatingOn>
-                    ) { console.log('nothing to focus'); return;}                                                         // => nothing to focus
+                    ) return;                               // => nothing to focus
                     
                     
                     
