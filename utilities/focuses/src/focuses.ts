@@ -112,17 +112,3 @@ export const setFocusNext  = (parentElement : Element) => {
         ((focusableElements.at(currentFocusedElementIndex +1) ?? focusableElements.at(0)) as HTMLElement|SVGElement|undefined)?.focus();
     }
 };
-
-export const isSelfOrDescendantOf = (element: Element, desired: Element): boolean => {
-    let parent: Element|null = element;
-    do {
-        if (parent === desired) return true; // confirmed
-        
-        // let's try again:
-        parent = parent.parentElement;
-    } while (parent);
-    
-    
-    
-    return false; // not the descendant of desired
-};
