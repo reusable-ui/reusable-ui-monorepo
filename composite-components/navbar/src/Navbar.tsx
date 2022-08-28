@@ -462,7 +462,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // dom effects:
-    // collapses the <Navbar>'s menu if <Navbar expanded={false}>:
+    // collapses the <Navbar>'s menu if switched from mobile to desktop:
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!menuExpanded)  return;  // the <Navbar>'s menu was already collapsed => ignore
@@ -479,12 +479,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         // cleanups:
         return () => {
-            // conditions:
-            if (!navbarExpanded) return; // the <Navbar> immediately switched to mobile version => ignore
-            
-            
-            
-            // aborts:
+            // the <Navbar> immediately switched to mobile version => aborts
             cancelAnimationFrame(cancelRequest);
         };
     }, [navbarExpanded, menuExpanded]);
