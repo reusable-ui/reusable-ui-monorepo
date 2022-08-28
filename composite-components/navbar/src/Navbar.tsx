@@ -159,7 +159,7 @@ export const usesNavbarLayout = () => {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
             }),
-            ...descendants(':is(.menu, .button, button, [role="button"])', {
+            ...descendants(':is(.menu, .list :is(.button, button, [role="button"]):where(:not(.not-menu)))', {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'menu')), // apply config's cssProps starting with menu***
             }),
