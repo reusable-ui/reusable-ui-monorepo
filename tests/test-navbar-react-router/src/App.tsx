@@ -11,6 +11,9 @@ import {
     Nav, NavItem,
 } from '@reusable-ui/nav'
 import {
+    Collapse,
+} from '@reusable-ui/collapse'
+import {
     HamburgerMenuButton,
 } from '@reusable-ui/hamburger-menu-button'
 import {
@@ -45,7 +48,7 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Navbar theme='primary' expanded={true}>{({
+                <Navbar theme='primary' expanded={undefined}>{({
                     colorSystemProps,
                     navbarExpanded,
                     menuExpanded,
@@ -53,23 +56,25 @@ function App() {
                 }) => <>
                     <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
                     {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Nav tag='ul' role='' {...colorSystemProps} className='list' orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
-                        <NavItem>
-                            <Link to='/'>Home</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/expenses'>Expenses</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/invoices'>Invoices</Link>
-                        </NavItem>
-                        <NavItem href='https://github.com/nodestrap' target='_blank'>
-                            Menu 3
-                        </NavItem>
-                        <NavItem href='https://www.npmjs.com/org/nodestrap' target='_blank'>
-                            Menu 4
-                        </NavItem>
-                    </Nav>
+                    <Collapse className='list' expanded={navbarExpanded || menuExpanded}>
+                        <Nav tag='ul' role='' {...colorSystemProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
+                            <NavItem>
+                                <Link to='/'>Home</Link>
+                            </NavItem>
+                            <NavItem>
+                                <Link to='/expenses'>Expenses</Link>
+                            </NavItem>
+                            <NavItem>
+                                <Link to='/invoices'>Invoices</Link>
+                            </NavItem>
+                            <NavItem href='https://github.com/nodestrap' target='_blank'>
+                                Menu 3
+                            </NavItem>
+                            <NavItem href='https://www.npmjs.com/org/nodestrap' target='_blank'>
+                                Menu 4
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
                 </>}</Navbar>
                 <hr />
                 <Outlet />

@@ -5,6 +5,7 @@
   "dependencies": {
     "@reusable-ui/navbar": "^5.0.0",
     "@reusable-ui/nav": "^5.0.0",
+    "@reusable-ui/collapse": "^5.0.0",
     "@reusable-ui/hamburger-menu-button": "^5.0.0",
     "@reusable-ui/react-router-compat-link": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
