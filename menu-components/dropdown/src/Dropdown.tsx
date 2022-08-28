@@ -46,7 +46,6 @@ import {
 import {
     // utilities:
     setFocusNext,
-    isSelfOrDescendantOf,
 }                           from '@reusable-ui/focuses'         // focusing functions
 import {
     // hooks:
@@ -380,11 +379,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                     if (!focusedElm) return; // nothing was focused => nothing to do
                     
                     const dropdownUi = dropdownUiRefInternal.current;
-                    if (                                                              // neither
-                        !(dropdownUi && isSelfOrDescendantOf(focusedElm, dropdownUi)) // the current focused element is inside the <Dropdown>
-                        &&                                                            // nor
-                        !isSelfOrDescendantOf(focusedElm, target)                     // the current focused element is inside the <floatingOn>
-                    ) return;                                                         // => nothing to focus
+                    if (                                    // neither
+                        !(dropdownUi?.contains(focusedElm)) // the current focused element is inside the <Dropdown>
+                        &&                                  // nor
+                        !target.contains(focusedElm)        // the current focused element is inside the <floatingOn>
+                    ) { console.log('nothing to focus'); return;}                                                         // => nothing to focus
                     
                     
                     
@@ -421,13 +420,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             // check if focusedTarget is inside the <Dropdown> or not:
             const dropdownUi = dropdownUiRefInternal.current;
-            if ((focusedTarget instanceof Element) && dropdownUi && isSelfOrDescendantOf(focusedTarget, dropdownUi)) return; // focus is still inside <Dropdown> => nothing to do
+            if ((focusedTarget instanceof Element) && dropdownUi?.contains(focusedTarget)) return; // focus is still inside <Dropdown> => nothing to do
             
             
             
             // <floatingOn> is <Dropdown>'s friend, so focus on <floatingOn> is considered not to lost focus on <Dropdown>:
             const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
-            if ((focusedTarget instanceof Element) && target && isSelfOrDescendantOf(focusedTarget, target)) return;
+            if ((focusedTarget instanceof Element) && target?.contains(focusedTarget)) return;
             
             
             
