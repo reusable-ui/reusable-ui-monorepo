@@ -126,6 +126,10 @@ const _defaultResponsiveFallbacks : Fallbacks<boolean> = [true, false]
 
 
 // styles:
+const logoElm    = '.logo'
+const togglerElm = '.toggler'
+const listElm    = '.list'
+const menuElm    = ':is(.menu, .list :is(.button, button, [role="button"]):where(:not(.not-menu)))'
 export const usesNavbarLayout = () => {
     // dependencies:
     
@@ -146,19 +150,19 @@ export const usesNavbarLayout = () => {
         ]),
         ...style({
             // children:
-            ...descendants('.logo', {
+            ...descendants(logoElm, {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'logo')), // apply config's cssProps starting with logo***
             }),
-            ...descendants('.toggler', {
+            ...descendants(togglerElm, {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'toggler')), // apply config's cssProps starting with toggler***
             }),
-            ...descendants('.list', {
+            ...descendants(listElm, {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
             }),
-            ...descendants(':is(.menu, .list :is(.button, button, [role="button"]):where(:not(.not-menu)))', {
+            ...descendants(menuElm, {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'menu')), // apply config's cssProps starting with menu***
             }),
@@ -334,7 +338,7 @@ export interface NavbarParams {
     
     
     // handlers:
-    handleToggleMenu        : EventHandler<boolean|undefined>
+    toggleMenu              : EventHandler<boolean|undefined>
     handleActiveChange      : EventHandler<ActiveChangeEvent>
     handleClickAsToggleMenu : React.MouseEventHandler<Element>
 }
@@ -435,7 +439,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // handlers:
-    const handleToggleMenu        = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+    const toggleMenu                = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
         // conditions:
         if (navbarExpanded) return; // the expand/collapse functionality is only for the mobile version of <Navbar>
         
@@ -444,20 +448,43 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         // actions:
         setMenuExpanded(newMenuExpanded ?? !menuExpanded);
     }) as ((newMenuExpanded ?: boolean) => void);
-    const handleActiveChange      = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+    const handleActiveChange        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // actions:
-        handleToggleMenu(event.active);
+        toggleMenu(event.active);
     });
-    const handleClickAsToggleMenu = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickAsToggleMenu   = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
         
         // actions:
-        handleToggleMenu();
+        toggleMenu();
         event.preventDefault(); // handled
     });
+    
+    const handleClickAsCollapseMenu = useEvent<React.MouseEventHandler<Element>>((event) => {
+        // conditions:
+        // if (event.defaultPrevented) return; // always handle click even if the event has been handled
+        if (event.target === event.currentTarget) return; // ignores non bubbling
+        if (!(event.target instanceof Element))   return; // ignores click event from non Element
+        if (!event.target.matches(menuElm))       return; // ignore click event fron non .menu elements
+        
+        
+        
+        // actions:
+        toggleMenu(false);
+        // event.preventDefault(); // handled
+    });
+    const handleClick               = useMergeEvents(
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickAsCollapseMenu,
+    );
     
     
     
@@ -516,6 +543,11 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             stateClasses={stateClasses}
+            
+            
+            
+            // handlers:
+            onClick={handleClick}
         >
             {(typeof(children) !== 'function') ? children : children({
                 // color system props:
@@ -530,7 +562,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
                 
                 
                 // handlers:
-                handleToggleMenu,
+                toggleMenu,
                 handleActiveChange,
                 handleClickAsToggleMenu,
             })}
