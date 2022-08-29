@@ -10,6 +10,13 @@ import {
     EditableActionControl,
 } from '@reusable-ui/editable-action-control'
 import {
+    List,
+    ListItem,
+} from '@reusable-ui/list'
+import {
+    Alert,
+} from '@reusable-ui/alert'
+import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -143,6 +150,40 @@ function App() {
                         <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /> [has theme] background_color.
                     </p>
                 </EditableActionControl>
+                
+                <hr />
+                
+                <List theme='primary'>
+                    <ListItem>
+                        light_blue
+                    </ListItem>
+                    <ListItem>
+                        light_blue
+                    </ListItem>
+                    <ListItem active={true}>
+                        blue
+                    </ListItem>
+                    <ListItem theme='success'>
+                        light_green
+                    </ListItem>
+                    <ListItem theme='success' active={true}>
+                        green
+                    </ListItem>
+                    <ListItem theme='danger'>
+                        pink
+                    </ListItem>
+                    <ListItem theme='danger' active={true}>
+                        red
+                    </ListItem>
+                </List>
+                
+                <hr />
+                
+                <Alert theme='primary' gradient={true} expanded={true}>
+                    <Icon icon='face' />
+                    <Icon icon='instagram' />
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </Alert>
             </div>
         </>
     );
