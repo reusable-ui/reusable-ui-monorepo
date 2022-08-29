@@ -51,6 +51,10 @@ import {
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
+    // hooks:
+    usePropEnabled,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
     // utilities:
     JsxClientSideLink,
     isClientSideLink,
@@ -395,11 +399,22 @@ interface ClientSideLinkWrapperProps<TElement extends Element = HTMLElement> {
     children       ?: React.ReactNode
 }
 const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
-    const { isSemanticTag: isSemanticLink } = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
+    const propEnabled                     = usePropEnabled(actionComponent.props);
+    const {isSemanticTag: isSemanticLink} = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
     
     
     
     // jsx:
+    if (!propEnabled) return React.cloneElement(actionComponent, // if <ActionControl> is disabled => no need to wrap with <Link>
+        // props:
+        undefined, // keeps the original <ActionControl>'s props
+        
+        
+        
+        // children:
+        children, // replace the children
+    );
+    
     const isNextJsLink = !!linkComponent.props.href;
     return React.cloneElement(linkComponent,
         // props:
