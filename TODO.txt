@@ -1,5 +1,3 @@
-fix disabled as unclickable for <ActionControl> with <Link>
-
 fix hack _use***
 
 TODO: color system

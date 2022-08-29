@@ -261,6 +261,11 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     
     
+    // fn props:
+    const propEnabled    = usePropEnabled(props);
+    
+    
+    
     // rest props:
     const {
         // states:
@@ -345,6 +350,11 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
             
             
             
+            // link:
+            {...(!propEnabled ? { href: undefined } : null)} // remove [href] if <ActionControl> is disabled
+            
+            
+            
             // handlers:
             onMouseDown    = {handleMouseDown   }
             onKeyDown      = {handleKeyDown     }
@@ -399,6 +409,7 @@ interface ClientSideLinkWrapperProps<TElement extends Element = HTMLElement> {
     children       ?: React.ReactNode
 }
 const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
+    // fn props:
     const propEnabled                     = usePropEnabled(actionComponent.props);
     const {isSemanticTag: isSemanticLink} = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
     

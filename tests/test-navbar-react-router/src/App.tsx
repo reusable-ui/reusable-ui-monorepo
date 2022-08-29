@@ -58,6 +58,9 @@ function App() {
                             <NavItem href='https://www.npmjs.com/org/nodestrap' target='_blank'>
                                 Menu 4
                             </NavItem>
+                            <NavItem enabled={false} href='https://www.google.com' target='_blank'>
+                                Disabled
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </>}</Navbar>
