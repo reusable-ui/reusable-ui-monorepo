@@ -130,4 +130,4 @@
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/navscroll
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/accordion
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/carousel
-[obsolete] [documented  ] [published] @reusable-ui/navbar
+[upgraded] [documented  ] [published] [          atomic] @reusable-ui/navbar
