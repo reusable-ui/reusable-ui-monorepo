@@ -15,12 +15,6 @@ import type {
     CssKnownProps,
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
-    rule,
-    fallbacks,
-    
-    
-    
     // combinators:
     descendants,
     
@@ -51,13 +45,11 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
-    useMergeRefs,
     useMergeClasses,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // react components:
     Fallbacks,
-    ResponsiveProviderProps,
     ResponsiveProvider,
 }                           from '@reusable-ui/responsives'     // a responsive management system for react web components
 
@@ -80,11 +72,9 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifCollapsed,
     usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
-    useCollapsible,
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // hooks:
@@ -415,8 +405,6 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         // children:
         children,
     ...restContainerProps} = props;
-    type T1 = typeof restContainerProps
-    type T2 = Omit<T1, keyof ContainerProps<TElement> | keyof React.HTMLAttributes<TElement>>
     
     
     

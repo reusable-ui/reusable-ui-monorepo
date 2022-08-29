@@ -49,6 +49,9 @@ function App() {
                             <NavItem>
                                 <Link to='/invoices'>Invoices</Link>
                             </NavItem>
+                            <NavItem enabled={false}>
+                                <Link to='/expenses'>Disabled</Link>
+                            </NavItem>
                             <NavItem href='https://github.com/nodestrap' target='_blank'>
                                 Menu 3
                             </NavItem>
