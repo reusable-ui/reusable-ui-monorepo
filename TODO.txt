@@ -1,5 +1,7 @@
 [deferred] fix hack _use***
 
+[defered] perfecting the detection of ifAncestorMild on <Icon>
+
 TODO: color system
 fix <Alert> close button on mild={false}
 fix <Alert> icon color   on mild={true}

@@ -198,16 +198,16 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                 ...vars({
                     [iconVars.autoColor] : themableVars.altBackgCond,
                 }),
-                ...ifSelfMild({
+                ...ifSelfMildOrOutlined({
                     ...vars({
                         [iconVars.autoColor] : themableVars.backgCond,
                     }),
                 }),
-                ...ifAncestorMild({
+                ...ifAncestorMildOrOutlined({
                     ...vars({
                         [iconVars.autoColor] : themableVars.backgCond,
                     }),
-                    ...ifSelfMild({
+                    ...ifSelfMildOrOutlined({
                         ...vars({
                             [iconVars.autoColor] : themableVars.altBackgCond,
                         }),
@@ -218,7 +218,7 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                 ...vars({
                     [iconVars.autoColor] : backgroundVars.altBackgColor,
                 }),
-                ...ifAncestorMild({
+                ...ifAncestorMildOrOutlined({
                     ...vars({
                         [iconVars.autoColor] : backgroundVars.backgColor,
                     }),
@@ -307,11 +307,11 @@ export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 
 //#region mildable
 // current is  `.mild`:
-const ifSelfMild     = (styles: CssStyleCollection): CssRule => rule('&.mild' , styles);
+const ifSelfMildOrOutlined     = (styles: CssStyleCollection): CssRule => rule('&:is(.mild, .outlined)' , styles);
 
 
 // grandpa is  `.mild`:
-const ifAncestorMild = (styles: CssStyleCollection): CssRule => rule('.mild &', styles);
+const ifAncestorMildOrOutlined = (styles: CssStyleCollection): CssRule => rule(':is(.mild, .outlined) &', styles);
 //#endregion mildable
 
 
