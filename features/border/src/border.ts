@@ -27,7 +27,6 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    ifHasTheme,
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
@@ -124,19 +123,17 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
         borderRule: () => style({
             // color functions:
             ...vars({
-                [borderVars.borderColorFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [borderVars.borderColorFn] : switchOf(
-                        themableVars.borderCond, // first  priority
-                        themableVars.border,     // second priority
-                        
-                        config?.borderColor,     // default => uses config's border color
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] can be toggled_on
+                // conditional color functions:
+                [borderVars.borderColorFn] : switchOf(
+                    themableVars.borderCond, // first  priority
+                    themableVars.border,     // second priority
+                    
+                    config?.borderColor,     // default => uses config's border color
+                ),
+                
+                
+                
+                // final color functions:
                 [borderVars.borderColor  ] : switchOf(
                     outlineableVars.foregTg,     // toggle outlined (if `usesOutlineable()` applied)
                     

@@ -27,7 +27,6 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    ifHasTheme,
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 
@@ -71,19 +70,17 @@ export const usesRing = (config?: RingConfig): RingStuff => {
         ringRule: () => style({
             // color functions:
             ...vars({
-                [ringVars.ringFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [ringVars.ringFn] : switchOf(
-                        themableVars.ringCond, // first  priority
-                        themableVars.ring,     // second priority
-                        
-                        config?.ring,          // default => uses config's ring
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
+                // conditional color functions:
+                [ringVars.ringFn] : switchOf(
+                    themableVars.ringCond, // first  priority
+                    themableVars.ring,     // second priority
+                    
+                    config?.ring,          // default => uses config's ring
+                ),
+                
+                
+                
+                // final color functions:
                 [ringVars.ring  ] : switchOf(
                     // no toggle outlined nor toggle mild yet (might be added in the future)
                     

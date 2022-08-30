@@ -32,7 +32,6 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    ifHasTheme,
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
@@ -123,26 +122,23 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
             
             // color functions:
             ...vars({
-                [backgroundVars.backgColorFn   ] : 'inherit', // inherit to parent theme
-                [backgroundVars.altBackgColorFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [backgroundVars.backgColorFn   ] : switchOf(
-                        themableVars.backgCond,     // first  priority
-                        themableVars.backg,         // second priority
-                        
-                        config?.backg,              // default => uses config's background
-                    ),
-                    [backgroundVars.altBackgColorFn] : switchOf(
-                        themableVars.altBackgCond,  // first  priority
-                        themableVars.altBackg,      // second priority
-                        
-                        config?.altBackg,           // default => uses config's alternate background
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
+                // conditional color functions:
+                [backgroundVars.backgColorFn   ] : switchOf(
+                    themableVars.backgCond,     // first  priority
+                    themableVars.backg,         // second priority
+                    
+                    config?.backg,              // default => uses config's background
+                ),
+                [backgroundVars.altBackgColorFn] : switchOf(
+                    themableVars.altBackgCond,  // first  priority
+                    themableVars.altBackg,      // second priority
+                    
+                    config?.altBackg,           // default => uses config's alternate background
+                ),
+                
+                
+                
+                // final color functions:
                 [backgroundVars.backgColor     ] : switchOf(
                     outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)

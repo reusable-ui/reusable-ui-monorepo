@@ -27,7 +27,6 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    ifHasTheme,
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
@@ -90,26 +89,23 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
         foregroundRule: () => style({
             // color functions:
             ...vars({
-                [foregroundVars.foregFn   ] : 'inherit', // inherit to parent theme
-                [foregroundVars.altForegFn] : 'inherit', // inherit to parent theme
-            }),
-            ...ifHasTheme({ // only declare the function below if the <Component> has a dedicated theme:
-                ...vars({
-                    [foregroundVars.foregFn   ] : switchOf(
-                        themableVars.foregCond,     // first  priority
-                        themableVars.foreg,         // second priority
-                        
-                        config?.foreg,              // default => uses config's foreground
-                    ),
-                    [foregroundVars.altForegFn] : switchOf(
-                        themableVars.altForegCond,  // first  priority
-                        themableVars.altForeg,      // second priority
-                        
-                        config?.altForeg,           // default => uses config's alternate foreground
-                    ),
-                }),
-            }),
-            ...vars({ // always re-declare the final function below, so the [outlined] and/or [mild] can be toggled_on
+                // conditional color functions:
+                [foregroundVars.foregFn   ] : switchOf(
+                    themableVars.foregCond,     // first  priority
+                    themableVars.foreg,         // second priority
+                    
+                    config?.foreg,              // default => uses config's foreground
+                ),
+                [foregroundVars.altForegFn] : switchOf(
+                    themableVars.altForegCond,  // first  priority
+                    themableVars.altForeg,      // second priority
+                    
+                    config?.altForeg,           // default => uses config's alternate foreground
+                ),
+                
+                
+                
+                // final color functions:
                 [foregroundVars.foreg     ] : switchOf(
                     outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.foregTg,           // toggle mild     (if `usesMildable()` applied)
