@@ -51,6 +51,7 @@ import {
     // utilities:
     CssVars,
     cssVars,
+    switchOf,
 }                           from '@cssfn/css-vars'              // strongly typed of css variables
 import {
     cssConfig,
@@ -60,12 +61,6 @@ import {
     // utilities:
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
-
-// reusable-ui configs:
-import {
-    // configs:
-    colors,
-}                           from '@reusable-ui/colors'          // a color management system
 
 // reusable-ui utilities:
 import {
@@ -93,9 +88,9 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    ThemeName,
-    usesThemable as baseUsesThemable,
-    themeOptions,
+    ifHasTheme,
+    ifNoTheme,
+    usesThemable,
     ThemableProps,
     useThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
@@ -133,17 +128,22 @@ export interface IconVars {
     /**
      * Icon image url or icon name.
      */
-    image : any
+    image     : any
     
     /**
      * Icon size.
      */
-    size  : any
+    size      : any
     
     /**
      * Icon color.
      */
-    color : any
+    color     : any
+    
+    /**
+     * Conditional Icon color based on its background color.
+     */
+    autoColor : any
 }
 const [iconVars] = cssVars<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-image: ... }}` is the same between in server
 
@@ -166,6 +166,9 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({ altBackg : icons.color });
     
+    // variants:
+    const {                  themableVars} = usesThemable();
+    
     
     
     return {
@@ -186,7 +189,40 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                 
                 
                 // backgrounds:
-                [iconVars.color] : config?.color ?? backgroundVars.altBackgColor,
+                [iconVars.color] : config?.color ?? switchOf(
+                    iconVars.autoColor,        // first  priority
+                    backgroundVars.backgColor, // second priority
+                ),
+            }),
+            ...ifHasTheme({
+                ...vars({
+                    [iconVars.autoColor] : themableVars.altBackgCond,
+                }),
+                ...ifSelfMild({
+                    ...vars({
+                        [iconVars.autoColor] : themableVars.backgCond,
+                    }),
+                }),
+                ...ifAncestorMild({
+                    ...vars({
+                        [iconVars.autoColor] : themableVars.backgCond,
+                    }),
+                    ...ifSelfMild({
+                        ...vars({
+                            [iconVars.autoColor] : themableVars.altBackgCond,
+                        }),
+                    }),
+                }),
+            }),
+            ...ifNoTheme({
+                ...vars({
+                    [iconVars.autoColor] : backgroundVars.altBackgColor,
+                }),
+                ...ifAncestorMild({
+                    ...vars({
+                        [iconVars.autoColor] : backgroundVars.backgColor,
+                    }),
+                }),
             }),
         }),
         iconVars,
@@ -269,38 +305,14 @@ export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
 export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 //#endregion resizable
 
-//#region themable
-/**
- * Uses theme (color) options.  
- * For example: `primary`, `success`, `danger`.
- * @param factory A callback to create a theme rules for each theme color in `options`.
- * @param options Defines all available theme color options.
- * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
- */
-export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()) => baseUsesThemable(factory, options);
+//#region mildable
+// current is  `.mild`:
+const ifSelfMild     = (styles: CssStyleCollection): CssRule => rule('&.mild' , styles);
 
-/**
- * Creates a theme rules for the given `themeName`.
- * @param themeName The theme name.
- * @returns A `CssRule` represents a theme rules for the given `themeName`.
- */
-export const themeOf = (themeName: ThemeName): CssRule => {
-    // dependencies:
-    const {themableVars} = usesThemable();
-    
-    
-    
-    return style({
-        ...vars({
-            // altBackg     => backg:
-            [themableVars.altBackg    ] : colors[   themeName       as keyof typeof colors], // base color
-            
-            // altBackgMild => backgMild:
-            [themableVars.altBackgMild] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        }),
-    });
-};
-//#endregion themable
+
+// grandpa is  `.mild`:
+const ifAncestorMild = (styles: CssStyleCollection): CssRule => rule('.mild &', styles);
+//#endregion mildable
 
 
 
@@ -353,7 +365,7 @@ export const usesIconLayout      = () => {
     // dependencies:
     
     // features:
-    const {iconRule, iconVars} = usesIcon();
+    const {iconRule, iconVars} = usesIcon({size: icons.size});
     
     
     
