@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "@reusable-ui/icon": "^5.0.0",
-    "@reusable-ui/editable-action-control": "^5.0.0",
+    "@reusable-ui/check": "^5.0.0",
+    "@reusable-ui/button-icon": "^5.0.0",
+    "@reusable-ui/editable-control": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
     "@reusable-ui/alert": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
