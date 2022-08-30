@@ -51,6 +51,9 @@ function App() {
                                 <p>
                                     <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon> [mild] dark_red.
                                 </p>
+                                <p>
+                                    <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' outlined={true} >Test</ButtonIcon> [outlined] dark_red.
+                                </p>
                             </td>
                             <td>
                                 <p>
@@ -58,6 +61,9 @@ function App() {
                                 </p>
                                 <p>
                                     <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon> [mild] mild_blue.
+                                </p>
+                                <p>
+                                    <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' outlined={true} >Test</ButtonIcon> [outlined] mild_blue.
                                 </p>
                             </td>
                         </tr>
