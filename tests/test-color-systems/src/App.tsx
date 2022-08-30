@@ -110,6 +110,28 @@ function App() {
                         </tr>
                         <tr>
                             <td>
+                                <EditableControl gradient={true} theme='primary' outlined={true}>
+                                    <p>
+                                        <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                            <td>
+                                <EditableControl gradient={true} theme='primary' outlined={true}>
+                                    <p>
+                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <EditableControl gradient={true} theme='warning' mild={false}>
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
@@ -143,6 +165,28 @@ function App() {
                             </td>
                             <td>
                                 <EditableControl gradient={true} theme='warning' mild={true}>
+                                    <p>
+                                        <Icon icon='face' theme='primary' /> <Icon icon='instagram' theme='primary' /><ButtonIcon icon='instagram' theme='primary' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <EditableControl gradient={true} theme='warning' outlined={true}>
+                                    <p>
+                                        <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                            <td>
+                                <EditableControl gradient={true} theme='warning' outlined={true}>
                                     <p>
                                         <Icon icon='face' theme='primary' /> <Icon icon='instagram' theme='primary' /><ButtonIcon icon='instagram' theme='primary' >Test</ButtonIcon>
                                     </p>
@@ -206,6 +250,28 @@ function App() {
                         </tr>
                         <tr>
                             <td>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true}>
+                                    <p>
+                                        <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                            <td>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true}>
+                                    <p>
+                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={false}>
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
@@ -239,6 +305,28 @@ function App() {
                             </td>
                             <td>
                                 <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={true}>
+                                    <p>
+                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true}>
+                                    <p>
+                                        <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                                    </p>
+                                    <p>
+                                        <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon>
+                                    </p>
+                                </EditableControl>
+                            </td>
+                            <td>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true}>
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -286,6 +374,12 @@ function App() {
                 </Alert>
                 
                 <Alert expanded={true} theme='primary' gradient={true} mild={true}>
+                    <Icon icon='face' />
+                    <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                </Alert>
+                
+                <Alert expanded={true} theme='primary' gradient={true} outlined={true}>
                     <Icon icon='face' />
                     <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
