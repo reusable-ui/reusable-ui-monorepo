@@ -96,6 +96,10 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    outlinedOf,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
     usesMildable,
     MildableProps,
     useMildable,
@@ -194,6 +198,7 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                     backgroundVars.backgColor, // second priority
                 ),
             }),
+            ...outlinedOf(false), // a hack for supporting <parent outlined={true}>
             ...ifHasTheme({
                 ...vars({
                     [iconVars.autoColor] : themableVars.altBackgCond,
