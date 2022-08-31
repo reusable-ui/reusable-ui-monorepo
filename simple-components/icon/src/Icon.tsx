@@ -96,7 +96,7 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
-    outlinedOf,
+    usesOutlineable,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
@@ -127,27 +127,163 @@ import type {
 
 // features:
 
+//#region iconColor
+export interface IconColorVars {
+    /**
+     * Conditional Icon color based on its background color.
+     */
+    autoColor       : any
+    
+    /**
+     * functional conditional Icon color based on its background color.
+     */
+    autoColorFn     : any
+    
+    /**
+     * functional conditional Icon color based on its background color - at mild variant.
+     */
+    autoMildColorFn : any
+    
+    /**
+     * toggles_on conditional Icon color based on its background color - at mild variant.
+     */
+    autoMildColorTg : any
+    
+    
+    
+    /**
+     * final Icon color.
+     */
+    color           : any
+}
+const [iconColorVars] = cssVars<IconColorVars>();
+
+
+
+export interface IconColorStuff { iconColorRule: Factory<CssRule>, iconColorVars: CssVars<IconColorVars> }
+export interface IconColorConfig {
+    altColor ?: CssKnownProps['backgroundColor']
+}
+/**
+ * Uses icon color.
+ * @param config  A configuration of `iconColorRule`.
+ * @param mildFactory A callback to create a mildification rules for each toggle state.
+ * @returns A `IconColorStuff` represents the icon color rules.
+ */
+export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): IconColorStuff => {
+    // dependencies:
+    
+    // features:
+    const {backgroundRule, backgroundVars} = usesBackground({ altBackg : config?.altColor });
+    
+    // variants:
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
+    
+    
+    
+    return {
+        iconColorRule: () => style({
+            ...imports([
+                // features:
+                backgroundRule,
+            ]),
+            ...ifHasTheme({
+                // conditional color functions:
+                ...vars({
+                    [iconColorVars.autoColor] : themableVars.altBackgCond,
+                }),
+                ...ifSelfMildOrOutlined({
+                    ...vars({
+                        [iconColorVars.autoColor] : themableVars.backgCond,
+                    }),
+                }),
+                ...ifAncestorMildOrOutlined({
+                    ...vars({
+                        [iconColorVars.autoColor] : themableVars.backgCond,
+                    }),
+                    ...ifSelfMildOrOutlined({
+                        ...vars({
+                            [iconColorVars.autoColor] : themableVars.altBackgCond,
+                        }),
+                    }),
+                }),
+            }),
+            ...ifNoTheme({
+                // conditional color functions:
+                
+                // ...vars({
+                //     [iconColorVars.autoColor] : backgroundVars.altBackgColor,
+                // }),
+                // ...ifAncestorMildOrOutlined({
+                //     ...vars({
+                //         [iconColorVars.autoColor] : backgroundVars.backgColor,
+                //     }),
+                // }),
+                [iconColorVars.autoColorFn] : switchOf(
+                    outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
+                    
+                    backgroundVars.altBackgColorFn, // default => uses our `altBackgColorFn`
+                ),
+                [iconColorVars.autoMildColorFn] : switchOf(
+                    outlineableVars.backgTg,     // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.backgTg,        // toggle mild     (if `usesMildable()` applied)
+                    
+                    backgroundVars.backgColorFn, // default => uses our `backgColorFn`
+                ),
+                [iconColorVars.autoColor] : switchOf(
+                    iconColorVars.autoMildColorTg, // toggle mild
+                    
+                    iconColorVars.autoColorFn,     // default => uses our `autoColorFn`
+                ),
+            }),
+            ...vars({
+                // final color functions:
+                [iconColorVars.color] : switchOf(
+                    iconColorVars.autoColor,   // first  priority
+                    backgroundVars.backgColor, // second priority
+                ),
+            }),
+            ...variants([
+                rule('&:not(.mild)', mildFactory(false)),
+                rule('&.mild'      , mildFactory(true )),
+            ]),
+        }),
+        iconColorVars,
+    };
+};
+
+/**
+ * Creates a mildification rules for the given `toggle` state.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
+ * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
+ */
+export const mildOf = (toggle: boolean|null = true): CssRule => style({
+    ...vars({
+        // *toggle on/off* the mildification prop:
+        [iconColorVars.autoMildColorTg] : toggle ? iconColorVars.autoMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+    }),
+});
+//#endregion iconColor
+
 //#region icon
 export interface IconVars {
     /**
      * Icon image url or icon name.
      */
-    image     : any
+    image : any
     
     /**
      * Icon size.
      */
-    size      : any
+    size  : any
     
     /**
      * Icon color.
      */
-    color     : any
-    
-    /**
-     * Conditional Icon color based on its background color.
-     */
-    autoColor : any
+    color : any
 }
 const [iconVars] = cssVars<IconVars>({ minify: false, prefix: 'icon' }); // do not minify to make sure `style={{ --icon-image: ... }}` is the same between in server
 
@@ -167,20 +303,13 @@ export interface IconConfig {
 export const usesIcon = (config?: IconConfig): IconStuff => {
     // dependencies:
     
-    // features:
-    const {backgroundRule, backgroundVars} = usesBackground({ altBackg : icons.color });
-    
     // variants:
-    const {                  themableVars} = usesThemable();
+    const {iconColorVars} = usesIconColor();
     
     
     
     return {
         iconRule: () => style({
-            ...imports([
-                // features:
-                backgroundRule,
-            ]),
             ...vars({
                 // appearances:
                 [iconVars.image] : config?.image,
@@ -193,41 +322,7 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                 
                 
                 // backgrounds:
-                [iconVars.color] : config?.color ?? switchOf(
-                    iconVars.autoColor,        // first  priority
-                    backgroundVars.backgColor, // second priority
-                ),
-            }),
-            ...outlinedOf(false), // a hack for supporting <parent outlined={true}>
-            ...ifHasTheme({
-                ...vars({
-                    [iconVars.autoColor] : themableVars.altBackgCond,
-                }),
-                ...ifSelfMildOrOutlined({
-                    ...vars({
-                        [iconVars.autoColor] : themableVars.backgCond,
-                    }),
-                }),
-                ...ifAncestorMildOrOutlined({
-                    ...vars({
-                        [iconVars.autoColor] : themableVars.backgCond,
-                    }),
-                    ...ifSelfMildOrOutlined({
-                        ...vars({
-                            [iconVars.autoColor] : themableVars.altBackgCond,
-                        }),
-                    }),
-                }),
-            }),
-            ...ifNoTheme({
-                ...vars({
-                    [iconVars.autoColor] : backgroundVars.altBackgColor,
-                }),
-                ...ifAncestorMildOrOutlined({
-                    ...vars({
-                        [iconVars.autoColor] : backgroundVars.backgColor,
-                    }),
-                }),
+                [iconVars.color] : config?.color ?? iconColorVars.color,
             }),
         }),
         iconVars,
@@ -555,7 +650,7 @@ export const usesIconVariants    = () => {
     // variants:
     const {resizableRule} = usesResizable<SizeName>(icons, sizeOptions());
     const {themableRule } = usesThemable();
-    const {mildableRule } = usesMildable({ altBackg : icons.color });
+    const {iconColorRule} = usesIconColor({ altColor : icons.color });
     
     
     
@@ -564,7 +659,7 @@ export const usesIconVariants    = () => {
             // variants:
             resizableRule,
             themableRule,
-            mildableRule,
+            iconColorRule,
         ]),
     });
 };
