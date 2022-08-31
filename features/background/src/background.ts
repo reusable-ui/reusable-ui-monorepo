@@ -171,7 +171,11 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                     ...(config?.backgroundImage ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
                     
                     // bottom layer:
-                    backgroundVars.backgColor,
+                    switchOf(
+                        outlineableVars.noBackgTg, // toggle outlined transparent background (if `usesOutlineable()` applied)
+                        
+                        backgroundVars.backgColor, // default => uses our `backgColor`
+                    ),
                 ],
             }),
         }),
