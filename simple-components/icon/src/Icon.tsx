@@ -95,6 +95,11 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    usesOutlineable,
+}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
+    usesMildable,
     MildableProps,
     useMildable,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
@@ -174,12 +179,13 @@ export interface IconColorVars {
      */
     color           : any
 }
-const [iconColorVars] = cssVars<IconColorVars>();
+const [iconColorVars] = cssVars<IconColorVars>({minify: false}); // TODO: remove minify
 
 
 
 export interface IconColorStuff { iconColorRule: Factory<CssRule>, iconColorVars: CssVars<IconColorVars> }
 export interface IconColorConfig {
+    color    ?: CssKnownProps['backgroundColor']
     altColor ?: CssKnownProps['backgroundColor']
 }
 /**
@@ -192,7 +198,15 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
     // dependencies:
     
     // features:
-    const {backgroundRule, backgroundVars} = usesBackground({ altBackg : config?.altColor });
+    const {backgroundRule, backgroundVars} = usesBackground({
+        backg    : config?.color,
+        altBackg : config?.altColor,
+    });
+    
+    // variants:
+    const {themableVars   } = usesThemable();
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
     
     
     
@@ -204,8 +218,36 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             ]),
             ...vars({
                 // conditional color functions:
-                [iconColorVars.themedBoldColorFn] : backgroundVars.backgColor,
-                [iconColorVars.themedMildColorFn] : backgroundVars.altBackgColor,
+                [iconColorVars.themedBoldColorFn] : switchOf(
+                    // outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
+                    // mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
+                    
+                    // conditional <parent> color:
+                    themableVars.altBackgCond,     // first  priority
+                    
+                    // themed color:
+                    themableVars.backg,            // second priority
+                    
+                    // default color:
+                    config?.color,              // default => uses config's color
+                ),
+                [iconColorVars.themedMildColorFn] : switchOf(
+                    // outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
+                    // mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
+                    
+                    // conditional <parent> color:
+                    themableVars.backgCond,  // first  priority
+                    
+                    // themed color:
+                    themableVars.altBackg,      // second priority
+                    
+                    // default color:
+                    config?.altColor,           // default => uses config's alternate color
+                ),
+                
+                
+                
+                // final color functions:
                 [iconColorVars.themedColorFn    ] : switchOf(
                     iconColorVars.themedMildColorTg,  // toggle mild
                     
@@ -214,16 +256,19 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             }),
             ...vars({
                 // conditional color functions:
-                [iconColorVars.autoBoldColorFn] : backgroundVars.altBackgColor,
-                [iconColorVars.autoMildColorFn] : backgroundVars.backgColor,
+                [iconColorVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt  color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                [iconColorVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s alt  color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                
+                
+                
+                // final color functions:
                 [iconColorVars.autoColorFn    ] : switchOf(
                     iconColorVars.autoMildColorTg,  // toggle mild
                     
                     iconColorVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
                 ),
-                
-                
-                
+            }),
+            ...vars({
                 // final color functions:
                 [iconColorVars.color] : switchOf(
                     iconColorVars.autoColorTg,   // toggle auto theme
