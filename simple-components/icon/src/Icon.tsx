@@ -95,11 +95,6 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
-    usesOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
-    usesMildable,
     MildableProps,
     useMildable,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
@@ -199,10 +194,6 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({ altBackg : config?.altColor });
     
-    // variants:
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
-    
     
     
     return {
@@ -223,18 +214,8 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             }),
             ...vars({
                 // conditional color functions:
-                [iconColorVars.autoBoldColorFn] : switchOf(
-                    outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgroundVars.altBackgColorFn, // default => uses our `altBackgColorFn`
-                ),
-                [iconColorVars.autoMildColorFn] : switchOf(
-                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgroundVars.backgColorFn,    // default => uses our `backgColorFn`
-                ),
+                [iconColorVars.autoBoldColorFn] : backgroundVars.altBackgColor,
+                [iconColorVars.autoMildColorFn] : backgroundVars.backgColor,
                 [iconColorVars.autoColorFn    ] : switchOf(
                     iconColorVars.autoMildColorTg,  // toggle mild
                     
