@@ -221,22 +221,22 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
                 //         [iconColorVars.autoColor] : backgroundVars.backgColor,
                 //     }),
                 // }),
-                [iconColorVars.autoColorFn] : switchOf(
+                [iconColorVars.autoColorFn    ] : switchOf(
                     outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
                     
                     backgroundVars.altBackgColorFn, // default => uses our `altBackgColorFn`
                 ),
                 [iconColorVars.autoMildColorFn] : switchOf(
-                    outlineableVars.backgTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,        // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
                     
-                    backgroundVars.backgColorFn, // default => uses our `backgColorFn`
+                    backgroundVars.backgColorFn,    // default => uses our `backgColorFn`
                 ),
-                [iconColorVars.autoColor] : switchOf(
-                    iconColorVars.autoMildColorTg, // toggle mild
+                [iconColorVars.autoColor      ] : switchOf(
+                    iconColorVars.autoMildColorTg,  // toggle mild
                     
-                    iconColorVars.autoColorFn,     // default => uses our `autoColorFn`
+                    iconColorVars.autoColorFn,      // default => uses our `autoColorFn`
                 ),
             }),
             ...vars({
