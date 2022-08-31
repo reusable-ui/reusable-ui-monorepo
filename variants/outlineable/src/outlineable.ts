@@ -47,6 +47,8 @@ import {
 
 //#region outlineable
 export interface OutlineableVars {
+    noBackgTg  : any
+    
     /**
      * functional background color - at outlined variant.
      */
@@ -96,6 +98,7 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(
 
 export interface OutlineableStuff { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
 export interface OutlineableConfig {
+    backg    ?: CssKnownProps['backgroundColor']
     foreg    ?: CssKnownProps['foreground'     ]
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
@@ -120,7 +123,20 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 themableRule,
             ]),
             ...vars({
-                [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
+             // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
+                /*
+                    copied from [mildable],
+                    for supporting <icon> having mild color (copied from [mildable] background).
+                    
+                    when [outlined], the background color definition is not gone,
+                    just not be included to background layers.
+                */
+                [outlineableVars.backgFn   ] : switchOf(
+                    themableVars.backgMildCond,    // first  priority
+                    themableVars.backgMild,        // second priority
+                    
+                    config?.backg,                 // default => uses config's background
+                ),
                 
                 [outlineableVars.foregFn   ] : switchOf(
                     themableVars.foregOutlinedCond,    // first  priority
@@ -162,6 +178,8 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
 export const outlinedOf = (toggle: boolean|null = true): CssRule => style({
     ...vars({
         // *toggle on/off* the outlining prop:
+        [outlineableVars.noBackgTg ] : toggle ? 'transparent'              : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        
         [outlineableVars.backgTg   ] : toggle ? outlineableVars.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
         [outlineableVars.foregTg   ] : toggle ? outlineableVars.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
         
