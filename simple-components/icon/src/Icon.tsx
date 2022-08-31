@@ -130,24 +130,27 @@ import type {
 //#region iconColor
 export interface IconColorVars {
     /**
-     * Conditional Icon color based on its background color.
-     */
-    autoColor       : any
-    
-    /**
      * functional conditional Icon color based on its background color.
      */
-    autoColorFn     : any
+    autoBoldColorFn : any
     
     /**
      * functional conditional Icon color based on its background color - at mild variant.
      */
     autoMildColorFn : any
-    
     /**
      * toggles_on conditional Icon color based on its background color - at mild variant.
      */
     autoMildColorTg : any
+    
+    /**
+     * Conditional Icon color based on its background color.
+     */
+    autoColorFn     : any
+    /**
+     * toggles_on conditional Icon color based on its background color.
+     */
+    autoColorTg     : any
     
     
     
@@ -191,37 +194,28 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             ]),
             ...ifHasTheme({
                 // conditional color functions:
-                ...vars({
-                    [iconColorVars.autoColor] : themableVars.altBackgCond,
-                }),
-                ...ifSelfMildOrOutlined({
-                    ...vars({
-                        [iconColorVars.autoColor] : themableVars.backgCond,
-                    }),
-                }),
-                ...ifAncestorMildOrOutlined({
-                    ...vars({
-                        [iconColorVars.autoColor] : themableVars.backgCond,
-                    }),
-                    ...ifSelfMildOrOutlined({
-                        ...vars({
-                            [iconColorVars.autoColor] : themableVars.altBackgCond,
-                        }),
-                    }),
-                }),
-            }),
-            ...ifNoTheme({
-                // conditional color functions:
-                
                 // ...vars({
-                //     [iconColorVars.autoColor] : backgroundVars.altBackgColor,
+                //     [iconColorVars.autoColor] : themableVars.altBackgCond,
+                // }),
+                // ...ifSelfMildOrOutlined({
+                //     ...vars({
+                //         [iconColorVars.autoColor] : themableVars.backgCond,
+                //     }),
                 // }),
                 // ...ifAncestorMildOrOutlined({
                 //     ...vars({
-                //         [iconColorVars.autoColor] : backgroundVars.backgColor,
+                //         [iconColorVars.autoColor] : themableVars.backgCond,
+                //     }),
+                //     ...ifSelfMildOrOutlined({
+                //         ...vars({
+                //             [iconColorVars.autoColor] : themableVars.altBackgCond,
+                //         }),
                 //     }),
                 // }),
-                [iconColorVars.autoColorFn    ] : switchOf(
+            }),
+            ...vars({
+                // conditional color functions:
+                [iconColorVars.autoBoldColorFn] : switchOf(
                     outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
                     
@@ -233,20 +227,26 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
                     
                     backgroundVars.backgColorFn,    // default => uses our `backgColorFn`
                 ),
-                [iconColorVars.autoColor      ] : switchOf(
+                [iconColorVars.autoColorFn    ] : switchOf(
                     iconColorVars.autoMildColorTg,  // toggle mild
                     
-                    iconColorVars.autoColorFn,      // default => uses our `autoColorFn`
+                    iconColorVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
                 ),
-            }),
-            ...vars({
+                
+                
+                
                 // final color functions:
                 [iconColorVars.color] : switchOf(
-                    iconColorVars.autoColor,   // first  priority
+                    iconColorVars.autoColorTg, // first  priority
                     backgroundVars.backgColor, // second priority
                 ),
             }),
             ...variants([
+                ifNoTheme({
+                    ...vars({
+                        [iconColorVars.autoColorTg] : iconColorVars.autoColorFn,
+                    }),
+                }),
                 rule('&:not(.mild)', mildFactory(false)),
                 rule('&.mild'      , mildFactory(true )),
             ]),
