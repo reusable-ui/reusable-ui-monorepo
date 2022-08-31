@@ -219,8 +219,8 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             ...vars({
                 // conditional color functions:
                 [iconColorVars.themedBoldColorFn] : switchOf(
-                    // outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    // mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
                     
                     // conditional <parent> color:
                     themableVars.altBackgCond,     // first  priority
@@ -232,8 +232,8 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
                     config?.color,              // default => uses config's color
                 ),
                 [iconColorVars.themedMildColorFn] : switchOf(
-                    // outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    // mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
+                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
                     
                     // conditional <parent> color:
                     themableVars.backgCond,  // first  priority
