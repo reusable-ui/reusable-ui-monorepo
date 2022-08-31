@@ -88,7 +88,6 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    ifHasTheme,
     ifNoTheme,
     usesThemable,
     ThemableProps,
@@ -129,6 +128,27 @@ import type {
 
 //#region iconColor
 export interface IconColorVars {
+    /**
+     * functional conditional Icon color based on its theme name.
+     */
+    themedBoldColorFn : any
+    
+    /**
+     * functional conditional Icon color based on its theme name - at mild variant.
+     */
+    themedMildColorFn : any
+    /**
+     * toggles_on conditional Icon color based on its theme name - at mild variant.
+     */
+    themedMildColorTg : any
+    
+    /**
+     * Conditional Icon color based on its theme name.
+     */
+    themedColorFn     : any
+    
+    
+    
     /**
      * functional conditional Icon color based on its background color.
      */
@@ -180,7 +200,6 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
     const {backgroundRule, backgroundVars} = usesBackground({ altBackg : config?.altColor });
     
     // variants:
-    const {themableVars   } = usesThemable();
     const {outlineableVars} = usesOutlineable();
     const {mildableVars   } = usesMildable();
     
@@ -192,26 +211,15 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
                 // features:
                 backgroundRule,
             ]),
-            ...ifHasTheme({
+            ...vars({
                 // conditional color functions:
-                // ...vars({
-                //     [iconColorVars.autoColor] : themableVars.altBackgCond,
-                // }),
-                // ...ifSelfMildOrOutlined({
-                //     ...vars({
-                //         [iconColorVars.autoColor] : themableVars.backgCond,
-                //     }),
-                // }),
-                // ...ifAncestorMildOrOutlined({
-                //     ...vars({
-                //         [iconColorVars.autoColor] : themableVars.backgCond,
-                //     }),
-                //     ...ifSelfMildOrOutlined({
-                //         ...vars({
-                //             [iconColorVars.autoColor] : themableVars.altBackgCond,
-                //         }),
-                //     }),
-                // }),
+                [iconColorVars.themedBoldColorFn] : backgroundVars.backgColor,
+                [iconColorVars.themedMildColorFn] : backgroundVars.altBackgColor,
+                [iconColorVars.themedColorFn    ] : switchOf(
+                    iconColorVars.themedMildColorTg,  // toggle mild
+                    
+                    iconColorVars.themedBoldColorFn,  // default => uses our `themedBoldColorFn`
+                ),
             }),
             ...vars({
                 // conditional color functions:
@@ -237,8 +245,9 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
                 
                 // final color functions:
                 [iconColorVars.color] : switchOf(
-                    iconColorVars.autoColorTg, // first  priority
-                    backgroundVars.backgColor, // second priority
+                    iconColorVars.autoColorTg,   // toggle auto theme
+                    
+                    iconColorVars.themedColorFn, // default => uses our `themedColorFn`
                 ),
             }),
             ...variants([
@@ -263,7 +272,8 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
 export const mildOf = (toggle: boolean|null = true): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification prop:
-        [iconColorVars.autoMildColorTg] : toggle ? iconColorVars.autoMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [iconColorVars.themedMildColorTg] : toggle ? iconColorVars.themedMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        [iconColorVars.autoMildColorTg  ] : toggle ? iconColorVars.autoMildColorFn   : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
     }),
 });
 //#endregion iconColor
@@ -404,15 +414,6 @@ export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
  */
 export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
 //#endregion resizable
-
-//#region mildable
-// current is  `.mild`:
-const ifSelfMildOrOutlined     = (styles: CssStyleCollection): CssRule => rule('&:is(.mild, .outlined)' , styles);
-
-
-// grandpa is  `.mild`:
-const ifAncestorMildOrOutlined = (styles: CssStyleCollection): CssRule => rule(':is(.mild, .outlined) &', styles);
-//#endregion mildable
 
 
 
