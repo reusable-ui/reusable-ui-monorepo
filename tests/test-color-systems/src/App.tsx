@@ -84,10 +84,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='primary' mild={false}>
                                     <p>
-                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
@@ -106,10 +106,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='primary' mild={true}>
                                     <p>
-                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
@@ -128,10 +128,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='primary' outlined={true}>
                                     <p>
-                                        <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
@@ -150,10 +150,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='warning' mild={false}>
                                     <p>
-                                        <Icon icon='face' theme='primary' /> <Icon icon='instagram' theme='primary' /><ButtonIcon icon='instagram' theme='primary' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
@@ -172,10 +172,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='warning' mild={true}>
                                     <p>
-                                        <Icon icon='face' theme='primary' /> <Icon icon='instagram' theme='primary' /><ButtonIcon icon='instagram' theme='primary' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
@@ -194,10 +194,10 @@ function App() {
                             <td>
                                 <EditableControl gradient={true} theme='warning' outlined={true}>
                                     <p>
-                                        <Icon icon='face' theme='primary' /> <Icon icon='instagram' theme='primary' /><ButtonIcon icon='instagram' theme='primary' >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
                                     <p>
-                                        <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon>
+                                        <Icon icon='face' theme='danger' mild={true} /> <Icon icon='instagram' theme='danger' mild={true} /><ButtonIcon icon='instagram' theme='danger' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
                             </td>
