@@ -116,7 +116,7 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
                     outlineableVars.altForegTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altForegTg,        // toggle mild     (if `usesMildable()` applied)
                     
-                    foregroundVars.altForegFn,      // default => uses our `foregFn`
+                    foregroundVars.altForegFn,      // default => uses our `altForegFn`
                 ),
             }),
         }),

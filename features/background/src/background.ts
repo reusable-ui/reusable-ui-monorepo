@@ -149,7 +149,7 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                     outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
                     mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
                     
-                    backgroundVars.altBackgColorFn, // default => uses our `backgColorFn`
+                    backgroundVars.altBackgColorFn, // default => uses our `altBackgColorFn`
                 ),
             }),
             
