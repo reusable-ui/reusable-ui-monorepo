@@ -376,6 +376,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => ignore
                 if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => ignore
                 if (!(listItem.props.actionCtrl ?? defaultActionCtrl ?? false)) return listItem; // <ListItem actionCtrl={false}>  => ignore
+                if (listItem.type === ListSeparatorItem)                        return listItem; // <ListSeparatorItem>            => ignore
                 if (listItem.props.classes?.includes('void'))                   return listItem; // a foreign <ListItem>           => ignore
                 // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
                 
