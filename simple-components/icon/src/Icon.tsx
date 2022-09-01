@@ -152,32 +152,32 @@ export interface IconColorVars {
     /**
      * functional conditional Icon color based on its background color.
      */
-    autoBoldColorFn : any
+    autoBoldColorFn   : any
     
     /**
      * functional conditional Icon color based on its background color - at mild variant.
      */
-    autoMildColorFn : any
+    autoMildColorFn   : any
     /**
      * toggles_on conditional Icon color based on its background color - at mild variant.
      */
-    autoMildColorTg : any
+    autoMildColorTg   : any
     
     /**
      * Conditional Icon color based on its background color.
      */
-    autoColorFn     : any
+    autoColorFn       : any
     /**
      * toggles_on conditional Icon color based on its background color.
      */
-    autoColorTg     : any
+    autoColorTg       : any
     
     
     
     /**
      * final Icon color.
      */
-    color           : any
+    color             : any
 }
 const [iconColorVars] = cssVars<IconColorVars>();
 
