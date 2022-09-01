@@ -47,43 +47,60 @@ import {
 
 //#region outlineable
 export interface OutlineableVars {
-    noBackgTg  : any
+    /**
+     * toggles_on background color layer - at outlined variant.
+     */
+    noBackgTg      : any
+    
+    
     
     /**
      * functional background color - at outlined variant.
      */
-    backgFn    : any
+    backgFn        : any
     /**
      * toggles_on background color - at outlined variant.
      */
-    backgTg    : any
+    backgTg        : any
     /**
      * functional alternate background color - at outlined variant.
      */
-    altBackgFn : any
+    altBackgFn     : any
     /**
      * toggles_on alternate background color - at outlined variant.
      */
-    altBackgTg : any
+    altBackgTg     : any
     
     
     
     /**
      * functional foreground color - at outlined variant.
      */
-    foregFn    : any
+    foregFn        : any
     /**
      * toggles_on foreground color - at outlined variant.
      */
-    foregTg    : any
+    foregTg        : any
     /**
      * functional alternate foreground color - at outlined variant.
      */
-    altForegFn : any
+    altForegFn     : any
     /**
      * toggles_on alternate foreground color - at outlined variant.
      */
-    altForegTg : any
+    altForegTg     : any
+    
+    
+    
+    // supports for iconColor:
+    /**
+     * toggles_on conditionally background color - at outlined variant.
+     */
+    backgCondTg    : any
+    /**
+     * toggles_on conditionally alternate background color - at outlined variant.
+     */
+    altBackgCondTg : any
 }
 const [outlineableVars] = cssVars<OutlineableVars>();
 
@@ -175,18 +192,29 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const outlinedOf = (toggle: boolean|null = true): CssRule => style({
-    ...vars({
-        // *toggle on/off* the outlining prop:
-        [outlineableVars.noBackgTg ] : toggle ? 'transparent'              : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        
-        [outlineableVars.backgTg   ] : toggle ? outlineableVars.backgFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineableVars.foregTg   ] : toggle ? outlineableVars.foregFn    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        
-        [outlineableVars.altBackgTg] : toggle ? outlineableVars.altBackgFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [outlineableVars.altForegTg] : toggle ? outlineableVars.altForegFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
+export const outlinedOf = (toggle: boolean|null = true): CssRule => {
+    // dependencies:
+    const {themableVars} = usesThemable();
+    
+    
+    
+    return style({
+        ...vars({
+            // *toggle on/off* the outlining prop:
+            [outlineableVars.noBackgTg     ] : toggle ? 'transparent'                     : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            
+            [outlineableVars.backgTg       ] : toggle ? outlineableVars.backgFn           : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [outlineableVars.foregTg       ] : toggle ? outlineableVars.foregFn           : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            
+            [outlineableVars.altBackgTg    ] : toggle ? outlineableVars.altBackgFn        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [outlineableVars.altForegTg    ] : toggle ? outlineableVars.altForegFn        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            
+            // supports for iconColor:
+            [outlineableVars.backgCondTg   ] : toggle ? themableVars.backgMildCond        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [outlineableVars.altBackgCondTg] : toggle ? themableVars.altBackgOutlinedCond : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        }),
+    });
+};
 
 
 
