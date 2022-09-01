@@ -101,9 +101,9 @@ const [mildableVars] = cssVars<MildableVars>();
 
 // by design: grandpa's `.mild` does not affect current `.mild`
 // parent not `.mild` -and- current not `.mild`:
-export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(.mild)&:where(:not(.mild))', styles);
+export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(:is(.mild&, &.mild))', styles);
 // parent is  `.mild` -or-  current is  `.mild`:
-export const ifMild    = (styles: CssStyleCollection): CssRule => rule(':is(.mild&, &.mild)'            , styles);
+export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is(.mild&, &.mild)' , styles);
 
 
 
