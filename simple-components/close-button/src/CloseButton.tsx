@@ -43,7 +43,7 @@ const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
             
             
             // variants:
-            buttonStyle={props.buttonStyle ?? 'link'}
+            nude={props.nude ?? true}
             
             
             
