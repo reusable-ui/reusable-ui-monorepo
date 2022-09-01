@@ -52,10 +52,10 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 
 
-// grandpa not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':not(.gradient) :where(:not(.gradient)&:not(.gradient))', styles);
-// grandpa is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(.gradient &, .gradient&, &.gradient)'               , styles);
+// ancestor(s) not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
+export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule('&:not(:is(.gradient &, .gradient&, &.gradient))', styles);
+// ancestor(s) is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
+export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(':is(.gradient &, .gradient&, &.gradient)'       , styles);
 
 
 

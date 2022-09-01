@@ -106,10 +106,10 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 
 
-// grandpa not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':not(.outlined) :where(:not(.outlined)&:not(.outlined))', styles);
-// grandpa is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(.outlined &, .outlined&, &.outlined)'               , styles);
+// ancestor(s) not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
+export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule('&:not(:is(.outlined &, .outlined&, &.outlined))', styles);
+// ancestor(s) is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
+export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(':is(.outlined &, .outlined&, &.outlined)'       , styles);
 
 
 
