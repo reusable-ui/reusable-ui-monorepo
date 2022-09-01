@@ -78,9 +78,9 @@ const [excitableVars] = cssVars<ExcitableVars>();
 
 
 
-// parent not `.excited` -and- current not `.excited`:
+// ancestor(s) not `.excited` -and- current not `.excited`:
 export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':not(:is(.excited&, &.excited))', styles);
-// parent is  `.excited` -or-  current is  `.excited`:
+// ancestor(s) is  `.excited` -or-  current is  `.excited`:
 export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(     ':is(.excited&, &.excited)' , styles);
 
 

@@ -37,10 +37,10 @@ import {
 // variants:
 
 //#region nudible
-// by design: grandpa's `.nude` does not affect current `.nude`
-// parent not `.nude` -and- current not `.nude`:
+// by design: ancestor(s)'s `.nude` does not affect current `.nude`
+// ancestor(s) not `.nude` -and- current not `.nude`:
 export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':not(:is(.nude&, &.nude))', styles);
-// parent is  `.nude` -or-  current is  `.nude`:
+// ancestor(s) is  `.nude` -or-  current is  `.nude`:
 export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     ':is(.nude&, &.nude)' , styles);
 
 
