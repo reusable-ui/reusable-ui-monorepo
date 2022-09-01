@@ -199,8 +199,9 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
     
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({
-        backg    : config?.color,
-        altBackg : config?.altColor,
+        // reverses the regular & alternate:
+        backg    : config?.altColor,
+        altBackg : config?.color,
     });
     
     // variants:
@@ -675,7 +676,7 @@ export const usesIconVariants    = () => {
     // variants:
     const {resizableRule} = usesResizable<SizeName>(icons, sizeOptions());
     const {themableRule } = usesThemable();
-    const {iconColorRule} = usesIconColor({ altColor : icons.color });
+    const {iconColorRule} = usesIconColor(icons);
     
     
     
@@ -737,12 +738,12 @@ export const useIconStyleSheet = dynamicStyleSheet(() => ({
 export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
     const basics = {
         // color:
-        color  : 'currentColor'                                 as CssKnownProps['backgroundColor'],
-        
+        color      : 'currentColor'                                 as CssKnownProps['backgroundColor'],
+        altColor   : 'gray'                                         as CssKnownProps['backgroundColor'],
         
         
         // sizes:
-        sizeNm : '24px'                                         as CssKnownProps['blockSize'],
+        sizeNm     : '24px'                                         as CssKnownProps['blockSize'],
     };
     
     
@@ -753,16 +754,16 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         
         // sizes:
-        size    :            basics.sizeNm                      as CssKnownProps['blockSize'],
-        sizeSm  : [['calc(', basics.sizeNm, '*', 0.75  , ')']]  as CssKnownProps['blockSize'],
-        sizeMd  : [['calc(', basics.sizeNm, '*', 1.50  , ')']]  as CssKnownProps['blockSize'],
-        sizeLg  : [['calc(', basics.sizeNm, '*', 2.00  , ')']]  as CssKnownProps['blockSize'],
-        size1em : '1em'                                         as CssKnownProps['blockSize'],
+        size       :            basics.sizeNm                       as CssKnownProps['blockSize'],
+        sizeSm     : [['calc(', basics.sizeNm, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
+        sizeMd     : [['calc(', basics.sizeNm, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
+        sizeLg     : [['calc(', basics.sizeNm, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
+        size1em    : '1em'                                          as CssKnownProps['blockSize'],
         
         
         
         // animations:
-        transition : basicCssConfigs.transition                 as CssKnownProps['transition'],
+        transition : basicCssConfigs.transition                     as CssKnownProps['transition'],
     };
 }, { prefix: 'ico' });
 
