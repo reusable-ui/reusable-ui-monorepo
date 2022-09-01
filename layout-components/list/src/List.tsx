@@ -1695,7 +1695,17 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                             
                             
                             // behaviors:
-                            actionCtrl : child.props.actionCtrl ?? defaultActionCtrl, // the default <ListItem>'s actionCtrl value, if not assigned
+                            actionCtrl : (
+                                (
+                                    (child.type === ListSeparatorItem)
+                                    ||
+                                    (child.props.classes?.includes('void'))
+                                )
+                                ?
+                                undefined
+                                :
+                                (child.props.actionCtrl ?? defaultActionCtrl) // the default <ListItem>'s actionCtrl value, if not assigned
+                            ),
                         },
                     )}
                 </Generic>
