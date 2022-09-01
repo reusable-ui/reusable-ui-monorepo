@@ -44,6 +44,7 @@
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.10",
     "@cssfn/types": "^2.0.1",
+    "@reusable-ui/basic": "^5.0.0",
     "@reusable-ui/button-icon": "^5.0.0",
     "@reusable-ui/close-button": "^5.0.0",
     "@reusable-ui/content": "^5.0.0",
