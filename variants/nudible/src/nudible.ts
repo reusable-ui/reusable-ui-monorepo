@@ -41,7 +41,7 @@ import {
 // ancestor(s) not `.nude` -and- current not `.nude`:
 export const ifNotNude = (styles: CssStyleCollection): CssRule => rule('&:not(:is(.nude&, &.nude))', styles);
 // ancestor(s) is  `.nude` -or-  current is  `.nude`:
-export const ifNude    = (styles: CssStyleCollection): CssRule => rule(     ':is(.nude&, &.nude)' , styles);
+export const ifNude    = (styles: CssStyleCollection): CssRule => rule(      ':is(.nude&, &.nude)' , styles);
 
 
 
