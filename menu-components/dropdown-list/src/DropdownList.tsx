@@ -411,6 +411,9 @@ export type { ListStyle, ListVariant }
 
 interface ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
+        // bases:
+        ListItemProps<Element>,
+        
         // states:
         Required<Pick<DropdownProps<Element, TDropdownListExpandedChangeEvent>, 'onExpandedChange'>>
 {
@@ -422,7 +425,25 @@ interface ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent exte
     // components:
     listItemComponent : React.ReactElement<ListItemProps<Element>>
 }
-const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>({listIndex, onExpandedChange, listItemComponent}: ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+    // rest props:
+    const {
+        // positions:
+        listIndex,
+        
+        
+        
+        // states:
+        onExpandedChange,
+        
+        
+        
+        // components:
+        listItemComponent,
+    ...restListItemProps} = props;
+    
+    
+    
     // handlers:
     const handleExpandedChange = onExpandedChange;
     const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
@@ -441,6 +462,11 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
         
         
         
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
         // handlers:
         handleClickInternal,
     );
@@ -452,8 +478,8 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
     return React.cloneElement<ListItemProps<Element>>(listItemComponent,
         // props:
         {
-            // behaviors:
-            actionCtrl : listItemComponent.props.actionCtrl ?? true,
+            // other props:
+            ...restListItemProps,
             
             
             
