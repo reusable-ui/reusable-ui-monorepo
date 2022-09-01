@@ -43,6 +43,7 @@ const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
             
             
             // variants:
+            mild={props.mild ?? true}
             nude={props.nude ?? true}
             
             
