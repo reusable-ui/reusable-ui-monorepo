@@ -11,7 +11,6 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    states,
     keyframes,
     
     
@@ -75,11 +74,6 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    markActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
-    ifPress,
     usesClickable,
     ClickableProps,
     useClickable,
@@ -154,13 +148,6 @@ export const usesActionControlStates = () => {
             // states:
             usesControlStates(),
             clickableRule,
-        ]),
-        ...states([
-            ifPress({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
         ]),
     });
 };

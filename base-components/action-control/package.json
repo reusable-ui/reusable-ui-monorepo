@@ -41,7 +41,6 @@
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
-    "@reusable-ui/activatable": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
