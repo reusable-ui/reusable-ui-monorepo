@@ -70,6 +70,7 @@ import {
 // defaults:
 const _defaultTabIndex   : number            = -1   // makes the <List> programatically focusable
 const _defaultActionCtrl : boolean|undefined = true // the default for <ListItem>(s) is clickable
+const _defaultListStyle  : ListStyle         = 'joined'
 
 
 
@@ -349,7 +350,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 // variants:
                 orientation : listComponent.props.orientation ?? listOrientation,
-                listStyle   : listComponent.props.listStyle   ?? listStyle,
+                listStyle   : listComponent.props.listStyle   ?? listStyle ?? _defaultListStyle,
                 
                 
                 
