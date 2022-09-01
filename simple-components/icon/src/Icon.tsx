@@ -179,7 +179,7 @@ export interface IconColorVars {
      */
     color           : any
 }
-const [iconColorVars] = cssVars<IconColorVars>({minify: false}); // TODO: remove minify
+const [iconColorVars] = cssVars<IconColorVars>();
 
 
 
@@ -219,30 +219,28 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
             ...vars({
                 // conditional color functions:
                 [iconColorVars.themedBoldColorFn] : switchOf(
-                    outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
-                    
                     // conditional <parent> color:
-                    themableVars.altBackgCond,     // first  priority
+                    outlineableVars.altBackgCondTg, // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.altBackgCondTg,    // toggle mild     (if `usesMildable()` applied)
+                    themableVars.altBackgCond,      // default => uses themed alternate background color
                     
                     // themed color:
-                    themableVars.backg,            // second priority
+                    themableVars.backg,             // if not conditional => uses themed background color
                     
                     // default color:
-                    config?.color,              // default => uses config's color
+                    config?.color,                  // default => uses config's color
                 ),
                 [iconColorVars.themedMildColorFn] : switchOf(
-                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
-                    
                     // conditional <parent> color:
-                    themableVars.backgCond,  // first  priority
+                    outlineableVars.backgCondTg,    // toggle outlined (if `usesOutlineable()` applied)
+                    mildableVars.backgCondTg,       // toggle mild     (if `usesMildable()` applied)
+                    themableVars.backgCond,         // default => uses themed background color
                     
                     // themed color:
-                    themableVars.altBackg,      // second priority
+                    themableVars.altBackg,          // if not conditional => uses themed alternate background color
                     
                     // default color:
-                    config?.altColor,           // default => uses config's alternate color
+                    config?.altColor,               // default => uses config's alternate color
                 ),
                 
                 
