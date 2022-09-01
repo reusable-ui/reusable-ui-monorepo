@@ -101,7 +101,7 @@ const [mildableVars] = cssVars<MildableVars>();
 
 // by design: ancestor(s)'s `.mild` does not affect current `.mild`
 // ancestor(s) not `.mild` -and- current not `.mild`:
-export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':not(:is(.mild&, &.mild))', styles);
+export const ifNotMild = (styles: CssStyleCollection): CssRule => rule('&:not(:is(.mild&, &.mild))', styles);
 // ancestor(s) is  `.mild` -or-  current is  `.mild`:
 export const ifMild    = (styles: CssStyleCollection): CssRule => rule(     ':is(.mild&, &.mild)' , styles);
 
