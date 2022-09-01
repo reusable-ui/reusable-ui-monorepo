@@ -452,8 +452,13 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
     return React.cloneElement<ListItemProps<Element>>(listItemComponent,
         // props:
         {
+            // behaviors:
+            actionCtrl : listItemComponent.props.actionCtrl ?? true,
+            
+            
+            
             // handlers:
-            onClick : handleClick,
+            onClick    : handleClick,
         },
     );
 };
