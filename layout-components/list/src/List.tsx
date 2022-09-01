@@ -7,6 +7,7 @@ import {
 // cssfn:
 import type {
     // types:
+    Optional,
     SingleOrArray,
 }                           from '@cssfn/types'                 // cssfn general types
 import type {
@@ -217,18 +218,20 @@ import {
 
 // defaults:
 export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: null, mild: null };
+const _defaultMarkActiveOptions        : MarkActiveOptions  = { outlined: null, mild: null };
 
-const _defaultSemanticTag    : SemanticTag       = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
-const _defaultSemanticRole   : SemanticRole      = ['list'    ] // uses [role="list"] as the default semantic
+const _defaultSemanticTag              : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticRole             : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic
 
-const _defaultOutlined       : boolean           = false
-const _defaultMild           : boolean           = true
-const _defaultActionCtrl     : boolean|undefined = undefined
+const _defaultOutlined                 : boolean            = false
+const _defaultMild                     : boolean            = true
+const _defaultActionCtrl               : boolean|undefined  = undefined
 
-const _defaultItemOutlined   : boolean           = false
-const _defaultItemMild       : boolean           = false
-const _defaultItemActionCtrl : boolean           = false
+const _defaultItemOutlined             : boolean            = false
+const _defaultItemMild                 : boolean            = false
+const _defaultItemActionCtrl           : boolean            = false
+
+const _defaultListSeparatorItemClasses : Optional<string>[] = ['void']
 
 
 
@@ -1503,6 +1506,19 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
     
     
     
+    // classes:
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        _defaultListSeparatorItemClasses,
+    );
+    
+    
+    
     // jsx:
     return (
         <ListItem<TElement>
@@ -1512,7 +1528,8 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
             
             
             // classes:
-            mainClass={props.mainClass ?? [styleSheet.main, separatorStyleSheet.main, 'void'].join(' ')}
+            mainClass={props.mainClass ?? [styleSheet.main, separatorStyleSheet.main].join(' ')}
+            classes={classes}
         >
             <hr />
         </ListItem>
