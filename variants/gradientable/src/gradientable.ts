@@ -89,7 +89,7 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const gradientOf = (toggle: boolean|null = true): CssRule => style({
+export const gradientOf = (toggle: boolean|null): CssRule => style({
     ...vars({
         // *toggle on/off* the background gradient prop:
         [gradientableVars.backgGradTg] : toggle ? gradientableVars.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
