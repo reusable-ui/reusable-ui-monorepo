@@ -31,15 +31,15 @@ function App() {
         <>
             <div className="App">
                 <Navbar theme='primary' expanded={undefined}>{({
-                    colorSystemProps,
+                    basicVariantProps,
                     navbarExpanded,
                     menuExpanded,
                     handleClickAsToggleMenu,
                 }) => <>
                     <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
-                    {!navbarExpanded && <HamburgerMenuButton {...colorSystemProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
+                    {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
                     <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={menuExpanded}>
-                        <Nav tag='ul' role='' {...colorSystemProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
+                        <Nav tag='ul' role='' {...basicVariantProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                             <NavItem>
                                 <Link to='/'>Home</Link>
                             </NavItem>

@@ -315,7 +315,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 
 // react components:
 export interface NavbarParams {
-    // color system props:
+    // basic variant props:
     basicVariantProps       : BasicVariantProps
     
     
