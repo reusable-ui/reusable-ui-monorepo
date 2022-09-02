@@ -64,10 +64,6 @@ import type {
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 
 // reusable-ui components:
-import type {
-    // react components:
-    BasicProps,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesPopupLayout,
@@ -303,28 +299,6 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     
-    // forward props:
-    const {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
-    } = props;
-    const colorSystemProps : BasicProps<any> = {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
-    };
-    
-    
-    
     // rest props:
     const {
         // states:
@@ -412,16 +386,6 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             {React.cloneElement<ControlProps<Element>>(controlComponent,
                 // props:
                 {
-                    // color system props:
-                    ...colorSystemProps,
-                    
-                    
-                    
-                    // other props:
-                    ...controlComponent.props,
-                    
-                    
-                    
                     // variants:
                     size    : controlComponent.props.size ?? (_defaultControlSize as ControlProps<Element>['size']),
                     
