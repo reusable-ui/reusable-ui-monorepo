@@ -68,6 +68,11 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    BasicVariantProps,
+    useBasicVariantProps,
+}                           from '@reusable-ui/basic-variants'  // basic variants of UI
 
 // reusable-ui states:
 import {
@@ -85,11 +90,6 @@ import type {
 import {
     // configs:
     basics,
-    
-    
-    
-    // react components:
-    BasicProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
@@ -314,10 +314,9 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
 
 
 // react components:
-export type ColorSystemProps = Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'>
 export interface NavbarParams {
     // color system props:
-    colorSystemProps        : ColorSystemProps
+    basicVariantProps       : BasicVariantProps
     
     
     
@@ -380,18 +379,6 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
 const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet       = useNavbarStyleSheet();
-    
-    
-    
-    // forward props:
-    const {
-        // from <Basic>:
-        size,
-        theme,
-        gradient,
-        outlined,
-        mild = false,
-    } = props;
     
     
     
@@ -502,18 +489,11 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // jsx:
-    const colorSystemProps : Pick<BasicProps, 'size'|'theme'|'gradient'|'outlined'|'mild'> = {
-        // from <Basic>:
-        size,
-        theme,
-        gradient,
-        outlined,
-        mild,
-    };
+    const basicVariantProps = useBasicVariantProps(props, { mild: false });
     return (
         <Container<TElement>
-            // color system props:
-            {...colorSystemProps}
+            // basic variant props:
+            {...basicVariantProps}
             
             
             
@@ -538,8 +518,8 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             onClick={handleClick}
         >
             {(typeof(children) !== 'function') ? children : children({
-                // color system props:
-                colorSystemProps,
+                // basic variant props:
+                basicVariantProps,
                 
                 
                 
