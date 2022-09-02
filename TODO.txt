@@ -2,6 +2,8 @@
 
 TODO: color system
 
+add fluid/fixed <GroupItem>
+
 calculateSemanticRole => test add <ListSeparatorItem> => should still role="menu"
 
 merge fooComponent.fooStyle & fooStyle
