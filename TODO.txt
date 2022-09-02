@@ -1,10 +1,21 @@
 [deferred] fix hack _use***
 
+[deferred] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
+[deferred] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
+
+[low prior] fix <Carousel> fast clicking [prev] & [next] button
+[low prior] fix <Carousel> touch scroll sync with <Navscroll>
+
+[low prior] test tree shake a Dropdown without Modal
+
 TODO: color system
 
-add fluid/fixed <GroupItem>
+TODO: upgrade <Masonry> & <Dropdown(List)?Buton> to useOrientationableWithDirection
 
-calculateSemanticRole => test add <ListSeparatorItem> => should still role="menu"
+fix fooElm constant with zero specificity:
+^(export\s+)?const\s+\w+Elm\s*=.*?;
+
+add fluid/fixed <GroupItem>
 
 merge fooComponent.fooStyle & fooStyle
 \w+Style\s*:\s*\w+Component\.props\.\w+Style\s*\?\?\s*\w+Style,?
@@ -13,21 +24,9 @@ merged\w+Style
 TODO:
 @reusable-ui/clickable => handle space & enter as click
 
-TODO: upgrade <Masonry> & <Dropdown(List)?Buton> to useOrientationableWithDirection
-
-fix <Carousel> fast clicking [prev] & [next] button
-fix <Carousel> touch scroll sync with <Navscroll>
-
-test tree shake a Dropdown without Modal
-
-fix fooElm constant with zero specificity:
-^(export\s+)?const\s+\w+Elm\s*=.*?;
 
 fix touchStart/End on <ActionControl>
 fix press/release animation on keyboard press on <Range>
-
-fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
-fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
 
 add <AccordionItemGroup maxExpanded={1}>
 
