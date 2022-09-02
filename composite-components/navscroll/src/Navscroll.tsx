@@ -831,7 +831,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             // jsx:
             return (
-                <ListItemWithNavigation
+                <ListItemWithNavigation<Element>
                     // identifiers:
                     key={child.key}
                     
