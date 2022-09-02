@@ -33,17 +33,7 @@ import {
 // variants:
 
 //#region basic-variants
-export interface BasicVariantProps
-    extends
-        // bases:
-        ResizableProps,
-        ThemableProps,
-        GradientableProps,
-        OutlineableProps,
-        MildableProps
-{
-}
-export const useBasicVariantProps = (props: BasicVariantProps): BasicVariantProps => {
+const onlyExistingProps = (props: BasicVariantProps): BasicVariantProps => {
     const {
         size,
         theme,
@@ -61,10 +51,48 @@ export const useBasicVariantProps = (props: BasicVariantProps): BasicVariantProp
         outlined,
         mild,
     };
-    return useMemo<BasicVariantProps>(() => Object.fromEntries(
+    
+    
+    
+    return Object.fromEntries(
         Object.entries(basicVariantProps)
         .filter(([, value]) => (value !== undefined)) // filter out `undefined` props so they wouldn't overwrite the existing ones
-    ) as BasicVariantProps, [
+    ) as BasicVariantProps;
+};
+
+
+
+export interface BasicVariantProps
+    extends
+        // bases:
+        ResizableProps,
+        ThemableProps,
+        GradientableProps,
+        OutlineableProps,
+        MildableProps
+{
+}
+export const useBasicVariantProps = (props: BasicVariantProps, defaults?: BasicVariantProps): BasicVariantProps => {
+    const {
+        size,
+        theme,
+        gradient,
+        outlined,
+        mild,
+    } = {
+        ...(defaults ? onlyExistingProps(defaults) : null),
+        ...onlyExistingProps(props),
+    };
+    
+    
+    
+    return useMemo<BasicVariantProps>(() => ({
+        size,
+        theme,
+        gradient,
+        outlined,
+        mild,
+    }), [
         size,
         theme,
         gradient,
