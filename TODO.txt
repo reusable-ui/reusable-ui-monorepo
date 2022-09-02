@@ -10,8 +10,6 @@
 
 [low prior] test tree shake a Dropdown without Modal
 
-TODO: color system
-
 TODO: upgrade <Masonry> & <Dropdown(List)?Buton> to useOrientationableWithDirection
 
 fix fooElm constant with zero specificity:
