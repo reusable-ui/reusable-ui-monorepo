@@ -192,7 +192,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const outlinedOf = (toggle: boolean|null = true): CssRule => {
+export const outlinedOf = (toggle: boolean|null): CssRule => {
     // dependencies:
     const {themableVars} = usesThemable();
     
