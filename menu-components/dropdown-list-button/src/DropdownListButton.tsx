@@ -4,6 +4,12 @@ import {
     default as React,
 }                           from 'react'
 
+// reusable-ui variants:
+import {
+    // hooks:
+    useBasicVariantProps,
+}                           from '@reusable-ui/basic-variants'  // basic variants of UI
+
 // reusable-ui components:
 import type {
     // react components:
@@ -82,19 +88,13 @@ export interface DropdownListButtonProps<TDropdownListExpandedChangeEvent extend
 {
 }
 const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListButtonProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
-    // forward props:
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props);
+    
+    
+    
+    // accessibility props:
     const {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
-        
-        
-        
-        // from <Indicator>:
         enabled,
         inheritEnabled,
         readOnly,
@@ -122,17 +122,17 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
             listComponent={React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
                 {
-                    // from <Basic>:
-                    size            : listComponent.props.size            ?? size,
-                    nude            : listComponent.props.nude            ?? nude,
-                    theme           : listComponent.props.theme           ?? theme,
-                    gradient        : listComponent.props.gradient        ?? gradient,
-                    outlined        : listComponent.props.outlined        ?? outlined,
-                    mild            : listComponent.props.mild            ?? mild,
+                    // basic variant props:
+                    ...basicVariantProps,
                     
                     
                     
-                    // from <Indicator>:
+                    // other props:
+                    ...listComponent.props,
+                    
+                    
+                    
+                    // accessibility props:
                     enabled         : listComponent.props.enabled         ?? enabled,
                     inheritEnabled  : listComponent.props.inheritEnabled  ?? inheritEnabled,
                     readOnly        : listComponent.props.readOnly        ?? readOnly,

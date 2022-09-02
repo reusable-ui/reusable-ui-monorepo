@@ -39,6 +39,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "@reusable-ui/basic-variants": "^5.0.0",
     "@reusable-ui/dropdown": "^5.0.0",
     "@reusable-ui/dropdown-button": "^5.0.0",
     "@reusable-ui/dropdown-list": "^5.0.0",
