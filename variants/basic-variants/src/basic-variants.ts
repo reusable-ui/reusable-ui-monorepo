@@ -81,12 +81,12 @@ export const useBasicVariantProps = (props: BasicVariantProps, defaults?: BasicV
         mild,
     } = {
         ...(defaults ? onlyExistingProps(defaults) : null),
-        ...onlyExistingProps(props),
+        ...props,
     };
     
     
     
-    return useMemo<BasicVariantProps>(() => ({
+    return useMemo<BasicVariantProps>(() => onlyExistingProps({
         size,
         theme,
         gradient,
