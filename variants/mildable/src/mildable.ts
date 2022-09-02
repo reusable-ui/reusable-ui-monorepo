@@ -195,15 +195,15 @@ export const mildOf = (toggle: boolean|null|'inherit'): CssRule => {
     return style({
         ...vars({
             // *toggle on/off* the mildification prop:
-            [mildableVars.backgTg       ] : toggle ? mildableVars.backgFn          : falsyValue,
-            [mildableVars.foregTg       ] : toggle ? mildableVars.foregFn          : falsyValue,
+            [mildableVars.backgTg       ] : (toggle === true) ? mildableVars.backgFn          : falsyValue,
+            [mildableVars.foregTg       ] : (toggle === true) ? mildableVars.foregFn          : falsyValue,
             
-            [mildableVars.altBackgTg    ] : toggle ? mildableVars.altBackgFn       : falsyValue,
-            [mildableVars.altForegTg    ] : toggle ? mildableVars.altForegFn       : falsyValue,
+            [mildableVars.altBackgTg    ] : (toggle === true) ? mildableVars.altBackgFn       : falsyValue,
+            [mildableVars.altForegTg    ] : (toggle === true) ? mildableVars.altForegFn       : falsyValue,
             
             // supports for iconColor:
-            [mildableVars.backgCondTg   ] : toggle ? themableVars.backgMildCond    : falsyValue,
-            [mildableVars.altBackgCondTg] : toggle ? themableVars.altBackgMildCond : falsyValue,
+            [mildableVars.backgCondTg   ] : (toggle === true) ? themableVars.backgMildCond    : falsyValue,
+            [mildableVars.altBackgCondTg] : (toggle === true) ? themableVars.altBackgMildCond : falsyValue,
         }),
     });
 };
