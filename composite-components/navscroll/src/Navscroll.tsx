@@ -928,7 +928,7 @@ interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     // handlers:
     handleNavigate   ?: EventHandler<number[]>
 }
-const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: ListItemWithNavigationProps<TElement>) => {
+const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: ListItemWithNavigationProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // positions:
