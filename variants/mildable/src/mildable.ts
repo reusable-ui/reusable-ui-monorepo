@@ -175,27 +175,35 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
 
 /**
  * Creates a mildification rules for the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification -or- `'inherit'` to copy ancestor's mild property.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: boolean|null = true): CssRule => {
+export const mildOf = (toggle: boolean|null|'inherit' = true): CssRule => {
     // dependencies:
     const {themableVars} = usesThemable();
     
     
     
+    const falsyValue = (() => {
+        switch(toggle) {
+            case true : return undefined;
+            case false: return 'initial'; // protect from inheritance
+            case null : return null;      // keep the original (imported) behavior, delete the existing prop so it doesn't overwrite the original prop
+            default   : return 'inherit'; // force to inherit
+        } // switch
+    })();
     return style({
         ...vars({
             // *toggle on/off* the mildification prop:
-            [mildableVars.backgTg       ] : toggle ? mildableVars.backgFn          : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [mildableVars.foregTg       ] : toggle ? mildableVars.foregFn          : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [mildableVars.backgTg       ] : toggle ? mildableVars.backgFn          : falsyValue,
+            [mildableVars.foregTg       ] : toggle ? mildableVars.foregFn          : falsyValue,
             
-            [mildableVars.altBackgTg    ] : toggle ? mildableVars.altBackgFn       : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [mildableVars.altForegTg    ] : toggle ? mildableVars.altForegFn       : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [mildableVars.altBackgTg    ] : toggle ? mildableVars.altBackgFn       : falsyValue,
+            [mildableVars.altForegTg    ] : toggle ? mildableVars.altForegFn       : falsyValue,
             
             // supports for iconColor:
-            [mildableVars.backgCondTg   ] : toggle ? themableVars.backgMildCond    : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [mildableVars.altBackgCondTg] : toggle ? themableVars.altBackgMildCond : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+            [mildableVars.backgCondTg   ] : toggle ? themableVars.backgMildCond    : falsyValue,
+            [mildableVars.altBackgCondTg] : toggle ? themableVars.altBackgMildCond : falsyValue,
         }),
     });
 };
