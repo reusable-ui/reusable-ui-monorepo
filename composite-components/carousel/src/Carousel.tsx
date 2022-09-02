@@ -527,13 +527,18 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
 }
 const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useCarouselStyleSheet();
+    const styleSheet        = useCarouselStyleSheet();
     
     
     
     // variants:
-    const carouselVariant = useCarouselVariant(props);
-    const infiniteLoop    = carouselVariant.infiniteLoop;
+    const carouselVariant   = useCarouselVariant(props);
+    const infiniteLoop      = carouselVariant.infiniteLoop;
+    
+    
+    
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props);
     
     
     
@@ -1087,7 +1092,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // jsx:
-    const basicVariantProps = useBasicVariantProps(props);
     return (
         <Content<TElement>
             // other props:
