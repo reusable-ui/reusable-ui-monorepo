@@ -101,6 +101,10 @@ import {
     ifNotOutlined,
     outlinedOf,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+import {
+    // hooks:
+    mildOf,
+}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui states:
 import {
@@ -336,6 +340,13 @@ export const usesButtonVariants = () => {
                 ]),
             }),
         ]),
+        ...variants([
+            rule('.icon', {
+                ...imports([
+                    mildOf('inherit'),
+                ]),
+            }),
+        ], { specificityWeight: 3 }), // increase the specificity to win with '&:not(:is(.mild&, &.mild))'
     });
 };
 export const usesButtonStates = () => {
@@ -362,7 +373,7 @@ export const useButtonStyleSheet = dynamicStyleSheet(() => ({
 
 
 
-export type ButtonStyle = 'link'|'ghost' // might be added more styles in the future
+export type ButtonStyle = 'link'|'ghost'|'icon' // might be added more styles in the future
 export interface ButtonVariant {
     buttonStyle ?: ButtonStyle
 }
