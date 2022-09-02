@@ -378,7 +378,12 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
 };
 const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useNavbarStyleSheet();
+    const styleSheet        = useNavbarStyleSheet();
+    
+    
+    
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props, { mild: false });
     
     
     
@@ -489,7 +494,6 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // jsx:
-    const basicVariantProps = useBasicVariantProps(props, { mild: false });
     return (
         <Container<TElement>
             // basic variant props:
