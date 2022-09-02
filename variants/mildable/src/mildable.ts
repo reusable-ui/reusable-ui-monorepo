@@ -120,7 +120,7 @@ export interface MildableConfig {
  * @param factory A callback to create a mildification rules for each toggle state.
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
-export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): MildableStuff => {
+export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null|'inherit') => CssStyleCollection) = mildOf): MildableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
