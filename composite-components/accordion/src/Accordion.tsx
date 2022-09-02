@@ -57,6 +57,10 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    useBasicVariantProps,
+}                           from '@reusable-ui/basic-variants'  // basic variants of UI
 
 // reusable-ui states:
 import {
@@ -248,23 +252,17 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
 }
 export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet       = useAccordionItemStyleSheet();
+    const styleSheet        = useAccordionItemStyleSheet();
     
     
     
-    // forward props:
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props);
+    
+    
+    
+    // accessibility props:
     const {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
-        
-        
-        
-        // from <Indicator>:
         enabled,
         inheritEnabled,
         readOnly,
@@ -458,23 +456,22 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             {React.cloneElement<ListItemProps<TElement>>(contentComponent,
                 // props:
                 {
+                    // basic variant props:
+                    ...basicVariantProps,
+                    
+                    
+                    
+                    // other props:
+                    ...contentComponent.props,
+                    
+                    
+                    
                     // identifiers:
                     id              : collapsibleId,
                     
                     
                     
-                    // variants:
-                    // from <Basic>:
-                    size            : contentComponent.props.size            ?? size,
-                    nude            : contentComponent.props.nude            ?? nude,
-                    theme           : contentComponent.props.theme           ?? theme,
-                    gradient        : contentComponent.props.gradient        ?? gradient,
-                    outlined        : contentComponent.props.outlined        ?? outlined,
-                    mild            : contentComponent.props.mild            ?? mild,
-                    
-                    
-                    
-                    // from <Indicator>:
+                    // accessibility props:
                     enabled         : contentComponent.props.enabled         ?? enabled,
                     inheritEnabled  : contentComponent.props.inheritEnabled  ?? inheritEnabled,
                     readOnly        : contentComponent.props.readOnly        ?? readOnly,
