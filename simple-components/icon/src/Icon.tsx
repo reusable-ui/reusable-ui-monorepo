@@ -294,7 +294,7 @@ export const usesIconColor = (config?: IconColorConfig, mildFactory : ((toggle: 
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: boolean|null = true): CssRule => style({
+export const mildOf = (toggle: boolean|null): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification prop:
         [iconColorVars.themedMildColorTg] : toggle ? iconColorVars.themedMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
