@@ -63,6 +63,8 @@ import {
     List,
     
     ListComponentProps,
+    
+    ListItemComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 
 
@@ -384,7 +386,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 // jsx:
                 return (
-                    <ListItemWithExpandedHandler<TDropdownListExpandedChangeEvent>
+                    <ListItemWithExpandedHandler<Element, TDropdownListExpandedChangeEvent>
                         // positions:
                         listIndex={index}
                         
@@ -412,23 +414,21 @@ export type { ListStyle, ListVariant }
 
 
 
-interface ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
+interface ListItemWithExpandedHandlerProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
     extends
         // bases:
-        ListItemProps<Element>,
+        ListItemProps<TElement>,
         
         // states:
-        Required<Pick<DropdownProps<Element, TDropdownListExpandedChangeEvent>, 'onExpandedChange'>>
+        Required<Pick<DropdownProps<TElement, TDropdownListExpandedChangeEvent>, 'onExpandedChange'>>,
+        
+        // components:
+        Required<ListItemComponentProps<TElement>>
 {
     // positions:
-    listIndex         : number
-    
-    
-    
-    // components:
-    listItemComponent : React.ReactElement<ListItemProps<Element>>
+    listIndex : number
 }
-const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const ListItemWithExpandedHandler = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // positions:
@@ -449,7 +449,7 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
     
     // handlers:
     const handleExpandedChange = onExpandedChange;
-    const handleClickInternal  = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickInternal  = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -478,7 +478,7 @@ const ListItemWithExpandedHandler = <TDropdownListExpandedChangeEvent extends Dr
     
     // jsx:
     /* <ListItem> */
-    return React.cloneElement<ListItemProps<Element>>(listItemComponent,
+    return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
         // props:
         {
             // other props:
