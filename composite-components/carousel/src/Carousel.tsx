@@ -556,9 +556,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // components:
-        prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
-        nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' size='lg' buttonStyle='ghost' gradient={true} outlined={false} /> as React.ReactComponentElement<any, ButtonProps>),
-        navscrollComponent  = (<Navscroll<Element> orientation='inline' listStyle='bullet' />                                                        as React.ReactComponentElement<any, NavscrollProps<Element>>),
+        prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' buttonStyle='ghost' /> as React.ReactComponentElement<any, ButtonProps>),
+        nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' buttonStyle='ghost' /> as React.ReactComponentElement<any, ButtonProps>),
+        navscrollComponent  = (<Navscroll<Element> orientation='inline'     listStyle='bullet'  /> as React.ReactComponentElement<any, NavscrollProps<Element>>),
         
         
         
@@ -1177,13 +1177,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     
                     
+                    // variants:
+                    size     : prevButtonComponent.props.size     ?? basicVariantProps.size     ?? 'lg',
+                    gradient : prevButtonComponent.props.gradient ?? basicVariantProps.gradient ?? true,
+                    
+                    
+                    
                     // classes:
-                    classes : mergedPrevButtonClasses,
+                    classes  : mergedPrevButtonClasses,
                     
                     
                     
                     // accessibilities:
-                    label   : prevButtonComponent.props.label ?? 'Previous',
+                    label    : prevButtonComponent.props.label ?? 'Previous',
                     
                     
                     
@@ -1205,13 +1211,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     
                     
+                    // variants:
+                    size     : nextButtonComponent.props.size     ?? basicVariantProps.size     ?? 'lg',
+                    gradient : nextButtonComponent.props.gradient ?? basicVariantProps.gradient ?? true,
+                    
+                    
+                    
                     // classes:
-                    classes : mergedNextButtonClasses,
+                    classes  : mergedNextButtonClasses,
                     
                     
                     
                     // accessibilities:
-                    label   : nextButtonComponent.props.label ?? 'Next',
+                    label    : nextButtonComponent.props.label ?? 'Next',
                     
                     
                     
@@ -1230,6 +1242,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     // other props:
                     ...navscrollComponent.props,
+                    
+                    
+                    
+                    // variants:
+                    outlined               : navscrollComponent.props.outlined ?? basicVariantProps.outlined ?? true,
                     
                     
                     
