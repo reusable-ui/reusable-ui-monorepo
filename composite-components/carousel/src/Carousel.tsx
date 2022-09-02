@@ -1087,11 +1087,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // jsx:
-    const basicVariantProps = {
-        // variants:
-        ...useBasicVariantProps(props),
-        nude : props.nude,
-    };
+    const basicVariantProps = useBasicVariantProps(props);
     return (
         <Content<TElement>
             // other props:
