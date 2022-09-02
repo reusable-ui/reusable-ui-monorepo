@@ -1,4 +1,5 @@
 [high prior] fix <Carousel outlined={true}> on the navButton
+[high prior] fix <Progress mild={true}> should affected to <ProgressBar>
 
 [deferred] fix hack _use***
 
