@@ -63,53 +63,53 @@ import {
 //#region colorable
 export interface ColorableVars {
     /**
-     * functional conditional Icon color based on its theme name.
+     * functional conditional color based on its theme name.
      */
     themedBoldColorFn : any
     
     /**
-     * functional conditional Icon color based on its theme name - at mild variant.
+     * functional conditional color based on its theme name - at mild variant.
      */
     themedMildColorFn : any
     /**
-     * toggles_on conditional Icon color based on its theme name - at mild variant.
+     * toggles_on conditional color based on its theme name - at mild variant.
      */
     themedMildColorTg : any
     
     /**
-     * Conditional Icon color based on its theme name.
+     * Conditional color based on its theme name.
      */
     themedColorFn     : any
     
     
     
     /**
-     * functional conditional Icon color based on its background color.
+     * functional conditional color based on its background color.
      */
     autoBoldColorFn   : any
     
     /**
-     * functional conditional Icon color based on its background color - at mild variant.
+     * functional conditional color based on its background color - at mild variant.
      */
     autoMildColorFn   : any
     /**
-     * toggles_on conditional Icon color based on its background color - at mild variant.
+     * toggles_on conditional color based on its background color - at mild variant.
      */
     autoMildColorTg   : any
     
     /**
-     * Conditional Icon color based on its background color.
+     * Conditional color based on its background color.
      */
     autoColorFn       : any
     /**
-     * toggles_on conditional Icon color based on its background color.
+     * toggles_on conditional color based on its background color.
      */
     autoColorTg       : any
     
     
     
     /**
-     * final Icon color.
+     * final color.
      */
     color             : any
 }
@@ -123,12 +123,12 @@ export interface ColorableConfig {
     altColor ?: CssKnownProps['backgroundColor']
 }
 /**
- * Uses icon color.
+ * Uses color.
  * @param config  A configuration of `colorableRule`.
  * @param mildFactory A callback to create a mildification rules for each toggle state.
- * @returns A `ColorableStuff` represents the icon color rules.
+ * @returns A `ColorableStuff` represents the color rules.
  */
-export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: boolean|null) => CssStyleCollection) = mildOf): ColorableStuff => {
+export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: boolean|null) => CssStyleCollection) = selfMildOf): ColorableStuff => {
     // dependencies:
     
     // features:
@@ -228,7 +228,7 @@ export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: 
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: boolean|null): CssRule => style({
+export const selfMildOf = (toggle: boolean|null): CssRule => style({
     ...vars({
         // *toggle on/off* the mildification prop:
         [colorableVars.themedMildColorTg] : toggle ? colorableVars.themedMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
