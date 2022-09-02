@@ -75,16 +75,16 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    useBasicVariantProps,
+}                           from '@reusable-ui/basic-variants'  // basic variants of UI
 
 // reusable-ui components:
 import {
     // react components:
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
-import type {
-    // react components:
-    BasicProps,
-}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     ContentChildrenMediaOptions,
@@ -534,19 +534,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // variants:
     const carouselVariant = useCarouselVariant(props);
     const infiniteLoop    = carouselVariant.infiniteLoop;
-    
-    
-    
-    // forward props:
-    const {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
-    } = props;
     
     
     
@@ -1100,14 +1087,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // jsx:
-    const colorSystemProps : BasicProps<any> = {
-        // from <Basic>:
-        size,
-        nude,
-        theme,
-        gradient,
-        outlined,
-        mild,
+    const basicVariantProps = {
+        // variants:
+        ...useBasicVariantProps(props),
+        nude : props.nude,
     };
     return (
         <Content<TElement>
@@ -1184,8 +1167,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             {React.cloneElement<ButtonProps>(prevButtonComponent,
                 // props:
                 {
-                    // color system props:
-                    ...colorSystemProps,
+                    // basic variant props:
+                    ...basicVariantProps,
                     
                     
                     
@@ -1212,8 +1195,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             {React.cloneElement<ButtonProps>(nextButtonComponent,
                 // props:
                 {
-                    // color system props:
-                    ...colorSystemProps,
+                    // basic variant props:
+                    ...basicVariantProps,
                     
                     
                     
@@ -1240,8 +1223,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             {React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
                 // props:
                 {
-                    // color system props:
-                    ...colorSystemProps,
+                    // basic variant props:
+                    ...basicVariantProps,
                     
                     
                     
