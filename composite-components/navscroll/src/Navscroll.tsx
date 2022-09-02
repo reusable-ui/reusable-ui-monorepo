@@ -953,7 +953,7 @@ const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: L
     
     
     // handlers:
-    const handleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
