@@ -178,7 +178,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification -or- `'inherit'` to copy ancestor's mild property.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: boolean|null|'inherit' = true): CssRule => {
+export const mildOf = (toggle: boolean|null|'inherit'): CssRule => {
     // dependencies:
     const {themableVars} = usesThemable();
     
