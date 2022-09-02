@@ -1,3 +1,5 @@
+[high prior] fix <Carousel outlined={true}> on the navButton
+
 [deferred] fix hack _use***
 
 [deferred] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
