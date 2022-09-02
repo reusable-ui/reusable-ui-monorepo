@@ -911,6 +911,9 @@ export type { ListStyle, ListVariant }
 
 interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     extends
+        // bases:
+        Omit<ListItemProps<TElement>, 'active'>,
+        
         // states:
         Required<Pick<ListItemProps<TElement>, 'active'>>,
         
@@ -925,7 +928,31 @@ interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     // handlers:
     handleNavigate   ?: EventHandler<number[]>
 }
-const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLevels, active, handleNavigate, listItemComponent}: ListItemWithNavigationProps<TElement>) => {
+const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: ListItemWithNavigationProps<TElement>) => {
+    // rest props:
+    const {
+        // positions:
+        deepLevels,
+        
+        
+        
+        // states:
+        active,
+        
+        
+        
+        // handlers:
+        handleNavigate,
+        
+        
+        
+        // components:
+        listItemComponent,
+    ...restListItemProps} = props;
+    
+    
+    
+    // handlers:
     const handleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -956,6 +983,11 @@ const ListItemWithNavigation = <TElement extends Element = HTMLElement>({deepLev
     return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
         // props:
         {
+            // other props:
+            ...restListItemProps,
+            
+            
+            
             // states:
             active  : listItemComponent.props.active ?? active,
             
