@@ -134,9 +134,9 @@ const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding 
 
 
 // styles:
-export const headerElm = ':where(.header)' // zero specificity
-export const footerElm = ':where(.footer)' // zero specificity
-export const bodyElm   = ':where(.body)'   // zero specificity
+export const headerElm = '.header' // one degree specificity to overwrite <CardHeader> component
+export const footerElm = '.footer' // one degree specificity to overwrite <CardFooter> component
+export const bodyElm   = '.body'   // one degree specificity to overwrite <CardBody>   component
 
 
 
