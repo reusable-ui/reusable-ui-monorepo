@@ -332,7 +332,7 @@ export const usesCheckVariants = () => {
                 ]),
                 ...style({
                     // children:
-                    // hides the <dummy> & <Check>'s indicator:
+                    // hide the <dummy> & <Check>'s indicator:
                     ...children([dummyElm, inputElm], {
                         // layouts:
                         display : 'none',
