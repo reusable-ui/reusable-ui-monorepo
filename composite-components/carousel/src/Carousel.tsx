@@ -165,7 +165,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
         ...imports([
             // resets:
             stripoutList(),      // clear browser's default styles
-            stripoutScrollbar(), // hides browser's scrollbar
+            stripoutScrollbar(), // hide browser's scrollbar
         ]),
         ...style({
             // layouts:
