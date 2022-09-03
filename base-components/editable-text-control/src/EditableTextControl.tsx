@@ -221,7 +221,7 @@ export const usesEditableTextControlStates = () => {
             
             ifNoValidation({
                 ...children(iconElm, {
-                    display: 'none', // hides validation icon image
+                    display: 'none', // hide the validation icon image
                 }),
             }),
         ]),
