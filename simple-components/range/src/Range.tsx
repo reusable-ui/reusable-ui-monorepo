@@ -239,11 +239,11 @@ export const usesRange = (config?: RangeConfig): RangeStuff => {
 
 
 // styles:
-export const inputElm      = ':first-child'
-export const trackElm      = '.track'
-export const trackLowerElm = '.tracklower'
-export const trackUpperElm = '.trackupper'
-export const thumbElm      = '.thumb'
+export const inputElm      = ':where(:first-child)' // zero degree specificity to be easily overwritten
+export const trackElm      = '.track'               // any degree specificity, not intended to be overwritten
+export const trackLowerElm = '.tracklower'          // one degree specificity to overwrite <Tracklower> component
+export const trackUpperElm = '.trackupper'          // one degree specificity to overwrite <Trackupper> component
+export const thumbElm      = '.thumb'               // one degree specificity to overwrite <Thumb>      component
 
 export const usesRangeLayout = (options?: OrientationableOptions) => {
     // options:
@@ -355,7 +355,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             
             ...children(inputElm, {
                 // layouts:
-                display: 'none', // hide the input
+                display: 'none', // hides the input
             }),
             
             ...children(trackElm, {
