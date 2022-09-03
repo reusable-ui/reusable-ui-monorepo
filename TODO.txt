@@ -1,4 +1,3 @@
-[high prior] add dropup.svg
 [high prior] fix <Carousel outlined={true}> on the navButton
 [high prior] fix <Progress mild={true}> should affected to <ProgressBar>
 
@@ -11,8 +10,6 @@
 [low prior] fix <Carousel> touch scroll sync with <Navscroll>
 
 [low prior] test tree shake a Dropdown without Modal
-
-TODO: upgrade <Dropdown(List)?Buton> to useOrientationableWithDirection
 
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=.*?;
