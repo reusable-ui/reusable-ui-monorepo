@@ -224,6 +224,10 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     // variants:
     const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const determineFloatingPlacement = () => {
+        // TODO: RTL direction aware
+        return orientationableVariant.isOrientationBlock ? 'bottom' : 'right';
+    };
     
     
     
@@ -474,7 +478,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             // floatable:
-            floatingPlacement ={props.floatingPlacement ?? (orientationableVariant.isOrientationBlock ? 'bottom' : 'right')}
+            floatingPlacement ={props.floatingPlacement ?? determineFloatingPlacement()}
             floatingAutoFlip  ={props.floatingAutoFlip  ?? true}
             floatingAutoShift ={props.floatingAutoShift ?? true}
             
