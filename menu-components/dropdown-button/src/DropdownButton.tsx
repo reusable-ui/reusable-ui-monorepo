@@ -21,8 +21,16 @@ import {
 
 // reusable-ui variants:
 import {
+    // defaults:
+    defaultBlockEndOrientationableWithDirectionOptions as dropdownDefaultOrientationableWithDirectionOptions,
+    
+    
+    
     // hooks:
-    useOrientationable,
+    OrientationName,
+    
+    OrientationableWithDirectionProps,
+    useOrientationableWithDirection,
 }                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
 
 // reusable-ui states:
@@ -60,11 +68,6 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
-    // defaults:
-    defaultOrientationableOptions as dropdownDefaultOrientationableOptions,
-    
-    
-    
     // react components:
     DropdownUiComponentProps,
     
@@ -86,16 +89,27 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         Omit<ButtonProps,
             // children:
             |'children' // we redefined `children` prop as a <DropdownUi> component
+            
+            // variants:
+            |'orientation' // we upgraded `orientation` with `OrientationWithDirectionName`
         >,
         
-        // dropdowns:
+        // additional bases:
         Omit<DropdownProps<Element, TDropdownExpandedChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <Button>
             
             // DOMs:
             |Exclude<keyof React.DOMAttributes<Element>, 'children'> // all DOM [attributes] are for <Button>
+            
+            // variants:
+            |'orientation' // we upgraded `orientation` with `OrientationWithDirectionName`
         >,
+        
+        // variants:
+        OrientationableWithDirectionProps,
+        
+        // states:
         ToggleCollapsibleProps<TDropdownExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
         
         // components:
@@ -107,8 +121,51 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
 }
 const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // variants:
-    const dropdownOrientationableVariant = useOrientationable(props, dropdownDefaultOrientationableOptions);
-    const dropdownIsOrientationBlock     = dropdownOrientationableVariant.isOrientationBlock;
+    const dropdownOrientationableVariant = useOrientationableWithDirection(props, dropdownDefaultOrientationableWithDirectionOptions);
+    const determineDropdownIcon = () => {
+        // TODO: RTL direction aware
+        switch(dropdownOrientationableVariant.orientation) {
+            case 'inline-start': return 'dropleft';
+            case 'inline-end'  : return 'dropright';
+            case 'block-start' : return 'dropup';
+            default            : return 'dropdown';
+        } // switch
+    };
+    const determineDropdownIconPosition = (buttonOrientation: OrientationName) => {
+        switch(dropdownOrientationableVariant.orientation) {
+            case 'inline-start':
+                if (buttonOrientation === 'inline') return 'start';
+                break;
+            case 'inline-end'  :
+                if (buttonOrientation === 'inline') return 'end';
+                break;
+            case 'block-start' :
+                if (buttonOrientation === 'block') return 'start';
+                break;
+            default            :
+                if (buttonOrientation === 'block') return 'end';
+                break;
+        } // switch
+        
+        return 'end';
+    };
+    const determineDropdownOrientation = () => {
+        switch(dropdownOrientationableVariant.orientation) {
+            case 'inline-start': return 'inline';
+            case 'inline-end'  : return 'inline';
+            case 'block-start' : return 'block';
+            default            : return 'block';
+        } // switch
+    };
+    const determineFloatingPlacement = () => {
+        // TODO: RTL direction aware
+        switch(dropdownOrientationableVariant.orientation) {
+            case 'inline-start': return 'left';
+            case 'inline-end'  : return 'right';
+            case 'block-start' : return 'top';
+            default            : return 'bottom';
+        } // switch
+    };
     
     
     
@@ -128,7 +185,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         // floatable:
         floatingOn,
-        floatingPlacement,
+        floatingPlacement     = determineFloatingPlacement(),
         floatingMiddleware,
         floatingStrategy,
         
@@ -143,9 +200,9 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         // components:
         buttonRef,
-        buttonOrientation,
+        buttonOrientation     = 'inline',
         buttonStyle,
-        buttonComponent       = (<ButtonIcon iconPosition='end' icon={dropdownIsOrientationBlock ? 'dropdown' : 'dropright'} />   as React.ReactComponentElement<any, ButtonProps>),
+        buttonComponent       = (<ButtonIcon iconPosition={determineDropdownIconPosition(buttonOrientation)} icon={determineDropdownIcon()} />   as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
         
         toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
@@ -154,7 +211,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         children: dropdownUiComponent,
         
         dropdownRef,
-        dropdownOrientation,
+        dropdownOrientation   = determineDropdownOrientation(),
         dropdownComponent     = (<Dropdown<Element, TDropdownExpandedChangeEvent> >{dropdownUiComponent}</Dropdown> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownExpandedChangeEvent>>),
     ...restButtonProps} = props;
     
@@ -297,7 +354,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                             
                             
                             // variants:
-                            orientation : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
+                            orientation : buttonComponent.props.orientation ?? buttonOrientation,
                             buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
                             
                             
