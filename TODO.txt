@@ -13,8 +13,8 @@
 
 fix fooElm constant with zero specificity:
 ^(export\s+)?const\s+\w+Elm\s*=\s*'.*?
-^(export\s+)?const\s+\w+Elm\s*=\s*'(?::where\(|\*).*?
-^(export\s+)?const\s+\w+Elm\s*=\s*'(?!:where\(|\*).*?
+^(export\s+)?const\s+\w+Elm\s*=\s*'(?::where\(|\*|::).*?
+^(export\s+)?const\s+\w+Elm\s*=\s*'(?!:where\(|\*|::).*?
 
 add fluid/fixed <GroupItem>
 
