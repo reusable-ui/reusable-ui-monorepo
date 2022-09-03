@@ -144,12 +144,12 @@ const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
 // styles:
 
 // .carousel > .list > .item > .media
-const listElm      = ':where(.list)'; // zero specificity
-const dummyListElm = '.dummy';
-const itemElm      = '*';             // zero specificity
-const prevBtnElm   = '.prevBtn';
-const nextBtnElm   = '.nextBtn';
-const navElm       = '.nav';
+const listElm      = ':where(.list)' // zero specificity
+const dummyListElm = '.dummy'
+const itemElm      = '*'             // zero specificity
+const prevBtnElm   = '.prevBtn'
+const nextBtnElm   = '.nextBtn'
+const navElm       = '.nav'
 
 
 
