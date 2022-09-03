@@ -144,7 +144,17 @@ export interface OrientationableWithDirectionProps {
     // variants:
     orientation ?: OrientationWithDirectionName
 }
-export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps) => ({
+export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions) => ({
     class: orientation ?? null,
+    
+    get orientation(): OrientationWithDirectionName {
+        return(
+            orientation
+            ??
+            defaultOptions.defaultOrientation
+            ??
+            defaultBlockEndOrientationableWithDirectionOptions.defaultOrientation!
+        );
+    },
 });
 //#endregion orientationable
