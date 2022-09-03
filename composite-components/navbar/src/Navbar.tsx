@@ -116,10 +116,10 @@ const _defaultResponsiveFallbacks : Fallbacks<boolean> = [true, false]
 
 
 // styles:
-const logoElm    = '.logo'
-const togglerElm = '.toggler'
-const listElm    = '.list'
-const menuElm    = ':is(.menu, .list :is(.button, button, [role="button"]):where(:not(.not-menu)))'
+const logoElm    = '.logo'    // one degree specificity to overwrite <Logo>    component
+const togglerElm = '.toggler' // one degree specificity to overwrite <Toggler> component
+const listElm    = '.list'    // one degree specificity to overwrite <List>    component
+const menuElm    = ':is(.menu, :where(.list) :where(.button, button, [role="button"]):not(.not-menu))' // one degree specificity to overwrite <Menu> component
 export const usesNavbarLayout = () => {
     // dependencies:
     
