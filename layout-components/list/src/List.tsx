@@ -238,6 +238,8 @@ const _defaultListSeparatorItemClasses : Optional<string>[] = ['void']
 // styles:
 export const wrapperElm  = '*'                    // zero degree specificity to be easily overwritten
 export const listItemElm = ':where(:first-child)' // zero degree specificity to be easily overwritten
+// not exported:
+const horzRuleElm        = ':where(hr)'           // zero degree specificity to be easily overwritten
 
 
 
@@ -459,7 +461,7 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
         
         
         // children:
-        ...children('hr', {
+        ...children(horzRuleElm, {
             // appearances:
             opacity       : 'unset',
             
@@ -480,7 +482,7 @@ export const usesListSeparatorItemLayout = (options?: OrientationableOptions) =>
         }),
         ...ifParentOrientationInline({ // inline
             // children:
-            ...children('hr', {
+            ...children(horzRuleElm, {
                 // appearances:
                 // rotate the <hr> 90 deg:
                 writingMode: 'vertical-lr',
