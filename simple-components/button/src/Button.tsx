@@ -334,7 +334,7 @@ export const usesButtonVariants = () => {
                     ifLeave({
                         ...imports([
                             // backgrounds:
-                            gradientOf(false), // hides the gradient to increase invisibility
+                            gradientOf(false), // hide the gradient to increase invisibility
                         ]),
                     }),
                 ]),
