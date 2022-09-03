@@ -121,7 +121,7 @@ const _defaultArrowClasses    : Optional<string>[] = ['arrow']
 
 
 // styles:
-const arrowElm = ':where(.arrow)' // zero specificity
+export const arrowElm = '.arrow' // one degree specificity to overwrite <Arrow> component
 
 
 
