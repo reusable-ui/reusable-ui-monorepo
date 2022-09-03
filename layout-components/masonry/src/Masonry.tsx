@@ -120,23 +120,23 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
             ...ifOrientationInline({ // inline
                 display             : 'inline-grid', // use css inline grid for layouting, the core of our Masonry layout
                 gridAutoFlow        : 'column',      // items direction is to block & masonry's direction is to inline
-                gridAutoColumns     : masonries.itemsRaiseRowHeight,
-                gridTemplateRows    : `repeat(auto-fill, minmax(${masonries.itemsMinColumnWidth}, 1fr))`,
+                gridAutoColumns     : masonries.itemRaiseRowHeight,
+                gridTemplateRows    : `repeat(auto-fill, minmax(${masonries.itemMinColumnWidth}, 1fr))`,
                 
                 // item default sizes:
                 alignItems          : 'stretch',     // each item fills the entire Masonry's column height
-             // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
+             // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
                 justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
             }),
             ...ifOrientationBlock({  // block
                 display             : 'grid',        // use css block grid for layouting, the core of our Masonry layout
                 gridAutoFlow        : 'row',         // items direction is to inline & masonry's direction is to block
-                gridAutoRows        : masonries.itemsRaiseRowHeight,
-                gridTemplateColumns : `repeat(auto-fill, minmax(${masonries.itemsMinColumnWidth}, 1fr))`,
+                gridAutoRows        : masonries.itemRaiseRowHeight,
+                gridTemplateColumns : `repeat(auto-fill, minmax(${masonries.itemMinColumnWidth}, 1fr))`,
                 
                 // item default sizes:
                 justifyItems        : 'stretch',     // each item fills the entire Masonry's column width
-             // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemsRaiseRowHeight` // causing the ResizeObserver doesn't work
+             // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
                 alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
             }),
             
@@ -225,23 +225,23 @@ export const useMasonryStyleSheet = dynamicStyleSheet(() => ({
 export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
     return {
         // sizes:
-        itemsRaiseRowHeight   : '2px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightSm : '1px'               as CssKnownProps['blockSize'],
-        itemsRaiseRowHeightLg : '4px'               as CssKnownProps['blockSize'],
+        itemRaiseRowHeight   : '2px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeightSm : '1px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeightLg : '4px'                as CssKnownProps['blockSize'],
         
-        itemsMinColumnWidth   : 'calc(5 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthSm : 'calc(3 * 40px)'    as CssKnownProps['columnWidth'],
-        itemsMinColumnWidthLg : 'calc(8 * 40px)'    as CssKnownProps['columnWidth'],
+        itemMinColumnWidth   : 'calc(5 * 40px)'     as CssKnownProps['columnWidth'],
+        itemMinColumnWidthSm : 'calc(3 * 40px)'     as CssKnownProps['columnWidth'],
+        itemMinColumnWidthLg : 'calc(8 * 40px)'     as CssKnownProps['columnWidth'],
         
         
         
         // spacings:
-        gapInline             : spacers.sm          as CssKnownProps['gapInline'],
-        gapInlineSm           : spacers.xs          as CssKnownProps['gapInline'],
-        gapInlineLg           : spacers.md          as CssKnownProps['gapInline'],
-        gapBlock              : spacers.sm          as CssKnownProps['gapBlock' ],
-        gapBlockSm            : spacers.xs          as CssKnownProps['gapBlock' ],
-        gapBlockLg            : spacers.md          as CssKnownProps['gapBlock' ],
+        gapInline            : spacers.sm           as CssKnownProps['gapInline'],
+        gapInlineSm          : spacers.xs           as CssKnownProps['gapInline'],
+        gapInlineLg          : spacers.md           as CssKnownProps['gapInline'],
+        gapBlock             : spacers.sm           as CssKnownProps['gapBlock' ],
+        gapBlockSm           : spacers.xs           as CssKnownProps['gapBlock' ],
+        gapBlockLg           : spacers.md           as CssKnownProps['gapBlock' ],
     };
 }, { prefix: 'msry' });
 
