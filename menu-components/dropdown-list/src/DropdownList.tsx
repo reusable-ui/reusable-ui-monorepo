@@ -121,7 +121,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         // bases:
         ListProps<TElement>,
         
-        // dropdowns:
+        // additional bases:
         Omit<DropdownProps<Element, TDropdownListExpandedChangeEvent>,
             // refs:
             |'elmRef'|'outerRef' // all (elm|outer)Ref are for <List>
