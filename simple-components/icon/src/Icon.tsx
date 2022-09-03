@@ -631,6 +631,7 @@ export const config = {
             'busy.svg',
             'prev.svg',
             'next.svg',
+            'dropup.svg',
             'dropdown.svg',
             'dropright.svg',
             'dropleft.svg',
@@ -648,6 +649,7 @@ type CustomIconList  =
 |'busy'
 |'prev'
 |'next'
+|'dropup'
 |'dropdown'
 |'dropright'
 |'dropleft';
