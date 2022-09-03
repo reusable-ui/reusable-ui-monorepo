@@ -144,12 +144,12 @@ const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
 // styles:
 
 // .carousel > .list > .item > .media
-const listElm      = ':where(.list)' // zero specificity
-const dummyListElm = '.dummy'
-const itemElm      = '*'             // zero specificity
-const prevBtnElm   = '.prevBtn'
-const nextBtnElm   = '.nextBtn'
-const navElm       = '.nav'
+const listElm      = ':where(.list)' // zero degree specificity to be easily overwritten
+const dummyListElm = '.dummy'        // any degree specificity, not intended to be overwritten
+const itemElm      = '*'             // zero degree specificity to be easily overwritten
+const prevBtnElm   = '.prevBtn'      // one degree specificity to overwrite <Button>         component
+const nextBtnElm   = '.nextBtn'      // one degree specificity to overwrite <Button>         component
+const navElm       = '.nav'          // one degree specificity to overwrite <NavscrollProps> component
 
 
 
