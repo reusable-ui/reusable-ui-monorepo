@@ -120,9 +120,9 @@ const _defaultControlClasses : Optional<string>[] = ['control']
 
 
 // styles:
-const iconElm    = ':where(.icon)'    // zero specificity
-const bodyElm    = ':where(.body)'    // zero specificity
-const controlElm = ':where(.control)' // zero specificity
+const iconElm    = '.icon'         // one degree specificity to overwrite <Icon> component
+const bodyElm    = ':where(.body)' // zero degree specificity to be easily overwritten
+const controlElm = '.control'      // one degree specificity to overwrite <Control> component
 
 
 
