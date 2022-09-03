@@ -110,7 +110,9 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 // styles:
-const svgElm = 'svg'
+const svgElm = ':where(svg)' // zero degree specificity to be easily overwritten
+
+
 
 export const usesHamburgerLayout = () => {
     // dependencies:
