@@ -355,7 +355,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             
             ...children(inputElm, {
                 // layouts:
-                display: 'none', // hides the input
+                display: 'none', // hide the input
             }),
             
             ...children(trackElm, {
