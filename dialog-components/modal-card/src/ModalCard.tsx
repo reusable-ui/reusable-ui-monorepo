@@ -582,12 +582,12 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         
-        // preserves the original `style` from `props` (can overwrite the `style`):
+        // preserves the original `style` from `props` (can overwrite the `modalCardVariant.style`):
         props.style,
         
         
         
-        // preserves the original `style` from `modalComponent` (can overwrite the `style` and/or the `props.style`):
+        // preserves the original `style` from `modalComponent` (can overwrite the `style` and/or the `modalCardVariant.style`):
         modalComponent.props.style,
     );
     
