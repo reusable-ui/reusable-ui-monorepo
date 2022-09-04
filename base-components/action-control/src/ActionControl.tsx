@@ -110,8 +110,9 @@ export const usesActionControlLayout = () => {
         ]),
         ...style({
             // accessibilities:
-            userSelect : 'none', // disable selecting text (double clicking not causing selecting text)
-            
+            userSelect              : 'none',         // disable selecting text (double clicking not causing selecting text)
+            touchAction             : 'manipulation', // all gestures are preserved except a double click, to make clicking faster
+            WebkitTapHighlightColor : 'transparent',  // no tap_&_hold highlight
             
             
             // customize:
@@ -261,8 +262,9 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         // behaviors:
-        actionMouses : _actionMouses, // remove
-        actionKeys   : _actionKeys,   // remove
+        actionMouses  : _actionMouses,  // remove
+        actionTouches : _actionTouches, // remove
+        actionKeys    : _actionKeys,    // remove
         
         
         
@@ -294,6 +296,15 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         // states:
         clickableState.handleMouseDown,
+    );
+    const handleTouchStart   = useMergeEvents(
+        // preserves the original `onTouchStart`:
+        props.onTouchStart,
+        
+        
+        
+        // states:
+        clickableState.handleTouchStart,
     );
     const handleKeyDown      = useMergeEvents(
         // preserves the original `onKeyDown`:
@@ -344,6 +355,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
             
             // handlers:
             onMouseDown    = {handleMouseDown   }
+            onTouchStart   = {handleTouchStart  }
             onKeyDown      = {handleKeyDown     }
             onClick        = {handleClick       }
             onAnimationEnd = {handleAnimationEnd}
