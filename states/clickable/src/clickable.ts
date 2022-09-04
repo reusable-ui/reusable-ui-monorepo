@@ -236,6 +236,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
         if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
+        if (!pressDn)              return; // not in pressed state => no need to watch for releasing event
         
         
         
@@ -289,7 +290,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             window.removeEventListener('touchend'   , handleReleaseTouch);
             window.removeEventListener('touchcancel', handleReleaseTouch);
         };
-    }, [propEditable, isControllablePressed]);
+    }, [propEditable, isControllablePressed, pressDn]);
     
     
     
@@ -335,21 +336,52 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handlePress();
     });
     
+    const activeKeys         = new Set<string>();
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) {
+        // logs:
+        const keyCode = event.code.toLowerCase();
+        activeKeys.add(keyCode);
+        
+        
+        
+        // conditions:
+        const hasMultiplePressedKeys = activeKeys.size > 1;
+        // pressing multiple keys causes the pressed state be canceled:
+        if (hasMultiplePressedKeys) {
+            setPressDn(false);
+            return;
+        } // if
+        
+        
+        
+        // actions:
+        if (!actionKeys || actionKeys.includes(keyCode)) {
             handlePress();
         }
-        
-        // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
-        else if (handleActionCtrlEvents) {
-            if ((event.code.toLowerCase() ?? event.key.toLowerCase()) === 'enter') {
-                // responses the onClick event:
-                event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+        else {
+            // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
+            if (handleActionCtrlEvents) {
+                if (keyCode === 'enter') {
+                    // responses the onClick event:
+                    event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                } // if
             } // if
         } // if
     });
     const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) {
+        // logs:
+        const keyCode = event.code.toLowerCase();
+        activeKeys.delete(keyCode);
+        
+        
+        
+        // conditions:
+        if (!pressDn) return; // not in pressed state => no need to perform the action below
+        
+        
+        
+        // actions:
+        if (!actionKeys || actionKeys.includes(keyCode)) {
             // responses the onClick event:
             event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
         } // if
