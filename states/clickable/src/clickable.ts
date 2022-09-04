@@ -359,12 +359,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             handlePress();
         }
         else {
+            // conditions:
+            if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
+            
+            
+            
             // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
-            if (handleActionCtrlEvents) {
-                if (keyCode === 'enter') {
-                    // responses the onClick event:
-                    event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                } // if
+            if (keyCode === 'enter') {
+                // responses the onClick event:
+                event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
         } // if
     });
@@ -376,7 +379,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // conditions:
-        if (!pressDn) return; // not in pressed state => no need to perform the action below
+        if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
         
         
         
@@ -390,6 +393,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
+        
         if (!propEnabled) { // control is disabled => no response required
             event.stopPropagation(); // prevent from bubbling
             return; // nothing to do
