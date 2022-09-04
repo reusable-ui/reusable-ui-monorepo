@@ -20,6 +20,10 @@ function App() {
         setValue(value + 1);
     };
     
+    const handleClick: React.EventHandler<React.MouseEvent> = (event) => {
+        console.log(event);
+    };
+    
     
     return (
         <>
@@ -33,7 +37,7 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <EditableActionControl theme='primary' enableValidation={true}>
+                    <EditableActionControl theme='primary' enableValidation={true} onClick={handleClick}>
                         Test &lt;EditableActionControl&gt;
                     </EditableActionControl>
                 </article>

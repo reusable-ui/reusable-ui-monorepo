@@ -114,7 +114,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     
     
     // states:
-    const clickableState = useClickable<TElement>(props);
+    const clickableState = useClickable<TElement>(props, /*handleActionCtrlEvents = */true);
     
     
     
@@ -179,6 +179,15 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // states:
         clickableState.handleKeyDown,
     );
+    const handleKeyUp        = useMergeEvents(
+        // preserves the original `onKeyUp`:
+        props.onKeyUp,
+        
+        
+        
+        // states:
+        clickableState.handleKeyUp,
+    );
     const handleClick        = clickableState.handleClick;
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
@@ -210,6 +219,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
             onMouseDown    = {handleMouseDown   }
             onTouchStart   = {handleTouchStart  }
             onKeyDown      = {handleKeyDown     }
+            onKeyUp        = {handleKeyUp       }
             onClick        = {handleClick       }
             onAnimationEnd = {handleAnimationEnd}
         />

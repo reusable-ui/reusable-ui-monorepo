@@ -21,8 +21,9 @@ function App() {
     };
     
     const [pressed, setPressed] = useState(false);
-    const handleTogglePressed = () => {
+    const handleTogglePressed: React.EventHandler<React.MouseEvent> = (event) => {
         setPressed(!pressed);
+        console.log(event);
     };
     
     
