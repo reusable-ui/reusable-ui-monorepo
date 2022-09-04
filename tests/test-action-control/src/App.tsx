@@ -23,6 +23,8 @@ function App() {
     const [pressed, setPressed] = useState(false);
     const handleTogglePressed: React.EventHandler<React.MouseEvent> = (event) => {
         setPressed(!pressed);
+    };
+    const handleClick: React.EventHandler<React.MouseEvent> = (event) => {
         console.log(event);
     };
     
@@ -39,7 +41,7 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <ActionControl theme='primary' mild={false}>
+                    <ActionControl theme='primary' mild={false} onClick={handleClick}>
                         test &lt;ActionControl&gt;
                     </ActionControl>
                     <ActionControl theme='primary' mild={false} pressed={pressed || undefined} onClick={handleTogglePressed}>
