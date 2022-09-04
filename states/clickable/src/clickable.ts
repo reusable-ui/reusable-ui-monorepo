@@ -70,9 +70,10 @@ import {
 
 
 // defaults:
-const _defaultActionMouses  : number[]|null = [0]       // left click
-const _defaultActionTouches : number|null   = 1         // single touch
-const _defaultActionKeys    : string[]|null = ['space'] // space key
+const _defaultActionMouses           : number[]|null = [0]       // left click
+const _defaultActionTouches          : number|null   = 1         // single touch
+const _defaultActionKeys             : string[]|null = ['space'] // space key
+const _defaultHandleActionCtrlEvents : boolean       = false     // not to handle [space] & [enter] as onClick
 
 
 
@@ -179,7 +180,7 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     actionTouches ?: number|null
     actionKeys    ?: string[]|null
 }
-export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>) => {
+export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, handleActionCtrlEvents = _defaultHandleActionCtrlEvents) => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);       // supports for <Check>
@@ -335,11 +336,28 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     });
     
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress();
+        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) {
+            handlePress();
+        }
+        
+        // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
+        else if (handleActionCtrlEvents) {
+            if ((event.code.toLowerCase() ?? event.key.toLowerCase()) === 'enter') {
+                // responses the onClick event:
+                event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+            } // if
+        } // if
+    });
+    const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) {
+            // responses the onClick event:
+            event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+        } // if
     });
     
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
+        if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
         if (!propEnabled) { // control is disabled => no response required
             event.stopPropagation(); // prevent from bubbling
             return; // nothing to do
@@ -399,6 +417,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handleMouseDown,
         handleTouchStart,
         handleKeyDown,
+        handleKeyUp,
         handleClick,
         handleAnimationEnd,
     };
