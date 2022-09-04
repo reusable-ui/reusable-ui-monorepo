@@ -1200,10 +1200,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const isMouseActive       = useRef(false);
     const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         // conditions:
-        if (!propEnabled)        return; // control is disabled => no response required
-        if (propReadOnly)        return; // control is readOnly => no response required
+        if (!propEnabled)          return; // control is disabled => no response required
+        if (propReadOnly)          return; // control is readOnly => no response required
         
-        if (event.buttons !== 1) return; // only left button pressed, ignore multi button pressed
+        if (isTouchActive.current) return; // already handled by touch event => no response required
+        
+        if (event.buttons !== 1)   return; // only left button pressed, ignore multi button pressed
         
         
         
