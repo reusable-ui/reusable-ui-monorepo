@@ -114,7 +114,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     
     
     // states:
-    const clickableState = useClickable<TElement>(props, /*handleActionCtrlEvents = */false); // no need to handle [space] & [enter] key as click
+    const clickableState = useClickable<TElement>(props);
     
     
     
