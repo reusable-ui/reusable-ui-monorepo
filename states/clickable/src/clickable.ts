@@ -295,7 +295,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     // handlers:
-    const handlePress        = useEvent<EventHandler<void>>(() => {
+    const handlePress         = useEvent<EventHandler<void>>(() => {
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
         if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
@@ -305,7 +305,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         setPressDn(true);
     });
     
-    const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handleMouseDown     = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (isTouchActive.current) return; // not in touch mode
         
@@ -314,8 +314,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         if (!actionMouses || actionMouses.includes(event.button)) handlePress();
     });
     
-    const isTouchActive      = useRef(false);
-    const handleTouchStart   = useEvent<React.TouchEventHandler<TElement>>((event) => {
+    const isTouchActive       = useRef(false);
+    const handleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // marks:
         const isTouched       = (
             !actionTouches // null or zero
@@ -336,8 +336,9 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handlePress();
     });
     
-    const activeKeys         = new Set<string>();
-    const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const activeKeys          = new Set<string>();
+    const performKeyUpActions = useRef<boolean>(false);
+    const handleKeyDown       = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
         const keyCode = event.code.toLowerCase();
         activeKeys.add(keyCode);
@@ -348,6 +349,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         const hasMultiplePressedKeys = activeKeys.size > 1;
         // pressing multiple keys causes the pressed state be canceled:
         if (hasMultiplePressedKeys) {
+            performKeyUpActions.current = false; // mark as aborted
             setPressDn(false);
             return;
         } // if
@@ -357,6 +359,16 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // actions:
         if (!actionKeys || actionKeys.includes(keyCode)) {
             handlePress();
+            
+            
+            
+            // conditions:
+            if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
+            
+            
+            
+            // actions:
+            performKeyUpActions.current = true;
         }
         else {
             // conditions:
@@ -364,6 +376,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             
             
+            // actions:
             // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
             if (keyCode === 'enter') {
                 // responses the onClick event:
@@ -371,7 +384,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             } // if
         } // if
     });
-    const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleKeyUp         = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
         const keyCode = event.code.toLowerCase();
         activeKeys.delete(keyCode);
@@ -379,7 +392,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // conditions:
-        if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
+        if (!performKeyUpActions.current) return; // keyup actions has marked as aborted => nothing to do
+        performKeyUpActions.current = false;      // reset
+        
+        if (!handleActionCtrlEvents)      return; // not an <ActionControl> or similar   => no need to handle click event
         
         
         
@@ -390,7 +406,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         } // if
     });
     
-    const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handleClick         = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
         
@@ -405,7 +421,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         props.onClick?.(event);
     });
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationEnd  = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
