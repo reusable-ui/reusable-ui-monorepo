@@ -332,7 +332,8 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             
             
             // accessibilities:
-            touchAction       : 'pinch-zoom', // prevents scrolling by touch, but allows to zoom_in/out
+            touchAction             : 'pinch-zoom',  // prevents scrolling by touch, but allows to zoom_in/out
+            WebkitTapHighlightColor : 'transparent', // no tap_&_hold highlight
             
             
             
@@ -746,8 +747,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         inheritReadOnly   : props.inheritReadOnly,
         
         pressed           : props.pressed,
-        actionMouses      : (props.actionMouses !== undefined) ? props.actionMouses : null,
-        actionKeys        : (props.actionKeys   !== undefined) ? props.actionKeys   : null,
+        actionMouses      : (props.actionMouses  !== undefined) ? props.actionMouses  : null, // handled manually
+        actionTouches     : (props.actionTouches !== undefined) ? props.actionTouches : null, // handled manually
+        actionKeys        : (props.actionKeys    !== undefined) ? props.actionKeys    : null, // handled manually
     });
     
     
@@ -796,8 +798,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // behaviors:
-        actionMouses : _actionMouses, // remove
-        actionKeys   : _actionKeys,   // remove
+        actionMouses  : _actionMouses,  // remove
+        actionTouches : _actionTouches, // remove
+        actionKeys    : _actionKeys,    // remove
         
         
         
@@ -1245,6 +1248,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         handleTouchNative(event.nativeEvent);
     });
+    const handleTouchFocus    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+        // TODO: focus
+    });
     
     useEffect(() => {
         // conditions:
@@ -1405,6 +1411,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleTouchActive,
+        handleTouchFocus,
         handleTouchSlide,
     );
     const handleTouchMove     = useMergeEvents(
