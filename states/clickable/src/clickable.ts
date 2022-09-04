@@ -313,7 +313,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     });
     
     const isTouchActive      = useRef(false);
-    const handleTouchStart   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+    const handleTouchStart   = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // marks:
         const isTouched       = (
             !actionTouches // null or zero
