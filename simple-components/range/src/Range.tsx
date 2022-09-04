@@ -87,6 +87,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -1198,70 +1199,62 @@ const Range = (props: RangeProps): JSX.Element|null => {
     );
     
     const isMouseActive       = useRef(false);
-    const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handleMouseNative   = useEvent<EventHandler<MouseEvent>>((event) => {
         // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (propReadOnly)          return; // control is readOnly => no response required
-        
-        if (isTouchActive.current) return; // already handled by touch event => no response required
-        
-        if (event.buttons !== 1)   return; // only left button pressed, ignore multi button pressed
+        if (!propEnabled) return; // control is disabled => no response required
+        if (propReadOnly) return; // control is readOnly => no response required
         
         
         
         // actions:
-        isMouseActive.current = true; // mark as pressed
+        isMouseActive.current = (
+            !isTouchActive.current // not in touch mode
+            &&
+            (event.buttons === 1)  // only left button pressed, ignore multi button pressed
+        );
+    });
+    const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+        handleMouseNative(event.nativeEvent);
     });
     
     const isTouchActive       = useRef(false);
-    const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+    const handleTouchNative   = useEvent<EventHandler<TouchEvent>>((event) => {
         // conditions:
-        if (!propEnabled)               return; // control is disabled => no response required
-        if (propReadOnly)               return; // control is readOnly => no response required
-        
-        if (event.touches.length !== 1) return; // only single touch
+        if (!propEnabled) return; // control is disabled => no response required
+        if (propReadOnly) return; // control is readOnly => no response required
         
         
         
         // actions:
-        isTouchActive.current = true; // mark as touched
+        isTouchActive.current = (event.touches.length === 1); // only single touch
         
         // already handled by css `touch-action: pinch-zoom`
         // event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
         // event.currentTarget.focus(); // un-prevent to focus()
     });
+    const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+        handleTouchNative(event.nativeEvent);
+    });
     
     useEffect(() => {
         // conditions:
-        if (!propEnabled)           return; // control is disabled => no response required
-        if (propReadOnly)           return; // control is readOnly => no response required
-        
-        
-        
-        // handlers:
-        const handleMousePassive = (): void => {
-            // resets:
-            isMouseActive.current = false; // unmark as pressed
-        };
-        const handleTouchPassive = (): void => {
-            // resets:
-            isTouchActive.current = false; // unmark as touched
-        };
+        if (!propEnabled) return; // control is disabled => no response required
+        if (propReadOnly) return; // control is readOnly => no response required
         
         
         
         // setups:
-        window.addEventListener('mouseup'    , handleMousePassive);
-        window.addEventListener('touchend'   , handleTouchPassive);
-        window.addEventListener('touchcancel', handleTouchPassive);
+        window.addEventListener('mouseup'    , handleMouseNative);
+        window.addEventListener('touchend'   , handleTouchNative);
+        window.addEventListener('touchcancel', handleTouchNative);
         
         
         
         // cleanups:
         return () => {
-            window.removeEventListener('mouseup'    , handleMousePassive);
-            window.removeEventListener('touchend'   , handleTouchPassive);
-            window.removeEventListener('touchcancel', handleTouchPassive);
+            window.removeEventListener('mouseup'    , handleMouseNative);
+            window.removeEventListener('touchend'   , handleTouchNative);
+            window.removeEventListener('touchcancel', handleTouchNative);
         };
     }, [propEnabled, propReadOnly]);
     
