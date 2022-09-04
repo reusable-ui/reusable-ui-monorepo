@@ -48,6 +48,7 @@ import {
 import {
     // hooks:
     useEvent,
+    EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -222,7 +223,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     useEffect(() => {
         // cleanups:
         return () => {
-            // cancel out previously handleReleaseLate (if any):
+            // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
         };
     }, []); // runs once on startup
@@ -238,8 +239,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         const handleRelease = (): void => {
             setPressDn(false);
         };
-        const handleReleaseLate = (): void => {
-            // cancel out previously handleReleaseLate (if any):
+        const handleReleaseAfterClick = (): void => {
+            // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
             
             
@@ -249,26 +250,41 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             asyncHandleRelease.current = setTimeout(handleRelease, 1); // 1 = runs immediately after all micro tasks & nextJS macro task finished
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
+        const handleReleaseMouse = handleReleaseAfterClick;
+        const handleReleaseTouch = (): void => {
+            handleReleaseAfterClick();
+            
+            
+            
+            // resets:
+            isTouchActive.current = false; // unmark as touched
+        };
         
         
         
         // setups:
-        window.addEventListener('mouseup', handleReleaseLate);
+        window.addEventListener('mouseup', handleReleaseMouse);
         window.addEventListener('keyup',   handleRelease);
+        
+        window.addEventListener('touchend'   , handleReleaseTouch);
+        window.addEventListener('touchcancel', handleReleaseTouch);
         
         
         
         // cleanups:
         return () => {
-            window.removeEventListener('mouseup', handleReleaseLate);
+            window.removeEventListener('mouseup', handleReleaseMouse);
             window.removeEventListener('keyup',   handleRelease);
+            
+            window.removeEventListener('touchend'   , handleReleaseTouch);
+            window.removeEventListener('touchcancel', handleReleaseTouch);
         };
     }, [propEditable, isControllablePressed]);
     
     
     
     // handlers:
-    const handlePress        = useEvent<React.MouseEventHandler<TElement> & React.KeyboardEventHandler<TElement>>(() => {
+    const handlePress        = useEvent<EventHandler<void>>(() => {
         // conditions:
         if (!propEditable)         return; // control is not editable => no response required
         if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
@@ -279,11 +295,32 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     });
     
     const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        if (!actionMouses || actionMouses.includes(event.button)) handlePress(event);
+        // conditions:
+        if (isTouchActive.current) return; // not in touch mode
+        
+        
+        
+        if (!actionMouses || actionMouses.includes(event.button)) handlePress();
+    });
+    
+    const isTouchActive      = useRef(false);
+    const handleTouchStart   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+        // marks:
+        const isTouched       = (event.touches.length === 1); // only single touch
+        isTouchActive.current = isTouched;
+        
+        
+        
+        // conditions:
+        if (!isTouched) return;
+        
+        
+        
+        handlePress();
     });
     
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress(event);
+        if (!actionKeys || actionKeys.includes(event.code.toLowerCase()) || actionKeys.includes(event.key.toLowerCase())) handlePress();
     });
     
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
@@ -345,6 +382,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         })(),
         
         handleMouseDown,
+        handleTouchStart,
         handleKeyDown,
         handleClick,
         handleAnimationEnd,
