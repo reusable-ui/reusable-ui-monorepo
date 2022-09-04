@@ -70,8 +70,9 @@ import {
 
 
 // defaults:
-const _defaultActionMouses : number[]|null = [0]       // left click
-const _defaultActionKeys   : string[]|null = ['space'] // space key
+const _defaultActionMouses  : number[]|null = [0]       // left click
+const _defaultActionTouches : number|null   = 1         // single touch
+const _defaultActionKeys    : string[]|null = ['space'] // space key
 
 
 
@@ -169,13 +170,14 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
         Pick<React.DOMAttributes<TElement>, 'onClick'>
 {
     // states:
-    pressed      ?: boolean
+    pressed       ?: boolean
     
     
     
     // behaviors:
-    actionMouses ?: number[]|null
-    actionKeys   ?: string[]|null
+    actionMouses  ?: number[]|null
+    actionTouches ?: number|null
+    actionKeys    ?: string[]|null
 }
 export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>) => {
     // fn props:
@@ -184,8 +186,9 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const propEditable          = propEnabled && !propReadOnly; // supports for <Check>
     const isControllablePressed = (props.pressed !== undefined);
     
-    const actionMouses          = (props.actionMouses !== undefined) ? props.actionMouses : _defaultActionMouses;
-    const actionKeys            = (props.actionKeys   !== undefined) ? props.actionKeys   : _defaultActionKeys;
+    const actionMouses          = (props.actionMouses  !== undefined) ? props.actionMouses  : _defaultActionMouses;
+    const actionTouches         = (props.actionTouches !== undefined) ? props.actionTouches : _defaultActionTouches;
+    const actionKeys            = (props.actionKeys    !== undefined) ? props.actionKeys    : _defaultActionKeys;
     
     
     
@@ -251,13 +254,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
         const handleReleaseMouse = handleReleaseAfterClick;
-        const handleReleaseTouch = (): void => {
+        const handleReleaseTouch = (event: TouchEvent): void => {
             handleReleaseAfterClick();
             
             
             
             // resets:
-            isTouchActive.current = false; // unmark as touched
+            isTouchActive.current = (
+                !actionTouches // null or zero
+                ?
+                !!event.touches.length // any number of touch(es)
+                :
+                (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
+            );
         };
         
         
@@ -306,7 +315,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const isTouchActive      = useRef(false);
     const handleTouchStart   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // marks:
-        const isTouched       = (event.touches.length === 1); // only single touch
+        const isTouched       = (
+            !actionTouches // null or zero
+            ?
+            !!event.touches.length // any number of touch(es)
+            :
+            (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
+        );
         isTouchActive.current = isTouched;
         
         
