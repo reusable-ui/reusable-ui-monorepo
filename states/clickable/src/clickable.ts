@@ -70,10 +70,13 @@ import {
 
 
 // defaults:
-const _defaultActionMouses           : number[]|null = [0]       // left click
-const _defaultActionTouches          : number|null   = 1         // single touch
-const _defaultActionKeys             : string[]|null = ['space'] // space key
-const _defaultHandleActionCtrlEvents : boolean       = false     // not to handle [space] & [enter] as onClick
+const _defaultActionMouses     : number[]|null = [0]       // left click
+const _defaultActionTouches    : number|null   = 1         // single touch
+const _defaultActionKeys       : string[]|null = ['space'] // space key
+const _defaultClickableOptions : Required<ClickableOptions> = {
+    handleActionCtrlEvents : false, // not to handle [space] as onClick
+    handleKeyEnterEvents   : false, // not to handle [enter] as onClick
+};
 
 
 
@@ -180,7 +183,19 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     actionTouches ?: number|null
     actionKeys    ?: string[]|null
 }
-export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, handleActionCtrlEvents = _defaultHandleActionCtrlEvents) => {
+export interface ClickableOptions {
+    handleActionCtrlEvents ?: boolean
+    handleKeyEnterEvents   ?: boolean
+}
+export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, options : ClickableOptions = _defaultClickableOptions) => {
+    // options:
+    const {
+        handleActionCtrlEvents = _defaultClickableOptions.handleActionCtrlEvents,
+        handleKeyEnterEvents   = _defaultClickableOptions.handleKeyEnterEvents,
+    } = options;
+    
+    
+    
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const propReadOnly          = usePropReadOnly(props);       // supports for <Check>
@@ -372,7 +387,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         }
         else {
             // conditions:
-            if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
+            if (!handleKeyEnterEvents) return; // not an <ActionControl> or similar => no need to handle click event
             
             
             
