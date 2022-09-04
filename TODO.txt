@@ -1,4 +1,4 @@
-[progress] @reusable-ui/clickable => handle space & enter as click
+[progress] remove event.key.toLowerCase()
 
 [high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
