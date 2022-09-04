@@ -1,6 +1,4 @@
-[progress] fix touchStart/End on <ActionControl>
 [progress] @reusable-ui/clickable => handle space & enter as click
-[progress] fix press/release animation on keyboard press on <Range>
 
 [high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
