@@ -757,6 +757,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     // rest props:
     const {
         // refs:
+        outerRef,
         elmRef,
         
         trackRef,
@@ -895,10 +896,19 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // refs:
+    const rangeRefInternal    = useRef<HTMLInputElement|null>(null);
     const inputRefInternal    = useRef<HTMLInputElement|null>(null);
     const trackRefInternal    = useRef<HTMLElement|null>(null);
     const thumbRefInternal    = useRef<HTMLElement|null>(null);
     
+    const mergedRangeRef      = useMergeRefs(
+        // preserves the original `outerRef`:
+        outerRef,
+        
+        
+        
+        rangeRefInternal,
+    );
     const mergedInputRef      = useMergeRefs(
         // preserves the original `elmRef`:
         elmRef,
@@ -1229,6 +1239,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         handleMouseNative(event.nativeEvent);
     });
+    const handleMouseFocus    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+        rangeRefInternal.current?.focus(); // set focus at whole <Range>
+        event.preventDefault(); // prevents focusing at <Track>|<Tracklower>|<Trackupper>|<Thumb>
+    });
     
     const isTouchActive       = useRef(false);
     const handleTouchNative   = useEvent<EventHandler<TouchEvent>>((event) => {
@@ -1240,16 +1254,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // actions:
         isTouchActive.current = (event.touches.length === 1); // only single touch
-        
-        // already handled by css `touch-action: pinch-zoom`
-        // event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
-        // event.currentTarget.focus(); // un-prevent to focus()
     });
     const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         handleTouchNative(event.nativeEvent);
     });
-    const handleTouchFocus    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
-        // TODO: focus
+    const handleTouchFocus    = useEvent<React.TouchEventHandler<HTMLInputElement>>(() => {
+        rangeRefInternal.current?.focus(); // set focus at whole <Range>
+        // no need for `preventDefault()` because the current event is passive
     });
     
     useEffect(() => {
@@ -1391,6 +1402,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleMouseActive,
+        handleMouseFocus,
         handlePointerSlide,
     );
     const handleMouseMove     = useMergeEvents(
@@ -1590,6 +1602,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         <EditableControl<HTMLInputElement>
             // other props:
             {...restEditableControlProps}
+            
+            
+            
+            // refs:
+            outerRef={mergedRangeRef}
             
             
             
