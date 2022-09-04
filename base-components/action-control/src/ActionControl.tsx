@@ -245,7 +245,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     
     // states:
-    const clickableState = useClickable<TElement>(props, /*handleActionCtrlEvents = */true);
+    const clickableState = useClickable<TElement>(props, /*handleActionCtrlEvents = */true); // needs to handle [space] & [enter] key as click
     
     
     
