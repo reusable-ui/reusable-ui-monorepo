@@ -750,7 +750,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         actionMouses      : (props.actionMouses  !== undefined) ? props.actionMouses  : null, // handled manually
         actionTouches     : (props.actionTouches !== undefined) ? props.actionTouches : null, // handled manually
         actionKeys        : (props.actionKeys    !== undefined) ? props.actionKeys    : null, // handled manually
-    });
+    }, /*handleActionCtrlEvents = */false); // no need to handle [space] & [enter] key as click
     
     
     
