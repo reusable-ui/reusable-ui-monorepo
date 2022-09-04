@@ -76,6 +76,7 @@ import {
     // hooks:
     usesClickable,
     ClickableProps,
+    ClickableOptions,
     useClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
@@ -96,8 +97,13 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
-const _defaultSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultSemanticTag      : SemanticTag  = [null, 'button', 'a'   ] // uses <div>           as the default semantic, fallbacks to <button>, <a>
+const _defaultSemanticRole     : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+
+const _defaultClickableOptions : ClickableOptions = {
+    handleActionCtrlEvents : true, // needs to handle [space] key as click
+    handleKeyEnterEvents   : true, // needs to handle [enter] key as click
+};
 
 
 
@@ -245,7 +251,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     
     // states:
-    const clickableState = useClickable<TElement>(props, /*handleActionCtrlEvents = */true); // needs to handle [space] & [enter] key as click
+    const clickableState = useClickable<TElement>(props, _defaultClickableOptions);
     
     
     
