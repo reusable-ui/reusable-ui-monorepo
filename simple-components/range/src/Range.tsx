@@ -1200,27 +1200,30 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const isMouseActive       = useRef(false);
     const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         // conditions:
-        if (!propEnabled)           return; // control is disabled => no response required
-        if (propReadOnly)           return; // control is readOnly => no response required
+        if (!propEnabled)        return; // control is disabled => no response required
+        if (propReadOnly)        return; // control is readOnly => no response required
         
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (event.buttons !== 1) return; // only left button pressed, ignore multi button pressed
         
         
         
-        isMouseActive.current = ((event.buttons & 1) === 1); // only left button is pressed => true
+        // actions:
+        isMouseActive.current = true; // mark as pressed
     });
     
     const isTouchActive       = useRef(false);
     const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
-        if (!propEnabled)           return; // control is disabled => no response required
-        if (propReadOnly)           return; // control is readOnly => no response required
+        if (!propEnabled)               return; // control is disabled => no response required
+        if (propReadOnly)               return; // control is readOnly => no response required
         
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (event.touches.length !== 1) return; // only single touch
         
         
         
-        isTouchActive.current = (event.touches.length === 1); // only touched by single finger => true
+        // actions:
+        isTouchActive.current = true; // mark as touched
+        
         // already handled by css `touch-action: pinch-zoom`
         // event.preventDefault(); // prevents the whole page from scrolling when the user slides the <Range>
         // event.currentTarget.focus(); // un-prevent to focus()
@@ -1235,10 +1238,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // handlers:
         const handleMousePassive = (): void => {
-            isMouseActive.current = false;
+            // resets:
+            isMouseActive.current = false; // unmark as pressed
         };
         const handleTouchPassive = (): void => {
-            isTouchActive.current = false;
+            // resets:
+            isTouchActive.current = false; // unmark as touched
         };
         
         
@@ -1256,6 +1261,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
             window.removeEventListener('touchend'   , handleTouchPassive);
             window.removeEventListener('touchcancel', handleTouchPassive);
         };
+    }, [propEnabled, propReadOnly]);
+    
+    useEffect(() => {
+        // conditions:
+        if (propEnabled && !propReadOnly) return; // control is enabled and mutable => no reset required
+        
+        
+        
+        // resets:
+        isMouseActive.current = false; // unmark as pressed
+        isTouchActive.current = false; // unmark as touched
     }, [propEnabled, propReadOnly]);
     
     const handleMouseSlide    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
