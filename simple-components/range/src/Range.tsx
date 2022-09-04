@@ -738,7 +738,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
     // states:
     const focusableState         = useFocusable<HTMLInputElement>(props);
     const interactableState      = useInteractable<HTMLInputElement>(props, focusableState);
-    const clickableState         = useClickable<HTMLInputElement>(props);
+    const clickableState         = useClickable<HTMLInputElement>({
+        enabled           : props.enabled,
+        inheritEnabled    : props.inheritEnabled,
+        
+        readOnly          : props.readOnly,
+        inheritReadOnly   : props.inheritReadOnly,
+        
+        pressed           : props.pressed,
+        actionMouses      : (props.actionMouses !== undefined) ? props.actionMouses : null,
+        actionKeys        : (props.actionKeys   !== undefined) ? props.actionKeys   : null,
+    });
     
     
     
@@ -1269,7 +1279,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         isTouchActive.current = false; // unmark as touched
     }, [propEnabled, propReadOnly]);
     
-    const handleMouseSlide    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handlePointerSlide  = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         // one of the mouse or touch is active but not both are active:
         if (
@@ -1302,8 +1312,15 @@ const Range = (props: RangeProps): JSX.Element|null => {
         setValueDn({ type: 'setValueRatio', payload: valueRatio });
         
         
-        
-        clickableState.handleMouseDown(event); // indicates the <Range> is currently being pressed/touched
+        // indicates the <Range> is currently being pressed/touched
+        switch(event.type) {
+            case 'mousedown':
+                clickableState.handleMouseDown(event);
+                break;
+            case 'touchstart':
+                clickableState.handleTouchStart(event as unknown as React.TouchEvent<HTMLInputElement>);
+                break;
+        } // switch
     });
     const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         // conditions:
@@ -1311,11 +1328,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         
-        // simulates the touch as sliding mouse:
-        handleMouseSlide({
+        // simulates the touch as sliding pointer:
+        handlePointerSlide({
+            ...event,
             clientX : event.touches[0].clientX,
             clientY : event.touches[0].clientY,
-        } as React.MouseEvent<HTMLInputElement, MouseEvent>);
+        } as unknown as React.MouseEvent<HTMLInputElement, MouseEvent>);
     });
     const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
         // conditions:
@@ -1367,7 +1385,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleMouseActive,
-        handleMouseSlide,
+        handlePointerSlide,
     );
     const handleMouseMove     = useMergeEvents(
         // preserves the original `onMouseMove`:
@@ -1376,7 +1394,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // range handlers:
-        handleMouseSlide,
+        handlePointerSlide,
     );
     
     const handleTouchStart    = useMergeEvents(
