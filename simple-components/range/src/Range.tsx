@@ -1244,15 +1244,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // setups:
-        window.addEventListener('mouseup' , handleMousePassive);
-        window.addEventListener('touchend', handleTouchPassive);
+        window.addEventListener('mouseup'    , handleMousePassive);
+        window.addEventListener('touchend'   , handleTouchPassive);
+        window.addEventListener('touchcancel', handleTouchPassive);
         
         
         
         // cleanups:
         return () => {
-            window.removeEventListener('mouseup' , handleMousePassive);
-            window.removeEventListener('touchend', handleTouchPassive);
+            window.removeEventListener('mouseup'    , handleMousePassive);
+            window.removeEventListener('touchend'   , handleTouchPassive);
+            window.removeEventListener('touchcancel', handleTouchPassive);
         };
     }, [propEnabled, propReadOnly]);
     
