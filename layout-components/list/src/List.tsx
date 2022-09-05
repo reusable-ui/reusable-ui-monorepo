@@ -275,7 +275,7 @@ export const stripoutCommonBasicLayout = () => {
 export const usesListItemInheritMildVariant = () => {
     return style({
         ...variants([
-            rule('.mild>*>&', { // .mild>*>.listItem => the specificity weight including parent = 2
+            rule('.mild>*>&', { // .mild>*>.listItem => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
                 ...imports([
                     mildOf(true),
                 ]),
