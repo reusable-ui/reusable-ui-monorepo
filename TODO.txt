@@ -1,7 +1,26 @@
-[progress  ] fix <Progress mild={true}> should affected to <ProgressBar>
-
 [high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
+
+
+
+[high prior] on|off|inherit of:
+gradientable (inheritable)  => on|off|inherit
+outlineable  (inheritable)  => on|off|inherit
+
+mildable  (not inheritable) => on|off|inherit
+
+nudible   (not inheritable) => no change
+excitable (not inheritable) => no change
+
+then test:
+usesProgressBarInheritMildVariant
+usesListItemInheritMildVariant
+
+
+
+[high prior] <ListItem> can overwrite gradient, outlined, mild
+
+
 
 [low prior ] fix hack _use***
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
