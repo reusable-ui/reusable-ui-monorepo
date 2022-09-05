@@ -1362,27 +1362,25 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         if (((): boolean => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
+            const keyCode = event.code.toLowerCase();
             const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
             
             
             
-                 if (                                 isKeyOf('pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (                                 isKeyOf('pageup'    )) setValueDn({ type: 'increase', payload: 1     });
+                 if (                                 (keyCode === 'pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (                                 (keyCode === 'pageup'    )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (                                 isKeyOf('home'      )) setValueDn({ type: 'setValue', payload: minFn });
-            else if (                                 isKeyOf('end'       )) setValueDn({ type: 'setValue', payload: maxFn });
+            else if (                                 (keyCode === 'home'      )) setValueDn({ type: 'setValue', payload: minFn });
+            else if (                                 (keyCode === 'end'       )) setValueDn({ type: 'setValue', payload: maxFn });
             
-            else if ( isOrientationBlock &&           isKeyOf('arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if ( isOrientationBlock &&           isKeyOf('arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
+            else if ( isOrientationBlock &&           (keyCode === 'arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if ( isOrientationBlock &&           (keyCode === 'arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationBlock && !isRtl && isKeyOf('arrowright')) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowright')) setValueDn({ type: 'increase', payload: 1     });
             
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowright')) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowright')) setValueDn({ type: 'decrease', payload: 1     });
+            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
             else return false; // not handled
             
             
