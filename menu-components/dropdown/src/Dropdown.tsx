@@ -305,30 +305,28 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         
         if (((): boolean => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
+            const keyCode = event.code.toLowerCase();
             
             
             
-            if (isKeyOf('escape')) {
+            if ((keyCode === 'escape')) {
                 // [esc] key pressed => request to hide the <Dropdown>:
                 handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TDropdownExpandedChangeEvent);
             }
-            else if (isKeyOf('tab'))
+            else if ((keyCode === 'tab'))
             {
                 setFocusNext(event.currentTarget);
             }
             else if (
-                isKeyOf('pagedown'  ) ||
-                isKeyOf('pageup'    ) ||
-                isKeyOf('home'      ) ||
-                isKeyOf('end'       ) ||
-                isKeyOf('arrowdown' ) ||
-                isKeyOf('arrowup'   ) ||
-                isKeyOf('arrowleft' ) ||
-                isKeyOf('arrowright') ||
-                isKeyOf('space'     )
+                (keyCode === 'pagedown'  ) ||
+                (keyCode === 'pageup'    ) ||
+                (keyCode === 'home'      ) ||
+                (keyCode === 'end'       ) ||
+                (keyCode === 'arrowdown' ) ||
+                (keyCode === 'arrowup'   ) ||
+                (keyCode === 'arrowleft' ) ||
+                (keyCode === 'arrowright') ||
+                (keyCode === 'space'     )
             )
             {
                 // do nothing
