@@ -251,6 +251,7 @@ export const stripoutCommonBasicLayout = () => {
     
     
     
+    // makes dynamic border & borderRadius work on <ListItem>s:
     return style({
         // borders:
         // undef border stroke:
