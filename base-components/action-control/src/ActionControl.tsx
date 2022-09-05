@@ -384,7 +384,33 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     if (!clientSideLink) return actionControl;                     // if no contain <Link> => normal <ActionControl>
     
     return (
-        <ClientSideLinkWrapper<TElement>
+        /*
+            swaps between <Control> and <Link> while maintaining their's children, so:
+            declaration:
+            <Control>
+                <c1>
+                <c2>
+                <Link>
+                    <c3>
+                    <c4>
+                </Link>
+                <c5>
+                <c6>
+            </Control>
+            rendered to:
+            <Link>
+                <Control>
+                    <c1>
+                    <c2>
+                    <c3>
+                    <c4>
+                    <c5>
+                    <c6>
+                </Control>
+            </Link>
+        */
+        <ClientSideLinkSwapper<TElement>
+            // components:
             linkComponent={clientSideLink}
             actionComponent={actionControl}
         >
@@ -403,7 +429,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                     })
                 );
             })}
-        </ClientSideLinkWrapper>
+        </ClientSideLinkSwapper>
     );
 };
 export {
@@ -413,17 +439,31 @@ export {
 
 
 
-interface ClientSideLinkWrapperProps<TElement extends Element = HTMLElement> {
+interface ClientSideLinkSwapperProps<TElement extends Element = HTMLElement> {
     // components:
-    linkComponent   : JsxClientSideLink
-    actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    linkComponent    : JsxClientSideLink
+    actionComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
     
     
     
     // children:
-    children       ?: React.ReactNode
+    children        ?: React.ReactNode
 }
-const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkComponent, actionComponent, children }: ClientSideLinkWrapperProps<TElement>): JSX.Element|null => {
+const ClientSideLinkSwapper = <TElement extends Element = HTMLElement>(props: ClientSideLinkSwapperProps<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // components:
+        linkComponent,
+        actionComponent,
+        
+        
+        
+        // children:
+        children,
+    ...restProps} = props;
+    
+    
+    
     // fn props:
     const propEnabled                     = usePropEnabled(actionComponent.props);
     const {isSemanticTag: isSemanticLink} = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
@@ -445,6 +485,12 @@ const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkCom
     return React.cloneElement(linkComponent,
         // props:
         {
+            // other props:
+            ...restProps,
+            
+            
+            
+            // link props:
             ...(!isNextJsLink  ? { linkComponent : actionComponent } : undefined),
             ...(isSemanticLink ? { passHref      : true            } : undefined),
         },
@@ -501,6 +547,7 @@ const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLEleme
         
         
         
+        // forwards:
         ref,
     );
     
