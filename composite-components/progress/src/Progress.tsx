@@ -348,7 +348,8 @@ export const usesProgressVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable(progresses);
+    const {resizableRule   } = usesResizable(progresses);
+    const {gradientableRule} = usesGradientable(progresses);
     
     
     
@@ -358,6 +359,7 @@ export const usesProgressVariants = () => {
             usesBasicVariants(),
             usesListBasicVariants(),
             resizableRule,
+            gradientableRule,
         ]),
         ...variants([
             ifMild({
@@ -467,18 +469,11 @@ export const usesProgressBarVariants = () => {
     // dependencies:
     
     // features:
-    const {backgroundVars  } = usesBackground();
-    
-    // variants:
-    const {gradientableRule} = usesGradientable(progresses);
+    const {backgroundVars} = usesBackground();
     
     
     
     return style({
-        ...imports([
-            // variants:
-            gradientableRule,
-        ]),
         ...style({
             // children:
             ...children(listItemElm, {
