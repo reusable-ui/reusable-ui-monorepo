@@ -22,7 +22,10 @@ usesListItemInheritMildVariant
 
 
 
-[low prior ] fix hack _use***
+[med prior ] fix hack _use***
+
+
+
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 [low prior ] test tree shake a Dropdown without Modal
