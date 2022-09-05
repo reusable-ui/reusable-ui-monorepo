@@ -1,19 +1,16 @@
-[progress] remove event.key.toLowerCase()
+[progress  ] fix <Carousel outlined={true}> on the navButton
+[progress  ] fix <Progress mild={true}> should affected to <ProgressBar>
 
 [high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
-[high prior] fix <Carousel outlined={true}> on the navButton
-[high prior] fix <Progress mild={true}> should affected to <ProgressBar>
 
-[deferred] fix hack _use***
+[low prior ] fix hack _use***
+[low prior ] fix <Carousel> fast clicking [prev] & [next] button
+[low prior ] fix <Carousel> touch scroll sync with <Navscroll>
+[low prior ] test tree shake a Dropdown without Modal
 
-[deferred] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
-[deferred] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
-
-[low prior] fix <Carousel> fast clicking [prev] & [next] button
-[low prior] fix <Carousel> touch scroll sync with <Navscroll>
-
-[low prior] test tree shake a Dropdown without Modal
+[deferred  ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
+[deferred  ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
 
 
 
