@@ -586,26 +586,24 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         if (((): boolean => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
+            const keyCode = event.code.toLowerCase();
             
             
             
-            if (isModal && isKeyOf('tab'))
+            if (isModal && (keyCode === 'tab'))
             {
                 setFocusNext(event.currentTarget);
             }
             else if (
-                isKeyOf('pagedown'  ) ||
-                isKeyOf('pageup'    ) ||
-                isKeyOf('home'      ) ||
-                isKeyOf('end'       ) ||
-                isKeyOf('arrowdown' ) ||
-                isKeyOf('arrowup'   ) ||
-                isKeyOf('arrowleft' ) ||
-                isKeyOf('arrowright') ||
-                isKeyOf('space'     )
+                (keyCode === 'pagedown'  ) ||
+                (keyCode === 'pageup'    ) ||
+                (keyCode === 'home'      ) ||
+                (keyCode === 'end'       ) ||
+                (keyCode === 'arrowdown' ) ||
+                (keyCode === 'arrowup'   ) ||
+                (keyCode === 'arrowleft' ) ||
+                (keyCode === 'arrowright') ||
+                (keyCode === 'space'     )
             )
             {
                 // do nothing
@@ -824,10 +822,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         // handlers:
         const handleKeyDown = (event: KeyboardEvent) => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
-            if (isKeyOf('escape')) {
+            const keyCode = event.code.toLowerCase();
+            
+            
+            
+            if ((keyCode === 'escape')) {
                 // [esc] key pressed => request to hide the <Modal>:
                 handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TModalExpandedChangeEvent);
                 // event.preventDefault(); // no need to mark as handled, because it's a global event
