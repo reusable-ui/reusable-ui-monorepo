@@ -1,7 +1,7 @@
 [high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
 
-
+[high prior] colorable => themed => flip regular & alternate
 
 [high prior] on|off|inherit of:
 gradientable (inheritable)  => on|off|inherit
