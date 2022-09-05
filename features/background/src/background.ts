@@ -85,6 +85,10 @@ export interface BackgroundVars {
      * final background layers.
      */
     backg           : any
+    /**
+     * final alternate background layers.
+     */
+    altBackg        : any
 }
 const [backgroundVars] = cssVars<BackgroundVars>();
 
@@ -175,6 +179,26 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
                         outlineableVars.noBackgTg, // toggle outlined transparent background (if `usesOutlineable()` applied)
                         
                         backgroundVars.backgColor, // default => uses our `backgColor`
+                    ),
+                ],
+                [backgroundVars.altBackg       ] : [
+                    // layering: backg1 | backg2 | backg3 ...
+                    
+                    // top layer:
+                    switchOf(
+                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
+                        
+                        backgroundVars.backgNone,     // default => no top layer
+                    ),
+                    
+                    // middle layer:
+                    ...(config?.backgroundImage ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
+                    
+                    // bottom layer:
+                    switchOf(
+                        outlineableVars.noBackgTg,    // toggle outlined transparent background (if `usesOutlineable()` applied)
+                        
+                        backgroundVars.altBackgColor, // default => uses our `altBackgColor`
                     ),
                 ],
             }),
