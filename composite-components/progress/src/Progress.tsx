@@ -317,7 +317,7 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
             
             
             // backgrounds:
-            backg          : backgroundVars.altBackgColor, // the remaining area should lighter than the <ProgressBar>
+            backg          : backgroundVars.altBackg, // the remaining area should lighter than the <ProgressBar>
             
             
             
@@ -384,7 +384,7 @@ export const useProgressVariant = (props: ProgressVariant) => {
 export const usesProgressBarInheritMildVariant = () => {
     return style({
         ...variants([
-            rule('.mild>&', { // .mild>*>.listItem => the specificity weight including parent = 2
+            rule('.mild>&', { // .mild>.progress => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
                 ...imports([
                     mildOf(true),
                 ]),
@@ -922,15 +922,15 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
             // styles:
             style={mergedStyle}
         >
-        <Basic<TElement>
-            // other props:
-            {...restBasicProps}
-            
-            
-            
-            // variants:
-            mild={props.mild ?? false}
-        />
+            <Basic<TElement>
+                // other props:
+                {...restBasicProps}
+                
+                
+                
+                // variants:
+                mild={props.mild ?? false}
+            />
         </Generic>
     );
 };
