@@ -457,7 +457,15 @@ const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkCom
             ?
             children
             :
-            <ForwardRefWrapper actionComponent={actionComponent} {...actionComponent.props}>
+            <ForwardRefWrapper
+                // other props:
+                {...actionComponent.props}
+                
+                
+                
+                // components:
+                actionComponent={actionComponent}
+            >
                 {children}
             </ForwardRefWrapper>
         )
@@ -470,18 +478,23 @@ interface ForwardRefWrapperProps<TElement extends Element = HTMLElement>
         ActionControlProps<TElement>
 {
     // components:
-    actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    actionComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    
+    
+    
+    // children:
+    children        ?: React.ReactNode
 }
 const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLElement>(props: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // rest props:
     const {
-        // refs:
-        outerRef,
-        
-        
-        
         // components:
         actionComponent,
+        
+        
+        
+        // children:
+        children,
     ...restActionControlProps} = props;
     
     
@@ -489,7 +502,7 @@ const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLEleme
     // refs:
     const mergedOuterRef = useMergeRefs(
         // preserves the original `outerRef`:
-        outerRef,
+        props.outerRef,
         
         
         
@@ -510,5 +523,10 @@ const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLEleme
             // refs:
             outerRef : mergedOuterRef,
         },
+        
+        
+        
+        // children:
+        children,
     );
 });
