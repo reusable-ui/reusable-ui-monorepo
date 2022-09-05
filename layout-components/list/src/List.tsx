@@ -251,7 +251,7 @@ export const stripoutCommonBasicLayout = () => {
     
     
     
-    // makes dynamic border & borderRadius work on <ListItem>s:
+    // makes dynamic border & borderRadius work on <ListItem>(s):
     return style({
         // borders:
         // undef border stroke:
@@ -317,18 +317,17 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...style({
-            // spacings:
-            margin: 0, // a fix for marginBlockEnd of <h1>...<h6>
-        }),
         ...imports([
             // borders:
             /*
                 Accordion supports: a separator between Accordion's header & body.
-                Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
             */
-            separatorRule, // must be placed at the last
+            separatorRule, // turns the current border as separator between <ListItem>(s)
         ]),
+        ...style({
+            // spacings:
+            margin: 0, // a fix for marginBlockEnd of <h1>...<h6>
+        }),
     });
 };
 export const usesListItemLayout = (options?: OrientationableOptions) => {
@@ -586,7 +585,10 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     // features:
     const {borderRule, borderVars} = usesBorder(lists);
-    const {groupableRule         } = usesGroupable(options);
+    const {groupableRule         } = usesGroupable({
+        ...options,
+        itemsSelector : wrapperElm,
+    });
     const {separatorRule         } = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
@@ -629,7 +631,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             ...children(['&', wrapperElm], {
                 ...imports([
                     // features:
-                    borderRule, // dedicated border stroke for each <List> & <wrapper>s
+                    borderRule, // dedicated border stroke for each <List> & <wrapper>(s)
                 ]),
             }),
             
@@ -637,6 +639,10 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             
             // children:
             ...children(wrapperElm, {
+                ...imports([
+                    // borders:
+                    separatorRule, // turns the current border as separator between <wrapper>(s)
+                ]),
                 ...style({
                     // layouts:
                     display        : 'flex',    // use block flexbox, so it takes the entire <List>'s width
@@ -691,14 +697,6 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                         }),
                     }),
                 }),
-                ...imports([
-                    // borders:
-                    /*
-                        A separator between ListItems.
-                        Exploits the borders as a horizontal/vertical separator depending on the List's orientation.
-                    */
-                    separatorRule, // must be placed at the last
-                ]),
             }),
             
             
@@ -1695,8 +1693,8 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                         // props:
                         {
                             // variants:
-                            outlined : (outlined || undefined) ?? child.props.outlined, // if `true` => force apply to <ListItem>s, otherwise independent by <ListItem>s
-                            mild     : (mild     || undefined) ?? child.props.mild,     // if `true` => force apply to <ListItem>s, otherwise independent by <ListItem>s
+                            outlined : (outlined || undefined) ?? child.props.outlined, // if `true` => force apply to <ListItem>(s), otherwise independent by <ListItem>(s)
+                            mild     : (mild     || undefined) ?? child.props.mild,     // if `true` => force apply to <ListItem>(s), otherwise independent by <ListItem>(s)
                             
                             
                             
