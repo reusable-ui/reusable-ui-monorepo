@@ -35,6 +35,7 @@
   "dependencies": {
     "@cssfn/css-config": "^2.0.14",
     "@cssfn/cssfn-react": "^2.0.10",
+    "@reusable-ui/basic-variants": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/orientationable": "^5.0.0",

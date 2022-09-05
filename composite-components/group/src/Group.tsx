@@ -44,6 +44,10 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
+import {
+    // hooks:
+    useBasicVariantProps,
+}                           from '@reusable-ui/basic-variants'  // basic variants of UI
 
 // reusable-ui components:
 import type {
@@ -142,28 +146,18 @@ export const [groups, groupValues, cssGroupConfig] = cssConfig(() => {
 
 interface GroupItemProps
 {
-    children : React.ReactNode
-}
-const GroupItem = ({children: child}: GroupItemProps): JSX.Element|null => {
-    // jsx:
-    if (!React.isValidElement(child)) {
-        if (!child || (child === true)) return null;
-        return <>{child}</>;
-    } // if
-    
-    return (
-        <ItemWrapper>
-            {child}
-        </ItemWrapper>
-    );
-};
-
-interface ItemWrapperProps
-{
     // components:
-    children : React.ReactElement
+    component : React.ReactElement
 }
-const ItemWrapper = ({children: component}: ItemWrapperProps): JSX.Element => {
+const GroupItem = (props: GroupItemProps): JSX.Element => {
+    // rest props:
+    const {
+        // components:
+        component,
+    ...restComponentProps} = props;
+    
+    
+    
     // styles:
     const styleSheet = useGroupItemStyleSheet();
     
@@ -197,6 +191,11 @@ const ItemWrapper = ({children: component}: ItemWrapperProps): JSX.Element => {
     return React.cloneElement(component,
         // props:
         {
+            // other props:
+            ...restComponentProps,
+            
+            
+            
             // classes:
             ...(isReusableUiModalComponent ? {
                 classes   : classes,
@@ -234,14 +233,13 @@ export interface GroupProps<TElement extends Element = HTMLElement>
     children  ?: React.ReactNode
 }
 const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElement>): JSX.Element|null => {
+    // basic variant props:
+    const basicVariantProps = useBasicVariantProps(props);
+    
+    
+    
     // rest props:
     const {
-        // variants:
-        mild,
-        nude,
-        
-        
-        
         // accessibilities:
         label,
         
@@ -272,19 +270,20 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             mild={props.mild ?? false}
         >
             {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => (
-                <GroupItem
-                    // identifiers:
-                    key={index}
-                >
-                    {!React.isValidElement(child) ? child : React.cloneElement(child,
+                !React.isValidElement(child) ? child : <GroupItem component={
+                    React.cloneElement(child,
                         // props:
                         {
-                            // variants:
-                            mild,
-                            nude,
+                            // basic variant props:
+                            ...basicVariantProps,
+                            
+                            
+                            
+                            // other props:
+                            ...child.props,
                         },
-                    )}
-                </GroupItem>
+                    )
+                } />
             ))}
         </List>
     );
