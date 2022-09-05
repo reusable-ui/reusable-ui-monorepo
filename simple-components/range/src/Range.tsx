@@ -291,6 +291,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     const {groupableRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : [trackLowerElm, thumbElm, trackUpperElm],
     });
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
@@ -390,6 +391,10 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     
                     // children:
                     ...children([trackLowerElm, trackUpperElm], {
+                        ...imports([
+                            // borders:
+                            separatorRule, // turns the current border as separator between <trackLower> & <trackUpper>
+                        ]),
                         ...style({
                             // layouts:
                             display    : 'inline-block', // use inline-block, so it takes the width & height as we set
@@ -416,10 +421,6 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             // sizes:
                             alignSelf  : 'stretch', // follows parent's height
                         }),
-                        ...imports([
-                            // borders:
-                            separatorRule, // must be placed at the last
-                        ]),
                     }),
                     ...children(trackLowerElm, {
                         // sizes:
