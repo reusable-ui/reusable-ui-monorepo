@@ -346,7 +346,7 @@ export const usesButtonVariants = () => {
                     mildOf('inherit'),
                 ]),
             }),
-        ], { specificityWeight: 3 }), // increase the specificity to win with '&:not(:is(.mild&, &.mild))'
+        ], { specificityWeight: 2 }), // increase the specificity to win with ':where(&):not(:is(.mild&, &.mild))'
     });
 };
 export const usesButtonStates = () => {
