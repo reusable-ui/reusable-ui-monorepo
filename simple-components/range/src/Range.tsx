@@ -291,12 +291,12 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     const {groupableRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
-        itemsSelector             : [trackLowerElm, thumbElm, trackUpperElm],
+        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
     });
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
-        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not select <thumb>
+        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
     });
     
     const {rangeRule, rangeVars} = usesRange();
