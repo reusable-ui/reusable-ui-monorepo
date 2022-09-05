@@ -69,6 +69,10 @@ import {
 // reusable-ui configs:
 import {
     // configs:
+    colors,
+}                           from '@reusable-ui/colors'          // a color management system
+import {
+    // configs:
     spacers,
 }                           from '@reusable-ui/spacers'         // a spacer (gap) management system
 
@@ -120,6 +124,7 @@ import {
 }                           from '@reusable-ui/gradientable'    // gradient variant of UI
 import {
     // hooks:
+    ifMild,
     mildOf,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
@@ -353,6 +358,12 @@ export const usesProgressVariants = () => {
             usesBasicVariants(),
             usesListBasicVariants(),
             resizableRule,
+        ]),
+        ...variants([
+            ifMild({
+                // backgrounds:
+                backg : colors.backg, // the remaining area should lighter than the <ProgressBar>
+            }),
         ]),
     });
 };
