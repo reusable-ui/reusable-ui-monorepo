@@ -39,9 +39,9 @@ import {
 //#region nudible
 // by design: ancestor(s)'s `.nude` does not affect current `.nude`
 // ancestor(s) not `.nude` -and- current not `.nude`:
-export const ifNotNude = (styles: CssStyleCollection): CssRule => rule('&:not(:is(.nude&, &.nude))', styles);
+export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.nude&, &.nude))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 // ancestor(s) is  `.nude` -or-  current is  `.nude`:
-export const ifNude    = (styles: CssStyleCollection): CssRule => rule(      ':is(.nude&, &.nude)' , styles);
+export const ifNude    = (styles: CssStyleCollection): CssRule => rule(              ':is(.nude&, &.nude)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
