@@ -246,7 +246,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     // features:
     const {borderRule   , borderVars   } = usesBorder(cards);
     const {animationRule, animationVars} = usesAnimation(cards as any);
-    const {groupableRule               } = usesGroupable(options);
+    const {groupableRule               } = usesGroupable({
+        ...options,
+        itemsSelector : [headerElm, footerElm, bodyElm],
+    });
     const {separatorRule               } = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
@@ -260,6 +263,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             // features:
             borderRule,
             animationRule,
+            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
             // layouts:
@@ -295,14 +299,9 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
                 ...imports([
                     // layouts:
                     usesCardItemLayout(),
-                ]),
-                ...imports([
+                    
                     // borders:
-                    /*
-                        A separator between CardItems.
-                        Exploits the borders as a horizontal/vertical separator depending on the Card's orientation.
-                    */
-                    separatorRule, // must be placed at the last
+                    separatorRule, // turns the current border as separator between <CardItem>(s)
                 ]),
             }),
             ...children([headerElm, footerElm], {
@@ -345,10 +344,6 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             borderEndStartRadius   : borderVars.borderEndStartRadius,
             borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
-        ...imports([
-            // features:
-            groupableRule, // make a nicely rounded corners, must be placed at the last in order to overwrite child's borderRadius
-        ]),
     });
 };
 export const usesCardVariants = () => {
