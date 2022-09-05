@@ -227,28 +227,26 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         if (((): boolean => {
-            const isKeyOf = (key: string): boolean => {
-                return ((event.key.toLowerCase() === key) || (event.code.toLowerCase() === key));
-            };
-            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
+            const keyCode = event.code.toLowerCase();
+            const isRtl   = (getComputedStyle(event.currentTarget).direction === 'rtl');
             
             
             
-                 if (                                     isKeyOf('tab'       )) setFocusNext(event.currentTarget);
-            else if (                                     isKeyOf('pagedown'  )) setFocusNext(event.currentTarget);
-            else if (                                     isKeyOf('pageup'    )) setFocusPrev(event.currentTarget);
+                 if (                                     (keyCode === 'tab'       )) setFocusNext(event.currentTarget);
+            else if (                                     (keyCode === 'pagedown'  )) setFocusNext(event.currentTarget);
+            else if (                                     (keyCode === 'pageup'    )) setFocusPrev(event.currentTarget);
             
-            else if (                                     isKeyOf('home'      )) setFocusFirst(event.currentTarget);
-            else if (                                     isKeyOf('end'       )) setFocusLast(event.currentTarget);
+            else if (                                     (keyCode === 'home'      )) setFocusFirst(event.currentTarget);
+            else if (                                     (keyCode === 'end'       )) setFocusLast(event.currentTarget);
             
-            else if ( listIsOrientationBlock &&           isKeyOf('arrowdown' )) setFocusNext(event.currentTarget);
-            else if ( listIsOrientationBlock &&           isKeyOf('arrowup'   )) setFocusPrev(event.currentTarget);
+            else if ( listIsOrientationBlock &&           (keyCode === 'arrowdown' )) setFocusNext(event.currentTarget);
+            else if ( listIsOrientationBlock &&           (keyCode === 'arrowup'   )) setFocusPrev(event.currentTarget);
             
-            else if (!listIsOrientationBlock && !isRtl && isKeyOf('arrowleft' )) setFocusNext(event.currentTarget);
-            else if (!listIsOrientationBlock && !isRtl && isKeyOf('arrowright')) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationBlock && !isRtl && (keyCode === 'arrowright')) setFocusPrev(event.currentTarget);
             
-            else if (!listIsOrientationBlock &&  isRtl && isKeyOf('arrowright')) setFocusNext(event.currentTarget);
-            else if (!listIsOrientationBlock &&  isRtl && isKeyOf('arrowleft' )) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationBlock &&  isRtl && (keyCode === 'arrowright')) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) setFocusPrev(event.currentTarget);
             else return false; // not handled
             
             
