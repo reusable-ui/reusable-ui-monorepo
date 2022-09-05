@@ -1363,7 +1363,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         if (((): boolean => {
             const keyCode = event.code.toLowerCase();
-            const isRtl = (getComputedStyle(event.currentTarget).direction === 'rtl');
+            const isRtl   = (getComputedStyle(event.currentTarget).direction === 'rtl');
             
             
             
