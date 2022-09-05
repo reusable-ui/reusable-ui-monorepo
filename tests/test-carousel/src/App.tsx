@@ -39,13 +39,13 @@ function App() {
                     </button>
                 </article>
                 <Carousel theme='primary' style={style} infiniteLoop={true}>
-                    <img key={0} alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
-                    <img key={1} alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
-                    <img key={2} alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
-                    <img key={3} alt='lorem image' src='/images/lorem-img/street-800x800.jpg' />
-                    <img key={4} alt='lorem image' src='/images/lorem-img/flower-700x400.jpg' />
-                    <img key={5} alt='lorem image' src='/images/lorem-img/water-500x800.jpg' />
-                    <img key={6} alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/street-800x800.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/flower-700x400.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/water-500x800.jpg' />
+                    <img alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
                 </Carousel>
             </div>
         </>

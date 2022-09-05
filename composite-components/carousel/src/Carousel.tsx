@@ -477,6 +477,7 @@ export const useCarouselVariant = (props: CarouselVariant) => {
 export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
     return {
         // borders:
+        navBtnBorderWidth   : '0px'                     as CssKnownProps['borderWidth' ],
         navBtnBorderRadius  : '0px'                     as CssKnownProps['borderRadius'],
         
         
