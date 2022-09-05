@@ -260,7 +260,6 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             // features:
             borderRule,
             animationRule,
-            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
             // layouts:
@@ -346,6 +345,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             borderEndStartRadius   : borderVars.borderEndStartRadius,
             borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
+        ...imports([
+            // features:
+            groupableRule, // make a nicely rounded corners, must be placed at the last in order to overwrite child's borderRadius
+        ]),
     });
 };
 export const usesCardVariants = () => {
@@ -630,7 +633,10 @@ export const CardBody   = <TElement extends Element = HTMLElement>(props: CardPr
 export interface CardProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        IndicatorProps<TElement>,
+        Omit<IndicatorProps<TElement>,
+            // variants:
+            |'nude' // <Card> cannot be [nude]
+        >,
         
         // <div>:
         Omit<React.HTMLAttributes<TElement>,
