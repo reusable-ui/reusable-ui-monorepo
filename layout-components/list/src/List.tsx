@@ -1543,7 +1543,10 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
 export interface ListProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        IndicatorProps<TElement>,
+        Omit<IndicatorProps<TElement>,
+            // variants:
+            |'nude' // <List> cannot be [nude]
+        >,
         
         // <ul>|<ol>:
         Omit<React.HTMLAttributes<TElement>,
