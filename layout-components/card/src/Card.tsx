@@ -248,11 +248,12 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     const {animationRule, animationVars} = usesAnimation(cards as any);
     const {groupableRule               } = usesGroupable({
         ...options,
-        itemsSelector : [headerElm, footerElm, bodyElm],
+        itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
     });
     const {separatorRule               } = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
         swapFirstItem             : true,
     });
     
