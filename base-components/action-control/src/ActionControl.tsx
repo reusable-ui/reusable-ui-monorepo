@@ -458,11 +458,6 @@ const ClientSideLinkWrapper = <TElement extends Element = HTMLElement>({ linkCom
             children
             :
             <ForwardRefWrapper
-                // other props:
-                {...actionComponent.props}
-                
-                
-                
                 // components:
                 actionComponent={actionComponent}
             >
