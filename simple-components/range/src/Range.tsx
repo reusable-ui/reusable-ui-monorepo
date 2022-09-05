@@ -296,7 +296,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
-        itemsSelector             : [trackLowerElm, trackUpperElm],
+        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not select <thumb>
     });
     
     const {rangeRule, rangeVars} = usesRange();
