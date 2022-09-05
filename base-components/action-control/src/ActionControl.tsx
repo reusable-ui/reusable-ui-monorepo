@@ -472,9 +472,22 @@ interface ForwardRefWrapperProps<TElement extends Element = HTMLElement>
     // components:
     actionComponent : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
 }
-const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLElement>({ actionComponent, outerRef, ...restForwardProps }: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLElement>(props: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // refs:
+        outerRef,
+        
+        
+        
+        // components:
+        actionComponent,
+    ...restActionControlProps} = props;
+    
+    
+    
     // refs:
-    const mergedouterRef = useMergeRefs(
+    const mergedOuterRef = useMergeRefs(
         // preserves the original `outerRef`:
         outerRef,
         
@@ -489,13 +502,13 @@ const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLEleme
     return React.cloneElement(actionComponent,
         // props:
         {
-            // refs:
-            outerRef: mergedouterRef,
-            
-            
-            
             // other props:
-            ...restForwardProps,
+            ...restActionControlProps,
+            
+            
+            
+            // refs:
+            outerRef : mergedOuterRef,
         },
     );
 });
