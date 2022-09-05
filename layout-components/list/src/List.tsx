@@ -312,6 +312,7 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : '*', // select <ListItem> & <foreign-elm>
     });
     
     
@@ -322,7 +323,7 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
             /*
                 Accordion supports: a separator between Accordion's header & body.
             */
-            separatorRule, // turns the current border as separator between <ListItem>(s)
+            separatorRule, // turns the current border as separator between <ListItem> & <foreign-elm>
         ]),
         ...style({
             // spacings:
@@ -587,11 +588,12 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     const {borderRule, borderVars} = usesBorder(lists);
     const {groupableRule         } = usesGroupable({
         ...options,
-        itemsSelector : wrapperElm,
+        itemsSelector             : wrapperElm,
     });
     const {separatorRule         } = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : wrapperElm,
     });
     
     
