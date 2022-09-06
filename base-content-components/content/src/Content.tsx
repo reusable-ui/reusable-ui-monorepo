@@ -336,13 +336,22 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
     
     // features:
     const {borderRule, borderVars} = usesBorder();
-    const {groupableRule         } = usesGroupable({
-        itemsSelector             : '*', // select all children inside <figure> for trimming their corners
-    });
     const {separatorRule         } = usesGroupable({
         orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
         itemsSelector             : mediaSelectorWithExceptZero,
+    });
+    
+    const {borderRule    : figureItemBorderRule, borderVars: figureItemBorderVars} = usesBorder({
+        borderRadius : 'initial', // protect from inheritance
+    });
+    const {separatorRule : figureItemSeparatorRule} = usesGroupable({
+        orientationInlineSelector : null, // never  => the <figureItem> are never  stacked in horizontal
+        orientationBlockSelector  : '&',  // always => the <figureItem> are always stacked in vertical
+        itemsSelector             : '*', // select all <figureItem>(s) inside <figure>
+    });
+    const {groupableRule : figureGroupableRule    } = usesGroupable({
+        itemsSelector             : '*', // select all <figureItem>(s) inside <figure> for trimming their corners
     });
     
     
@@ -358,7 +367,7 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
                 
                 // features:
                 // making the <figure> as border_container => the inner media can have a separator between them
-                groupableRule, // make a nicely rounded corners
+                figureGroupableRule, // make a nicely rounded corners
             ]),
             ...style({
                 // layouts:
@@ -375,17 +384,22 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
                     ...children('*', {
                         ...imports([
                             // features:
-                            borderRule,
+                            figureItemBorderRule,
                         ]),
                         ...style({
                             // borders:
-                            border       : borderVars.border,
-                         // borderRadius           : borderVars.borderRadius,
-                            borderStartStartRadius : borderVars.borderStartStartRadius,
-                            borderStartEndRadius   : borderVars.borderStartEndRadius,
-                            borderEndStartRadius   : borderVars.borderEndStartRadius,
-                            borderEndEndRadius     : borderVars.borderEndEndRadius,
+                            border       : figureItemBorderVars.border,
+                         // borderRadius           : figureItemBorderVars.borderRadius,
+                            borderStartStartRadius : figureItemBorderVars.borderStartStartRadius,
+                            borderStartEndRadius   : figureItemBorderVars.borderStartEndRadius,
+                            borderEndStartRadius   : figureItemBorderVars.borderEndStartRadius,
+                            borderEndEndRadius     : figureItemBorderVars.borderEndEndRadius,
                         }),
+                        ...imports([
+                            // borders:
+                            // we placed at the last because we redefined the border at above
+                            figureItemSeparatorRule, // turns the current border as separator between <figureItem>(s)
+                        ]),
                     }),
                 }, { performGrouping: false }), // do not transform/simplify
             }),

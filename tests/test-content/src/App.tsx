@@ -34,10 +34,11 @@ function App() {
                     </button>
                 </article>
                 <Content theme='primary'>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo aut deserunt nulla iusto quod a est debitis tenetur dolorem? Molestiae unde nulla amet odio eveniet, quis eum libero aperiam natus?
-                    </p>
-                    <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                    <figure>
+                        <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                        <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                        <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                    </figure>
                     <p>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo aut deserunt nulla iusto quod a est debitis tenetur dolorem? Molestiae unde nulla amet odio eveniet, quis eum libero aperiam natus?
                     </p>
