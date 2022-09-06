@@ -269,21 +269,23 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             orientation={props.orientation ?? 'inline'}
             mild={props.mild ?? false}
         >
-            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => (
-                !React.isValidElement(child) ? child : <GroupItem component={
-                    React.cloneElement(child,
-                        // props:
-                        {
-                            // basic variant props:
-                            ...basicVariantProps,
-                            
-                            
-                            
-                            // other props:
-                            ...child.props,
-                        },
-                    )
-                } />
+            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => (
+                !React.isValidElement(child) ? child : <GroupItem
+                    component={
+                        React.cloneElement(child,
+                            // props:
+                            {
+                                // basic variant props:
+                                ...basicVariantProps, // firstly : write the default basic variants
+                                
+                                
+                                
+                                // other props:
+                                ...child.props,       // finally : write the original props
+                            },
+                        )
+                    }
+                />
             ))}
         </List>
     );
