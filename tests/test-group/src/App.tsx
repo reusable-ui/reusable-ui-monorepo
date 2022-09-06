@@ -8,6 +8,9 @@ import {
     Group,
 } from '@reusable-ui/group'
 import {
+    TextInput,
+} from '@reusable-ui/input'
+import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -35,10 +38,22 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
+                
+                <hr />
+                
                 <Group theme='primary'>
                     <Button theme='primary'>Pizza</Button>
                     <Button theme='warning'>Salad</Button>
                     <Check nude={false} checkStyle='switch' theme='danger'>Spicy</Check>
+                </Group>
+                
+                <hr />
+                
+                <Group theme='primary'>
+                    <Button theme='primary'>Pizza</Button>
+                    <Button theme='warning'>Salad</Button>
+                    <Check nude={false} checkStyle='switch' theme='danger'>Spicy</Check>
+                    <TextInput placeholder='type here...' className='fluid' />
                 </Group>
             </div>
         </>
