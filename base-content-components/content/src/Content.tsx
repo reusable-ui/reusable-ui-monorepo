@@ -444,7 +444,7 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
             ...style({
                 ...imports([
                     // features:
-                    borderRule, // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius
+                    borderRule,
                 ]),
                 ...style({
                     // borders:
