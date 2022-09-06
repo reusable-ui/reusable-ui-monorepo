@@ -16,6 +16,7 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
+    rule,
     rules,
     fallbacks,
     atGlobal,
@@ -208,6 +209,10 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
     // dependencies:
     
     // features:
+    const {borderRule, borderVars} = usesBorder({
+        borderRadius : 'initial', // protect from inheritance
+    });
+    
     const fillSelectorAndSelf = [fillSelector, fillSelfSelector];
     const {groupableRule, groupableVars} = usesGroupable({
         itemsSelector: fillSelectorAndSelf, // select .fill & .fill-selft for trimming their corners
@@ -228,6 +233,22 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
         ]),
         ...style({
             // children:
+            ...rule(':where(&)', { // set at lowest specificity to the parent selector
+                ...children(fillSelectorAndSelf, {
+                    ...imports([
+                        // features:
+                        borderRule,
+                    ]),
+                    ...style({
+                        // borders:
+                     // borderRadius           : borderVars.borderRadius,
+                        borderStartStartRadius : borderVars.borderStartStartRadius,
+                        borderStartEndRadius   : borderVars.borderStartEndRadius,
+                        borderEndStartRadius   : borderVars.borderEndStartRadius,
+                        borderEndEndRadius     : borderVars.borderEndEndRadius,
+                    }),
+                }, { specificityWeight: 0 }), // set at lowest specificity to the section selectors
+            }, { performGrouping: false }), // do not transform/simplify
             ...children(fillSelectorAndSelf, {
                 // sizes:
                 // span to maximum width including parent's paddings:
