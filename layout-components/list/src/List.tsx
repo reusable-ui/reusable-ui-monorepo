@@ -159,6 +159,7 @@ import {
 // reusable-ui components:
 import {
     // react components:
+    GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
 import {
@@ -1541,6 +1542,73 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
 
 
 
+interface WrapperItemProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        GenericProps<TElement>
+{
+}
+const WrapperItem = <TElement extends Element = HTMLElement>(props: WrapperItemProps<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // children:
+        children,
+    ...restGenericProps} = props;
+    
+    
+    
+    // classes:
+    const flexes = (() => {
+        // conditions:
+        if (!React.isValidElement<GenericProps<Element>>(children)) return null;
+        
+        
+        
+        // fn props:
+        const classNames = (children.props.className ?? '').split(' ');
+        const classes    = (children.props.classes ?? []);
+        const isFluid    = classNames.includes('fluid') || classes.includes('fluid');
+        const isSolid    = classNames.includes('solid') || classes.includes('solid');
+        
+        
+        
+        // result:
+        return {
+            isFluid,
+            isSolid,
+        };
+    })();
+    const classes = useMergeClasses(
+        // preserves the original `classes`:
+        props.classes,
+        
+        
+        
+        // classes:
+        (flexes?.isFluid || undefined) && 'fluid',
+        (flexes?.isSolid || undefined) && 'solid',
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <Generic<TElement>
+            // other props:
+            {...restGenericProps}
+            
+            
+            
+            // classes:
+            classes={classes}
+        >
+            {children}
+        </Generic>
+    );
+};
+
+
+
 export interface ListProps<TElement extends Element = HTMLElement>
     extends
         // bases:
@@ -1682,7 +1750,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             onAnimationEnd={handleAnimationEnd}
         >
             {React.Children.map(children, (child, index) =>
-                <Generic<HTMLLIElement>
+                <WrapperItem<HTMLLIElement>
                     // identifiers:
                     key={index}
                     
@@ -1701,20 +1769,25 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                             
                             
                             // behaviors:
-                            actionCtrl : (
-                                (
-                                    (child.type === ListSeparatorItem)
-                                    ||
-                                    (child.props.classes?.includes('void'))
-                                )
-                                ?
-                                undefined
-                                :
-                                (child.props.actionCtrl ?? defaultActionCtrl) // the default <ListItem>'s actionCtrl value, if not assigned
-                            ),
+                            ...(((): boolean => {
+                                // conditions:
+                                if (child.type === ListSeparatorItem)      return false;
+                                if (child.props.classes?.includes('void')) return false;
+                                
+                                
+                                
+                                // result:
+                                return (
+                                    child.props.actionCtrl
+                                    ??
+                                    defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
+                                    ??
+                                    false             // if <List>'s actionCtrl was not assigned => default to false
+                                );
+                            })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
                         },
                     )}
-                </Generic>
+                </WrapperItem>
             )}
         </Indicator>
     );
