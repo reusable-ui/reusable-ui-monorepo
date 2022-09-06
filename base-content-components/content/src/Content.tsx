@@ -225,7 +225,9 @@ export const usesContentChildrenFill         = (options: ContentChildrenMediaOpt
     // dependencies:
     
     // features:
-    const {groupableRule, groupableVars} = usesGroupable({ itemsSelector: mediaSelectorWithExcept });
+    const {groupableRule, groupableVars} = usesGroupable({
+        itemsSelector : mediaSelectorWithExcept, // select all <media> inside <Content> for trimming their corners
+    });
     
     // spacings:
     const positivePaddingInline = groupableVars.paddingInline;
@@ -334,11 +336,13 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
     
     // features:
     const {borderRule, borderVars} = usesBorder();
-    const {groupableRule         } = usesGroupable();
+    const {groupableRule         } = usesGroupable({
+        itemsSelector             : '*', // select all children inside <figure> for trimming their corners
+    });
     const {separatorRule         } = usesGroupable({
         orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
-        itemsSelector             : mediaSelectorWithExceptZero
+        itemsSelector             : mediaSelectorWithExceptZero,
     });
     
     
@@ -367,21 +371,23 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
                 
                 
                 // children:
-                ...children('*', {
-                    ...imports([
-                        // features:
-                        borderRule, // let's Reusable-UI system to manage borderColor, borderStroke & borderRadius
-                    ]),
-                    ...style({
-                        // borders:
-                        border       : borderVars.border,
-                     // borderRadius           : borderVars.borderRadius,
-                        borderStartStartRadius : borderVars.borderStartStartRadius,
-                        borderStartEndRadius   : borderVars.borderStartEndRadius,
-                        borderEndStartRadius   : borderVars.borderEndStartRadius,
-                        borderEndEndRadius     : borderVars.borderEndEndRadius,
+                ...rule(':where(&)', { // set at lowest specificity to the parent selector
+                    ...children('*', {
+                        ...imports([
+                            // features:
+                            borderRule,
+                        ]),
+                        ...style({
+                            // borders:
+                            border       : borderVars.border,
+                         // borderRadius           : borderVars.borderRadius,
+                            borderStartStartRadius : borderVars.borderStartStartRadius,
+                            borderStartEndRadius   : borderVars.borderStartEndRadius,
+                            borderEndStartRadius   : borderVars.borderEndStartRadius,
+                            borderEndEndRadius     : borderVars.borderEndEndRadius,
+                        }),
                     }),
-                }),
+                }, { performGrouping: false }), // do not transform/simplify
             }),
         }),
         
@@ -438,7 +444,8 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
             }),
             ...imports([
                 // borders:
-                separatorRule, // must be placed at the last
+                // we placed at the last because we redefined the border at above
+                separatorRule, // turns the current border as separator between <media>(s)
             ]),
         }),
     });
