@@ -817,6 +817,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         return React.Children.map(children, (child, index) => {
             // conditions:
             if (!React.isValidElement<ListItemProps<Element>>(child)) return child; // not a <ListItem> => ignore
+            const listItem = child;
             
             
             
@@ -825,20 +826,25 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             
             // defaults:
-            const actionCtrl = child.props.actionCtrl ?? props.actionCtrl ?? true;
+            const actionCtrl = listItem.props.actionCtrl ?? props.actionCtrl ?? true;
             
             
             
             // jsx:
             return (
                 <ListItemWithNavigation<Element>
-                    // identifiers:
-                    key={child.key}
+                    // other props:
+                    {...listItem.props} // steals all listItem's props, so the <List> can recognize the <ListItemWithNavigation> as <ListItem>
                     
                     
                     
                     // positions:
                     deepLevels={deepLevelsCurrent}
+                    
+                    
+                    
+                    // behaviors:
+                    actionCtrl={actionCtrl}
                     
                     
                     
@@ -853,31 +859,28 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     
                     // components:
-                    listItemComponent={React.cloneElement(child,
-                        // props:
-                        {
-                            // behaviors:
-                            actionCtrl,
-                        },
-                        
-                        
-                        
-                        // children:
-                        React.Children.map(child.props.children, (grandChild, grandIndex) => (
-                            (
-                                React.isValidElement<NavscrollProps>(grandChild)
-                                &&
-                                (grandChild.type === navscrollComponent.type)
-                                &&
-                                !grandChild.props.scrollingOf
-                            )
-                            ?
-                            mutateNestedNavscroll(grandChild.props, grandChild.key ?? grandIndex, /*deepLevelsParent: */deepLevelsCurrent)
-                            :
-                            grandChild
-                        )),
-                    )}
-                />
+                    listItemComponent={
+                        // clone listItem element with blank props:
+                        <listItem.type
+                            // identifiers:
+                            key={listItem.key}
+                        />
+                    }
+                >
+                    {React.Children.map(listItem.props.children, (grandChild, grandIndex) => (
+                        (
+                            React.isValidElement<NavscrollProps>(grandChild)
+                            &&
+                            (grandChild.type === navscrollComponent.type)
+                            &&
+                            !grandChild.props.scrollingOf
+                        )
+                        ?
+                        mutateNestedNavscroll(grandChild.props, grandChild.key ?? grandIndex, /*deepLevelsParent: */deepLevelsCurrent)
+                        :
+                        grandChild
+                    ))}
+                </ListItemWithNavigation>
             );
         });
     };
@@ -912,10 +915,10 @@ export type { ListStyle, ListVariant }
 interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        Omit<ListItemProps<TElement>, 'active'>,
+        Omit<ListItemProps<TElement>, 'active'>,           // change active prop as required
         
         // states:
-        Required<Pick<ListItemProps<TElement>, 'active'>>,
+        Required<Pick<ListItemProps<TElement>, 'active'>>, // change active prop as required
         
         // components:
         Required<ListItemComponentProps<TElement>>
