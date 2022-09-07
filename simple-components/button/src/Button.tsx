@@ -58,6 +58,7 @@ import {
     
     
     // hooks:
+    useSemantic,
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
@@ -450,9 +451,18 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
     
     const semanticTag   = props.semanticTag  ?? (isNativeLink ? 'a'    : _defaultSemanticTag );
     const semanticRole  = props.semanticRole ?? (isNativeLink ? 'link' : _defaultSemanticRole);
+    
     const {
-        tag,
-        role,
+        tag  : finalTag,
+        role : finalRole,
+    } = useSemantic({
+        tag  : props.tag,
+        role : props.role,
+        semanticTag,
+        semanticRole,
+    });
+    
+    const {
         isDesiredType : isButtonType,
         isSemanticTag : isSemanticButton,
     } = useTestSemantic(
@@ -481,8 +491,8 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         semanticTag,
         semanticRole,
         
-        tag,
-        role,
+        tag  : finalTag,
+        role : finalRole,
         isButtonType,
         isSemanticButton,
         
