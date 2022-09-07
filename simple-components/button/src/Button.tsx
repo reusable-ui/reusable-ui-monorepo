@@ -145,10 +145,14 @@ import {
 // defaults:
 export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
 
-const _defaultSemanticTag  : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
-const _defaultSemanticRole : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
-const _defaultOutlined     : boolean      = false
-const _defaultMild         : boolean      = false
+const _defaultSemanticTag      : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
+const _defaultSemanticRole     : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+
+const _defaultLinkSemanticTag  : SemanticTag  = ['a'   , 'button'] // uses <a>             as the default semantic, fallbacks to <button>
+const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role="link"]   as the default semantic, fallbacks to [role="button"]
+
+const _defaultOutlined         : boolean      = false
+const _defaultMild             : boolean      = false
 
 
 
@@ -453,8 +457,8 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         if has [href] or <Link> => default to <a>      or <foo role='link'>
         else                    => default to <button> or <foo role='button'>
     */
-    const semanticTag   = props.semanticTag  ?? ((isNativeLink || isClientLink) ? 'a'    : _defaultSemanticTag );
-    const semanticRole  = props.semanticRole ?? ((isNativeLink || isClientLink) ? 'link' : _defaultSemanticRole);
+    const semanticTag   = props.semanticTag  ?? ((isNativeLink || isClientLink) ? _defaultLinkSemanticTag  : _defaultSemanticTag );
+    const semanticRole  = props.semanticRole ?? ((isNativeLink || isClientLink) ? _defaultLinkSemanticRole : _defaultSemanticRole);
     
     const {
         tag  : finalTag,
