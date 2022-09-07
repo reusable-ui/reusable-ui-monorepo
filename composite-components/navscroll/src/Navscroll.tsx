@@ -915,10 +915,14 @@ export type { ListStyle, ListVariant }
 interface ListItemWithNavigationProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        Omit<ListItemProps<TElement>, 'active'>,           // change active prop as required
+        Omit<ListItemProps<TElement>,
+            |'active' // change active prop as required
+        >,
         
         // states:
-        Required<Pick<ListItemProps<TElement>, 'active'>>, // change active prop as required
+        Required<Pick<ListItemProps<TElement>,
+            |'active' // change active prop as required
+        >>,
         
         // components:
         Required<ListItemComponentProps<TElement>>
