@@ -385,6 +385,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 // jsx:
                 return (
                     <ListItemWithExpandedHandler<Element, TDropdownListExpandedChangeEvent>
+                        // other props:
+                        {...listItem.props} // steals all listItem's props, so the <List> can recognize the <ListItemWithExpandedHandler> as <ListItem>
+                        
+                        
+                        
                         // positions:
                         listIndex={index}
                         
@@ -396,7 +401,13 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                         
                         
                         // components:
-                        listItemComponent={listItem}
+                        listItemComponent={
+                            // clone listItem element with blank props:
+                            <listItem.type
+                                // identifiers:
+                                key={listItem.key}
+                            />
+                        }
                     />
                 );
             }),
