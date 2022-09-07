@@ -301,8 +301,13 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                         
                         // components:
                         component={
-                            /* clone child element with (almost) blank props: */
+                            // clone child element with (almost) blank props:
                             <child.type
+                                // identifiers:
+                                key={child.key}
+                                
+                                
+                                
                                 // restore the sanitized child's [component] prop (if exist):
                                 {...(('component' in child.props) ? { component: childComponent } : null)}
                             />
