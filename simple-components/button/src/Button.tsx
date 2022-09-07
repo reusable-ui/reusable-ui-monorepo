@@ -449,8 +449,12 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
     const isNativeLink  = !!props.href; // assigning [href] will render the <Button> as <a>
     const isClientLink  = !isNativeLink && React.Children.toArray(props.children).some(isClientSideLink);
     
-    const semanticTag   = props.semanticTag  ?? (isNativeLink ? 'a'    : _defaultSemanticTag );
-    const semanticRole  = props.semanticRole ?? (isNativeLink ? 'link' : _defaultSemanticRole);
+    /*
+        if has [href] or <Link> => default to <a>      or <foo role='link'>
+        else                    => default to <button> or <foo role='button'>
+    */
+    const semanticTag   = props.semanticTag  ?? ((isNativeLink || isClientLink) ? 'a'    : _defaultSemanticTag );
+    const semanticRole  = props.semanticRole ?? ((isNativeLink || isClientLink) ? 'link' : _defaultSemanticRole);
     
     const {
         tag  : finalTag,
