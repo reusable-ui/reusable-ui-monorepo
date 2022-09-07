@@ -1,4 +1,3 @@
-[high prior] add fluid/fixed <GroupItem>
 [high prior] add <AccordionItemGroup maxExpanded={1}>
 
 [high prior] colorable => themed => flip regular & alternate
