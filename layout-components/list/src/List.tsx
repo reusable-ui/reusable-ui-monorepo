@@ -658,6 +658,16 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                     
                     // sizes:
                     flex           : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                    ...rule(':where(.fluid:not(.solid))', { // only .fluid
+                        flexBasis  : '100%', // fill the space as much as possible
+                    }),
+                    ...rule(':where(.solid:not(.fluid))', { // only .solid => fixed size
+                        flexGrow   : 0, // ungrowable
+                        flexShrink : 0, // unshrinkable
+                    }),
+                    ...rule(':where(.fluid.solid)', { // both .fluid & .solid => growable but not shrinkable
+                        flexShrink : 0, // unshrinkable
+                    }),
                     
                     
                     
