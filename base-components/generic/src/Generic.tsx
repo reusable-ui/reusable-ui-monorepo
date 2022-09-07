@@ -137,7 +137,7 @@ const Generic = <TElement extends Element = HTMLElement>(props: GenericProps<TEl
                 
                 
                 // React's legacy:
-                className?.split(' '),
+                ...(className?.split(' ') ?? []),
             ].filter((c) => !!c))).join(' ')
             ||
             undefined
