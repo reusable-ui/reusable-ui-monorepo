@@ -15,7 +15,7 @@ import {
     HeadPortal,
 } from '@cssfn/cssfn-react'
 import {
-    // Link,
+    Link as OriLink,
     Outlet,
 } from 'react-router-dom'
 import {
@@ -51,7 +51,7 @@ function App() {
                     <NavButton theme='primary'>
                         <Link to="/invoices">Invoices</Link>
                     </NavButton>
-                    <NavButton theme='primary'>
+                    <NavButton theme='primary' tag='button'>
                         <Link to="/expenses">Expenses</Link>
                     </NavButton>
                 </article>
@@ -63,10 +63,15 @@ function App() {
                         <NavItem theme='primary'>
                             <Link to="/invoices">Invoices</Link>
                         </NavItem>
-                        <NavItem theme='success'>
-                        <Link to="/expenses">Expenses</Link>
+                        <NavItem theme='success' tag='div'>
+                            <Link to="/expenses">Expenses</Link>
                         </NavItem>
                     </Nav>
+                </article>
+                <article>
+                    <Link to="/invoices">Invoices</Link> | <Link to="/expenses">Expenses</Link>
+                    <br />
+                    <OriLink to="/invoices">Invoices</OriLink> | <OriLink to="/expenses">Expenses</OriLink>
                 </article>
                 <hr />
                 <Outlet />
