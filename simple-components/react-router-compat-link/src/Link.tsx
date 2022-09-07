@@ -59,8 +59,8 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
         state,
         to,
         
-        linkComponent = (<a /> as React.ReactElement<LinkProps>),
-        passHref       = false,
+        linkComponent  = (<a /> as React.ReactElement<LinkProps>),
+        passHref       = (linkComponent.type === 'a'), // if [passHref] is not specified, the default (safe) is true for <a> element, otherwise false
         
         
         
