@@ -55,6 +55,23 @@ function App() {
                     <Check nude={false} checkStyle='switch' theme='danger'>Spicy</Check>
                     <TextInput placeholder='type here...' className='fluid' />
                 </Group>
+                
+                <hr />
+                
+                <Group theme='primary'>
+                    <Button theme='primary' className='solid'>Pizza</Button>
+                    <Button theme='warning' className='solid'>Salad</Button>
+                    <Check nude={false} checkStyle='switch' theme='danger' className='solid'>Spicy</Check>
+                    <TextInput placeholder='type here...' className='fluid' />
+                </Group>
+                
+                <hr />
+                
+                <Group theme='primary'>
+                    <Button theme='primary' className='solid fluid'>Pizza</Button>
+                    <Button theme='warning' className='solid fluid'>Salad</Button>
+                    <Check nude={false} checkStyle='switch' theme='danger' className='solid fluid'>Spicy</Check>
+                </Group>
             </div>
         </>
     );
