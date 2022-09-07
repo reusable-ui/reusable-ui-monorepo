@@ -1429,9 +1429,9 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         )
     */
     const isDefaultButton = isSemanticButton && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
-    const tag             = !actionCtrl ? props.tag          : (!isDefaultButton ? buttonTag  : (props.tag  ??               'div'    ));
-    const role            = !actionCtrl ? props.role         : (!isDefaultButton ? buttonRole : (props.role ?? buttonRole ?? 'button' ));
-    const type            = !actionCtrl ? props.type         : (!isDefaultButton ? buttonType : (props.type ??               undefined));
+    const tag             = !actionCtrl ? props.tag          : (!isDefaultButton ? buttonTag  : (props.tag  ??                'div'     ));
+    const role            = !actionCtrl ? props.role         : (!isDefaultButton ? buttonRole : (props.role ?? (buttonRole || 'button' )));
+    const type            = !actionCtrl ? props.type         : (!isDefaultButton ? buttonType : (props.type ??                undefined ));
     
     
     
