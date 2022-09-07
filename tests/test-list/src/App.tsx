@@ -39,16 +39,33 @@ function App() {
                     <ListItem>
                         A first item
                     </ListItem>
-                    <ListItem>
+                    <ListItem tag='span' role='presentation'>
                         A second item
                     </ListItem>
                     <ListItem theme='success'>
                         A third item
                     </ListItem>
-                    <ListItem active={true}>
+                    <ListItem active={true} actionCtrl={true} href='https://www.google.com'>
                         A fourth item
                     </ListItem>
-                    <ListItem theme='danger'>
+                    <ListItem theme='danger' actionCtrl={true}>
+                        A fifth item
+                    </ListItem>
+                </List>
+                <List theme='primary' actionCtrl={true}>
+                    <ListItem>
+                        A first item
+                    </ListItem>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                    <ListItem active={true} href='https://www.google.com'>
+                        A fourth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={false}>
                         A fifth item
                     </ListItem>
                 </List>

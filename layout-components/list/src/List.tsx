@@ -883,8 +883,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                         ...imports([
                             // layouts:
                             usesButtonLayout({
-                                orientationInlineSelector : '&',  // always => the <button> is always stacked in horizontal regradless the orientation of the <List>
-                                orientationBlockSelector  : null, // never  => the <button> is never  stacked in vertical   regradless the orientation of the <List>
+                                orientationInlineSelector : '&',  // always => the <Button> is always stacked in horizontal regradless the orientation of the <List>
+                                orientationBlockSelector  : null, // never  => the <Button> is never  stacked in vertical   regradless the orientation of the <List>
                             }),
                         ]),
                         ...style({
@@ -1404,8 +1404,8 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
     const pressedFn  = pressed ?? (((propActive && actionCtrl) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
     
     const {
-        semanticTag,
-        semanticRole,
+        semanticTag  : buttonSemanticTag,
+        semanticRole : buttonSemanticRole,
         
         tag  : buttonTag,
         role : buttonRole,
@@ -1414,11 +1414,24 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         type : buttonType,
     } = useSemanticButton(props);
     
-    // prevents for defaulting [tag] to <button>:
+    /*
+        if not [actionCtrl] => use props's semantic(Tag|Role)
+        if  is [actionCtrl] => use props's semantic(Tag|Role) ?? use <Button>'s semantic(Tag|Role)
+    */
+    const semanticTag     = !actionCtrl ? props.semanticTag  : (props.semanticTag  ?? buttonSemanticTag );
+    const semanticRole    = !actionCtrl ? props.semanticRole : (props.semanticRole ?? buttonSemanticRole);
+    
+    /*
+        if not [actionCtrl] => use props's (tag|role|type)
+        if  is [actionCtrl] => use props's (tag|role|type) ?? (
+            if not [defaulting to <button>] => use <button>'s (tag|role|type)
+            if  is [defaulting to <button>] => use props's (tag|role|type) ?? replace <button> with <div role='button' type={props.type}>
+        )
+    */
     const isDefaultButton = isSemanticButton && (props.tag === undefined); // determines if the [tag] was defaulting to <button>
-    const tag  = (isDefaultButton ? (props.tag  ?? 'div'   ) : buttonTag );
-    const role = (isDefaultButton ? (props.role ?? 'button') : buttonRole);
-    const type = (isDefaultButton ?  props.type              : buttonType);
+    const tag             = !actionCtrl ? props.tag          : (!isDefaultButton ? buttonTag  : (props.tag  ?? 'div'    ));
+    const role            = !actionCtrl ? props.role         : (!isDefaultButton ? buttonRole : (props.role ?? 'button' ));
+    const type            = !actionCtrl ? props.type         : (!isDefaultButton ? buttonType : (props.type ?? undefined));
     
     
     
