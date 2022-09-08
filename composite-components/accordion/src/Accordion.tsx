@@ -605,3 +605,11 @@ export interface AccordionItemComponentProps<TElement extends Element = HTMLElem
     // components:
     accordionItemComponent ?: React.ReactComponentElement<any, AccordionItemProps<TElement>>
 }
+
+
+
+export interface AccordionComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    accordionComponent ?: React.ReactComponentElement<any, AccordionProps<TElement>>
+}
