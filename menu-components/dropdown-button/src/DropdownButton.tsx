@@ -283,7 +283,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         
-        // <ToggleButton> expanded/collapsed => trigger `onExpandedChange` with `actionType`:
+        // <ToggleButton> expanded/collapsed => request to hide the <Dropdown> with `actionType`:
         onExpandedChange?.(dropdownExpandedChangeEvent); // request to change the [expanded] to <Parent>
         
         
