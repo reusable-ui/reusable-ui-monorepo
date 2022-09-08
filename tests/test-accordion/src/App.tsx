@@ -59,8 +59,6 @@ export interface AccordionItemWithExclusivityProps<TElement extends Element = HT
         // components:
         Required<AccordionItemComponentProps<TElement, ExpandedChangeEvent>>
 {
-    // positions:
-    listIndex : number
 }
 export const AccordionItemWithExclusivity = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: AccordionItemWithExclusivityProps<TElement, TExclusiveExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
@@ -153,7 +151,7 @@ export interface ExclusiveAccordionProps<TElement extends Element = HTMLElement>
         AccordionProps<TElement>
 {
 }
-const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionProps<TElement>): JSX.Element|null => {
+export const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // children:
