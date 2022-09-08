@@ -286,6 +286,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                     ...child.props,
                 };
                 const {
+                    // components:
                     component : childComponent, // sanitize the child's [component] prop (if exist), so it wouldn't collide with <GroupItem>'s [component] prop
                 ...restChildProps} = childProps;
                 
@@ -308,6 +309,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                                 
                                 
                                 
+                                // components:
                                 // restore the sanitized child's [component] prop (if exist):
                                 {...(('component' in child.props) ? { component: childComponent } : null)}
                             />
