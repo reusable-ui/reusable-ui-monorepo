@@ -600,10 +600,10 @@ export type { ListVariant }
 
 
 
-export interface AccordionItemComponentProps<TElement extends Element = HTMLElement>
+export interface AccordionItemComponentProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
 {
     // components:
-    accordionItemComponent ?: React.ReactComponentElement<any, AccordionItemProps<TElement>>
+    accordionItemComponent ?: React.ReactComponentElement<any, AccordionItemProps<TElement, TExpandedChangeEvent>>
 }
 
 
