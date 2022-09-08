@@ -597,3 +597,11 @@ export {
 }
 
 export type { ListVariant }
+
+
+
+export interface AccordionItemComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    accordionItemComponent ?: React.ReactComponentElement<any, AccordionItemProps<TElement>>
+}
