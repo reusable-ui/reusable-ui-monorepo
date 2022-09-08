@@ -464,7 +464,7 @@ const ListItemWithExpandedHandler = <TElement extends Element = HTMLElement, TDr
         
         
         
-        // a <ListItem> was clicked => close the <DropdownList>:
+        // <ListItem> clicked => request to hide the <Dropdown> with `actionType`:
         handleExpandedChange({ expanded: false, actionType: listIndex } as TDropdownListExpandedChangeEvent);
         event.preventDefault(); // mark as handled
     });
