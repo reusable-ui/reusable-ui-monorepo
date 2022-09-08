@@ -328,7 +328,8 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // actions:
-        handleExpandedChange?.({ expanded: false } as TExpandedChangeEvent); // handle click as request to close <Alert>
+        // <CloseButton> clicked => request to hide the <Alert>:
+        handleExpandedChange?.({ expanded: false } as TExpandedChangeEvent);
         event.preventDefault(); // handled
     });
     const handleControlClick         = useMergeEvents(
