@@ -8,7 +8,6 @@ import {
     // hooks:
     useState,
     useRef,
-    useRef as _useRef, // avoids eslint check
     useCallback,
     useEffect,
     
@@ -24,19 +23,24 @@ import {
     useContext,
 }                           from 'react'
 
-// cssfn:
-import type {
-    // types:
-    SingleOrArray,
-}                           from '@cssfn/types'                 // cssfn general types
-
 // reusable-ui utilities:
+import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // hooks:
     useIsomorphicLayoutEffect,
     useTriggerRender,
-    useMergeRefs as _useMergeRefs, // avoids eslint check
+    useEvent,
+    useMergeRefs,
 }                           from '@reusable-ui/hooks'           // react helper hooks
+
+// reusable-ui components:
+import type {
+    // react components:
+    GenericProps,
+}                           from '@reusable-ui/generic'         // a generic component
 
 
 
@@ -236,7 +240,7 @@ export interface ClientAreaResizeObserverOptions {
     horzResponsive? : boolean
     vertResponsive? : boolean
 }
-export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<React.RefObject<Element> | null>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
+export const useClientAreaResizeObserver = (resizingElementRefs: Set<Element>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
     // options:
     const {
         horzResponsive = true,
@@ -284,7 +288,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
         
         const observer = new ResizeObserver(handleResize);
         const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
-        [resizingElementRefs].flat().forEach((elmRef) => elmRef && elmRef.current && observer.observe(elmRef.current, sizeOptions));
+        resizingElementRefs.forEach((outerElm) => observer.observe(outerElm, sizeOptions));
         
         
         
@@ -293,12 +297,106 @@ export const useClientAreaResizeObserver = (resizingElementRefs: SingleOrArray<R
             observer.disconnect();
             prevSizes.clear(); // un-reference all Element(s)
         };
-    }, [...[resizingElementRefs].flat(), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
+    }, [...Array.from(resizingElementRefs), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
 
 
 
 // react components:
+
+interface ChildWithRefProps
+    extends
+        // bases:
+        Pick<GenericProps<Element>, 'outerRef'>,
+        Pick<React.RefAttributes<Element>, 'ref'>
+{
+    // refs:
+    childRefs : Set<Element>
+    
+    
+    
+    // components:
+    component : React.ReactElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
+}
+const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
+    // rest props:
+    const {
+        // refs:
+        childRefs,
+        
+        
+        
+        // components:
+        component,
+    ...restComponentProps} = props;
+    
+    
+    
+    // verifies:
+    const isReusableUiChildComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
+    
+    
+    
+    // refs:
+    const childOuterRefCache    = useRef<Element|null>(null);
+    const childOuterRefInternal = useEvent<React.RefCallback<Element>>((outerElm) => {
+        if (outerElm) {
+            childRefs.add(outerElm);
+            childOuterRefCache.current = outerElm;
+        }
+        else {
+            const prevElement = childOuterRefCache.current;
+            if (prevElement) {
+                childRefs.delete(prevElement);
+                childOuterRefCache.current = null;
+            } // if
+        } // if
+    });
+    const mergedChildOuterRef   = useMergeRefs(
+        // preserves the original `outerRef` from `component`:
+        (
+            isReusableUiChildComponent
+            ?
+            (component.props as GenericProps<Element>).outerRef
+            :
+            (component.props as React.RefAttributes<Element>).ref
+        ),
+        
+        
+        
+        // preserves the original `outerRef|ref` from `props`:
+        (
+            isReusableUiChildComponent
+            ?
+            (props as GenericProps<Element>).outerRef
+            :
+            (props as React.RefAttributes<Element>).ref
+        ),
+        
+        
+        
+        childOuterRefInternal,
+    );
+    
+    
+    
+    // jsx:
+    return React.cloneElement(component,
+        // props:
+        {
+            // other props:
+            ...restComponentProps,
+            
+            
+            
+            // refs:
+            [isReusableUiChildComponent ? 'outerRef' : 'ref'] : mergedChildOuterRef,
+        },
+    );
+};
+
+
+
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
 export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
 {
@@ -326,6 +424,11 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     
+    // refs:
+    const [childRefs] = useState<Set<Element>>(() => new Set<Element>());
+    
+    
+    
     // states:
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     const currentFallbackIndex = useRef(0);
@@ -339,47 +442,73 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     const maxFallbackIndex = (fallbacks.length - 1);
     const currentFallback  = (currentFallbackIndex.current <= maxFallbackIndex) ? fallbacks[currentFallbackIndex.current] : fallbacks[maxFallbackIndex];
     
-    type ChildWithRef      = { child: React.ReactNode, ref: React.RefObject<Element>|null }
-    const childrenWithRefs : ChildWithRef[] = (
-        React.Children.toArray(
-            (typeof(childrenFn) !== 'function')
-            ?
-            childrenFn
-            :
-            childrenFn(currentFallback)
-        )
-        .map((child): ChildWithRef => {
-            if (!React.isValidElement(child)) return {
-                child,
-                ref: null,
-            };
-            
-            
-            
-            const refName    = (typeof(child.type) !== 'function') ? 'ref' : 'outerRef'; // assumes all function components are valid reusable-ui_component
-            const originRef  = (child as any)[refName] as React.Ref<Element>|undefined;
-            const childRef   = _useRef<Element>(null);
-            const ref        = _useMergeRefs(
-                originRef, // preserves the original ref|outerRef
-                
-                childRef,  // append a new childRef
-            );
-            const childModif = React.cloneElement(child, {
-                [refName]: ref,
-            });
-            
-            return {
-                child : childModif,
-                ref   : childRef,
-            };
-        })
+    const childrenOrigin   = (
+        (typeof(childrenFn) !== 'function')
+        ?
+        childrenFn
+        :
+        childrenFn(currentFallback)
     );
+    console.log('count: ', React.Children.count(childrenOrigin), childRefs.size); // TODO: remove
+    const childrenWithRefs = React.Children.map<React.ReactNode, React.ReactNode>(childrenOrigin, (child) => {
+        // conditions:
+        if (!React.isValidElement(child)) return child;
+        
+        
+        
+        // rest props:
+        const {
+            // refs:
+            childRefs : childChildRefs, // sanitize the child's [childRefs] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [childRefs] prop
+            
+            
+            
+            // components:
+            component : childComponent, // sanitize the child's [component] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [component] prop
+        ...restChildProps} = child.props;
+        
+        
+        
+        // jsx:
+        return (
+            <ChildWithRef
+                // other props:
+                {...restChildProps} // steals (almost) all child's props, so the <Owner> can recognize the <ChildWithRef> as <Child>
+                
+                
+                
+                // refs:
+                childRefs={childRefs}
+                
+                
+                
+                // components:
+                component={
+                    // clone child element with (almost) blank props:
+                    <child.type
+                        // identifiers:
+                        key={child.key}
+                        
+                        
+                        
+                        // refs:
+                        // restore the sanitized child's [childRefs] prop (if exist):
+                        {...(('childRefs' in child.props) ? { childRefs: childChildRefs } : null)}
+                        
+                        
+                        
+                        // components:
+                        // restore the sanitized child's [component] prop (if exist):
+                        {...(('component' in child.props) ? { component: childComponent } : null)}
+                    />
+                }
+            />
+        );
+    });
     
     
     
     // dom effects:
-    const childRefs = childrenWithRefs.map(({ ref }) => ref);
-    
     //#region reset the fallback index to zero every container's client area resized
     const clientAreaResizeCallback = useCallback((): void => {
         // reset to the first fallback (0th):
@@ -423,11 +552,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         
         
         
-        const hasOverflowed = childRefs.some((childRef): boolean => {
-            const child = childRef?.current;
-            if (!child) return false;
-            return isOverflowed(child);
-        });
+        const hasOverflowed = Array.from(childRefs).some(isOverflowed);
         if (hasOverflowed) {
             // current fallback has a/some overflowed_layout => not satisfied => try the next fallback:
             currentFallbackIndex.current++;
@@ -443,7 +568,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     // jsx:
     return (
         <ResponsiveContext.Provider value={{ currentFallback }}>
-            { childrenWithRefs.map(({ child }) => child) }
+            {childrenWithRefs}
         </ResponsiveContext.Provider>
     );
 };
