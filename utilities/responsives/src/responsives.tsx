@@ -240,7 +240,7 @@ export interface ClientAreaResizeObserverOptions {
     horzResponsive? : boolean
     vertResponsive? : boolean
 }
-export const useClientAreaResizeObserver = (resizingElementRefs: Set<Element>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
+export const useClientAreaResizeObserver = (resizingElementRefs: (Element|null)[], clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
     // options:
     const {
         horzResponsive = true,
@@ -288,7 +288,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: Set<Element>, c
         
         const observer = new ResizeObserver(handleResize);
         const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
-        resizingElementRefs.forEach((outerElm) => observer.observe(outerElm, sizeOptions));
+        resizingElementRefs.forEach((outerElm) => !!outerElm && observer.observe(outerElm, sizeOptions));
         
         
         
@@ -297,7 +297,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: Set<Element>, c
             observer.disconnect();
             prevSizes.clear(); // un-reference all Element(s)
         };
-    }, [...Array.from(resizingElementRefs), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
+    }, [...resizingElementRefs, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
 
 
@@ -311,7 +311,8 @@ interface ChildWithRefProps
         Pick<React.RefAttributes<Element>, 'ref'>
 {
     // refs:
-    childRefs : Set<Element>
+    childId   : React.Key
+    childRefs : Map<React.Key, Element|null>
     
     
     
@@ -322,6 +323,7 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
     // rest props:
     const {
         // refs:
+        childId,
         childRefs,
         
         
@@ -338,19 +340,8 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
     
     
     // refs:
-    const childOuterRefCache    = useRef<Element|null>(null);
     const childOuterRefInternal = useEvent<React.RefCallback<Element>>((outerElm) => {
-        if (outerElm) {
-            childRefs.add(outerElm);
-            childOuterRefCache.current = outerElm;
-        }
-        else {
-            const prevElement = childOuterRefCache.current;
-            if (prevElement) {
-                childRefs.delete(prevElement);
-                childOuterRefCache.current = null;
-            } // if
-        } // if
+        childRefs.set(childId, outerElm);
     });
     const mergedChildOuterRef   = useMergeRefs(
         // preserves the original `outerRef` from `component`:
@@ -425,7 +416,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     // refs:
-    const [childRefs] = useState<Set<Element>>(() => new Set<Element>());
+    const [childRefs] = useState<Map<React.Key, Element|null>>(() => new Map<React.Key, Element|null>());
     
     
     
@@ -449,8 +440,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         :
         childrenFn(currentFallback)
     );
-    console.log('count: ', React.Children.count(childrenOrigin), childRefs.size); // TODO: remove
-    const childrenWithRefs = React.Children.map<React.ReactNode, React.ReactNode>(childrenOrigin, (child) => {
+    const childrenWithRefs = React.Children.map<React.ReactNode, React.ReactNode>(childrenOrigin, (child, childIndex) => {
         // conditions:
         if (!React.isValidElement(child)) return child;
         
@@ -470,6 +460,8 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         
         
         // jsx:
+        const childId = child.key ?? childIndex;
+        childRefs.set(childId, null); // initially, set the outerElm ref as null to maintain the `childRefs`'s size remain constant between renders
         return (
             <ChildWithRef
                 // other props:
@@ -478,6 +470,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                 
                 
                 // refs:
+                childId={childId}
                 childRefs={childRefs}
                 
                 
@@ -525,7 +518,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             triggerRender();
         } // if
     }, [useTransition]);
-    useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
+    useClientAreaResizeObserver(Array.from(childRefs.values()), clientAreaResizeCallback, props);
     //#endregion reset the fallback index to zero every container's client area resized
     
     //#region (re)calculates the existence of overflowed_layout each time the generation updated
@@ -552,7 +545,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         
         
         
-        const hasOverflowed = Array.from(childRefs).some(isOverflowed);
+        const hasOverflowed = Array.from(childRefs.values()).some((outerElm) => !!outerElm && isOverflowed(outerElm));
         if (hasOverflowed) {
             // current fallback has a/some overflowed_layout => not satisfied => try the next fallback:
             currentFallbackIndex.current++;
