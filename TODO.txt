@@ -1,7 +1,3 @@
-[progress  ] fix hack _use\w+
-
-[high prior] colorable => themed => flip regular & alternate
-
 [high prior] on|off|inherit of:
 gradientable (inheritable)  => on|off|inherit
 outlineable  (inheritable)  => on|off|inherit
@@ -17,6 +13,7 @@ usesListItemInheritMildVariant
 
 
 
+[high prior] colorable => themed => flip regular & alternate
 [high prior] <ListItem> can overwrite gradient, outlined, mild
 
 
