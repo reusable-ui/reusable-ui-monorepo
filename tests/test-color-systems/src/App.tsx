@@ -17,6 +17,9 @@ import {
     EditableControl,
 } from '@reusable-ui/editable-control'
 import {
+    EmailInput,
+} from '@reusable-ui/input'
+import {
     List,
     ListItem,
 } from '@reusable-ui/list'
@@ -377,18 +380,21 @@ function App() {
                     <Icon icon='face' />
                     <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <EmailInput />
                 </Alert>
                 
                 <Alert expanded={true} theme='primary' gradient={true} mild={true}>
                     <Icon icon='face' />
                     <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <EmailInput />
                 </Alert>
                 
                 <Alert expanded={true} theme='primary' gradient={true} outlined={true}>
                     <Icon icon='face' />
                     <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <EmailInput />
                 </Alert>
             </div>
         </>
