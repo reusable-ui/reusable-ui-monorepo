@@ -240,7 +240,7 @@ export interface ClientAreaResizeObserverOptions {
     horzResponsive? : boolean
     vertResponsive? : boolean
 }
-export const useClientAreaResizeObserver = (resizingElementRefs: (Element|null)[], clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
+export const useClientAreaResizeObserver = (resizingElementRefs: Map<React.Key, Element|null>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
     // options:
     const {
         horzResponsive = true,
@@ -297,7 +297,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: (Element|null)[
             observer.disconnect();
             prevSizes.clear(); // un-reference all Element(s)
         };
-    }, [...resizingElementRefs, horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
+    }, [...resizingElementRefs.values(), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
 
 
@@ -521,7 +521,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             triggerRender();
         } // if
     }, [useTransition]);
-    useClientAreaResizeObserver(Array.from(childRefs.values()), clientAreaResizeCallback, props);
+    useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
     //#endregion reset the fallback index to zero every container's client area resized
     
     //#region (re)calculates the existence of overflowed_layout each time the generation updated
