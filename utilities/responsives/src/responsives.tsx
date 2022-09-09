@@ -462,7 +462,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         
         // jsx:
         const childId = child.key ?? childIndex;
-        childRefs.set(childId, null); // initially, set the outerElm ref as null to maintain the `childRefs`'s size remain constant between renders
+        if (!childRefs.has(childId)) childRefs.set(childId, null); // initially, set the outerElm ref as null to maintain the `childRefs`'s size remain constant between renders
         return (
             <ChildWithRef
                 // other props:
