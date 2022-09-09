@@ -449,6 +449,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         // rest props:
         const {
             // refs:
+            childId   : childChildId,   // sanitize the child's [childId  ] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [childId  ] prop
             childRefs : childChildRefs, // sanitize the child's [childRefs] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [childRefs] prop
             
             
@@ -485,6 +486,8 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                         
                         
                         // refs:
+                        // restore the sanitized child's [childId  ] prop (if exist):
+                        {...(('childId'   in child.props) ? { childId  : childChildId   } : null)}
                         // restore the sanitized child's [childRefs] prop (if exist):
                         {...(('childRefs' in child.props) ? { childRefs: childChildRefs } : null)}
                         
