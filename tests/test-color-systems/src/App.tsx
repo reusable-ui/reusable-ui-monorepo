@@ -382,6 +382,12 @@ function App() {
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                     <EmailInput />
                 </Alert>
+                <Alert expanded={true} theme='primary' gradient={false} mild={false}>
+                    <Icon icon='face' />
+                    <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <EmailInput />
+                </Alert>
                 
                 <Alert expanded={true} theme='primary' gradient={true} mild={true}>
                     <Icon icon='face' />
