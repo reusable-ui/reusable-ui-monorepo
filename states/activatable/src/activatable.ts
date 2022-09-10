@@ -75,10 +75,12 @@ import {
 import {
     // hooks:
     outlinedOf,
+    OutlineableProps,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
     mildOf,
+    MildableProps,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 
@@ -164,8 +166,8 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
 };
 
 export interface MarkActiveOptions {
-    outlined ?: boolean|null
-    mild     ?: boolean|null
+    outlined ?: OutlineableProps['outlined']
+    mild     ?: MildableProps['mild']
 }
 export const markActive = (options?: MarkActiveOptions): CssRule => {
     // options:
