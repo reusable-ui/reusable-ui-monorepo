@@ -78,10 +78,10 @@ const [excitableVars] = cssVars<ExcitableVars>();
 
 
 
-// ancestor(s) not `.excited` -and- current not `.excited`:
-export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.excited&, &.excited))', styles); // specificityWeight = 1 + (parent's specificityWeight)
-// ancestor(s) is  `.excited` -or-  current is  `.excited`:
+// parent is     `.excited` -or-  current is     `.excited`:
 export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(              ':is(.excited&, &.excited)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is not `.excited` -and- current is not `.excited`:
+export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.excited&, &.excited))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
@@ -94,11 +94,12 @@ export interface ExcitableConfig {
 /**
  * Adds a capability of UI to highlight itself to attract user's attention.
  * @param config  A configuration of `excitableRule`.
- * @returns A `ExcitableStuff` represents a excitable state.
+ * @returns An `ExcitableStuff` represents an excitable state.
  */
 export const usesExcitable = (config?: ExcitableConfig): ExcitableStuff => {
     return {
         excitableRule: () => style({
+            // animation functions:
             ...states([
                 ifExcited({
                     ...vars({
