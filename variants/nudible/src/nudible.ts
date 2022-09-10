@@ -59,9 +59,9 @@ const [nudibleVars] = cssVars<NudibleVars>();
 
 
 // parent is     `.nude` -or-  current is     `.nude`:
-export const ifNude        = (styles: CssStyleCollection): CssRule => rule(              ':is(.nude&, &.nude)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifNude    = (styles: CssStyleCollection): CssRule => rule(              ':is(.nude&, &.nude)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
 // parent is not `.nude` -and- current is not `.nude`:
-export const ifNotNude     = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.nude&, &.nude))', styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.nude&, &.nude))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
