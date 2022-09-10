@@ -41,6 +41,11 @@ import {
 
 
 
+// defaults:
+const _defaultMild : Required<MildableProps>['mild'] = false
+
+
+
 // hooks:
 
 // variants:
@@ -246,9 +251,9 @@ export const mildOf = (toggle: boolean|'inherit'): CssRule => style({
 
 export interface MildableProps {
     // variants:
-    mild ?: boolean
+    mild ?: boolean|'inherit'
 }
-export const useMildable = ({mild}: MildableProps) => ({
-    class: mild ? 'mild' : null,
+export const useMildable = ({mild = _defaultMild}: MildableProps) => ({
+    class: (mild === 'inherit') ? null : (mild ? 'mild' : 'not-mild'),
 });
 //#endregion mildable
