@@ -153,7 +153,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
             // color functions:
             ...vars({
                 // conditional color functions:
-                
+
              // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 /*
                     copied from [mildable],
@@ -223,11 +223,11 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 // supports for iconColor:
                 [outlineableVars.backgCondTg] : [[
                     outlineableVars.outlinedSw,        // the outlined switching function
-                    themableVars.backgMildCond,        // the background color definition - at mild variant
+                    themableVars.backgMildCond,        // the conditional background color definition - at mild variant
                 ]],
                 [outlineableVars.altBackgCondTg] : [[
                     outlineableVars.outlinedSw,        // the outlined switching function
-                    themableVars.altBackgOutlinedCond, // the alternate background color definition - at mild variant
+                    themableVars.altBackgOutlinedCond, // the conditional alternate background color definition - at mild variant
                 ]],
             }),
             
