@@ -112,9 +112,9 @@ const [mildableVars] = cssVars<MildableVars>();
 
 
 // parent is     `.mild` -or- current is     `.mild`:
-export const ifMild        = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifMild        = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
 // parent is `.not-mild` -or- current is `.not-mild`:
-export const ifNotMild     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-mild&, &.not-mild)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifNotMild     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-mild&, &.not-mild)'                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
 export const ifInheritMild = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.mild&, &.mild, .not-mild&, &.not-mild))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
