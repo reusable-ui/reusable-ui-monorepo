@@ -139,7 +139,7 @@ export interface OutlineableConfig {
  * @param factory A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|'inherit') => CssStyleCollection) = outlinedOf): OutlineableStuff => {
+export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = outlinedOf): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -251,10 +251,10 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
 
 /**
  * Creates an outlining rules for the given `toggle` state.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `outlinedOf`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const outlinedOf = (toggle: boolean|'inherit'): CssRule => style({
+export const outlinedOf = (toggle: boolean|'inherit'|null): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.
@@ -262,8 +262,9 @@ export const outlinedOf = (toggle: boolean|'inherit'): CssRule => style({
                 true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
                 false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
                 inherit => inherit           => follows      the <ancestor> decision.
+                null    => null              => remove the prev declaration
         */
-        [outlineableVars.outlinedSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+        [outlineableVars.outlinedSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
     }),
 });
 
