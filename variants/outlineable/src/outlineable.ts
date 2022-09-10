@@ -153,6 +153,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
             // color functions:
             ...vars({
                 // conditional color functions:
+                
              // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 /*
                     copied from [mildable],
