@@ -1,9 +1,7 @@
 [high prior] on|off|inherit of:
 [done] gradientable (inheritable)  => on|off|inherit
 [done] outlineable  (inheritable)  => on|off|inherit
-
 [done] mildable  (not inheritable) => on|off|inherit
-[todo] fix mild on <EditableTextControl> when hovered
 
 [done] nudible   (not inheritable) => no change
 excitable (not inheritable) => no change
