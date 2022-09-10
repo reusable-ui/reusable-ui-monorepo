@@ -33,6 +33,7 @@
   "dependencies": {
     "@cssfn/types": "^2.0.1",
     "@cssfn/css-types": "^2.0.4",
+    "@cssfn/css-vars": "^2.0.10",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0"
   },
