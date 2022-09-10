@@ -116,10 +116,10 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
 export const gradientOf = (toggle: boolean|'inherit'): CssRule => style({
     ...vars({
         /*
-            *switch on/off/inherit* the `backgGradTg` prop.
+            *switch on/off/inherit* the `**Tg` prop.
             toggle:
-                true    => empty string      => do not alter the `backgGradTg`'s value => activates   `backgGradTg` variable.
-                false   => initial (invalid) => destroy      the `backgGradTg`'s value => deactivates `backgGradTg` variable.
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
                 inherit => inherit           => follows      the <ancestor> decision.
         */
         [gradientableVars.gradientSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
