@@ -48,11 +48,18 @@ import {
 //#region mildable
 export interface MildableVars {
     /**
+     * the mild switching function.
+     */
+    mildSw         : any
+    
+    
+    
+    /**
      * functional background color - at mild variant.
      */
     backgFn        : any
     /**
-     * toggles_on background color - at mild variant.
+     * conditionally toggled background color - at mild variant.
      */
     backgTg        : any
     /**
@@ -60,7 +67,7 @@ export interface MildableVars {
      */
     altBackgFn     : any
     /**
-     * toggles_on alternate background color - at mild variant.
+     * conditionally toggled alternate background color - at mild variant.
      */
     altBackgTg     : any
     
@@ -71,7 +78,7 @@ export interface MildableVars {
      */
     foregFn        : any
     /**
-     * toggles_on foreground color - at mild variant.
+     * conditionally toggled foreground color - at mild variant.
      */
     foregTg        : any
     /**
@@ -79,7 +86,7 @@ export interface MildableVars {
      */
     altForegFn     : any
     /**
-     * toggles_on alternate foreground color - at mild variant.
+     * conditionally toggled alternate foreground color - at mild variant.
      */
     altForegTg     : any
     
@@ -87,11 +94,11 @@ export interface MildableVars {
     
     // supports for iconColor:
     /**
-     * toggles_on conditionally background color - at mild variant.
+     * conditionally toggled conditional background color - at mild variant.
      */
     backgCondTg    : any
     /**
-     * toggles_on conditionally alternate background color - at mild variant.
+     * conditionally toggled conditional alternate background color - at mild variant.
      */
     altBackgCondTg : any
 }
@@ -99,11 +106,11 @@ const [mildableVars] = cssVars<MildableVars>();
 
 
 
-// by design: ancestor(s)'s `.mild` does not affect current `.mild`
-// ancestor(s) not `.mild` -and- current not `.mild`:
-export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.mild&, &.mild))', styles); // specificityWeight = 1 + (parent's specificityWeight)
-// ancestor(s) is  `.mild` -or-  current is  `.mild`:
-export const ifMild    = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is     `.mild` -or- current is     `.mild`:
+export const ifMild        = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is `.not-mild` -or- current is `.not-mild`:
+export const ifNotMild     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-mild&, &.not-mild)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifInheritMild = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.mild&, &.mild, .not-mild&, &.not-mild))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
@@ -120,7 +127,7 @@ export interface MildableConfig {
  * @param factory A callback to create a mildification rules for each toggle state.
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
-export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|null|'inherit') => CssStyleCollection) = mildOf): MildableStuff => {
+export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|'inherit') => CssStyleCollection) = mildOf): MildableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -133,7 +140,13 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                 // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
                 themableRule,
             ]),
+            
+            
+            
+            // color functions:
             ...vars({
+                // conditional color functions:
+                
                 [mildableVars.backgFn   ] : switchOf(
                     themableVars.backgMildCond,    // first  priority
                     themableVars.backgMild,        // second priority
@@ -164,9 +177,47 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
                     config?.altForeg,              // default => uses config's alternate foreground
                 ),
             }),
+            
+            
+            
+            // toggling functions:
+            ...vars({
+                [mildableVars.backgTg] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    mildableVars.backgFn, // the mild background color definition
+                ]],
+                [mildableVars.foregTg] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    mildableVars.foregFn, // the mild foreground color definition
+                ]],
+                
+                [mildableVars.altBackgTg] : [[
+                    mildableVars.mildSw,     // the mild switching function
+                    mildableVars.altBackgFn, // the mild alternate background color definition
+                ]],
+                [mildableVars.altForegTg] : [[
+                    mildableVars.mildSw,     // the mild switching function
+                    mildableVars.altForegFn, // the mild alternate foreground color definition
+                ]],
+                
+                // supports for iconColor:
+                [mildableVars.backgCondTg] : [[
+                    mildableVars.mildSw,           // the mild switching function
+                    themableVars.backgMildCond,    // the conditional background color definition - at mild variant
+                ]],
+                [mildableVars.altBackgCondTg] : [[
+                    mildableVars.mildSw,           // the mild switching function
+                    themableVars.altBackgMildCond, // the conditional alternate background color definition - at mild variant
+                ]],
+            }),
+            
+            
+            
+            // toggling conditions:
             ...variants([
-                ifNotMild(factory(false)),
                 ifMild(factory(true)),
+                ifNotMild(factory(false)),
+                ifInheritMild(factory('inherit')),
             ]),
         }),
         mildableVars,
@@ -175,38 +226,21 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
 
 /**
  * Creates a mildification rules for the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification -or- `'inherit'` to copy ancestor's mild property.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const mildOf = (toggle: boolean|null|'inherit'): CssRule => {
-    // dependencies:
-    const {themableVars} = usesThemable();
-    
-    
-    
-    const falsyValue = (() => {
-        switch(toggle) {
-            case true : return undefined;
-            case false: return 'initial'; // protect from inheritance
-            case null : return null;      // keep the original (imported) behavior, delete the existing prop so it doesn't overwrite the original prop
-            default   : return 'inherit'; // force to inherit
-        } // switch
-    })();
-    return style({
-        ...vars({
-            // *toggle on/off* the mildification prop:
-            [mildableVars.backgTg       ] : (toggle === true) ? mildableVars.backgFn          : falsyValue,
-            [mildableVars.foregTg       ] : (toggle === true) ? mildableVars.foregFn          : falsyValue,
-            
-            [mildableVars.altBackgTg    ] : (toggle === true) ? mildableVars.altBackgFn       : falsyValue,
-            [mildableVars.altForegTg    ] : (toggle === true) ? mildableVars.altForegFn       : falsyValue,
-            
-            // supports for iconColor:
-            [mildableVars.backgCondTg   ] : (toggle === true) ? themableVars.backgMildCond    : falsyValue,
-            [mildableVars.altBackgCondTg] : (toggle === true) ? themableVars.altBackgMildCond : falsyValue,
-        }),
-    });
-};
+export const mildOf = (toggle: boolean|'inherit'): CssRule => style({
+    ...vars({
+        /*
+            *switch on/off/inherit* the `**Tg` prop.
+            toggle:
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                inherit => inherit           => follows      the <ancestor> decision.
+        */
+        [mildableVars.mildSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+    }),
+});
 
 
 
