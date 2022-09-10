@@ -5,7 +5,7 @@
 [done] mildable  (not inheritable) => on|off|inherit
 [todo] fix mild on <EditableTextControl> when hovered
 
-nudible   (not inheritable) => no change
+[done] nudible   (not inheritable) => no change
 excitable (not inheritable) => no change
 
 then test:
