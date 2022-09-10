@@ -33,6 +33,11 @@ import {
 
 
 
+// defaults:
+const _defaultGradient : Required<GradientableProps>['gradient'] = 'inherit'
+
+
+
 // hooks:
 
 // variants:
@@ -132,7 +137,7 @@ export interface GradientableProps {
     // variants:
     gradient ?: boolean|'inherit'
 }
-export const useGradientable = ({gradient = 'inherit'}: GradientableProps) => ({
+export const useGradientable = ({gradient = _defaultGradient}: GradientableProps) => ({
     class: (gradient === 'inherit') ? null : (gradient ? 'gradient' : 'not-gradient'),
 });
 //#endregion gradientable
