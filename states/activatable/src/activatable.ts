@@ -166,8 +166,8 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
 };
 
 export interface MarkActiveOptions {
-    outlined ?: OutlineableProps['outlined']
-    mild     ?: MildableProps['mild']
+    outlined ?: null|OutlineableProps['outlined']
+    mild     ?: null|MildableProps['mild']
 }
 export const markActive = (options?: MarkActiveOptions): CssRule => {
     // options:
