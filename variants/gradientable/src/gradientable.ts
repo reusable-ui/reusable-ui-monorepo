@@ -44,7 +44,11 @@ export interface GradientableVars {
      */
     backgGrad   : any
     /**
-     * toggles_on background gradient - at gradient variant.
+     * a switching mechanism for the `backgGradTg`.
+     */
+    backgGradSw : any
+    /**
+     * conditionally toggled background gradient.
      */
     backgGradTg : any
 }
@@ -52,10 +56,11 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 
 
-// ancestor(s) not `.gradient` -and- parent not `.gradient` -and- current not `.gradient`:
-export const ifNotGradient = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.gradient &, .gradient&, &.gradient))', styles); // specificityWeight = 1 + (parent's specificityWeight)
-// ancestor(s) is  `.gradient` -or-  parent is  `.gradient` -or-  current is  `.gradient`:
-export const ifGradient    = (styles: CssStyleCollection): CssRule => rule(              ':is(.gradient &, .gradient&, &.gradient)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is     `.gradient` -or- current is     `.gradient`:
+export const ifGradient        = (styles: CssStyleCollection): CssRule => rule(              ':is(.gradient&, &.gradient)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is `.not-gradient` -or- current is `.not-gradient`:
+export const ifNotGradient     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-gradient&, &.not-gradient)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifInheritGradient = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.gradient&, &.gradient, .not-gradient&, &.not-gradient))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
@@ -69,15 +74,31 @@ export interface GradientableConfig {
  * @param factory A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = gradientOf): GradientableStuff => {
+export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|'inherit') => CssStyleCollection) = gradientOf): GradientableStuff => {
     return {
         gradientableRule: () => style({
+            // configs:
             ...vars({
                 [gradientableVars.backgGrad] : config?.backgGrad,
             }),
+            
+            
+            
+            // toggling functions:
+            ...vars({
+                [gradientableVars.backgGradTg] : [[
+                    gradientableVars.backgGradSw, // the gradient switching function
+                    gradientableVars.backgGrad,   // the gradient definition
+                ]],
+            }),
+            
+            
+            
+            // toggling conditions:
             ...variants([
-                ifNotGradient(factory(false)),
                 ifGradient(factory(true)),
+                ifNotGradient(factory(false)),
+                ifInheritGradient(factory('inherit')),
             ]),
         }),
         gradientableVars,
@@ -86,13 +107,19 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
 
 /**
  * Creates a gradient rules for the given `toggle` state.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `null` for undefining the gradient.
+ * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const gradientOf = (toggle: boolean|null): CssRule => style({
+export const gradientOf = (toggle: boolean|'inherit'): CssRule => style({
     ...vars({
-        // *toggle on/off* the background gradient prop:
-        [gradientableVars.backgGradTg] : toggle ? gradientableVars.backgGrad : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
+        /*
+            *switch on/off/inherit* the `backgGradTg` prop.
+            toggle:
+                true    => empty string      => do not alter the `backgGradTg`'s value => activates   `backgGradTg` variable.
+                false   => initial (invalid) => destroy      the `backgGradTg`'s value => deactivates `backgGradTg` variable.
+                inherit => inherit           => follows      the <ancestor> decision.
+        */
+        [gradientableVars.backgGradSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
     }),
 });
 
@@ -100,9 +127,9 @@ export const gradientOf = (toggle: boolean|null): CssRule => style({
 
 export interface GradientableProps {
     // variants:
-    gradient ?: boolean
+    gradient ?: boolean|'inherit'
 }
-export const useGradientable = ({gradient}: GradientableProps) => ({
-    class: gradient ? 'gradient' : null,
+export const useGradientable = ({gradient = 'inherit'}: GradientableProps) => ({
+    class: (gradient === 'inherit') ? null : (gradient ? 'gradient' : 'not-gradient'),
 });
 //#endregion gradientable
