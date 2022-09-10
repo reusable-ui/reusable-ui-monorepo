@@ -1,10 +1,30 @@
+[high prior] verify as excitable:
+
+disableable
+activatable
+
+focusable
+interactable
+
+invalidable
+validation-icon
+
+clickable
+
+collapsible
+
+checkable
+hamburgerable
+
+
+
 [high prior] on|off|inherit of:
 [done] gradientable (inheritable)  => on|off|inherit
 [done] outlineable  (inheritable)  => on|off|inherit
 [done] mildable  (not inheritable) => on|off|inherit
 
 [done] nudible   (not inheritable) => no change
-excitable (not inheritable) => no change
+[done] excitable (not inheritable) => no change
 
 then test:
 usesProgressBarInheritMildVariant
