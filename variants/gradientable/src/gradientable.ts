@@ -40,13 +40,16 @@ import {
 //#region gradientable
 export interface GradientableVars {
     /**
+     * the gradient switching function.
+     */
+    gradientSw  : any
+    
+    
+    
+    /**
      * defines background gradient.
      */
     backgGrad   : any
-    /**
-     * a switching mechanism for the `backgGradTg`.
-     */
-    backgGradSw : any
     /**
      * conditionally toggled background gradient.
      */
@@ -87,8 +90,8 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
             // toggling functions:
             ...vars({
                 [gradientableVars.backgGradTg] : [[
-                    gradientableVars.backgGradSw, // the gradient switching function
-                    gradientableVars.backgGrad,   // the gradient definition
+                    gradientableVars.gradientSw, // the gradient switching function
+                    gradientableVars.backgGrad,  // the gradient definition
                 ]],
             }),
             
@@ -119,7 +122,7 @@ export const gradientOf = (toggle: boolean|'inherit'): CssRule => style({
                 false   => initial (invalid) => destroy      the `backgGradTg`'s value => deactivates `backgGradTg` variable.
                 inherit => inherit           => follows      the <ancestor> decision.
         */
-        [gradientableVars.backgGradSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+        [gradientableVars.gradientSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
     }),
 });
 
