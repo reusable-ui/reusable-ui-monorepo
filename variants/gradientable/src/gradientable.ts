@@ -82,7 +82,7 @@ export interface GradientableConfig {
  * @param factory A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|'inherit') => CssStyleCollection) = gradientOf): GradientableStuff => {
+export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = gradientOf): GradientableStuff => {
     return {
         gradientableRule: () => style({
             // configs:
@@ -115,10 +115,10 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
 
 /**
  * Creates a gradient rules for the given `toggle` state.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor.
+ * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `gradientOf`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const gradientOf = (toggle: boolean|'inherit'): CssRule => style({
+export const gradientOf = (toggle: boolean|'inherit'|null): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.
@@ -126,8 +126,9 @@ export const gradientOf = (toggle: boolean|'inherit'): CssRule => style({
                 true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
                 false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
                 inherit => inherit           => follows      the <ancestor> decision.
+                null    => null              => remove the prev declaration
         */
-        [gradientableVars.gradientSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+        [gradientableVars.gradientSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
     }),
 });
 
