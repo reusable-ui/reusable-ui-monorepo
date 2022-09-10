@@ -72,7 +72,7 @@ export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssV
  * @param factory A callback to create a nudeification rules for each toggle state.
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
-export const usesNudible = (factory : ((toggle: boolean|'inherit') => CssStyleCollection) = nudeOf): NudibleStuff => {
+export const usesNudible = (factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = nudeOf): NudibleStuff => {
     // dependencies:
     
     // features:
@@ -160,10 +160,10 @@ export const usesNudible = (factory : ((toggle: boolean|'inherit') => CssStyleCo
 
 /**
  * Creates an nudeification rules for the given `toggle` state.
- * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `'inherit'` to inherit the nudeification from its ancestor.
+ * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `'inherit'` to inherit the nudeification from its ancestor -or- `null` to remove previously declared `nudeOf`.
  * @returns A `CssRule` represents an nudeification rules for the given `toggle` state.
  */
-export const nudeOf = (toggle: boolean|'inherit'): CssRule => style({
+export const nudeOf = (toggle: boolean|'inherit'|null): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.
@@ -171,8 +171,9 @@ export const nudeOf = (toggle: boolean|'inherit'): CssRule => style({
                 true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
                 false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
                 inherit => inherit           => follows      the <ancestor> decision.
+                null    => null              => remove the prev declaration
         */
-        [nudibleVars.nudeSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+        [nudibleVars.nudeSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
     }),
 });
 
