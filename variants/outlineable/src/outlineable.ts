@@ -48,7 +48,14 @@ import {
 //#region outlineable
 export interface OutlineableVars {
     /**
-     * toggles_on background color layer - at outlined variant.
+     * the outlined switching function.
+     */
+    outlinedSw     : any
+    
+    
+    
+    /**
+     * conditionally toggled background color layer - at outlined variant.
      */
     noBackgTg      : any
     
@@ -59,7 +66,7 @@ export interface OutlineableVars {
      */
     backgFn        : any
     /**
-     * toggles_on background color - at outlined variant.
+     * conditionally toggled background color - at outlined variant.
      */
     backgTg        : any
     /**
@@ -67,7 +74,7 @@ export interface OutlineableVars {
      */
     altBackgFn     : any
     /**
-     * toggles_on alternate background color - at outlined variant.
+     * conditionally toggled alternate background color - at outlined variant.
      */
     altBackgTg     : any
     
@@ -78,7 +85,7 @@ export interface OutlineableVars {
      */
     foregFn        : any
     /**
-     * toggles_on foreground color - at outlined variant.
+     * conditionally toggled foreground color - at outlined variant.
      */
     foregTg        : any
     /**
@@ -86,7 +93,7 @@ export interface OutlineableVars {
      */
     altForegFn     : any
     /**
-     * toggles_on alternate foreground color - at outlined variant.
+     * conditionally toggled alternate foreground color - at outlined variant.
      */
     altForegTg     : any
     
@@ -94,11 +101,11 @@ export interface OutlineableVars {
     
     // supports for iconColor:
     /**
-     * toggles_on conditionally background color - at outlined variant.
+     * conditionally toggled conditional background color - at outlined variant.
      */
     backgCondTg    : any
     /**
-     * toggles_on conditionally alternate background color - at outlined variant.
+     * conditionally toggled conditional alternate background color - at outlined variant.
      */
     altBackgCondTg : any
 }
@@ -106,10 +113,11 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 
 
-// ancestor(s) not `.outlined` -and- parent not `.outlined` -and- current not `.outlined`:
-export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.outlined &, .outlined&, &.outlined))', styles); // specificityWeight = 1 + (parent's specificityWeight)
-// ancestor(s) is  `.outlined` -or-  parent is  `.outlined` -or-  current is  `.outlined`:
-export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(              ':is(.outlined &, .outlined&, &.outlined)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is     `.outlined` -or- current is     `.outlined`:
+export const ifOutlined        = (styles: CssStyleCollection): CssRule => rule(              ':is(.outlined&, &.outlined)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
+// parent is `.not-outlined` -or- current is `.not-outlined`:
+export const ifNotOutlined     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-outlined&, &.not-outlined)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
+export const ifInheritOutlined = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.outlined&, &.outlined, .not-outlined&, &.not-outlined))', styles); // specificityWeight = 1 + (parent's specificityWeight)
 
 
 
@@ -126,7 +134,7 @@ export interface OutlineableConfig {
  * @param factory A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|null) => CssStyleCollection) = outlinedOf): OutlineableStuff => {
+export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|'inherit') => CssStyleCollection) = outlinedOf): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -139,7 +147,12 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                 // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
                 themableRule,
             ]),
+            
+            
+            
+            // color functions:
             ...vars({
+                // conditional color functions:
              // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 /*
                     copied from [mildable],
@@ -178,9 +191,52 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
                     config?.altForeg,                  // default => uses config's alternate foreground
                 ),
             }),
+            
+            
+            
+            // toggling functions:
+            ...vars({
+                [outlineableVars.noBackgTg] : [[
+                    outlineableVars.outlinedSw, // the outlined switching function
+                    'transparent',              // the no background color definition
+                ]],
+                
+                [outlineableVars.backgTg] : [[
+                    outlineableVars.outlinedSw, // the outlined switching function
+                    outlineableVars.backgFn,    // the outlined background color definition
+                ]],
+                [outlineableVars.foregTg] : [[
+                    outlineableVars.outlinedSw, // the outlined switching function
+                    outlineableVars.foregFn,    // the outlined foreground color definition
+                ]],
+                
+                [outlineableVars.altBackgTg] : [[
+                    outlineableVars.outlinedSw, // the outlined switching function
+                    outlineableVars.altBackgFn, // the outlined alternate background color definition
+                ]],
+                [outlineableVars.altForegTg] : [[
+                    outlineableVars.outlinedSw, // the outlined switching function
+                    outlineableVars.altForegFn, // the outlined alternate foreground color definition
+                ]],
+                
+                // supports for iconColor:
+                [outlineableVars.backgCondTg] : [[
+                    outlineableVars.outlinedSw,        // the outlined switching function
+                    themableVars.backgMildCond,        // the background color definition - at mild variant
+                ]],
+                [outlineableVars.altBackgCondTg] : [[
+                    outlineableVars.outlinedSw,        // the outlined switching function
+                    themableVars.altBackgOutlinedCond, // the alternate background color definition - at mild variant
+                ]],
+            }),
+            
+            
+            
+            // toggling conditions:
             ...variants([
-                ifNotOutlined(factory(false)),
                 ifOutlined(factory(true)),
+                ifNotOutlined(factory(false)),
+                ifInheritOutlined(factory('inherit')),
             ]),
         }),
         outlineableVars,
@@ -189,32 +245,21 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
 
 /**
  * Creates an outlining rules for the given `toggle` state.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `null` for undefining the outlining.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const outlinedOf = (toggle: boolean|null): CssRule => {
-    // dependencies:
-    const {themableVars} = usesThemable();
-    
-    
-    
-    return style({
-        ...vars({
-            // *toggle on/off* the outlining prop:
-            [outlineableVars.noBackgTg     ] : toggle ? 'transparent'                     : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            
-            [outlineableVars.backgTg       ] : toggle ? outlineableVars.backgFn           : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [outlineableVars.foregTg       ] : toggle ? outlineableVars.foregFn           : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            
-            [outlineableVars.altBackgTg    ] : toggle ? outlineableVars.altBackgFn        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [outlineableVars.altForegTg    ] : toggle ? outlineableVars.altForegFn        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            
-            // supports for iconColor:
-            [outlineableVars.backgCondTg   ] : toggle ? themableVars.backgMildCond        : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-            [outlineableVars.altBackgCondTg] : toggle ? themableVars.altBackgOutlinedCond : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        }),
-    });
-};
+export const outlinedOf = (toggle: boolean|'inherit'): CssRule => style({
+    ...vars({
+        /*
+            *switch on/off/inherit* the `**Tg` prop.
+            toggle:
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                inherit => inherit           => follows      the <ancestor> decision.
+        */
+        [outlineableVars.outlinedSw] : (toggle === 'inherit') ? 'inherit' : (toggle ? '' : 'initial'),
+    }),
+});
 
 
 
