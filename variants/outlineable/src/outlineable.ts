@@ -41,6 +41,11 @@ import {
 
 
 
+// defaults:
+const _defaultOutlined : Required<OutlineableProps>['outlined'] = 'inherit'
+
+
+
 // hooks:
 
 // variants:
@@ -266,9 +271,9 @@ export const outlinedOf = (toggle: boolean|'inherit'): CssRule => style({
 
 export interface OutlineableProps {
     // variants:
-    outlined ?: boolean
+    outlined ?: boolean|'inherit'
 }
-export const useOutlineable = ({outlined}: OutlineableProps) => ({
-    class: outlined ? 'outlined' : null,
+export const useOutlineable = ({outlined = _defaultOutlined}: OutlineableProps) => ({
+    class: (outlined === 'inherit') ? null : (outlined ? 'outlined' : 'not-outlined'),
 });
 //#endregion outlineable
