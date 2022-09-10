@@ -1,6 +1,6 @@
 [high prior] on|off|inherit of:
-gradientable (inheritable)  => on|off|inherit
-outlineable  (inheritable)  => on|off|inherit
+[done] gradientable (inheritable)  => on|off|inherit
+[done] outlineable  (inheritable)  => on|off|inherit
 
 mildable  (not inheritable) => on|off|inherit
 
