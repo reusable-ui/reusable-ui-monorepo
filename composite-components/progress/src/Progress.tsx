@@ -125,7 +125,7 @@ import {
 import {
     // hooks:
     ifMild,
-    mildOf,
+    setMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
@@ -399,7 +399,7 @@ export const usesProgressBarInheritMildVariant = () => {
         ...variants([
             rule('.mild>&', { // .mild>.progress => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
                 ...imports([
-                    mildOf(true),
+                    setMild(true),
                 ]),
             }),
         ]),
