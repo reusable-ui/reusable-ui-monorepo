@@ -91,6 +91,8 @@ import {
 
 //#region activatable
 export interface ActivatableVars {
+    /* supports for `usesPressAsActiveState()` */
+    
     filterActive : any
     
     animActive   : any
@@ -151,6 +153,8 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
         activatableRule: () => style({
             // configs:
             ...vars({
+                /* supports for `usesPressAsActiveState()` */
+                
                 [activatableVars.filterActive] : config?.filterActive,
                 
                 [activatableVars.animActive  ] : config?.animActive,
