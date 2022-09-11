@@ -74,12 +74,12 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    outlinedOf,
+    setOutlined,
     OutlineableProps,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
-    mildOf,
+    setMild,
     MildableProps,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
@@ -177,8 +177,8 @@ export const markActive = (options?: MarkActiveOptions): CssRule => {
     
     return style({
         ...imports([
-            outlinedOf(outlined), // kill outlined variant
-            mildOf(mild),         // kill mild     variant
+            setOutlined(outlined), // kill outlined variant
+            setMild(mild),         // kill mild     variant
         ]),
     });
 };
