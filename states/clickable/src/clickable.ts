@@ -86,6 +86,8 @@ const _defaultClickableOptions : Required<ClickableOptions> = {
 
 //#region clickable
 export interface ClickableVars {
+    /* supports for `usesPressAsActiveState()` */
+    
     filterPress : any
     
     animPress   : any
@@ -149,6 +151,8 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
         clickableRule: () => style({
             // configs:
             ...vars({
+                /* supports for `usesPressAsActiveState()` */
+                
                 [clickableVars.filterPress] : config?.filterPress,
                 
                 [clickableVars.animPress  ] : config?.animPress,
