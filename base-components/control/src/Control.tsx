@@ -208,12 +208,12 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
         from : frameBlurred,
         to   : frameFocused,
     });
-    keyframesFocus.value = 'focus'; // the @keyframes name should contain 'focus' in order to be recognized by `useFocusBlurState`
+    keyframesFocus.value = 'focus'; // the @keyframes name should contain 'focus' in order to be recognized by `useFocusable`
     const [keyframesBlurRule , keyframesBlur ] = keyframes({
         from : frameFocused,
         to   : frameBlurred,
     });
-    keyframesBlur.value  = 'blur';  // the @keyframes name should contain 'blur'  in order to be recognized by `useFocusBlurState`
+    keyframesBlur.value  = 'blur';  // the @keyframes name should contain 'blur'  in order to be recognized by `useFocusable`
     
     
     
@@ -232,12 +232,12 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
         from : frameLeft,
         to   : frameArrived,
     });
-    keyframesArrive.value = 'arrive'; // the @keyframes name should contain 'arrive' in order to be recognized by `useArriveLeaveState`
+    keyframesArrive.value = 'arrive'; // the @keyframes name should contain 'arrive' in order to be recognized by `useInteractable`
     const [keyframesLeaveRule , keyframesLeave ] = keyframes({
         from : frameArrived,
         to   : frameLeft,
     });
-    keyframesLeave.value  = 'leave';  // the @keyframes name should contain 'leave'  in order to be recognized by `useArriveLeaveState`
+    keyframesLeave.value  = 'leave';  // the @keyframes name should contain 'leave'  in order to be recognized by `useInteractable`
     //#endregion keyframes
     
     
