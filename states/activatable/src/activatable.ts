@@ -91,8 +91,16 @@ import {
 
 //#region activatable
 export interface ActivatableVars {
-    filter : any
-    anim   : any
+    filterActive : any
+    
+    animActive   : any
+    animPassive  : any
+    
+    
+    
+    filter       : any
+    
+    anim         : any
 }
 const [activatableVars] = cssVars<ActivatableVars>();
 
@@ -141,22 +149,33 @@ export interface ActivatableConfig {
 export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff => {
     return {
         activatableRule: () => style({
+            // configs:
+            ...vars({
+                [activatableVars.filterActive] : config?.filterActive,
+                
+                [activatableVars.animActive  ] : config?.animActive,
+                [activatableVars.animPassive ] : config?.animPassive,
+            }),
+            
+            
+            
+            // animation functions:
             ...states([
                 ifActived({
                     ...vars({
-                        [activatableVars.filter] : config?.filterActive,
+                        [activatableVars.filter] : activatableVars.filterActive,
                     }),
                 }),
                 ifActivating({
                     ...vars({
-                        [activatableVars.filter] : config?.filterActive,
-                        [activatableVars.anim  ] : config?.animActive,
+                        [activatableVars.filter] : activatableVars.filterActive,
+                        [activatableVars.anim  ] : activatableVars.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...vars({
-                        [activatableVars.filter] : config?.filterActive,
-                        [activatableVars.anim  ] : config?.animPassive,
+                        [activatableVars.filter] : activatableVars.filterActive,
+                        [activatableVars.anim  ] : activatableVars.animPassive
                     }),
                 }),
             ]),
