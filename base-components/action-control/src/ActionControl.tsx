@@ -199,12 +199,12 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
         from : frameReleased,
         to   : framePressed,
     });
-    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useEnableDisableState`
+    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     const [keyframesReleaseRule, keyframesRelease] = keyframes({
         from : framePressed,
         to   : frameReleased,
     });
-    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useEnableDisableState`
+    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useClickable`
     //#endregion keyframes
     
     
