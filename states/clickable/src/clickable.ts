@@ -86,8 +86,16 @@ const _defaultClickableOptions : Required<ClickableOptions> = {
 
 //#region clickable
 export interface ClickableVars {
-    filter : any
-    anim   : any
+    filterPress : any
+    
+    animPress   : any
+    animRelease : any
+    
+    
+    
+    filter      : any
+    
+    anim        : any
 }
 const [clickableVars] = cssVars<ClickableVars>();
 
@@ -139,22 +147,33 @@ export interface ClickableConfig {
 export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
     return {
         clickableRule: () => style({
+            // configs:
+            ...vars({
+                [clickableVars.filterPress] : config?.filterPress,
+                
+                [clickableVars.animPress  ] : config?.animPress,
+                [clickableVars.animRelease] : config?.animRelease,
+            }),
+            
+            
+            
+            // animation functions:
             ...states([
                 ifPressed({
                     ...vars({
-                        [clickableVars.filter] : config?.filterPress,
+                        [clickableVars.filter] : clickableVars.filterPress,
                     }),
                 }),
                 ifPressing({
                     ...vars({
-                        [clickableVars.filter] : config?.filterPress,
-                        [clickableVars.anim  ] : config?.animPress,
+                        [clickableVars.filter] : clickableVars.filterPress,
+                        [clickableVars.anim  ] : clickableVars.animPress,
                     }),
                 }),
                 ifReleasing({
                     ...vars({
-                        [clickableVars.filter] : config?.filterPress,
-                        [clickableVars.anim  ] : config?.animRelease,
+                        [clickableVars.filter] : clickableVars.filterPress,
+                        [clickableVars.anim  ] : clickableVars.animRelease,
                     }),
                 }),
             ]),
