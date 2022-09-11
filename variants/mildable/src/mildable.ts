@@ -242,7 +242,7 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
 
 /**
  * Defines a mildification preference rules for the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `mildOf`.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
 export const defineMild = (toggle: boolean|'inherit'|null): CssRule => style({
@@ -260,7 +260,7 @@ export const defineMild = (toggle: boolean|'inherit'|null): CssRule => style({
 });
 /**
  * Sets the current mildification state by the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `mildOf`.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `setMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
 export const setMild = (toggle: boolean|'inherit'|null): CssRule => style({
