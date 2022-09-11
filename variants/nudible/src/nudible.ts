@@ -140,7 +140,7 @@ export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollect
 
 /**
  * Defines a nudeification preference rules for the given `toggle` state.
- * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `nudeOf`.
+ * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `defineNude`.
  * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
 export const defineNude = (toggle: boolean|null): CssRule => style({
@@ -157,7 +157,7 @@ export const defineNude = (toggle: boolean|null): CssRule => style({
 });
 /**
  * Sets the current nudeification state by the given `toggle` state.
- * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `nudeOf`.
+ * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `setNude`.
  * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
 export const setNude = (toggle: boolean|null): CssRule => style({
