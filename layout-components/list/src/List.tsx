@@ -1341,7 +1341,7 @@ export const handleAnimationEndForward : React.AnimationEventHandler<Element> = 
      * because the `usesListLayout` is neither inherit from `usesIndicatorLayout` nor applies `anim: ...`,
      * so the `onAnimationEnd` will __never__ triggered directly (non_bubbled).
      * 
-     * the `useEnableDisableState() => handleAnimationEnd` only perform non_bubbled `onAnimationEnd`.
+     * the `useDisableable() => handleAnimationEnd` only perform non_bubbled `onAnimationEnd`.
      * 
      * thus we need to trigger `onAnimationEnd` at <List> level by forwarding `onAnimationEnd` bubbled from <ListItem>
      * 
