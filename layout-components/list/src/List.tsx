@@ -132,7 +132,7 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    mildOf,
+    setMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui states:
@@ -279,7 +279,7 @@ export const usesListItemInheritMildVariant = () => {
         ...variants([
             rule('.mild>*>&', { // .mild>*>.listItem => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
                 ...imports([
-                    mildOf(true),
+                    setMild(true),
                 ]),
             }),
         ]),
