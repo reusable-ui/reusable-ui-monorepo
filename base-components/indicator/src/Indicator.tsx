@@ -188,12 +188,12 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
         from : frameEnabled,
         to   : frameDisabled,
     });
-    keyframesDisable.value = 'disable'; // the @keyframes name should contain 'disable' in order to be recognized by `useEnableDisableState`
+    keyframesDisable.value = 'disable'; // the @keyframes name should contain 'disable' in order to be recognized by `useDisableable`
     const [keyframesEnableRule , keyframesEnable ] = keyframes({
         from : frameDisabled,
         to   : frameEnabled,
     });
-    keyframesEnable.value  = 'enable';  // the @keyframes name should contain 'enable'  in order to be recognized by `useEnableDisableState`
+    keyframesEnable.value  = 'enable';  // the @keyframes name should contain 'enable'  in order to be recognized by `useDisableable`
     
     
     
@@ -212,12 +212,12 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
         from : framePassived,
         to   : frameActived,
     });
-    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivePassiveState`
+    keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
     const [keyframesPassiveRule, keyframesPassive] = keyframes({
         from : frameActived,
         to   : framePassived,
     });
-    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivePassiveState`
+    keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivatable`
     //#endregion keyframes
     
     
