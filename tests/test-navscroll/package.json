@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cssfn/cssfn": "^2.0.7",
+    "@cssfn/cssfn": "^2.0.8",
     "@reusable-ui/navscroll": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
