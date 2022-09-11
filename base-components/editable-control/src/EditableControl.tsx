@@ -305,21 +305,21 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
         from : frameHighlighted,
         to   : frameNormalized,
     });
-    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useValidInvalidState`
+    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useInvalidable`
     const [keyframesInvalidRule, keyframesInvalid] = keyframes({
         from : frameHighlighted,
         to   : frameNormalized,
     });
-    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useValidInvalidState`
+    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useInvalidable`
     
     const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
         /* no animation yet */
     });
-    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useValidInvalidState`
+    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useInvalidable`
     const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
         /* no animation yet */
     });
-    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useValidInvalidState`
+    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useInvalidable`
     //#endregion keyframes
     
     
