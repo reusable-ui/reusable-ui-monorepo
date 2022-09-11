@@ -35,6 +35,7 @@ import {
 
 function App() {
     const [enableValidation, setEnableValidation] = useState<boolean>(true);
+    const [active, setActive] = useState<boolean>(false);
     
     
     
@@ -49,24 +50,24 @@ function App() {
                         <tr>
                             <td>
                                 <p>
-                                    <Icon icon='face' mild={false} /> <Icon icon='instagram' mild={false} /><ButtonIcon icon='instagram' mild={false} >Test</ButtonIcon> [strong] dark_red.
+                                    <Icon icon='face' mild={false} /> <Icon icon='instagram' mild={false} /><ButtonIcon icon='instagram' mild={false} active={active} >Test</ButtonIcon> [strong] dark_red.
                                 </p>
                                 <p>
-                                    <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} >Test</ButtonIcon> [mild] dark_red.
+                                    <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' mild={true} active={active} >Test</ButtonIcon> [mild] dark_red.
                                 </p>
                                 <p>
-                                    <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' outlined={true} >Test</ButtonIcon> [outlined] dark_red.
+                                    <Icon icon='face' mild={true} /> <Icon icon='instagram' mild={true} /><ButtonIcon icon='instagram' outlined={true} active={active} >Test</ButtonIcon> [outlined] dark_red.
                                 </p>
                             </td>
                             <td>
                                 <p>
-                                    <Icon icon='face' theme='primary' mild={false} /> <Icon icon='instagram' theme='primary' mild={false} /><ButtonIcon icon='instagram' theme='primary' mild={false} >Test</ButtonIcon> [strong] blue.
+                                    <Icon icon='face' theme='primary' mild={false} /> <Icon icon='instagram' theme='primary' mild={false} /><ButtonIcon icon='instagram' theme='primary' mild={false} active={active} >Test</ButtonIcon> [strong] blue.
                                 </p>
                                 <p>
-                                    <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} >Test</ButtonIcon> [mild] mild_blue.
+                                    <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' mild={true} active={active} >Test</ButtonIcon> [mild] mild_blue.
                                 </p>
                                 <p>
-                                    <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' outlined={true} >Test</ButtonIcon> [outlined] mild_blue.
+                                    <Icon icon='face' theme='primary' mild={true} /> <Icon icon='instagram' theme='primary' mild={true} /><ButtonIcon icon='instagram' theme='primary' outlined={true} active={active} >Test</ButtonIcon> [outlined] mild_blue.
                                 </p>
                             </td>
                         </tr>
@@ -74,8 +75,16 @@ function App() {
                             <td colSpan={2}><hr /></td>
                         </tr>
                         <tr>
+                            <td colSpan={2}>
+                                <Check theme='primary' checkStyle='switch' active={active} onActiveChange={(event) => setActive(event.active)} >Active</Check>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><hr /></td>
+                        </tr>
+                        <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' mild={false}>
+                                <EditableControl gradient={true} theme='primary' mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -85,7 +94,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' mild={false}>
+                                <EditableControl gradient={true} theme='primary' mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -97,7 +106,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' mild={true}>
+                                <EditableControl gradient={true} theme='primary' mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -107,7 +116,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' mild={true}>
+                                <EditableControl gradient={true} theme='primary' mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -119,7 +128,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' outlined={true}>
+                                <EditableControl gradient={true} theme='primary' outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -129,7 +138,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' outlined={true}>
+                                <EditableControl gradient={true} theme='primary' outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -141,7 +150,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='warning' mild={false}>
+                                <EditableControl gradient={true} theme='warning' mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -151,7 +160,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='warning' mild={false}>
+                                <EditableControl gradient={true} theme='warning' mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -163,7 +172,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='warning' mild={true}>
+                                <EditableControl gradient={true} theme='warning' mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -173,7 +182,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='warning' mild={true}>
+                                <EditableControl gradient={true} theme='warning' mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -185,7 +194,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='warning' outlined={true}>
+                                <EditableControl gradient={true} theme='warning' outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -195,7 +204,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='warning' outlined={true}>
+                                <EditableControl gradient={true} theme='warning' outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='danger' /> <Icon icon='instagram' theme='danger' /><ButtonIcon icon='instagram' theme='danger' >Test</ButtonIcon>
                                     </p>
@@ -210,12 +219,16 @@ function App() {
                         </tr>
                         <tr>
                             <td colSpan={2}>
-                                <Check theme='primary' checkStyle='switch' active={enableValidation} onActiveChange={(event) => setEnableValidation(event.active)} />
+                                <Check theme='primary' checkStyle='switch' active={active} onActiveChange={(event) => setActive(event.active)} >Active</Check>
+                                <Check theme='primary' checkStyle='switch' active={enableValidation} onActiveChange={(event) => setEnableValidation(event.active)} >Enable Validation</Check>
                             </td>
                         </tr>
                         <tr>
+                            <td colSpan={2}><hr /></td>
+                        </tr>
+                        <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={false}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -225,7 +238,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={false}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -237,7 +250,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -247,7 +260,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -259,7 +272,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -269,7 +282,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={false} outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -281,7 +294,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={false}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -291,7 +304,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={false}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={false} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -303,7 +316,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -313,7 +326,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} mild={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -325,7 +338,7 @@ function App() {
                         </tr>
                         <tr>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' /> <Icon icon='instagram' /><ButtonIcon icon='instagram' >Test</ButtonIcon>
                                     </p>
@@ -335,7 +348,7 @@ function App() {
                                 </EditableControl>
                             </td>
                             <td>
-                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true}>
+                                <EditableControl gradient={true} theme='primary' enableValidation={enableValidation} isValid={true} outlined={true} active={active} >
                                     <p>
                                         <Icon icon='face' theme='warning' /> <Icon icon='instagram' theme='warning' /><ButtonIcon icon='instagram' theme='warning' >Test</ButtonIcon>
                                     </p>
@@ -343,6 +356,12 @@ function App() {
                                         <Icon icon='face' theme='warning' mild={true} /> <Icon icon='instagram' theme='warning' mild={true} /><ButtonIcon icon='instagram' theme='warning' mild={true} >Test</ButtonIcon>
                                     </p>
                                 </EditableControl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>
+                                <Check theme='primary' checkStyle='switch' active={active} onActiveChange={(event) => setActive(event.active)} >Active</Check>
+                                <Check theme='primary' checkStyle='switch' active={enableValidation} onActiveChange={(event) => setEnableValidation(event.active)} >Enable Validation</Check>
                             </td>
                         </tr>
                     </tbody>
