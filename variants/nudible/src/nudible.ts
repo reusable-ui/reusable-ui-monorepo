@@ -50,6 +50,10 @@ const _defaultNude : Required<NudibleProps>['nude'] = false
 //#region nudible
 export interface NudibleVars {
     /**
+     * the nudible preference.
+     */
+    nudePr : any
+    /**
      * the nude switching function.
      */
     nudeSw : any
@@ -71,7 +75,7 @@ export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssV
  * @param factory A callback to create a nudeification rules for each toggle state.
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
-export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollection) = nudeOf): NudibleStuff => {
+export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
     // dependencies:
     
     // features:
@@ -82,6 +86,13 @@ export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollect
     
     return {
         nudibleRule: () => style({
+            // configs:
+            ...vars({
+                [nudibleVars.nudeSw] : nudibleVars.nudePr,
+            }),
+            
+            
+            
             // toggling props:
             ...variants([
                 ifNude({
@@ -128,11 +139,28 @@ export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollect
 };
 
 /**
- * Creates an nudeification rules for the given `toggle` state.
+ * Defines a nudeification preference rules for the given `toggle` state.
  * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `nudeOf`.
- * @returns A `CssRule` represents an nudeification rules for the given `toggle` state.
+ * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
-export const nudeOf = (toggle: boolean|null): CssRule => style({
+export const defineNude = (toggle: boolean|null): CssRule => style({
+    ...vars({
+        /*
+            *switch on/off* the `**Tg` prop.
+            toggle:
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                null    => null              => remove the prev declaration
+        */
+        [nudibleVars.nudePr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+    }),
+});
+/**
+ * Sets the current nudeification state by the given `toggle` state.
+ * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `nudeOf`.
+ * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
+ */
+export const setNude = (toggle: boolean|null): CssRule => style({
     ...vars({
         /*
             *switch on/off* the `**Tg` prop.
