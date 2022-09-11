@@ -262,7 +262,7 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
 
 /**
  * Defines an outlining preference rules for the given `toggle` state.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `outlinedOf`.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
 export const defineOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
@@ -280,7 +280,7 @@ export const defineOutlined = (toggle: boolean|'inherit'|null): CssRule => style
 });
 /**
  * Sets the current outlining state by the given `toggle` state.
- * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `outlinedOf`.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `setOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
 export const setOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
