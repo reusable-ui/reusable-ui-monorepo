@@ -120,7 +120,7 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
 
 /**
  * Defines a gradient preference rules for the given `toggle` state.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `gradientOf`.
+ * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `defineGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
 export const defineGradient = (toggle: boolean|'inherit'|null): CssRule => style({
@@ -138,7 +138,7 @@ export const defineGradient = (toggle: boolean|'inherit'|null): CssRule => style
 });
 /**
  * Sets the current gradient state by the given `toggle` state.
- * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `gradientOf`.
+ * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `setGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
 export const setGradient = (toggle: boolean|'inherit'|null): CssRule => style({
