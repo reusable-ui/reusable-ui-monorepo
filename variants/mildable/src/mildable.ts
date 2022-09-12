@@ -133,10 +133,10 @@ export interface MildableConfig {
 /**
  * Uses a toggleable mildification.  
  * @param config  A configuration of `mildableRule`.
- * @param factory A callback to create a mildification rules for each toggle state.
+ * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
-export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineMild): MildableStuff => {
+export const usesMildable = (config?: MildableConfig, mildDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineMild): MildableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -231,9 +231,9 @@ export const usesMildable = (config?: MildableConfig, factory : ((toggle: boolea
             
             // toggling conditions:
             ...variants([
-                ifMild(factory(true)),
-                ifNotMild(factory(false)),
-                ifInheritMild(factory('inherit')),
+                ifMild(mildDefinition(true)),
+                ifNotMild(mildDefinition(false)),
+                ifInheritMild(mildDefinition('inherit')),
             ]),
         }),
         mildableVars,
