@@ -83,10 +83,10 @@ export interface GradientableConfig {
 /**
  * Uses a toggleable gradient.  
  * @param config  A configuration of `gradientableRule`.
- * @param factory A callback to create a gradient rules for each toggle state.
+ * @param gradientDefinition A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (config?: GradientableConfig, factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineGradient): GradientableStuff => {
+export const usesGradientable = (config?: GradientableConfig, gradientDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineGradient): GradientableStuff => {
     return {
         gradientableRule: () => style({
             // configs:
@@ -109,9 +109,9 @@ export const usesGradientable = (config?: GradientableConfig, factory : ((toggle
             
             // toggling conditions:
             ...variants([
-                ifGradient(factory(true)),
-                ifNotGradient(factory(false)),
-                ifInheritGradient(factory('inherit')),
+                ifGradient(gradientDefinition(true)),
+                ifNotGradient(gradientDefinition(false)),
+                ifInheritGradient(gradientDefinition('inherit')),
             ]),
         }),
         gradientableVars,
