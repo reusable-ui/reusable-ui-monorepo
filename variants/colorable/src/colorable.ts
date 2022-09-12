@@ -41,6 +41,7 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
+    ifHasTheme,
     ifNoTheme,
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
@@ -66,48 +67,55 @@ import {
 //#region colorable
 export interface ColorableVars {
     /**
-     * functional conditional color based on its theme name.
+     * the auto color switching function.
      */
-    themedBoldColorFn : any
-    
-    /**
-     * functional conditional color based on its theme name - at mild variant.
-     */
-    themedMildColorFn : any
-    /**
-     * toggles_on conditional color based on its theme name - at mild variant.
-     */
-    themedMildColorTg : any
-    
-    /**
-     * Conditional color based on its theme name.
-     */
-    themedColorFn     : any
+    autoColorSw       : any
     
     
     
     /**
-     * functional conditional color based on its background color.
+     * functional auto color based on its background color.
      */
     autoBoldColorFn   : any
     
     /**
-     * functional conditional color based on its background color - at mild variant.
+     * functional auto color based on its background color - at mild variant.
      */
     autoMildColorFn   : any
     /**
-     * toggles_on conditional color based on its background color - at mild variant.
+     * conditionally toggled auto color based on its background color - at mild variant.
      */
     autoMildColorTg   : any
     
     /**
-     * Conditional color based on its background color.
+     * auto color based on its background color.
      */
     autoColorFn       : any
     /**
-     * toggles_on conditional color based on its background color.
+     * conditionally toggled auto color based on its background color.
      */
     autoColorTg       : any
+    
+    
+    
+    /**
+     * functional color based on its theme - at no variant.
+     */
+    themedBoldColorFn : any
+    
+    /**
+     * functional color based on its theme - at mild variant.
+     */
+    themedMildColorFn : any
+    /**
+     * conditionally toggled color based on its theme - at mild variant.
+     */
+    themedMildColorTg : any
+    
+    /**
+     * functional color based on its theme.
+     */
+    themedColorFn     : any
     
     
     
@@ -164,6 +172,21 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
             
             
             
+            // auto color functions:
+            ...vars({
+                // conditional color functions:
+                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                
+                
+                
+                // final color functions:
+                [colorableVars.autoColorFn    ] : switchOf(
+                    colorableVars.autoMildColorTg,  // toggle mild
+                    
+                    colorableVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
+                ),
+            }),
             // themed color functions:
             ...vars({
                 // conditional color functions:
@@ -201,21 +224,6 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
                     colorableVars.themedBoldColorFn,  // default => uses our `themedBoldColorFn`
                 ),
             }),
-            // auto color functions:
-            ...vars({
-                // conditional color functions:
-                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
-                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
-                
-                
-                
-                // final color functions:
-                [colorableVars.autoColorFn    ] : switchOf(
-                    colorableVars.autoMildColorTg,  // toggle mild
-                    
-                    colorableVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
-                ),
-            }),
             // color functions:
             ...vars({
                 // final color functions:
@@ -228,26 +236,22 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
             
             
             
-            // toggling (themed|auto) conditions:
-            ...variants([
-                ifNoTheme({
-                    ...vars({
-                        [colorableVars.autoColorTg] : colorableVars.autoColorFn,
-                    }),
-                }),
-            ]),
-            
-            
-            
             // toggling functions:
             ...vars({
-                [colorableVars.themedMildColorTg] : [[
-                    mildableVars.mildSw,  // the mild switching function
-                    colorableVars.themedMildColorFn,
+                [colorableVars.autoColorTg] : [[
+                    colorableVars.autoColorSw, // the auto color switching function
+                    colorableVars.autoColorFn,
                 ]],
+                
+                
+                
                 [colorableVars.autoMildColorTg  ] : [[
                     mildableVars.mildSw,  // the mild switching function
                     colorableVars.autoMildColorFn,
+                ]],
+                [colorableVars.themedMildColorTg] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    colorableVars.themedMildColorFn,
                 ]],
             }),
             
@@ -255,6 +259,23 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
             
             // toggling conditions:
             ...variants([
+                /*
+                    empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                */
+                ifHasTheme({
+                    ...vars({
+                        [colorableVars.autoColorSw] : 'initial',
+                    }),
+                }),
+                ifNoTheme({
+                    ...vars({
+                        [colorableVars.autoColorSw] : '',
+                    }),
+                }),
+                
+                
+                
                 ifMild(mildDefinition(true)),
                 ifNotMild(mildDefinition(false)),
                 ifInheritMild(mildDefinition('inherit')),
