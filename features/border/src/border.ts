@@ -123,7 +123,7 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
         borderRule: () => style({
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 [borderVars.borderColorFn] : switchOf(
                     themableVars.borderCond, // first  priority
                     themableVars.border,     // second priority
