@@ -70,7 +70,7 @@ export const usesRing = (config?: RingConfig): RingStuff => {
         ringRule: () => style({
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 [ringVars.ringFn] : switchOf(
                     themableVars.ringCond, // first  priority
                     themableVars.ring,     // second priority
