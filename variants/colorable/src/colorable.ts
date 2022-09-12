@@ -16,7 +16,6 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
     variants,
     
     
@@ -51,7 +50,11 @@ import {
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
+    ifMild,
+    ifNotMild,
+    ifInheritMild,
     usesMildable,
+    defineMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 
@@ -125,10 +128,10 @@ export interface ColorableConfig {
 /**
  * Uses color.
  * @param config  A configuration of `colorableRule`.
- * @param mildFactory A callback to create a mildification rules for each toggle state.
+ * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `ColorableStuff` represents the color rules.
  */
-export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: boolean|null) => CssStyleCollection) = selfMildOf): ColorableStuff => {
+export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineMild): ColorableStuff => {
     // dependencies:
     
     // features:
@@ -151,6 +154,17 @@ export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: 
                 // features:
                 backgroundRule,
             ]),
+            
+            
+            
+            // configs:
+            ...vars({
+                [mildableVars.mildSw] : mildableVars.mildPr,
+            }),
+            
+            
+            
+            // themed color functions:
             ...vars({
                 // conditional color functions:
                 [colorableVars.themedBoldColorFn] : switchOf(
@@ -187,10 +201,11 @@ export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: 
                     colorableVars.themedBoldColorFn,  // default => uses our `themedBoldColorFn`
                 ),
             }),
+            // auto color functions:
             ...vars({
                 // conditional color functions:
-                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt  color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
-                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s alt  color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
                 
                 
                 
@@ -201,6 +216,7 @@ export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: 
                     colorableVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
                 ),
             }),
+            // color functions:
             ...vars({
                 // final color functions:
                 [colorableVars.color] : switchOf(
@@ -209,30 +225,42 @@ export const usesColorable = (config?: ColorableConfig, mildFactory : ((toggle: 
                     colorableVars.themedColorFn, // default => uses our `themedColorFn`
                 ),
             }),
+            
+            
+            
+            // toggling (themed|auto) conditions:
             ...variants([
                 ifNoTheme({
                     ...vars({
                         [colorableVars.autoColorTg] : colorableVars.autoColorFn,
                     }),
                 }),
-                rule('&:not(.mild)', mildFactory(false)),
-                rule('&.mild'      , mildFactory(true )),
+            ]),
+            
+            
+            
+            // toggling functions:
+            ...vars({
+                [colorableVars.themedMildColorTg] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    colorableVars.themedMildColorFn,
+                ]],
+                [colorableVars.autoMildColorTg  ] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    colorableVars.autoMildColorFn,
+                ]],
+            }),
+            
+            
+            
+            // toggling conditions:
+            ...variants([
+                ifMild(mildDefinition(true)),
+                ifNotMild(mildDefinition(false)),
+                ifInheritMild(mildDefinition('inherit')),
             ]),
         }),
         colorableVars,
     };
 };
-
-/**
- * Creates a mildification rules for the given `toggle` state.
- * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `null` for undefining the mildification.
- * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
- */
-export const selfMildOf = (toggle: boolean|null): CssRule => style({
-    ...vars({
-        // *toggle on/off* the mildification prop:
-        [colorableVars.themedMildColorTg] : toggle ? colorableVars.themedMildColorFn : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-        [colorableVars.autoMildColorTg  ] : toggle ? colorableVars.autoMildColorFn   : ((toggle !== null) ? 'initial' : null), // `null` => delete existing prop (if any), `undefined` => preserves existing prop (if any)
-    }),
-});
 //#endregion colorable
