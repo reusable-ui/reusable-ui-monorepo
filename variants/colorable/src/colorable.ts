@@ -239,7 +239,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
             ...vars({
                 // final color functions:
                 // TODO: under construction
-                [colorableVars.color] : colorableVars.autoColorTg,
+                [colorableVars.color] : colorableVars.autoColorFn,
                 // [colorableVars.color] : switchOf(
                 //     colorableVars.autoColorTg,   // toggle auto theme
                     
