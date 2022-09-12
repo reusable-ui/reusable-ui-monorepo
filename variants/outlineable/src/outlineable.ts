@@ -131,7 +131,7 @@ export interface OutlineableConfig {
  * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
+export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -229,9 +229,9 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
             
             // toggling conditions:
             ...variants([
-                ifOutlined(outlinedDefinition(true)),
-                ifNotOutlined(outlinedDefinition(false)),
-                ifInheritOutlined(outlinedDefinition('inherit')),
+                outlinedDefinition && ifOutlined(outlinedDefinition(true)),
+                outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
+                outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
             ]),
         }),
         outlineableVars,
