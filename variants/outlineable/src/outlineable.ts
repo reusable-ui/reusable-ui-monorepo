@@ -167,10 +167,10 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
                     just not be included to background layers.
                 */
                 [outlineableVars.backgFn   ] : switchOf(
-                    themableVars.backgMildCond,    // first  priority
-                    themableVars.backgMild,        // second priority
+                    themableVars.backgMildCond,        // first  priority
+                    themableVars.backgMild,            // second priority
                     
-                    config?.backg,                 // default => uses config's background
+                    config?.backg,                     // default => uses config's background
                 ),
                 
                 [outlineableVars.foregFn   ] : switchOf(
