@@ -75,7 +75,7 @@ export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssV
  * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
-export const usesNudible = (nudeDefinition : ((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
+export const usesNudible = (nudeDefinition : null|((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
     // dependencies:
     
     // features:
@@ -130,8 +130,8 @@ export const usesNudible = (nudeDefinition : ((toggle: boolean|null) => CssStyle
             
             // toggling conditions:
             ...variants([
-                ifNude(nudeDefinition(true)),
-                ifNotNude(nudeDefinition(false)),
+                nudeDefinition && ifNude(nudeDefinition(true)),
+                nudeDefinition && ifNotNude(nudeDefinition(false)),
             ]),
         }),
         nudibleVars,
