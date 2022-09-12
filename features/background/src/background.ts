@@ -126,7 +126,7 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
             
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 [backgroundVars.backgColorFn   ] : switchOf(
                     themableVars.backgCond,     // first  priority
                     themableVars.backg,         // second priority
