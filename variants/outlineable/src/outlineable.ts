@@ -140,10 +140,10 @@ export interface OutlineableConfig {
 /**
  * Uses a toggleable outlining.  
  * @param config  A configuration of `outlineableRule`.
- * @param factory A callback to create an outlining rules for each toggle state.
+ * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
+export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -251,9 +251,9 @@ export const usesOutlineable = (config?: OutlineableConfig, factory : ((toggle: 
             
             // toggling conditions:
             ...variants([
-                ifOutlined(factory(true)),
-                ifNotOutlined(factory(false)),
-                ifInheritOutlined(factory('inherit')),
+                ifOutlined(outlinedDefinition(true)),
+                ifNotOutlined(outlinedDefinition(false)),
+                ifInheritOutlined(outlinedDefinition('inherit')),
             ]),
         }),
         outlineableVars,
