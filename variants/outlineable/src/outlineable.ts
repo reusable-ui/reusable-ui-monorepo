@@ -55,68 +55,56 @@ export interface OutlineableVars {
     /**
      * the outlineable preference.
      */
-    outlinedPr     : any
+    outlinedPr : any
     /**
      * the outlined switching function.
      */
-    outlinedSw     : any
+    outlinedSw : any
     
     
     
     /**
      * conditionally toggled background color layer - at outlined variant.
      */
-    noBackgTg      : any
+    noBackgTg  : any
     
     
     
     /**
      * functional background color - at outlined variant.
      */
-    backgFn        : any
+    backgFn    : any
     /**
      * conditionally toggled background color - at outlined variant.
      */
-    backgTg        : any
+    backgTg    : any
     /**
      * functional alternate background color - at outlined variant.
      */
-    altBackgFn     : any
+    altBackgFn : any
     /**
      * conditionally toggled alternate background color - at outlined variant.
      */
-    altBackgTg     : any
+    altBackgTg : any
     
     
     
     /**
      * functional foreground color - at outlined variant.
      */
-    foregFn        : any
+    foregFn    : any
     /**
      * conditionally toggled foreground color - at outlined variant.
      */
-    foregTg        : any
+    foregTg    : any
     /**
      * functional alternate foreground color - at outlined variant.
      */
-    altForegFn     : any
+    altForegFn : any
     /**
      * conditionally toggled alternate foreground color - at outlined variant.
      */
-    altForegTg     : any
-    
-    
-    
-    // supports for iconColor:
-    /**
-     * conditionally toggled conditional background color - at outlined variant.
-     */
-    backgCondTg    : any
-    /**
-     * conditionally toggled conditional alternate background color - at outlined variant.
-     */
-    altBackgCondTg : any
+    altForegTg : any
 }
 const [outlineableVars] = cssVars<OutlineableVars>();
 
@@ -168,7 +156,7 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
             
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 
              // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
                 /*
@@ -234,16 +222,6 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
                 [outlineableVars.altForegTg] : [[
                     outlineableVars.outlinedSw, // the outlined switching function
                     outlineableVars.altForegFn, // the outlined alternate foreground color definition
-                ]],
-                
-                // supports for iconColor:
-                [outlineableVars.backgCondTg] : [[
-                    outlineableVars.outlinedSw,        // the outlined switching function
-                    themableVars.backgMildCond,        // the conditional background color definition - at mild variant
-                ]],
-                [outlineableVars.altBackgCondTg] : [[
-                    outlineableVars.outlinedSw,        // the outlined switching function
-                    themableVars.altBackgOutlinedCond, // the conditional alternate background color definition - at mild variant
                 ]],
             }),
             
