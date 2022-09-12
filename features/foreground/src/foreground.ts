@@ -89,7 +89,7 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
         foregroundRule: () => style({
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 [foregroundVars.foregFn   ] : switchOf(
                     themableVars.foregCond,     // first  priority
                     themableVars.foreg,         // second priority
