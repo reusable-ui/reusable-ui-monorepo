@@ -47,6 +47,9 @@ import {
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
+    ifOutlined,
+    ifNotOutlined,
+    ifInheritOutlined,
     usesOutlineable,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
@@ -55,7 +58,6 @@ import {
     ifNotMild,
     ifInheritMild,
     usesMildable,
-    defineMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 
@@ -66,6 +68,16 @@ import {
 
 //#region colorable
 export interface ColorableVars {
+    /**
+     * the outlined switching function.
+     * this is the clone of `OutlineableVars.outlinedSw`, so we can still access the <ancestor>'s `outlinedSw`.
+     */
+    outlinedSw        : any
+    /**
+     * the mild switching function.
+     * this is the clone of `MildableVars.mildSw`, so we can still access the <ancestor>'s `mildSw`.
+     */
+    mildSw            : any
     /**
      * the auto color switching function.
      */
@@ -139,7 +151,7 @@ export interface ColorableConfig {
  * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `ColorableStuff` represents the color rules.
  */
-export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineMild): ColorableStuff => {
+export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
     // dependencies:
     
     // features:
@@ -160,23 +172,24 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
         colorableRule: () => style({
             ...imports([
                 // features:
-                backgroundRule,
+                backgroundRule, // overrides the default `backg` => `altColor` and `altBackg` => `color`
             ]),
             
             
             
             // configs:
             ...vars({
-                [mildableVars.mildSw] : mildableVars.mildPr,
+                [colorableVars.outlinedSw] : outlinedDefinition ? outlineableVars.outlinedPr : 'initial',
+                [colorableVars.mildSw    ] : mildDefinition     ? mildableVars.mildPr        : 'initial',
             }),
             
             
             
             // auto color functions:
             ...vars({
-                // conditional color functions:
-                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
-                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the variant of outlined ?? mild ?? conditional ?? themed ?? default)
+                // adaptive color functions:
+                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
+                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
                 
                 
                 
@@ -189,12 +202,11 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
             }),
             // themed color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 [colorableVars.themedBoldColorFn] : switchOf(
-                    // conditional <parent> color:
-                    outlineableVars.altBackgCondTg, // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altBackgCondTg,    // toggle mild     (if `usesMildable()` applied)
-                    themableVars.altBackgCond,      // default => uses themed alternate background color
+                    // TODO: under construction
+                    // conditional opposite <parent> color:
+                    // colorableVars.themedBoldColorCondFn,
                     
                     // themed color:
                     themableVars.backg,             // if not conditional => uses themed background color
@@ -203,10 +215,9 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
                     config?.color,                  // default => uses config's color
                 ),
                 [colorableVars.themedMildColorFn] : switchOf(
-                    // conditional <parent> color:
-                    outlineableVars.backgCondTg,    // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgCondTg,       // toggle mild     (if `usesMildable()` applied)
-                    themableVars.backgCond,         // default => uses themed background color
+                    // TODO: under construction
+                    // conditional opposite <parent> color:
+                    // colorableVars.themedMildColorCondFn,
                     
                     // themed color:
                     themableVars.altBackg,          // if not conditional => uses themed alternate background color
@@ -227,11 +238,13 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
             // color functions:
             ...vars({
                 // final color functions:
-                [colorableVars.color] : switchOf(
-                    colorableVars.autoColorTg,   // toggle auto theme
+                // TODO: under construction
+                [colorableVars.color] : colorableVars.autoColorTg,
+                // [colorableVars.color] : switchOf(
+                //     colorableVars.autoColorTg,   // toggle auto theme
                     
-                    colorableVars.themedColorFn, // default => uses our `themedColorFn`
-                ),
+                //     colorableVars.themedColorFn, // default => uses our `themedColorFn`
+                // ),
             }),
             
             
@@ -246,11 +259,11 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
                 
                 
                 [colorableVars.autoMildColorTg  ] : [[
-                    mildableVars.mildSw,  // the mild switching function
+                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw),  // the (outlined|mild) switching function
                     colorableVars.autoMildColorFn,
                 ]],
                 [colorableVars.themedMildColorTg] : [[
-                    mildableVars.mildSw,  // the mild switching function
+                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw),  // the (outlined|mild) switching function
                     colorableVars.themedMildColorFn,
                 ]],
             }),
@@ -276,12 +289,56 @@ export const usesColorable = (config?: ColorableConfig, mildDefinition : ((toggl
                 
                 
                 
-                ifMild(mildDefinition(true)),
-                ifNotMild(mildDefinition(false)),
-                ifInheritMild(mildDefinition('inherit')),
+                outlinedDefinition && ifOutlined(outlinedDefinition(true)),
+                outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
+                outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
+                
+                
+                
+                mildDefinition && ifMild(mildDefinition(true)),
+                mildDefinition && ifNotMild(mildDefinition(false)),
+                mildDefinition && ifInheritMild(mildDefinition('inherit')),
             ]),
         }),
         colorableVars,
     };
 };
+
+/**
+ * Defines an outlining preference rules for the given `toggle` state.
+ * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineSelfOutlined`.
+ * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
+ */
+const defineSelfOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
+    ...vars({
+        /*
+            *switch on/off/inherit* the `**Tg` prop.
+            toggle:
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                inherit => inherit           => follows      the <ancestor> decision.
+                null    => null              => remove the prev declaration
+        */
+        [colorableVars.outlinedSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+    }),
+});
+
+/**
+ * Defines a mildification preference rules for the given `toggle` state.
+ * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineSelfMild`.
+ * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
+ */
+const defineSelfMild = (toggle: boolean|'inherit'|null): CssRule => style({
+    ...vars({
+        /*
+            *switch on/off/inherit* the `**Tg` prop.
+            toggle:
+                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                inherit => inherit           => follows      the <ancestor> decision.
+                null    => null              => remove the prev declaration
+        */
+        [colorableVars.mildSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+    }),
+});
 //#endregion colorable
