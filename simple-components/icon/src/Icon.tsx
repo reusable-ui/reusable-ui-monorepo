@@ -488,7 +488,7 @@ export const usesIconVariants    = () => {
     // variants:
     const {resizableRule} = usesResizable<SizeName>(icons, sizeOptions());
     const {themableRule } = usesThemable();
-    const {colorableRule} = usesColorable(icons);
+    const {colorableRule} = usesColorable(icons, /* outlinedDefinition = not_supported */null, /* mildDefinition = is_supported */undefined);
     
     
     
