@@ -72,10 +72,10 @@ export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':where(&
 export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssVars<NudibleVars> }
 /**
  * Uses a toggleable nudeification (removes background, border & padding).
- * @param factory A callback to create a nudeification rules for each toggle state.
+ * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
-export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
+export const usesNudible = (nudeDefinition : ((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
     // dependencies:
     
     // features:
@@ -130,8 +130,8 @@ export const usesNudible = (factory : ((toggle: boolean|null) => CssStyleCollect
             
             // toggling conditions:
             ...variants([
-                ifNude(factory(true)),
-                ifNotNude(factory(false)),
+                ifNude(nudeDefinition(true)),
+                ifNotNude(nudeDefinition(false)),
             ]),
         }),
         nudibleVars,
