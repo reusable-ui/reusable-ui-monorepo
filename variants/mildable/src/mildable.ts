@@ -55,61 +55,49 @@ export interface MildableVars {
     /**
      * the mildable preference.
      */
-    mildPr         : any
+    mildPr     : any
     /**
      * the mild switching function.
      */
-    mildSw         : any
+    mildSw     : any
     
     
     
     /**
      * functional background color - at mild variant.
      */
-    backgFn        : any
+    backgFn    : any
     /**
      * conditionally toggled background color - at mild variant.
      */
-    backgTg        : any
+    backgTg    : any
     /**
      * functional alternate background color - at mild variant.
      */
-    altBackgFn     : any
+    altBackgFn : any
     /**
      * conditionally toggled alternate background color - at mild variant.
      */
-    altBackgTg     : any
+    altBackgTg : any
     
     
     
     /**
      * functional foreground color - at mild variant.
      */
-    foregFn        : any
+    foregFn    : any
     /**
      * conditionally toggled foreground color - at mild variant.
      */
-    foregTg        : any
+    foregTg    : any
     /**
      * functional alternate foreground color - at mild variant.
      */
-    altForegFn     : any
+    altForegFn : any
     /**
      * conditionally toggled alternate foreground color - at mild variant.
      */
-    altForegTg     : any
-    
-    
-    
-    // supports for iconColor:
-    /**
-     * conditionally toggled conditional background color - at mild variant.
-     */
-    backgCondTg    : any
-    /**
-     * conditionally toggled conditional alternate background color - at mild variant.
-     */
-    altBackgCondTg : any
+    altForegTg : any
 }
 const [mildableVars] = cssVars<MildableVars>();
 
@@ -161,7 +149,7 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : ((toggle:
             
             // color functions:
             ...vars({
-                // conditional color functions:
+                // adaptive color functions:
                 
                 [mildableVars.backgFn   ] : switchOf(
                     themableVars.backgMildCond,    // first  priority
@@ -214,16 +202,6 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : ((toggle:
                 [mildableVars.altForegTg] : [[
                     mildableVars.mildSw,     // the mild switching function
                     mildableVars.altForegFn, // the mild alternate foreground color definition
-                ]],
-                
-                // supports for iconColor:
-                [mildableVars.backgCondTg] : [[
-                    mildableVars.mildSw,           // the mild switching function
-                    themableVars.backgMildCond,    // the conditional background color definition - at mild variant
-                ]],
-                [mildableVars.altBackgCondTg] : [[
-                    mildableVars.mildSw,           // the mild switching function
-                    themableVars.altBackgMildCond, // the conditional alternate background color definition - at mild variant
                 ]],
             }),
             
