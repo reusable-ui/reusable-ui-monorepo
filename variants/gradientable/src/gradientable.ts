@@ -92,6 +92,13 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
             // configs:
             ...vars({
                 [gradientableVars.backgGrad ] : config?.backgGrad,
+                
+                /*
+                    supports for `usesColorable()`:
+                    only reset `gradientableVars.gradientSw = gradientableVars.gradientPr` if `gradientDefinition` provided,
+                    so the *modified* `gradientableVars.gradientSw` by `setGradient()` still *preserved*,
+                    thus the `usesColorable()` can see the <parent>'s actual [gradient] status.
+                */
                 [gradientableVars.gradientSw] : (gradientDefinition || undefined) && gradientableVars.gradientPr,
             }),
             
