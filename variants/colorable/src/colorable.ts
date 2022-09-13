@@ -112,6 +112,7 @@ export interface ColorableConfig {
 /**
  * Uses color.
  * @param config  A configuration of `colorableRule`.
+ * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
  * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `ColorableStuff` represents the color rules.
  */
@@ -120,7 +121,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
     
     // features:
     const {backgroundRule, backgroundVars} = usesBackground({
-        // reverses the regular & alternate:
+        // reverses the regular & alternate colors:
         backg    : config?.altColor,
         altBackg : config?.color,
     });
@@ -150,7 +151,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
                 
                 // final color functions:
                 [colorableVars.color] : switchOf(
-                    colorableVars.altColorTg, // toggle mild
+                    colorableVars.altColorTg, // toggle alternate color
                     
                     colorableVars.colorFn,    // default => uses our `colorFn`
                 ),
