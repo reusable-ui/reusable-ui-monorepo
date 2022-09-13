@@ -88,6 +88,12 @@ export const usesNudible = (nudeDefinition : null|((toggle: boolean|null) => Css
         nudibleRule: () => style({
             // configs:
             ...vars({
+                /*
+                    supports for `usesColorable()`:
+                    only reset `nudibleVars.nudeSw = nudibleVars.nudePr` if `nudeDefinition` provided,
+                    so the *modified* `nudibleVars.nudeSw` by `setNude()` still *preserved*,
+                    thus the `usesColorable()` can see the <parent>'s actual [nude] status.
+                */
                 [nudibleVars.nudeSw] : (nudeDefinition || undefined) && nudibleVars.nudePr,
             }),
             
