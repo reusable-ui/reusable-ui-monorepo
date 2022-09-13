@@ -142,7 +142,7 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
             
             // configs:
             ...vars({
-                [mildableVars.mildSw] : mildableVars.mildPr,
+                [mildableVars.mildSw] : (mildDefinition || undefined) && mildableVars.mildPr,
             }),
             
             
