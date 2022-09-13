@@ -42,8 +42,6 @@ import {
 import {
     // hooks:
     ifHasTheme,
-    ifNoTheme,
-    usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 import {
     // hooks:
@@ -78,10 +76,6 @@ export interface ColorableVars {
      * this is the clone of `MildableVars.mildSw`, so we can still access the <ancestor>'s `mildSw`.
      */
     mildSw            : any
-    /**
-     * the auto color switching function.
-     */
-    autoColorSw       : any
     
     
     
@@ -103,31 +97,6 @@ export interface ColorableVars {
      * auto color based on its background color.
      */
     autoColorFn       : any
-    /**
-     * conditionally toggled auto color based on its background color.
-     */
-    autoColorTg       : any
-    
-    
-    
-    /**
-     * functional color based on its theme - at no variant.
-     */
-    themedBoldColorFn : any
-    
-    /**
-     * functional color based on its theme - at mild variant.
-     */
-    themedMildColorFn : any
-    /**
-     * conditionally toggled color based on its theme - at mild variant.
-     */
-    themedMildColorTg : any
-    
-    /**
-     * functional color based on its theme.
-     */
-    themedColorFn     : any
     
     
     
@@ -162,9 +131,8 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
     });
     
     // variants:
-    const {themableVars   } = usesThemable();
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
+    const {outlineableRule} = usesOutlineable(/*config = */undefined, /*outlinedDefinition = */null);
+    const {mildableRule   } = usesMildable(/*config = */undefined, /*mildDefinition = */null);
     
     
     
@@ -174,14 +142,6 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
                 // features:
                 backgroundRule, // overrides the default `backg` => `altColor` and `altBackg` => `color`
             ]),
-            
-            
-            
-            // configs:
-            ...vars({
-                [colorableVars.outlinedSw] : outlinedDefinition ? outlineableVars.outlinedPr : 'initial',
-                [colorableVars.mildSw    ] : mildDefinition     ? mildableVars.mildPr        : 'initial',
-            }),
             
             
             
@@ -200,71 +160,20 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
                     colorableVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
                 ),
             }),
-            // themed color functions:
-            ...vars({
-                // adaptive color functions:
-                [colorableVars.themedBoldColorFn] : switchOf(
-                    // TODO: under construction
-                    // conditional opposite <parent> color:
-                    // colorableVars.themedBoldColorCondFn,
-                    
-                    // themed color:
-                    themableVars.backg,             // if not conditional => uses themed background color
-                    
-                    // default color:
-                    config?.color,                  // default => uses config's color
-                ),
-                [colorableVars.themedMildColorFn] : switchOf(
-                    // TODO: under construction
-                    // conditional opposite <parent> color:
-                    // colorableVars.themedMildColorCondFn,
-                    
-                    // themed color:
-                    themableVars.altBackg,          // if not conditional => uses themed alternate background color
-                    
-                    // default color:
-                    config?.altColor,               // default => uses config's alternate color
-                ),
-                
-                
-                
-                // final color functions:
-                [colorableVars.themedColorFn    ] : switchOf(
-                    colorableVars.themedMildColorTg,  // toggle mild
-                    
-                    colorableVars.themedBoldColorFn,  // default => uses our `themedBoldColorFn`
-                ),
-            }),
             // color functions:
             ...vars({
                 // final color functions:
                 // TODO: under construction
                 [colorableVars.color] : colorableVars.autoColorFn,
-                // [colorableVars.color] : switchOf(
-                //     colorableVars.autoColorTg,   // toggle auto theme
-                    
-                //     colorableVars.themedColorFn, // default => uses our `themedColorFn`
-                // ),
             }),
             
             
             
             // toggling functions:
             ...vars({
-                [colorableVars.autoColorTg] : [[
-                    colorableVars.autoColorSw, // the auto color switching function
-                    colorableVars.autoColorFn,
-                ]],
-                
-                
-                
                 [colorableVars.autoMildColorTg  ] : [[
                     switchOf(colorableVars.outlinedSw, colorableVars.mildSw),  // the (outlined|mild) switching function
                     colorableVars.autoMildColorFn,
-                ]],
-                [colorableVars.themedMildColorTg] : [[
-                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw),  // the (outlined|mild) switching function
-                    colorableVars.themedMildColorFn,
                 ]],
             }),
             
@@ -277,14 +186,11 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
                     initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
                 */
                 ifHasTheme({
-                    ...vars({
-                        [colorableVars.autoColorSw] : 'initial',
-                    }),
-                }),
-                ifNoTheme({
-                    ...vars({
-                        [colorableVars.autoColorSw] : '',
-                    }),
+                    ...imports([
+                        // variants:
+                        outlineableRule, // the theme has been modified => need to re-define the outlined version of color, otherwise it still using the <parent>'s theme
+                        mildableRule,    // the theme has been modified => need to re-define the mild     version of color, otherwise it still using the <parent>'s theme
+                    ]),
                 }),
                 
                 
