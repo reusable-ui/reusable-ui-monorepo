@@ -70,40 +70,35 @@ export interface ColorableVars {
      * the outlined switching function.
      * this is the clone of `OutlineableVars.outlinedSw`, so we can still access the <ancestor>'s `outlinedSw`.
      */
-    outlinedSw        : any
+    outlinedSw : any
     /**
      * the mild switching function.
      * this is the clone of `MildableVars.mildSw`, so we can still access the <ancestor>'s `mildSw`.
      */
-    mildSw            : any
+    mildSw     : any
     
     
     
     /**
-     * functional auto color based on its background color.
+     * functional color based on <parent>'s background color or <current>'s theme.
      */
-    autoBoldColorFn   : any
+    colorFn    : any
     
     /**
-     * functional auto color based on its background color - at mild variant.
+     * functional alternate color based on <parent>'s background color or <current>'s theme.
      */
-    autoMildColorFn   : any
+    altColorFn : any
     /**
-     * conditionally toggled auto color based on its background color - at mild variant.
+     * conditionally toggled alternate color based on <parent>'s background color or <current>'s theme.
      */
-    autoMildColorTg   : any
-    
-    /**
-     * auto color based on its background color.
-     */
-    autoColorFn       : any
+    altColorTg : any
     
     
     
     /**
-     * final color.
+     * final color based on <parent>'s background color or <current>'s theme.
      */
-    color             : any
+    color      : any
 }
 const [colorableVars] = cssVars<ColorableVars>();
 
@@ -145,35 +140,29 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
             
             
             
-            // auto color functions:
-            ...vars({
-                // adaptive color functions:
-                [colorableVars.autoBoldColorFn] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
-                [colorableVars.autoMildColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
-                
-                
-                
-                // final color functions:
-                [colorableVars.autoColorFn    ] : switchOf(
-                    colorableVars.autoMildColorTg,  // toggle mild
-                    
-                    colorableVars.autoBoldColorFn,  // default => uses our `autoBoldColorFn`
-                ),
-            }),
             // color functions:
             ...vars({
+                // adaptive color functions:
+                [colorableVars.colorFn   ] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
+                [colorableVars.altColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
+                
+                
+                
                 // final color functions:
-                // TODO: under construction
-                [colorableVars.color] : colorableVars.autoColorFn,
+                [colorableVars.color] : switchOf(
+                    colorableVars.altColorTg, // toggle mild
+                    
+                    colorableVars.colorFn,    // default => uses our `colorFn`
+                ),
             }),
             
             
             
             // toggling functions:
             ...vars({
-                [colorableVars.autoMildColorTg  ] : [[
-                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw),  // the (outlined|mild) switching function
-                    colorableVars.autoMildColorFn,
+                [colorableVars.altColorTg] : [[
+                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw), // the (outlined|mild) switching function
+                    colorableVars.altColorFn,
                 ]],
             }),
             
@@ -181,10 +170,6 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
             
             // toggling conditions:
             ...variants([
-                /*
-                    empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                    initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                */
                 ifHasTheme({
                     ...imports([
                         // variants:
@@ -201,9 +186,9 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
                 
                 
                 
-                mildDefinition && ifMild(mildDefinition(true)),
-                mildDefinition && ifNotMild(mildDefinition(false)),
-                mildDefinition && ifInheritMild(mildDefinition('inherit')),
+                mildDefinition     && ifMild(mildDefinition(true)),
+                mildDefinition     && ifNotMild(mildDefinition(false)),
+                mildDefinition     && ifInheritMild(mildDefinition('inherit')),
             ]),
         }),
         colorableVars,
