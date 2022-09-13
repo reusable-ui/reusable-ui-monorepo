@@ -142,6 +142,12 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
             
             // configs:
             ...vars({
+                /*
+                    supports for `usesColorable()`:
+                    only reset `mildableVars.mildSw = mildableVars.mildPr` if `mildDefinition` provided,
+                    so the *modified* `mildableVars.mildSw` by `setMild()` still *preserved*,
+                    thus the `usesColorable()` can see the <parent>'s actual [mild] status.
+                */
                 [mildableVars.mildSw] : (mildDefinition || undefined) && mildableVars.mildPr,
             }),
             
