@@ -18,6 +18,7 @@ import {
     // rules:
     rule,
     variants,
+    atRoot,
     
     
     
@@ -25,6 +26,16 @@ import {
     style,
     vars,
     imports,
+    
+    
+    
+    // scopes:
+    globalScope,
+    
+    
+    
+    // style sheets:
+    styleSheets,
 }                           from '@cssfn/cssfn'                 // writes css in javascript
 import {
     // utilities:
@@ -271,3 +282,26 @@ export const useMildable = ({mild = _defaultMild}: MildableProps) => ({
     class: (mild === 'inherit') ? null : (mild ? 'mild' : 'not-mild'),
 });
 //#endregion mildable
+
+
+
+//#region style sheets
+/*
+    a side-effect styleSheet that forced to `"sideEffects": false` by `package.json`,
+    so if you don't import anything from this module, this side effect will gone.
+*/
+styleSheets([
+    globalScope({
+        ...atRoot({
+            ...imports([
+                /*
+                    supports for `usesColorable()`:
+                    at outside <component>, which is at <html><body>, the whole page assumes to be *mild*-ed (not filled by bold color theme).
+                    so we need to reset the whole page to mild={true}
+                */
+                setMild(true),
+            ]),
+        }),
+    }),
+]);
+//#endregion style sheets
