@@ -149,7 +149,7 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
             
             // configs:
             ...vars({
-                [outlineableVars.outlinedSw] : outlineableVars.outlinedPr,
+                [outlineableVars.outlinedSw] : (outlinedDefinition || undefined) && outlineableVars.outlinedPr,
             }),
             
             
