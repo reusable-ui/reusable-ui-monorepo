@@ -88,7 +88,7 @@ export const usesNudible = (nudeDefinition : null|((toggle: boolean|null) => Css
         nudibleRule: () => style({
             // configs:
             ...vars({
-                [nudibleVars.nudeSw] : nudibleVars.nudePr,
+                [nudibleVars.nudeSw] : (nudeDefinition || undefined) && nudibleVars.nudePr,
             }),
             
             
