@@ -92,7 +92,7 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
             // configs:
             ...vars({
                 [gradientableVars.backgGrad ] : config?.backgGrad,
-                [gradientableVars.gradientSw] : gradientableVars.gradientPr,
+                [gradientableVars.gradientSw] : (gradientDefinition || undefined) && gradientableVars.gradientPr,
             }),
             
             
