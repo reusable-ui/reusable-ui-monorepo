@@ -149,6 +149,12 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
             
             // configs:
             ...vars({
+                /*
+                    supports for `usesColorable()`:
+                    only reset `outlineableVars.outlinedSw = outlineableVars.outlinedPr` if `outlinedDefinition` provided,
+                    so the *modified* `outlineableVars.outlinedSw` by `setOutlined()` still *preserved*,
+                    thus the `usesColorable()` can see the <parent>'s actual [outlined] status.
+                */
                 [outlineableVars.outlinedSw] : (outlinedDefinition || undefined) && outlineableVars.outlinedPr,
             }),
             
