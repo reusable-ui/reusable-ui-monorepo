@@ -114,25 +114,25 @@ const [activatableVars] = cssVars<ActivatableVars>();
 
 
 
-// .actived will be added after activating-animation done:
-const selectorIfActived     = '.actived'
+// .activated will be added after activating-animation done:
+const selectorIfActivated   = '.activated'
 // [aria-checked],[aria-pressed],[aria-selected] = styled active, :checked = native active:
-const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.actived)'
+const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.activated)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
 // if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.actived, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
+const selectorIfPassived    = ':not(:is(.activated, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
 
 
 
-export const ifActived           = (styles: CssStyleCollection): CssRule => rule(selectorIfActived    , styles);
+export const ifActivated         = (styles: CssStyleCollection): CssRule => rule(selectorIfActivated  , styles);
 export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
 export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
 export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
 
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived                                           ], styles);
+export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated                                         ], styles);
 export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActived, selectorIfPassivating                    ], styles);
+export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated, selectorIfPassivating                  ], styles);
 
 
 
@@ -165,7 +165,7 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
             
             // animation functions:
             ...states([
-                ifActived({
+                ifActivated({
                     ...vars({
                         [activatableVars.filter] : activatableVars.filterActive,
                     }),
@@ -227,7 +227,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     // states:
-    const [actived,   setActived  ] = useState<boolean>(propActive); // true => active, false => passive
+    const [activated, setActivated] = useState<boolean>(propActive); // true => active, false => passive
     const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
     
     
@@ -238,8 +238,8 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
      */
     const activeFn : boolean = propActive /*controllable*/;
     
-    if (actived !== activeFn) { // change detected => apply the change & start animating
-        setActived(activeFn);   // remember the last change
+    if (activated !== activeFn) { // change detected => apply the change & start animating
+        setActivated(activeFn); // remember the last change
         setAnimating(activeFn); // start activating-animation/deactivating-animation
     } // if
     
@@ -261,8 +261,8 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     return {
-        active    : actived,
-        isVisible : actived || (animating !== null),
+        active    : activated,
+        isVisible : activated || (animating !== null),
         
         class     : ((): string|null => {
             // activating:
@@ -271,15 +271,15 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
             // passivating:
             if (animating === false) return 'passivating';
             
-            // fully actived:
-            if (actived) return 'actived';
+            // fully activated:
+            if (activated) return 'activated';
             
             // fully passived:
             return null;
         })(),
         
         props     : (() => {
-            if (!actived) return null;
+            if (!activated) return null;
             
             // use :checked if <input type="checkbox|radio">:
             if ((tag === 'input') && checkableCtrls.includes((props as any).type)) return { checked: true };
