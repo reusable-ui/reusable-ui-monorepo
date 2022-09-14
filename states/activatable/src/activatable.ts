@@ -120,19 +120,19 @@ const selectorIfActivated   = '.activated'
 const selectorIfActivating  = ':is([aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.activated)'
 // .passivating will be added after loosing active and will be removed after deactivating-animation done:
 const selectorIfPassivating = '.passivating'
-// if all above are not set => passived:
-const selectorIfPassived    = ':not(:is(.activated, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
+// if all above are not set => passivated:
+const selectorIfPassivated  = ':not(:is(.activated, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
 
 
 
 export const ifActivated         = (styles: CssStyleCollection): CssRule => rule(selectorIfActivated  , styles);
 export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
 export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
-export const ifPassived          = (styles: CssStyleCollection): CssRule => rule(selectorIfPassived   , styles);
+export const ifPassivated        = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivated , styles);
 
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated                                         ], styles);
-export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassived], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated, selectorIfPassivating                  ], styles);
+export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated                                           ], styles);
+export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassivated], styles);
+export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated, selectorIfPassivating                    ], styles);
 
 
 
@@ -274,7 +274,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
             // fully activated:
             if (activated) return 'activated';
             
-            // fully passived:
+            // fully passivated:
             return null;
         })(),
         
