@@ -76,6 +76,7 @@ import {
 //#region focusable
 export interface FocusableVars {
     boxShadow   : any
+    
     anim        : any
     
     
@@ -155,6 +156,7 @@ export const usesFocusable = (config?: FocusableConfig): FocusableStuff => {
             
             
             
+            // animation states:
             ...states([
                 ifFocused({
                     ...vars({
