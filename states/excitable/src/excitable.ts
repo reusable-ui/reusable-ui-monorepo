@@ -66,6 +66,7 @@ import {
 //#region excitable
 export interface ExcitableVars {
     filter : any
+    
     anim   : any
 }
 const [excitableVars] = cssVars<ExcitableVars>();
@@ -99,7 +100,7 @@ export interface ExcitableConfig {
 export const usesExcitable = (config?: ExcitableConfig): ExcitableStuff => {
     return {
         excitableRule: () => style({
-            // animation functions:
+            // animation states:
             ...states([
                 ifExcited({
                     ...vars({
