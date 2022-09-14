@@ -39,7 +39,7 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifActived,
+    ifActivated,
     ifActivating,
     ifPassivating,
     ifActive,
@@ -184,7 +184,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 }),
             ]),
             ...states([
-                ifActived({
+                ifActivated({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
                     }),
