@@ -78,6 +78,7 @@ import type {
 //#region interactable
 export interface InteractableVars {
     filter : any
+    
     anim   : any
 }
 const [interactableVars] = cssVars<InteractableVars>();
@@ -132,6 +133,7 @@ export interface InteractableConfig {
 export const usesInteractable = (config?: InteractableConfig): InteractableStuff => {
     return {
         interactableRule: () => style({
+            // animation states:
             ...states([
                 ifArrived({
                     ...vars({
