@@ -163,7 +163,7 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
             
             
             
-            // animation functions:
+            // animation states:
             ...states([
                 ifActivated({
                     ...vars({
