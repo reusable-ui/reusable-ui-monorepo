@@ -125,7 +125,6 @@ import {
 import {
     // hooks:
     ifMild,
-    setMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui components:
@@ -394,20 +393,6 @@ export const useProgressVariant = (props: ProgressVariant) => {
 
 
 
-export const usesProgressBarInheritMildVariant = () => {
-    return style({
-        ...variants([
-            rule('.mild>&', { // .mild>.progress => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
-                ...imports([
-                    setMild(true),
-                ]),
-            }),
-        ]),
-    });
-};
-
-
-
 export const usesProgressBarLayout = () => {
     // dependencies:
     
@@ -474,15 +459,6 @@ export const usesProgressBarVariants = () => {
     
     
     return style({
-        ...style({
-            // children:
-            ...children(listItemElm, {
-                ...imports([
-                    // variants:
-                    usesProgressBarInheritMildVariant(),
-                ]),
-            }),
-        }),
         ...variants([
             rule('.striped', {
                 // children:
@@ -935,7 +911,7 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
                 
                 
                 // variants:
-                mild={props.mild ?? false}
+                mild={props.mild ?? 'inherit'}
             />
         </Generic>
     );
