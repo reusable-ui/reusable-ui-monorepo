@@ -62,10 +62,6 @@ import {
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
-    // hooks:
-    usePropActive,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
     // utilities:
     isClientSideLink,
 }                           from '@reusable-ui/client-sides'    // a set of client-side functions
@@ -95,16 +91,16 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    gradientOf,
+    setGradient,
 }                           from '@reusable-ui/gradientable'    // gradient variant of UI
 import {
     // hooks:
     ifNotOutlined,
-    outlinedOf,
+    setOutlined,
 }                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
 import {
     // hooks:
-    mildOf,
+    setMild,
 }                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui states:
@@ -125,6 +121,10 @@ import {
     // hooks:
     ifPress,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
+import {
+    // hooks:
+    usesActiveAsClick,
+}                           from '@reusable-ui/active-as-click' // shows the UI as clicked when activated
 
 // reusable-ui components:
 import {
@@ -175,29 +175,29 @@ export const noBackground = () => {
         ...states([
             ifActive({
                 ...imports([
-                    outlinedOf(true), // keeps outlined (no background) variant
+                    setOutlined(true), // keeps outlined (no background) variant
                 ]),
             }),
             ifFocus({
                 ...imports([
-                    outlinedOf(true), // keeps outlined (no background) variant
+                    setOutlined(true), // keeps outlined (no background) variant
                 ]),
             }),
             ifArrive({
                 ...imports([
-                    outlinedOf(true), // keeps outlined (no background) variant
+                    setOutlined(true), // keeps outlined (no background) variant
                 ]),
             }),
             ifPress({
                 ...imports([
-                    outlinedOf(true), // keeps outlined (no background) variant
+                    setOutlined(true), // keeps outlined (no background) variant
                 ]),
             }),
         ]),
         ...variants([
             ifNotOutlined({
                 ...imports([
-                    outlinedOf(true), // keeps outlined (no background) variant
+                    setOutlined(true), // keeps outlined (no background) variant
                 ]),
             }),
         ], { minSpecificityWeight: 4 }), // force to win with states' specificity weight
@@ -290,7 +290,7 @@ export const usesButtonLinkVariant = () => {
             ifNotOutlined({ // fully link style without `.outlined`:
                 ...imports([
                     // backgrounds:
-                    gradientOf(false), // gradient is not supported if not `.outlined`
+                    setGradient(false), // gradient is not supported if not `.outlined`
                 ]),
             }),
         ]),
@@ -339,7 +339,7 @@ export const usesButtonVariants = () => {
                     ifLeave({
                         ...imports([
                             // backgrounds:
-                            gradientOf(false), // hide the gradient to increase invisibility
+                            setGradient(false), // hide the gradient to increase invisibility
                         ]),
                     }),
                 ]),
@@ -348,17 +348,25 @@ export const usesButtonVariants = () => {
         ...variants([
             rule('.icon', {
                 ...imports([
-                    mildOf('inherit'),
+                    setMild('inherit'),
                 ]),
             }),
         ], { specificityWeight: 2 }), // increase the specificity to win with ':where(&):not(:is(.mild&, &.mild))'
     });
 };
 export const usesButtonStates = () => {
+    // dependencies:
+    
+    // states:
+    const {activeAsClickRule} = usesActiveAsClick();
+    
+    
+    
     return style({
         ...imports([
             // states:
             usesActionControlStates(),
+            activeAsClickRule,
         ]),
     });
 };
@@ -559,9 +567,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     
     
     // fn props:
-    const propActive = usePropActive(props);
-    const pressedFn  = pressed ?? ((propActive && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
-    
     const {
         semanticTag,
         semanticRole,
@@ -616,11 +621,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-            
-            
-            
-            // accessibilities:
-            pressed={pressedFn}
             
             
             
