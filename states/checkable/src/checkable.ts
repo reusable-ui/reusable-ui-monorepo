@@ -42,7 +42,7 @@ import {
     ifActivated,
     ifActivating,
     ifPassivating,
-    ifPassived,
+    ifPassivated,
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 
@@ -158,7 +158,7 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
                         [checkableVars.anim        ] : config?.checkAnimOut,
                     }),
                 }),
-                ifPassived({
+                ifPassivated({
                     ...vars({
                         [checkableVars.filterOut   ] : config?.checkFilterOut,
                         
