@@ -84,14 +84,12 @@ import {
 
 //#region collapsible
 export interface CollapsibleVars {
-    filter : any
-    anim   : any
+    anim : any
 }
 const [collapsibleVars] = cssVars<CollapsibleVars>();
 
 {
-    const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
-    registerFilter(collapsibleVars.filter);
+    const {animationRegistry: {registerAnim}} = usesAnimation();
     registerAnim(collapsibleVars.anim);
 }
 
@@ -133,6 +131,23 @@ export interface CollapsibleConfig {
 export const usesCollapsible = <TConfigProps extends CssConfigProps = CssConfigProps>(config?: CollapsibleConfig & Refs<TConfigProps>): CollapsibleStuff => {
     return {
         collapsibleRule: () => style({
+            // config states:
+            ...states([
+                iif(!!config, {
+                    ...ifExpand({
+                        // overwrites propName = propName{'Expand'}:
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Expand')),
+                    }),
+                    ...ifCollapse({
+                        // overwrites propName = propName{'Collapse'}:
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Collapse')),
+                    }),
+                }),
+            ]),
+            
+            
+            
+            // animation states:
             ...states([
                 ifExpanding({
                     ...vars({
@@ -142,19 +157,6 @@ export const usesCollapsible = <TConfigProps extends CssConfigProps = CssConfigP
                 ifCollapsing({
                     ...vars({
                         [collapsibleVars.anim] : config?.animCollapse,
-                    }),
-                }),
-                
-                
-                
-                iif(!!config, {
-                    ...ifExpand({
-                        // overwrites propName = propName{'Expand'}:
-                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Expand')),
-                    }),
-                    ...ifCollapse({
-                        // overwrites propName = propName{'Collapse'}:
-                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Collapse')),
                     }),
                 }),
             ]),
