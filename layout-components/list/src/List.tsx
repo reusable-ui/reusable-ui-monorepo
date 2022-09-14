@@ -126,10 +126,6 @@ import {
     // hooks:
     usesResizable,
 }                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
-    setMild,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
 
 // reusable-ui states:
 import {
@@ -274,17 +270,6 @@ export const stripoutCommonBasicLayout = () => {
         */
     });
 };
-export const usesListItemInheritMildVariant = () => {
-    return style({
-        ...variants([
-            rule('.mild>*>&', { // .mild>*>.listItem => the specificity weight including parent = 2, is enough to kill :where(&):not(:is(.mild&, &.mild))
-                ...imports([
-                    setMild(true),
-                ]),
-            }),
-        ]),
-    });
-};
 
 
 
@@ -393,7 +378,6 @@ export const usesListItemVariants = () => {
         ...imports([
             // variants:
             usesIndicatorVariants(),
-            usesListItemInheritMildVariant(),
             resizableRule,
         ]),
     });
@@ -529,7 +513,6 @@ export const usesListActionItemVariants = () => {
         ...imports([
             // variants:
             usesActionControlVariants(),
-            usesListItemInheritMildVariant(),
         ]),
     });
 };
