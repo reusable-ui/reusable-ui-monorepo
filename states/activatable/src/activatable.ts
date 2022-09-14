@@ -179,7 +179,7 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
                 ifPassivating({
                     ...vars({
                         [activatableVars.filter] : activatableVars.filterActive,
-                        [activatableVars.anim  ] : activatableVars.animPassive
+                        [activatableVars.anim  ] : activatableVars.animPassive,
                     }),
                 }),
             ]),
