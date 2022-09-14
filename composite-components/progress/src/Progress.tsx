@@ -80,7 +80,7 @@ import {
 import {
     // utilities:
     parseNumber,
-}                           from '@reusable-ui/utilities'       // common utility functions
+}                           from '@reusable-ui/numbers'         // a set of numeric utility functions
 import {
     // hooks:
     useMergeClasses,
