@@ -37,12 +37,18 @@ function App() {
                 </article>
                 <article className='actions'>
                     <ToggleButton theme='primary' active={isPressed} onActiveChange={(event) => {
-                        console.log('onActiveChange', event.newActive);
-                        setPressed(event.newActive);
+                        console.log('onActiveChange', event.active);
+                        setPressed(event.active);
                     }}>
                         test &lt;Button&gt;
                     </ToggleButton>
                     <ToggleButton theme='danger'>
+                        test &lt;Button&gt;
+                    </ToggleButton>
+                    <ToggleButton theme='danger' mild={true}>
+                        test &lt;Button&gt;
+                    </ToggleButton>
+                    <ToggleButton theme='danger' outlined={true}>
                         test &lt;Button&gt;
                     </ToggleButton>
                 </article>
