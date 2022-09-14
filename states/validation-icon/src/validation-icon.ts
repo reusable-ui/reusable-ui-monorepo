@@ -76,6 +76,7 @@ export const usesValidationIcon = (config?: ValidationIconConfig): ValidationIco
             
             
             
+            // icon states:
             ...states([
                 ifValid({
                     ...vars({
