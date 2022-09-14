@@ -39,7 +39,7 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifActived,
+    ifActivated,
     ifActivating,
     ifPassivating,
     ifPassived,
@@ -183,7 +183,7 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
             
             // states:
             ...states([
-                ifActived({
+                ifActivated({
                     ...imports([
                         transformInVars(),
                     ]),
