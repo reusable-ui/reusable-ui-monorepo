@@ -48,6 +48,12 @@ function App() {
                     <Check theme='danger' checkStyle='toggleButton' nude={false}>
                         test &lt;Check&gt;
                     </Check>
+                    <Check theme='danger' checkStyle='toggleButton' nude={false} mild={true}>
+                        test &lt;Check&gt;
+                    </Check>
+                    <Check theme='danger' checkStyle='toggleButton' nude={false} outlined={true}>
+                        test &lt;Check&gt;
+                    </Check>
                 </article>
             </div>
         </>
