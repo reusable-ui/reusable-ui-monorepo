@@ -20,6 +20,7 @@
 [upgraded] [documented  ] [published] @reusable-ui/typos
 
 // reusable-ui utilities:
+@reusable-ui/numbers
 [upgraded] [documented  ] [published] @reusable-ui/stripouts
 [upgraded] [documented  ] [published] @reusable-ui/layouts
 [upgraded] [documented  ] [published] @reusable-ui/utilities
