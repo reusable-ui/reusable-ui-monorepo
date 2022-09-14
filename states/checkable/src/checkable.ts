@@ -59,6 +59,8 @@ export interface CheckableVars {
     transformIn  : any
     transformOut : any
     
+    
+    
     /**
      * final filter for the check indicator element.
      */
@@ -127,6 +129,7 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
             
             
             
+            // animation states:
             ...states([
                 ifActivated({
                     ...vars({
