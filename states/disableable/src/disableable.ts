@@ -77,6 +77,7 @@ import {
 //#region disableable
 export interface DisableableVars {
     filter : any
+    
     anim   : any
 }
 const [disableableVars] = cssVars<DisableableVars>();
@@ -124,6 +125,7 @@ export interface DisableableConfig {
 export const usesDisableable = (config?: DisableableConfig): DisableableStuff => {
     return {
         disableableRule: () => style({
+            // animation states:
             ...states([
                 ifEnabling({
                     ...vars({
