@@ -181,7 +181,7 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
             
             
             
-            // states:
+            // animation states:
             ...states([
                 ifActivated({
                     ...imports([
