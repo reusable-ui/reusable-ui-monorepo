@@ -39,7 +39,7 @@ import {
 // reusable-ui states:
 import {
     // hooks:
-    ifActived,
+    ifActivated,
     ifActivating,
     ifPassivating,
     ifPassived,
@@ -128,7 +128,7 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
             
             
             ...states([
-                ifActived({
+                ifActivated({
                     ...vars({
                         [checkableVars.filterIn    ] : config?.checkFilterIn,
                         
