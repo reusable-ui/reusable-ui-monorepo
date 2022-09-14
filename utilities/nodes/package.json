@@ -1,9 +1,10 @@
 {
-  "name": "@reusable-ui/utilities",
+  "name": "@reusable-ui/nodes",
   "version": "5.0.0",
-  "description": "A set of common utility functions.",
+  "description": "A set of React node utility functions.",
   "keywords": [
-    "utility",
+    "nodes",
+    "react",
     "utilities",
     "common"
   ],
@@ -14,8 +15,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/utilities.js",
-  "types": "dist/utilities.d.ts",
+  "main": "dist/nodes.js",
+  "types": "dist/nodes.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
