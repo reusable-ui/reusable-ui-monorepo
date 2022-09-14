@@ -167,6 +167,7 @@ export interface InvalidableConfig {
 export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff => {
     return {
         invalidableRule: () => style({
+            // animation states:
             ...states([
                 ifValidating({
                     ...vars({
