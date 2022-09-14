@@ -161,7 +161,7 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
             
             
             
-            // animation functions:
+            // animation states:
             ...states([
                 ifPressed({
                     ...vars({
