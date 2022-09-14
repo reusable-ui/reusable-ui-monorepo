@@ -76,14 +76,14 @@ import {
 
 // reusable-ui utilities:
 import {
+    // utilities:
+    parseNumber,
+}                           from '@reusable-ui/numbers'                 // a set of numeric utility functions
+import {
     // styles:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
 }                           from '@reusable-ui/layouts'                 // reusable common layouts
-import {
-    // utilities:
-    parseNumber,
-}                           from '@reusable-ui/utilities'               // common utility functions
 import {
     // hooks:
     useEvent,
