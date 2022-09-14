@@ -25,6 +25,7 @@ function App() {
         setPressed(!pressed);
     };
     
+    const [active, setActive] = useState<boolean>(false);
     
     return (
         <>
@@ -38,13 +39,18 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <Button theme='primary'>
+                    <Button theme='primary' active={active}>
                         test &lt;Button&gt;
                     </Button>
-                    <Button theme='primary' pressed={pressed || undefined} onClick={handleTogglePressed}>
-                        toggle press
+                    <Button theme='primary' active={active} mild={true}>
+                        test &lt;Button&gt;
+                    </Button>
+                    <Button theme='primary' active={active} outlined={true}>
+                        test &lt;Button&gt;
                     </Button>
                 </article>
+                <hr />
+                <input type='checkbox' checked={active} onChange={(e) => setActive(e.target.checked)} />
             </div>
         </>
     );
