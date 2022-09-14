@@ -197,25 +197,25 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
     
     
     
-    const framePassived  = style({
+    const framePassivated = style({
         filter : [[
             ...filters.filter((f) => (f !== filterActive)), // the rest filter(s)
         ]],
     });
-    const frameActivated = style({
+    const frameActivated  = style({
         filter : [[
             ...filters.filter((f) => (f !== filterActive)), // the rest filter(s)
             filterActive, // the interpolating filter
         ]],
     });
     const [keyframesActiveRule , keyframesActive ] = keyframes({
-        from : framePassived,
+        from : framePassivated,
         to   : frameActivated,
     });
     keyframesActive.value  = 'active';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
     const [keyframesPassiveRule, keyframesPassive] = keyframes({
         from : frameActivated,
-        to   : framePassived,
+        to   : framePassivated,
     });
     keyframesPassive.value = 'passive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivatable`
     //#endregion keyframes
