@@ -1,7 +1,7 @@
 [high prior] verify as excitable:
 
 disableable
-activatable
+[done] activatable
 
 focusable
 interactable
@@ -9,7 +9,7 @@ interactable
 invalidable
 validation-icon
 
-clickable
+[done] clickable
 
 collapsible
 
