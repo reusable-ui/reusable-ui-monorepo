@@ -35,6 +35,31 @@ function App() {
                     </button>
                 </article>
                 
+                <hr />
+                
+                <List theme='primary' mild={false}>
+                    <ListItem>
+                        A first item
+                    </ListItem>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                    <ListItem>
+                        A fourth item
+                    </ListItem>
+                    <ListItem active={true} actionCtrl={true} href='https://www.google.com'>
+                        A fifth item
+                    </ListItem>
+                    <ListItem actionCtrl={true}>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={true}>
+                        A seventh item
+                    </ListItem>
+                </List>
                 <List theme='primary'>
                     <ListItem>
                         A first item
@@ -45,11 +70,66 @@ function App() {
                     <ListItem theme='success'>
                         A third item
                     </ListItem>
-                    <ListItem active={true} actionCtrl={true} href='https://www.google.com'>
+                    <ListItem>
                         A fourth item
                     </ListItem>
-                    <ListItem theme='danger' actionCtrl={true}>
+                    <ListItem active={true} actionCtrl={true} href='https://www.google.com'>
                         A fifth item
+                    </ListItem>
+                    <ListItem actionCtrl={true}>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={true}>
+                        A seventh item
+                    </ListItem>
+                </List>
+                <List theme='primary' outlined={true}>
+                    <ListItem>
+                        A first item
+                    </ListItem>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                    <ListItem>
+                        A fourth item
+                    </ListItem>
+                    <ListItem active={true} actionCtrl={true} href='https://www.google.com'>
+                        A fifth item
+                    </ListItem>
+                    <ListItem actionCtrl={true}>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={true}>
+                        A seventh item
+                    </ListItem>
+                </List>
+                
+                <hr />
+                
+                <List theme='primary' actionCtrl={true} mild={false}>
+                    <ListItem>
+                        A first item
+                    </ListItem>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                    <ListItem actionCtrl={false}>
+                        A fourth item
+                    </ListItem>
+                    <ListItem active={true} href='https://www.google.com'>
+                        A fifth item
+                    </ListItem>
+                    <ListItem>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={false}>
+                        A seventh item
                     </ListItem>
                 </List>
                 <List theme='primary' actionCtrl={true}>
@@ -62,11 +142,40 @@ function App() {
                     <ListItem theme='success'>
                         A third item
                     </ListItem>
-                    <ListItem active={true} href='https://www.google.com'>
+                    <ListItem actionCtrl={false}>
                         A fourth item
                     </ListItem>
-                    <ListItem theme='danger' actionCtrl={false}>
+                    <ListItem active={true} href='https://www.google.com'>
                         A fifth item
+                    </ListItem>
+                    <ListItem>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={false}>
+                        A seventh item
+                    </ListItem>
+                </List>
+                <List theme='primary' actionCtrl={true} outlined={true}>
+                    <ListItem>
+                        A first item
+                    </ListItem>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                    <ListItem actionCtrl={false}>
+                        A fourth item
+                    </ListItem>
+                    <ListItem active={true} href='https://www.google.com'>
+                        A fifth item
+                    </ListItem>
+                    <ListItem>
+                        A sixth item
+                    </ListItem>
+                    <ListItem theme='danger' actionCtrl={false}>
+                        A seventh item
                     </ListItem>
                 </List>
             </div>

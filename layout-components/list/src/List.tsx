@@ -91,10 +91,6 @@ import {
     // hooks:
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // hooks:
-    usePropActive,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // reusable-ui features:
 import {
@@ -155,6 +151,10 @@ import {
     // hooks:
     ifPress,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
+import {
+    // hooks:
+    usesActiveAsClick,
+}                           from '@reusable-ui/active-as-click' // shows the UI as clicked when activated
 
 // reusable-ui components:
 import {
@@ -399,10 +399,18 @@ export const usesListItemVariants = () => {
     });
 };
 export const usesListItemStates = () => {
+    // dependencies:
+    
+    // states:
+    const {activeAsClickRule} = usesActiveAsClick();
+    
+    
+    
     return style({
         ...imports([
             // states:
             usesIndicatorStates(),
+            activeAsClickRule,
         ]),
     });
 };
@@ -1410,9 +1418,6 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
     
     
     // fn props:
-    const propActive = usePropActive(props);
-    const pressedFn  = pressed ?? (((propActive && actionCtrl) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
-    
     const {
         semanticTag  : buttonSemanticTag,
         semanticRole : buttonSemanticRole,
@@ -1476,7 +1481,6 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
             
             // accessibilities:
             inheritActive={props.inheritActive ?? true} // change default value to `true`
-            pressed={pressedFn}
             
             
             
