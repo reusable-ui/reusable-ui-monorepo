@@ -42,7 +42,7 @@ import {
     ifActivated,
     ifActivating,
     ifPassivating,
-    ifPassived,
+    ifPassivated,
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 
 
@@ -204,7 +204,7 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
                         animOutVars(),
                     ]),
                 }),
-                ifPassived({
+                ifPassivated({
                     ...imports([
                         transformOutVars(),
                     ]),
