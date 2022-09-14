@@ -61,6 +61,7 @@
 @reusable-ui/focusable
 @reusable-ui/interactable
 @reusable-ui/clickable
+@reusable-ui/active-as-click
 @reusable-ui/invalidable
 @reusable-ui/checkable
 @reusable-ui/hamburgerable
