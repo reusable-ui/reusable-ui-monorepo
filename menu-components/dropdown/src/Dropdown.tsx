@@ -36,13 +36,13 @@ import {
 
 // reusable-ui utilities:
 import {
+    // utilities:
+    isReusableUiComponent,
+}                           from '@reusable-ui/nodes'           // a set of React node utility functions
+import {
     // styles:
     stripoutFocusableElement,
 }                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
-    // utilities:
-    isReusableUiComponent,
-}                           from '@reusable-ui/utilities'       // common utility functions
 import {
     // utilities:
     setFocusNext,

@@ -49,7 +49,7 @@
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/orientationable": "^5.0.0",
     "@reusable-ui/stripouts": "^5.0.0",
-    "@reusable-ui/utilities": "^5.0.0",
+    "@reusable-ui/nodes": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
