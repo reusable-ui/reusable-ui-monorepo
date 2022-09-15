@@ -8,7 +8,7 @@ import {
 import {
     // utilities:
     isForwardRef,
-}                           from '@reusable-ui/utilities'       // common utility functions
+}                           from '@reusable-ui/nodes'           // a set of React node utility functions
 
 // other libs:
 import type {
