@@ -138,18 +138,18 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 // alternate filterActive => filterActive:
                 [activeAsClickVars.altFilterActiveTg]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.filterActive,
+                    'brightness(100%)',
                 ]],
                 
                 // alternate animActive => animActive:
                 [activeAsClickVars.altAnimActiveTg  ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animActive,
+                    `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ]],
                 // alternate animPassive => animPassive:
                 [activeAsClickVars.altAnimPassiveTg ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animPassive,
+                    `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ]],
             }),
             
@@ -167,7 +167,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : [['1ms', keyframesDummyPress]], // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                                [clickableVars.anim  ] : activeAsClickVars.animActive,
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -177,7 +177,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : [['1ms', keyframesDummyRelease]], // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
