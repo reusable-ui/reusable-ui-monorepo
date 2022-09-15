@@ -23,7 +23,7 @@ import {
 import {
     // utilities:
     isReusableUiComponent,
-}                           from '@reusable-ui/utilities'       // common utility functions
+}                           from '@reusable-ui/nodes'           // a set of React node utility functions
 import {
     // hooks:
     useEvent,
