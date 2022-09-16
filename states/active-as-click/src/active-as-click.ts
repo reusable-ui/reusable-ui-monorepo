@@ -192,13 +192,13 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifActivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        [clickableVars.anim  ] : activeAsClickVars.animActive,
+                        [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation -or- pressing dummy
                     }),
                 }),
                 ifPassivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        [clickableVars.anim  ] : activeAsClickVars.animPassive,
+                        [clickableVars.anim  ] : activeAsClickVars.animPassive, // releasing animation -or- releasing dummy
                     }),
                 }),
             ]),
