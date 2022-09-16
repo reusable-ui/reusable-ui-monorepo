@@ -239,8 +239,18 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     const activeFn : boolean = propActive /*controllable*/;
     
     if (activated !== activeFn) { // change detected => apply the change & start animating
-        setActivated(activeFn); // remember the last change
-        setAnimating(activeFn); // start activating-animation/deactivating-animation
+        const updateActivated = () => {
+            setActivated(activeFn); // remember the last change
+            setAnimating(activeFn); // start activating-animation/deactivating-animation
+        };
+        if (activeFn) {
+            // update the state immediately:
+            updateActivated();
+        }
+        else {
+            // update the state a bit delayed:
+            setTimeout(updateActivated, 2); // supports for toggle active => make sure the `.passivating` state runs *after* `.releasing` state
+        } // if
     } // if
     
     
