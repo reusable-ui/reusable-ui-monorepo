@@ -167,7 +167,6 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     ...rules([
                         ifActive({
                             ...vars({
-                                [clickableVars.filter] : activeAsClickVars.filterActive,
                                 [clickableVars.anim  ] : activeAsClickVars.animActive,
                             }),
                         }),
