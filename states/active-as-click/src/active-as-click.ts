@@ -49,6 +49,7 @@ import {
     // hooks:
     ifPressing,
     ifReleasing,
+    ifPress,
     usesClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
@@ -162,12 +163,17 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     prevents the pressing & releasing state to animate & toggle the filter
                     without making `useClickable()` stalling
                 */
-                ifPressing({
+                ifPress({
                     ...rules([
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
                                 [clickableVars.anim  ] : `1ms ${keyframesDummyPress}`, // prevents a pressing animation when the <button> is already pressed
+                                
+                                // outlined/mild mode:
+                                [clickableVars.filter] : clickableVars.filterPress,
+                                // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
+                                [clickableVars.anim  ] : null,
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -185,12 +191,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                                 // outlined/mild mode:
                                 // preserves the releasing animation, so the pressing animation cancel out smoothly:
                                 [clickableVars.filter] : clickableVars.filterPress,
-                                [clickableVars.anim  ] : clickableVars.animRelease,
+                                [clickableVars.anim  ] : null,
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
                 }),
-            ]),
+            ], { specificityWeight: 4 }),
             ...states([
                 ifActivated({
                     ...vars({
@@ -213,6 +219,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
                         [clickableVars.anim  ] : activeAsClickVars.animPassive, // releasing animation -or- releasing dummy
+                        
+                        // outlined/mild mode:
+                        [clickableVars.anim  ] : null,
                     }),
                 }),
             ]),
