@@ -168,12 +168,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : `1ms ${keyframesDummyPress}`, // prevents a pressing animation when the <button> is already pressed
+                                [clickableVars.anim  ] : `1ms ${keyframesDummyPress}`, // no pressing animation
                                 
                                 // outlined/mild mode:
                                 [clickableVars.filter] : clickableVars.filterPress,
                                 // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
-                                [clickableVars.anim  ] : null,
+                                [clickableVars.anim  ] : null, // pressing animation
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -186,12 +186,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                                 // holds the pressed state:
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
                                 // prevents the releasing animation:
-                                [clickableVars.anim  ] : `1ms ${keyframesDummyRelease}`, // prevents a releasing animation when the <button> is still pressed
+                                [clickableVars.anim  ] : `1ms ${keyframesDummyRelease}`, // no releasing animation
                                 
                                 // outlined/mild mode:
                                 // preserves the releasing animation, so the pressing animation cancel out smoothly:
                                 [clickableVars.filter] : clickableVars.filterPress,
-                                [clickableVars.anim  ] : null,
+                                [clickableVars.anim  ] : null, // releasing animation
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -209,7 +209,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         // holds the pressed state:
                         [clickableVars.filter] : activeAsClickVars.filterActive,
                         // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
-                        // [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation -or- pressing dummy
+                        // [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation
                         
                         // outlined/mild mode:
                         [clickableVars.filter] : clickableVars.filterPress, // overrides the above
@@ -218,10 +218,10 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifPassivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        [clickableVars.anim  ] : activeAsClickVars.animPassive, // releasing animation -or- releasing dummy
+                        [clickableVars.anim  ] : activeAsClickVars.animPassive, // no releasing animation
                         
                         // outlined/mild mode:
-                        [clickableVars.anim  ] : null,
+                        [clickableVars.anim  ] : null, // releasing animation
                     }),
                 }),
             ]),
