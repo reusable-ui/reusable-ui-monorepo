@@ -123,12 +123,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 // animActive => animPress:
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
-                    clickableVars.animPress,
+                    `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 // animPassive => animRelease:
                 [activeAsClickVars.animPassive ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
-                    clickableVars.animRelease,
+                    `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
             }),
             
@@ -145,12 +145,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 // alternate animActive => animActive:
                 [activeAsClickVars.altAnimActiveTg  ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                    clickableVars.animPress,
                 ]],
                 // alternate animPassive => animPassive:
                 [activeAsClickVars.altAnimPassiveTg ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                    clickableVars.animRelease,
                 ]],
             }),
             
@@ -163,17 +163,22 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     prevents the pressing & releasing state to animate & toggle the filter
                     without making `useClickable()` stalling
                 */
-                ifPress({
+                ifPressing({
                     ...rules([
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : `1ms ${keyframesDummyPress}`, // no pressing animation
-                                
+                                [clickableVars.anim  ] : activeAsClickVars.animActive,
+                            }),
+                        }),
+                    ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
+                }),
+                ifPress({
+                    ...rules([
+                        ifActive({
+                            ...vars({
                                 // outlined/mild mode:
                                 [clickableVars.filter] : clickableVars.filterPress,
-                                // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
-                                [clickableVars.anim  ] : null, // pressing animation
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -182,19 +187,18 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     ...rules([
                         ifActive({
                             ...vars({
-                                // bold mode:
-                                // holds the pressed state:
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                // prevents the releasing animation:
-                                [clickableVars.anim  ] : `1ms ${keyframesDummyRelease}`, // no releasing animation
+                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
                                 
                                 // outlined/mild mode:
-                                // preserves the releasing animation, so the pressing animation cancel out smoothly:
                                 [clickableVars.filter] : clickableVars.filterPress,
-                                [clickableVars.anim  ] : null, // releasing animation
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
+                    ...vars({
+                        // outlined/mild mode:
+                        [clickableVars.filter] : clickableVars.filterPress,
+                    }),
                 }),
             ], { specificityWeight: 4 }),
             ...states([
@@ -205,23 +209,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 }),
                 ifActivating({
                     ...vars({
-                        // bold mode:
-                        // holds the pressed state:
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
-                        // [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation
-                        
-                        // outlined/mild mode:
-                        [clickableVars.filter] : clickableVars.filterPress, // overrides the above
                     }),
                 }),
                 ifPassivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        [clickableVars.anim  ] : activeAsClickVars.animPassive, // no releasing animation
-                        
-                        // outlined/mild mode:
-                        [clickableVars.anim  ] : null, // releasing animation
                     }),
                 }),
             ]),
