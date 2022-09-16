@@ -167,7 +167,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : activeAsClickVars.animActive,
+                                [clickableVars.anim  ] : `1ms ${keyframesDummyPress}`, // prevents a pressing animation when the <button> is already pressed
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
@@ -177,7 +177,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
-                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
+                                [clickableVars.anim  ] : `1ms ${keyframesDummyRelease}`, // prevents a releasing animation when the <button> is still pressed
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
