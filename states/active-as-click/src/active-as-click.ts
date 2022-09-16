@@ -192,7 +192,8 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifActivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation -or- pressing dummy
+                        // TODO: do not restart pressing animation if the <button> is already pressed
+                        // [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation -or- pressing dummy
                     }),
                 }),
                 ifPassivating({
