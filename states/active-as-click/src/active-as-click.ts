@@ -164,29 +164,20 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     without making `useClickable()` stalling
                 */
                 ifPressing({
-                    ...rules([
-                        ifActive({
-                            ...vars({
-                                [clickableVars.anim  ] : activeAsClickVars.animActive,
-                            }),
+                    ...ifActive({
+                        ...vars({
+                            [clickableVars.anim  ] : activeAsClickVars.animActive,
                         }),
-                    ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
-                }),
-                ifReleasing({
-                    ...rules([
-                        ifActive({
-                            ...vars({
-                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
-                            }),
-                        }),
-                    ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
-                }),
-                ifPressReleasing({
-                    ...vars({
-                        [clickableVars.filter] : clickableVars.filterPress,
                     }),
                 }),
-            ], { specificityWeight: 4 }),
+                ifReleasing({
+                    ...ifActive({
+                        ...vars({
+                            [clickableVars.anim  ] : activeAsClickVars.animPassive,
+                        }),
+                    }),
+                }),
+            ]),
             ...states([
                 ifActivated({
                     ...vars({
@@ -201,6 +192,18 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifPassivating({
                     ...vars({
                         [clickableVars.filter] : activeAsClickVars.filterActive,
+                    }),
+                }),
+                
+                /*
+                    put at the last, so the action states (.pressing/.pressed/.releasing) always win than toggling states (.activating/.activated/.passivating)
+                    the cases of a <button> with [outlined=true] or [mild=true]:
+                        * when toggling on , the mouse_up will not cause blinking effect
+                        * when toggling off, the mouse_down will make pressing effect
+                */
+                ifPressReleasing({
+                    ...vars({
+                        [clickableVars.filter] : clickableVars.filterPress,
                     }),
                 }),
             ]),
