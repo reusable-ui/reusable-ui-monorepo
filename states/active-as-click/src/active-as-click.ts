@@ -187,11 +187,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     ...rules([
                         ifActive({
                             ...vars({
-                                [clickableVars.filter] : activeAsClickVars.filterActive,
                                 [clickableVars.anim  ] : activeAsClickVars.animPassive,
-                                
-                                // outlined/mild mode:
-                                [clickableVars.filter] : clickableVars.filterPress,
                             }),
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
