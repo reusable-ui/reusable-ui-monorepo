@@ -47,6 +47,7 @@ import {
 }                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
 import {
     // hooks:
+    ifPressed,
     ifPressing,
     ifReleasing,
     ifPress,
@@ -172,6 +173,15 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         }),
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
                 }),
+                ifReleasing({
+                    ...rules([
+                        ifActive({
+                            ...vars({
+                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
+                            }),
+                        }),
+                    ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
+                }),
                 ifPress({
                     ...rules([
                         ifActive({
@@ -183,13 +193,6 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     ], { specificityWeight: 0 }), // do not increase the .pressing state specificity, so it can be overriden by the .(activating|releasing) state
                 }),
                 ifReleasing({
-                    ...rules([
-                        ifActive({
-                            ...vars({
-                                [clickableVars.anim  ] : activeAsClickVars.animPassive,
-                            }),
-                        }),
-                    ], { specificityWeight: 0 }), // do not increase the .releasing state specificity, so it can be overriden by the .(activating|releasing) state
                     ...vars({
                         // outlined/mild mode:
                         [clickableVars.filter] : clickableVars.filterPress,
