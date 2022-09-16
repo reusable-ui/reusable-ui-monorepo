@@ -191,6 +191,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     }),
                 }),
             ]),
+            // animation filters:
             ...states([
                 ifActivated({
                     ...vars({
