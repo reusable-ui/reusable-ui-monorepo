@@ -114,12 +114,28 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation functions:
             ...vars({
+                /*
+                    a <button> with [outlined=true] or [mild=true] style:
+                        => uses filter `active` (the default is do nothing)
+                    
+                    a <button> with regular style:
+                        => uses filter `press` (the default is darken)
+                */
                 // filterActive => filterPress:
                 [activeAsClickVars.filterActive]: switchOf(
                     activeAsClickVars.altFilterActiveTg,
                     clickableVars.filterPress,
                 ),
                 
+                
+                
+                /*
+                    a <button> with [outlined=true] or [mild=true] style:
+                        => uses the .pressing & .releasing animations
+                    
+                    a <button> with regular style:
+                        => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
+                */
                 // animActive => animPress:
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
@@ -142,6 +158,8 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     activatableVars.filterActive,
                 ]],
                 
+                
+                
                 // alternate animActive => animActive:
                 [activeAsClickVars.altAnimActiveTg  ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
@@ -158,22 +176,17 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
-                /*
-                    when in activating/activated state =>
-                    prevents the pressing & releasing state to animate & toggle the filter
-                    without making `useClickable()` stalling
-                */
                 ifPressing({
                     ...ifActive({
                         ...vars({
-                            [clickableVars.anim  ] : activeAsClickVars.animActive,
+                            [clickableVars.anim] : activeAsClickVars.animActive,
                         }),
                     }),
                 }),
                 ifReleasing({
                     ...ifActive({
                         ...vars({
-                            [clickableVars.anim  ] : activeAsClickVars.animPassive,
+                            [clickableVars.anim] : activeAsClickVars.animPassive,
                         }),
                     }),
                 }),
@@ -197,7 +210,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 
                 /*
                     put at the last, so the action states (.pressing/.pressed/.releasing) always win than toggling states (.activating/.activated/.passivating)
-                    the cases of a <button> with [outlined=true] or [mild=true]:
+                    the cases of a <button> with [outlined=true] or [mild=true] style:
                         * when toggling on , the mouse_up will not cause blinking effect
                         * when toggling off, the mouse_down will make pressing effect
                 */
