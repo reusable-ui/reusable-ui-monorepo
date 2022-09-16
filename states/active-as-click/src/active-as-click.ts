@@ -177,7 +177,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         ifActive({
                             ...vars({
                                 // bold mode:
+                                // holds the pressed state:
                                 [clickableVars.filter] : activeAsClickVars.filterActive,
+                                // prevents the releasing animation:
                                 [clickableVars.anim  ] : `1ms ${keyframesDummyRelease}`, // prevents a releasing animation when the <button> is still pressed
                                 
                                 // // outlined/mild mode:
@@ -198,8 +200,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifActivating({
                     ...vars({
                         // bold mode:
+                        // holds the pressed state:
                         [clickableVars.filter] : activeAsClickVars.filterActive,
-                        // already been pressed => no need to play the pressing animation:
+                        // already been pressed by `usesClickable()` => no need to re-play the pressing animation => causing blinky:
                         // [clickableVars.anim  ] : activeAsClickVars.animActive, // pressing animation -or- pressing dummy
                     }),
                 }),
