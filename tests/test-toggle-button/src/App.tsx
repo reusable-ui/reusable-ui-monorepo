@@ -39,16 +39,16 @@ function App() {
                     <ToggleButton theme='primary' active={isPressed} onActiveChange={(event) => {
                         console.log('onActiveChange', event.active);
                         setPressed(event.active);
-                    }}>
+                    }} focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger'>
+                    <ToggleButton theme='danger' focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger' mild={true}>
+                    <ToggleButton theme='danger' mild={true} focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger' outlined={true}>
+                    <ToggleButton theme='danger' outlined={true} focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
                 </article>
