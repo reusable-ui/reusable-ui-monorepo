@@ -123,6 +123,9 @@ const selectorIfReleasing = '.releasing'
 // // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
+// the .clicked will be added in a short time (about one frame long) after releasing-animation done:
+const selectorIfClicked   = '.clicked'
+
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
 export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
@@ -131,6 +134,9 @@ export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(se
 export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
 export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
 export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
+
+export const ifClicked        = (styles: CssStyleCollection): CssRule => rule(        selectorIfClicked   , styles);
+export const ifNotClicked     = (styles: CssStyleCollection): CssRule => rule(`:not(${selectorIfClicked})`, styles);
 
 
 
@@ -232,12 +238,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     // states:
-    const [pressed,   setPressed  ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
+    const [pressed,     setPressed    ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
+    const [animating,   setAnimating  ] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
     
-    const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
+    const [pressDn,     setPressDn    ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
     
-    const [triggerReleased, setTriggerReleased] = useState<boolean>(false);      // true => trigger the `.released` state briefly after the `.releasing` animation done, false => do
+    const [markClicked, setMarkClicked] = useState<boolean>(false);                  // true => mark the `.clicked` state briefly after the `.releasing` animation done, false => do nothing
     
     
     
@@ -263,16 +269,16 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     // dom effects:
     
-    const asyncHandleRelease   = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    const asyncTriggerReleased = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
+    const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncUnmarkClicked = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
         return () => {
             // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
             
-            // cancel out previously asyncTriggerReleased (if any):
-            if (asyncTriggerReleased.current) cancelIdleCallback(asyncTriggerReleased.current);
+            // cancel out previously asyncUnmarkClicked (if any):
+            if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         };
     }, []); // runs once on startup
     
@@ -338,20 +344,20 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     useEffect(() => {
         // conditions:
-        if (!triggerReleased) return; // the released state was not triggered => nothing to reset
+        if (!markClicked) return; // the `.clicked` state was not marked => nothing to reset
         
         
         
         // setups:
         
-        // cancel out previously asyncTriggerReleased (if any):
-        if (asyncTriggerReleased.current) cancelIdleCallback(asyncTriggerReleased.current);
+        // cancel out previously asyncUnmarkClicked (if any):
+        if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         
-        // wait until the `.released` state shown briefly (1 frame) by browser ui, then remove it
-        asyncTriggerReleased.current = requestIdleCallback(() => {
-            setTriggerReleased(false); // remove the `.released` state
+        // wait until the `.clicked` state shown briefly (1 frame) by browser ui, then remove it
+        asyncUnmarkClicked.current = requestIdleCallback(() => {
+            setMarkClicked(false); // un-mark the `.clicked` state
         });
-    }, [triggerReleased]);
+    }, [markClicked]);
     
     
     
@@ -489,8 +495,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        if (animating === false) { // the `.releasing` animation done
-            setTriggerReleased(true); // trigger the `.released` state briefly
+        if (animating === false) { // the `.releasing` animation is done
+            setMarkClicked(true); // mark the `.clicked` state
         } // if
         
         
@@ -523,7 +529,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             // fully pressed:
             if (pressed) return 'pressed';
             
-            if (triggerReleased) return 'released';
+            // has been clicked:
+            if (markClicked) return 'clicked';
             
             // // // fully released:
             // // // if (isControllablePressed) {
