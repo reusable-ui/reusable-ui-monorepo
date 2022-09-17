@@ -38,6 +38,7 @@
     "@cssfn/cssfn-react": "^2.0.10",
     "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/activatable": "^5.0.0",
+    "@reusable-ui/active-as-click": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/checkable": "^5.0.0",

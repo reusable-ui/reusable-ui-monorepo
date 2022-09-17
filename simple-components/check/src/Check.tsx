@@ -118,6 +118,10 @@ import {
 }                           from '@reusable-ui/focusable'               // a capability of UI to be focused
 import {
     // hooks:
+    usesActiveAsClick,
+}                           from '@reusable-ui/active-as-click'         // shows the UI as clicked when activated
+import {
+    // hooks:
     usesCheckable,
 }                           from '@reusable-ui/checkable'               // a capability of UI to be checked
 
@@ -408,8 +412,9 @@ export const usesCheckStates = () => {
     // dependencies:
     
     // states:
-    const {focusableVars} = usesFocusable();
-    const {checkableRule} = usesCheckable(checks);
+    const {focusableVars    } = usesFocusable();
+    const {checkableRule    } = usesCheckable(checks);
+    const {activeAsClickRule} = usesActiveAsClick();
     
     
     
@@ -419,6 +424,14 @@ export const usesCheckStates = () => {
             usesEditableActionControlStates(),
             checkableRule,
         ]),
+        ...variants([
+            rule('.toggleButton', {
+                ...imports([
+                    // states:
+                    activeAsClickRule,
+                ]),
+            }),
+        ], { specificityWeight: 1 }),
         ...style({
             // children:
             ...children(inputElm, {
@@ -759,9 +772,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
     
-    const isToggleButton = (props.checkStyle === 'toggleButton');
-    const pressedFn      = pressed ?? (((isActive && isToggleButton) && !outlined && !mild) || undefined); // if (active (as pressed) === false) => uncontrolled pressed
-    
     
     
     // classes:
@@ -882,7 +892,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             // states:
             active={isActive}
-            pressed={pressedFn}
             
             
             
