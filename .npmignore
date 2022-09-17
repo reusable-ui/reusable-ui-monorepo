@@ -32,6 +32,9 @@ dialog-components/*/__tests__/
 composite-components/*/src/
 composite-components/*/__tests__/
 
+barrels/*/src/
+barrels/*/__tests__/
+
 
 package-lock.json
 

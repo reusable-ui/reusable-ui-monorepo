@@ -18,6 +18,8 @@
     "dialog-components/*",
     "composite-components/*",
     
+    "barrels/*",
+    
     "tests/*"
   ],
   "version": "independent"

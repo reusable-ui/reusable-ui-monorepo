@@ -29,6 +29,8 @@
     "dialog-components/*",
     "composite-components/*",
     
+    "barrels/*",
+    
     "tests/*"
   ]
 }
