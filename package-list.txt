@@ -28,6 +28,7 @@
 [upgraded] [documented  ] [published] @reusable-ui/semantics
 [upgraded] [documented  ] [published] @reusable-ui/accessibilities
 [upgraded] [documented  ] [published] @reusable-ui/validations
+@reusable-ui/focuses
 [upgraded] [undocumented] [published] @reusable-ui/dimensions
 [upgraded] [undocumented] [published] @reusable-ui/responsive
 [        ] [undocumented] [         ] @reusable-ui/client-sides
@@ -133,5 +134,6 @@
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/nav
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/navscroll
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/accordion
+[upgraded] [documented  ] [published] [full    compound] @reusable-ui/exclusive-accordion
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/carousel
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/navbar
