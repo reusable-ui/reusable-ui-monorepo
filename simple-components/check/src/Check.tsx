@@ -692,8 +692,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
         inheritActive,  // take, to be handled by `useToggleActivatable`
         onActiveChange, // take, to be handled by `useToggleActivatable`
         
-        pressed,
-        
         
         
         // accessibilities:
