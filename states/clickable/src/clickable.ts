@@ -113,14 +113,14 @@ const [clickableVars] = cssVars<ClickableVars>();
 const selectorIfPressed   = '.pressed'
 // .pressing = styled press, :active = native press:
 // the .disabled, .disable are used to kill native :active
-// the .pressed, .releasing, .released are used to overwrite native :active
-// const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
+// // // the .pressed, .releasing, .released are used to overwrite native :active
+// // // const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
 const selectorIfPressing  = '.pressing'
 // .releasing will be added after loosing press and will be removed after releasing-animation done:
 const selectorIfReleasing = '.releasing'
 // if all above are not set => released:
-// optionally use .released to overwrite native :active
-// const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
+// // // optionally use .released to overwrite native :active
+// // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
@@ -237,6 +237,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     const [pressDn,   setPressDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
     
+    const [triggerReleased, setTriggerReleased] = useState<boolean>(false);      // true => trigger the `.released` state briefly after the `.releasing` animation done, false => do
+    
     
     
     // resets:
@@ -261,12 +263,16 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     // dom effects:
     
-    const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncHandleRelease   = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+    const asyncTriggerReleased = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
         return () => {
             // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
+            
+            // cancel out previously asyncTriggerReleased (if any):
+            if (asyncTriggerReleased.current) cancelIdleCallback(asyncTriggerReleased.current);
         };
     }, []); // runs once on startup
     
@@ -329,6 +335,23 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             window.removeEventListener('touchcancel', handleReleaseTouch);
         };
     }, [propEditable, isControllablePressed, pressDn]);
+    
+    useEffect(() => {
+        // conditions:
+        if (!triggerReleased) return; // the released state was not triggered => nothing to reset
+        
+        
+        
+        // setups:
+        
+        // cancel out previously asyncTriggerReleased (if any):
+        if (asyncTriggerReleased.current) cancelIdleCallback(asyncTriggerReleased.current);
+        
+        // wait until the `.released` state shown briefly (1 frame) by browser ui, then remove it
+        asyncTriggerReleased.current = requestIdleCallback(() => {
+            setTriggerReleased(false); // remove the `.released` state
+        });
+    }, [triggerReleased]);
     
     
     
@@ -466,6 +489,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
+        if (animating === false) { // the `.releasing` animation done
+            setTriggerReleased(true); // trigger the `.released` state briefly
+        } // if
+        
+        
+        
         // clean up finished animation
         
         setAnimating(null); // stop pressing-animation/releasing-animation
@@ -494,13 +523,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             // fully pressed:
             if (pressed) return 'pressed';
             
-            // fully released:
-            // if (isControllablePressed) {
-            //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // }
-            // else {
-            //     return null; // discard all classes above
-            // } // if
+            if (triggerReleased) return 'released';
+            
+            // // // fully released:
+            // // // if (isControllablePressed) {
+            // // //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
+            // // // }
+            // // // else {
+            // // //     return null; // discard all classes above
+            // // // } // if
             return null; // discard all classes above
         })(),
         
