@@ -185,20 +185,24 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             // animation states:
             ...states([
                 // TODO: in progress
-                // ifActivating({
-                //     ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
-                //         ...vars({
-                //             [activatableVars.anim] : clickableVars.animPress,
-                //         }),
-                //     }),
-                // }),
-                // ifPassivating({
-                //     ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
-                //         ...vars({
-                //             [activatableVars.anim] : clickableVars.animRelease,
-                //         }),
-                //     }),
-                // }),
+                ifActivating({
+                    ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
+                        ...vars({
+                            // !!! causes `useActivatable()` stall, because the animation name not contain *active*
+                            // [activatableVars.anim] : clickableVars.animPress,
+                            [clickableVars.anim] : clickableVars.animPress,
+                        }),
+                    }),
+                }),
+                ifPassivating({
+                    ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
+                    }),
+                    ...vars({
+                        // !!! causes `useActivatable()` stall, because the animation name not contain *passive*
+                        // [activatableVars.anim] : clickableVars.animRelease,
+                        [clickableVars.anim] : clickableVars.animRelease,
+                    }),
+                }),
                 
                 
                 
