@@ -220,12 +220,7 @@ const _defaultMarkActiveOptions        : MarkActiveOptions  = { outlined: null, 
 const _defaultSemanticTag              : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
 const _defaultSemanticRole             : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic
 
-const _defaultOutlined                 : boolean            = false
-const _defaultMild                     : boolean            = true
 const _defaultActionCtrl               : boolean|undefined  = undefined
-
-const _defaultItemOutlined             : boolean            = false
-const _defaultItemMild                 : boolean            = false
 const _defaultItemActionCtrl           : boolean            = false
 
 const _defaultListSeparatorItemClasses : Optional<string>[] = ['void']
@@ -1383,17 +1378,6 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
     
     // rest props:
     const {
-        // variants:
-        outlined = _defaultItemOutlined,
-        mild     = _defaultItemMild,
-        
-        
-        
-        // accessibilities:
-        pressed,
-        
-        
-        
         // behaviors:
         actionCtrl = _defaultItemActionCtrl,
     ...restActionControlProps} = props;
@@ -1452,8 +1436,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
             
             
             // variants:
-            outlined={outlined}
-            mild={mild}
+            mild={props.mild ?? 'inherit'}
             
             
             
@@ -1489,8 +1472,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
             
             
             // variants:
-            outlined={outlined}
-            mild={mild}
+            mild={props.mild ?? 'inherit'}
             
             
             
@@ -1661,9 +1643,6 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
         orientation : _orientation, // remove
         listStyle   : _listStyle,   // remove
         
-        outlined    = _defaultOutlined,
-        mild        = _defaultMild,
-        
         
         
         // behaviors:
@@ -1744,12 +1723,6 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             
             
             
-            // variants:
-            outlined={outlined}
-            mild={mild}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
@@ -1772,12 +1745,6 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                     {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
                         // props:
                         {
-                            // variants:
-                            outlined : (outlined || undefined) ?? child.props.outlined, // if `true` => force apply to <ListItem>(s), otherwise independent by <ListItem>(s)
-                            mild     : (mild     || undefined) ?? child.props.mild,     // if `true` => force apply to <ListItem>(s), otherwise independent by <ListItem>(s)
-                            
-                            
-                            
                             // behaviors:
                             ...(((): boolean => {
                                 // conditions:
