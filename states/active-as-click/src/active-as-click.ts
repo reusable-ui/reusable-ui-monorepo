@@ -9,10 +9,9 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
-    rule,
-    rules,
     states,
     keyframes,
+    ifNotHover,
     
     
     
@@ -51,6 +50,7 @@ import {
     ifPressing,
     ifReleasing,
     ifPressReleasing,
+    ifNotClicked,
     usesClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
@@ -101,10 +101,6 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
     const [keyframesDummyReleaseRule, keyframesDummyRelease] = keyframes({ /* empty frame */ });
     keyframesDummyPress.value   = 'dummyPress';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     keyframesDummyRelease.value = 'dummyRelease'; // the @keyframes name should contain 'release' in order to be recognized by `useClickable`
-    
-    // TODO: remove:
-    const [keyframesDummyTestRule  , keyframesDummyTest  ] = keyframes({ /* empty frame */ });
-    keyframesDummyTest.value   = 'dummy-TEST-active';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     //#endregion dummy keyframes
     
     
@@ -114,9 +110,6 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             // animations:
             ...keyframesDummyPressRule,
             ...keyframesDummyReleaseRule,
-            
-            // TODO: remove:
-            ...keyframesDummyTestRule,
             
             
             
@@ -184,23 +177,22 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
-                // TODO: in progress
                 ifActivating({
-                    ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
-                        ...vars({
-                            // !!! causes `useActivatable()` stall, because the animation name not contain *active*
-                            // [activatableVars.anim] : clickableVars.animPress,
-                            [clickableVars.anim] : clickableVars.animPress,
+                    ...ifNotClicked({ // if there's no clicking activity in the last 1 frame
+                        ...ifNotHover({ // if there's no `.activating` by click // TODO: perfecting the detection of [click => .activating]
+                            ...vars({
+                                [clickableVars.anim] : clickableVars.animPress,
+                            }),
                         }),
                     }),
                 }),
                 ifPassivating({
-                    ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
-                    }),
-                    ...vars({
-                        // !!! causes `useActivatable()` stall, because the animation name not contain *passive*
-                        // [activatableVars.anim] : clickableVars.animRelease,
-                        [clickableVars.anim] : clickableVars.animRelease,
+                    ...ifNotClicked({ // if there's no clicking activity in the last 1 frame
+                        ...ifNotHover({ // if there's no `.passivating` by click // TODO: perfecting the detection of [click => .passivating]
+                            ...vars({
+                                [clickableVars.anim] : clickableVars.animRelease,
+                            }),
+                        }),
                     }),
                 }),
                 
