@@ -561,7 +561,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         
         // accessibilities:
         label,
-        pressed,
     ...restActionControlProps} = props;
     
     
