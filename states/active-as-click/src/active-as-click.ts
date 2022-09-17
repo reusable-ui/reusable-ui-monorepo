@@ -9,6 +9,7 @@ import type {
 }                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
+    rule,
     rules,
     states,
     keyframes,
@@ -100,6 +101,10 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
     const [keyframesDummyReleaseRule, keyframesDummyRelease] = keyframes({ /* empty frame */ });
     keyframesDummyPress.value   = 'dummyPress';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     keyframesDummyRelease.value = 'dummyRelease'; // the @keyframes name should contain 'release' in order to be recognized by `useClickable`
+    
+    // TODO: remove:
+    const [keyframesDummyTestRule  , keyframesDummyTest  ] = keyframes({ /* empty frame */ });
+    keyframesDummyTest.value   = 'dummy-TEST-active';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     //#endregion dummy keyframes
     
     
@@ -109,6 +114,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             // animations:
             ...keyframesDummyPressRule,
             ...keyframesDummyReleaseRule,
+            
+            // TODO: remove:
+            ...keyframesDummyTestRule,
             
             
             
@@ -176,6 +184,24 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
+                // TODO: in progress
+                // ifActivating({
+                //     ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
+                //         ...vars({
+                //             [activatableVars.anim] : clickableVars.animPress,
+                //         }),
+                //     }),
+                // }),
+                // ifPassivating({
+                //     ...rule(':not(:is(.pressing, .pressed, .releasing, .released))', {
+                //         ...vars({
+                //             [activatableVars.anim] : clickableVars.animRelease,
+                //         }),
+                //     }),
+                // }),
+                
+                
+                
                 ifPressing({
                     ...ifActive({
                         ...vars({
