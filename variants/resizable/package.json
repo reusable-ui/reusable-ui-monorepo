@@ -31,11 +31,11 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/css-config": "^2.0.14",
+    "@cssfn/css-config": "^2.0.15",
     "@cssfn/types": "^2.0.1",
     "@cssfn/css-types": "^2.0.4"
   },
   "peerDependencies": {
-    "@cssfn/cssfn": "^2.0.8"
+    "@cssfn/cssfn": "^2.0.9"
   }
 }

@@ -35,12 +35,12 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/cssfn-react": "^2.0.10",
+    "@cssfn/cssfn-react": "^2.0.11",
     "@reusable-ui/generic": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
-    "@cssfn/cssfn": "^2.0.8",
+    "@cssfn/cssfn": "^2.0.9",
     "react": "^18.1.0"
   }
 }

@@ -45,6 +45,6 @@
     "@reusable-ui/outlineable": "^5.0.0"
   },
   "peerDependencies": {
-    "@cssfn/cssfn": "^2.0.8"
+    "@cssfn/cssfn": "^2.0.9"
   }
 }

@@ -40,6 +40,6 @@
     "@cssfn/types": "^2.0.1"
   },
   "peerDependencies": {
-    "@cssfn/cssfn": "^2.0.8"
+    "@cssfn/cssfn": "^2.0.9"
   }
 }
