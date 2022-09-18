@@ -74,7 +74,7 @@
 
 // base-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/generic
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/basic
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/basic
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/indicator
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/control
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/action-control
