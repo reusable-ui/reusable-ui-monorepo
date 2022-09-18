@@ -77,7 +77,7 @@ import {
 import {
     // hooks:
     usesValidationIcon,
-}                           from '@reusable-ui/validation-icon'     // an icon for indicating a validity status.
+}                           from '@reusable-ui/validation-icon'     // an icon for indicating a validity status
 
 // reusable-ui components:
 import {
