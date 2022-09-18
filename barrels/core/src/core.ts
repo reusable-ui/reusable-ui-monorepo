@@ -15,8 +15,6 @@ export * from '@reusable-ui/semantics'          // a semantic management system 
 export * from '@reusable-ui/accessibilities'    // an accessibility management system
 export * from '@reusable-ui/validations'        // a validation management system
 export * from '@reusable-ui/focuses'            // focusing functions
-export * from '@reusable-ui/dimensions'         // a set of React helper for fetching the dimension of elements
-export * from '@reusable-ui/responsives'        // a responsive management system for react web components
 export * from '@reusable-ui/client-sides'       // a set of client-side functions
 export * from '@reusable-ui/navigations'        // a set of navigation functions
 
