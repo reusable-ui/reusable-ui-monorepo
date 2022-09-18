@@ -34,7 +34,7 @@ import {
     // hooks:
     ifValid,
     ifInvalid,
-}                           from '@reusable-ui/invalidable'     // a possibility of UI having an invalid state.
+}                           from '@reusable-ui/invalidable'     // a possibility of UI having an invalid state
 
 
 
