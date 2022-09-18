@@ -32,53 +32,49 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // types:
+    
+    
+    
+    // a semantic management system for react web components:
     SemanticTag,
     SemanticRole,
-    
-    
-    
-    // hooks:
     useTestSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // hooks:
+    
+    
+    
+    // an accessibility management system:
     usePropEnabled,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // utilities:
+    
+    
+    
+    // a set of client-side functions:
     JsxClientSideLink,
     isClientSideLink,
-}                           from '@reusable-ui/client-sides'    // a set of client-side functions
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     usesClickable,
     ClickableProps,
     ClickableOptions,
     useClickable,
-}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
