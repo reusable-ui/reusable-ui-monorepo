@@ -30,7 +30,7 @@
 [upgraded] [documented  ] [published] @reusable-ui/validations
 @reusable-ui/focuses
 [upgraded] [undocumented] [published] @reusable-ui/dimensions
-[upgraded] [undocumented] [published] @reusable-ui/responsive
+[upgraded] [undocumented] [published] @reusable-ui/responsives
 [        ] [undocumented] [         ] @reusable-ui/client-sides
 [        ] [undocumented] [         ] @reusable-ui/navigations
 
