@@ -15,16 +15,17 @@ import type {
     Optional,
 }                           from '@cssfn/types'                 // cssfn general types
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // a semantic management system for react web components:
     SemanticProps,
     useSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
 
