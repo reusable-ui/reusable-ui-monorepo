@@ -33,50 +33,45 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeEvents,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // an accessibility management system:
     usePropAccessibility,
-    
-    
-    
-    // react components:
     AccessibilityProps,
     AccessibilityProvider,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be disabled:
     usesDisableable,
     DisableableProps,
     useDisableable,
-}                           from '@reusable-ui/disableable'     // a capability of UI to be disabled
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
     usesActivatable,
     markActive,
     ActivatableProps,
     useActivatable,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
