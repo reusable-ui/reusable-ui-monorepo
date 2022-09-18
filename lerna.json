@@ -18,6 +18,8 @@
     "dialog-components/*",
     "composite-components/*",
     
+    "utility-components/*",
+    
     "barrels/*",
     
     "tests/*"

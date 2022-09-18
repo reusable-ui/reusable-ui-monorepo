@@ -18,6 +18,8 @@ menu-components/*/dist/
 dialog-components/*/dist/
 composite-components/*/dist/
 
+utility-components/*/dist/
+
 barrels/*/dist/
 
 
