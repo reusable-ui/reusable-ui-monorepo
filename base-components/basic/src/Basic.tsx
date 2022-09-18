@@ -32,94 +32,104 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a color management system:
     colors,
-}                           from '@reusable-ui/colors'          // a color management system
-import {
-    // configs:
+    
+    
+    
+    // a border (stroke) management system:
     borders,
     borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
+    
+    
+    
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-import {
-    // configs:
+    
+    
+    
+    // a typography management system:
     typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-
-// reusable-ui utilities:
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // background stuff of UI:
     usesBackground,
-}                           from '@reusable-ui/background'      // background stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // foreground (text color) stuff of UI:
     usesForeground,
-}                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // ring (focus indicator) color of UI:
     usesRing,
-}                           from '@reusable-ui/ring'            // ring (focus indicator) color of UI
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
     ResizableProps,
     useResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // color options of UI:
     usesThemable,
     ThemableProps,
     useThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
-import {
-    // hooks:
+    
+    
+    
+    // gradient variant of UI:
     usesGradientable,
     GradientableProps,
     useGradientable,
-}                           from '@reusable-ui/gradientable'    // gradient variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // outlined (background-less) variant of UI:
     usesOutlineable,
     OutlineableProps,
     useOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     usesMildable,
     MildableProps,
     useMildable,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // nude variant of UI:
     usesNudible,
     NudibleProps,
     useNudible,
-}                           from '@reusable-ui/nudible'         // nude variant of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
