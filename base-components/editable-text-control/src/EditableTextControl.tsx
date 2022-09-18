@@ -73,7 +73,7 @@ import {
 import {
     // hooks:
     ifNoValidation,
-}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state.
+}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state
 import {
     // hooks:
     usesValidationIcon,
