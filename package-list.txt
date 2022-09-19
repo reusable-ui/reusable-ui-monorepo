@@ -119,7 +119,7 @@
 [simplified] [documented  ] [published] [partial compound] @reusable-ui/dropdown
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/dropdown-button
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list-button
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list-button
 
 // dialog-components:
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/modal

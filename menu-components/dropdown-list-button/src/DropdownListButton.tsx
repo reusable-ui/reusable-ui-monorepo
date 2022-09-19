@@ -4,11 +4,11 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui variants:
+// reusable-ui core:
 import {
-    // hooks:
+    // basic variants of UI:
     useBasicVariantProps,
-}                           from '@reusable-ui/basic-variants'  // basic variants of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import type {
