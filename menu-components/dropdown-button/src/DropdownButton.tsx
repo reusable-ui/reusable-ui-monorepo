@@ -9,40 +9,34 @@ import {
     useRef,
 }                           from 'react'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui variants:
-import {
-    // defaults:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     defaultBlockEndOrientationableWithDirectionOptions as dropdownDefaultOrientationableWithDirectionOptions,
-    
-    
-    
-    // hooks:
     OrientationName,
-    
     OrientationableWithDirectionProps,
     useOrientationableWithDirection,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-
-// reusable-ui states:
-import {
-    // type:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     ToggleCollapsibleProps,
     useToggleCollapsible,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-import type {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ActiveChangeEvent,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import type {
