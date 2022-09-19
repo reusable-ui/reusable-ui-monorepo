@@ -59,39 +59,42 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // styles:
+    // common layouts:
     fillTextLineHeightLayout,
-}                           from '@reusable-ui/layouts'         // common layouts
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeClasses,
     useMergeStyles,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
     ResizableProps,
     useResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // color options of UI:
     usesThemable,
     ThemableProps,
     useThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     MildableProps,
     useMildable,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     usesColorable,
-}                           from '@reusable-ui/colorable'       // colorize the UI based on its theme or the background theme
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
