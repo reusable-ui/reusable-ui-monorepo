@@ -35,96 +35,100 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
+    
+    
+    
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
-// reusable-ui utilities:
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // types:
+    
+    
+    
+    // a semantic management system for react web components:
     SemanticTag,
     SemanticRole,
-    
-    
-    
-    // hooks:
     useSemantic,
     useTestSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // utilities:
+    
+    
+    
+    // a set of client-side functions:
     isClientSideLink,
-}                           from '@reusable-ui/client-sides'    // a set of client-side functions
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultInlineOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // gradient variant of UI:
     setGradient,
-}                           from '@reusable-ui/gradientable'    // gradient variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // outlined (background-less) variant of UI:
     ifNotOutlined,
     setOutlined,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     setMild,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     ifFocus,
-}                           from '@reusable-ui/focusable'       // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // adds an interactive feel to a UI:
     ifArrive,
     ifLeave,
-}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     ifPress,
-}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
-import {
-    // hooks:
+    
+    
+    
+    // shows the UI as clicked when activated:
     usesActiveAsClick,
-}                           from '@reusable-ui/active-as-click' // shows the UI as clicked when activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
