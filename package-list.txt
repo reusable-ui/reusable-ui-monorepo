@@ -123,7 +123,7 @@
 
 // dialog-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/modal
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/modal-card
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/modal-card
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
