@@ -43,41 +43,43 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a typography management system:
     typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
     MarkActiveOptions,
     markActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     ifFocus,
-}                           from '@reusable-ui/focusable'       // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // adds an interactive feel to a UI:
     ifArrive,
-}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     ifPress,
-}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
-import {
-    // hooks:
+    
+    
+    
+    // a hamburger menu animation:
     usesHamburgerable,
-}                           from '@reusable-ui/hamburgerable'   // a hamburger menu animation
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
