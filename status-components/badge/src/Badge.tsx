@@ -40,52 +40,52 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
+    
+    
+    
+    // a typography management system:
     typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-
-// reusable-ui utilities:
-import {
-    // styles:
+    
+    
+    
+    // reusable common layouts:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
-}                           from '@reusable-ui/layouts'         // reusable common layouts
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // nude variant of UI:
     ifNotNude,
-}                           from '@reusable-ui/nudible'         // nude variant of UI
-
-// reusable-ui states:
-import type {
-    // type:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
