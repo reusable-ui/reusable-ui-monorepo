@@ -91,7 +91,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/button
 [simplified] [new         ] [new      ] [full    compound] @reusable-ui/toggle-button
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/nav-button
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/button-icon
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/button-icon
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/close-button
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/form
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/input

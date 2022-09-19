@@ -37,38 +37,37 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a typography management system:
     typos,
-}                           from '@reusable-ui/typos'           // a typography management system
-
-// reusable-ui utilities:
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import type {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
     ResizableProps,
-}                           from '@reusable-ui/resizable'       // size options of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
