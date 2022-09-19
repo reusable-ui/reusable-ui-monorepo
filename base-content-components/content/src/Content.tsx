@@ -79,44 +79,44 @@ import {
     groupSelector,
 }                           from '@cssfn/css-selectors'         // manipulates css selectors
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
-// reusable-ui utilities:
-import type {
-    // types:
+    
+    
+    
+    // a semantic management system for react web components:
     Tag,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // styles:
+    
+    
+    
+    // removes browser's default stylesheet:
     stripoutFigure,
     stripoutImage,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // groups a list of UIs into a single UI:
     ifFirstVisibleChild,
     ifLastVisibleChild,
     usesGroupable,
-}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
