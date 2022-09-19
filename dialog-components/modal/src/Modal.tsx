@@ -58,56 +58,58 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // utilities:
+    // a set of React node utility functions:
     isReusableUiComponent,
-}                           from '@reusable-ui/nodes'           // a set of React node utility functions
-import {
-    // styles:
+    
+    
+    
+    // removes browser's default stylesheet:
     stripoutFocusableElement,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
-    // utilities:
+    
+    
+    
+    // focusing functions:
     setFocusNext,
-}                           from '@reusable-ui/focuses'         // focusing functions
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // utilities:
+    
+    
+    
+    // a set of client-side functions:
     isClientSide,
-}                           from '@reusable-ui/client-sides'    // a set of client-side functions
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     ifCollapsed,
     usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
     ToggleCollapsibleProps,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to highlight itself to attract user's attention:
     usesExcitable,
     ExcitedChangeEvent,
     useToggleExcitable,
-}                           from '@reusable-ui/excitable'       // a capability of UI to highlight itself to attract user's attention
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
