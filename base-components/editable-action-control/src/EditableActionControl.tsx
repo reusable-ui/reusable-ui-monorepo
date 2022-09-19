@@ -15,18 +15,17 @@ import {
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeEvents,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'               // react helper hooks
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     useClickable,
-}                           from '@reusable-ui/clickable'           // a capability of UI to be clicked
+}                           from '@reusable-ui/core'                // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
