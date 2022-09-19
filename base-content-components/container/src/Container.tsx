@@ -53,43 +53,40 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borders as borderStrokes,
     borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
+    
+    
+    
+    // a responsive management system:
     breakpoints,
-    
-    
-    
-    // rules:
     ifScreenWidthAtLeast,
-}                           from '@reusable-ui/breakpoints'     // a responsive management system
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // groups a list of UIs into a single UI:
     ifFirstVisibleChild,
     ifLastVisibleChild,
     usesGroupable,
-}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     defaultBlockOrientationableOptions,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {

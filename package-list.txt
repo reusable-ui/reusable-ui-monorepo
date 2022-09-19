@@ -81,7 +81,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/container
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/container
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
