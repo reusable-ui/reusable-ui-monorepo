@@ -47,33 +47,32 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
-// reusable-ui utilities:
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useIsomorphicLayoutEffect,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultBlockOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
