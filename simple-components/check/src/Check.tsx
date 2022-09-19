@@ -53,77 +53,82 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borderRadiuses,
-}                           from '@reusable-ui/borders'                 // a border (stroke) management system
-
-// reusable-ui utilities:
-import {
-    // styles:
+    
+    
+    
+    // reusable common layouts:
     fillTextLineHeightLayout,
-}                           from '@reusable-ui/layouts'                 // reusable common layouts
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'                   // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // an accessibility management system:
     usePropEnabled,
     usePropReadOnly,
-}                           from '@reusable-ui/accessibilities'         // an accessibility management system
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // foreground (text color) stuff of UI:
     usesForeground,
-}                           from '@reusable-ui/foreground'              // foreground (text color) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'               // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     usesMildable,
-}                           from '@reusable-ui/mildable'                // mild (soft color) variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // nude variant of UI:
     ifNotNude,
     ifNude,
-}                           from '@reusable-ui/nudible'                 // nude variant of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ToggleActivatableProps,
     useToggleActivatable,
-}                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     usesFocusable,
-}                           from '@reusable-ui/focusable'               // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // shows the UI as clicked when activated:
     usesActiveAsClick,
-}                           from '@reusable-ui/active-as-click'         // shows the UI as clicked when activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be checked:
     usesCheckable,
-}                           from '@reusable-ui/checkable'               // a capability of UI to be checked
+}                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
