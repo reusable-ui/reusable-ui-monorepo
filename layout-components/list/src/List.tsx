@@ -60,97 +60,100 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borderRadiuses,
-}                           from '@reusable-ui/borders'         // a border (stroke) management system
-import {
-    // configs:
+    
+    
+    
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
-// reusable-ui utilities:
-import {
-    // styles:
+    
+    
+    
+    // removes browser's default stylesheet:
     stripoutList,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeEvents,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // types:
+    
+    
+    
+    // a semantic management system for react web components:
     Tag,
     SemanticTag,
     SemanticRole,
-    
-    
-    
-    // hooks:
     useTestSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // background stuff of UI:
     usesBackground,
-}                           from '@reusable-ui/background'      // background stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // groups a list of UIs into a single UI:
     ifFirstVisibleChild,
     ifLastVisibleChild,
     ifNotFirstVisibleChild,
     usesGroupable,
-}                           from '@reusable-ui/groupable'       // groups a list of UIs into a single UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultBlockOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
     ifPassive,
     MarkActiveOptions,
     markActive,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     ifFocus,
-}                           from '@reusable-ui/focusable'       // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // adds an interactive feel to a UI:
     ifArrive,
-}                           from '@reusable-ui/interactable'    // adds an interactive feel to a UI
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     ifPress,
-}                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
-import {
-    // hooks:
+    
+    
+    
+    // shows the UI as clicked when activated:
     usesActiveAsClick,
-}                           from '@reusable-ui/active-as-click' // shows the UI as clicked when activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {

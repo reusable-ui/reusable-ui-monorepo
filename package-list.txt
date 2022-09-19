@@ -101,7 +101,7 @@
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/list
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/list
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/card
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/masonry
 
