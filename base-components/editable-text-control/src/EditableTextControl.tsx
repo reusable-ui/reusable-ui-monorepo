@@ -43,41 +43,43 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
-// reusable-ui features:
+// reusable-ui core:
 import {
-    // hooks:
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'             // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'           // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
     MarkActiveOptions,
     markActive,
-}                           from '@reusable-ui/activatable'         // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     ifFocus,
-}                           from '@reusable-ui/focusable'           // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // adds an interactive feel to a UI:
     ifArrive,
-}                           from '@reusable-ui/interactable'        // adds an interactive feel to a UI
-import {
-    // hooks:
+    
+    
+    
+    // a possibility of UI having an invalid state:
     ifNoValidation,
-}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state
-import {
-    // hooks:
+    
+    
+    
+    // an icon for indicating a validity status:
     usesValidationIcon,
-}                           from '@reusable-ui/validation-icon'     // an icon for indicating a validity status
+}                           from '@reusable-ui/core'                // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
