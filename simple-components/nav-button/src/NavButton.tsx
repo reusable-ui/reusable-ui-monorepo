@@ -4,20 +4,22 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // an accessibility management system:
     usePropActive,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    
+    
+    
+    // a set of navigation functions:
     DetermineCurrentPageProps,
     useDetermineCurrentPage,
-}                           from '@reusable-ui/navigations'     // a set of navigation functions
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
