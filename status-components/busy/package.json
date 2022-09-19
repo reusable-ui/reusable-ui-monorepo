@@ -41,9 +41,8 @@
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/cssfn-react": "^2.0.11",
     "@reusable-ui/badge": "^5.0.0",
-    "@reusable-ui/collapsible": "^5.0.0",
+    "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
-    "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/visually-hidden": "^5.0.0",
     "@types/react": "^18.0.10"
   },

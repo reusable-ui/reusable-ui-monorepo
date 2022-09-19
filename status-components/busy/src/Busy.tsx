@@ -27,17 +27,16 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui states:
-import type {
-    // type:
-    ExpandedChangeEvent,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-
-// reusable-ui variants:
+// reusable-ui core:
 import {
-    // hooks:
+    // a capability of UI to expand/reduce its size or toggle the visibility:
+    ExpandedChangeEvent,
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
