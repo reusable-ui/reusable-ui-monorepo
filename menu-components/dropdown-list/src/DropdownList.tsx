@@ -4,30 +4,31 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import type {
-    // types:
+    
+    
+    
+    // a semantic management system for react web components:
     Role,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
-import {
-    // utilities:
+    
+    
+    
+    // focusing functions:
     setFocusFirst,
     setFocusLast,
     setFocusPrev,
     setFocusNext,
-}                           from '@reusable-ui/focuses'         // focusing functions
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
