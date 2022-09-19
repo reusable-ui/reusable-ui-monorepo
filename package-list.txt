@@ -93,7 +93,7 @@
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/nav-button
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/button-icon
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/close-button
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/form
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/form
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/input
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/check

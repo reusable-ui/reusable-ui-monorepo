@@ -44,35 +44,30 @@ import {
     usesCssProps,
 }                           from '@cssfn/css-config'                // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'               // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // a validation management system:
     Result as ValResult,
-    
-    
-    
-    // react components:
     ValidationProvider,
-}                           from '@reusable-ui/validations'         // a validation management system
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'           // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a possibility of UI having an invalid state:
     ifValid,
     ifInvalid,
     usesInvalidable,
@@ -81,7 +76,7 @@ import {
     ValidityChangeEvent,
     InvalidableProps,
     useInvalidable,
-}                           from '@reusable-ui/invalidable'         // a possibility of UI having an invalid state
+}                           from '@reusable-ui/core'                // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
