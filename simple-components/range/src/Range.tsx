@@ -68,90 +68,96 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'                    // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a border (stroke) management system:
     borderRadiuses,
-}                           from '@reusable-ui/borders'                 // a border (stroke) management system
-
-// reusable-ui utilities:
-import {
-    // utilities:
+    
+    
+    
+    // a set of numeric utility functions:
     parseNumber,
-}                           from '@reusable-ui/numbers'                 // a set of numeric utility functions
-import {
-    // styles:
+    
+    
+    
+    // reusable common layouts:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
-}                           from '@reusable-ui/layouts'                 // reusable common layouts
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
     useMergeStyles,
-}                           from '@reusable-ui/hooks'                   // react helper hooks
-import {
-    // hooks:
+    
+    
+    
+    // an accessibility management system:
     usePropEnabled,
     usePropReadOnly,
-}                           from '@reusable-ui/accessibilities'         // an accessibility management system
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // background stuff of UI:
     usesBackground,
-}                           from '@reusable-ui/background'              // background stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'                  // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'                 // padding (inner spacing) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // groups a list of UIs into a single UI:
     usesGroupable,
-}                           from '@reusable-ui/groupable'               // groups a list of UIs into a single UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultInlineOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable'         // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'               // size options of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActive,
     MarkActiveOptions,
     markActive,
-}                           from '@reusable-ui/activatable'             // a capability of UI to be highlighted/selected/activated
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be focused:
     ifFocus,
     useFocusable,
-}                           from '@reusable-ui/focusable'               // a capability of UI to be focused
-import {
-    // hooks:
+    
+    
+    
+    // adds an interactive feel to a UI:
     ifArrive,
     useInteractable,
-}                           from '@reusable-ui/interactable'            // adds an interactive feel to a UI
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be clicked:
     useClickable,
-}                           from '@reusable-ui/clickable'               // a capability of UI to be clicked
+}                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
