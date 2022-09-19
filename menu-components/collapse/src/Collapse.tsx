@@ -36,45 +36,43 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
     useMergeStyles,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to float/overlay on the top/beside the another UI:
     FloatableProps,
     useFloatable,
-}                           from '@reusable-ui/floatable'       // a capability of UI to float/overlay on the top/beside the another UI
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultBlockOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     ifCollapsed,
     usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
