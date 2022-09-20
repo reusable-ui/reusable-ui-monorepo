@@ -50,5 +50,4 @@ export * from '@reusable-ui/clickable'          // a capability of UI to be clic
 export * from '@reusable-ui/active-as-click'    // shows the UI as clicked when activated
 export * from '@reusable-ui/invalidable'        // a possibility of UI having an invalid state.
 export * from '@reusable-ui/checkable'          // a capability of UI to be checked
-export * from '@reusable-ui/hamburgerable'      // a hamburger menu animation
 export * from '@reusable-ui/validation-icon'    // an icon for indicating a validity status

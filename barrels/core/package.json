@@ -75,7 +75,6 @@
     "@reusable-ui/active-as-click": "^5.0.0",
     "@reusable-ui/invalidable": "^5.0.0",
     "@reusable-ui/checkable": "^5.0.0",
-    "@reusable-ui/hamburgerable": "^5.0.0",
     "@reusable-ui/validation-icon": "^5.0.0"
   }
 }
