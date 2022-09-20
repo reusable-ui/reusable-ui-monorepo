@@ -66,66 +66,71 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui configs:
+// reusable-ui core:
 import {
-    // configs:
+    // a color management system:
     colors,
-}                           from '@reusable-ui/colors'          // a color management system
-import {
-    // configs:
+    
+    
+    
+    // a spacer (gap) management system:
     spacers,
-}                           from '@reusable-ui/spacers'         // a spacer (gap) management system
-
-// reusable-ui utilities:
-import {
-    // utilities:
+    
+    
+    
+    // a set of numeric utility functions:
     parseNumber,
-}                           from '@reusable-ui/numbers'         // a set of numeric utility functions
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useMergeClasses,
     useMergeStyles,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // background stuff of UI:
     usesBackground,
-}                           from '@reusable-ui/background'      // background stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // foreground (text color) stuff of UI:
     usesForeground,
-}                           from '@reusable-ui/foreground'      // foreground (text color) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to rotate its layout:
     OrientationableOptions,
     defaultInlineOrientationableOptions,
     usesOrientationable,
     OrientationableProps,
     useOrientationable,
-}                           from '@reusable-ui/orientationable' // a capability of UI to rotate its layout
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // gradient variant of UI:
     usesGradientable,
-}                           from '@reusable-ui/gradientable'    // gradient variant of UI
-import {
-    // hooks:
+    
+    
+    
+    // mild (soft color) variant of UI:
     ifMild,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
