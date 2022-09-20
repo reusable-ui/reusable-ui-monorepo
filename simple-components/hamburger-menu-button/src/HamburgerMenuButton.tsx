@@ -74,11 +74,6 @@ import {
     
     // a capability of UI to be clicked:
     ifPress,
-    
-    
-    
-    // a hamburger menu animation:
-    usesHamburgerable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -103,6 +98,12 @@ import {
     
     ToggleButtonComponentProps,
 }                           from '@reusable-ui/toggle-button'   // a base component
+
+// internals:
+import {
+    // a hamburger menu animation:
+    usesHamburgerable,
+}                           from './hamburgerable.js'
 
 
 
