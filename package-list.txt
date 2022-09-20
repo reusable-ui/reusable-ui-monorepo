@@ -138,4 +138,4 @@
 
 utility-components:
 [simplified] [undocumented] [published] @reusable-ui/dimensions
-[upgraded] [undocumented] [published] @reusable-ui/responsives
+[simplified] [undocumented] [published] @reusable-ui/responsives

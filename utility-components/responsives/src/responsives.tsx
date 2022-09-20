@@ -23,18 +23,19 @@ import {
     useContext,
 }                           from 'react'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // utilities:
+    // a set of React node utility functions:
     isReusableUiComponent,
-}                           from '@reusable-ui/nodes'           // a set of React node utility functions
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useIsomorphicLayoutEffect,
     useTriggerRender,
     useEvent,
     useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import type {
