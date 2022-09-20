@@ -41,8 +41,7 @@
   },
   "dependencies": {
     "@reusable-ui/accordion": "^5.0.0",
-    "@reusable-ui/collapsible": "^5.0.0",
-    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/core": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

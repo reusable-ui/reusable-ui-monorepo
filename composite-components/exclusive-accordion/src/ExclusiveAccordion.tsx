@@ -9,19 +9,18 @@ import {
     useState,
 }                           from 'react'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useEvent,
     EventHandler,
     useMergeEvents,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui states:
-import type {
-    // hooks:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
