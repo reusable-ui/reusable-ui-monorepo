@@ -23,7 +23,7 @@ import type {
     CssStyle,
     
     CssSelector,
-}                           from '@cssfn/css-types'     // cssfn css specific types
+}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
     // rules:
     rule,
@@ -49,11 +49,11 @@ import {
     iif,
 }                           from '@cssfn/cssfn'
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useIsomorphicLayoutEffect,
-}                           from '@reusable-ui/hooks'   // react helper hooks
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // other libs:
 import {

@@ -137,5 +137,5 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/navbar
 
 utility-components:
-[upgraded] [undocumented] [published] @reusable-ui/dimensions
+[simplified] [undocumented] [published] @reusable-ui/dimensions
 [upgraded] [undocumented] [published] @reusable-ui/responsives

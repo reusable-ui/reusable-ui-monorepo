@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@cssfn/css-types": "^2.0.4",
-    "@reusable-ui/hooks": "^5.0.0",
+    "@reusable-ui/core": "^5.0.0",
     "@types/react": "^18.0.10",
     "rxjs": "^7.5.5"
   },
