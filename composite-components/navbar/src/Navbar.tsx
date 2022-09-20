@@ -38,53 +38,48 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // hooks:
+    // react helper hooks:
     useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // react components:
-    Fallbacks,
-    ResponsiveProvider,
-}                           from '@reusable-ui/responsives'     // a responsive management system for react web components
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // border (stroke) stuff of UI:
     usesBorder,
-}                           from '@reusable-ui/border'          // border (stroke) stuff of UI
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // basic variants of UI:
     BasicVariantProps,
     useBasicVariantProps,
-}                           from '@reusable-ui/basic-variants'  // basic variants of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
     usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
-}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
-import type {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ActiveChangeEvent,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
@@ -107,6 +102,11 @@ import {
     ContainerProps,
     Container,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
+import {
+    // react components:
+    Fallbacks,
+    ResponsiveProvider,
+}                           from '@reusable-ui/responsives'     // a responsive management system for react web components
 
 
 
