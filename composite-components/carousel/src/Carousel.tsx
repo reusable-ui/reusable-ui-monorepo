@@ -49,36 +49,36 @@ import {
     usesPrefixedProps,
 }                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
-// reusable-ui utilities:
+// reusable-ui core:
 import {
-    // styles:
+    // removes browser's default stylesheet:
     stripoutList,
     stripoutScrollbar,
     stripoutImage,
-}                           from '@reusable-ui/stripouts'       // removes browser's default stylesheet
-import {
-    // hooks:
+    
+    
+    
+    // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
-import {
-    // hooks:
+    
+    
+    
+    // padding (inner spacing) stuff of UI:
     usesPadding,
-}                           from '@reusable-ui/padding'         // padding (inner spacing) stuff of UI
-
-// reusable-ui variants:
-import {
-    // hooks:
+    
+    
+    
+    // size options of UI:
     usesResizable,
-}                           from '@reusable-ui/resizable'       // size options of UI
-import {
-    // hooks:
+    
+    
+    
+    // basic variants of UI:
     useBasicVariantProps,
-}                           from '@reusable-ui/basic-variants'  // basic variants of UI
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {

@@ -133,7 +133,7 @@
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/navscroll
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/accordion
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/exclusive-accordion
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/carousel
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/carousel
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/navbar
 
 utility-components:
