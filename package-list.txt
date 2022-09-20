@@ -128,7 +128,7 @@
 
 // composite-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/progress
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/group
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/group
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/nav
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/navscroll
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/accordion
