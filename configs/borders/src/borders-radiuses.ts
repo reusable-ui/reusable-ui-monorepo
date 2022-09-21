@@ -1,16 +1,14 @@
 // cssfn:
-import type {
-    // css values:
-    CssComplexValueOf,
-    
-    
-    
-    // css known (standard) properties:
-    CssKnownValueOf,
-}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
+    // cssfn css specific types:
+    CssComplexValueOf,
+    CssKnownValueOf,
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/css-config'    // reads/writes css variables configuration
+}                           from '@cssfn/core'          // writes css in javascript
 
 
 
