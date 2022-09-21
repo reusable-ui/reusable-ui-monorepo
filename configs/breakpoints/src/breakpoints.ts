@@ -1,20 +1,21 @@
 // cssfn:
-import type {
-    // types:
-    Optional,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn general types:
+    Optional,
+    
+    
+    
+    // cssfn css specific types:
+    CssRule,
+    CssStyleCollection,
+    
+    
+    
+    // writes css in javascript:
     rule,
     alwaysRule,
     neverRule,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+}                           from '@cssfn/core'          // writes css in javascript
 
 
 

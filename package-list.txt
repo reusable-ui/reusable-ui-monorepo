@@ -11,7 +11,7 @@
 [simplified] [documented  ] [published] @reusable-ui/colors
 [simplified] [documented  ] [published] @reusable-ui/borders
 [simplified] [documented  ] [published] @reusable-ui/spacers
-[upgraded] [documented  ] [published] @reusable-ui/breakpoints
+[simplified] [documented  ] [published] @reusable-ui/breakpoints
 [upgraded] [documented  ] [published] @reusable-ui/typos
 
 // reusable-ui utilities:
