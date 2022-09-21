@@ -1,28 +1,4 @@
 {
-  "packages": [
-    "configs/*",
-    "utilities/*",
-    
-    "features/*",
-    "variants/*",
-    "states/*",
-    
-    "base-components/*",
-    "base-content-components/*",
-    
-    "simple-components/*",
-    "layout-components/*",
-    "status-components/*",
-    "notification-components/*",
-    "menu-components/*",
-    "dialog-components/*",
-    "composite-components/*",
-    
-    "utility-components/*",
-    
-    "barrels/*",
-    
-    "tests/*"
-  ],
+  "useWorkspaces": true,
   "version": "independent"
 }
