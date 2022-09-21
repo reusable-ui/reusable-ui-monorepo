@@ -32,18 +32,17 @@ import {
 
 // reusable-ui features:
 import {
-    // hooks:
+    // animation stuff of UI:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
-
-// reusable-ui states:
-import {
-    // hooks:
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
     ifActivated,
     ifActivating,
     ifPassivating,
     ifPassivated,
-}                           from '@reusable-ui/activatable'     // a capability of UI to be highlighted/selected/activated
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
 
