@@ -12,7 +12,7 @@
 [simplified] [documented  ] [published] @reusable-ui/borders
 [simplified] [documented  ] [published] @reusable-ui/spacers
 [simplified] [documented  ] [published] @reusable-ui/breakpoints
-[upgraded] [documented  ] [published] @reusable-ui/typos
+[simplified] [documented  ] [published] @reusable-ui/typos
 
 // reusable-ui utilities:
 @reusable-ui/numbers
