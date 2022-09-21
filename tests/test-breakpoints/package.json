@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@cssfn/cssfn": "^2.0.9",
-    "@cssfn/cssfn-react": "^2.0.11",
+    "@cssfn/cssfn-react": "^2.0.12",
     "@reusable-ui/breakpoints": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

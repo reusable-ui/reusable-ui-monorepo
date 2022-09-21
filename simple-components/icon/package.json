@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "@cssfn/types": "^2.0.1",
-    "@cssfn/cssfn-react": "^2.0.11",
-    "@cssfn/css-config": "^2.0.15",
+    "@cssfn/cssfn-react": "^2.0.12",
+    "@cssfn/css-config": "^2.0.16",
     "@cssfn/css-types": "^2.0.4",
     "@cssfn/css-vars": "^2.0.10",
     "@reusable-ui/basic": "^5.0.0",
