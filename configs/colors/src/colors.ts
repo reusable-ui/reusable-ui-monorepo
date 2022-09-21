@@ -1,20 +1,20 @@
 // cssfn:
-import type {
+import {
+    // cssfn general types:
     Optional,
-}                           from '@cssfn/types'         // cssfn general types
-import type {
-    // css custom properties:
+    
+    
+    
+    // cssfn css specific types:
     CssCustomSimpleRef,
     CssCustomRef,
-    
-    
-    
-    // css known (standard) properties:
     CssKnownValueOf,
-}                           from '@cssfn/css-types'     // cssfn css specific types
-import {
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/css-config'    // reads/writes css variables configuration
+}                           from '@cssfn/core'          // writes css in javascript
 
 // other libs:
 import Color                from 'color'                // color utilities

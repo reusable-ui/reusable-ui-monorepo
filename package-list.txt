@@ -8,7 +8,7 @@
 [upgraded] [undocumented] [published] @cssfn/react-cssfn
 
 // reusable-ui configs:
-[upgraded] [documented  ] [published] @reusable-ui/colors
+[simplified] [documented  ] [published] @reusable-ui/colors
 [upgraded] [documented  ] [published] @reusable-ui/borders
 [upgraded] [documented  ] [published] @reusable-ui/spacers
 [upgraded] [documented  ] [published] @reusable-ui/breakpoints
