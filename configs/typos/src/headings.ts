@@ -1,50 +1,34 @@
 // cssfn:
-import type {
-    // css known (standard) properties:
+import {
+    // cssfn css specific types:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
     CssSelector,
     CssSelectorCollection,
-}                           from '@cssfn/css-types'     // cssfn css specific types
-import {
-    // rules:
+    
+    
+    
+    // writes css in javascript:
     rule,
     rules,
     ifFirstChild,
     ifLastChild,
     ifNotLastChild,
-    
-    
-    
-    // combinators:
     nextSiblings,
-    
-    
-    
-    // scopes:
     globalScope,
-    
-    
-    
-    // style sheets:
     styleSheets,
-}                           from '@cssfn/cssfn'         // writes css in javascript
-import {
-    flat,
-}                           from '@cssfn/cssfn/dist/utilities.js'
-import {
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-    
-    
-    
-    // utilities:
     usesCssProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'    // reads/writes css variables configuration
+}                           from '@cssfn/core'          // writes css in javascript
+import {
+    // utilities:
+    flat,
+}                           from '@cssfn/cssfn/dist/utilities.js'
 
 // internals:
 import {

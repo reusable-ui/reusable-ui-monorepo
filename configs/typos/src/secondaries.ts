@@ -1,30 +1,21 @@
 // cssfn:
-import type {
-    // css known (standard) properties:
+import {
+    // cssfn css specific types:
     CssKnownProps,
-}                           from '@cssfn/css-types'     // cssfn css specific types
-import {
-    // rules:
+    
+    
+    
+    // writes css in javascript:
     rule,
-    
-    
-    
-    // scopes:
     globalScope,
-    
-    
-    
-    // style sheets:
     styleSheets,
-}                           from '@cssfn/cssfn'         // writes css in javascript
-import {
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-    
-    
-    
-    // utilities:
     usesCssProps,
-}                           from '@cssfn/css-config'    // reads/writes css variables configuration
+}                           from '@cssfn/core'          // writes css in javascript
 
 
 

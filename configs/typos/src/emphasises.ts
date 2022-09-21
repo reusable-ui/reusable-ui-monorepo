@@ -1,18 +1,10 @@
 // cssfn:
 import {
-    // rules:
+    // writes css in javascript:
     rule,
-    
-    
-    
-    // scopes:
     globalScope,
-    
-    
-    
-    // style sheets:
     styleSheets,
-}                           from '@cssfn/cssfn'         // writes css in javascript
+}                           from '@cssfn/core'          // writes css in javascript
 
 // internals:
 import {

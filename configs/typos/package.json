@@ -30,13 +30,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/css-config": "^2.0.16",
-    "@cssfn/css-types": "^2.0.4",
+    "@cssfn/core": "^2.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0"
-  },
-  "peerDependencies": {
-    "@cssfn/cssfn": "^2.0.9"
   }
 }
