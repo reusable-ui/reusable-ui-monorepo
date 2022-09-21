@@ -1,25 +1,18 @@
 // cssfn:
-import type {
-    // cssfn properties:
-    CssSelectorCollection,
-}                           from '@cssfn/css-types'     // cssfn css specific types
 import {
-    // rules:
+    // cssfn css specific types:
+    CssSelectorCollection,
+    
+    
+    
+    // writes css in javascript:
     rule,
     fallbacks,
     ifActive,
-    
-    
-    
-    //combinators:
     children,
-    
-    
-    
-    // styles:
     style,
     imports,
-}                           from '@cssfn/cssfn'         // writes css in javascript
+}                           from '@cssfn/core'          // writes css in javascript
 
 
 
