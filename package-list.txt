@@ -10,7 +10,7 @@
 // reusable-ui configs:
 [simplified] [documented  ] [published] @reusable-ui/colors
 [simplified] [documented  ] [published] @reusable-ui/borders
-[upgraded] [documented  ] [published] @reusable-ui/spacers
+[simplified] [documented  ] [published] @reusable-ui/spacers
 [upgraded] [documented  ] [published] @reusable-ui/breakpoints
 [upgraded] [documented  ] [published] @reusable-ui/typos
 
