@@ -45,7 +45,7 @@
 [simplified] @reusable-ui/outlineable
 [simplified] @reusable-ui/mildable
 [simplified] @reusable-ui/nudible
-@reusable-ui/colorable
+[simplified] @reusable-ui/colorable
 @reusable-ui/basic-variants
 
 // reusable-ui states:
