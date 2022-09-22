@@ -11,10 +11,10 @@ import {
 
 // cssfn:
 import type {
-    // types:
+    // cssfn general types:
     Optional,
     SingleOrArray,
-}                           from '@cssfn/types'                 // cssfn general types
+}                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui utilities:
 import {
