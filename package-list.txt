@@ -46,7 +46,7 @@
 [simplified] @reusable-ui/mildable
 [simplified] @reusable-ui/nudible
 [simplified] @reusable-ui/colorable
-@reusable-ui/basic-variants
+[simplified] @reusable-ui/basic-variants
 
 // reusable-ui states:
 @reusable-ui/excitable
