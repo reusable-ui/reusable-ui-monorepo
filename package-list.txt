@@ -49,7 +49,7 @@
 [simplified] @reusable-ui/basic-variants
 
 // reusable-ui states:
-@reusable-ui/excitable
+[simplified] @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/disableable
 @reusable-ui/activatable
