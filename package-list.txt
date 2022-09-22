@@ -59,7 +59,7 @@
 [simplified] @reusable-ui/active-as-click
 [simplified] @reusable-ui/invalidable
 [simplified] @reusable-ui/checkable
-@reusable-ui/validation-icon
+[simplified] @reusable-ui/validation-icon
 
 // supports:
 [upgraded] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
