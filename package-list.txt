@@ -33,7 +33,7 @@
 [simplified] @reusable-ui/border
 [simplified] @reusable-ui/ring
 [simplified] @reusable-ui/animation
-@reusable-ui/padding
+[simplified] @reusable-ui/padding
 @reusable-ui/floatable
 @reusable-ui/groupable
 
