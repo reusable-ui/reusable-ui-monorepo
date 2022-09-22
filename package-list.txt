@@ -32,7 +32,7 @@
 [simplified] @reusable-ui/foreground
 [simplified] @reusable-ui/border
 [simplified] @reusable-ui/ring
-@reusable-ui/animation
+[simplified] @reusable-ui/animation
 @reusable-ui/padding
 @reusable-ui/floatable
 @reusable-ui/groupable
