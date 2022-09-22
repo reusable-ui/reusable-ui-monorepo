@@ -52,7 +52,7 @@
 [simplified] @reusable-ui/excitable
 [simplified] @reusable-ui/collapsible
 [simplified] @reusable-ui/disableable
-@reusable-ui/activatable
+[simplified] @reusable-ui/activatable
 @reusable-ui/focusable
 @reusable-ui/interactable
 @reusable-ui/clickable
