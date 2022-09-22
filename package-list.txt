@@ -30,7 +30,7 @@
 // reusable-ui features:
 [simplified] @reusable-ui/background
 [simplified] @reusable-ui/foreground
-@reusable-ui/border
+[simplified] @reusable-ui/border
 @reusable-ui/ring
 @reusable-ui/animation
 @reusable-ui/padding
