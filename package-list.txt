@@ -39,7 +39,7 @@
 
 // reusable-ui variants:
 [simplified] @reusable-ui/orientationable
-@reusable-ui/resizable
+[simplified] @reusable-ui/resizable
 @reusable-ui/themable
 @reusable-ui/gradientable
 @reusable-ui/outlineable

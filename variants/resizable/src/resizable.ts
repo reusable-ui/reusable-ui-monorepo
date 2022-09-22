@@ -1,40 +1,30 @@
 // cssfn:
-import type {
-    // types:
-    Factory,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
-    // cssfn properties:
-    CssRule,
-    
-    CssStyleCollection,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn general types:
+    Factory,
+    
+    
+    
+    // cssfn css specific types:
+    CssRule,
+    CssStyleCollection,
+    
+    
+    
+    // writes css in javascript:
     rule,
     variants,
-    
-    
-    
-    // styles:
     style,
-    
-    
-    
-    // utilities:
     pascalCase,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // types:
+    
+    
+    
+    // reads/writes css variables configuration:
     CssConfigProps,
     Refs,
-    
-    
-    
-    // utilities:
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
+}                           from '@cssfn/core'                  // writes css in javascript
 
 
 
