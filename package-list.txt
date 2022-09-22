@@ -41,7 +41,7 @@
 [simplified] @reusable-ui/orientationable
 [simplified] @reusable-ui/resizable
 [simplified] @reusable-ui/themable
-@reusable-ui/gradientable
+[simplified] @reusable-ui/gradientable
 @reusable-ui/outlineable
 @reusable-ui/mildable
 @reusable-ui/nudible
