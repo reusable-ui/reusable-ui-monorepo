@@ -38,7 +38,7 @@
 [simplified] @reusable-ui/groupable
 
 // reusable-ui variants:
-@reusable-ui/orientationable
+[simplified] @reusable-ui/orientationable
 @reusable-ui/resizable
 @reusable-ui/themable
 @reusable-ui/gradientable
