@@ -13,7 +13,7 @@ import {
 import type {
     // types:
     Optional,
-}                           from '@cssfn/types'                 // cssfn general types
+}                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
 import {

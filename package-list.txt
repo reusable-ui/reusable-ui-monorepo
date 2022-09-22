@@ -65,7 +65,7 @@
 [simplified] [undocumented] [published] [full    compound] @reusable-ui/react-router-link
 
 // base-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/generic
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/generic
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/basic
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/indicator
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/control
