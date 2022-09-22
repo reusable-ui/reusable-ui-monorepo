@@ -31,7 +31,7 @@
 [simplified] @reusable-ui/background
 [simplified] @reusable-ui/foreground
 [simplified] @reusable-ui/border
-@reusable-ui/ring
+[simplified] @reusable-ui/ring
 @reusable-ui/animation
 @reusable-ui/padding
 @reusable-ui/floatable
