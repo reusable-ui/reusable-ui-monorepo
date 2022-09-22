@@ -50,7 +50,7 @@
 
 // reusable-ui states:
 [simplified] @reusable-ui/excitable
-@reusable-ui/collapsible
+[simplified] @reusable-ui/collapsible
 @reusable-ui/disableable
 @reusable-ui/activatable
 @reusable-ui/focusable
