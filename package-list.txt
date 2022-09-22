@@ -58,7 +58,7 @@
 [simplified] @reusable-ui/clickable
 [simplified] @reusable-ui/active-as-click
 [simplified] @reusable-ui/invalidable
-@reusable-ui/checkable
+[simplified] @reusable-ui/checkable
 @reusable-ui/hamburgerable
 @reusable-ui/validation-icon
 
