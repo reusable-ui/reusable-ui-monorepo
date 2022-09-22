@@ -21,11 +21,11 @@
 [simplified] [documented  ] [published] @reusable-ui/layouts
 [simplified] [documented  ] [published] @reusable-ui/hooks
 [simplified] [documented  ] [published] @reusable-ui/semantics
-[upgraded] [documented  ] [published] @reusable-ui/accessibilities
-[upgraded] [documented  ] [published] @reusable-ui/validations
-@reusable-ui/focuses
-[        ] [undocumented] [         ] @reusable-ui/client-sides
-[        ] [undocumented] [         ] @reusable-ui/navigations
+[simplified] [documented  ] [published] @reusable-ui/accessibilities
+[simplified] [documented  ] [published] @reusable-ui/validations
+[simplified] @reusable-ui/focuses
+[simplified] [undocumented] [         ] @reusable-ui/client-sides
+[simplified] [undocumented] [         ] @reusable-ui/navigations
 
 // reusable-ui features:
 @reusable-ui/background
