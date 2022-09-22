@@ -44,7 +44,7 @@
 [simplified] @reusable-ui/gradientable
 [simplified] @reusable-ui/outlineable
 [simplified] @reusable-ui/mildable
-@reusable-ui/nudible
+[simplified] @reusable-ui/nudible
 @reusable-ui/colorable
 @reusable-ui/basic-variants
 
