@@ -28,7 +28,7 @@
 [simplified] [undocumented] [         ] @reusable-ui/navigations
 
 // reusable-ui features:
-@reusable-ui/background
+[simplified] @reusable-ui/background
 @reusable-ui/foreground
 @reusable-ui/border
 @reusable-ui/ring
