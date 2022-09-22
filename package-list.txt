@@ -56,7 +56,7 @@
 [simplified] @reusable-ui/focusable
 [simplified] @reusable-ui/interactable
 [simplified] @reusable-ui/clickable
-@reusable-ui/active-as-click
+[simplified] @reusable-ui/active-as-click
 @reusable-ui/invalidable
 @reusable-ui/checkable
 @reusable-ui/hamburgerable

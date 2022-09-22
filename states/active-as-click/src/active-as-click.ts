@@ -1,30 +1,29 @@
 // cssfn:
-import type {
-    // types:
-    Factory,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
-    // cssfn properties:
-    CssRule,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn general types:
+    Factory,
+    
+    
+    
+    // cssfn css specific types:
+    CssRule,
+    
+    
+    
+    // writes css in javascript:
     states,
     keyframes,
     ifNotHover,
-    
-    
-    
-    // styles:
     style,
     vars,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // utilities:
+    
+    
+    
+    // strongly typed of css variables:
     CssVars,
     cssVars,
     switchOf,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
+}                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
 import {
