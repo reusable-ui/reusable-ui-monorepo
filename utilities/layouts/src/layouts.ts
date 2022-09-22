@@ -1,8 +1,8 @@
 import {
-    // styles:
+    // writes css in javascript:
     style,
     imports,
-}                           from '@cssfn/cssfn'         // writes css in javascript
+}                           from '@cssfn/core'          // writes css in javascript
 
 
 
