@@ -89,7 +89,7 @@
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/close-button
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/form
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/input
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/range
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/range
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/check
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/radio
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/hamburger-menu-button
