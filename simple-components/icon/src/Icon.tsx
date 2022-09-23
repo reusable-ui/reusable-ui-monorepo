@@ -10,54 +10,43 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // types:
-    Factory,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssRule,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn general types:
+    Factory,
+    
+    
+    
+    // cssfn css specific types:
+    CssKnownProps,
+    CssRule,
+    
+    
+    
+    // writes css in javascript:
     rule,
     variants,
     fontFace,
-    
-    
-    
-    // combinators:
     children,
-    
-    
-    
-    // styles:
     style,
     vars,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // strongly typed of css variables:
+    CssVars,
+    cssVars,
+    
+    
+    
+    // reads/writes css variables configuration:
+    cssConfig,
+    usesCssProps,
+}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    CssVars,
-    cssVars,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui core:
 import {
