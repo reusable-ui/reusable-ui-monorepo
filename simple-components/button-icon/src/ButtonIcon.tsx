@@ -5,37 +5,33 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // combinators:
+    // cssfn css specific types:
+    CssKnownProps,
+    
+    
+    
+    // writes css in javascript:
     children,
-    
-    
-    
-    // styles:
     style,
     vars,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // strongly typed of css variables:
+    switchOf,
+    
+    
+    
+    // reads/writes css variables configuration:
+    cssConfig,
+    usesCssProps,
+}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    // utilities:
-    switchOf,
-}                           from '@cssfn/css-vars'              // strongly typed of css variables
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui core:
 import {
