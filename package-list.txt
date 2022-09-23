@@ -79,7 +79,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/visually-hidden
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/visually-hidden
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/icon
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/label
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/button
