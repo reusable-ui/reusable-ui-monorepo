@@ -5,60 +5,36 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-    
-    
-    
-    // cssfn properties:
-    CssSelectorCollection,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn css specific types:
+    CssKnownProps,
+    CssSelectorCollection,
+    
+    
+    
+    // writes css in javascript:
     rule,
     fallbacks,
-    
-    
-    
-    // combinators:
     children,
     nextSiblings,
-    
-    
-    
-    // styles:
     style,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    dynamicStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-    
-    
-    
-    // utilities:
     usesCssProps,
     usesPrefixedProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
-import {
-    // types:
+    
+    
+    
+    // manipulates css selectors:
     PseudoClassSelector,
     Selector,
     SelectorGroup,
     PureSelectorGroup,
-    
-    
-    
-    // parses:
     parseSelectors,
-    
-    
-    
-    // creates & tests:
     createElementSelector,
     createPseudoClassSelector,
     isElementSelectorOf,
@@ -66,18 +42,14 @@ import {
     createSelectorGroup,
     isNotEmptySelector,
     isNotEmptySelectors,
-    
-    
-    
-    // renders:
     selectorsToString,
-    
-    
-    
-    // transforms:
     groupSelectors,
     groupSelector,
-}                           from '@cssfn/css-selectors'         // manipulates css selectors
+}                           from '@cssfn/core'                  // writes css in javascript
+import {
+    // style sheets:
+    dynamicStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
 import {

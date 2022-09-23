@@ -76,7 +76,7 @@
 
 // base-content-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/container
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/content    *button
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/visually-hidden
