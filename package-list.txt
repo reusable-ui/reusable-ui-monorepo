@@ -70,7 +70,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/indicator
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/control
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/action-control
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/editable-control
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/editable-control
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/editable-text-control   *icon
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/editable-action-control
 
