@@ -91,7 +91,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/input
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/range
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/check
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/radio
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/radio
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
