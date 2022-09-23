@@ -82,7 +82,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/visually-hidden
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/icon
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/label
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/button
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/button
 [upgraded] [new         ] [new      ] [full    compound] @reusable-ui/toggle-button
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/nav-button
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/button-icon
