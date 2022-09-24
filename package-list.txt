@@ -96,7 +96,7 @@
 
 // layout-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/list
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/card
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/card
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/masonry
 
 // status-components:
