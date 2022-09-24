@@ -6,22 +6,20 @@ import {
 
 // cssfn:
 import {
-    // styles:
+    // writes css in javascript:
     style,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // reads/writes css variables configuration:
+    cssConfig,
+    usesCssProps,
+}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui core:
 import {
