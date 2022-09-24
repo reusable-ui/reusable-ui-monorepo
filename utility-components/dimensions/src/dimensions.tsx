@@ -12,42 +12,22 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // css custom properties:
+import {
+    // cssfn css specific types:
     CssCustomName,
     CssCustomSimpleRef,
-    
-    
-    
-    // cssfn properties:
     CssStyle,
-    
     CssSelector,
-}                           from '@cssfn/css-types'             // cssfn css specific types
-import {
-    // rules:
+    
+    
+    
+    // writes css in javascript:
     rule,
-    
-    
-    
-    // rule shortcuts:
     atGlobal,
-    
-    
-    
-    // styles:
     vars,
-    
-    
-    
-    // style sheets:
     styleSheet,
-    
-    
-    
-    // utilities:
     iif,
-}                           from '@cssfn/cssfn'
+}                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
 import {
