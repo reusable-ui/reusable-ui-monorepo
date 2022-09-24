@@ -5,60 +5,43 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // types:
+import {
+    // cssfn general types:
     Optional,
     SingleOrArray,
-}                           from '@cssfn/types'                 // cssfn general types
-import type {
-    // css known (standard) properties:
+    
+    
+    
+    // cssfn css specific types:
     CssKnownProps,
-    
-    
-    
-    // cssfn properties:
     CssStyleCollection,
-    
     CssSelectorCollection,
-}                           from '@cssfn/css-types'             // cssfn css specific types
-import {
-    // rules:
+    
+    
+    
+    // writes css in javascript:
     rule,
     variants,
     states,
-    
-    
-    
-    // combinators:
     children,
-    
-    
-    
-    // styles:
     style,
     vars,
     imports,
-    
-    
-    
-    // utilities:
     escapeSvg,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
-import {
-    // style sheets:
-    dynamicStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
+    
+    
+    
+    // reads/writes css variables configuration:
     cssConfig,
-    
-    
-    
-    // utilities:
     usesCssProps,
     usesPrefixedProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
+}                           from '@cssfn/core'                  // writes css in javascript
+import {
+    // style sheets:
+    dynamicStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
 import {
