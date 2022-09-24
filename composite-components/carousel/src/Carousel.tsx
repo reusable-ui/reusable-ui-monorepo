@@ -11,43 +11,35 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // types:
-    Optional,
-}                           from '@cssfn/types'                         // cssfn general types
-import type {
-    // css known (standard) properties:
-    CssKnownProps,
-}                           from '@cssfn/css-types'             // cssfn css specific types
 import {
-    // rules:
+    // cssfn general types:
+    Optional,
+    
+    
+    
+    // cssfn css specific types:
+    CssKnownProps,
+    
+    
+    
+    // writes css in javascript:
     rule,
     fallbacks,
-    
-    
-    
-    // combinators:
     children,
-    
-    
-    
-    // styles:
     style,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // reads/writes css variables configuration:
+    cssConfig,
+    usesCssProps,
+    usesPrefixedProps,
+}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui core:
 import {
