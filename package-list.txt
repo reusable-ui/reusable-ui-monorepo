@@ -15,7 +15,7 @@
 [simplified] [documented  ] [published] @reusable-ui/typos
 
 // reusable-ui utilities:
-@reusable-ui/numbers
+[simplified] @reusable-ui/numbers
 [simplified] [documented  ] [published] @reusable-ui/nodes
 [simplified] [documented  ] [published] @reusable-ui/stripouts
 [simplified] [documented  ] [published] @reusable-ui/layouts
