@@ -110,7 +110,7 @@
 
 // menu-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/collapse
-[upgraded] [documented  ] [published] [partial compound] @reusable-ui/dropdown
+[simplified] [documented  ] [published] [partial compound] @reusable-ui/dropdown
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-button
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list-button
