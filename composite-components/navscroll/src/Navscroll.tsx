@@ -12,9 +12,9 @@ import {
 
 // cssfn:
 import type {
-    // cssfn properties:
+    // cssfn css specific types:
     CssSelector,
-}                           from '@cssfn/css-types'             // cssfn css specific types
+}                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
 import {
