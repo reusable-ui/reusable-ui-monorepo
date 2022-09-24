@@ -109,7 +109,7 @@
 [simplified] [documented  ] [published] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/collapse
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/collapse
 [upgraded] [documented  ] [published] [partial compound] @reusable-ui/dropdown
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-button
 [upgraded] [documented  ] [published] [full    compound] @reusable-ui/dropdown-list
