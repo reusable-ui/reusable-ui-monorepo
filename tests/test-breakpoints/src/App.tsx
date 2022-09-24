@@ -20,7 +20,7 @@ import {
     styleSheet,
     children,
     ifNthChild,
-} from '@cssfn/cssfn'
+} from '@cssfn/core'
 
 
 

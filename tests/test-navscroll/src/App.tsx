@@ -11,7 +11,7 @@ import {
 import {
     ListItem,
 } from '@reusable-ui/list'
-import { children, descendants, rule, style } from '@cssfn/cssfn'
+import { children, descendants, rule, style } from '@cssfn/core'
 import {
     Styles,
     HeadPortal,
