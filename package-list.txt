@@ -100,7 +100,7 @@
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/masonry
 
 // status-components:
-[upgraded] [documented  ] [published] [          atomic] @reusable-ui/popup
+[simplified] [documented  ] [published] [          atomic] @reusable-ui/popup
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/badge
 [upgraded] [documented  ] [published] [partial compound] @reusable-ui/busy
 
