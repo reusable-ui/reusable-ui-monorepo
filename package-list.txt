@@ -118,7 +118,7 @@
 // dialog-components:
 [simplified] [documented  ] [published] [          atomic] @reusable-ui/modal
 [simplified] [documented  ] [published] [full    compound] @reusable-ui/modal-card
-[upgraded] [documented  ] [published] [full    compound] @reusable-ui/modal-side
+[simplified] [documented  ] [published] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/progress
