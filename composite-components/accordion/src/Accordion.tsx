@@ -10,29 +10,28 @@ import {
 }                           from 'react'
 
 // cssfn:
-import type {
-    // types:
-    SingleOrArray,
-}                           from '@cssfn/types'                 // cssfn general types
 import {
-    // styles:
+    // cssfn general types:
+    SingleOrArray,
+    
+    
+    
+    // writes css in javascript:
     style,
     imports,
-}                           from '@cssfn/cssfn'                 // writes css in javascript
+    
+    
+    
+    // reads/writes css variables configuration:
+    cssConfig,
+    usesCssProps,
+    usesSuffixedProps,
+    overwriteProps,
+}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
-import {
-    cssConfig,
-    
-    
-    
-    // utilities:
-    usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/css-config'            // reads/writes css variables configuration
 
 // reusable-ui core:
 import {
