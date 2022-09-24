@@ -106,7 +106,7 @@
 
 // notification-components:
 [simplified] [documented  ] [published] [partial compound] @reusable-ui/alert
-[upgraded] [documented  ] [published] [partial compound] @reusable-ui/tooltip
+[simplified] [documented  ] [published] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
 [upgraded] [documented  ] [published] [          atomic] @reusable-ui/collapse
