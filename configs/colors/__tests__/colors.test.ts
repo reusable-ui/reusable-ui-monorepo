@@ -10,16 +10,11 @@ import type {
     defineForeg as _defineForeg,
     defineTheme as _defineTheme,
 } from '../dist/colors.js'
-// import type {
-//     // style sheets:
-//     StyleSheet,
-// } from '@cssfn/cssfn'
 import type {
-    render      as _render,
-} from '@cssfn/cssfn/dist/renders.js'
-import type {
+    // StyleSheet,
+    render             as _render,
     styleSheetRegistry as _styleSheetRegistry,
-} from '@cssfn/cssfn/dist/styleSheets.js'
+} from '@cssfn/core'
 import Color from 'color'
 import {
     jest,
