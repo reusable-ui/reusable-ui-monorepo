@@ -133,12 +133,46 @@ export const bodyElm   = '.body'   // one degree specificity to overwrite <CardB
 
 
 
+const inheritBorderFromParent = () => {
+    // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
+    
+    
+    
+    // makes <CardItem>'s border & borderRadius inherit from <Card>:
+    return style({
+        // borders:
+        // undef border stroke:
+        [borderVars.borderStyle           ] : null, // always same as <Card>
+        [borderVars.borderWidth           ] : null, // always same as <Card>
+        /*
+        [borderVars.borderColorFn] // independent for each <CardItem>
+        [borderVars.borderColor  ] // independent for each <CardItem>
+        [borderVars.border       ] // independent for each <CardItem>
+        */
+        
+        // undef border radius:
+        [borderVars.borderStartStartRadius] : null, // always same as <Card>
+        [borderVars.borderStartEndRadius  ] : null, // always same as <Card>
+        [borderVars.borderEndStartRadius  ] : null, // always same as <Card>
+        [borderVars.borderEndEndRadius    ] : null, // always same as <Card>
+        /*
+        [borderVars.borderRadius ] // independent for each <CardItem>
+        */
+    });
+};
+
+
+
 export const usesCardItemLayout    = () => {
     return style({
         ...imports([
             // layouts:
             usesIndicatorLayout(),
             usesContentLayout(),
+            inheritBorderFromParent(),
             
             // children:
             usesContentChildren(),
