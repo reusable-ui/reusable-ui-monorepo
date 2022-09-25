@@ -1,0 +1,49 @@
+{
+  "name": "@reusable-ui/details",
+  "version": "5.0.0",
+  "description": "A foldable content widget.",
+  "keywords": [
+    "details",
+    "widget",
+    "toggle",
+    "collapse",
+    "content",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/Details.js",
+  "types": "dist/Details.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/core": "^2.0.1",
+    "@cssfn/cssfn-react": "^2.0.13",
+    "@reusable-ui/collapse": "^5.0.0",
+    "@reusable-ui/core": "^5.0.0",
+    "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/indicator": "^5.0.0",
+    "@types/react": "^18.0.10"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0"
+  }
+}
