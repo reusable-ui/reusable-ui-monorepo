@@ -191,7 +191,13 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // basic variant props:
-    const basicVariantProps = useBasicVariantProps(props);
+    const {
+        mild = true,
+    ...restBasicVariantProps} = useBasicVariantProps(props);
+    const basicVariantProps = {
+        ...restBasicVariantProps,
+        mild,
+    };
     
     
     
@@ -319,6 +325,11 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             
+            // variants:
+            mild={mild}
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
@@ -369,16 +380,6 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             {React.cloneElement<CollapseProps<Element, TExpandedChangeEvent>>(collapseComponent,
                 // props:
                 {
-                    // basic variant props:
-                    ...basicVariantProps,
-                    
-                    
-                    
-                    // other props:
-                    ...collapseComponent.props,
-                    
-                    
-                    
                     // identifiers:
                     id              : collapsibleId,
                     
