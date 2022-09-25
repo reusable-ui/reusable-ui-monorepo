@@ -221,7 +221,7 @@ const horzRuleElm        = ':where(hr)'           // zero degree specificity to 
 
 
 
-export const inheritBorderFromParent = () => {
+const inheritBorderFromParent = () => {
     // dependencies:
     
     // features:
