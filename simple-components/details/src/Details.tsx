@@ -11,11 +11,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn general types:
-    SingleOrArray,
-    
-    
-    
     // writes css in javascript:
     style,
     imports,
@@ -38,7 +33,6 @@ import {
     // react helper hooks:
     useEvent,
     useMergeEvents,
-    useMergeRefs,
     useMergeClasses,
     
     
@@ -85,13 +79,23 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // react components:
-    IndicatorProps,
-    Indicator,
-}                           from '@reusable-ui/indicator'       // a base component
+    ButtonProps,
+    Button,
+    
+    ButtonComponentProps,
+}                           from '@reusable-ui/button'          // a button component for initiating an action
 import {
-    // styles:
-    usesCollapseLayout,
-    usesCollapseStates,
+    ToggleButtonProps,
+    ToggleButton,
+    
+    ToggleButtonComponentProps,
+}                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
+import {
+    // react components:
+    CollapseProps,
+    Collapse,
+    
+    CollapseComponentProps,
 }                           from '@reusable-ui/collapse'        // a base component
 
 
@@ -107,7 +111,6 @@ export const usesDetailsLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesCollapseLayout(), // `usesCollapseLayout` first then `usesListItemLayout`, so any conflict the `usesListItemLayout` wins
             usesBasicLayout(),
         ]),
         ...style({
@@ -132,14 +135,6 @@ export const usesDetailsVariants = () => {
         ]),
     });
 };
-export const usesDetailsStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesCollapseStates(),
-        ]),
-    });
-};
 
 export const useDetailsStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
@@ -148,9 +143,6 @@ export const useDetailsStyleSheet = dynamicStyleSheet(() => ({
         
         // variants:
         usesDetailsVariants(),
-        
-        // states:
-        usesDetailsStates(),
     ]),
 }), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
@@ -172,26 +164,25 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         BasicProps<TElement>,
         
         // states:
-        ToggleCollapsibleProps<TExpandedChangeEvent>
+        ToggleCollapsibleProps<TExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
+        
+        // components:
+        ButtonComponentProps,
+        ToggleButtonComponentProps,
+        CollapseComponentProps<Element, TExpandedChangeEvent>
 {
     // accessibilities:
-    label            ?: React.ReactNode
+    label    ?: React.ReactNode
     
     
     
     // behaviors:
-    lazy             ?: boolean
-    
-    
-    
-    // components:
-    togglerComponent ?: React.ReactComponentElement<any, IndicatorProps<TElement>>
-    contentComponent ?: React.ReactComponentElement<any, BasicProps<TElement>>
+    lazy     ?: boolean
     
     
     
     // children:
-    children         ?: React.ReactNode
+    children ?: React.ReactNode
 }
 const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: DetailsProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -224,8 +215,15 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // components:
-        togglerComponent = (<Indicator<TElement> /> as React.ReactComponentElement<any, IndicatorProps<TElement>>),
-        contentComponent = (<Basic<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        buttonRef,
+        buttonOrientation,
+        buttonStyle,
+        buttonComponent       = (<Button />   as React.ReactComponentElement<any, ButtonProps>),
+        buttonChildren,
+        
+        toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
+        
+        collapseComponent     = (<Collapse<Element, TExpandedChangeEvent> /> as React.ReactComponentElement<any, CollapseProps<Element, TExpandedChangeEvent>>),
         
         
         
@@ -239,7 +237,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // identifiers:
     const defaultId     = useId();
-    const collapsibleId = contentComponent.props.id ?? defaultId;
+    const collapsibleId = collapseComponent.props.id ?? defaultId;
     
     
     
@@ -250,7 +248,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         onExpandedChange,
     });
     
-    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
+    const collapsibleState = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
     
@@ -258,44 +256,25 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     // fn props:
     const propActive = usePropActive(props, null);
     const activeDn   = isExpanded;
-    const activeFn   = (togglerComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const activeFn   = (toggleButtonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
     // classes:
-    const togglerClasses      = useMergeClasses(
-        // preserves the original `classes` from `togglerComponent`:
-        togglerComponent.props.classes,
-        
-        
-        
-        // preserves the original `classes` from `props`:
-        props.classes,
+    const toggleButtonClasses  = useMergeClasses(
+        // preserves the original `classes` from `toggleButtonComponent`:
+        toggleButtonComponent.props.classes,
         
         
         
         // hacks:
         ((!activeFn || null) && 'last-visible-child'),
     );
-    const contentStateClasses = useMergeClasses(
-        // preserves the original `stateClasses` from `togglerComponent`:
-        togglerComponent.props.stateClasses,
-        
-        
-        
-        // preserves the original `stateClasses` from `props`:
-        props.stateClasses,
-        
-        
-        
-        // states:
-        collapsibleState.class,
-    );
     
     
     
     // handlers:
-    const listHandleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const toggleButtonHandleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -305,28 +284,18 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         toggleExpanded();       // handle click as toggle [expanded]
         event.preventDefault(); // handled
     });
-    const listHandleClick           = useMergeEvents(
-        // preserves the original `onClick` from `togglerComponent`:
-        togglerComponent.props.onClick,
-        
-        
-        
-        // preserves the original `onClick` from `props`:
-        props.onClick,
+    const toggleButtonHandleClick         = useMergeEvents(
+        // preserves the original `onClick` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onClick,
         
         
         
         // actions:
-        listHandleClickInternal,
+        toggleButtonHandleClickInternal,
     );
-    const contentHandleAnimationEnd = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `togglerComponent`:
-        togglerComponent.props.onAnimationEnd,
-        
-        
-        
-        // preserves the original `onAnimationEnd` from `props`:
-        props.onAnimationEnd,
+    const collapseHandleAnimationEnd      = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `collapseComponent`:
+        collapseComponent.props.onAnimationEnd,
         
         
         
@@ -353,20 +322,29 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            {/* <label> */}
-            {React.cloneElement<IndicatorProps<TElement>>(togglerComponent,
+            {/* <ToggleButton> */}
+            {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                 // props:
                 {
-                    // semantics:
-                    semanticRole    : togglerComponent.props.semanticRole ?? 'heading',
+                    // basic variant props:
+                    ...basicVariantProps,
                     
-                    'aria-expanded' : (activeFn || undefined) && (togglerComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
-                    'aria-controls' : togglerComponent.props['aria-controls'] ?? collapsibleId,
+                    
+                    
+                    // other props:
+                    ...toggleButtonComponent.props,
+                    
+                    
+                    
+                    // semantics:
+                    semanticRole    : toggleButtonComponent.props.semanticRole ?? 'heading',
+                    
+                    'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
                     
                     // classes:
-                    classes         : togglerClasses,
+                    classes         : toggleButtonClasses,
                     
                     
                     
@@ -376,19 +354,19 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // handlers:
-                    onClick         : listHandleClick,
+                    onClick         : toggleButtonHandleClick,
                 },
                 
                 
                 
                 // children:
-                togglerComponent.props.children ?? label,
+                toggleButtonComponent.props.children ?? label,
             )}
             
             
             
-            {/* collapsible <content> */}
-            {React.cloneElement<BasicProps<TElement>>(contentComponent,
+            {/* <Collapse> */}
+            {React.cloneElement<CollapseProps<Element, TExpandedChangeEvent>>(collapseComponent,
                 // props:
                 {
                     // basic variant props:
@@ -397,7 +375,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // other props:
-                    ...contentComponent.props,
+                    ...collapseComponent.props,
                     
                     
                     
@@ -406,19 +384,19 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     
-                    // classes:
-                    stateClasses    : contentStateClasses,
+                    // states:
+                    expanded        : collapseComponent.props.expanded ?? collapsibleState.expanded,
                     
                     
                     
                     // handlers:
-                    onAnimationEnd  : contentHandleAnimationEnd,
+                    onAnimationEnd  : collapseHandleAnimationEnd,
                 },
                 
                 
                 
                 // children:
-                contentComponent.props.children ?? ((!lazy || isVisible) && children),
+                collapseComponent.props.children ?? ((!lazy || isVisible) && children),
             )}
         </Basic>
     );
