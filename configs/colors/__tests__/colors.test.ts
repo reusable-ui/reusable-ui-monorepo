@@ -88,7 +88,7 @@ jest.isolateModules(() => {
         simulateBrowserSide(dom);
         
         const colorsModule = await import('../dist/colors.js')
-        const styleSheetModule = await import('@cssfn/cssfn/dist/styleSheets.js')
+        const cssfnModule = await import('@cssfn/core')
         
         colors             = colorsModule.colors
         themes             = colorsModule.themes
@@ -97,7 +97,7 @@ jest.isolateModules(() => {
         defineBackg        = colorsModule.defineBackg
         defineForeg        = colorsModule.defineForeg
         defineTheme        = colorsModule.defineTheme
-        styleSheetRegistry = styleSheetModule.styleSheetRegistry
+        styleSheetRegistry = cssfnModule.styleSheetRegistry
         
         
         
