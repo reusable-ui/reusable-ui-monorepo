@@ -221,7 +221,7 @@ const horzRuleElm        = ':where(hr)'           // zero degree specificity to 
 
 
 
-export const stripoutCommonBasicLayout = () => {
+export const inheritBorderFromParent = () => {
     // dependencies:
     
     // features:
@@ -229,7 +229,7 @@ export const stripoutCommonBasicLayout = () => {
     
     
     
-    // makes dynamic border & borderRadius work on <ListItem>(s):
+    // makes <ListItem>'s border & borderRadius inherit from <List>:
     return style({
         // borders:
         // undef border stroke:
@@ -309,9 +309,7 @@ export const usesListItemLayout = (options?: OrientationableOptions) => {
         ...imports([
             // layouts:
             usesIndicatorLayout(),
-            
-            // resets:
-            stripoutCommonBasicLayout(),
+            inheritBorderFromParent(),
             
             // layouts:
             usesListItemBaseLayout(options), // must be placed at the last
@@ -483,9 +481,7 @@ export const usesListActionItemLayout = () => {
         ...imports([
             // layouts:
             usesActionControlLayout(),
-            
-            // resets:
-            stripoutCommonBasicLayout(),
+            inheritBorderFromParent(),
         ]),
     });
 };
@@ -919,7 +915,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     ...children(listItemElm, {
                         ...imports([
                             // features:
-                            borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderRule, // restore border stripped out by `inheritBorderFromParent`
                         ]),
                         ...style({
                             // borders:
@@ -934,8 +930,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,                 // restore border stripped out by `stripoutCommonBasicLayout`
-                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            border       : borderVars.border,                 // restore border stripped out by `inheritBorderFromParent`
+                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `inheritBorderFromParent`
                             borderStartStartRadius : borderVars.borderStartStartRadius,
                             borderStartEndRadius   : borderVars.borderStartEndRadius,
                             borderEndStartRadius   : borderVars.borderEndStartRadius,
@@ -1107,7 +1103,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     ...children(listItemElm, {
                         ...imports([
                             // features:
-                            borderRule, // restore border stripped out by `stripoutCommonBasicLayout`
+                            borderRule, // restore border stripped out by `inheritBorderFromParent`
                         ]),
                         ...style({
                             // layouts:
@@ -1142,8 +1138,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,                 // restore border stripped out by `stripoutCommonBasicLayout`
-                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `stripoutCommonBasicLayout`
+                            border       : borderVars.border,                 // restore border stripped out by `inheritBorderFromParent`
+                         // borderRadius           : borderVars.borderRadius, // restore border stripped out by `inheritBorderFromParent`
                             borderStartStartRadius : borderVars.borderStartStartRadius,
                             borderStartEndRadius   : borderVars.borderStartEndRadius,
                             borderEndStartRadius   : borderVars.borderEndStartRadius,
