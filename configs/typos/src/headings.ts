@@ -24,11 +24,12 @@ import {
     usesCssProps,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/core'          // writes css in javascript
-import {
+    
+    
+    
     // utilities:
     flat,
-}                           from '@cssfn/cssfn/dist/utilities.js'
+}                           from '@cssfn/core'          // writes css in javascript
 
 // internals:
 import {
