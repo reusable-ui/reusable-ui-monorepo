@@ -396,8 +396,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // semantics:
-                    semanticRole    : listItemComponent.props.semanticRole ?? 'heading',
-                    
                     'aria-expanded' : (isExpanded || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isExpanded === false) and the default value of [aria-expanded] is true
                     'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
                     
