@@ -50,7 +50,7 @@ function App() {
                 <br />
                 
                 <Accordion theme='primary'>
-                    <AccordionItem key={0} expanded={undefined} onExpandedChange={undefined} label='A first item'>
+                    <AccordionItem key={0} onExpandedChange={(event) => console.log(event)} label='A first item'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />

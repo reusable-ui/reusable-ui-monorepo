@@ -43,11 +43,6 @@ import {
     
     
     
-    // an accessibility management system:
-    usePropActive,
-    
-    
-    
     // a capability of UI to rotate its layout:
     OrientationableOptions,
     usesOrientationable,
@@ -312,7 +307,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // states:
-    const [isExpanded, , toggleExpanded] = useToggleCollapsible({
+    const [isExpanded, , toggleExpanded] = useToggleCollapsible<TExpandedChangeEvent>({
         defaultExpanded,
         expanded,
         onExpandedChange,
@@ -320,13 +315,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    
-    
-    
-    // fn props:
-    const propActive = usePropActive(props, null);
-    const activeDn   = isExpanded;
-    const activeFn   = (listItemComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
@@ -343,7 +331,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // hacks:
-        ((!activeFn || null) && 'last-visible-child'),
+        ((!isExpanded || null) && 'last-visible-child'),
     );
     const contentStateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `listItemComponent`:
@@ -420,7 +408,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     // semantics:
                     semanticRole    : listItemComponent.props.semanticRole ?? 'heading',
                     
-                    'aria-expanded' : (activeFn || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
+                    'aria-expanded' : (isExpanded || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isExpanded === false) and the default value of [aria-expanded] is true
                     'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
@@ -436,7 +424,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // states:
-                    active          : activeFn,
+                    active          : listItemComponent.props.active ?? active ?? isExpanded,
                     
                     
                     
