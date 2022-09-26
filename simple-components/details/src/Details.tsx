@@ -17,6 +17,8 @@ import {
     
     
     // writes css in javascript:
+    rule,
+    variants,
     children,
     style,
     imports,
@@ -98,6 +100,12 @@ import {
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // styles:
+    usesContentBasicLayout,
+    usesContentBasicVariants,
+    usesContentChildren,
+}                           from '@reusable-ui/content'         // a neighbor component
 import {
     // react components:
     ButtonProps,
@@ -255,6 +263,34 @@ export const usesContentVariants = () => {
         ...imports([
             // variants:
             resizableRule,
+        ]),
+        ...variants([
+            /*
+                a hack with :not(_)
+                the total selector combined with parent is something like this: `.content>:where(.detailsContent):not(_)`, the specificity weight = 1.1
+                the specificity of 1.1 is a bit higher than:
+                * `.basic`          , the specificity weight = 1
+                * `.custom`         , the specificity weight = 1
+                * but can be easily overriden by specificity weight >= 2, like:
+                * `.basic.awesome`  , the specificity weight = 2
+                * `.custom.awesome` , the specificity weight = 2
+            */
+            rule('.content>:where(&):not(_)', { // content
+                ...imports([
+                    // layouts:
+                    usesContentBasicLayout(),
+                    
+                    // variants:
+                    usesContentBasicVariants(),
+                    
+                    // children:
+                    usesContentChildren(),
+                ]),
+                
+                
+                
+                // children:
+            }),
         ]),
     });
 };

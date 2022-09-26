@@ -53,6 +53,15 @@ function App() {
                 
                 <Details theme='primary' label='An awesome thing'>
                     <ParagraphLorem />
+                    <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                    <ParagraphLorem />
+                </Details>
+                
+                <br />
+                
+                <Details theme='primary' label='An awesome thing' detailsStyle='content'>
+                    <ParagraphLorem />
+                    <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
                     <ParagraphLorem />
                 </Details>
                 
@@ -60,6 +69,15 @@ function App() {
                 
                 <Details theme='primary' label='An awesome thing' contentComponent={<Content />}>
                     <ParagraphLorem />
+                    <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
+                    <ParagraphLorem />
+                </Details>
+                
+                <br />
+                
+                <Details theme='primary' label='An awesome thing' contentComponent={<Content />} detailsStyle='content'>
+                    <ParagraphLorem />
+                    <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
                     <ParagraphLorem />
                 </Details>
             </div>
