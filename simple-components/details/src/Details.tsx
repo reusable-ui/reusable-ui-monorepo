@@ -400,7 +400,7 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
     
     
     // components:
-    contentComponent ?: React.ReactComponentElement<any, BasicProps<TElement>>
+    contentComponent ?: React.ReactComponentElement<any, BasicProps<Element>>
     
     
     
@@ -479,10 +479,10 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // states:
-    const [isExpanded, setExpanded] = useToggleCollapsible({
+    const [isExpanded, setExpanded] = useToggleCollapsible<TExpandedChangeEvent>({
         defaultExpanded,
         expanded,
-        onExpandedChange,
+        // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
     });
     
     const collapsibleState = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
@@ -635,8 +635,6 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // semantics:
-                    semanticRole    : toggleButtonComponent.props.semanticRole ?? 'heading',
-                    
                     'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
