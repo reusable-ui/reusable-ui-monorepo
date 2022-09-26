@@ -1,3 +1,8 @@
+[high prior] update <Accordion> similar to <Details>
+[high prior] use id for <DropdownButton> similar to <Details>
+[high prior] fix double onClick when using native <button> on <ActionControl>
+[high prior] fix page scrolling when pressing [space] on <ActionControl> with role="button"
+
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 [low prior ] test tree shake a Dropdown without Modal
