@@ -250,9 +250,9 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // classes:
-    const classes = useMergeClasses(
-        // preserves the original `classes` from `buttonComponent`:
-        buttonComponent.props.classes,
+    const toggleButtonClasses = useMergeClasses(
+        // preserves the original `classes` from `toggleButtonComponent`:
+        toggleButtonComponent.props.classes,
         
         
         
@@ -261,7 +261,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         
-        // classes:
+        // hacks:
         'last-visible-child', // a fix for <DropdownButton> inside a <Group>
     );
     
@@ -327,6 +327,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
             {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                 // props:
                 {
+                    // classes:
+                    classes         : toggleButtonClasses,
+                    
+                    
+                    
                     // states:
                     active          : toggleButtonComponent.props.active ?? isExpanded,
                     onActiveChange  : handleToggleButtonActiveChange,
@@ -350,19 +355,14 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                             // variants:
                             orientation : buttonComponent.props.orientation ?? buttonOrientation,
                             buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
-                            
-                            
-                            
-                            // classes:
-                            classes     : classes,
                         },
-                        
-                        
-                        
-                        // children:
-                        buttonComponent.props.children ?? buttonChildren,
                     ),
                 },
+                
+                
+                
+                // children:
+                toggleButtonComponent.props.children ?? buttonComponent.props.children ?? buttonChildren,
             )}
             
             {/* <Dropdown> */}
