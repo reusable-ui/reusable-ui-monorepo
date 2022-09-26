@@ -41,7 +41,9 @@ import {
 import {
     // react helper hooks:
     useEvent,
+    EventHandler,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
     
     
@@ -82,6 +84,11 @@ import {
     useCollapsible,
     ToggleCollapsibleProps,
     useToggleCollapsible,
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
+    ActiveChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -134,7 +141,7 @@ const _defaultSemanticRole : SemanticRole = 'group' // uses [role="group"] as th
 
 
 // styles:
-export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <DetailsContent> & <ToggleButton> component
+export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsContent> component
 
 
 
@@ -144,9 +151,9 @@ export const usesDetailsLayout = () => {
     // features:
     const {borderRule   , borderVars   } = usesBorder(details);
     const {groupableRule, separatorRule} = usesGroupable({
-        orientationInlineSelector : null, // never  => the <Details> are never  stacked in horizontal
-        orientationBlockSelector  : '&',  // always => the <Details> are always stacked in vertical
-        itemsSelector             : ':nth-child(n)', // select <DetailsContent> & <ToggleButton>
+        orientationInlineSelector : null, // never  => the <ToggleButton> & <DetailsContent> are never  stacked in horizontal
+        orientationBlockSelector  : '&',  // always => the <ToggleButton> & <DetailsContent> are always stacked in vertical
+        itemsSelector             : ':nth-child(n)', // select <ToggleButton> & <DetailsContent>
     });
     
     
@@ -177,7 +184,7 @@ export const usesDetailsLayout = () => {
             ...children(itemElm, {
                 ...imports([
                     // borders:
-                    separatorRule, // turns the current border as separator between <DetailsContent> & <ToggleButton>
+                    separatorRule, // turns the current border as separator between <ToggleButton> & <DetailsContent>
                 ]),
             }),
             
@@ -217,10 +224,8 @@ export const usesDetailsVariants = () => {
 
 export const usesTogglerLayout = () => {
     return style({
-        ...style({
-            // customize:
-            ...usesCssProps(usesPrefixedProps(details, 'toggler')), // apply config's cssProps starting with toggler***
-        }),
+        // customize:
+        ...usesCssProps(usesPrefixedProps(details, 'toggler')), // apply config's cssProps starting with toggler***
     });
 };
 export const usesTogglerVariants = () => {
@@ -286,10 +291,6 @@ export const usesContentVariants = () => {
                     // children:
                     usesContentChildren(),
                 ]),
-                
-                
-                
-                // children:
             }),
         ]),
     });
@@ -419,7 +420,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // basic variant props:
     const {
-        mild = true,
+        mild = true, // set the default [mild] to true
     ...restBasicVariantProps} = useBasicVariantProps(props);
     const basicVariantProps = {
         ...restBasicVariantProps,
@@ -456,7 +457,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         buttonRef,
         buttonOrientation,
         buttonStyle,
-        buttonComponent       = (<Button />   as React.ReactComponentElement<any, ButtonProps>),
+        buttonComponent       = (<Button         /> as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
         
         toggleButtonComponent = (<ToggleButton   /> as React.ReactComponentElement<any, ToggleButtonProps>),
@@ -478,7 +479,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // states:
-    const [isExpanded, , toggleExpanded] = useToggleCollapsible({
+    const [isExpanded, setExpanded] = useToggleCollapsible({
         defaultExpanded,
         expanded,
         onExpandedChange,
@@ -493,6 +494,19 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     const propActive = usePropActive(props, null);
     const activeDn   = isExpanded;
     const activeFn   = (toggleButtonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    
+    
+    
+    // refs:
+    const mergedButtonRef = useMergeRefs(
+        // preserves the original `elmRef` from `buttonComponent`:
+        buttonComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `buttonRef` from `props`:
+        buttonRef,
+    );
     
     
     
@@ -544,26 +558,34 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // handlers:
-    const toggleButtonHandleClickInternal = useEvent<React.MouseEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // actions:
-        toggleExpanded();       // handle click as toggle [expanded]
-        event.preventDefault(); // handled
+    const handleExpandedChangeInternal       = useEvent<EventHandler<TExpandedChangeEvent>>((event) => {
+        setExpanded(event.expanded);
     });
-    const toggleButtonHandleClick         = useMergeEvents(
-        // preserves the original `onClick` from `toggleButtonComponent`:
-        toggleButtonComponent.props.onClick,
+    const handleExpandedChangeByToggleButton = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // create an expanded event:
+        const expandedChangeEvent = { expanded: event.active } as TExpandedChangeEvent;
+        
+        
+        
+        // <ToggleButton> expanded/collapsed => request to show/hide the <DetailsContent>:
+        onExpandedChange?.(expandedChangeEvent); // request to change the [expanded] to <Parent>
         
         
         
         // actions:
-        toggleButtonHandleClickInternal,
+        handleExpandedChangeInternal(expandedChangeEvent);
+    });
+    const handleToggleButtonActiveChange     = useMergeEvents(
+        // preserves the original `onActiveChange` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onActiveChange,
+        
+        
+        
+        // forwards the original `onExpandedChange` from `props`:
+        handleExpandedChangeByToggleButton,
     );
-    const contentHandleAnimationEnd       = useMergeEvents(
+    
+    const contentHandleAnimationEnd          = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
         
@@ -626,17 +648,30 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     // states:
                     active          : activeFn,
+                    onActiveChange  : handleToggleButtonActiveChange,
                     
                     
                     
-                    // handlers:
-                    onClick         : toggleButtonHandleClick,
+                    /* <Button> */
+                    buttonComponent : React.cloneElement<ButtonProps>(buttonComponent,
+                        // props:
+                        {
+                            // refs:
+                            elmRef      : mergedButtonRef,
+                            
+                            
+                            
+                            // variants:
+                            orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                            buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
+                        },
+                    ),
                 },
                 
                 
                 
                 // children:
-                toggleButtonComponent.props.children ?? label,
+                toggleButtonComponent.props.children ?? buttonComponent.props.children ?? buttonChildren ?? label,
             )}
             
             
