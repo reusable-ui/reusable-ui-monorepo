@@ -85,7 +85,6 @@ import {
 // reusable-ui components:
 import {
     // styles:
-    usesBasicLayout,
     usesBasicVariants,
     
     
@@ -208,12 +207,35 @@ export const usesDetailsVariants = () => {
     });
 };
 
+export const usesTogglerLayout = () => {
+    return style({
+        ...style({
+            // customize:
+            ...usesCssProps(usesPrefixedProps(details, 'toggler')), // apply config's cssProps starting with toggler***
+        }),
+    });
+};
+export const usesTogglerVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'toggler'));
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            resizableRule,
+        ]),
+    });
+};
+
 export const usesContentLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesCollapseLayout(), // `usesCollapseLayout` first then `usesBasicLayout`, so any conflict the `usesBasicLayout` wins
-            usesBasicLayout(),
+            usesCollapseLayout(),
         ]),
         ...style({
             // customize:
@@ -232,7 +254,6 @@ export const usesContentVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesBasicVariants(),
             resizableRule,
         ]),
     });
@@ -256,6 +277,15 @@ export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
             usesDetailsVariants(),
         ]),
     }),
+    scopeOf('toggler', {
+        ...imports([
+            // layouts:
+            usesTogglerLayout(),
+            
+            // variants:
+            usesTogglerVariants(),
+        ]),
+    }, { specificityWeight: 2 }), // increase the specificity weight to overcome .toggleButton's specificity weight
     scopeOf('content', {
         ...imports([
             // layouts:
@@ -267,22 +297,40 @@ export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
             // states:
             usesContentStates(),
         ]),
-    }),
+    }, { specificityWeight: 2 }), // increase the specificity weight to overcome .basic's specificity weight
 ]), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
+export type DetailsStyle = 'content' // might be added more styles in the future
+export interface DetailsVariant {
+    detailsStyle ?: DetailsStyle
+}
+export const useDetailsVariant = (props: DetailsVariant) => {
+    return {
+        class: props.detailsStyle ?? null,
+    };
+};
 
 
 
 // configs:
 export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
     return {
-        // borders:
-        borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle' ],
-        borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth' ],
-        borderColor    : basics.borderColor     as CssKnownProps['borderColor' ],
+        // layouts:
+        togglerDisplay   : 'block'                  as CssKnownProps['display'  ],
+        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'],
         
-        borderRadius   : basics.borderRadius    as CssKnownProps['borderRadius'],
-        borderRadiusSm : basics.borderRadiusSm  as CssKnownProps['borderRadius'],
-        borderRadiusLg : basics.borderRadiusLg  as CssKnownProps['borderRadius'],
+        
+        
+        // borders:
+        borderStyle      : basics.borderStyle       as CssKnownProps['borderStyle' ],
+        borderWidth      : basics.borderWidth       as CssKnownProps['borderWidth' ],
+        borderColor      : basics.borderColor       as CssKnownProps['borderColor' ],
+        
+        borderRadius     : basics.borderRadius      as CssKnownProps['borderRadius'],
+        borderRadiusSm   : basics.borderRadiusSm    as CssKnownProps['borderRadius'],
+        borderRadiusLg   : basics.borderRadiusLg    as CssKnownProps['borderRadius'],
     };
 }, { prefix: 'dtl' });
 
@@ -299,7 +347,10 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         ButtonComponentProps,
-        ToggleButtonComponentProps
+        ToggleButtonComponentProps,
+        
+        // variants:
+        DetailsVariant
 {
     // accessibilities:
     label            ?: React.ReactNode
@@ -321,7 +372,12 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
 }
 const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: DetailsProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet        = useDetailsStyleSheet();
+    const styleSheet          = useDetailsStyleSheet();
+    
+    
+    
+    // variants:
+    const detailsVariant      = useDetailsVariant(props);
     
     
     
@@ -338,6 +394,11 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // rest props:
     const {
+        // variants:
+        detailsStyle : _detailsStyle, // remove
+        
+        
+        
         // accessibilities:
         label,
         
@@ -371,8 +432,6 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // children:
         children,
     ...restBasicProps} = props;
-    type T1 = typeof restBasicProps
-    type T2 = Omit<T1, keyof BasicProps>
     
     
     
@@ -402,15 +461,31 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // classes:
-    const toggleButtonClasses  = useMergeClasses(
+    const variantClasses      = useMergeClasses(
+        // preserves the original `variantClasses`:
+        props.variantClasses,
+        
+        
+        
+        // variants:
+        detailsVariant.class,
+    );
+    
+    const toggleButtonClasses = useMergeClasses(
         // preserves the original `classes` from `toggleButtonComponent`:
         toggleButtonComponent.props.classes,
+        
+        
+        
+        // classes:
+        styleSheet.toggler,
         
         
         
         // hacks:
         ((!activeFn || null) && 'last-visible-child'),
     );
+    
     const contentStateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `contentComponent`:
         contentComponent.props.stateClasses,
@@ -419,6 +494,15 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // states:
         collapsibleState.class,
+    );
+    const contentClasses      = useMergeClasses(
+        // preserves the original `classes` from `contentComponent`:
+        contentComponent.props.classes,
+        
+        
+        
+        // classes:
+        styleSheet.content,
     );
     
     
@@ -443,7 +527,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // actions:
         toggleButtonHandleClickInternal,
     );
-    const collapseHandleAnimationEnd      = useMergeEvents(
+    const contentHandleAnimationEnd       = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
         
@@ -476,6 +560,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
+            variantClasses={variantClasses}
         >
             {/* <ToggleButton> */}
             {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
@@ -540,13 +625,13 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // classes:
-                    mainClass       : contentComponent.props.mainClass ?? styleSheet.content,
                     stateClasses    : contentStateClasses,
+                    classes         : contentClasses,
                     
                     
                     
                     // handlers:
-                    onAnimationEnd  : collapseHandleAnimationEnd,
+                    onAnimationEnd  : contentHandleAnimationEnd,
                 },
                 
                 

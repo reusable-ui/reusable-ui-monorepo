@@ -8,6 +8,9 @@ import {
     Details,
 } from '@reusable-ui/details'
 import {
+    Content,
+} from '@reusable-ui/content'
+import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
@@ -49,6 +52,13 @@ function App() {
                 <br />
                 
                 <Details theme='primary' label='An awesome thing'>
+                    <ParagraphLorem />
+                    <ParagraphLorem />
+                </Details>
+                
+                <br />
+                
+                <Details theme='primary' label='An awesome thing' contentComponent={<Content />}>
                     <ParagraphLorem />
                     <ParagraphLorem />
                 </Details>
