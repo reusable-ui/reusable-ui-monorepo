@@ -54,11 +54,6 @@ import {
     
     
     
-    // an accessibility management system:
-    usePropActive,
-    
-    
-    
     // border (stroke) stuff of UI:
     usesBorder,
     
@@ -490,13 +485,6 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     
-    // fn props:
-    const propActive = usePropActive(props, null);
-    const activeDn   = isExpanded;
-    const activeFn   = (toggleButtonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
-    
-    
-    
     // refs:
     const mergedButtonRef = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
@@ -533,7 +521,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // hacks:
-        ((!activeFn || null) && 'last-visible-child'),
+        ((!isExpanded || null) && 'last-visible-child'),
     );
     
     const contentStateClasses = useMergeClasses(
@@ -645,7 +633,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // states:
-                    active          : activeFn,
+                    active          : toggleButtonComponent.props.active ?? isExpanded,
                     onActiveChange  : handleToggleButtonActiveChange,
                     
                     
