@@ -121,7 +121,7 @@ const _defaultHeaderSemanticRole : SemanticRole = ''        // no corresponding 
 const _defaultFooterSemanticTag  : SemanticTag  = 'footer'  // uses <footer>         as the default semantic
 const _defaultFooterSemanticRole : SemanticRole = ''        // no corresponding role
 
-const _defaultBodySemanticTag    : SemanticTag  = ''        // uses <div>            as the default semantic
+const _defaultBodySemanticTag    : SemanticTag  = ''        // no corresponding semantic tag => defaults to <div>
 const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding role
 
 
