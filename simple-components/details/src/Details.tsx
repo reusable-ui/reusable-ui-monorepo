@@ -127,7 +127,7 @@ const _defaultSemanticRole : SemanticRole = 'group' // uses [role="group"] as th
 
 
 // styles:
-export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <DetailsItem> component
+export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <DetailsContent> & <ToggleButton> component
 
 
 
@@ -139,7 +139,7 @@ export const usesDetailsLayout = () => {
     const {groupableRule, separatorRule} = usesGroupable({
         orientationInlineSelector : null, // never  => the <Details> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <Details> are always stacked in vertical
-        itemsSelector             : ':nth-child(n)', // select <toggler> and <content>
+        itemsSelector             : ':nth-child(n)', // select <DetailsContent> & <ToggleButton>
     });
     
     
@@ -170,7 +170,7 @@ export const usesDetailsLayout = () => {
             ...children(itemElm, {
                 ...imports([
                     // borders:
-                    separatorRule, // turns the current border as separator between <DetailsItem>(s)
+                    separatorRule, // turns the current border as separator between <DetailsContent> & <ToggleButton>
                 ]),
             }),
             
@@ -267,7 +267,7 @@ export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
             // states:
             usesContentStates(),
         ]),
-    })
+    }),
 ]), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
