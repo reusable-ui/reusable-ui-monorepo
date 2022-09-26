@@ -11,21 +11,28 @@ import {
 
 // cssfn:
 import {
+    // cssfn css specific types:
+    CssKnownProps,
+    
+    
+    
     // writes css in javascript:
+    children,
     style,
     imports,
+    scopeOf,
+    mainScope,
     
     
     
     // reads/writes css variables configuration:
     cssConfig,
     usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
+    usesPrefixedProps,
 }                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
-    dynamicStyleSheet,
+    dynamicStyleSheets,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
@@ -45,6 +52,16 @@ import {
     
     // an accessibility management system:
     usePropActive,
+    
+    
+    
+    // border (stroke) stuff of UI:
+    usesBorder,
+    
+    
+    
+    // groups a list of UIs into a single UI:
+    usesGroupable,
     
     
     
@@ -73,6 +90,11 @@ import {
     
     
     
+    // configs:
+    basics,
+    
+    
+    
     // react components:
     BasicProps,
     Basic,
@@ -91,11 +113,9 @@ import {
     ToggleButtonComponentProps,
 }                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
 import {
-    // react components:
-    CollapseProps,
-    Collapse,
-    
-    CollapseComponentProps,
+    // styles:
+    usesCollapseLayout,
+    usesCollapseStates,
 }                           from '@reusable-ui/collapse'        // a base component
 
 
@@ -107,15 +127,67 @@ const _defaultSemanticRole : SemanticRole = 'group' // uses [role="group"] as th
 
 
 // styles:
+export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <DetailsItem> component
+
+
+
 export const usesDetailsLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {borderRule   , borderVars   } = usesBorder(details);
+    const {groupableRule, separatorRule} = usesGroupable({
+        orientationInlineSelector : null, // never  => the <Details> are never  stacked in horizontal
+        orientationBlockSelector  : '&',  // always => the <Details> are always stacked in vertical
+        itemsSelector             : ':nth-child(n)', // select <toggler> and <content>
+    });
+    
+    
+    
     return style({
         ...imports([
-            // layouts:
-            usesBasicLayout(),
+            // features:
+            borderRule,
+            groupableRule, // make a nicely rounded corners
         ]),
         ...style({
+            // layouts:
+            display        : 'flex',    // use block flexbox, so it takes the entire parent's width
+            flexDirection  : 'column',  // items are stacked vertically
+            justifyContent : 'start',   // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+            alignItems     : 'stretch', // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            flexWrap       : 'nowrap',  // no wrapping
+            
+            
+            
+            // sizes:
+            // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
+            minInlineSize  : 0,
+            
+            
+            
+            // children:
+            ...children(itemElm, {
+                ...imports([
+                    // borders:
+                    separatorRule, // turns the current border as separator between <DetailsItem>(s)
+                ]),
+            }),
+            
+            
+            
             // customize:
             ...usesCssProps(details), // apply config's cssProps
+            
+            
+            
+            // borders:
+            border            : borderVars.border,
+         // borderRadius           : borderVars.borderRadius,
+            borderStartStartRadius : borderVars.borderStartStartRadius,
+            borderStartEndRadius   : borderVars.borderStartEndRadius,
+            borderEndStartRadius   : borderVars.borderEndStartRadius,
+            borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
     });
 };
@@ -136,22 +208,81 @@ export const usesDetailsVariants = () => {
     });
 };
 
-export const useDetailsStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesDetailsLayout(),
-        
-        // variants:
-        usesDetailsVariants(),
-    ]),
-}), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const usesContentLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesCollapseLayout(), // `usesCollapseLayout` first then `usesBasicLayout`, so any conflict the `usesBasicLayout` wins
+            usesBasicLayout(),
+        ]),
+        ...style({
+            // customize:
+            ...usesCssProps(usesPrefixedProps(details, 'content')), // apply config's cssProps starting with content***
+        }),
+    });
+};
+export const usesContentVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'content'));
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesBasicVariants(),
+            resizableRule,
+        ]),
+    });
+};
+export const usesContentStates = () => {
+    return style({
+        ...imports([
+            // states:
+            usesCollapseStates(),
+        ]),
+    });
+};
+
+export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
+    mainScope({
+        ...imports([
+            // layouts:
+            usesDetailsLayout(),
+            
+            // variants:
+            usesDetailsVariants(),
+        ]),
+    }),
+    scopeOf('content', {
+        ...imports([
+            // layouts:
+            usesContentLayout(),
+            
+            // variants:
+            usesContentVariants(),
+            
+            // states:
+            usesContentStates(),
+        ]),
+    })
+]), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
 // configs:
 export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
     return {
-        /* no config props yet */
+        // borders:
+        borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle' ],
+        borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth' ],
+        borderColor    : basics.borderColor     as CssKnownProps['borderColor' ],
+        
+        borderRadius   : basics.borderRadius    as CssKnownProps['borderRadius'],
+        borderRadiusSm : basics.borderRadiusSm  as CssKnownProps['borderRadius'],
+        borderRadiusLg : basics.borderRadiusLg  as CssKnownProps['borderRadius'],
     };
 }, { prefix: 'dtl' });
 
@@ -168,21 +299,25 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         ButtonComponentProps,
-        ToggleButtonComponentProps,
-        CollapseComponentProps<Element, TExpandedChangeEvent>
+        ToggleButtonComponentProps
 {
     // accessibilities:
-    label    ?: React.ReactNode
+    label            ?: React.ReactNode
     
     
     
     // behaviors:
-    lazy     ?: boolean
+    lazy             ?: boolean
+    
+    
+    
+    // components:
+    contentComponent ?: React.ReactComponentElement<any, BasicProps<TElement>>
     
     
     
     // children:
-    children ?: React.ReactNode
+    children         ?: React.ReactNode
 }
 const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: DetailsProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -227,9 +362,9 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         buttonComponent       = (<Button />   as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
         
-        toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
+        toggleButtonComponent = (<ToggleButton   /> as React.ReactComponentElement<any, ToggleButtonProps>),
         
-        collapseComponent     = (<Collapse<Element, TExpandedChangeEvent> /> as React.ReactComponentElement<any, CollapseProps<Element, TExpandedChangeEvent>>),
+        contentComponent      = (<Basic<Element> /> as React.ReactComponentElement<any, BasicProps<Element>>),
         
         
         
@@ -243,7 +378,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // identifiers:
     const defaultId     = useId();
-    const collapsibleId = collapseComponent.props.id ?? defaultId;
+    const collapsibleId = contentComponent.props.id ?? defaultId;
     
     
     
@@ -276,6 +411,15 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // hacks:
         ((!activeFn || null) && 'last-visible-child'),
     );
+    const contentStateClasses = useMergeClasses(
+        // preserves the original `stateClasses` from `contentComponent`:
+        contentComponent.props.stateClasses,
+        
+        
+        
+        // states:
+        collapsibleState.class,
+    );
     
     
     
@@ -300,8 +444,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         toggleButtonHandleClickInternal,
     );
     const collapseHandleAnimationEnd      = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `collapseComponent`:
-        collapseComponent.props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `contentComponent`:
+        contentComponent.props.onAnimationEnd,
         
         
         
@@ -376,17 +520,28 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             
-            {/* <Collapse> */}
-            {React.cloneElement<CollapseProps<Element, TExpandedChangeEvent>>(collapseComponent,
+            {/* collapsible <Basic> */}
+            {React.cloneElement<BasicProps<Element>>(contentComponent,
                 // props:
                 {
+                    // basic variant props:
+                    ...basicVariantProps,
+                    
+                    
+                    
+                    // other props:
+                    ...contentComponent.props,
+                    
+                    
+                    
                     // identifiers:
                     id              : collapsibleId,
                     
                     
                     
-                    // states:
-                    expanded        : collapseComponent.props.expanded ?? collapsibleState.expanded,
+                    // classes:
+                    mainClass       : contentComponent.props.mainClass ?? styleSheet.content,
+                    stateClasses    : contentStateClasses,
                     
                     
                     
@@ -397,7 +552,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 
                 
                 // children:
-                collapseComponent.props.children ?? ((!lazy || isVisible) && children),
+                contentComponent.props.children ?? ((!lazy || isVisible) && children),
             )}
         </Basic>
     );
