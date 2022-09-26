@@ -319,7 +319,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // classes:
-    const listClasses         = useMergeClasses(
+    const listItemClasses     = useMergeClasses(
         // preserves the original `classes` from `listItemComponent`:
         listItemComponent.props.classes,
         
@@ -334,8 +334,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         ((!isExpanded || null) && 'last-visible-child'),
     );
     const contentStateClasses = useMergeClasses(
-        // preserves the original `stateClasses` from `listItemComponent`:
-        listItemComponent.props.stateClasses,
+        // preserves the original `stateClasses` from `contentComponent`:
+        contentComponent.props.stateClasses,
         
         
         
@@ -351,7 +351,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // handlers:
-    const listHandleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const listItemHandleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (!actionCtrl)            return; // not [actionCtrl] => no response
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -362,7 +362,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         toggleExpanded();       // handle click as toggle [expanded]
         event.preventDefault(); // handled
     });
-    const listHandleClick           = useMergeEvents(
+    const listItemHandleClick         = useMergeEvents(
         // preserves the original `onClick` from `listItemComponent`:
         listItemComponent.props.onClick,
         
@@ -374,11 +374,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // actions:
-        listHandleClickInternal,
+        listItemHandleClickInternal,
     );
-    const contentHandleAnimationEnd = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `listItemComponent`:
-        listItemComponent.props.onAnimationEnd,
+    const contentHandleAnimationEnd   = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `contentComponent`:
+        contentComponent.props.onAnimationEnd,
         
         
         
@@ -414,7 +414,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // classes:
-                    classes         : listClasses,
+                    classes         : listItemClasses,
                     
                     
                     
@@ -429,7 +429,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // handlers:
-                    onClick         : listHandleClick,
+                    onClick         : listItemHandleClick,
                 },
                 
                 
