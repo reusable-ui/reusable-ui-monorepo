@@ -121,7 +121,7 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag  = 'div'   // uses <div>          as the default semantic
+const _defaultSemanticTag  : SemanticTag  = ''      // no corresponding semantic tag => defaults to <div>
 const _defaultSemanticRole : SemanticRole = 'group' // uses [role="group"] as the default semantic
 
 
