@@ -130,8 +130,11 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag  = ''      // no corresponding semantic tag => defaults to <div>
-const _defaultSemanticRole : SemanticRole = 'group' // uses [role="group"] as the default semantic
+const _defaultSemanticTag         : SemanticTag  = ''      // no corresponding semantic tag => defaults to <div>
+const _defaultSemanticRole        : SemanticRole = 'group' // uses [role="group"] as the default semantic
+
+const _defaultTogglerSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // no corresponding semantic tag => defaults to <div>, fallbacks to <button>, <a>
+const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
 
 
 
@@ -623,6 +626,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // semantics:
+                    semanticTag     : toggleButtonComponent.props.semanticTag  ?? _defaultTogglerSemanticTag,
+                    semanticRole    : toggleButtonComponent.props.semanticRole ?? _defaultTogglerSemanticRole,
                     'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? collapsibleId,
                     
                     
