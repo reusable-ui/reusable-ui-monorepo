@@ -339,11 +339,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         
-        // preserves the original `stateClasses` from `props`:
-        props.stateClasses,
-        
-        
-        
         // states:
         collapsibleState.class,
     );
@@ -379,11 +374,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     const contentHandleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
-        
-        
-        
-        // preserves the original `onAnimationEnd` from `props`:
-        props.onAnimationEnd,
         
         
         
