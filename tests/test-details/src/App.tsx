@@ -51,7 +51,7 @@ function App() {
                 
                 <br />
                 
-                <Details theme='primary' label='An awesome thing'>
+                <Details theme='primary' label='An awesome thing' onExpandedChange={(event) => console.log(event)}>
                     <ParagraphLorem />
                     <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
                     <ParagraphLorem />
