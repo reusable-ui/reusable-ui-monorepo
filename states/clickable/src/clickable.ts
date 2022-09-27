@@ -444,6 +444,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
         } // if
+        
+        
+        
+        event.preventDefault(); // prevents triggering `onClick` event by native <button>
     });
     const handleKeyUp         = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
@@ -465,6 +469,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             // responses the onClick event:
             event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
         } // if
+        
+        
+        
+        event.preventDefault(); // prevents triggering `onClick` event by native <button>
     });
     
     const handleClick         = useEvent<React.MouseEventHandler<TElement>>((event) => {

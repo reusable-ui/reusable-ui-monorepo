@@ -50,6 +50,15 @@ function App() {
                     </Button>
                 </article>
                 <hr />
+                <article className='actions'>
+                    <Button theme='primary' onClick={() => console.log('native clicked!')}>
+                        test native button
+                    </Button>
+                    <Button theme='primary' onClick={() => console.log('styled clicked!')} tag='div'>
+                        test styled button
+                    </Button>
+                </article>
+                <hr />
                 <input type='checkbox' checked={active} onChange={(e) => setActive(e.target.checked)} />
             </div>
         </>
