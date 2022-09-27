@@ -241,7 +241,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
                 
-                // otherwise use a combination of :hover || (.focused || .focusing || :focus)
+                // otherwise use a combination of :hover || (.focused || .focusing || :focus-within)
                 return null;
             } // if
             
@@ -253,7 +253,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
             
             // fully left:
             if (isControllableArrived) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus)]
+                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus-within)]
             }
             else {
                 return null; // discard all classes above
