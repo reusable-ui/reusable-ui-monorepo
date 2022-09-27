@@ -294,7 +294,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // forwards the original `onExpandedChange` from `props`:
         handleExpandedChangeByToggleButton,
     );
-    const handleDropdownExpandedChange               = useMergeEvents(
+    const handleDropdownExpandedChange       = useMergeEvents(
         // preserves the original `onExpandedChange` from `dropdownComponent`:
         dropdownComponent.props.onExpandedChange,
         
