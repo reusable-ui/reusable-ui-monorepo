@@ -447,7 +447,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key
+        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key, still alowing scrolling the whole page by arrows, pgup, pgdown, home, end.
     });
     const handleKeyUp         = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
@@ -472,7 +472,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key
+        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key, still alowing scrolling the whole page by arrows, pgup, pgdown, home, end.
     });
     
     const handleClick         = useEvent<React.MouseEventHandler<TElement>>((event) => {
