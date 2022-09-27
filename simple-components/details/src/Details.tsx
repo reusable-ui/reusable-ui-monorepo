@@ -576,7 +576,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         handleExpandedChangeByToggleButton,
     );
     
-    const contentHandleAnimationEnd          = useMergeEvents(
+    const handleContentAnimationEnd          = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
         
@@ -693,7 +693,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // handlers:
-                    onAnimationEnd  : contentHandleAnimationEnd,
+                    onAnimationEnd  : handleContentAnimationEnd,
                 },
                 
                 
