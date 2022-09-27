@@ -308,7 +308,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // actions:
         handleExpandedChangeInternal,
     );
-    const handleFloatingUpdate               = useMergeEvents(
+    const handleDropdownFloatingUpdate       = useMergeEvents(
         // preserves the original `onFloatingUpdate` from `dropdownComponent`:
         dropdownComponent.props.onFloatingUpdate,
         
@@ -401,7 +401,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     floatingOffset     : dropdownComponent.props.floatingOffset     ?? floatingOffset,
                     floatingShift      : dropdownComponent.props.floatingShift      ?? floatingShift,
                     
-                    onFloatingUpdate   : handleFloatingUpdate,
+                    onFloatingUpdate   : handleDropdownFloatingUpdate,
                 },
                 
                 
