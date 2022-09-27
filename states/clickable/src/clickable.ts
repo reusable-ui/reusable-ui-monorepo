@@ -447,7 +447,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        event.preventDefault(); // prevents triggering `onClick` event by native <button>
+        event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key
     });
     const handleKeyUp         = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
@@ -472,7 +472,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        event.preventDefault(); // prevents triggering `onClick` event by native <button>
+        event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key
     });
     
     const handleClick         = useEvent<React.MouseEventHandler<TElement>>((event) => {
