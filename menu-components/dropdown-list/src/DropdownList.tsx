@@ -221,7 +221,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     
     // handlers:
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<Element>>((event) => {
+    const handleKeyDownInternal        = useEvent<React.KeyboardEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -257,7 +257,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     });
-    const handleKeyDown         = useMergeEvents(
+    const handleListKeyDown            = useMergeEvents(
         // preserves the original `onKeyDown` from `listComponent`:
         listComponent.props.onKeyDown,
         
@@ -266,7 +266,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // actions:
         handleKeyDownInternal,
     );
-    const handleExpandedChange  = useMergeEvents(
+    const handleDropdownExpandedChange = useMergeEvents(
         // preserves the original `onExpandedChange` from `dropdownComponent`:
         dropdownComponent.props.onExpandedChange,
         
@@ -275,7 +275,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // actions:
         onExpandedChange,
     );
-    const handleFloatingUpdate  = useMergeEvents(
+    const handleDropdownFloatingUpdate = useMergeEvents(
         // preserves the original `onFloatingUpdate` from `dropdownComponent`:
         dropdownComponent.props.onFloatingUpdate,
         
@@ -314,7 +314,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             // states:
             expanded         : dropdownComponent.props.expanded ?? expanded,
-            onExpandedChange : handleExpandedChange,
+            onExpandedChange : handleDropdownExpandedChange,
             
             
             
@@ -329,7 +329,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             floatingOffset,
             floatingShift,
             
-            onFloatingUpdate : handleFloatingUpdate,
+            onFloatingUpdate : handleDropdownFloatingUpdate,
         },
         
         
@@ -366,7 +366,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 // handlers:
-                onKeyDown   : handleKeyDown,
+                onKeyDown   : handleListKeyDown,
             },
             
             
