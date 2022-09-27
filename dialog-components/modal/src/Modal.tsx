@@ -680,7 +680,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // states:
         collapsibleState.handleAnimationEnd,
     );
-    const modalUiHandleAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
+    const handleModalUiAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
         // preserves the original `onAnimationEnd` from `modalUiComponent`:
         modalUiComponent.props.onAnimationEnd,
         
@@ -896,7 +896,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     
                     
                     // handlers:
-                    onAnimationEnd   : modalUiHandleAnimationEnd,
+                    onAnimationEnd   : handleModalUiAnimationEnd,
                 },
             )}
         </Generic>
