@@ -215,7 +215,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     const [isExpanded, setExpanded] = useToggleCollapsible<TDropdownExpandedChangeEvent>({
         defaultExpanded,
         expanded,
-        // onExpandedChange, // trigger manually to <Dropdown>'s `onExpandedChange`
+        // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
     });
     
     
