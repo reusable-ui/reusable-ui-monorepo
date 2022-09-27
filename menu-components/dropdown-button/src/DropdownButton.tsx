@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useId,
 }                           from 'react'
 
 // reusable-ui core:
@@ -211,6 +212,12 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     
+    // identifiers:
+    const defaultId  = useId();
+    const dropdownId = dropdownComponent.props.id ?? defaultId;
+    
+    
+    
     // states:
     const [isExpanded, setExpanded] = useToggleCollapsible<TDropdownExpandedChangeEvent>({
         defaultExpanded,
@@ -327,6 +334,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
             {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                 // props:
                 {
+                    // semantics:
+                    'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? dropdownId,
+                    
+                    
+                    
                     // classes:
                     classes         : toggleButtonClasses,
                     
@@ -371,6 +383,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                 {
                     // refs:
                     outerRef           : mergedDropdownRef,
+                    
+                    
+                    
+                    // identifiers:
+                    id                 : dropdownId,
                     
                     
                     

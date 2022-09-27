@@ -1,5 +1,4 @@
 [high prior] update <Accordion> similar to <Details>
-[high prior] use id for <DropdownButton> similar to <Details>
 [high prior] fix double onClick when using native <button> on <ActionControl>
 [high prior] fix page scrolling when pressing [space] on <ActionControl> with role="button"
 
