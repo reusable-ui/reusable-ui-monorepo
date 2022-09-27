@@ -93,7 +93,6 @@
 [simplified] [documented  ] [          atomic] @reusable-ui/check
 [simplified] [documented  ] [          atomic] @reusable-ui/radio
 [simplified] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
-[simplified] [undocumented] [full    compound] @reusable-ui/details
 
 // layout-components:
 [simplified] [documented  ] [          atomic] @reusable-ui/list
@@ -130,6 +129,7 @@
 [simplified] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
 [simplified] [documented  ] [full    compound] @reusable-ui/carousel
 [simplified] [documented  ] [          atomic] @reusable-ui/navbar
+[simplified] [undocumented] [full    compound] @reusable-ui/details
 
 utility-components:
 [simplified] [undocumented] @reusable-ui/dimensions
