@@ -368,6 +368,15 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         interactableState.handleMouseLeave,
     );
+    const handleKeyDown      = useMergeEvents(
+        // preserves the original `onKeyDown`:
+        props.onKeyDown,
+        
+        
+        
+        // states:
+        focusableState.handleKeyDown,
+    );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -413,6 +422,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
             onBlur         = {handleBlur        }
             onMouseEnter   = {handleMouseEnter  }
             onMouseLeave   = {handleMouseLeave  }
+            onKeyDown      = {handleKeyDown     }
             onAnimationEnd = {handleAnimationEnd}
         />
     );
