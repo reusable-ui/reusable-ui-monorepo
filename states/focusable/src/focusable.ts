@@ -254,6 +254,10 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         setFocusDn(false);
     });
     
+    const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        handleFocus(event as unknown as React.FocusEvent<TElement, Element>);
+    });
+    
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
@@ -303,6 +307,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         
         handleFocus,
         handleBlur,
+        handleKeyDown,
         handleAnimationEnd,
     };
 };
