@@ -33,8 +33,18 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Control>
-                    test &lt;Control&gt;
+                <Control theme='primary' tag='button'>
+                    test native button
+                </Control>
+                <br />
+                <Control theme='primary' tag='div' role='button'>
+                    test polifill button
+                </Control>
+                <br />
+                <Control theme='primary' tag='input' {...{defaultValue: 'test native input'}} />
+                <br />
+                <Control theme='primary' tag='div' role='textbox' assertiveFocusable={true}>
+                    test polifill input
                 </Control>
             </div>
         </>
