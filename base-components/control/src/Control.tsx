@@ -310,8 +310,9 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         
         
         // states:
-        focused  : _focused,  // remove
-        arrived  : _arrived,  // remove
+        focused            : _focused,            // remove
+        assertiveFocusable : _assertiveFocusable, // remove
+        arrived            : _arrived,            // remove
     ...restIndicatorProps} = props;
     
     
@@ -399,6 +400,11 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
                 // accessibilities:
                 tabIndex,
             }}
+            
+            
+            
+            // focusable props:
+            {...focusableState.attributes}
             
             
             
