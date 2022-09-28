@@ -363,7 +363,7 @@ const Input = (props: InputProps): JSX.Element|null => {
             
             
             // accessibilities:
-            tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+            tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-visible-within` (pseudo) => the wrapper is also `.focus` (synthetic)
         >
             <input
                 // refs:
