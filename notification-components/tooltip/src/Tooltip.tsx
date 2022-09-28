@@ -618,8 +618,10 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             targetStates.hovered = false;
             handleChange();
         };
-        const handleFocus  = () => {
+        const handleFocus  = (event: Event) => {
             if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
+            if (!(event.currentTarget as HTMLElement|null)?.matches?.(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))'))
+                                          return; // not :focus-visible-within => supporess the actual focus
             
             
             
@@ -639,7 +641,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // setups:
         targetStates.hovered  = target.matches(':hover');
-        targetStates.focused  = target.matches(':focus-within');
+        targetStates.focused  = target.matches(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))');
         targetStates.expanded = (targetStates.hovered || targetStates.focused);
         
         target.addEventListener('mouseenter', handleHover);
