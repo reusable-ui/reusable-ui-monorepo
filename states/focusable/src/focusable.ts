@@ -92,7 +92,7 @@ const [focusableVars] = cssVars<FocusableVars>();
 
 /*
     polyfill:
-    :focus-visible-within = :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable)))
+    :focus-visible-within = :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))
 */
 
 // .focused will be added after focusing-animation done:
@@ -100,12 +100,12 @@ const selectorIfFocused  = '.focused'
 // .focusing = styled focus, :focus-visible-within = native focus:
 // the .disabled, .disable are used to kill native :focus-visible-within
 // the .focused, .blurring, .blurred are used to overwrite native :focus-visible-within
-const selectorIfFocusing = ':is(.focusing, :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable))):not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
+const selectorIfFocusing = ':is(.focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
 // optionally use .blurred to overwrite native :focus-visible-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable))):not(:is(.disabled, .disable)), .blurring)), .blurred)'
+const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.disabled, .disable)), .blurring)), .blurred)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
@@ -191,7 +191,8 @@ export interface FocusableProps
         Pick<React.ButtonHTMLAttributes<Element>, 'tabIndex'>
 {
     // states:
-    focused ?: boolean
+    focused            ?: boolean
+    assertiveFocusable ?: boolean
 }
 export const useFocusable = <TElement extends Element = HTMLElement>(props: FocusableProps) => {
     // fn props:
@@ -229,10 +230,13 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     // handlers:
-    const handleFocus        = useEvent<React.FocusEventHandler<TElement>>(() => {
+    const handleFocus        = useEvent<React.FocusEventHandler<TElement>>((event) => {
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
+        if (focusDn)               return; // already focused => nothing to focus
+        if (!event.currentTarget.matches(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))'))
+                                   return; // not :focus-visible-within => supporess the actual focus
         
         
         
@@ -243,6 +247,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         // conditions:
         if (!propEnabled)          return; // control is disabled => no response required
         if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
+        if (!focusDn)              return; // already blurred => nothing to blur
         
         
         
@@ -293,6 +298,8 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
                 return null; // discard all classes above
             } // if
         })(),
+        
+        attributes : { 'data-assertive-focusable': props.assertiveFocusable || null },
         
         handleFocus,
         handleBlur,
