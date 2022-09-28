@@ -636,6 +636,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             targetStates.focused = false;
             handleChange();
         };
+        const handleKeyDown  = handleFocus;
         
         
         
@@ -648,6 +649,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         target.addEventListener('mouseleave', handleLeave);
         target.addEventListener('focus'     , handleFocus, { capture: true }); // force `focus` as bubbling
         target.addEventListener('blur'      , handleBlur , { capture: true }); // force `blur`  as bubbling
+        target.addEventListener('keydown'   , handleKeyDown);
         
         
         
@@ -657,6 +659,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             target.removeEventListener('mouseleave', handleLeave);
             target.removeEventListener('focus'     , handleFocus, { capture: true });
             target.removeEventListener('blur'      , handleBlur , { capture: true });
+            target.removeEventListener('keydown'   , handleKeyDown);
         };
     }, [isControllableExpanded, props.floatingOn, expandDelay, collapseDelay]);
     
