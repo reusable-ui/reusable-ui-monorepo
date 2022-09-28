@@ -90,17 +90,22 @@ const [focusableVars] = cssVars<FocusableVars>();
 
 
 
+/*
+    polyfill:
+    :focus-visible-within = :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable)))
+*/
+
 // .focused will be added after focusing-animation done:
 const selectorIfFocused  = '.focused'
-// .focusing = styled focus, :focus-within = native focus:
-// the .disabled, .disable are used to kill native :focus-within
-// the .focused, .blurring, .blurred are used to overwrite native :focus-within
-const selectorIfFocusing = ':is(.focusing, :focus-within:not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
+// .focusing = styled focus, :focus-visible-within = native focus:
+// the .disabled, .disable are used to kill native :focus-visible-within
+// the .focused, .blurring, .blurred are used to overwrite native :focus-visible-within
+const selectorIfFocusing = ':is(.focusing, :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable))):not(:is(.disabled, .disable, .focused, .blurring, .blurred)))'
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
-// optionally use .blurred to overwrite native :focus-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :focus-within:not(:is(.disabled, .disable)), .blurring)), .blurred)'
+// optionally use .blurred to overwrite native :focus-visible-within
+const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :is(:focus-visible, :focus:where(.assertive-focusable), :has(:focus-visible, :focus:where(.assertive-focusable))):not(:is(.disabled, .disable)), .blurring)), .blurred)'
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
@@ -270,7 +275,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
                 // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
                 if ((props.tabIndex ?? 0) < 0) return 'focusing';
                 
-                // otherwise use pseudo :focus-within
+                // otherwise use pseudo :focus-visible-within
                 return null;
             } // if
             
@@ -282,7 +287,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
             
             // fully blurred:
             if (isControllableFocused) {
-                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-within
+                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-visible-within
             }
             else {
                 return null; // discard all classes above
