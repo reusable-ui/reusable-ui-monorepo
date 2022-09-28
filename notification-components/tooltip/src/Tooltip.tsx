@@ -561,37 +561,47 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // handlers:
         const handleDelayExpand   = () => {
             // conditions:
-            clearTimeout(targetStates.collapsing); // cancel the collapsing process (if not too late)
-            if (targetStates.expanded) return;     // already expanded => nothing to change
+            if (targetStates.collapsing) {
+                clearTimeout(targetStates.collapsing);  // cancel the collapsing process (if not too late)
+                targetStates.collapsing = undefined;    // mark there's no running collapsing process
+            } // if
+            if (targetStates.expanded) return;          // already expanded => nothing to change
             
             
             
-            targetStates.expanding = setTimeout(() => {
-                // conditions:
-                if (targetStates.expanded) return; // already expanded => nothing to change
-                
-                
-                
-                targetStates.expanded = true;      // now mark as expanded
-                setExpandedDn(true);               // expand the <Tooltip>
-            }, expandDelay);
+            if (!targetStates.expanding) {              // there's no running expanding process => create a new one
+                targetStates.expanding = setTimeout(() => {
+                    // conditions:
+                    if (targetStates.expanded) return;  // already expanded => nothing to change
+                    
+                    
+                    
+                    targetStates.expanded = true;       // now mark as expanded
+                    setExpandedDn(true);                // expand the <Tooltip>
+                }, expandDelay);
+            } // if
         };
         const handleDelayCollapse = () => {
             // conditions:
-            clearTimeout(targetStates.expanding);   // cancel the expanding process (if not too late)
-            if (!targetStates.expanded) return;     // already collapsed => nothing to change
+            if (targetStates.expanding) {
+                clearTimeout(targetStates.expanding);   // cancel the expanding process (if not too late)
+                targetStates.expanding = undefined;     // mark there's no running expanding process
+            } // if
+            if (!targetStates.expanded) return;         // already collapsed => nothing to change
             
             
             
-            targetStates.collapsing = setTimeout(() => {
-                // conditions:
-                if (!targetStates.expanded) return; // already collapsed => nothing to change
-                
-                
-                
-                targetStates.expanded = false;      // now mark as collapsed
-                setExpandedDn(false);               // collapse the <Tooltip>
-            }, collapseDelay);
+            if (!targetStates.collapsing) {             // there's no running collapsing process => create a new one
+                targetStates.collapsing = setTimeout(() => {
+                    // conditions:
+                    if (!targetStates.expanded) return; // already collapsed => nothing to change
+                    
+                    
+                    
+                    targetStates.expanded = false;      // now mark as collapsed
+                    setExpandedDn(false);               // collapse the <Tooltip>
+                }, collapseDelay);
+            } // if
         };
         const handleChange = () => {
             const expanded = (targetStates.hovered || targetStates.focused);
