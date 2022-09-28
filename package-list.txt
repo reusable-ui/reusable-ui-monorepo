@@ -62,7 +62,7 @@
 [simplified] @reusable-ui/validation-icon
 
 // supports:
-[simplified] [undocumented] [full    compound] @reusable-ui/react-router-link
+[simplified] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
 
 // base-components:
 [simplified] [documented  ] [          atomic] @reusable-ui/generic
@@ -131,6 +131,6 @@
 [simplified] [documented  ] [          atomic] @reusable-ui/navbar
 [simplified] [undocumented] [full    compound] @reusable-ui/details
 
-utility-components:
+// utility-components:
 [simplified] [undocumented] @reusable-ui/dimensions
 [simplified] [undocumented] @reusable-ui/responsives
