@@ -1437,6 +1437,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleKeyboardSlide,
+        
+        
+        
+        // states:
+        focusableState.handleKeyDown,
     );
     
     const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
