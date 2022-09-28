@@ -85,6 +85,11 @@ const [interactableVars] = cssVars<InteractableVars>();
 
 
 
+/*
+    polyfill:
+    :focus-visible-within = :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))
+*/
+
 /***  arriving = hover(ing) + focus(ing|ed)  ***/
 
 // .arrived will be added after arriving-animation done:
@@ -92,12 +97,12 @@ const selectorIfArrived  = '.arrived'
 // .arriving = styled arrive, :hover = native arrive:
 // the .disabled, .disable are used to kill native :hover
 // the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
+const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
 // if all above are not set => left:
 // optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :focus-within:not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
+const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
 
 
 
@@ -241,7 +246,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
                 
-                // otherwise use a combination of :hover || (.focused || .focusing || :focus-within)
+                // otherwise use a combination of :hover || (.focused || .focusing || :focus-visible-within)
                 return null;
             } // if
             
@@ -253,7 +258,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
             
             // fully left:
             if (isControllableArrived) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus-within)]
+                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus-visible-within)]
             }
             else {
                 return null; // discard all classes above
