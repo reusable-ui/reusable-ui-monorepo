@@ -329,6 +329,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
             // accessibilities:
             touchAction             : 'pinch-zoom',  // prevents scrolling by touch, but allows to zoom_in/out
             WebkitTapHighlightColor : 'transparent', // no tap_&_hold highlight
+            userSelect              : 'none',        // disable selecting text (double clicking and hold_and_mouse_move not causing selecting the <Range>)
             
             
             
@@ -375,6 +376,11 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                     // sizes:
                     boxSizing      : 'border-box',     // the final size is including borders & paddings
                     flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
+                    
+                    
+                    
+                    // accessibilities:
+                    pointerEvents  : 'none', // just an overlay element (ghost), no mouse interaction, clicking on it will focus on the parent
                     
                     
                     
@@ -1234,10 +1240,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         handleMouseNative(event.nativeEvent);
     });
-    const handleMouseFocus    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
-        rangeRefInternal.current?.focus(); // set focus at whole <Range>
-        event.preventDefault(); // prevents focusing at <Track>|<Tracklower>|<Trackupper>|<Thumb>
-    });
     
     const isTouchActive       = useRef(false);
     const handleTouchNative   = useEvent<EventHandler<TouchEvent>>((event) => {
@@ -1252,10 +1254,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
     });
     const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         handleTouchNative(event.nativeEvent);
-    });
-    const handleTouchFocus    = useEvent<React.TouchEventHandler<HTMLInputElement>>(() => {
-        rangeRefInternal.current?.focus(); // set focus at whole <Range>
-        // no need for `preventDefault()` because the current event is passive
     });
     
     useEffect(() => {
@@ -1395,7 +1393,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleMouseActive,
-        handleMouseFocus,
         handlePointerSlide,
     );
     const handleMouseMove     = useMergeEvents(
@@ -1416,7 +1413,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // range handlers:
         handleTouchActive,
-        handleTouchFocus,
         handleTouchSlide,
     );
     const handleTouchMove     = useMergeEvents(
