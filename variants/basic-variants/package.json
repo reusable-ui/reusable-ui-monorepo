@@ -36,12 +36,12 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/mildable": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
     "react": "^18.1.0",
     "@reusable-ui/gradientable": "^5.0.0",
+    "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/outlineable": "^5.0.0",
     "@reusable-ui/resizable": "^5.0.0",
     "@reusable-ui/themable": "^5.0.0"
