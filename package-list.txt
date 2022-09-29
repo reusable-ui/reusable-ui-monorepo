@@ -71,66 +71,66 @@
 [published ] [documented  ] [          atomic] @reusable-ui/control
 [published ] [documented  ] [          atomic] @reusable-ui/action-control
 [published ] [documented  ] [          atomic] @reusable-ui/editable-control
-[simplified] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
-[simplified] [documented  ] [          atomic] @reusable-ui/editable-action-control
+[published ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
+[published ] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/container
-[simplified] [documented  ] [          atomic] @reusable-ui/content    *button
+[published ] [documented  ] [          atomic] @reusable-ui/container
+[published ] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/visually-hidden
-[simplified] [documented  ] [          atomic] @reusable-ui/icon
-[simplified] [documented  ] [          atomic] @reusable-ui/label
-[simplified] [documented  ] [          atomic] @reusable-ui/button
-[simplified] [new         ] [full    compound] @reusable-ui/toggle-button
-[simplified] [documented  ] [full    compound] @reusable-ui/nav-button
-[simplified] [documented  ] [full    compound] @reusable-ui/button-icon
-[simplified] [documented  ] [full    compound] @reusable-ui/close-button
-[simplified] [documented  ] [          atomic] @reusable-ui/form
-[simplified] [documented  ] [          atomic] @reusable-ui/input
-[simplified] [documented  ] [full    compound] @reusable-ui/range
-[simplified] [documented  ] [          atomic] @reusable-ui/check
-[simplified] [documented  ] [          atomic] @reusable-ui/radio
-[simplified] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
+[published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
+[published ] [documented  ] [          atomic] @reusable-ui/icon
+[published ] [documented  ] [          atomic] @reusable-ui/label
+[published ] [documented  ] [          atomic] @reusable-ui/button
+[published ] [new         ] [full    compound] @reusable-ui/toggle-button
+[published ] [documented  ] [full    compound] @reusable-ui/nav-button
+[published ] [documented  ] [full    compound] @reusable-ui/button-icon
+[published ] [documented  ] [full    compound] @reusable-ui/close-button
+[published ] [documented  ] [          atomic] @reusable-ui/form
+[published ] [documented  ] [          atomic] @reusable-ui/input
+[published ] [documented  ] [full    compound] @reusable-ui/range
+[published ] [documented  ] [          atomic] @reusable-ui/check
+[published ] [documented  ] [          atomic] @reusable-ui/radio
+[published ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/list
-[simplified] [documented  ] [          atomic] @reusable-ui/card
-[simplified] [documented  ] [          atomic] @reusable-ui/masonry
+[published ] [documented  ] [          atomic] @reusable-ui/list
+[published ] [documented  ] [          atomic] @reusable-ui/card
+[published ] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/popup
-[simplified] [documented  ] [          atomic] @reusable-ui/badge
-[simplified] [documented  ] [partial compound] @reusable-ui/busy
+[published ] [documented  ] [          atomic] @reusable-ui/popup
+[published ] [documented  ] [          atomic] @reusable-ui/badge
+[published ] [documented  ] [partial compound] @reusable-ui/busy
 
 // notification-components:
-[simplified] [documented  ] [partial compound] @reusable-ui/alert
-[simplified] [documented  ] [partial compound] @reusable-ui/tooltip
+[published ] [documented  ] [partial compound] @reusable-ui/alert
+[published ] [documented  ] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/collapse
-[simplified] [documented  ] [partial compound] @reusable-ui/dropdown
-[simplified] [documented  ] [full    compound] @reusable-ui/dropdown-button
-[simplified] [documented  ] [full    compound] @reusable-ui/dropdown-list
-[simplified] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
+[published ] [documented  ] [          atomic] @reusable-ui/collapse
+[published ] [documented  ] [partial compound] @reusable-ui/dropdown
+[published ] [documented  ] [full    compound] @reusable-ui/dropdown-button
+[published ] [documented  ] [full    compound] @reusable-ui/dropdown-list
+[published ] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
 
 // dialog-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/modal
-[simplified] [documented  ] [full    compound] @reusable-ui/modal-card
-[simplified] [documented  ] [full    compound] @reusable-ui/modal-side
+[published ] [documented  ] [          atomic] @reusable-ui/modal
+[published ] [documented  ] [full    compound] @reusable-ui/modal-card
+[published ] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/progress
-[simplified] [documented  ] [          atomic] @reusable-ui/group
-[simplified] [documented  ] [full    compound] @reusable-ui/nav
-[simplified] [documented  ] [full    compound] @reusable-ui/navscroll
-[simplified] [documented  ] [full    compound] @reusable-ui/accordion
-[simplified] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
-[simplified] [documented  ] [full    compound] @reusable-ui/carousel
-[simplified] [documented  ] [          atomic] @reusable-ui/navbar
-[simplified] [undocumented] [full    compound] @reusable-ui/details
+[published ] [documented  ] [          atomic] @reusable-ui/progress
+[published ] [documented  ] [          atomic] @reusable-ui/group
+[published ] [documented  ] [full    compound] @reusable-ui/nav
+[published ] [documented  ] [full    compound] @reusable-ui/navscroll
+[published ] [documented  ] [full    compound] @reusable-ui/accordion
+[published ] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
+[published ] [documented  ] [full    compound] @reusable-ui/carousel
+[published ] [documented  ] [          atomic] @reusable-ui/navbar
+[published ] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
-[simplified] [undocumented] @reusable-ui/dimensions
-[simplified] [undocumented] @reusable-ui/responsives
+[published ] [undocumented] @reusable-ui/dimensions
+[published ] [undocumented] @reusable-ui/responsives
