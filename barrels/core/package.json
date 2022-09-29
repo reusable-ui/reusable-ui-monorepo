@@ -41,7 +41,6 @@
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
     "@reusable-ui/navigations": "^5.0.0",
-    "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/ring": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
@@ -75,6 +74,7 @@
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/breakpoints": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
+    "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
     "@reusable-ui/typos": "^5.0.0",
     "@reusable-ui/validations": "^5.0.0"
