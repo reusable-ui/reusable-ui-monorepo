@@ -38,7 +38,6 @@
     "@reusable-ui/layouts": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/semantics": "^5.0.0",
-    "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/validations": "^5.0.0",
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
@@ -73,6 +72,7 @@
     "@reusable-ui/validation-icon": "^5.0.0"
   },
   "peerDependencies": {
+    "@reusable-ui/accessibilities": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/breakpoints": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
