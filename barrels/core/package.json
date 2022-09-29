@@ -63,7 +63,7 @@
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
     "@reusable-ui/breakpoints": "^5.0.0",
-    "@reusable-ui/colors": "^5.0.0",
+    "@reusable-ui/colors": "^5.0.1",
     "@reusable-ui/foreground": "^5.0.0",
     "@reusable-ui/gradientable": "^5.0.0",
     "@reusable-ui/groupable": "^5.0.0",
