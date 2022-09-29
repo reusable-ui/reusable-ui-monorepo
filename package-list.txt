@@ -45,17 +45,17 @@
 [simplified] @reusable-ui/outlineable
 [simplified] @reusable-ui/mildable
 [simplified] @reusable-ui/nudible
-[simplified] @reusable-ui/colorable
+[simplified] @reusable-ui/colorable // ???????????
 [simplified] @reusable-ui/basic-variants
 
 // reusable-ui states:
 [simplified] @reusable-ui/excitable
 [simplified] @reusable-ui/collapsible
 [simplified] @reusable-ui/disableable
-[simplified] @reusable-ui/activatable
+[simplified] @reusable-ui/activatable // ???????????
 [simplified] @reusable-ui/focusable
 [simplified] @reusable-ui/interactable
-[simplified] @reusable-ui/clickable
+[simplified] @reusable-ui/clickable // ???????????
 [simplified] @reusable-ui/active-as-click
 [simplified] @reusable-ui/invalidable
 [simplified] @reusable-ui/checkable
