@@ -38,7 +38,6 @@
     "@reusable-ui/layouts": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/semantics": "^5.0.0",
-    "@reusable-ui/validations": "^5.0.0",
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
     "@reusable-ui/navigations": "^5.0.0",
@@ -77,6 +76,7 @@
     "@reusable-ui/breakpoints": "^5.0.0",
     "@reusable-ui/colors": "^5.0.0",
     "@reusable-ui/spacers": "^5.0.0",
-    "@reusable-ui/typos": "^5.0.0"
+    "@reusable-ui/typos": "^5.0.0",
+    "@reusable-ui/validations": "^5.0.0"
   }
 }
