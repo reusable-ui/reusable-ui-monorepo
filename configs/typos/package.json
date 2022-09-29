@@ -33,7 +33,7 @@
     "@cssfn/core": "^2.0.1"
   },
   "peerDependencies": {
-    "@reusable-ui/borders": "^5.0.0",
+    "@reusable-ui/borders": "^5.0.1",
     "@reusable-ui/colors": "^5.0.1",
     "@reusable-ui/spacers": "^5.0.0"
   }
