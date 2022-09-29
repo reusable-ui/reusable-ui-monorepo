@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/spacers",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A spacer (margins/paddings/gaps) management system for web components using css variables (css custom properties).",
   "keywords": [
     "spacers",
