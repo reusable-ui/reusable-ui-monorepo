@@ -62,15 +62,15 @@
 [published ] @reusable-ui/validation-icon
 
 // supports:
-[simplified] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
+[published ] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
 
 // base-components:
-[simplified] [documented  ] [          atomic] @reusable-ui/generic
-[simplified] [documented  ] [          atomic] @reusable-ui/basic
-[simplified] [documented  ] [          atomic] @reusable-ui/indicator
-[simplified] [documented  ] [          atomic] @reusable-ui/control
-[simplified] [documented  ] [          atomic] @reusable-ui/action-control
-[simplified] [documented  ] [          atomic] @reusable-ui/editable-control
+[published ] [documented  ] [          atomic] @reusable-ui/generic
+[published ] [documented  ] [          atomic] @reusable-ui/basic
+[published ] [documented  ] [          atomic] @reusable-ui/indicator
+[published ] [documented  ] [          atomic] @reusable-ui/control
+[published ] [documented  ] [          atomic] @reusable-ui/action-control
+[published ] [documented  ] [          atomic] @reusable-ui/editable-control
 [simplified] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
 [simplified] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
