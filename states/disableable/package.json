@@ -32,13 +32,13 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.1",
-    "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/hooks": "^5.0.0",
     "@reusable-ui/semantics": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {
     "react": "^18.1.0",
-    "@reusable-ui/accessibilities": "^5.0.0"
+    "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/animation": "^5.0.0"
   }
 }

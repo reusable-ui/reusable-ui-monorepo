@@ -32,7 +32,9 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.1",
-    "@reusable-ui/activatable": "^5.0.0",
+    "@reusable-ui/activatable": "^5.0.0"
+  },
+  "peerDependencies": {
     "@reusable-ui/animation": "^5.0.0"
   }
 }

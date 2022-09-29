@@ -41,7 +41,6 @@
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
     "@reusable-ui/navigations": "^5.0.0",
-    "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/padding": "^5.0.0",
     "@reusable-ui/floatable": "^5.0.0",
     "@reusable-ui/groupable": "^5.0.0",
@@ -68,6 +67,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/background": "^5.0.0",
     "@reusable-ui/border": "^5.0.0",
     "@reusable-ui/borders": "^5.0.0",
