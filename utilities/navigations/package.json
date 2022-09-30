@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navigations",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A set of navigation functions.",
   "keywords": [
     "navigations",
@@ -37,10 +37,5 @@
   "peerDependencies": {
     "react": "^18.1.0",
     "react-router": "^6.3.0"
-  },
-  "peerDependenciesMeta": {
-    "react-router": {
-      "optional": true
-    }
   }
 }
