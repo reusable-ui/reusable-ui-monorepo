@@ -25,7 +25,7 @@
 [published ] [documented  ] @reusable-ui/validations
 [published ] @reusable-ui/focuses
 [published ] [undocumented] @reusable-ui/client-sides
-[published ] [undocumented] @reusable-ui/navigations
+[modified  ] [undocumented] @reusable-ui/navigations
 
 // reusable-ui features:
 [published ] @reusable-ui/background
@@ -60,6 +60,8 @@
 [published ] @reusable-ui/invalidable
 [published ] @reusable-ui/checkable
 [published ] @reusable-ui/validation-icon
+
+[modified  ] @reusable-ui/core
 
 // supports:
 [published ] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
@@ -134,3 +136,5 @@
 // utility-components:
 [published ] [undocumented] @reusable-ui/dimensions
 [published ] [undocumented] @reusable-ui/responsives
+
+[published ] @reusable-ui/components
