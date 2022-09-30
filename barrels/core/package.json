@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -40,7 +40,7 @@
     "@reusable-ui/semantics": "^5.0.0",
     "@reusable-ui/focuses": "^5.0.0",
     "@reusable-ui/client-sides": "^5.0.0",
-    "@reusable-ui/navigations": "^5.0.0",
+    "@reusable-ui/navigations": "^5.0.1",
     "@reusable-ui/floatable": "^5.0.0",
     "@reusable-ui/colorable": "^5.0.0",
     "@reusable-ui/excitable": "^5.0.0",
