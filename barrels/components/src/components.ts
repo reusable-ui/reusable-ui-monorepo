@@ -73,8 +73,8 @@ export * from '@reusable-ui/responsives'
 
 // ambiguous:
 export { defaultBlockOrientationableOptions as defaultOrientationableOptions } from '@reusable-ui/orientationable'
-export type { SizeName, sizeOptions } from '@reusable-ui/resizable'
-export type { CustomValidatorHandler } from '@reusable-ui/editable-control'
+export { SizeName, sizeOptions } from '@reusable-ui/resizable'
+export { CustomValidatorHandler } from '@reusable-ui/editable-control'
 export { usesContentLayout, usesContentVariants } from '@reusable-ui/content'
 export { inputElm } from '@reusable-ui/input'
 export { handleAnimationEndForward } from '@reusable-ui/card'
