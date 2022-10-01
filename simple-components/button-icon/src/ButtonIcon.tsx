@@ -391,11 +391,18 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         
         // children:
         buttonComponent.props.children ?? (
-            <>
+            /*<>
                 { (iconPosition === 'start') && iconComponent }
                 { buttonChildren ?? children }
                 { (iconPosition === 'end'  ) && iconComponent }
-            </>
+            </>*/
+            
+            // use an array instead of fragment, so the <Button> can see the existance of <Link> inside `children`:
+            [
+                ( (iconPosition === 'start') && iconComponent && React.cloneElement(iconComponent, { key: iconComponent.key ?? '.icon' }) ),
+                ( buttonChildren ?? children ),
+                ( (iconPosition === 'end'  ) && iconComponent && React.cloneElement(iconComponent, { key: iconComponent.key ?? '.icon' }) ),
+            ]
         ),
     );
 };

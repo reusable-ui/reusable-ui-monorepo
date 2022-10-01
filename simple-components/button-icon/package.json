@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/button-icon",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A button component with a nice icon.",
   "keywords": [
     "icon",
