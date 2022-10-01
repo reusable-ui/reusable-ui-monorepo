@@ -53,7 +53,7 @@ export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TC
     
     
     // dom effects:
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         // re-update the callbackRef:
         callbackRef.current = callback;
     }); // runs on every render

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/hooks",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A set of React helper hooks.",
   "keywords": [
     "react",

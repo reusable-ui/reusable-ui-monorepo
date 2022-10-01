@@ -19,7 +19,7 @@
 [published ] [documented  ] @reusable-ui/nodes
 [published ] [documented  ] @reusable-ui/stripouts
 [published ] [documented  ] @reusable-ui/layouts
-[published ] [documented  ] @reusable-ui/hooks
+[modified  ] [documented  ] @reusable-ui/hooks
 [published ] [documented  ] @reusable-ui/semantics
 [published ] [documented  ] @reusable-ui/accessibilities
 [published ] [documented  ] @reusable-ui/validations
