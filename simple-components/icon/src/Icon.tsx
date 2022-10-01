@@ -188,12 +188,12 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
         
         
         const iconImage    : string|null = (() => {
-            const file = config.image.files.find((file) => getFileNameWithoutExtension(file) === icon);
+            const file = iconConfig.image.files.find((file) => getFileNameWithoutExtension(file) === icon);
             if (!file) return null;
-            return concatUrl(config.image.path, file);
+            return concatUrl(iconConfig.image.path, file);
         })();
         
-        const isIconFont : boolean = !iconImage; // && config.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
+        const isIconFont : boolean = !iconImage; // && iconConfig.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
         
         
         
@@ -351,13 +351,13 @@ export const usesIconFontLayout  = () => {
         // load a custom font:
         ...fontFace({
             ...imports([
-                config.font.style, // define the font's properties
+                iconConfig.font.style, // define the font's properties
             ]),
             ...style({
                 src: [
-                    ...config.font.files
+                    ...iconConfig.font.files
                     .map((file) => [
-                        `url("${concatUrl(config.font.path, file)}")`,
+                        `url("${concatUrl(iconConfig.font.path, file)}")`,
                         formatOf(file) ?? '',
                     ]),
                 ],
@@ -370,7 +370,7 @@ export const usesIconFontLayout  = () => {
         ...children('::after', {
             ...imports([
                 // use the loaded custom font:
-                config.font.style, // apply the defined font's properties
+                iconConfig.font.style, // apply the defined font's properties
             ]),
             ...style({
                 // layouts:
@@ -571,7 +571,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
     };
 }, { prefix: 'ico' });
 
-export const config = {
+export const iconConfig = {
     font  : {
         /**
          * A `url directory` pointing to the collection of the icon's fonts.  

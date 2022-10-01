@@ -82,7 +82,7 @@
 
 // simple-components:
 [published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
-[published ] [documented  ] [          atomic] @reusable-ui/icon
+[modified  ] [documented  ] [          atomic] @reusable-ui/icon
 [published ] [documented  ] [          atomic] @reusable-ui/label
 [published ] [documented  ] [          atomic] @reusable-ui/button
 [published ] [new         ] [full    compound] @reusable-ui/toggle-button
