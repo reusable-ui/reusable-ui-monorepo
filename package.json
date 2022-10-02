@@ -15,6 +15,7 @@
     "utilities/*",
     
     "features/*",
+    "capabilities/*",
     "variants/*",
     "states/*",
     

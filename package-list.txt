@@ -34,6 +34,8 @@
 [published ] @reusable-ui/ring
 [published ] @reusable-ui/animation
 [published ] @reusable-ui/padding
+
+// reusable-ui capabilities:
 [published ] @reusable-ui/floatable
 [published ] @reusable-ui/groupable
 

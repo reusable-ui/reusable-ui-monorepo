@@ -4,6 +4,7 @@ configs/*/dist/
 utilities/*/dist/
 
 features/*/dist/
+capabilities/*/dist/
 variants/*/dist/
 states/*/dist/
 
