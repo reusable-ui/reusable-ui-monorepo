@@ -25,6 +25,8 @@ export * from '@reusable-ui/navigations'                    // a set of navigati
 /*peer*/ export * from '@reusable-ui/ring'                  // ring (focus indicator) color of UI
 /*peer*/ export * from '@reusable-ui/animation'             // animation stuff of UI
 /*peer*/ export * from '@reusable-ui/padding'               // padding (inner spacing) stuff of UI
+
+// reusable-ui capabilities:
 export * from '@reusable-ui/floatable'                      // a capability of UI to float/overlay on the top/beside the another UI
 /*peer*/ export * from '@reusable-ui/groupable'             // groups a list of UIs into a single UI
 
