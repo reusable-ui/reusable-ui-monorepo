@@ -233,6 +233,12 @@ export const isOverflowed = (element: Element): boolean => {
     //#endregion handle padding right & bottom
 };
 
+const getElements = (elementRefs: Map<any, Element|null>|Iterable<Element|null>|React.RefObject<Element>): (Element|null)[] => {
+    if (elementRefs instanceof Map) return Array.from(elementRefs.values());
+    if (Symbol.iterator in elementRefs) return Array.from(elementRefs as Iterable<Element|null>);
+    return [(elementRefs as React.RefObject<Element>).current];
+}
+
 
 
 // hooks:
@@ -241,7 +247,7 @@ export interface ClientAreaResizeObserverOptions {
     horzResponsive? : boolean
     vertResponsive? : boolean
 }
-export const useClientAreaResizeObserver = (resizingElementRefs: Map<React.Key, Element|null>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
+export const useClientAreaResizeObserver = (resizingElementRefs: Map<any, Element|null>|Iterable<Element|null>|React.RefObject<Element>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
     // options:
     const {
         horzResponsive = true,
@@ -289,7 +295,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: Map<React.Key, 
         
         const observer = new ResizeObserver(handleResize);
         const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
-        resizingElementRefs.forEach((outerElm) => !!outerElm && observer.observe(outerElm, sizeOptions));
+        getElements(resizingElementRefs).forEach((outerElm) => !!outerElm && observer.observe(outerElm, sizeOptions));
         
         
         
@@ -298,7 +304,7 @@ export const useClientAreaResizeObserver = (resizingElementRefs: Map<React.Key, 
             observer.disconnect();
             prevSizes.clear(); // un-reference all Element(s)
         };
-    }, [...resizingElementRefs.values(), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
+    }, [...getElements(resizingElementRefs), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
 };
 
 
