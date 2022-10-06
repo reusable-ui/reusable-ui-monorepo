@@ -412,6 +412,7 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         enableValidation  : _enableValidation,
         isValid           : _isValid,
         inheritValidation : _inheritValidation,
+        onValidation      : _onValidation,
         customValidator   : _customValidator,
     ...restControlProps} = props;
     
