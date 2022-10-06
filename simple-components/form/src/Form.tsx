@@ -343,6 +343,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         enableValidation  : _enableValidation,  // remove
         isValid           : _isValid,           // remove
         inheritValidation : _inheritValidation, // remove
+        onValidation      : _onValidation,      // remove
         customValidator   : _customValidator,   // remove
     ...restContentProps} = props;
     
