@@ -13,7 +13,6 @@ export * from '@reusable-ui/container'
 export * from '@reusable-ui/content'
 
 // simple-components:
-export * from '@reusable-ui/visually-hidden'
 export * from '@reusable-ui/icon'
 export * from '@reusable-ui/label'
 export * from '@reusable-ui/button'
@@ -66,6 +65,7 @@ export * from '@reusable-ui/navbar'
 export * from '@reusable-ui/details'
 
 // utility-components:
+export * from '@reusable-ui/visually-hidden'
 export * from '@reusable-ui/dimensions'
 export * from '@reusable-ui/responsives'
 
