@@ -83,7 +83,6 @@
 [published ] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
-[published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
 [modified  ] [documented  ] [          atomic] @reusable-ui/icon
 [published ] [documented  ] [          atomic] @reusable-ui/label
 [published ] [documented  ] [          atomic] @reusable-ui/button
@@ -136,6 +135,7 @@
 [published ] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
+[published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
 [published ] [undocumented] @reusable-ui/dimensions
 [published ] [undocumented] @reusable-ui/responsives
 
