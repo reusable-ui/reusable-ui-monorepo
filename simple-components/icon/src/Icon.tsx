@@ -650,12 +650,18 @@ export type IconList = CustomIconList | ((typeof fontItems)[number]) | (string &
 export interface IconProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        GenericProps<TElement>,
+        Omit<GenericProps<TElement>,
+            // children:
+            |'children' // nested components are not supported
+        >,
         
         // span:
         Omit<React.HTMLAttributes<TElement>,
             // semantics:
             |'role' // we redefined [role] in <Generic>
+            
+            // children:
+            |'children' // nested components are not supported
         >,
         
         // variants:
@@ -763,7 +769,6 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
             style={mergedStyle}
         >
             { icon.children }
-            { props.children }
         </Generic>
     );
 };
