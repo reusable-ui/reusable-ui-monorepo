@@ -624,9 +624,6 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
         paddingInlineLg : spacers.lg        as CssKnownProps['paddingInline'], // override to <Basic>
         paddingBlockLg  : spacers.lg        as CssKnownProps['paddingBlock' ], // override to <Basic>
         
-        
-        
-        // links:
         linkSpacing     : spacers.sm        as CssKnownProps['gapInline'],
     };
 }, { prefix: 'ct' });
