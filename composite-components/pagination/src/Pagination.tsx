@@ -123,9 +123,11 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         
         
         // children:
-        prevItems,
-        navComponent.props.children ?? limitedChildren(),
-        nextItems,
+        ...[
+            ...(prevItems ? [prevItems] : []),
+            ...React.Children.toArray(navComponent.props.children ?? limitedChildren()),
+            ...(nextItems ? [nextItems] : []),
+        ],
     );
 };
 export {
