@@ -4,6 +4,12 @@ import {
     default as React,
 }                           from 'react'
 
+// reusable-ui core:
+import {
+    // a capability of UI to rotate its layout:
+    defaultInlineOrientationableOptions,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
+
 // reusable-ui components:
 import type {
     // styles:
@@ -16,11 +22,6 @@ import type {
     ListItemProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
-    // defaults:
-    defaultOrientationableOptions,
-    
-    
-    
     // react components:
     NavProps,
     Nav,
@@ -31,7 +32,7 @@ import {
 
 
 // defaults:
-export { defaultOrientationableOptions };
+export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
 
 
 
@@ -118,6 +119,11 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         {
             // other props:
             ...restNavProps,
+            
+            
+            
+            // variants:
+            orientation : navComponent.props.orientation ?? props.orientation ?? 'inline',
         },
         
         

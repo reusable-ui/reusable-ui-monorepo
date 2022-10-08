@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/pagination",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A navigation component with limited shown items.",
   "keywords": [
     "navigation",
@@ -34,6 +34,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
     "@reusable-ui/nav": "^5.0.0",
     "@types/react": "^18.0.10"
