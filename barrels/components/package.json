@@ -77,6 +77,7 @@
     "@reusable-ui/group": "^5.0.0",
     "@reusable-ui/nav": "^5.0.0",
     "@reusable-ui/navscroll": "^5.0.0",
+    "@reusable-ui/pagination": "^5.0.0",
     "@reusable-ui/accordion": "^5.0.0",
     "@reusable-ui/exclusive-accordion": "^5.0.0",
     "@reusable-ui/carousel": "^5.0.0",
