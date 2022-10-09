@@ -42,11 +42,6 @@ import {
     
     // size options of UI:
     usesResizable,
-    
-    
-    
-    // basic variants of UI:
-    useBasicVariantProps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -54,6 +49,10 @@ import type {
     // react components:
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
+import type {
+    // react components:
+    BasicProps,
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesListItemBaseLayout,
@@ -234,7 +233,7 @@ export interface GroupProps<TElement extends Element = HTMLElement>
 }
 const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElement>): JSX.Element|null => {
     // basic variant props:
-    const basicVariantProps = useBasicVariantProps(props);
+    const size = props.size;
     
     
     
@@ -271,19 +270,19 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
         >
             {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
                 // conditions:
-                if (!React.isValidElement(child)) return child;
+                if (!React.isValidElement<BasicProps & { component: React.ReactElement }>(child)) return child;
                 
                 
                 
                 // rest props:
                 const childProps = {
-                    // basic variant props:
-                    ...basicVariantProps,
-                    
-                    
-                    
                     // other props:
                     ...child.props,
+                    
+                    
+                    
+                    // variants:
+                    size : child.props.size ?? size,
                 };
                 const {
                     // components:
