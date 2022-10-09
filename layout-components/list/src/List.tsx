@@ -1714,40 +1714,48 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             // handlers:
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.Children.map(children, (child, index) =>
-                <WrapperItem<HTMLLIElement>
-                    // identifiers:
-                    key={index}
-                    
-                    
-                    
-                    // semantics:
-                    tag={wrapperTag}
-                >
-                    {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
-                        // props:
-                        {
-                            // behaviors:
-                            ...(((): boolean => {
-                                // conditions:
-                                if (child.type === ListSeparatorItem)      return false;
-                                if (child.props.classes?.includes('void')) return false;
-                                
-                                
-                                
-                                // result:
-                                return (
-                                    child.props.actionCtrl
-                                    ??
-                                    defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
-                                    ??
-                                    false             // if <List>'s actionCtrl was not assigned => default to false
-                                );
-                            })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
-                        },
-                    )}
-                </WrapperItem>
-            )}
+            {React.Children.map(children, (child, index) => {
+                // conditions:
+                if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
+                
+                
+                
+                // jsx:
+                return (
+                    <WrapperItem<HTMLLIElement>
+                        // identifiers:
+                        key={index}
+                        
+                        
+                        
+                        // semantics:
+                        tag={wrapperTag}
+                    >
+                        {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
+                            // props:
+                            {
+                                // behaviors:
+                                ...(((): boolean => {
+                                    // conditions:
+                                    if (child.type === ListSeparatorItem)      return false;
+                                    if (child.props.classes?.includes('void')) return false;
+                                    
+                                    
+                                    
+                                    // result:
+                                    return (
+                                        child.props.actionCtrl
+                                        ??
+                                        defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
+                                        ??
+                                        false             // if <List>'s actionCtrl was not assigned => default to false
+                                    );
+                                })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
+                            },
+                        )}
+                    </WrapperItem>
+                );
+            })}
         </Indicator>
     );
 };
