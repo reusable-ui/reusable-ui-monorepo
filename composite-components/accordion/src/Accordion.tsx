@@ -510,6 +510,11 @@ export interface AccordionProps<TElement extends Element = HTMLElement>
     
     // accessibilities:
     label     ?: string
+    
+    
+    
+    // behaviors:
+    lazy      ?: boolean
 }
 const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps<TElement>): JSX.Element|null => {
     // rest props:
@@ -519,11 +524,21 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         
         
         
+        // behaviors:
+        lazy = undefined,
+        
+        
+        
         // components:
         listRef,
         listOrientation,
         listStyle,
         listComponent = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
+        
+        
+        
+        // children:
+        children,
     ...restListProps} = props;
     
     
@@ -569,7 +584,21 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         
         
         // children:
-        listComponent.props.children ?? props.children,
+        listComponent.props.children ?? React.Children.map(children, (child) => {
+            // conditions:
+            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => ignore
+            
+            
+            
+            // jsx:
+            return React.cloneElement(child,
+                // props:
+                {
+                    // behaviors:
+                    lazy : child.props.lazy ?? lazy,
+                },
+            );
+        }),
     );
 };
 export {
