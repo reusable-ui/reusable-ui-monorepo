@@ -1111,20 +1111,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     // classes:
                     classes={_defaultListElmClasses}
                 >
-                    {React.Children.map(children, (child, index) =>
-                        /* .item */
-                        <Generic<TElement>
-                            // identifiers:
-                            key={index}
-                            
-                            
-                            
-                            // semantics:
-                            tag='li'
-                        >
-                            {child}
-                        </Generic>
-                    )}
+                    {React.Children.map(children, (child, index) => {
+                        // conditions:
+                        if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
+                        
+                        
+                        
+                        /* wrap child with .item */
+                        return (
+                            <Generic<TElement>
+                                // identifiers:
+                                key={index}
+                                
+                                
+                                
+                                // semantics:
+                                tag='li'
+                            >
+                                {child}
+                            </Generic>
+                        );
+                    })}
                 </Generic>
                 
                 {/* .dummy */}
@@ -1147,13 +1154,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     // handlers:
                     onScroll={dummyHandleScroll}
                 >
-                    {React.Children.map(children, (_child, index) =>
-                        /* .dummy-item */
-                        <div
-                            // identifiers:
-                            key={index}
-                        />
-                    )}
+                    {React.Children.map(children, (child, index) => {
+                        // conditions:
+                        if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
+                        
+                        
+                        
+                        /* convert child to .dummy-item */
+                        return (
+                            <div
+                                // identifiers:
+                                key={index}
+                            />
+                        );
+                    })}
                 </Generic>}
             </>}
             
@@ -1256,24 +1270,32 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 
                 
                 // children:
-                navscrollComponent.props.children ?? React.Children.map(children, (child, index) => (
-                    <ListItem
-                        // identifiers:
-                        key={index}
-                        
-                        
-                        
-                        // semantics:
-                        tag='button'
-                        
-                        
-                        
-                        // accessibilities:
-                        {...(React.isValidElement<React.HTMLAttributes<HTMLElement>>(child) ? ({
-                            title : child.props.title,
-                        } as React.HTMLAttributes<HTMLElement>) : null)}
-                    />
-                )),
+                navscrollComponent.props.children ?? React.Children.map(children, (child, index) => {
+                    // conditions:
+                    if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
+                    
+                    
+                    
+                    /* convert child to button */
+                    return (
+                        <ListItem
+                            // identifiers:
+                            key={index}
+                            
+                            
+                            
+                            // semantics:
+                            tag='button'
+                            
+                            
+                            
+                            // accessibilities:
+                            {...(React.isValidElement<React.HTMLAttributes<HTMLElement>>(child) ? ({
+                                title : child.props.title,
+                            } as React.HTMLAttributes<HTMLElement>) : null)}
+                        />
+                    );
+                }),
             )}
         </Content>
     );
