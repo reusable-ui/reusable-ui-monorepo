@@ -424,3 +424,12 @@ export {
     Basic,
     Basic as default,
 }
+
+
+
+export interface BasicComponentProps<TElement extends Element = HTMLElement>
+{
+    // components:
+    basicComponent ?: React.ReactComponentElement<any, BasicProps<TElement>>
+}
+
