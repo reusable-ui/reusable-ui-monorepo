@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navbar",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A responsive navigation header. Supports for branding, navigation and more.",
   "keywords": [
     "menu",
@@ -36,7 +36,7 @@
   "dependencies": {
     "@cssfn/core": "^2.0.1",
     "@cssfn/cssfn-react": "^2.0.13",
-    "@reusable-ui/basic": "^5.0.0",
+    "@reusable-ui/basic": "^5.0.1",
     "@reusable-ui/container": "^5.0.0",
     "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/responsives": "^5.0.0",

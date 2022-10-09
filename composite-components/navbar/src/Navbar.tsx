@@ -80,6 +80,13 @@ import {
 import {
     // configs:
     basics,
+    
+    
+    
+    // react components:
+    BasicProps,
+    
+    BasicComponentProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
@@ -94,7 +101,6 @@ import {
     
     
     // react components:
-    ContainerProps,
     Container,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 import {
@@ -330,7 +336,7 @@ export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
-        Omit<ContainerProps<TElement>,
+        Omit<BasicProps<TElement>,
             // children:
             |'children' // we redefined `children` prop as `NavbarChildren`
         >,
@@ -347,7 +353,10 @@ export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedCh
         >,
         
         // states:
-        CollapsibleProps<TExpandedChangeEvent>
+        CollapsibleProps<TExpandedChangeEvent>,
+        
+        // components:
+        BasicComponentProps<TElement>
 {
     // children:
     children ?: NavbarChildren
@@ -389,9 +398,14 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         
+        // components:
+        basicComponent = (<Container<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        
+        
+        
         // children:
         children,
-    ...restContainerProps} = props;
+    ...restBasicProps} = props;
     
     
     
@@ -489,51 +503,55 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // jsx:
-    return (
-        <Container<TElement>
+    return React.cloneElement<BasicProps<TElement>>(basicComponent,
+        // props:
+        {
             // basic variant props:
-            {...basicVariantProps}
+            ...basicVariantProps,
             
             
             
             // other props:
-            {...restContainerProps}
+            ...restBasicProps,
             
             
             
             // semantics:
-            semanticTag={props.semanticTag   ?? 'nav'       }
-            semanticRole={props.semanticRole ?? 'navigation'}
+            semanticTag  : props.semanticTag  ?? 'nav',
+            semanticRole : props.semanticRole ?? 'navigation',
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
+            mainClass    : props.mainClass ?? styleSheet.main,
+            stateClasses : stateClasses,
             
             
             
             // handlers:
-            onClick={handleClick}
-        >
-            {(typeof(children) !== 'function') ? children : children({
-                // basic variant props:
-                basicVariantProps,
-                
-                
-                
-                // states:
-                navbarExpanded,
-                menuExpanded,
-                
-                
-                
-                // handlers:
-                toggleMenu,
-                handleActiveChange,
-                handleClickAsToggleMenu,
-            })}
-        </Container>
+            onClick      : handleClick,
+        },
+        
+        
+        
+        // children:
+        (typeof(children) !== 'function') ? children : children({
+            // basic variant props:
+            basicVariantProps,
+            
+            
+            
+            // states:
+            navbarExpanded,
+            menuExpanded,
+            
+            
+            
+            // handlers:
+            toggleMenu,
+            handleActiveChange,
+            handleClickAsToggleMenu,
+        }),
     );
 };
 export {
