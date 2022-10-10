@@ -2,6 +2,7 @@
 [high prior] set userSelect: true for <Button buttonStyle='link'>
 [high prior] rename left to leaved to avoid collision with left|right
 
+[med prior ] <Icon>'s icon svg should be black #000 color.
 [med prior ] add xxxl to <Container>
 
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
