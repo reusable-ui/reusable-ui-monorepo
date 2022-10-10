@@ -348,17 +348,28 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
     */
     const triggerActiveChange  = useEvent<React.Dispatch<boolean>>((active) => {
         Promise.resolve().then(() => { // trigger the event after the <Component> has finished rendering (for controllable <Component>)
-            // fire change dom event:
+            // fire change native event:
             const element = changeEventTarget?.current;
             if (element) {
                 // *hack*: trigger `onChange` event:
                 // side effect: toggles the [checked] prop:
                 
-                if ((element.tagName === 'INPUT') && (element.type === 'radio') && (element.checked === active)) {
-                    element.checked = !active; // *hack* flip before firing click event
+                if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
+                    if (active) {
+                        if (element.checked) element.checked = false; // *hack* flip before firing click event
+                        
+                        // fire `click` native event to trigger `onChange` synthetic event:
+                        element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                    }
+                    // else {
+                    //     // do nothing if (active === false)
+                    //     // the `onChange` event is *never* triggered when *uncheck*
+                    // } // if
+                }
+                else {
+                    // fire `click` native event to trigger `onChange` synthetic event:
+                    element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
                 } // if
-                
-                element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
             
             // fire change synthetic event:
