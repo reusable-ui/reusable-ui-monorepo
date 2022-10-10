@@ -348,15 +348,21 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
     */
     const triggerActiveChange  = useEvent<React.Dispatch<boolean>>((active) => {
         Promise.resolve().then(() => { // trigger the event after the <Component> has finished rendering (for controllable <Component>)
-            // fire change synthetic event:
-            props.onActiveChange?.({ active } as TActiveChangeEvent);
-            
             // fire change dom event:
-            if (changeEventTarget?.current) {
+            const element = changeEventTarget?.current;
+            if (element) {
                 // *hack*: trigger `onChange` event:
                 // side effect: toggles the [checked] prop:
-                changeEventTarget.current.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                
+                if ((element.tagName === 'INPUT') && (element.type === 'radio') && (element.checked === active)) {
+                    element.checked = !active; // *hack* flip before firing click event
+                } // if
+                
+                element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
+            
+            // fire change synthetic event:
+            props.onActiveChange?.({ active } as TActiveChangeEvent);
         });
     });
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
