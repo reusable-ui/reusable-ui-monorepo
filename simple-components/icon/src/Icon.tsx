@@ -81,7 +81,7 @@ import {
     
     
     
-    // mild (soft color) variant of UI:
+    // colorize the UI based on its theme or the background theme:
     usesColorable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
