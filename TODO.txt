@@ -1,4 +1,3 @@
-[high prior] auto colorize for <code>, <kbd>, <mark>, <etc> based on background lightness
 [high prior] set userSelect: true for <Button buttonStyle='link'>
 [high prior] rename left to leaved to avoid collision with left|right
 
