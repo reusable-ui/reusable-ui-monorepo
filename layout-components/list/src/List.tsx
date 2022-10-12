@@ -1038,10 +1038,10 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                         // children:
                         ...children('::before', {
                             ...imports([
-                                usesIconImage(
-                                    /*image : */lists.breadcrumbSeparatorImage,
-                                    /*color : */backgroundVars.altBackgColor,
-                                ),
+                                usesIconImage({
+                                    image : lists.breadcrumbSeparatorImage,
+                                    color : backgroundVars.altBackgColor,
+                                }),
                             ]),
                             ...style({
                                 // layouts:
