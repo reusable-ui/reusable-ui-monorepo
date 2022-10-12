@@ -282,6 +282,8 @@ export const usesButtonLinkVariant = () => {
             // spacings:
             [paddingVars.paddingInline] : spacers.xs,
             [paddingVars.paddingBlock ] : spacers.xs,
+            marginInline : `calc(0px - ${paddingVars.paddingInline})`, // cancels out the padding with negative margin
+            marginBlock  : `calc(0px - ${paddingVars.paddingBlock })`, // cancels out the padding with negative margin
             
             
             
