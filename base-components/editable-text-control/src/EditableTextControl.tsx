@@ -32,6 +32,11 @@ import {
 
 // reusable-ui core:
 import {
+    // background stuff of UI:
+    usesBackground,
+    
+    
+    
     // padding (inner spacing) stuff of UI:
     usesPadding,
     
@@ -102,6 +107,7 @@ export const usesEditableTextControlLayout = () => {
     // dependencies:
     
     // features:
+    const {backgroundVars    } = usesBackground();
     const {paddingVars       } = usesPadding();
     
     // states:
@@ -118,9 +124,10 @@ export const usesEditableTextControlLayout = () => {
             // children:
             ...children(iconElm, {
                 ...imports([
-                    usesIconImage(
-                        /*image : */validationIconVars.iconImage,
-                    ),
+                    usesIconImage({
+                        image : validationIconVars.iconImage,
+                        color : backgroundVars.altBackgColor,
+                    }),
                 ]),
                 ...style({
                     // layouts:
