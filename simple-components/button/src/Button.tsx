@@ -15,6 +15,7 @@ import {
     rule,
     variants,
     states,
+    fallbacks,
     style,
     imports,
     
@@ -260,6 +261,14 @@ export const usesButtonLinkVariant = () => {
             noBackground(),
         ]),
         ...style({
+            // accessibilities:
+            userSelect     : 'contain', // a link should be selectable
+            ...fallbacks({
+                userSelect : 'text',    // a link should be selectable
+            }),
+            
+            
+            
             // borders:
             // small rounded corners on top:
             [borderVars.borderStartStartRadius] : borderRadiuses.sm,
