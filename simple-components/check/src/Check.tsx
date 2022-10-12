@@ -247,10 +247,10 @@ export const usesCheckLayout = () => {
                     ...children(checkElm, {
                         ...imports([
                             // check indicator:
-                            usesIconImage(
-                                /*image : */checks.indicator,
-                                /*color : */foregroundVars.foreg,
-                            ),
+                            usesIconImage({
+                                image : checks.indicator,
+                                color : foregroundVars.foreg,
+                            }),
                         ]),
                         ...style({
                             // layouts:
