@@ -140,13 +140,6 @@ export interface IconConfig {
  * @returns A `IconStuff` represents the icon rules.
  */
 export const usesIcon = (config?: IconConfig): IconStuff => {
-    // dependencies:
-    
-    // variants:
-    const {colorableVars} = usesColorable();
-    
-    
-    
     return {
         iconRule: () => style({
             ...vars({
@@ -161,7 +154,7 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
                 
                 
                 // backgrounds:
-                [iconVars.color] : config?.color ?? colorableVars.color,
+                [iconVars.color] : config?.color,
             }),
         }),
         iconVars,
@@ -294,8 +287,14 @@ export const formatOf = (fileName: string): string|null => {
 export const usesIconLayout      = () => {
     // dependencies:
     
+    // variants:
+    const {colorableVars} = usesColorable();
+    
     // features:
-    const {iconRule, iconVars} = usesIcon({size: icons.size});
+    const {iconRule, iconVars} = usesIcon({
+        size  : icons.size,
+        color : colorableVars.color,
+    });
     
     
     
@@ -493,11 +492,18 @@ export const usesIconVariants    = () => {
         ]),
     });
 };
-export const usesIconImage       = (image: CssKnownProps['content'], color?: CssKnownProps['backgroundColor'], size?: CssKnownProps['blockSize']) => {
+
+export interface IconImageConfig
+    extends
+        Omit<IconConfig, 'image'>,
+        Required<Pick<IconConfig, 'image'>>
+{
+}
+export const usesIconImage       = (config: IconImageConfig) => {
     // dependencies:
     
     // features:
-    const {iconRule} = usesIcon({ image, size, color });
+    const {iconRule} = usesIcon(config);
     
     
     
