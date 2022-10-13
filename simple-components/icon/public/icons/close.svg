@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <style>
         polyline {
-            stroke: black;
+            stroke: #000;
             stroke-width: 4;
             stroke-linecap: round;
-
             transform-origin: 50% 50%;
         }
-
         polyline.top {
             transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%);
         }
