@@ -22,12 +22,13 @@ import {
 //#region configs
 export type BreakpointValue = number
 const initialBreakpoints = {
-    xs  : 0    as Optional<BreakpointValue>,
-    sm  : 576  as Optional<BreakpointValue>,
-    md  : 768  as Optional<BreakpointValue>,
-    lg  : 992  as Optional<BreakpointValue>,
-    xl  : 1200 as Optional<BreakpointValue>,
-    xxl : 1400 as Optional<BreakpointValue>,
+    xs   : 0    as Optional<BreakpointValue>,
+    sm   : 576  as Optional<BreakpointValue>,
+    md   : 768  as Optional<BreakpointValue>,
+    lg   : 992  as Optional<BreakpointValue>,
+    xl   : 1200 as Optional<BreakpointValue>,
+    xxl  : 1400 as Optional<BreakpointValue>,
+    xxxl : 1600 as Optional<BreakpointValue>,
 };
 
 export type Breakpoints = typeof initialBreakpoints & { [name: string & {}] : Optional<BreakpointValue> }
