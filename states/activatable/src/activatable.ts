@@ -222,6 +222,9 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     const propActive  = usePropActive(props);
     const {tag, role} = useSemantic(props);
     
+    
+    
+    // fn states:
     /*
      * state is active/passive based on [controllable active]
      * [uncontrollable active] is not supported
@@ -238,6 +241,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     
+    // update states:
     if (activated !== activeFn) { // change detected => apply the change & start animating
         const updateActivated = () => {
             setActivated(activeFn); // remember the last change
