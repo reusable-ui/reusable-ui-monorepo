@@ -309,7 +309,17 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     
     // handlers:
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        disableableState.handleAnimationStart,
+        activatableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -350,7 +360,8 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
             
             
             // handlers:
-            onAnimationEnd={handleAnimationEnd}
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd}
         >
             { children && <AccessibilityProvider {...propAccess}>
                 { children }
