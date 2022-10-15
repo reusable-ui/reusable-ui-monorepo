@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/activatable",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A capability of UI to be highlighted/selected/activated.",
   "keywords": [
     "activatable",
@@ -41,6 +41,7 @@
   "peerDependencies": {
     "react": "^18.1.0",
     "@reusable-ui/accessibilities": "^5.0.0",
+    "@reusable-ui/animating-state": "^5.0.0",
     "@reusable-ui/animation": "^5.0.0",
     "@reusable-ui/mildable": "^5.0.0",
     "@reusable-ui/outlineable": "^5.0.0"

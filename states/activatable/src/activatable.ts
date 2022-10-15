@@ -58,6 +58,10 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -218,24 +222,25 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     const propActive  = usePropActive(props);
     const {tag, role} = useSemantic(props);
     
-    
-    
-    // states:
-    const [activated, setActivated] = useState<boolean>(propActive); // true => active, false => passive
-    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => activating-animation, false => deactivating-animation
-    
-    
-    
     /*
      * state is active/passive based on [controllable active]
      * [uncontrollable active] is not supported
      */
     const activeFn : boolean = propActive /*controllable*/;
     
+    
+    
+    // states:
+    const [activated, setActivated, animation, handleAnimationStart, handleAnimationEnd] = useAnimatingState<boolean, TElement>({
+        initialState  : activeFn,
+        animationName : /((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/,
+    });
+    
+    
+    
     if (activated !== activeFn) { // change detected => apply the change & start animating
         const updateActivated = () => {
             setActivated(activeFn); // remember the last change
-            setAnimating(activeFn); // start activating-animation/deactivating-animation
         };
         if (activeFn) {
             // update the state immediately:
@@ -249,31 +254,17 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (active|passive)[Foo] or boo(Active|Passive)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop activating-animation/deactivating-animation
-    });
-    
-    
-    
+    // interfaces:
     return {
         active    : activated,
-        isVisible : activated || (animating !== null),
+        isVisible : activated || (animation !== undefined),
         
         class     : ((): string|null => {
             // activating:
-            if (animating === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
+            if (animation === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
             
             // passivating:
-            if (animating === false) return 'passivating';
+            if (animation === false) return 'passivating';
             
             // fully activated:
             if (activated) return 'activated';
@@ -298,6 +289,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
             return { 'aria-selected' : true };
         })(),
         
+        handleAnimationStart,
         handleAnimationEnd,
     };
 };
