@@ -17,6 +17,7 @@ export * from '@reusable-ui/semantics'                      // a semantic manage
 export * from '@reusable-ui/focuses'                        // focusing functions
 export * from '@reusable-ui/client-sides'                   // a set of client-side functions
 export * from '@reusable-ui/navigations'                    // a set of navigation functions
+export * from '@reusable-ui/animating-state'                // a hook for creating animating state
 
 // reusable-ui features:
 /*peer*/ export * from '@reusable-ui/background'            // background stuff of UI
