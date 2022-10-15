@@ -156,6 +156,9 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     const propEnabled = usePropEnabled(props);
     const {tag}       = useSemantic(props);
     
+    
+    
+    // fn states:
     /*
      * state is enabled/disabled based on [controllable enabled]
      * [uncontrollable enabled] is not supported
@@ -172,6 +175,7 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     
     
     
+    // update states:
     if (enabled !== enabledFn) { // change detected => apply the change & start animating
         setEnabled(enabledFn);   // remember the last change
     } // if
