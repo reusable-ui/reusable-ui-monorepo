@@ -1,14 +1,3 @@
-// react:
-import {
-    // react:
-    default as React,
-    
-    
-    
-    // hooks:
-    useState,
-}                           from 'react'
-
 // cssfn:
 import {
     // cssfn general types:
@@ -39,10 +28,6 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
-    useEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
     SemanticProps,
     useSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
@@ -55,6 +40,10 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -167,52 +156,39 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     const propEnabled = usePropEnabled(props);
     const {tag}       = useSemantic(props);
     
-    
-    
-    // states:
-    const [enabled,   setEnabled  ] = useState<boolean>(propEnabled); // true => enabled, false => disabled
-    const [animating, setAnimating] = useState<boolean|null>(null);   // null => no-animation, true => enabling-animation, false => disabling-animation
-    
-    
-    
     /*
      * state is enabled/disabled based on [controllable enabled]
      * [uncontrollable enabled] is not supported
      */
     const enabledFn : boolean = propEnabled /*controllable*/;
     
-    if (enabled !== enabledFn) { // change detected => apply the change & start animating
-        setEnabled(enabledFn);   // remember the last change
-        setAnimating(enabledFn); // start enabling-animation/disabling-animation
-    } // if
     
     
-    
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (enable|disable)[Foo] or boo(Enable|Disable)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop enabling-animation/disabling-animation
+    // states:
+    const [enabled, setEnabled, animation, handleAnimationStart, handleAnimationEnd] = useAnimatingState<boolean, TElement>({
+        initialState  : enabledFn,
+        animationName : /((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/,
     });
     
     
     
+    if (enabled !== enabledFn) { // change detected => apply the change & start animating
+        setEnabled(enabledFn);   // remember the last change
+    } // if
+    
+    
+    
+    // interfaces:
     return {
         enabled  : enabled,
         disabled : !enabled,
         
         class    : ((): string|null => {
             // enabling:
-            if (animating === true)  return 'enabling';
+            if (animation === true)  return 'enabling';
             
             // disabling:
-            if (animating === false) return null; // uses :disabled or [aria-disabled]
+            if (animation === false) return null; // uses :disabled or [aria-disabled]
             
             // fully disabled:
             if (!enabled) return 'disabled';
@@ -231,6 +207,7 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
             return { 'aria-disabled' : true };
         })(),
         
+        handleAnimationStart,
         handleAnimationEnd,
     };
 };
