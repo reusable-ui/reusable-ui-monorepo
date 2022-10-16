@@ -223,16 +223,16 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     
-    // resets:
-    if (focusDn.current && !propEnabled) {
-        focusDn.current = false; // lost focus because the control is disabled
+    // update state:
+    if (focused !== focusedFn) { // change detected => apply the change & start animating
+        setFocused(focusedFn);   // remember the last change
     } // if
     
     
     
-    // update state:
-    if (focused !== focusedFn) { // change detected => apply the change & start animating
-        setFocused(focusedFn);   // remember the last change
+    // resets:
+    if (focusDn.current && !propEnabled) {
+        focusDn.current = false; // lost focus because the control is disabled
     } // if
     
     
