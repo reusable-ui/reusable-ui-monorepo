@@ -78,7 +78,7 @@ const selectorIfEnabled   = ':not(:is(.enabling, .disabling, [aria-disabled]:not
 // .enabling will be added after loosing disable and will be removed after enabling-animation done:
 const selectorIfEnabling  = '.enabling'
 // .disabling, [aria-disabled] = styled disable, :disabled = native disable:
-const selectorIfDisabling = ':is(.disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
+const selectorIfDisabling = ':is(.disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled):not(:is(.enabling, .disabled))'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
 
