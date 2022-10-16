@@ -226,6 +226,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     // resets:
     if (focused && !propEnabled) {
         setFocused(false); // lost focus because the control is disabled
+        focusDn.current = false; // reset the *uncontrollable* focus too
     } // if
     
     
