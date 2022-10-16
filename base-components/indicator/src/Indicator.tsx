@@ -361,7 +361,7 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
             
             // handlers:
             onAnimationStart = {handleAnimationStart}
-            onAnimationEnd   = {handleAnimationEnd}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             { children && <AccessibilityProvider {...propAccess}>
                 { children }
