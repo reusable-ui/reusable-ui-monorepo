@@ -175,7 +175,7 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     
     
     
-    // update states:
+    // update state:
     if (enabled !== enabledFn) { // change detected => apply the change & start animating
         setEnabled(enabledFn);   // remember the last change
     } // if
