@@ -196,13 +196,6 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     
     
     
-    // resets:
-    if (arrived && !propEnabled) {
-        setArrived(false); // lost hover because the control is disabled
-    } // if
-    
-    
-    
     // update state:
     if (arrived !== arrivedFn) { // change detected => apply the change & start animating
         setArrived(arrivedFn);   // remember the last change
