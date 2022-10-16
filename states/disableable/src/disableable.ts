@@ -192,7 +192,12 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
             if (animation === true)  return 'enabling';
             
             // disabling:
-            if (animation === false) return null; // uses :disabled or [aria-disabled]
+            if (animation === false) {
+                // [enabled] but *still* animating of disabling => force to keep disabling using class .disabling
+                if (enabled) return 'disabling';
+                
+                return null; // uses :disabled or [aria-disabled]
+            } // if
             
             // fully disabled:
             if (!enabled) return 'disabled';
