@@ -6,7 +6,7 @@ import {
     
     
     // hooks:
-    useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -50,6 +50,10 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -174,75 +178,64 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     
     
     
-    // states:
-    const [arrived,   setArrived  ] = useState<boolean>(props.arrived ?? false); // true => arrived, false => left
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => arriving-animation, false => leaving-animation
-    
-    const [hoverDn,   setHoverDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user hovered, false => user left
-    
-    
-    
-    // resets:
-    if (hoverDn && (!propEnabled || isControllableArrived)) {
-        setHoverDn(false); // lost hover because the control is disabled or controllable [arrived] is set, when the control is re-enabled => still lost hover
-    } // if
-    
-    
-    
+    // fn states:
+    const hoverDn = useRef<boolean>(false);// uncontrollable (dynamic) state: true => user hovered, false => user left
     /*
      * state is always left if disabled
      * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
      */
-    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn /*uncontrollable*/ || focusableState.focused /*uncontrollable*/));
+    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn.current /*uncontrollable*/ || focusableState.focused /*uncontrollable*/));
     
+    
+    
+    // states:
+    const [arrived, setArrived, animation, handleAnimationStart, handleAnimationEnd] = useAnimatingState<boolean, TElement>({
+        initialState  : arrivedFn,
+        animationName : /((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/,
+    });
+    
+    
+    
+    // resets:
+    if (arrived && !propEnabled) {
+        setArrived(false); // lost hover because the control is disabled
+    } // if
+    
+    
+    
+    // update state:
     if (arrived !== arrivedFn) { // change detected => apply the change & start animating
         setArrived(arrivedFn);   // remember the last change
-        setAnimating(arrivedFn); // start arriving-animation/leaving-animation
     } // if
     
     
     
     // handlers:
-    const handleMouseEnter   = useEvent<React.MouseEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
+    const handleMouseEnter = useEvent<React.MouseEventHandler<TElement>>(() => {
+        // watchdog the *uncontrollable* hover state:
+        hoverDn.current = true;
         
-        
-        
-        setHoverDn(true);
+        // update state:
+        if (!isControllableArrived) setArrived(propEnabled);
     });
     
-    const handleMouseLeave   = useEvent<React.MouseEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableArrived) return; // controllable [arrived] is set => no uncontrollable required
+    const handleMouseLeave = useEvent<React.MouseEventHandler<TElement>>(() => {
+        // watchdog the *uncontrollable* leave state:
+        hoverDn.current = false;
         
-        
-        
-        setHoverDn(false);
-    });
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (arrive|leave)[Foo] or boo(Arrive|Leave)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop arriving-animation/leaving-animation
+        // update state:
+        if (!isControllableArrived) setArrived(propEnabled && focusableState.focused);
     });
     
     
     
+    // interfaces:
     return {
         arrived,
         
         class  : ((): string|null => {
             // arriving:
-            if (animating === true) {
+            if (animation === true) {
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
                 
@@ -251,7 +244,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
             } // if
             
             // leaving:
-            if (animating === false) return 'leaving';
+            if (animation === false) return 'leaving';
             
             // fully arrived:
             if (arrived) return 'arrived';
@@ -267,6 +260,8 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         
         handleMouseEnter,
         handleMouseLeave,
+        
+        handleAnimationStart,
         handleAnimationEnd,
     };
 };
