@@ -100,24 +100,24 @@ const [interactableVars] = cssVars<InteractableVars>();
 const selectorIfArrived  = '.arrived'
 // .arriving = styled arrive, :hover = native arrive:
 // the .disabled, .disable are used to kill native :hover
-// the .arrived, .leaving, .left are used to overwrite native :hover
-const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .left)))'
+// the .arrived, .leaving, .leaved are used to overwrite native :hover
+const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .leaved)))'
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
-// if all above are not set => left:
-// optionally use .left to overwrite native :hover
-const selectorIfLeft     = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .left)'
+// if all above are not set => left (leaved):
+// optionally use .leaved to overwrite native :hover
+const selectorIfLeaved   = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .leaved)'
 
 
 
 export const ifArrived       = (styles: CssStyleCollection): CssRule => rule(selectorIfArrived , styles);
 export const ifArriving      = (styles: CssStyleCollection): CssRule => rule(selectorIfArriving, styles);
 export const ifLeaving       = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaving , styles);
-export const ifLeft          = (styles: CssStyleCollection): CssRule => rule(selectorIfLeft    , styles);
+export const ifLeaved        = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaved  , styles);
 
-export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                   ], styles);
-export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeft], styles);
-export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                ], styles);
+export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                     ], styles);
+export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeaved], styles);
+export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                  ], styles);
 
 
 
@@ -242,9 +242,9 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
             // fully arrived:
             if (arrived) return 'arrived';
             
-            // fully left:
+            // fully left (leaved):
             if (isControllableArrived) {
-                return 'left'; // arriving by controllable prop => use class .left to kill [:hover || (.focused || .focusing || :focus-visible-within)]
+                return 'leaved'; // arriving by controllable prop => use class .leaved to kill [:hover || (.focused || .focusing || :focus-visible-within)]
             }
             else {
                 return null; // discard all classes above
