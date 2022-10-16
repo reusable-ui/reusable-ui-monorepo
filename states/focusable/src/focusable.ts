@@ -6,7 +6,7 @@ import {
     
     
     // hooks:
-    useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -50,6 +50,10 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -201,83 +205,74 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     
-    // states:
-    const [focused,   setFocused  ] = useState<boolean>(props.focused ?? false); // true => focused, false => blurred
-    const [animating, setAnimating] = useState<boolean|null>(null);              // null => no-animation, true => focusing-animation, false => blurring-animation
-    
-    const [focusDn,   setFocusDn  ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user focused, false => user blurred
-    
-    
-    
-    // resets:
-    if (focusDn && (!propEnabled || isControllableFocused)) {
-        setFocusDn(false); // lost focus because the control is disabled or controllable [focused] is set, when the control is re-enabled => still lost focus
-    } // if
-    
-    
-    
+    // fn states:
+    const focusDn = useRef<boolean>(false);// uncontrollable (dynamic) state: true => user focused, false => user blurred
     /*
      * state is always blur if disabled
      * state is focused/blurred based on [controllable focused] (if set) and fallback to [uncontrollable focused]
      */
-    const focusedFn : boolean = propEnabled && (props.focused /*controllable*/ ?? focusDn /*uncontrollable*/);
+    const focusedFn : boolean = propEnabled && (props.focused /*controllable*/ ?? focusDn.current /*uncontrollable*/);
     
+    
+    
+    // states:
+    const [focused, setFocused, animation, handleAnimationStart, handleAnimationEnd] = useAnimatingState<boolean, TElement>({
+        initialState  : focusedFn,
+        animationName : /((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/,
+    });
+    
+    
+    
+    // resets:
+    if (focused && !propEnabled) {
+        setFocused(false); // lost focus because the control is disabled
+    } // if
+    
+    
+    
+    // update state:
     if (focused !== focusedFn) { // change detected => apply the change & start animating
         setFocused(focusedFn);   // remember the last change
-        setAnimating(focusedFn); // start focusing-animation/blurring-animation
     } // if
     
     
     
     // handlers:
-    const handleFocus        = useEvent<React.FocusEventHandler<TElement>>((event) => {
+    const handleFocus   = useEvent<React.FocusEventHandler<TElement>>((event) => {
         // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
-        if (focusDn)               return; // already focused => nothing to focus
         if (!event.currentTarget.matches(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))'))
                                    return; // not :focus-visible-within => supporess the actual focus
         
         
         
-        setFocusDn(true);
+        // watchdog the *uncontrollable* focus state:
+        focusDn.current = true;
+        
+        // update state:
+        if (!isControllableFocused) setFocused(propEnabled);
     });
     
-    const handleBlur         = useEvent<React.FocusEventHandler<TElement>>(() => {
-        // conditions:
-        if (!propEnabled)          return; // control is disabled => no response required
-        if (isControllableFocused) return; // controllable [focused] is set => no uncontrollable required
-        if (!focusDn)              return; // already blurred => nothing to blur
+    const handleBlur    = useEvent<React.FocusEventHandler<TElement>>(() => {
+        // watchdog the *uncontrollable* blur state:
+        focusDn.current = false;
         
-        
-        
-        setFocusDn(false);
+        // update state:
+        if (!isControllableFocused) setFocused(false);
     });
     
-    const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleKeyDown = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         handleFocus(event as unknown as React.FocusEvent<TElement, Element>);
     });
     
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (focus|blur)[Foo] or boo(Focus|Blur)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop focusing-animation/blurring-animation
-    });
     
     
-    
+    // interfaces:
     return {
         focused,
         
         class : ((): string|null => {
             // focusing:
-            if (animating === true) {
+            if (animation === true) {
                 // focusing by controllable prop => use class .focusing
                 if (isControllableFocused) return 'focusing';
                 
@@ -289,7 +284,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
             } // if
             
             // blurring:
-            if (animating === false) return 'blurring';
+            if (animation === false) return 'blurring';
             
             // fully focused:
             if (focused) return 'focused';
@@ -308,6 +303,8 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         handleFocus,
         handleBlur,
         handleKeyDown,
+        
+        handleAnimationStart,
         handleAnimationEnd,
     };
 };
