@@ -1174,7 +1174,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleFocus         = useMergeEvents(
+    const handleFocus          = useMergeEvents(
         // preserves the original `onFocus`:
         props.onFocus,
         
@@ -1183,7 +1183,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         focusableState.handleFocus,
     );
-    const handleBlur          = useMergeEvents(
+    const handleBlur           = useMergeEvents(
         // preserves the original `onBlur`:
         props.onBlur,
         
@@ -1192,7 +1192,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         focusableState.handleBlur,
     );
-    const handleMouseEnter    = useMergeEvents(
+    const handleMouseEnter     = useMergeEvents(
         // preserves the original `onMouseEnter`:
         props.onMouseEnter,
         
@@ -1201,7 +1201,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         interactableState.handleMouseEnter,
     );
-    const handleMouseLeave    = useMergeEvents(
+    const handleMouseLeave     = useMergeEvents(
         // preserves the original `onMouseLeave`:
         props.onMouseLeave,
         
@@ -1210,7 +1210,17 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         interactableState.handleMouseLeave,
     );
-    const handleAnimationEnd  = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        focusableState.handleAnimationStart,
+        interactableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -1222,8 +1232,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
         clickableState.handleAnimationEnd,
     );
     
-    const isMouseActive       = useRef(false);
-    const handleMouseNative   = useEvent<EventHandler<MouseEvent>>((event) => {
+    const isMouseActive        = useRef(false);
+    const handleMouseNative    = useEvent<EventHandler<MouseEvent>>((event) => {
         // conditions:
         if (!propEnabled) return; // control is disabled => no response required
         if (propReadOnly) return; // control is readOnly => no response required
@@ -1237,12 +1247,12 @@ const Range = (props: RangeProps): JSX.Element|null => {
             (event.buttons === 1)  // only left button pressed, ignore multi button pressed
         );
     });
-    const handleMouseActive   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handleMouseActive    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
         handleMouseNative(event.nativeEvent);
     });
     
-    const isTouchActive       = useRef(false);
-    const handleTouchNative   = useEvent<EventHandler<TouchEvent>>((event) => {
+    const isTouchActive        = useRef(false);
+    const handleTouchNative    = useEvent<EventHandler<TouchEvent>>((event) => {
         // conditions:
         if (!propEnabled) return; // control is disabled => no response required
         if (propReadOnly) return; // control is readOnly => no response required
@@ -1252,7 +1262,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // actions:
         isTouchActive.current = (event.touches.length === 1); // only single touch
     });
-    const handleTouchActive   = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+    const handleTouchActive    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
         handleTouchNative(event.nativeEvent);
     });
     
@@ -1642,19 +1652,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             // handlers:
-            onFocus        = {handleFocus       }
-            onBlur         = {handleBlur        }
-            onMouseEnter   = {handleMouseEnter  }
-            onMouseLeave   = {handleMouseLeave  }
-            onAnimationEnd = {handleAnimationEnd}
+            onFocus          = {handleFocus         }
+            onBlur           = {handleBlur          }
+            onMouseEnter     = {handleMouseEnter    }
+            onMouseLeave     = {handleMouseLeave    }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
             
-            onMouseDown    = {handleMouseDown   }
-            onMouseMove    = {handleMouseMove   }
+            onMouseDown      = {handleMouseDown     }
+            onMouseMove      = {handleMouseMove     }
             
-            onTouchStart   = {handleTouchStart  }
-            onTouchMove    = {handleTouchMove   }
+            onTouchStart     = {handleTouchStart    }
+            onTouchMove      = {handleTouchMove     }
             
-            onKeyDown      = {handleKeyDown     }
+            onKeyDown        = {handleKeyDown       }
         >
             <input
                 // refs:
