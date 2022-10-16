@@ -226,7 +226,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     return {
         arrived,
         
-        class  : ((): string|null => {
+        class : ((): string|null => {
             // arriving:
             if (animation === true) {
                 // arriving by controllable prop => use class .arriving
