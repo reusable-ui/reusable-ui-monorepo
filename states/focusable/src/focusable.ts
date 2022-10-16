@@ -279,8 +279,8 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
                 // negative [tabIndex] => can't be focused by user input => treats <Control> as *wrapper* element => use class .focusing
                 if ((props.tabIndex ?? 0) < 0) return 'focusing';
                 
-                // not natively :focus-visible-within but *still* animating of focusing => force to keep focusing using class .focusing
-                if (!(focusDn.current /*uncontrollable*/)) return 'focusing';
+                // not [focused] but *still* animating of focusing => force to keep focusing using class .focusing
+                if (!focused) return 'focusing';
                 
                 // otherwise use pseudo :focus-visible-within
                 return null;
