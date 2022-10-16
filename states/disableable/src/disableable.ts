@@ -74,11 +74,11 @@ const [disableableVars] = cssVars<DisableableVars>();
 
 
 // if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
+const selectorIfEnabled   = ':not(:is(.enabling, .disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
 // .enabling will be added after loosing disable and will be removed after enabling-animation done:
 const selectorIfEnabling  = '.enabling'
-// [aria-disabled] = styled disable, :disabled = native disable:
-const selectorIfDisabling = ':is([aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
+// .disabling, [aria-disabled] = styled disable, :disabled = native disable:
+const selectorIfDisabling = ':is(.disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled):not(.disabled)'
 // .disabled will be added after disabling-animation done:
 const selectorIfDisabled  = '.disabled'
 
