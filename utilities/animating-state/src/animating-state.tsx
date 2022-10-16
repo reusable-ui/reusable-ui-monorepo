@@ -167,11 +167,11 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
     
     
     // handlers:
-    const setState             = useEvent<Dispatch<SetStateAction<TState>>>((newState) => {
+    const setState              = useEvent<Dispatch<SetStateAction<TState>>>((newState) => {
         // update with a new state:
         dispatchState({ type: AnimatingStateActionType.Change, newState });
     });
-    const handleAnimationStart = useEvent<AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationStart  = useEvent<AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (!animationBubbling && (event.target !== event.currentTarget)) return; // if not bubbling => ignores bubbling
         if (!event.animationName.match(animationName))                    return; // ignores foreign animations
@@ -181,7 +181,7 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
         // mark the expected_css_animation has started:
         expectedAnimation.current = state.animation;
     });
-    const handleAnimationEnd   = useEvent<AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationEnd    = useEvent<AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (!animationBubbling && (event.target !== event.currentTarget)) return; // if not bubbling => ignores bubbling
         if (!event.animationName.match(animationName))                    return; // ignores foreign animations
@@ -194,16 +194,18 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
         // clean up finished_animation:
         dispatchState({ type: AnimatingStateActionType.Done });
     });
-    
+    const handleAnimationCancel = handleAnimationEnd;
     
     
     // interfaces:
     return [
-        state.state,          // getter state
-        setState,             // setter state
-        
-        state.animation,      // animation state
-        handleAnimationStart, // animation-start handler
-        handleAnimationEnd,   // animation-end handler
+        state.state,               // getter    state
+        setState,                  // setter    state
+        state.animation,           // animation state
+        {
+            handleAnimationStart,  // animation-start  handler
+            handleAnimationEnd,    // animation-end    handler
+            handleAnimationCancel, // animation-cancel handler
+        },
     ] as const;
 };
