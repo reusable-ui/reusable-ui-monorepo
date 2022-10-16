@@ -216,7 +216,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     // states:
-    const [focused, setFocused, animation, handleAnimationStart, handleAnimationEnd] = useAnimatingState<boolean, TElement>({
+    const [focused, setFocused, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : focusedFn,
         animationName : /((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/,
     });
@@ -309,6 +309,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
         
         handleAnimationStart,
         handleAnimationEnd,
+        handleAnimationCancel,
     };
 };
 //#endregion focusable
