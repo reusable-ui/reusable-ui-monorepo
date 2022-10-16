@@ -265,7 +265,12 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
         
         class     : ((): string|null => {
             // activating:
-            if (animation === true) return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
+            if (animation === true) {
+                // not [activated] but *still* animating of activating => force to keep activating using class .activating
+                if (!activated) return 'activating';
+                
+                return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
+            } // if
             
             // passivating:
             if (animation === false) return 'passivating';
