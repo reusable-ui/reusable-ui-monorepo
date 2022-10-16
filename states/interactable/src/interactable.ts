@@ -99,14 +99,14 @@ const [interactableVars] = cssVars<InteractableVars>();
 // .arrived will be added after arriving-animation done:
 const selectorIfArrived  = '.arrived'
 // .arriving = styled arrive, :hover = native arrive:
-// the .disabled, .disable are used to kill native :hover
+// the .disabling, [aria-disabled], .disabled are used to kill native :hover
 // the .arrived, .leaving, .leaved are used to overwrite native :hover
-const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable, .arrived, .leaving, .leaved)))'
+const selectorIfArriving = ':is(.arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .arrived, .leaving, .leaved)))'
 // .leaving will be added after loosing arrive and will be removed after leaving-animation done:
 const selectorIfLeaving  = '.leaving'
 // if all above are not set => left (leaved):
 // optionally use .leaved to overwrite native :hover
-const selectorIfLeaved   = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabled, .disable)), .leaving)), .leaved)'
+const selectorIfLeaved   = ':is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.blurring, .blurred))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .leaving)), .leaved)'
 
 
 
