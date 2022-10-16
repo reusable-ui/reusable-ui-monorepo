@@ -332,7 +332,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
     
     
     // handlers:
-    const handleFocus        = useMergeEvents(
+    const handleFocus          = useMergeEvents(
         // preserves the original `onFocus`:
         props.onFocus,
         
@@ -341,7 +341,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         focusableState.handleFocus,
     );
-    const handleBlur         = useMergeEvents(
+    const handleBlur           = useMergeEvents(
         // preserves the original `onBlur`:
         props.onBlur,
         
@@ -350,7 +350,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         focusableState.handleBlur,
     );
-    const handleMouseEnter   = useMergeEvents(
+    const handleMouseEnter     = useMergeEvents(
         // preserves the original `onMouseEnter`:
         props.onMouseEnter,
         
@@ -359,7 +359,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         interactableState.handleMouseEnter,
     );
-    const handleMouseLeave   = useMergeEvents(
+    const handleMouseLeave     = useMergeEvents(
         // preserves the original `onMouseLeave`:
         props.onMouseLeave,
         
@@ -368,7 +368,7 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         interactableState.handleMouseLeave,
     );
-    const handleKeyDown      = useMergeEvents(
+    const handleKeyDown        = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -377,7 +377,17 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
         // states:
         focusableState.handleKeyDown,
     );
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        focusableState.handleAnimationStart,
+        interactableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -418,12 +428,13 @@ const Control = <TElement extends Element = HTMLElement>(props: ControlProps<TEl
             
             
             // handlers:
-            onFocus        = {handleFocus       }
-            onBlur         = {handleBlur        }
-            onMouseEnter   = {handleMouseEnter  }
-            onMouseLeave   = {handleMouseLeave  }
-            onKeyDown      = {handleKeyDown     }
-            onAnimationEnd = {handleAnimationEnd}
+            onFocus          = {handleFocus         }
+            onBlur           = {handleBlur          }
+            onMouseEnter     = {handleMouseEnter    }
+            onMouseLeave     = {handleMouseLeave    }
+            onKeyDown        = {handleKeyDown       }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };
