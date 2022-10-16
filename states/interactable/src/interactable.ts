@@ -232,6 +232,9 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
                 
+                // not natively :hover-focus but *still* animating of arriving => force to keep arriving using class .arriving
+                if (!(hoverDn.current /*uncontrollable*/ || focusableState.focused /*uncontrollable*/)) return 'arriving';
+                
                 // otherwise use a combination of :hover || (.focused || .focusing || :focus-visible-within)
                 return null;
             } // if
