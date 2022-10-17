@@ -1,3 +1,5 @@
+[med prior ] fix button blinky effect when hover-in then hover-out quickly
+
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 [low prior ] test tree shake a Dropdown without Modal
