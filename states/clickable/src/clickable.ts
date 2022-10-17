@@ -54,6 +54,10 @@ import {
     // react components:
     AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -117,7 +121,7 @@ const selectorIfReleasing = '.releasing'
 // // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
 const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
-// the .clicked will be added in a short time (about one frame long) after releasing-animation done:
+// the .clicked will be added in a short time (about 1 idle frame long) after releasing-animation done:
 const selectorIfClicked   = '.clicked'
 
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
@@ -231,38 +235,42 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     
-    // states:
-    const [pressed,     setPressed    ] = useState<boolean>(props.pressed ?? false); // true => pressed, false => released
-    const [animating,   setAnimating  ] = useState<boolean|null>(null);              // null => no-animation, true => pressing-animation, false => releasing-animation
-    
-    const [pressDn,     setPressDn    ] = useState<boolean>(false);                  // uncontrollable (dynamic) state: true => user pressed, false => user released
-    
-    const [markClicked, setMarkClicked] = useState<boolean>(false);                  // true => mark the `.clicked` state briefly after the `.releasing` animation done, false => do nothing
-    
-    
-    
-    // resets:
-    if (pressDn && (!propEditable || isControllablePressed)) {
-        setPressDn(false); // lost press because the control is not editable, when the control is re-editable => still lost press
-    } // if
-    
-    
-    
+    // fn states:
+    const pressDn = useRef<boolean>(false); // uncontrollable (dynamic) state: true => user pressed, false => user released
     /*
      * state is always released if (disabled || readOnly)
      * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
      */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn /*uncontrollable*/);
+    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn.current /*uncontrollable*/);
     
+    
+    
+    // states:
+    const [pressed, setPressed, animation, {handleAnimationStart, handleAnimationEnd: handleAnimationEndExternal, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
+        initialState  : pressedFn,
+        animationName : /((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/,
+    });
+    const [markClicked, setMarkClicked] = useState<boolean>(false); // true => mark the `.clicked` state briefly after the `.releasing` animation done, false => no click was performed
+    
+    
+    
+    // update state:
     if (pressed !== pressedFn) { // change detected => apply the change & start animating
         setPressed(pressedFn);   // remember the last change
-        setAnimating(pressedFn); // start pressing-animation/releasing-animation
+    } // if
+    
+    
+    
+    // resets:
+    if (pressDn.current && (!propEditable || isControllablePressed)) {
+        pressDn.current = false; // lost press because the control is not editable (disabled and/or readOnly) or becomes *controllable*
     } // if
     
     
     
     // dom effects:
     
+    //#region aborts async handles when the control is unmounted
     const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
     const asyncUnmarkClicked = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
     useEffect(() => {
@@ -275,18 +283,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         };
     }, []); // runs once on startup
+    //#endregion aborts async handles when the control is unmounted
     
+    //#region releases the *uncontrollable* pressed
     useEffect(() => {
         // conditions:
-        if (!propEditable)         return; // control is not editable => no response required
-        if (isControllablePressed) return; // controllable [pressed] is set => no uncontrollable required
-        if (!pressDn)              return; // not in pressed state => no need to watch for releasing event
+        if (!propEditable)         return; // control is not editable (disabled and/or readOnly) => no *uncontrollable* release_event required
+        if (isControllablePressed) return; // control is *controllable*                          => no *uncontrollable* release_event required
         
         
         
         // handlers:
         const handleRelease = (): void => {
-            setPressDn(false);
+            pressDn.current = false;
         };
         const handleReleaseAfterClick = (): void => {
             // cancel out previously `handleReleaseAfterClick` (if any):
@@ -334,8 +343,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             window.removeEventListener('touchend'   , handleReleaseTouch);
             window.removeEventListener('touchcancel', handleReleaseTouch);
         };
-    }, [propEditable, isControllablePressed, pressDn]);
+    }, [propEditable, isControllablePressed]);
+    //#endregion releases the *uncontrollable* pressed
     
+    //#region resets the `.clicked` state after 1 idle frame
     useEffect(() => {
         // conditions:
         if (!markClicked) return; // the `.clicked` state was not marked => nothing to reset
@@ -347,11 +358,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // cancel out previously asyncUnmarkClicked (if any):
         if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         
-        // wait until the `.clicked` state shown briefly (1 frame) by browser ui, then remove it
+        // wait until the `.clicked` state shown briefly (1 idle frame) by browser ui, then remove it
         asyncUnmarkClicked.current = requestIdleCallback(() => {
             setMarkClicked(false); // un-mark the `.clicked` state
         });
     }, [markClicked]);
+    //#endregion resets the `.clicked` state after 1 idle frame
     
     
     
@@ -491,21 +503,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     });
     
     const handleAnimationEnd  = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (press|release)[Foo] or boo(Press|Release)[Foo]
-        
-        
-        
-        if (animating === false) { // the `.releasing` animation is done
+        const prevAnimation = animation;
+        handleAnimationEndExternal(event);
+        if ((prevAnimation === true) && (animation === undefined)) { // the `.releasing` animation is done
             setMarkClicked(true); // mark the `.clicked` state
         } // if
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop pressing-animation/releasing-animation
     });
     
     
@@ -549,7 +551,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handleKeyDown,
         handleKeyUp,
         handleClick,
+        
+        handleAnimationStart,
         handleAnimationEnd,
+        handleAnimationCancel,
     };
 };
 //#endregion clickable
