@@ -395,7 +395,25 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 
                 
                 
-                // TODO
+                if (logs.performKeyUpActions) {
+                    logs.performKeyUpActions = false; // reset
+                    
+                    
+                    
+                    // actions:
+                    // trigger the onClick event by <kbd>actionKeys</kbd> key:
+                    event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                    
+                    
+                    
+                    // prevents triggering a *double* `onClick` event fired by native <button>
+                    // prevents scrolling the whole page by [space] key
+                    // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
+                    const keyCode = event.code.toLowerCase();
+                    if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) {
+                        event.preventDefault();
+                    } // if
+                } // if
             } // if
         };
         
@@ -509,44 +527,17 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             
             
-            // conditions:
-            if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
-            
-            
-            
-            // actions:
-            logs.performKeyUpActions = true;
+            if (handleActionCtrlEvents) {
+                // actions:
+                logs.performKeyUpActions = true;
+            } // if
         }
         else if (keyCode === 'enter') { // handle [enter] key (if not listed in `actionKeys`)
-            // actions:
             if (handleKeyEnterEvents) {
+                // actions:
                 // trigger the onClick event by <kbd>enter</kbd> key:
                 event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
-        } // if
-        
-        
-        
-        // prevents triggering a *double* `onClick` event fired by native <button>
-        // prevents scrolling the whole page by [space] key
-        // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
-        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) {
-            event.preventDefault();
-        } // if
-    });
-    const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        // conditions:
-        if (!logs.performKeyUpActions) return; // keyup actions has marked as aborted => nothing to do
-        logs.performKeyUpActions = false;      // reset
-        
-        if (!handleActionCtrlEvents)      return; // not an <ActionControl> or similar   => no need to handle click event
-        
-        
-        
-        // actions:
-        if (!actionKeys || actionKeys.includes(keyCode)) {
-            // trigger the onClick event by <kbd>actionKeys</kbd> key:
-            event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
         } // if
         
         
@@ -621,7 +612,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handleMouseDown,
         handleTouchStart,
         handleKeyDown,
-        handleKeyUp,
         handleClick,
         
         handleAnimationStart,
