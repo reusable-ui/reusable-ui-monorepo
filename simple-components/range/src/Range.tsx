@@ -1232,7 +1232,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         clickableState.handleAnimationEnd,
     );
     
-    const isMouseActive        = useRef(false);
+    const isMouseActive        = useRef<boolean>(false);
     const handleMouseNative    = useEvent<EventHandler<MouseEvent>>((event) => {
         // conditions:
         if (!propEnabled) return; // control is disabled => no response required
