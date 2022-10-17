@@ -551,18 +551,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     });
     
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        // conditions:
-        if (!handleActionCtrlEvents) return; // not an <ActionControl> or similar => no need to handle click event
-        
-        if (!propEnabled) { // control is disabled => no response required
-            event.stopPropagation(); // prevent from bubbling
-            return; // nothing to do
+        if (handleActionCtrlEvents) {
+            // actions:
+            if (!propEnabled) {
+                // control is disabled => no response required
+                
+                // prevent to bubbling:
+                event.stopPropagation();
+            }
+            else {
+                // trigger the onClick event by mouse/touch:
+                props.onClick?.(event);
+            } // if
         } // if
-        
-        
-        
-        // trigger the onClick event by mouse/touch:
-        props.onClick?.(event);
     });
     
     const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
@@ -580,7 +581,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         class : ((): string|null => {
             // pressing:
-            if (animating === true) {
+            if (animation === true) {
                 // // pressing by controllable prop => use class .pressing
                 // if (isControllablePressed) return 'pressing';
                 //
@@ -591,7 +592,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             } // if
             
             // releasing:
-            if (animating === false) return 'releasing';
+            if (animation === false) return 'releasing';
             
             // fully pressed:
             if (pressed) return 'pressed';
