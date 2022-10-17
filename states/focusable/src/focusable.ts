@@ -261,6 +261,11 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     });
     
     const handleKeyDown = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.code.toLowerCase() === 'tab') return; // ignores [tab] key
+        
+        
+        
         handleFocus(event as unknown as React.FocusEvent<TElement, Element>);
     });
     
