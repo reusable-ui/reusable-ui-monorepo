@@ -384,8 +384,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (!logs.isActive) handleReleaseAfterClick();
         };
         const handleReleaseKeyboard   = (event: KeyboardEvent): void => {
+            // logs:
+            logs.logKeyEvent(event, false, actionKeys);
+            
+            
+            
             // actions:
-            handleRelease();
+            if (!logs.isActive) {
+                handleRelease();
+                
+                
+                
+                // TODO
+            } // if
         };
         
         
@@ -524,12 +535,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         } // if
     });
     const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
-        // logs:
-        const keyCode = event.code.toLowerCase();
-        logs.activeKeys.delete(keyCode);
-        
-        
-        
         // conditions:
         if (!logs.performKeyUpActions) return; // keyup actions has marked as aborted => nothing to do
         logs.performKeyUpActions = false;      // reset
