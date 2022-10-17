@@ -26,7 +26,7 @@
 [published ] @reusable-ui/focuses
 [published ] [undocumented] @reusable-ui/client-sides
 [modified  ] [undocumented] @reusable-ui/navigations
-[fixed     ] [undocumented] @reusable-ui/animating-state
+[fixed  pub] [undocumented] @reusable-ui/animating-state
 
 // reusable-ui features:
 [published ] @reusable-ui/background
@@ -54,10 +54,10 @@
 // reusable-ui states:
 [published ] @reusable-ui/excitable
 [published ] @reusable-ui/collapsible
-[fixed     ] @reusable-ui/disableable
-[fixed     ] @reusable-ui/activatable
-[fixed     ] @reusable-ui/focusable
-[fixed     ] @reusable-ui/interactable
+[fixed  pub] @reusable-ui/disableable
+[fixed  pub] @reusable-ui/activatable
+[fixed  pub] @reusable-ui/focusable
+[fixed  pub] @reusable-ui/interactable
 [published ] @reusable-ui/clickable
 [published ] @reusable-ui/active-as-click
 [published ] @reusable-ui/invalidable
@@ -72,8 +72,8 @@
 // base-components:
 [published ] [documented  ] [          atomic] @reusable-ui/generic
 [published ] [documented  ] [          atomic] @reusable-ui/basic
-[published ] [documented  ] [          atomic] @reusable-ui/indicator
-[published ] [documented  ] [          atomic] @reusable-ui/control
+[fixed  pub] [documented  ] [          atomic] @reusable-ui/indicator
+[fixed  pub] [documented  ] [          atomic] @reusable-ui/control
 [published ] [documented  ] [          atomic] @reusable-ui/action-control
 [modified  ] [documented  ] [          atomic] @reusable-ui/editable-control
 [modified  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
@@ -93,7 +93,7 @@
 [published ] [documented  ] [full    compound] @reusable-ui/close-button
 [modified  ] [documented  ] [          atomic] @reusable-ui/form
 [published ] [documented  ] [          atomic] @reusable-ui/input
-[published ] [documented  ] [full    compound] @reusable-ui/range
+[fixed  pub] [documented  ] [full    compound] @reusable-ui/range
 [published ] [documented  ] [          atomic] @reusable-ui/check
 [published ] [documented  ] [          atomic] @reusable-ui/radio
 [published ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
