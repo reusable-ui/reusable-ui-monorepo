@@ -1251,7 +1251,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         handleMouseNative(event.nativeEvent);
     });
     
-    const isTouchActive        = useRef(false);
+    const isTouchActive        = useRef<boolean>(false);
     const handleTouchNative    = useEvent<EventHandler<TouchEvent>>((event) => {
         // conditions:
         if (!propEnabled) return; // control is disabled => no response required
