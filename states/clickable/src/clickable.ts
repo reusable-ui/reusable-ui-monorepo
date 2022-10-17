@@ -520,7 +520,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         else if (keyCode === 'enter') { // handle [enter] key (if not listed in `actionKeys`)
             // actions:
             if (handleKeyEnterEvents) {
-                // responses the onClick event:
+                // trigger the onClick event by <kbd>enter</kbd> key:
                 event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
         } // if
@@ -545,7 +545,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         // actions:
         if (!actionKeys || actionKeys.includes(keyCode)) {
-            // responses the onClick event:
+            // trigger the onClick event by <kbd>actionKeys</kbd> key:
             event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
         } // if
         
@@ -570,7 +570,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        // responses the onClick event:
+        // trigger the onClick event by mouse/touch:
         props.onClick?.(event);
     });
     
