@@ -206,7 +206,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     // fn states:
-    const focusDn = useRef<boolean>(false);// uncontrollable (dynamic) state: true => user focused, false => user blurred
+    const focusDn = useRef<boolean>(false); // uncontrollable (dynamic) state: true => user focused, false => user blurred
     /*
      * state is always blur if disabled
      * state is focused/blurred based on [controllable focused] (if set) and fallback to [uncontrollable focused]
