@@ -57,7 +57,7 @@
 [fixed     ] @reusable-ui/disableable
 [fixed     ] @reusable-ui/activatable
 [fixed     ] @reusable-ui/focusable
-[published ] @reusable-ui/interactable
+[fixed     ] @reusable-ui/interactable
 [published ] @reusable-ui/clickable
 [published ] @reusable-ui/active-as-click
 [published ] @reusable-ui/invalidable
