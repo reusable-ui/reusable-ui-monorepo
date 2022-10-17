@@ -179,7 +179,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     
     
     // fn states:
-    const hoverDn = useRef<boolean>(false);// uncontrollable (dynamic) state: true => user hovered, false => user left
+    const hoverDn = useRef<boolean>(false); // uncontrollable (dynamic) state: true => user hovered, false => user left
     /*
      * state is always left if disabled
      * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
