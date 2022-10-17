@@ -272,8 +272,55 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const [logs] = useState(() => ({
         isMouseActive       : false,
         isTouchActive       : false,
+        isKeyActive         : false,
         activeKeys          : new Set<string>(),
         performKeyUpActions : false,
+        
+        get isActive(): boolean {
+            return (
+                this.isMouseActive
+                ||
+                this.isTouchActive
+                ||
+                !!this.activeKeys.size
+            );
+        },
+        
+        logMouseEvent : function(event: MouseEvent, actionMouses: number[]|null) {
+            this.isMouseActive = (
+                !actionMouses
+                ||
+                actionMouses.includes(event.button)
+            );
+        },
+        logTouchEvent : function(event: TouchEvent, actionTouches: number|null) {
+            this.isTouchActive = (
+                !actionTouches // null or zero
+                ?
+                !!event.touches.length // any number of touch(es)
+                :
+                (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
+            );
+        },
+        logKeyEvent : function(event: KeyboardEvent, isKeyDown: boolean, actionKeys: string[]|null) {
+            const keyCode = event.code.toLowerCase();
+            if (isKeyDown) {
+                this.activeKeys.add(keyCode);
+            }
+            else {
+                this.activeKeys.delete(keyCode);
+            } // if
+            
+            
+            
+            this.isKeyActive = (
+                isKeyDown
+                &&
+                (this.activeKeys.size === 1) // pressing multiple keys causes the pressed state be canceled
+                &&
+                (!actionKeys || actionKeys.includes(keyCode))
+            );
+        },
     }));
     
     
@@ -320,33 +367,21 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         };
         const handleReleaseMouse      = (event: MouseEvent): void => {
             // logs:
-            const isPressed = (
-                !actionMouses
-                ||
-                actionMouses.includes(event.button)
-            );
-            logs.isMouseActive = isPressed;
+            logs.logMouseEvent(event, actionMouses);
             
             
             
             // actions:
-            handleReleaseAfterClick();
+            if (!logs.isActive) handleReleaseAfterClick();
         };
         const handleReleaseTouch      = (event: TouchEvent): void => {
             // logs:
-            const isTouched = (
-                !actionTouches // null or zero
-                ?
-                !!event.touches.length // any number of touch(es)
-                :
-                (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
-            );
-            logs.isTouchActive = isTouched;
+            logs.logTouchEvent(event, actionTouches);
             
             
             
             // actions:
-            handleReleaseAfterClick();
+            if (!logs.isActive) handleReleaseAfterClick();
         };
         const handleReleaseKeyboard   = (event: KeyboardEvent): void => {
             // actions:
@@ -407,74 +442,58 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
-        if (logs.isTouchActive) return; // not in touch mode
+        if (logs.isActive) return; // the control has already activated by another input device => ignore
         
         
         
         // logs:
-        const isPressed = (
-            !actionMouses
-            ||
-            actionMouses.includes(event.button)
-        );
-        logs.isMouseActive = isPressed;
+        logs.logMouseEvent(event.nativeEvent, actionMouses);
         
         
         
-        // conditions:
-        if (!isPressed) return;
-        
-        
-        
-        handlePress();
+        // actions:
+        if (logs.isMouseActive) handlePress();
     });
     
     const handleTouchStart   = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
-        if (logs.isMouseActive) return; // not in mouse mode
+        if (logs.isActive) return; // the control has already activated by another input device => ignore
         
         
         
         // logs:
-        const isTouched = (
-            !actionTouches // null or zero
-            ?
-            !!event.touches.length // any number of touch(es)
-            :
-            (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
-        );
-        logs.isTouchActive = isTouched;
+        logs.logTouchEvent(event.nativeEvent, actionTouches);
         
         
         
-        // conditions:
-        if (!isTouched) return;
-        
-        
-        
-        handlePress();
+        // actions:
+        if (logs.isTouchActive) handlePress();
     });
     
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        // conditions:
+        if (logs.isActive) return; // the control has already activated by another input device => ignore
+        
+        
+        
         // logs:
-        const keyCode = event.code.toLowerCase();
-        logs.activeKeys.add(keyCode);
+        logs.logKeyEvent(event.nativeEvent, true, actionKeys);
         
         
         
         // conditions:
-        const hasMultiplePressedKeys = logs.activeKeys.size > 1;
-        // pressing multiple keys causes the pressed state be canceled:
-        if (hasMultiplePressedKeys) {
+        if (logs.activeKeys.size >= 2) { // pressing multiple keys causes the pressed state be canceled
             logs.performKeyUpActions = false; // mark as aborted
-            setPressDn(false);
-            return;
+            setPressed(false);
+            return; // no further actions
         } // if
         
         
         
         // actions:
-        if (!actionKeys || actionKeys.includes(keyCode)) {
+        const keyCode = event.code.toLowerCase();
+        if (logs.isKeyActive) { // handle normal keys
+            // actions:
             handlePress();
             
             
@@ -487,15 +506,9 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             // actions:
             logs.performKeyUpActions = true;
         }
-        else {
-            // conditions:
-            if (!handleKeyEnterEvents) return; // not an <ActionControl> or similar => no need to handle click event
-            
-            
-            
+        else if (keyCode === 'enter') { // handle [enter] key (if not listed in `actionKeys`)
             // actions:
-            // if the pressed key is not listed in actionKeys => treat [enter] as onClick event:
-            if (keyCode === 'enter') {
+            if (handleKeyEnterEvents) {
                 // responses the onClick event:
                 event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
@@ -503,7 +516,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key, still alowing scrolling the whole page by arrows, pgup, pgdown, home, end.
+        // prevents triggering a *double* `onClick` event fired by native <button>
+        // prevents scrolling the whole page by [space] key
+        // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
+        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) {
+            event.preventDefault();
+        } // if
     });
     const handleKeyUp        = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
@@ -528,7 +546,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) event.preventDefault(); // prevents triggering `onClick` event fired by native <button>, prevents scrolling the whole page by [space] key, still alowing scrolling the whole page by arrows, pgup, pgdown, home, end.
+        // prevents triggering a *double* `onClick` event fired by native <button>
+        // prevents scrolling the whole page by [space] key
+        // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
+        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) {
+            event.preventDefault();
+        } // if
     });
     
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
