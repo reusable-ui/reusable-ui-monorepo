@@ -517,9 +517,19 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // conditions:
-        if (logs.activeKeys.size >= 2) { // pressing multiple keys causes the pressed state be canceled
-            logs.performKeyUpActions = false; // mark as aborted
-            setPressed(false);
+        if (logs.performKeyUpActions && !logs.isKeyActive) { // pressing multiple keys causes the pressed state be canceled
+            logs.performKeyUpActions = false; // aborted
+            
+            
+            
+            // watchdog the *uncontrollable* release state:
+            if (propEditable) pressDn.current = false;
+            
+            // update state:
+            if (!isControllablePressed) setPressed(false);
+            
+            
+            
             return; // no further actions
         } // if
         

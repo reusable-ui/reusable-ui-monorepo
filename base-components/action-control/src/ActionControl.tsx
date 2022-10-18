@@ -92,8 +92,8 @@ const _defaultSemanticTag      : SemanticTag  = [null, 'button', 'a'   ] // no c
 const _defaultSemanticRole     : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
 
 const _defaultClickableOptions : ClickableOptions = {
-    handleActionCtrlEvents : true, // needs to handle [space] key as click
-    handleKeyEnterEvents   : true, // needs to handle [enter] key as click
+    handleActionCtrlEvents : true, // needs to handle [space] key as onClick
+    handleKeyEnterEvents   : true, // needs to handle [enter] key as onClick
 };
 
 
