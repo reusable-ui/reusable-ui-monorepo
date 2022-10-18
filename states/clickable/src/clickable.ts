@@ -287,8 +287,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             );
         },
         
-        logMouseEvent : function(event: MouseEvent, actionMouses: number[]|null) {
+        logMouseEvent : function(event: MouseEvent, isMouseDown: boolean, actionMouses: number[]|null) {
             this.isMouseActive = (
+                isMouseDown // the *last* action is pressing mouse, not releasing
+                &&
                 !!event.buttons // one/more buttons are pressed
                 &&
                 (
@@ -298,8 +300,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 )
             );
         },
-        logTouchEvent : function(event: TouchEvent, actionTouches: number[]|null) {
+        logTouchEvent : function(event: TouchEvent, isTouchDown: boolean, actionTouches: number[]|null) {
             this.isTouchActive = (
+                isTouchDown // the *last* action is touching, not releasing
+                &&
                 !!event.touches.length // one/more fingers are touched
                 &&
                 (
@@ -321,7 +325,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             
             this.isKeyActive = (
-                isKeyDown // the last action is pressing key, not releasing
+                isKeyDown // the *last* action is pressing key, not releasing
                 &&
                 (this.activeKeys.size === 1) // only one key is pressed
                 &&
@@ -378,7 +382,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         };
         const handleReleaseMouse      = (event: MouseEvent): void => {
             // logs:
-            logs.logMouseEvent(event, actionMouses);
+            logs.logMouseEvent(event, false /*mouse_up*/, actionMouses);
             
             
             
@@ -387,7 +391,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         };
         const handleReleaseTouch      = (event: TouchEvent): void => {
             // logs:
-            logs.logTouchEvent(event, actionTouches);
+            logs.logTouchEvent(event, false /*touch_up*/, actionTouches);
             
             
             
@@ -487,7 +491,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // logs:
-        logs.logMouseEvent(event.nativeEvent, actionMouses);
+        logs.logMouseEvent(event.nativeEvent, true /*mouse_down*/, actionMouses);
         
         
         
@@ -502,7 +506,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // logs:
-        logs.logTouchEvent(event.nativeEvent, actionTouches);
+        logs.logTouchEvent(event.nativeEvent, true /*touch_down*/, actionTouches);
         
         
         
