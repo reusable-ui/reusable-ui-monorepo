@@ -367,7 +367,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         // handlers:
         const handleRelease           = (): void => {
+            // watchdog the *uncontrollable* release state:
             pressDn.current = false;
+            
+            // update state:
+            setPressed(false);
         };
         const handleReleaseAfterClick = (): void => {
             // cancel out previously `handleReleaseAfterClick` (if any):
