@@ -68,9 +68,9 @@ import {
 
 
 // defaults:
-const _defaultActionMouses     : number[]|null = [0]       // left click
-const _defaultActionTouches    : number|null   = 1         // single touch
-const _defaultActionKeys       : string[]|null = ['space'] // space key
+const _defaultActionMouses     : number[]|null = [1]       // [only_left_click]
+const _defaultActionTouches    : number[]|null = [1]       // [only_single_touch]
+const _defaultActionKeys       : string[]|null = ['space'] // [space_key]
 const _defaultClickableOptions : Required<ClickableOptions> = {
     handleActionCtrlEvents : false, // not to handle [space] as onClick
     handleKeyEnterEvents   : false, // not to handle [enter] as onClick
@@ -207,7 +207,7 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     
     // behaviors:
     actionMouses  ?: number[]|null
-    actionTouches ?: number|null
+    actionTouches ?: number[]|null
     actionKeys    ?: string[]|null
 }
 export interface ClickableOptions {
@@ -238,7 +238,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     // fn states:
     const pressDn = useRef<boolean>(false); // uncontrollable (dynamic) state: true => user pressed, false => user released
     /*
-     * state is always released if (disabled || readOnly)
+     * state is always released if not_editable (disabled and/or readOnly)
      * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
      */
     const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn.current /*uncontrollable*/);
@@ -263,7 +263,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     // resets:
     if (pressDn.current && (!propEditable || isControllablePressed)) {
-        pressDn.current = false; // lost press because the control is not editable (disabled and/or readOnly) or becomes *controllable*
+        pressDn.current = false; // lost press because the control is not_editable (disabled and/or readOnly) or becomes *controllable*
     } // if
     
     
@@ -273,6 +273,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         isMouseActive       : false,
         isTouchActive       : false,
         isKeyActive         : false,
+        
         activeKeys          : new Set<string>(),
         performKeyUpActions : false,
         
@@ -282,24 +283,30 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 ||
                 this.isTouchActive
                 ||
-                !!this.activeKeys.size
+                this.isKeyActive
             );
         },
         
         logMouseEvent : function(event: MouseEvent, actionMouses: number[]|null) {
             this.isMouseActive = (
-                !actionMouses
-                ||
-                actionMouses.includes(event.button)
+                !!event.buttons // one/more buttons are pressed
+                &&
+                (
+                    !actionMouses // null => no constraint
+                    ||
+                    actionMouses.includes(event.buttons) // within constraint
+                )
             );
         },
-        logTouchEvent : function(event: TouchEvent, actionTouches: number|null) {
+        logTouchEvent : function(event: TouchEvent, actionTouches: number[]|null) {
             this.isTouchActive = (
-                !actionTouches // null or zero
-                ?
-                !!event.touches.length // any number of touch(es)
-                :
-                (event.touches.length >= actionTouches) // the minimum number of touch(es) was satisfied (the default is single touch)
+                !!event.touches.length // one/more fingers are touched
+                &&
+                (
+                    !actionTouches // null => no constraint
+                    ||
+                    actionTouches.includes(event.touches.length) // within constraint
+                )
             );
         },
         logKeyEvent : function(event: KeyboardEvent, isKeyDown: boolean, actionKeys: string[]|null) {
@@ -314,11 +321,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             
             this.isKeyActive = (
-                isKeyDown
+                isKeyDown // the last action is pressing key, not releasing
                 &&
-                (this.activeKeys.size === 1) // pressing multiple keys causes the pressed state be canceled
+                (this.activeKeys.size === 1) // only one key is pressed
                 &&
-                (!actionKeys || actionKeys.includes(keyCode))
+                (
+                    !actionKeys // null => no constraint
+                    ||
+                    actionKeys.includes(keyCode) // within constraint
+                )
             );
         },
     }));
@@ -345,7 +356,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     //#region releases the *uncontrollable* pressed
     useEffect(() => {
         // conditions:
-        if (!propEditable)         return; // control is not editable (disabled and/or readOnly) => no *uncontrollable* release_event required
+        if (!propEditable)         return; // control is not_editable (disabled and/or readOnly) => no *uncontrollable* release_event required
         if (isControllablePressed) return; // control is *controllable*                          => no *uncontrollable* release_event required
         
         
