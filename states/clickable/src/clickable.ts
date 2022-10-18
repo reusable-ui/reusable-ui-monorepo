@@ -110,15 +110,15 @@ const [clickableVars] = cssVars<ClickableVars>();
 // .pressed will be added after pressing-animation done:
 const selectorIfPressed   = '.pressed'
 // .pressing = styled press, :active = native press:
-// the .disabled, .disable are used to kill native :active
+// the .disabling, [aria-disabled], .disabled are used to kill native :active
 // // // the .pressed, .releasing, .released are used to overwrite native :active
-// // // const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabled, .disable, .pressed, .releasing, .released)))'
+// // // const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .pressed, .releasing, .released)))'
 const selectorIfPressing  = '.pressing'
 // .releasing will be added after loosing press and will be removed after releasing-animation done:
 const selectorIfReleasing = '.releasing'
 // if all above are not set => released:
 // // // optionally use .released to overwrite native :active
-// // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabled, .disable)), .releasing)), .released)'
+// // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .releasing)), .released)'
 const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
 // the .clicked will be added in a short time (about 1 idle frame long) after releasing-animation done:
