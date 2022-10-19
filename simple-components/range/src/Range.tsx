@@ -1219,6 +1219,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // states:
         focusableState.handleAnimationStart,
         interactableState.handleAnimationStart,
+        clickableState.handleAnimationStart,
     );
     const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
