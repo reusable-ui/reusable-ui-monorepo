@@ -366,13 +366,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // handlers:
-        const handleRelease           = (): void => {
-            // watchdog the *uncontrollable* release state:
-            pressDn.current = false;
-            
-            // update state:
-            setPressed(false);
-        };
         const handleReleaseAfterClick = (): void => {
             // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
@@ -489,6 +482,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // update state:
         if (!isControllablePressed) setPressed(propEditable);
     });
+    const handleRelease      = useEvent<EventHandler<void>>(() => {
+        // watchdog the *uncontrollable* release state:
+        if (propEditable) pressDn.current = false;
+        
+        // update state:
+        if (!isControllablePressed) setPressed(false);
+    });
     
     const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // logs:
@@ -516,19 +516,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        // conditions:
+        // resets:
         if (logs.performKeyUpActions && !logs.isKeyActive) { // pressing multiple keys causes the pressed state be canceled
             logs.performKeyUpActions = false; // aborted
             
-            
-            
-            // watchdog the *uncontrollable* release state:
-            if (propEditable) pressDn.current = false;
-            
-            // update state:
-            if (!isControllablePressed) setPressed(false);
-            
-            
+            handleRelease();
             
             return; // no further actions
         } // if
@@ -536,13 +528,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // actions:
+        if (logs.isActive) handlePress();
+        
+        
+        
+        // actions:
         const keyCode = event.code.toLowerCase();
-        if (logs.isKeyActive) { // handle normal keys
-            // actions:
-            handlePress();
-            
-            
-            
+        if (logs.isKeyActive) { // handle <kbd>actionKeys</kbd> key
             if (handleActionCtrlEvents) {
                 // actions:
                 logs.performKeyUpActions = true;
