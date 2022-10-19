@@ -381,6 +381,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             asyncHandleRelease.current = setTimeout(handleRelease, 1); // 1 = runs immediately after all micro tasks & nextJS macro task finished
             /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
         };
+        
         const handleMouseUp           = (event: MouseEvent): void => {
             // logs:
             logs.logMouseEvent(event, false /*mouse_up*/, actionMouses);
@@ -511,7 +512,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // actions:
         handlePressRelease();
     });
-    
     const handleTouchStart   = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // logs:
         logs.logTouchEvent(event.nativeEvent, true /*touch_down*/, actionTouches);
@@ -521,7 +521,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // actions:
         handlePressRelease();
     });
-    
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // logs:
         logs.logKeyEvent(event.nativeEvent, true /*key_down*/, actionKeys);
@@ -564,7 +563,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         if (handleActionCtrlEvents) {
             // actions:
             if (!propEnabled) {
-                // control is disabled => no response required
+                // control is disabled => block the response
                 
                 // prevent to bubbling:
                 event.stopPropagation();
