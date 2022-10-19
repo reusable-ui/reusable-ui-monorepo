@@ -488,6 +488,17 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         // update state:
         if (!isControllablePressed) setPressed(false);
+        
+        // resets:
+        logs.performKeyUpActions = false;
+    });
+    const handlePressRelease = useEvent<EventHandler<void>>(() => {
+        if (logs.isActive) {
+            handlePress();
+        }
+        else {
+            handleRelease();
+        } // if
     });
     
     const handleMouseDown    = useEvent<React.MouseEventHandler<TElement>>((event) => {
@@ -497,7 +508,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // actions:
-        if (logs.isActive) handlePress();
+        handlePressRelease();
     });
     
     const handleTouchStart   = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -507,7 +518,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // actions:
-        if (logs.isActive) handlePress();
+        handlePressRelease();
     });
     
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
@@ -516,19 +527,17 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
+        // actions:
+        handlePressRelease();
+        
+        
+        
         // resets:
         if (logs.performKeyUpActions && !logs.isKeyActive) { // pressing multiple keys causes the pressed state be canceled
             logs.performKeyUpActions = false; // aborted
             
-            handleRelease();
-            
             return; // no further actions
         } // if
-        
-        
-        
-        // actions:
-        if (logs.isActive) handlePress();
         
         
         
