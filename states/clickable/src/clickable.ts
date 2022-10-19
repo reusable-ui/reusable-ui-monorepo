@@ -452,7 +452,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     //#endregion releases the *uncontrollable* pressed
     
     //#region sets/resets the .clicked state
-    //#region sets the `.clicked` state on transition .releasing => .released
+    //#region sets the .clicked state on transition .releasing => .released
     const prevAnimation = useRef<boolean|undefined>(animation);
     useEffect(() => {
         // conditions:
@@ -470,7 +470,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // setups:
         setMarkClicked(true); // mark the `.clicked` state
     }, [animation]);
-    //#endregion sets the `.clicked` state on transition .releasing => .released
+    //#endregion sets the .clicked state on transition .releasing => .released
     
     //#region resets the .clicked state after 1 idle frame
     useEffect(() => {
