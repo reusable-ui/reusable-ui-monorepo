@@ -407,15 +407,12 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             // actions:
             if (!logs.isActive) {
+                const performKeyUpActions = logs.performKeyUpActions; // copy before modified
                 handleRelease();
                 
                 
                 
-                if (logs.performKeyUpActions) {
-                    logs.performKeyUpActions = false; // reset
-                    
-                    
-                    
+                if (performKeyUpActions) {
                     // actions:
                     // trigger the onClick event by <kbd>actionKeys</kbd> key:
                     event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
@@ -536,24 +533,16 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         
-        // resets:
-        if (logs.performKeyUpActions && !logs.isKeyActive) { // pressing multiple keys causes the pressed state be canceled
-            logs.performKeyUpActions = false; // aborted
-            
-            return; // no further actions
-        } // if
-        
-        
-        
         // actions:
         const keyCode = event.code.toLowerCase();
-        if (logs.isKeyActive) { // handle <kbd>actionKeys</kbd> key
+        if (logs.isActive) { // <kbd>actionKeys</kbd> key was handled
             if (handleActionCtrlEvents) {
                 // actions:
+                // trigger the onClick event later at `onKeyUp`
                 logs.performKeyUpActions = true;
             } // if
         }
-        else if (keyCode === 'enter') { // handle [enter] key (if not listed in `actionKeys`)
+        else if (keyCode === 'enter') { // handle <kbd>enter</kbd> key (if not listed in <kbd>actionKeys</kbd>)
             if (handleKeyEnterEvents) {
                 // actions:
                 // trigger the onClick event by <kbd>enter</kbd> key:
@@ -566,7 +555,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // prevents triggering a *double* `onClick` event fired by native <button>
         // prevents scrolling the whole page by [space] key
         // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
-        if ((keyCode === 'enter') || (keyCode === 'space') || (actionKeys && actionKeys.includes(keyCode))) {
+        if ((keyCode === 'enter') || (keyCode === 'space') || (!actionKeys || actionKeys.includes(keyCode))) {
             event.preventDefault();
         } // if
     });
