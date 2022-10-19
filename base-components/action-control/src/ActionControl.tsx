@@ -285,7 +285,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     
     // handlers:
-    const handleMouseDown    = useMergeEvents(
+    const handleMouseDown      = useMergeEvents(
         // preserves the original `onMouseDown`:
         props.onMouseDown,
         
@@ -294,7 +294,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         // states:
         clickableState.handleMouseDown,
     );
-    const handleTouchStart   = useMergeEvents(
+    const handleTouchStart     = useMergeEvents(
         // preserves the original `onTouchStart`:
         props.onTouchStart,
         
@@ -303,7 +303,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         // states:
         clickableState.handleTouchStart,
     );
-    const handleKeyDown      = useMergeEvents(
+    const handleKeyDown        = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -312,17 +312,17 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         // states:
         clickableState.handleKeyDown,
     );
-    const handleKeyUp        = useMergeEvents(
-        // preserves the original `onKeyUp`:
-        props.onKeyUp,
+    const handleClick          = clickableState.handleClick;
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
         
         
         
         // states:
-        clickableState.handleKeyUp,
+        clickableState.handleAnimationStart,
     );
-    const handleClick        = clickableState.handleClick;
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -360,12 +360,12 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
             
             
             // handlers:
-            onMouseDown    = {handleMouseDown   }
-            onTouchStart   = {handleTouchStart  }
-            onKeyDown      = {handleKeyDown     }
-            onKeyUp        = {handleKeyUp       }
-            onClick        = {handleClick       }
-            onAnimationEnd = {handleAnimationEnd}
+            onMouseDown      = {handleMouseDown     }
+            onTouchStart     = {handleTouchStart    }
+            onKeyDown        = {handleKeyDown       }
+            onClick          = {handleClick         }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         />
     );
     
