@@ -246,7 +246,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     // states:
-    const [pressed, setPressed, animation, {handleAnimationStart, handleAnimationEnd: handleAnimationEndExternal, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
+    const [pressed, setPressed, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : pressedFn,
         animationName : /((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/,
     });
@@ -348,15 +348,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     //#region aborts async handles when the control is unmounted
     const asyncHandleRelease = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    const asyncUnmarkClicked = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
     useEffect(() => {
         // cleanups:
         return () => {
             // cancel out previously `handleReleaseAfterClick` (if any):
             if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-            
-            // cancel out previously asyncUnmarkClicked (if any):
-            if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         };
     }, []); // runs once on startup
     //#endregion aborts async handles when the control is unmounted
@@ -455,24 +451,50 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     }, [propEditable, isControllablePressed]);
     //#endregion releases the *uncontrollable* pressed
     
-    //#region resets the `.clicked` state after 1 idle frame
+    //#region sets/resets the .clicked state
+    //#region sets the `.clicked` state on transition .releasing => .released
+    const prevAnimation = useRef<boolean|undefined>(animation);
     useEffect(() => {
         // conditions:
-        if (!markClicked) return; // the `.clicked` state was not marked => nothing to reset
+        if (prevAnimation.current === animation) return; // still the same => ignore
+        const hasBeenReleased = (
+            (prevAnimation.current === false) // the past was `.releasing`
+            &&
+            (animation === undefined)         // the present is `.released`
+        );
+        prevAnimation.current = animation; // sync
+        if (!hasBeenReleased) return; // not has been `.released` => ignore
         
         
         
         // setups:
+        setMarkClicked(true); // mark the `.clicked` state
+    }, [animation]);
+    //#endregion sets the `.clicked` state on transition .releasing => .released
+    
+    //#region resets the .clicked state after 1 idle frame
+    useEffect(() => {
+        // conditions:
+        if (!markClicked) return; // already un-mark => ignore
         
-        // cancel out previously asyncUnmarkClicked (if any):
-        if (asyncUnmarkClicked.current) cancelIdleCallback(asyncUnmarkClicked.current);
         
+        
+        // setups:
         // wait until the `.clicked` state shown briefly (1 idle frame) by browser ui, then remove it
-        asyncUnmarkClicked.current = requestIdleCallback(() => {
+        const asyncUnmarkClicked = requestIdleCallback(() => {
             setMarkClicked(false); // un-mark the `.clicked` state
         });
+        
+        
+        
+        // cleanups:
+        return () => {
+            // cancel out previously asyncUnmarkClicked:
+            cancelIdleCallback(asyncUnmarkClicked);
+        };
     }, [markClicked]);
-    //#endregion resets the `.clicked` state after 1 idle frame
+    //#endregion resets the .clicked state after 1 idle frame
+    //#endregion sets/resets the .clicked state
     
     
     
@@ -572,14 +594,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 // trigger the onClick event by mouse/touch:
                 props.onClick?.(event);
             } // if
-        } // if
-    });
-    
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        const prevAnimation = animation;
-        handleAnimationEndExternal(event);
-        if ((prevAnimation === true) && (animation === undefined)) { // the `.releasing` animation is done
-            setMarkClicked(true); // mark the `.clicked` state
         } // if
     });
     
