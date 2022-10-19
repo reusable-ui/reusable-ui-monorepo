@@ -146,7 +146,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     
     
     // handlers:
-    const handleMouseDown    = useMergeEvents(
+    const handleMouseDown      = useMergeEvents(
         // preserves the original `onMouseDown`:
         props.onMouseDown,
         
@@ -155,7 +155,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // states:
         clickableState.handleMouseDown,
     );
-    const handleTouchStart   = useMergeEvents(
+    const handleTouchStart     = useMergeEvents(
         // preserves the original `onTouchStart`:
         props.onTouchStart,
         
@@ -164,7 +164,7 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // states:
         clickableState.handleTouchStart,
     );
-    const handleKeyDown      = useMergeEvents(
+    const handleKeyDown        = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -173,7 +173,17 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         // states:
         clickableState.handleKeyDown,
     );
-    const handleAnimationEnd = useMergeEvents(
+    // const handleClick          = clickableState.handleClick; // not a <button>, no need to handle `onClick` for [space] & [enter] key
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        clickableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -200,10 +210,12 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
             
             
             // handlers:
-            onMouseDown    = {handleMouseDown   }
-            onTouchStart   = {handleTouchStart  }
-            onKeyDown      = {handleKeyDown     }
-            onAnimationEnd = {handleAnimationEnd}
+            onMouseDown      = {handleMouseDown     }
+            onTouchStart     = {handleTouchStart    }
+            onKeyDown        = {handleKeyDown       }
+            // onClick          = {handleClick         } // not a <button>, no need to handle `onClick` for [space] & [enter] key
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };

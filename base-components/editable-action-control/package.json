@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/editable-action-control",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A base clickable editable control of Reusable-UI components.",
   "keywords": [
     "control",
