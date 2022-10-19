@@ -279,11 +279,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         get isActive(): boolean {
             return (
-                this.isMouseActive
-                ||
-                this.isTouchActive
-                ||
-                this.isKeyActive
+                (
+                    (+this.isMouseActive)
+                    +
+                    (+this.isTouchActive)
+                    +
+                    (+this.isKeyActive)
+                )
+                ===
+                1 // must *exactly one* of actived input, if none -or- two -or- more => deactivated
             );
         },
         
