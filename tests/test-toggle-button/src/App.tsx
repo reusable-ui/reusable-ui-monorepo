@@ -23,7 +23,7 @@ const handleAnimationEnd = (event: React.AnimationEvent<HTMLButtonElement>) => {
     console.log('end: ', event.animationName, new Date().getTime(), event.currentTarget.classList.toString());
 };
 const handleAnimationCancel = (event: AnimationEvent) => {
-    console.log('cancel: ', event.animationName, new Date().getTime(), (event.currentTarget as HTMLButtonElement)?.classList?.toString());
+    console.log('!!! CANCEL !!!: ', event.animationName, new Date().getTime(), (event.currentTarget as HTMLButtonElement)?.classList?.toString());
 };
 
 
@@ -36,15 +36,37 @@ function App() {
     
     const [isPressed, setPressed] = useState<boolean>(false);
     
-    const toggleButtonRef = useRef<HTMLButtonElement>(null);
+    const toggleButton1Ref = useRef<HTMLButtonElement>(null);
+    const toggleButton2Ref = useRef<HTMLButtonElement>(null);
+    const toggleButton3Ref = useRef<HTMLButtonElement>(null);
     useEffect(() => {
-        const toggleButtonElm = toggleButtonRef.current;
-        if (!toggleButtonElm) return;
+        const toggleButton1Elm = toggleButton1Ref.current;
+        if (!toggleButton1Elm) return;
         
-        toggleButtonElm.addEventListener('animationcancel', handleAnimationCancel);
+        toggleButton1Elm.addEventListener('animationcancel', handleAnimationCancel);
         
         return () => {
-            toggleButtonElm.removeEventListener('animationcancel', handleAnimationCancel);
+            toggleButton1Elm.removeEventListener('animationcancel', handleAnimationCancel);
+        };
+    }, []);
+    useEffect(() => {
+        const toggleButton2Elm = toggleButton2Ref.current;
+        if (!toggleButton2Elm) return;
+        
+        toggleButton2Elm.addEventListener('animationcancel', handleAnimationCancel);
+        
+        return () => {
+            toggleButton2Elm.removeEventListener('animationcancel', handleAnimationCancel);
+        };
+    }, []);
+    useEffect(() => {
+        const toggleButton3Elm = toggleButton3Ref.current;
+        if (!toggleButton3Elm) return;
+        
+        toggleButton3Elm.addEventListener('animationcancel', handleAnimationCancel);
+        
+        return () => {
+            toggleButton3Elm.removeEventListener('animationcancel', handleAnimationCancel);
         };
     }, []);
     
@@ -67,16 +89,22 @@ function App() {
                     }} focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton elmRef={toggleButtonRef} theme='danger' focused={false} arrived={false}
+                    <ToggleButton elmRef={toggleButton1Ref} theme='danger' focused={false} arrived={false}
                         onAnimationStart={handleAnimationStart}
                         onAnimationEnd={handleAnimationEnd}
-                    autoFocus={true}>
+                    >
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger' mild={true} focused={false} arrived={false}>
+                    <ToggleButton elmRef={toggleButton2Ref} theme='danger' mild={true} focused={false} arrived={false}
+                        onAnimationStart={handleAnimationStart}
+                        onAnimationEnd={handleAnimationEnd}
+                    >
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger' outlined={true} focused={false} arrived={false}>
+                    <ToggleButton elmRef={toggleButton3Ref} theme='danger' outlined={true} focused={false} arrived={false}
+                        onAnimationStart={handleAnimationStart}
+                        onAnimationEnd={handleAnimationEnd}
+                    >
                         test &lt;Button&gt;
                     </ToggleButton>
                 </article>

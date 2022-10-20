@@ -65,12 +65,18 @@ export interface ActiveAsClickVars {
     animPress         : any
     animRelease       : any
     
+    animActive        : any
+    animPassive       : any
+    
     
     
     altFilterActiveTg : any
     
     altAnimPressTg    : any
     altAnimReleaseTg  : any
+    
+    altAnimActiveTg   : any
+    altAnimPassiveTg  : any
 }
 const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
@@ -135,15 +141,26 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     a <button> with regular style:
                         => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
                 */
-                // animPress   => dummy animPress:
+                // regular animPress   => dummy animPress:
                 [activeAsClickVars.animPress   ]: switchOf(
                     activeAsClickVars.altAnimPressTg,
                     `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
-                // animRelease => dummy animRelease:
+                // regular animRelease => dummy animRelease:
                 [activeAsClickVars.animRelease ]: switchOf(
                     activeAsClickVars.altAnimReleaseTg,
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                ),
+                
+                // regular animActive  => original animPress
+                [activeAsClickVars.animActive  ]: switchOf(
+                    activeAsClickVars.altAnimActiveTg,
+                    clickableVars.animPress,
+                ),
+                // regular animPassive => original animRelease
+                [activeAsClickVars.animPassive ]: switchOf(
+                    activeAsClickVars.altAnimPassiveTg,
+                    clickableVars.animRelease,
                 ),
             }),
             
@@ -169,35 +186,44 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animRelease,
                 ]],
+                
+                // alternate animActive  => original animActive
+                [activeAsClickVars.altAnimActiveTg  ]: [[
+                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                    activatableVars.animActive,
+                ]],
+                // alternate animPassive => original animPassive
+                [activeAsClickVars.altAnimPassiveTg ]: [[
+                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                    activatableVars.animPassive,
+                ]],
             }),
             
             
             
             // animation states:
             ...states([
-                //#region activating/deactivating transition -- controllable
+                //#region activating/passivating transition -- controllable
                 /*
                     when on controllable activating:
                         * regular       : pressing_animation
                         * outlined/mild : activating_animation
                     
-                    when on controllable deactivating:
+                    when on controllable passivating:
                         * regular       : releasing_animation
-                        * outlined/mild : deactivating_animation
+                        * outlined/mild : passivating_animation
                 */
                 ifActivating({
                     ...ifReleased({ // there is no clicking activity
-                        // TODO: there is no `releaseDelay` activity
                         // [clickableVars.anim] : activeAsClickVars.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...ifReleased({ // there is no clicking activity
-                        // TODO: there is no `releaseDelay` activity
                         // [clickableVars.anim] : activeAsClickVars.animPassive,
                     }),
                 }),
-                //#endregion activating/deactivating transition -- controllable
+                //#endregion activating/passivating transition -- controllable
                 
                 
                 
@@ -207,7 +233,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         * regular       : NO_releasing_animation because the UI is already styled_as_pressed
                         * outlined/mild :    releasing_animation
                     
-                    when clicking for deactivating:
+                    when clicking for passivating:
                         * regular       : NO_pressing_animation because the UI is already styled_as_pressed
                         * outlined/mild :    pressing_animation
                 */
