@@ -174,6 +174,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
+                //#region clicking feedback
                 /*
                     when clicking for activating:
                         * regular       : NO_releasing_animation because the UI is already styled_as_pressed
@@ -197,6 +198,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         }),
                     }),
                 }),
+                //#endregion clicking feedback
             ]),
             // animation filters:
             ...states([
