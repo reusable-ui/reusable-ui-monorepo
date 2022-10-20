@@ -179,11 +179,11 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 /*
                     when on controllable activating:
                         * regular       : pressing_animation
-                        * outlined/mild : TODO
+                        * outlined/mild : activating_animation
                     
                     when on controllable deactivating:
                         * regular       : releasing_animation
-                        * outlined/mild : TODO
+                        * outlined/mild : deactivating_animation
                 */
                 ifActivating({
                     ...ifReleased({ // there is no clicking activity
