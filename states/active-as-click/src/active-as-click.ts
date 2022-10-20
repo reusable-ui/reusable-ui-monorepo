@@ -188,13 +188,13 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifActivating({
                     ...ifReleased({ // there is no clicking activity
                         // TODO: there is no `releaseDelay` activity
-                        // [clickableVars.anim] : clickableVars.animPress,
+                        // [clickableVars.anim] : activeAsClickVars.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...ifReleased({ // there is no clicking activity
                         // TODO: there is no `releaseDelay` activity
-                        // [clickableVars.anim] : clickableVars.animRelease,
+                        // [clickableVars.anim] : activeAsClickVars.animPassive,
                     }),
                 }),
                 //#endregion activating/deactivating transition -- controllable
