@@ -55,7 +55,7 @@
 [published ] @reusable-ui/excitable
 [published ] @reusable-ui/collapsible
 [fixed  pub] @reusable-ui/disableable
-[fixed  pub] @reusable-ui/activatable
+[fixed     ] @reusable-ui/activatable
 [fixed  pub] @reusable-ui/focusable
 [fixed  pub] @reusable-ui/interactable
 [published ] @reusable-ui/clickable

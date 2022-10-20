@@ -243,17 +243,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     // update state:
     if (activated !== activeFn) { // change detected => apply the change & start animating
-        const updateActivated = () => {
-            setActivated(activeFn); // remember the last change
-        };
-        if (activeFn) {
-            // update the state immediately:
-            updateActivated();
-        }
-        else {
-            // update the state a bit delayed:
-            setTimeout(updateActivated, 2); // supports for toggle active => make sure the `.passivating` state runs *after* `.releasing` state
-        } // if
+        setActivated(activeFn);   // remember the last change
     } // if
     
     
