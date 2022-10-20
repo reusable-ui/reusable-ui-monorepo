@@ -59,7 +59,7 @@
 [fixed  pub] @reusable-ui/focusable
 [fixed  pub] @reusable-ui/interactable
 [published ] @reusable-ui/clickable
-[published ] @reusable-ui/active-as-click
+[fixed     ] @reusable-ui/active-as-click
 [published ] @reusable-ui/invalidable
 [published ] @reusable-ui/checkable
 [published ] @reusable-ui/validation-icon
