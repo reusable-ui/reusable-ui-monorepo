@@ -215,12 +215,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 */
                 ifActivating({
                     ...ifReleased({ // there is no clicking activity
-                        // [clickableVars.anim] : activeAsClickVars.animActive,
+                        // TODO: not working on regular mode
+                        [activatableVars.anim] : activeAsClickVars.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...ifReleased({ // there is no clicking activity
-                        // [clickableVars.anim] : activeAsClickVars.animPassive,
+                        // TODO: not working on regular mode
+                        [activatableVars.anim] : activeAsClickVars.animPassive,
                     }),
                 }),
                 //#endregion activating/passivating transition -- controllable
