@@ -72,9 +72,10 @@ const _defaultActionMouses     : number[]|null = [1]       // [only_left_click]
 const _defaultActionTouches    : number[]|null = [1]       // [only_single_touch]
 const _defaultActionKeys       : string[]|null = ['space'] // [space_key]
 const _defaultClickableOptions : Required<ClickableOptions> = {
-    handleActionCtrlEvents : false, // not to handle [space] as onClick
-    handleKeyEnterEvents   : false, // not to handle [enter] as onClick
+    handleActionCtrlEvents     : false, // not to handle [space] as onClick
+    handleKeyEnterEvents       : false, // not to handle [enter] as onClick
 };
+const _defaultReleaseDelay     : number = 1;
 
 
 
@@ -209,6 +210,8 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     actionMouses  ?: number[]|null
     actionTouches ?: number[]|null
     actionKeys    ?: string[]|null
+    
+    releaseDelay  ?: number
 }
 export interface ClickableOptions {
     handleActionCtrlEvents ?: boolean
@@ -232,6 +235,8 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const actionMouses          = (props.actionMouses  !== undefined) ? props.actionMouses  : _defaultActionMouses;
     const actionTouches         = (props.actionTouches !== undefined) ? props.actionTouches : _defaultActionTouches;
     const actionKeys            = (props.actionKeys    !== undefined) ? props.actionKeys    : _defaultActionKeys;
+    
+    const releaseDelay          = props.releaseDelay ?? _defaultReleaseDelay;
     
     
     
@@ -367,15 +372,29 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         // handlers:
         const handleReleaseAfterClick = (): void => {
-            // cancel out previously `handleReleaseAfterClick` (if any):
-            if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
-            
-            
-            
-            // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
-            // asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
-            asyncHandleRelease.current = setTimeout(handleRelease, 1); // 1 = runs immediately after all micro tasks & nextJS macro task finished
-            /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
+            if (releaseDelay < 0) {
+                // actions:
+                handleRelease();
+            }
+            else {
+                // cancel out previously `handleReleaseAfterClick` (if any):
+                if (asyncHandleRelease.current) clearTimeout(asyncHandleRelease.current);
+                
+                
+                
+                // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
+                // asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
+                asyncHandleRelease.current = setTimeout(() => {
+                    // actions:
+                    handleRelease();
+                    
+                    
+                    
+                    // marks:
+                    setMarkClicked(false); // un-mark the `.clicked` state
+                }, releaseDelay); // `releaseDelay = 1 (default)` = runs immediately after all micro tasks & nextJS macro task finished
+                /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
+            } // if
         };
         
         const handleMouseUp           = (event: MouseEvent): void => {
@@ -405,7 +424,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             // actions:
             if (!logs.isActive) {
                 const performKeyUpActions = logs.performKeyUpActions; // copy before modified
-                handleRelease();
+                handleReleaseAfterClick();
                 
                 
                 
@@ -450,51 +469,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         };
     }, [propEditable, isControllablePressed]);
     //#endregion releases the *uncontrollable* pressed
-    
-    //#region sets/resets the .clicked state
-    //#region sets the .clicked state on transition .releasing => .released
-    const prevAnimation = useRef<boolean|undefined>(animation);
-    useEffect(() => {
-        // conditions:
-        if (prevAnimation.current === animation) return; // still the same => ignore
-        const hasBeenReleased = (
-            (prevAnimation.current === false) // the past was `.releasing`
-            &&
-            (animation === undefined)         // the present is `.released`
-        );
-        prevAnimation.current = animation; // sync
-        if (!hasBeenReleased) return; // not has been `.released` => ignore
-        
-        
-        
-        // setups:
-        setMarkClicked(true); // mark the `.clicked` state
-    }, [animation]);
-    //#endregion sets the .clicked state on transition .releasing => .released
-    
-    //#region resets the .clicked state after 1 idle frame
-    useEffect(() => {
-        // conditions:
-        if (!markClicked) return; // already un-mark => ignore
-        
-        
-        
-        // setups:
-        // wait until the `.clicked` state shown briefly (1 idle frame) by browser ui, then remove it
-        const asyncUnmarkClicked = requestIdleCallback(() => {
-            setMarkClicked(false); // un-mark the `.clicked` state
-        });
-        
-        
-        
-        // cleanups:
-        return () => {
-            // cancel out previously asyncUnmarkClicked:
-            cancelIdleCallback(asyncUnmarkClicked);
-        };
-    }, [markClicked]);
-    //#endregion resets the .clicked state after 1 idle frame
-    //#endregion sets/resets the .clicked state
     
     
     
@@ -591,6 +565,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 event.stopPropagation();
             }
             else {
+                // marks:
+                if (releaseDelay >= 0) setMarkClicked(true); // mark the `.clicked` state
+                
+                
+                
                 // trigger the onClick event by mouse/touch:
                 props.onClick?.(event);
             } // if
