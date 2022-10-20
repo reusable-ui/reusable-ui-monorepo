@@ -176,11 +176,11 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             ...states([
                 /*
                     when clicking for activating:
-                        * regular       : NO_releasing_animation because the UI is already styled_pressed
+                        * regular       : NO_releasing_animation because the UI is already styled_as_pressed
                         * outlined/mild :    releasing_animation
                     
                     when clicking for deactivating:
-                        * regular       : NO_pressing_animation because the UI is already styled_pressed
+                        * regular       : NO_pressing_animation because the UI is already styled_as_pressed
                         * outlined/mild :    pressing_animation
                 */
                 ifPressing({
