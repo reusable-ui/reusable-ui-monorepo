@@ -42,6 +42,10 @@ function App() {
         if (!toggleButtonElm) return;
         
         toggleButtonElm.addEventListener('animationcancel', handleAnimationCancel);
+        
+        return () => {
+            toggleButtonElm.removeEventListener('animationcancel', handleAnimationCancel);
+        };
     }, []);
     
     
