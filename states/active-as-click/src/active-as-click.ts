@@ -13,7 +13,6 @@ import {
     // writes css in javascript:
     states,
     keyframes,
-    ifNotHover,
     style,
     vars,
     
@@ -49,7 +48,6 @@ import {
     ifPressing,
     ifReleasing,
     ifPressReleasing,
-    ifNotClicked,
     usesClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
 
@@ -176,27 +174,6 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
-                ifActivating({
-                    ...ifNotClicked({ // if there's no clicking activity in the last 1 frame
-                        ...ifNotHover({ // if there's no `.activating` by click // TODO: perfecting the detection of [click => .activating]
-                            ...vars({
-                                [clickableVars.anim] : clickableVars.animPress,
-                            }),
-                        }),
-                    }),
-                }),
-                ifPassivating({
-                    ...ifNotClicked({ // if there's no clicking activity in the last 1 frame
-                        ...ifNotHover({ // if there's no `.passivating` by click // TODO: perfecting the detection of [click => .passivating]
-                            ...vars({
-                                [clickableVars.anim] : clickableVars.animRelease,
-                            }),
-                        }),
-                    }),
-                }),
-                
-                
-                
                 ifPressing({
                     ...ifActive({
                         ...vars({
