@@ -152,12 +152,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 
-                // regular animActive  => original animPress
+                // regular animActive  => original animPress // TODO: rename to active-as-press
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
                     clickableVars.animPress,
                 ),
-                // regular animPassive => original animRelease
+                // regular animPassive => original animRelease // TODO: rename to passive-as-release
                 [activeAsClickVars.animPassive ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
                     clickableVars.animRelease,
