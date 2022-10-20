@@ -215,13 +215,13 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 */
                 ifActivating({
                     ...ifReleased({ // there is no clicking activity
-                        // TODO: not working on regular mode
+                        // TODO: not working on regular mode because the animation name is not containing 'active'
                         [activatableVars.anim] : activeAsClickVars.animActive,
                     }),
                 }),
                 ifPassivating({
                     ...ifReleased({ // there is no clicking activity
-                        // TODO: not working on regular mode
+                        // TODO: not working on regular mode because the animation name is not containing 'passive'
                         [activatableVars.anim] : activeAsClickVars.animPassive,
                     }),
                 }),
