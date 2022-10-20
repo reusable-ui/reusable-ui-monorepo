@@ -47,6 +47,7 @@ import {
     // hooks:
     ifPressing,
     ifReleasing,
+    ifReleased,
     ifPressReleasing,
     usesClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
@@ -61,15 +62,15 @@ import {
 export interface ActiveAsClickVars {
     filterActive      : any
     
-    animActive        : any
-    animPassive       : any
+    animPress         : any
+    animRelease       : any
     
     
     
     altFilterActiveTg : any
     
-    altAnimActiveTg   : any
-    altAnimPassiveTg  : any
+    altAnimPressTg    : any
+    altAnimReleaseTg  : any
 }
 const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
@@ -134,14 +135,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     a <button> with regular style:
                         => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
                 */
-                // animActive => animPress:
-                [activeAsClickVars.animActive  ]: switchOf(
-                    activeAsClickVars.altAnimActiveTg,
+                // animPress   => dummy animPress:
+                [activeAsClickVars.animPress   ]: switchOf(
+                    activeAsClickVars.altAnimPressTg,
                     `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
-                // animPassive => animRelease:
-                [activeAsClickVars.animPassive ]: switchOf(
-                    activeAsClickVars.altAnimPassiveTg,
+                // animRelease => dummy animRelease:
+                [activeAsClickVars.animRelease ]: switchOf(
+                    activeAsClickVars.altAnimReleaseTg,
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
             }),
@@ -158,13 +159,13 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 
                 
                 
-                // alternate animActive => animActive:
-                [activeAsClickVars.altAnimActiveTg  ]: [[
+                // alternate animPress   => original animPress:
+                [activeAsClickVars.altAnimPressTg   ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animPress,
                 ]],
-                // alternate animPassive => animPassive:
-                [activeAsClickVars.altAnimPassiveTg ]: [[
+                // alternate animRelease => original animRelease:
+                [activeAsClickVars.altAnimReleaseTg ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animRelease,
                 ]],
@@ -174,6 +175,32 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             
             // animation states:
             ...states([
+                //#region activating/deactivating transition -- controllable
+                /*
+                    when on controllable activating:
+                        * regular       : pressing_animation
+                        * outlined/mild : TODO
+                    
+                    when on controllable deactivating:
+                        * regular       : releasing_animation
+                        * outlined/mild : TODO
+                */
+                ifActivating({
+                    ...ifReleased({ // there is no clicking activity
+                        // TODO: there is no `releaseDelay` activity
+                        // [clickableVars.anim] : clickableVars.animPress,
+                    }),
+                }),
+                ifPassivating({
+                    ...ifReleased({ // there is no clicking activity
+                        // TODO: there is no `releaseDelay` activity
+                        // [clickableVars.anim] : clickableVars.animRelease,
+                    }),
+                }),
+                //#endregion activating/deactivating transition -- controllable
+                
+                
+                
                 //#region clicking feedback
                 /*
                     when clicking for activating:
@@ -187,14 +214,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifPressing({
                     ...ifActivated({ // allows pressing_animation if the UI is being_activating
                         ...vars({
-                            [clickableVars.anim] : activeAsClickVars.animActive,
+                            [clickableVars.anim] : activeAsClickVars.animPress,
                         }),
                     }),
                 }),
                 ifReleasing({
                     ...ifActive({
                         ...vars({
-                            [clickableVars.anim] : activeAsClickVars.animPassive,
+                            [clickableVars.anim] : activeAsClickVars.animRelease,
                         }),
                     }),
                 }),
