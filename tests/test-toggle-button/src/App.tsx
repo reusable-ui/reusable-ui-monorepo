@@ -1,5 +1,7 @@
 import {
     default as React,
+    useEffect,
+    useRef,
     useState,
 } from 'react';
 // import logo from './logo.svg';
@@ -14,6 +16,18 @@ import {
 
 
 
+const handleAnimationStart = (event: React.AnimationEvent<HTMLButtonElement>) => {
+    console.log('start: ', event.animationName, new Date().getTime(), event.currentTarget.classList.toString());
+};
+const handleAnimationEnd = (event: React.AnimationEvent<HTMLButtonElement>) => {
+    console.log('end: ', event.animationName, new Date().getTime(), event.currentTarget.classList.toString());
+};
+const handleAnimationCancel = (event: AnimationEvent) => {
+    console.log('cancel: ', event.animationName, new Date().getTime(), (event.currentTarget as HTMLButtonElement)?.classList?.toString());
+};
+
+
+
 function App() {
     const [value, setValue] = useState(0);
     const handleTriggerRerender = () => {
@@ -22,6 +36,13 @@ function App() {
     
     const [isPressed, setPressed] = useState<boolean>(false);
     
+    const toggleButtonRef = useRef<HTMLButtonElement>(null);
+    useEffect(() => {
+        const toggleButtonElm = toggleButtonRef.current;
+        if (!toggleButtonElm) return;
+        
+        toggleButtonElm.addEventListener('animationcancel', handleAnimationCancel);
+    }, []);
     
     
     return (
@@ -42,7 +63,10 @@ function App() {
                     }} focused={false} arrived={false}>
                         test &lt;Button&gt;
                     </ToggleButton>
-                    <ToggleButton theme='danger' focused={false} arrived={false}>
+                    <ToggleButton elmRef={toggleButtonRef} theme='danger' focused={false} arrived={false}
+                        onAnimationStart={handleAnimationStart}
+                        onAnimationEnd={handleAnimationEnd}
+                    autoFocus={true}>
                         test &lt;Button&gt;
                     </ToggleButton>
                     <ToggleButton theme='danger' mild={true} focused={false} arrived={false}>
