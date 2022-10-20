@@ -122,9 +122,6 @@ const selectorIfReleasing = '.releasing'
 // // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .releasing)), .released)'
 const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
 
-// the .clicked will be added in a short time (about 1 idle frame long) after releasing-animation done:
-const selectorIfClicked   = '.clicked'
-
 export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
 export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
 export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
@@ -133,9 +130,6 @@ export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(se
 export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
 export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
 export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
-
-export const ifClicked        = (styles: CssStyleCollection): CssRule => rule(        selectorIfClicked   , styles);
-export const ifNotClicked     = (styles: CssStyleCollection): CssRule => rule(`:not(${selectorIfClicked})`, styles);
 
 
 
@@ -255,7 +249,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         initialState  : pressedFn,
         animationName : /((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/,
     });
-    const [markClicked, setMarkClicked] = useState<boolean>(false); // true => mark the `.clicked` state briefly after the `.releasing` animation done, false => no click was performed
     
     
     
@@ -374,7 +367,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // handlers:
         const handleReleaseAfterClick = (): void => {
             if (releaseDelay < 0) {
-                // actions:
                 handleRelease();
             }
             else {
@@ -385,15 +377,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 
                 // setTimeout => make sure the `mouseup` event fires *after* the `click` event, so the user has a chance to change the `pressed` prop:
                 // asyncHandleRelease.current = setTimeout(handleRelease, 0); // 0 = runs immediately after all micro tasks finished
-                asyncHandleRelease.current = setTimeout(() => {
-                    // actions:
-                    handleRelease();
-                    
-                    
-                    
-                    // marks:
-                    setMarkClicked(false); // un-mark the `.clicked` state
-                }, releaseDelay); // `releaseDelay = 1 (default)` = runs immediately after all micro tasks & nextJS macro task finished
+                asyncHandleRelease.current = setTimeout(handleRelease, releaseDelay); // `releaseDelay = 1 (default)` = runs immediately after all micro tasks & nextJS macro task finished
                 /* do not use `Promise.resolve().then(handleRelease)` because it's not fired *after* the `click` event */
             } // if
         };
@@ -566,11 +550,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 event.stopPropagation();
             }
             else {
-                // marks:
-                if (releaseDelay >= 0) setMarkClicked(true); // mark the `.clicked` state
-                
-                
-                
                 // trigger the onClick event by mouse/touch:
                 props.onClick?.(event);
             } // if
@@ -599,9 +578,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             // fully pressed:
             if (pressed) return 'pressed';
-            
-            // has been clicked:
-            if (markClicked) return 'clicked';
             
             // // // fully released:
             // // // if (isControllablePressed) {
