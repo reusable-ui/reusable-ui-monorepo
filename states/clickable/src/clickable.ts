@@ -367,6 +367,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         // conditions:
         if (!propEditable)         return; // control is not_editable (disabled and/or readOnly) => no *uncontrollable* release_event required
         if (isControllablePressed) return; // control is *controllable*                          => no *uncontrollable* release_event required
+        if (!pressed)              return; // control is not_pressed                             => no need watching for releasing
         
         
         
@@ -467,7 +468,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             window.removeEventListener('keyup',   handleKeyUp);
         };
-    }, [propEditable, isControllablePressed]);
+    }, [propEditable, isControllablePressed, pressed]);
     //#endregion releases the *uncontrollable* pressed
     
     
