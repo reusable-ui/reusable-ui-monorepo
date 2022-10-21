@@ -339,34 +339,38 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
         uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
     */
     const triggerActiveChange  = useEvent<React.Dispatch<boolean>>((active) => {
-        Promise.resolve().then(() => { // trigger the event after the <Component> has finished rendering (for controllable <Component>)
-            // fire change native event:
-            const element = changeEventTarget?.current;
-            if (element) {
-                // *hack*: trigger `onChange` event:
-                // side effect: toggles the [checked] prop:
-                
-                if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
-                    if (active) {
-                        if (element.checked) element.checked = false; // *hack* flip before firing click event
-                        
-                        // fire `click` native event to trigger `onChange` synthetic event:
-                        element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                    }
-                    // else {
-                    //     // do nothing if (active === false)
-                    //     // the `onChange` event is *never* triggered when *uncheck*
-                    // } // if
-                }
-                else {
-                    // fire `click` native event to trigger `onChange` synthetic event:
-                    element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                } // if
-            } // if
+        // fire change native event:
+        const element = changeEventTarget?.current;
+        if (element) {
+            // *hack*: trigger `onChange` event:
+            // side effect: toggles the [checked] prop:
             
-            // fire change synthetic event:
+            if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
+                if (active) {
+                    if (element.checked) element.checked = false; // *hack* flip before firing click event
+                    
+                    // fire `click` native event to trigger `onChange` synthetic event:
+                    setTimeout(() => {
+                        element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                    }, 0); // runs the 'click' event *next after* current event completed
+                }
+                // else {
+                //     // do nothing if (active === false)
+                //     // the `onChange` event is *never* triggered when *uncheck*
+                // } // if
+            }
+            else {
+                // fire `click` native event to trigger `onChange` synthetic event:
+                setTimeout(() => {
+                    element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                }, 0); // runs the 'click' event *next after* current event completed
+            } // if
+        } // if
+        
+        // fire change synthetic event:
+        setTimeout(() => {
             props.onActiveChange?.({ active } as TActiveChangeEvent);
-        });
+        }, 0); // runs the 'onActiveChange' event *next after* current event completed
     });
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
         // conditions:
