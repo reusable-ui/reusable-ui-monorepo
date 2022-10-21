@@ -566,8 +566,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // handlers:
-    const handleExpandedChange      = onExpandedChange;
-    const handleKeyDownInternal     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleExpandedChange        = onExpandedChange;
+    const handleKeyDownInternal       = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -606,7 +606,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     });
-    const handleKeyDown             = useMergeEvents(
+    const handleKeyDown               = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -615,7 +615,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         handleKeyDownInternal,
     );
-    const handleMouseDownInternal   = useEvent<React.MouseEventHandler<TElement> & React.TouchEventHandler<TElement>>((event) => {
+    const handleMouseDownInternal     = useEvent<React.MouseEventHandler<TElement> & React.TouchEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented)               return; // the event was already handled by user => nothing to do
         if (event.target !== event.currentTarget) return; // ignore bubbling from <ModalUi>
@@ -633,7 +633,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         } // if
         if (event.type !== 'touchstart') event.preventDefault(); // handled
     });
-    const handleMouseDown           = useMergeEvents(
+    const handleMouseDown             = useMergeEvents(
         // preserves the original `onMouseDown` from `props`:
         props.onMouseDown,
         
@@ -642,7 +642,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         handleMouseDownInternal,
     );
-    const handleTouchStart          = useMergeEvents(
+    const handleTouchStart            = useMergeEvents(
         // preserves the original `onTouchStart` from `props`:
         props.onTouchStart,
         
@@ -651,7 +651,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         handleMouseDownInternal,
     );
-    const handleContextMenuInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handleContextMenuInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented)               return; // the event was already handled by user => nothing to do
         if (event.target !== event.currentTarget) return; // only cancels the contextMenu at the <overlay>, allows at the <ModalUi>
@@ -662,7 +662,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // cancel the contextMenu:
         event.preventDefault(); // handled
     });
-    const handleContextMenu         = useMergeEvents(
+    const handleContextMenu           = useMergeEvents(
         // preserves the original `onContextMenu` from `props`:
         props.onContextMenu,
         
@@ -671,7 +671,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         handleContextMenuInternal,
     );
-    const handleAnimationEnd        = useMergeEvents(
+    const handleAnimationEnd          = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -680,7 +680,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // states:
         collapsibleState.handleAnimationEnd,
     );
-    const handleModalUiAnimationEnd = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
+    const handleModalUiAnimationStart = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
+        // preserves the original `onAnimationStart` from `modalUiComponent`:
+        modalUiComponent.props.onAnimationStart,
+        
+        
+        
+        // states:
+        excitableState.handleAnimationStart,
+    );
+    const handleModalUiAnimationEnd   = useMergeEvents<React.AnimationEvent<HTMLElement & SVGElement>>(
         // preserves the original `onAnimationEnd` from `modalUiComponent`:
         modalUiComponent.props.onAnimationEnd,
         
@@ -896,6 +905,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                     
                     
                     // handlers:
+                    onAnimationStart : handleModalUiAnimationStart,
                     onAnimationEnd   : handleModalUiAnimationEnd,
                 },
             )}
