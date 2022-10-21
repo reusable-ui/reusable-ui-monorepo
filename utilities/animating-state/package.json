@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/animating-state",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A hook for creating animating state.",
   "keywords": [
     "utility",

@@ -26,7 +26,7 @@
 [published ] @reusable-ui/focuses
 [published ] [undocumented] @reusable-ui/client-sides
 [modified  ] [undocumented] @reusable-ui/navigations
-[fixed  pub] [undocumented] @reusable-ui/animating-state
+[fixed     ] [undocumented] @reusable-ui/animating-state
 
 // reusable-ui features:
 [published ] @reusable-ui/background

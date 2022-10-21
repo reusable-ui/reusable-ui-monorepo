@@ -144,15 +144,23 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
             
             
             
-            // retry:
+            // retry 1:
             asyncCheckRunningAnimation = requestAnimationFrame(() => {
                 // tests:
                 if (Object.is(expectedAnimation.current, state.animation)) return; // the expected animation is running => verified
                 
                 
                 
-                // the expected animation is not running within 2 frames => NOT verified => mark as finished_animation:
-                dispatchState({ type: AnimatingStateActionType.Done });
+                // retry 2:
+                asyncCheckRunningAnimation = requestAnimationFrame(() => {
+                    // tests:
+                    if (Object.is(expectedAnimation.current, state.animation)) return; // the expected animation is running => verified
+                    
+                    
+                    
+                    // the expected animation is not running within 2 frames => NOT verified => mark as finished_animation:
+                    dispatchState({ type: AnimatingStateActionType.Done });
+                });
             });
         });
         
