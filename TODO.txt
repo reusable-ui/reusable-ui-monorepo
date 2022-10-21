@@ -1,6 +1,5 @@
 [med prior ] fix button blinky effect when hover-in then hover-out quickly
 
-[med-prior ] wraps dispatchEvent with setTimeout
 [high-prior] polyfill requestIdleCallback
 [med-prior ] re-check requestAnimationFrame
 
