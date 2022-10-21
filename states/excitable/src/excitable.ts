@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -150,19 +151,39 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     // states:
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     /**
-     * `true`   => has excited  
-     * `false`  => has normal
-     * `'null'` => need to restart
+     * `true`      => has excited  
+     * `false`     => has normal
+     * `null`      => need to restart
+     * `undefined` => force to stop because the <control> has unmounted
      */
-    const isExcited = useRef<boolean|null>(excitedFn);
+    const isExcited = useRef<boolean|null|undefined>(excitedFn);
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // mark the <component> has unmounted:
+            isExcited.current = undefined;
+        };
+    }, [])
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
-    if ((isExcited.current !== null) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
+    if (isExcited.current === null) {
+        // need to *briefly* apply the *un-animated* before continue to *re-animated*:
+        requestAnimationFrame(() => {
+            // conditions:
+            if (isExcited.current === undefined) return;
+            
+            
+            
+            // actions:
+            isExcited.current = true; // restart
+            triggerRender(); // need to restart the animation
+        });
+    }
+    else if ((isExcited.current !== undefined) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
         isExcited.current = excitedFn; // remember the last change
-        
-        triggerRender(); // need to restart the animation
+        triggerRender(); // need to apply the animation
     } // if
     
     
@@ -188,12 +209,9 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         // mark the animation has stopped:
         if (!excitedFn) {
             isExcited.current = false; // mark the animation has stopped
-            console.log('stopped!!!')
         }
         else {
             isExcited.current = null;  // mark the animation has stopped but need to restart
-            
-            console.log('restarting...')
             triggerRender(); // need to restart the animation
         } // if
         
