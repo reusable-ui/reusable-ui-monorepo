@@ -1028,7 +1028,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         inputElm.valueAsNumber = valueDn;
         
         // *hack*: trigger `onChange` event:
-        inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
+        setTimeout(() => {
+            inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
+        }, 0); // runs the 'input' event *next after* current event completed
     }, [valueFn, valueDn]);
     
     
