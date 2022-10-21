@@ -347,10 +347,10 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
             
             if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
                 if (active) {
-                    if (element.checked) element.checked = false; // *hack* flip before firing click event
-                    
                     // fire `click` native event to trigger `onChange` synthetic event:
                     setTimeout(() => {
+                        if (element.checked) element.checked = false; // *hack* flip before firing click event
+                        
                         element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
                     }, 0); // runs the 'click' event *next after* current event completed
                 }
