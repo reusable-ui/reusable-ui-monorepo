@@ -416,7 +416,9 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 if (performKeyUpActions) {
                     // actions:
                     // trigger the onClick event by <kbd>actionKeys</kbd> key:
-                    event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                    setTimeout(() => {
+                        event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                    }, 0); // runs the 'click' event *next after* current event completed
                     
                     
                     
@@ -526,7 +528,9 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (handleKeyEnterEvents) {
                 // actions:
                 // trigger the onClick event by <kbd>enter</kbd> key:
-                event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                setTimeout(() => {
+                    event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
+                }, 0); // runs the 'click' event *next after* current event completed
             } // if
         } // if
         
