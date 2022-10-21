@@ -1,4 +1,3 @@
-[high-prior] polyfill requestIdleCallback
 [med-prior ] re-check requestAnimationFrame
 
 [med-prior ] re-check states without animating-state
