@@ -138,20 +138,20 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
         
         
         // setups:
-        let asyncCheckRunningAnimation = requestIdleCallback(() => {
+        let asyncCheckRunningAnimation = requestAnimationFrame(() => {
             // tests:
             if (Object.is(expectedAnimation.current, state.animation)) return; // the expected animation is running => verified
             
             
             
             // retry:
-            asyncCheckRunningAnimation = requestIdleCallback(() => {
+            asyncCheckRunningAnimation = requestAnimationFrame(() => {
                 // tests:
                 if (Object.is(expectedAnimation.current, state.animation)) return; // the expected animation is running => verified
                 
                 
                 
-                // the expected animation is not running within 2 idle_frames => NOT verified => mark as finished_animation:
+                // the expected animation is not running within 2 frames => NOT verified => mark as finished_animation:
                 dispatchState({ type: AnimatingStateActionType.Done });
             });
         });
@@ -160,7 +160,7 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
         
         // cleanups:
         return () => {
-            cancelIdleCallback(asyncCheckRunningAnimation);
+            cancelAnimationFrame(asyncCheckRunningAnimation);
         };
     }, [state.animation]);
     
