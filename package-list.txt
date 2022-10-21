@@ -58,7 +58,7 @@
 [fixed     ] @reusable-ui/activatable
 [fixed  pub] @reusable-ui/focusable
 [fixed  pub] @reusable-ui/interactable
-[published ] @reusable-ui/clickable
+[fixed     ] @reusable-ui/clickable
 [fixed     ] @reusable-ui/active-as-click
 [published ] @reusable-ui/invalidable
 [published ] @reusable-ui/checkable
@@ -74,10 +74,10 @@
 [published ] [documented  ] [          atomic] @reusable-ui/basic
 [fixed  pub] [documented  ] [          atomic] @reusable-ui/indicator
 [fixed  pub] [documented  ] [          atomic] @reusable-ui/control
-[published ] [documented  ] [          atomic] @reusable-ui/action-control
+[fixed     ] [documented  ] [          atomic] @reusable-ui/action-control
 [modified  ] [documented  ] [          atomic] @reusable-ui/editable-control
 [modified  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
-[published ] [documented  ] [          atomic] @reusable-ui/editable-action-control
+[fixed     ] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
 [published ] [documented  ] [          atomic] @reusable-ui/container
@@ -93,7 +93,7 @@
 [published ] [documented  ] [full    compound] @reusable-ui/close-button
 [modified  ] [documented  ] [          atomic] @reusable-ui/form
 [published ] [documented  ] [          atomic] @reusable-ui/input
-[fixed  pub] [documented  ] [full    compound] @reusable-ui/range
+[fixed     ] [documented  ] [full    compound] @reusable-ui/range
 [published ] [documented  ] [          atomic] @reusable-ui/check
 [published ] [documented  ] [          atomic] @reusable-ui/radio
 [published ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
