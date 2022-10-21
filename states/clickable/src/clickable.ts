@@ -550,11 +550,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (!propEnabled) {
                 // control is disabled => block the response
                 
-                // prevent to bubbling:
+                // prevent from bubbling:
                 event.stopPropagation();
             }
             else {
-                // trigger the onClick event by mouse/touch:
+                // forward the *synthetic* onClick event by mouse/touch:
                 props.onClick?.(event);
             } // if
         } // if
