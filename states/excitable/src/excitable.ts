@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -151,77 +150,72 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     // states:
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     /**
-     * `true`  => was excited  
-     * `false` => was normal
+     * `true`   => has excited  
+     * `false`  => has normal
+     * `'null'` => need to restart
      */
-    const wasExcited = useRef<boolean|null>(excitedFn);
+    const isExcited = useRef<boolean|null>(excitedFn);
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
-    
-    
-    const asyncTriggerRender = useRef<ReturnType<typeof requestIdleCallback>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
-        };
-    }, []); // runs once on startup
-    
-    
-    
-    if (wasExcited.current !== excitedFn) { // change detected => apply the change & start animating
-        const continueToRun = excitedFn && (wasExcited.current === null);
-        if (continueToRun) {
-            // cancel out previously asyncTriggerRender (if any):
-            if (asyncTriggerRender.current) cancelIdleCallback(asyncTriggerRender.current);
-            
-            
-            
-            // wait until the non-excited `<Component>` has been applied by browser ui, then re-render the excited `<Component>`
-            asyncTriggerRender.current = requestIdleCallback(() => {
-                wasExcited.current = excitedFn; // remember the last change
-                triggerRender(); // re-render the excited `<Component>`
-            });
-        }
-        else {
-            wasExcited.current = excitedFn; // remember the last change
-        } // if
+    if ((isExcited.current !== null) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
+        isExcited.current = excitedFn; // remember the last change
+        
+        triggerRender(); // need to restart the animation
     } // if
     
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationStart = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
         
         
         
-        // clean up finished animation
+        // mark the animation has started:
+        isExcited.current = true;
+    });
+    const handleAnimationEnd   = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+        // conditions:
+        if (event.target !== event.currentTarget) return; // ignores bubbling
+        if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
         
-        const continueToRun = wasExcited.current;
-        wasExcited.current = null; // mark the animation need to restart
         
-        Promise.resolve().then(() => { // trigger the event after the <Component> has finished rendering (for controllable <Component>)
-            onExcitedChange?.({ excited: false} as TExcitedChangeEvent); // request to stop
-        });
-        if (continueToRun) {
+        
+        // mark the animation has stopped:
+        if (!excitedFn) {
+            isExcited.current = false; // mark the animation has stopped
+            console.log('stopped!!!')
+        }
+        else {
+            isExcited.current = null;  // mark the animation has stopped but need to restart
+            
+            console.log('restarting...')
             triggerRender(); // need to restart the animation
         } // if
+        
+        
+        
+        // request to stop:
+        setTimeout(() => {
+            onExcitedChange?.({ excited: false} as TExcitedChangeEvent);
+        }, 0); // runs the 'onExcitedChange' event *next after* current event completed
     });
+    const handleAnimationCancel = handleAnimationEnd;
     
     
     
     return {
-        excited : wasExcited.current,
+        excited : excitedFn,
         
-        class   : wasExcited.current ? 'excited' : null,
+        class   : isExcited.current ? 'excited' : null,
         
-        handleAnimationEnd,
+        handleAnimationStart,  // animation-start  handler
+        handleAnimationEnd,    // animation-end    handler
+        handleAnimationCancel, // animation-cancel handler
     };
 };
 //#endregion excitable

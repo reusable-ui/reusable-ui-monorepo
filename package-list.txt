@@ -52,7 +52,7 @@
 [published ] @reusable-ui/basic-variants
 
 // reusable-ui states:
-[published ] @reusable-ui/excitable
+[fixed     ] @reusable-ui/excitable
 [published ] @reusable-ui/collapsible
 [fixed  pub] @reusable-ui/disableable
 [fixed     ] @reusable-ui/activatable
