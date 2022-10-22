@@ -392,7 +392,16 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // handlers:
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -441,7 +450,8 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             
             
             // handlers:
-            onAnimationEnd={handleAnimationEnd}
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             { (!lazy || isVisible) && children }
         </Generic>

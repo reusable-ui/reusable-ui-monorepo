@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/collapse",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A generic element with dynamic visibility (show/hide).",
   "keywords": [
     "collapse",
