@@ -274,6 +274,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
+    // fn states:
     /*
      * state is  as <ValidationProvider> if it's [isValid] was set
      * state is  as [onValidation] callback returned
@@ -308,6 +309,9 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         return undefined;
     })();
     
+    
+    
+    // update state:
     if ((isValidFn !== undefined) && (wasValid !== isValidFn)) { // change detected => apply the change & start animating
         setWasValid(isValidFn);                                  // remember the last change
         
@@ -364,7 +368,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationEnd    = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         
@@ -381,9 +385,11 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             setErrAnimating(null);  // stop err-animation/unerr-animation
         } // if
     });
+    const handleAnimationCancel = handleAnimationEnd;
     
     
     
+    // interfaces:
     const noValidation : boolean = (
         !propEditable          // if control is not editable => no validation
         ||
@@ -437,6 +443,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         ].filter((c) => !!c).join(' ') || null,
         
         handleAnimationEnd,
+        handleAnimationCancel,
     };
 };
 //#endregion invalidable
