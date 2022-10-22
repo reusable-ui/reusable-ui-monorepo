@@ -122,7 +122,7 @@
 // dialog-components:
 [fixed     ] [documented  ] [          atomic] @reusable-ui/modal
 [fixed     ] [documented  ] [full    compound] @reusable-ui/modal-card
-[published ] [documented  ] [full    compound] @reusable-ui/modal-side
+[fixed     ] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
 [published ] [documented  ] [          atomic] @reusable-ui/progress

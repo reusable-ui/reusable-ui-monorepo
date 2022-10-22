@@ -534,7 +534,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     
     // handlers:
-    const handleExpandedChange  = useMergeEvents(
+    const handleExpandedChange = useMergeEvents(
         // preserves the original `onExpandedChange` from `modalComponent`:
         modalComponent.props.onExpandedChange,
         
@@ -543,7 +543,21 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // actions:
         onExpandedChange,
     );
-    const handleAnimationEnd    = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart` from `modalComponent`:
+        modalComponent.props.onAnimationStart,
+        
+        
+        
+        // preserves the original `onAnimationStart` from `props`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd` from `modalComponent`:
         modalComponent.props.onAnimationEnd,
         
@@ -598,6 +612,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             // handlers:
+            onAnimationStart : handleAnimationStart,
             onAnimationEnd   : handleAnimationEnd,
         },
         
