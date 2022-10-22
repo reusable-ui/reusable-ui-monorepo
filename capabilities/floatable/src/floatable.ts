@@ -201,9 +201,13 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // setups:
         
         // the first trigger:
-        const cancelTimeout = setTimeout(() => { // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
-            triggerFloatingUpdate();
-        }, 0);
+        let cancelRequest = requestAnimationFrame(() => {     // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
+            cancelRequest = requestAnimationFrame(() => {     // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
+                cancelRequest = requestAnimationFrame(() => { // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
+                    triggerFloatingUpdate();
+                });
+            });
+        });
         
         // the live trigger:
         const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
@@ -212,7 +216,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         // cleanups:
         return () => {
-            clearTimeout(cancelTimeout);
+            cancelAnimationFrame(cancelRequest);
             stopUpdate();
         };
     }, [

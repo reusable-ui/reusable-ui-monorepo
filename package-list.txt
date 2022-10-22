@@ -37,7 +37,7 @@
 [published ] @reusable-ui/padding
 
 // reusable-ui capabilities:
-[published ] @reusable-ui/floatable
+[fixed     ] @reusable-ui/floatable
 [published ] @reusable-ui/groupable
 
 // reusable-ui variants:
