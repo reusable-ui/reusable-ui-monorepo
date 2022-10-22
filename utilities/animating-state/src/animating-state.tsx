@@ -104,10 +104,10 @@ const animatingStateReducer = <TState extends ({}|null)>(oldState: AnimatingStat
 
 
 export interface AnimatingStateOptions<TState extends ({}|null)> {
-    initialState       : TState        // required
+    initialState       : TState|(() => TState) // required
     
-    animationBubbling ?: boolean       // optional
-    animationName      : string|RegExp // required
+    animationBubbling ?: boolean               // optional
+    animationName      : string|RegExp         // required
 };
 export const useAnimatingState = <TState extends ({}|null), TElement extends Element = HTMLElement>(options: AnimatingStateOptions<TState>) => {
     // options:
@@ -123,7 +123,7 @@ export const useAnimatingState = <TState extends ({}|null), TElement extends Ele
     // states:
     const [state, dispatchState] = useReducer<Reducer<AnimatingState<TState>, AnimatingStateAction<TState>>>(animatingStateReducer, {
         // initials:
-        state     : initialState,
+        state     : (typeof(initialState) === 'function') ? (initialState as (() => TState))() : initialState,
         animation : undefined,
     });
     const expectedAnimation = useRef<TState|undefined>(undefined);
