@@ -64,6 +64,10 @@ import {
     // react components:
     ValidationProps,
 }                           from '@reusable-ui/validations'     // a validation management system
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -249,28 +253,28 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     // states:
-    const [wasValid     , setWasValid     ] = useState<ValResult|undefined>((): (ValResult|undefined) => {
-        // if control is not editable => no validation
-        if (!propEditable)             return null;
-        
-        
-        
-        // if [isValid] was set => use [isValid] as the final result:
-        if (propIsValid !== undefined) return propIsValid;
-        
-        
-        
-        // if [onValidation] was provided, evaluate it at startup:
-        if (onValidation)              return undefined; // undefined means => evaluate the [onValidation] *at startup*
-        
-        
-        
-        // use default value as fallback:
-        return defaultIsValid;
+    const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
+        initialState  : (): boolean|0|-0 => {
+            // if control is not editable => no validation
+            if (!propEditable)             return +0;
+            
+            
+            
+            // if [isValid] was set => use [isValid] as the final result:
+            if (propIsValid !== undefined) return propIsValid ?? +0;
+            
+            
+            
+            // // if [onValidation] was provided, evaluate it at startup:
+            // if (onValidation)              return undefined; // undefined means => evaluate the [onValidation] *at startup*
+            
+            
+            
+            // use default value as fallback:
+            return defaultIsValid ?? +0;
+        },
+        animationName : /((?<![a-z])(valid|unvalid|invalid|uninvalid)|(?<=[a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
     });
-    
-    const [succAnimating, setSuccAnimating] = useState<boolean|null>(null); // null => no-succ-animation, true => succ-animation, false => unsucc-animation
-    const [errAnimating , setErrAnimating ] = useState<boolean|null>(null); // null => no-err-animation,  true => err-animation,  false => unerr-animation
     
     
     
@@ -367,28 +371,6 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
-    // handlers:
-    const handleAnimationEnd    = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        
-        
-        
-        if (/((?<![a-z])(valid|unvalid)|(?<=[a-z])(Valid|Unvalid))(?![a-z])/.test(event.animationName)) { // if animation is (valid|unvalid)[Foo] or boo(Valid|Unvalid)[Foo]
-            // clean up finished animation
-            
-            setSuccAnimating(null); // stop succ-animation/unsucc-animation
-        }
-        else if (/((?<![a-z])(invalid|uninvalid)|(?<=[a-z])(Invalid|Uninvalid))(?![a-z])/.test(event.animationName)) { // if animation is (invalid|uninvalid)[Foo] or boo(Invalid|Uninvalid)[Foo]
-            // clean up finished animation
-            
-            setErrAnimating(null);  // stop err-animation/unerr-animation
-        } // if
-    });
-    const handleAnimationCancel = handleAnimationEnd;
-    
-    
-    
     // interfaces:
     const noValidation : boolean = (
         !propEditable          // if control is not editable => no validation
@@ -442,6 +424,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             })(),
         ].filter((c) => !!c).join(' ') || null,
         
+        handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
     };
