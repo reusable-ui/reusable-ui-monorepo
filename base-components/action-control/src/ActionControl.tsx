@@ -262,6 +262,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         actionMouses  : _actionMouses,  // remove
         actionTouches : _actionTouches, // remove
         actionKeys    : _actionKeys,    // remove
+        releaseDelay  : _releaseDelay,  // remove
         
         
         
