@@ -309,7 +309,16 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     // handlers:
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -357,7 +366,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             // handlers:
-            onAnimationEnd={handleAnimationEnd}
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             { (!lazy || isVisible) && children }
         </Basic>
