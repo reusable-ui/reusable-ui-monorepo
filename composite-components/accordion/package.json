@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/accordion",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Represents a series of toggleable collapsing content.",
   "keywords": [
     "list",

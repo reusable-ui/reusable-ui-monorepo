@@ -376,6 +376,15 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         handleListItemClickInternal,
     );
     
+    const handleContentAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart` from `contentComponent`:
+        contentComponent.props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
     const handleContentAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
@@ -448,28 +457,29 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // identifiers:
-                    id              : collapsibleId,
+                    id               : collapsibleId,
                     
                     
                     
                     // accessibility props:
-                    enabled         : contentComponent.props.enabled         ?? enabled,
-                    inheritEnabled  : contentComponent.props.inheritEnabled  ?? inheritEnabled,
-                    readOnly        : contentComponent.props.readOnly        ?? readOnly,
-                    inheritReadOnly : contentComponent.props.inheritReadOnly ?? inheritReadOnly,
-                    active          : contentComponent.props.active          ?? active,
-                    inheritActive   : contentComponent.props.inheritActive   ?? inheritActive,
+                    enabled          : contentComponent.props.enabled         ?? enabled,
+                    inheritEnabled   : contentComponent.props.inheritEnabled  ?? inheritEnabled,
+                    readOnly         : contentComponent.props.readOnly        ?? readOnly,
+                    inheritReadOnly  : contentComponent.props.inheritReadOnly ?? inheritReadOnly,
+                    active           : contentComponent.props.active          ?? active,
+                    inheritActive    : contentComponent.props.inheritActive   ?? inheritActive,
                     
                     
                     
                     // classes:
-                    mainClass       : contentComponent.props.mainClass       ?? styleSheet.main,
-                    stateClasses    : contentStateClasses,
+                    mainClass        : contentComponent.props.mainClass       ?? styleSheet.main,
+                    stateClasses     : contentStateClasses,
                     
                     
                     
                     // handlers:
-                    onAnimationEnd  : handleContentAnimationEnd,
+                    onAnimationStart : handleContentAnimationStart,
+                    onAnimationEnd   : handleContentAnimationEnd,
                 },
                 
                 
