@@ -206,7 +206,7 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     
     
     // handlers:
-    const handleAnimationStart = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationStart  = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
@@ -216,7 +216,7 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         // mark the animation has started:
         isExcited.current = true;
     });
-    const handleAnimationEnd   = useEvent<React.AnimationEventHandler<TElement>>((event) => {
+    const handleAnimationEnd    = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
         if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
