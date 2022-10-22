@@ -350,6 +350,15 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         // actions:
         handleKeyDownInternal,
     );
+    const handleAnimationStart  = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
     const handleAnimationEnd    = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -483,8 +492,9 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             // handlers:
-            onKeyDown={handleKeyDown}
-            onAnimationEnd={handleAnimationEnd}
+            onKeyDown        = {handleKeyDown       }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             {/* <DropdownUi> */}
             {React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(dropdownUiComponent,

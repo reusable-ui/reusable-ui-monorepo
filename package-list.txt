@@ -114,7 +114,7 @@
 
 // menu-components:
 [fixed     ] [documented  ] [          atomic] @reusable-ui/collapse
-[published ] [documented  ] [partial compound] @reusable-ui/dropdown
+[fixed     ] [documented  ] [partial compound] @reusable-ui/dropdown
 [published ] [documented  ] [full    compound] @reusable-ui/dropdown-button
 [published ] [documented  ] [full    compound] @reusable-ui/dropdown-list
 [published ] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
