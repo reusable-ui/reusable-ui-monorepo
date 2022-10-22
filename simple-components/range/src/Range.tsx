@@ -803,6 +803,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         actionMouses  : _actionMouses,  // remove
         actionTouches : _actionTouches, // remove
         actionKeys    : _actionKeys,    // remove
+        releaseDelay  : _releaseDelay,  // remove
         
         
         
