@@ -168,9 +168,23 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
-    if (isExcited.current === null) {
+    if ((isExcited.current !== null) && (isExcited.current !== undefined) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
+        isExcited.current = excitedFn; // remember the last change
+        triggerRender(); // need to apply the animation
+    } // if
+    
+    
+    
+    // dom effects:
+    useEffect(() => {
+        // conditions:
+        if (isExcited.current !== null) return; // only process `null` (need to restart)
+        
+        
+        
+        // setups:
         // need to *briefly* apply the *un-animated* before continue to *re-animated*:
-        requestAnimationFrame(() => {
+        const cancelRequest = requestAnimationFrame(() => {
             // conditions:
             if (isExcited.current === undefined) return;
             
@@ -180,11 +194,14 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
             isExcited.current = true; // restart
             triggerRender(); // need to restart the animation
         });
-    }
-    else if ((isExcited.current !== undefined) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
-        isExcited.current = excitedFn; // remember the last change
-        triggerRender(); // need to apply the animation
-    } // if
+        
+        
+        
+        // cleanups:
+        return () => {
+            cancelAnimationFrame(cancelRequest);
+        };
+    }); // no dependency-list, runs every re-render
     
     
     
