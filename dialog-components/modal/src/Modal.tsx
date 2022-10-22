@@ -671,6 +671,15 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         handleContextMenuInternal,
     );
+    const handleAnimationStart        = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
     const handleAnimationEnd          = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -870,11 +879,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             
             
             // handlers:
-            onKeyDown={handleKeyDown}
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
-            onContextMenu={handleContextMenu}
-            onAnimationEnd={handleAnimationEnd}
+            onKeyDown        = {handleKeyDown       }
+            onMouseDown      = {handleMouseDown     }
+            onTouchStart     = {handleTouchStart    }
+            onContextMenu    = {handleContextMenu   }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             {/* <ModalUi> */}
             {(!lazy || isVisible) && React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,
