@@ -1,5 +1,3 @@
-[med-prior ] re-check requestAnimationFrame
-
 [med-prior ] re-check states without animating-state
 [med-prior ] upgrade onAnimationEnd detection on vanilla state
 [low prior ] upgrade onAnimationEnd detection on animating-state
