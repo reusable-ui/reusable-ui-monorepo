@@ -487,8 +487,10 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // setups:
-        const cancelRequest = requestAnimationFrame(() => { // wait for the <ResponsiveProvider> to switch to mobile version
-            setMenuExpanded(false); // collapsing the <Navbar>'s menu
+        let cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
+            cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
+                setMenuExpanded(false); // collapsing the <Navbar>'s menu
+            });
         });
         
         
