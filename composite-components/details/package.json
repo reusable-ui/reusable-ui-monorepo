@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/details",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A foldable content widget.",
   "keywords": [
     "details",

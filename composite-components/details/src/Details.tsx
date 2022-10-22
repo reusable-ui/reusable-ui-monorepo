@@ -576,6 +576,15 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         handleExpandedChangeByToggleButton,
     );
     
+    const handleContentAnimationStart        = useMergeEvents(
+        // preserves the original `onAnimationStart` from `contentComponent`:
+        contentComponent.props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
     const handleContentAnimationEnd          = useMergeEvents(
         // preserves the original `onAnimationEnd` from `contentComponent`:
         contentComponent.props.onAnimationEnd,
@@ -682,18 +691,19 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // identifiers:
-                    id              : collapsibleId,
+                    id               : collapsibleId,
                     
                     
                     
                     // classes:
-                    stateClasses    : contentStateClasses,
-                    classes         : contentClasses,
+                    stateClasses     : contentStateClasses,
+                    classes          : contentClasses,
                     
                     
                     
                     // handlers:
-                    onAnimationEnd  : handleContentAnimationEnd,
+                    onAnimationStart : handleContentAnimationStart,
+                    onAnimationEnd   : handleContentAnimationEnd,
                 },
                 
                 
