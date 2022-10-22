@@ -56,6 +56,10 @@ import {
     SemanticProps,
     useSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+import {
+    // hooks:
+    useAnimatingState,
+}                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
 // reusable-ui features:
 import {
@@ -176,53 +180,47 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     
     
     
-    // states:
-    const [expanded,  setExpanded ] = useState<boolean>(isExpanded); // true => expand, false => collapse
-    const [animating, setAnimating] = useState<boolean|null>(null);  // null => no-animation, true => expanding-animation, false => collapsing-animation
-    
-    
-    
+    // fn states:
     /*
      * state is expand/collapse based on [controllable expanded]
      * [uncontrollable expanded] is not supported
      */
-    const expandFn : boolean = isExpanded /*controllable*/;
-    
-    if (expanded !== expandFn) { // change detected => apply the change & start animating
-        setExpanded(expandFn);   // remember the last change
-        setAnimating(expandFn);  // start expanding-animation/collapsing-animation
-    } // if
+    const expandedFn : boolean = isExpanded /*controllable*/;
     
     
     
-    // handlers:
-    const handleAnimationEnd = useEvent<React.AnimationEventHandler<TElement>>((event) => {
-        // conditions:
-        if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(expand|collapse)|(?<=[a-z])(Expand|Collapse))(?![a-z])/.test(event.animationName)) return; // ignores animation other than (expand|collapse)[Foo] or boo(Expand|Collapse)[Foo]
-        
-        
-        
-        // clean up finished animation
-        
-        setAnimating(null); // stop expanding-animation/collapsing-animation
+    // states:
+    const [expanded, setExpanded, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
+        initialState  : expandedFn,
+        animationName : /((?<![a-z])(expand|collapse)|(?<=[a-z])(Expand|Collapse))(?![a-z])/,
     });
     
     
     
+    // update state:
+    if (expanded !== expandedFn) { // change detected => apply the change & start animating
+        setExpanded(expandedFn);   // remember the last change
+    } // if
+    
+    
+    
+    // interfaces:
     return {
         expanded  : expanded,
-        isVisible : expanded || (animating !== null),
+        isVisible : expanded || (animation !== undefined),
         
         class     : ((): string|null => {
             // expanding:
-            if (animating === true) {
+            if (animation === true) {
+                // not [expanded] but *still* animating of expanding => force to keep expanding using class .expanding
+                if (!expanded) return 'expanding';
+                
                 if (tag && collapsibleCtrls.includes(tag)) return null; // uses [open]
                 return 'expanding';
             } // if
             
             // collapsing:
-            if (animating === false) return 'collapsing';
+            if (animation === false) return 'collapsing';
             
             // fully expanded:
             if (expanded) return 'expanded';
@@ -241,7 +239,9 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
             return null;
         })(),
         
+        handleAnimationStart,
         handleAnimationEnd,
+        handleAnimationCancel,
     };
 };
 

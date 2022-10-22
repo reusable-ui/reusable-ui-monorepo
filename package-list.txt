@@ -53,7 +53,7 @@
 
 // reusable-ui states:
 [fixed     ] @reusable-ui/excitable
-[published ] @reusable-ui/collapsible
+[fixed     ] @reusable-ui/collapsible
 [fixed  pub] @reusable-ui/disableable
 [fixed     ] @reusable-ui/activatable
 [fixed  pub] @reusable-ui/focusable
