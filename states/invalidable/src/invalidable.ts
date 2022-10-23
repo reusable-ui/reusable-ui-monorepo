@@ -6,7 +6,7 @@ import {
     
     
     // hooks:
-    useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -252,39 +252,14 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
-    // states:
-    const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
-        initialState  : (): boolean|0|-0 => {
-            // if control is not editable => no validation
-            if (!propEditable)             return +0;
-            
-            
-            
-            // if [isValid] was set => use [isValid] as the final result:
-            if (propIsValid !== undefined) return propIsValid ?? +0;
-            
-            
-            
-            // // if [onValidation] was provided, evaluate it at startup:
-            // if (onValidation)              return undefined; // undefined means => evaluate the [onValidation] *at startup*
-            
-            
-            
-            // use default value as fallback:
-            return defaultIsValid ?? +0;
-        },
-        animationName : /((?<![a-z])(valid|unvalid|invalid|uninvalid)|(?<=[a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
-    });
-    
-    
-    
     // fn states:
+    const wasValid = useRef<boolean>(true);
     /*
      * state is  as <ValidationProvider> if it's [isValid] was set
      * state is  as [onValidation] callback returned
      * otherwise undefined (represents no change needed)
      */
-    const isValidFn = ((): (ValResult|undefined) => {
+    const isValidFn : boolean|0|-0 = ((): boolean|null => {
         // if control is not editable => no validation
         if (!propEditable)             return null;
         
@@ -295,13 +270,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         
         
         
-        if (wasValid !== undefined) { // (wasValid !== undefined) means => the validator is ready => evaluate it *now*
-            // conditions:
-            // if [onValidation] was provided, evaluate it:
-            if (!onValidation) return defaultIsValid;
-            
-            
-            
+        if (onValidation) {
             const event : ValidityChangeEvent = { isValid: null };
             onValidation(event as TValidityChangeEvent);
             return event.isValid;
@@ -309,9 +278,17 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         
         
         
-        // no change needed:
-        return undefined;
-    })();
+        // use default value as fallback:
+        return defaultIsValid;
+    })() ?? (wasValid.current ? +0 : -0);
+    
+    
+    
+    // states:
+    const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
+        initialState  : isValidFn,
+        animationName : /((?<![a-z])(valid|unvalid|invalid|uninvalid)|(?<=[a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
+    });
     
     
     
