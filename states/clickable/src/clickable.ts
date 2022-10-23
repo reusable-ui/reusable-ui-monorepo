@@ -85,18 +85,21 @@ const _defaultReleaseDelay     : number = 1;
 
 //#region clickable
 export interface ClickableVars {
-    /* supports for `usesPressAsActiveState()` */
+    /* supports for `usesActiveAsClick()` */
     
-    filterPress : any
+    filterPress          : any
     
-    animPress   : any
-    animRelease : any
+    animPress            : any
+    animRelease          : any
+    
+    animPressAsActive    : any
+    animReleaseAsPassive : any
     
     
     
-    filter      : any
+    filter               : any
     
-    anim        : any
+    anim                 : any
 }
 const [clickableVars] = cssVars<ClickableVars>();
 
@@ -135,10 +138,13 @@ export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([s
 
 export interface ClickableStuff { clickableRule: Factory<CssRule>, clickableVars: CssVars<ClickableVars> }
 export interface ClickableConfig {
-    filterPress ?: CssKnownProps['filter'   ]
+    filterPress          ?: CssKnownProps['filter'   ]
     
-    animPress   ?: CssKnownProps['animation']
-    animRelease ?: CssKnownProps['animation']
+    animPress            ?: CssKnownProps['animation']
+    animRelease          ?: CssKnownProps['animation']
+    
+    animPressAsActive    ?: CssKnownProps['animation']
+    animReleaseAsPassive ?: CssKnownProps['animation']
 }
 /**
  * Adds a capability of UI to be clicked.
@@ -150,12 +156,15 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
         clickableRule: () => style({
             // configs:
             ...vars({
-                /* supports for `usesPressAsActiveState()` */
+                /* supports for `usesActiveAsClick()` */
                 
-                [clickableVars.filterPress] : config?.filterPress,
+                [clickableVars.filterPress         ] : config?.filterPress,
                 
-                [clickableVars.animPress  ] : config?.animPress,
-                [clickableVars.animRelease] : config?.animRelease,
+                [clickableVars.animPress           ] : config?.animPress,
+                [clickableVars.animRelease         ] : config?.animRelease,
+                
+                [clickableVars.animPressAsActive   ] : config?.animPressAsActive,
+                [clickableVars.animReleaseAsPassive] : config?.animReleaseAsPassive,
             }),
             
             
