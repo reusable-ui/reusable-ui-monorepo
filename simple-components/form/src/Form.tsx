@@ -383,7 +383,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleChange       = useMergeEvents(
+    const handleChange         = useMergeEvents(
         // preserves the original `onChange`:
         props.onChange,
         
@@ -394,7 +394,16 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         // validations:
         formValidator.handleChange,
     );
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        invalidableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -432,8 +441,9 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
             
             
             // handlers:
-            onChange       = {handleChange      }
-            onAnimationEnd = {handleAnimationEnd}
+            onChange         = {handleChange        }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };
