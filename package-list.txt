@@ -75,7 +75,7 @@
 [fixed  pub] [documented  ] [          atomic] @reusable-ui/indicator
 [fixed  pub] [documented  ] [          atomic] @reusable-ui/control
 [fixed     ] [documented  ] [          atomic] @reusable-ui/action-control
-[modified  ] [documented  ] [          atomic] @reusable-ui/editable-control
+[fixed     ] [documented  ] [          atomic] @reusable-ui/editable-control
 [modified  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
 [fixed     ] [documented  ] [          atomic] @reusable-ui/editable-action-control
 

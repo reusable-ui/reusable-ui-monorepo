@@ -456,7 +456,7 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     
     // handlers:
-    const handleChange       = useMergeEvents(
+    const handleChange         = useMergeEvents(
         // preserves the original `onChange`:
         props.onChange,
         
@@ -467,7 +467,16 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         // validations:
         inputValidator.handleChange as unknown as React.ChangeEventHandler<TElement>,
     );
-    const handleAnimationEnd = useMergeEvents(
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        invalidableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
@@ -499,8 +508,9 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
             
             
             // handlers:
-            onChange       = {handleChange      }
-            onAnimationEnd = {handleAnimationEnd}
+            onChange         = {handleChange        }
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };
