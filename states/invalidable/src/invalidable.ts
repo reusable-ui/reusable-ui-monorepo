@@ -292,7 +292,16 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     // update state:
     if (isValid !== isValidFn) { // change detected => apply the change & start animating
-        setIsValid(isValidFn);   // remember the last change
+        if (isValid !== 0) { // was `valid` (true) or was `invalid` (false) => need to apply `un-valid` or `un-invalid` *before* applying other states
+            setIsValid(wasValid.current ? +0 : -0);
+            /*
+                then the `setIsValid` above causing to re-render,
+                and at the next-render the `setIsValid` below will be executed
+            */
+        }
+        else {
+            setIsValid(isValidFn); // remember the last change
+        } // if
     } // if
     
     wasValid.current = (typeof(isValid) === 'boolean') ? isValid : Object.is(isValid, +0);
