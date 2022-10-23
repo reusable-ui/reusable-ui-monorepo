@@ -293,35 +293,11 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     // update state:
-    if ((isValidFn !== undefined) && (wasValid !== isValidFn)) { // change detected => apply the change & start animating
-        setWasValid(isValidFn);                                  // remember the last change
-        
-        
-        
-        switch (isValidFn) {
-            case true: // success
-                // if was error => un-error:
-                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
-                
-                setSuccAnimating(true); // start succ-animation
-                break;
-            
-            case false: // error
-                // if was success => un-success:
-                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
-                
-                setErrAnimating(true);  // start err-animation
-                break;
-            
-            case null: // uncheck
-                // if was success => un-success:
-                if (wasValid === true)  setSuccAnimating(false); // start unsucc-animation
-                
-                // if was error => un-error:
-                if (wasValid === false) setErrAnimating(false);  // start unerr-animation
-                break;
-        } // switch
+    if (isValid !== isValidFn) { // change detected => apply the change & start animating
+        setIsValid(isValidFn);   // remember the last change
     } // if
+    
+    wasValid.current = (typeof(isValid) === 'boolean') ? isValid : Object.is(isValid, +0);
     
     
     
