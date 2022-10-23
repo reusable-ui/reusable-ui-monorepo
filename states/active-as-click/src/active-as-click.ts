@@ -155,12 +155,12 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 // regular animActive  => original animPress // TODO: rename to active-as-press
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
-                    clickableVars.animPress,
+                    clickableVars.animPressAsActive,
                 ),
                 // regular animPassive => original animRelease // TODO: rename to passive-as-release
                 [activeAsClickVars.animPassive ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
-                    clickableVars.animRelease,
+                    clickableVars.animReleaseAsPassive,
                 ),
             }),
             
