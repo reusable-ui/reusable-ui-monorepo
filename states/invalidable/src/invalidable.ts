@@ -1,12 +1,8 @@
 // react:
 import {
-    // react:
-    default as React,
-    
-    
-    
     // hooks:
     useRef,
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -41,7 +37,6 @@ import {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
-    useEvent,
     EventHandler,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -239,21 +234,23 @@ export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEve
 }
 export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent>) => {
     // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);
-    const propEditable          = propEnabled && !propReadOnly;
-    const propIsValid           = usePropIsValid(props);
-    const onValidation          = props.onValidation;
+    const propEnabled    = usePropEnabled(props);
+    const propReadOnly   = usePropReadOnly(props);
+    const propEditable   = propEnabled && !propReadOnly;
+    const propIsValid    = usePropIsValid(props);
+    const onValidation   = props.onValidation;
     
     
     
     // defaults:
-    const defaultIsValid        : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
+    const defaultIsValid : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
     
     
     
     // fn states:
     const wasValid = useRef<boolean>(true);
+    const [validatorLoaded, setValidatorLoaded] = useState<boolean>(false);
+    
     /*
      * state is  as <ValidationProvider> if it's [isValid] was set
      * state is  as [onValidation] callback returned
@@ -270,7 +267,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         
         
         
-        if (onValidation) {
+        if (onValidation && validatorLoaded) {
             const event : ValidityChangeEvent = { isValid: null };
             onValidation(event as TValidityChangeEvent);
             return event.isValid;
@@ -302,35 +299,27 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     // dom effects:
-    
-    // watch the changes once (only at startup):
+    // marks the validator as loaded (ready to use) at startup:
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (wasValid !== undefined) return; // the effect should only run once
+        if (!onValidation)   return; // the validator callback is not specified   => ignore
+        if (validatorLoaded) return; // the validator is already marked as loaded => ignore
         
         
         
-        // now validator has been loaded => re-*set the initial* state of `wasValid` with any values other than `undefined`
-        // once set, this effect will never be executed again
-        if (!onValidation) {
-            setWasValid(defaultIsValid);
-        }
-        else {
-            const event : ValidityChangeEvent = { isValid: null };
-            onValidation(event as TValidityChangeEvent);
-            setWasValid(event.isValid);
-        } // if
-    }, [wasValid, onValidation]); // the effect should only run once
+        // setups:
+        setValidatorLoaded(true);
+    }, [onValidation, validatorLoaded]);
     
     
     
     // interfaces:
-    const noValidation : boolean = (
-        !propEditable          // if control is not editable => no validation
+    const noValidation = ( // things makes `isValidFn` *always 0*
+        !propEditable           // the <control> is not editable      => no validation
         ||
-        (propIsValid === null) // ([isValid] === null)       => no validation
+        (propIsValid === null)  // the <ancestor> forced to *uncheck* => no validation
         ||
-        !onValidation          // no validator               => no validation
+        !onValidation           // no validation callback provided    => no validation
     );
     return {
         /**
@@ -338,16 +327,16 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
          * `false` : invalidating/invalidated
          * `null`  : uncheck/unvalidating/uninvalidating
         */
-        isValid : (wasValid ?? defaultIsValid) as ValResult,
+        isValid : ((typeof(isValid) === 'boolean') ? isValid : null) as ValResult,
         noValidation,
         
         class   : [
             // valid classes:
             ((): string|null => {
-                if (succAnimating === true)  return 'validating';
-                if (succAnimating === false) return 'unvalidating';
+                if (animation === true)       return 'validating';
+                if (Object.is(animation, +0)) return 'unvalidating';
                 
-                if (wasValid === true)       return 'validated';
+                if (isValid === true)         return 'validated';
                 
                 return null;
             })(),
@@ -356,10 +345,10 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             
             // invalid classes:
             ((): string|null => {
-                if (errAnimating === true)   return 'invalidating';
-                if (errAnimating === false)  return 'uninvalidating';
+                if (animation === false)      return 'invalidating';
+                if (Object.is(animation, -0)) return 'uninvalidating';
                 
-                if (wasValid === false)      return 'invalidated';
+                if (isValid === false)        return 'invalidated';
                 
                 return null;
             })(),
