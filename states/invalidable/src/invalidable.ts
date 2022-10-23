@@ -252,9 +252,8 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     const [validatorLoaded, setValidatorLoaded] = useState<boolean>(false);
     
     /*
-     * state is  as <ValidationProvider> if it's [isValid] was set
-     * state is  as [onValidation] callback returned
-     * otherwise undefined (represents no change needed)
+     * state is always uncheck if not editable
+     * state is valid/invalid/uncheck based on [controllable isValid] (if set) and fallback to [uncontrollable onValidation]
      */
     const isValidFn : boolean|0|-0 = ((): boolean|null => {
         // if control is not editable => no validation
@@ -262,11 +261,13 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         
         
         
+        /*controllable*/
         // if [isValid] was set => use [isValid] as the final result:
         if (propIsValid !== undefined) return propIsValid;
         
         
         
+        /*uncontrollable*/
         if (onValidation && validatorLoaded) {
             const event : ValidityChangeEvent = { isValid: null };
             onValidation(event as TValidityChangeEvent);
