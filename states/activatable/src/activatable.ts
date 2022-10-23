@@ -89,7 +89,7 @@ import {
 
 //#region activatable
 export interface ActivatableVars {
-    /* supports for `usesPressAsActiveState()` */
+    /* supports for `usesActiveAsClick()` */
     
     filterActive : any
     
@@ -151,7 +151,7 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
         activatableRule: () => style({
             // configs:
             ...vars({
-                /* supports for `usesPressAsActiveState()` */
+                /* supports for `usesActiveAsClick()` */
                 
                 [activatableVars.filterActive] : config?.filterActive,
                 
