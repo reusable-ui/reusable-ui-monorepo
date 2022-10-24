@@ -105,6 +105,13 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
     const [keyframesDummyReleaseRule, keyframesDummyRelease] = keyframes({ /* empty frame */ });
     keyframesDummyPress.value   = 'dummyPress';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
     keyframesDummyRelease.value = 'dummyRelease'; // the @keyframes name should contain 'release' in order to be recognized by `useClickable`
+    
+    
+    
+    const [keyframesDummyActiveRule , keyframesDummyActive ] = keyframes({ /* empty frame */ });
+    const [keyframesDummyPassiveRule, keyframesDummyPassive] = keyframes({ /* empty frame */ });
+    keyframesDummyActive.value  = 'dummyActive';  // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
+    keyframesDummyPassive.value = 'dummyPassive'; // the @keyframes name should contain 'passive' in order to be recognized by `useActivatable`
     //#endregion dummy keyframes
     
     
@@ -114,6 +121,8 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             // animations:
             ...keyframesDummyPressRule,
             ...keyframesDummyReleaseRule,
+            ...keyframesDummyActiveRule,
+            ...keyframesDummyPassiveRule,
             
             
             
@@ -155,12 +164,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 // regular animActive  => original animPress // TODO: rename to active-as-press
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
-                    clickableVars.animPressAsActive,
+                    // clickableVars.animPressAsActive, // TODO: remove
+                    `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 // regular animPassive => original animRelease // TODO: rename to passive-as-release
                 [activeAsClickVars.animPassive ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
-                    clickableVars.animReleaseAsPassive,
+                    // clickableVars.animReleaseAsPassive, // TODO: remove
+                    `1ms ${keyframesDummyPassive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
             }),
             
@@ -214,16 +225,16 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         * outlined/mild : passivating_animation
                 */
                 ifActivating({
-                    ...ifReleased({ // there is no clicking activity
-                        // TODO: not working on regular mode because the animation name is not containing 'active'
-                        [activatableVars.anim] : activeAsClickVars.animActive,
-                    }),
+                    // ...ifReleased({ // there is no clicking activity
+                    //     // TODO: not working on regular mode because the animation name is not containing 'active'
+                    // }),
+                    [activatableVars.anim] : activeAsClickVars.animActive,
                 }),
                 ifPassivating({
-                    ...ifReleased({ // there is no clicking activity
-                        // TODO: not working on regular mode because the animation name is not containing 'passive'
-                        [activatableVars.anim] : activeAsClickVars.animPassive,
-                    }),
+                    // ...ifReleased({ // there is no clicking activity
+                    //     // TODO: not working on regular mode because the animation name is not containing 'passive'
+                    // }),
+                    [activatableVars.anim] : activeAsClickVars.animPassive,
                 }),
                 //#endregion activating/passivating transition -- controllable
                 
