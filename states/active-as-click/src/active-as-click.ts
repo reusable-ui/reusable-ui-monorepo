@@ -238,7 +238,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 }),
                 ifPassivating({
                     // there is a clicking activity:
-                    // TODO: FIXED: conditional dummyPassive vs original passive
+                    // TODO: FIXED: conditional dummyPassive vs original passive:
                     ...ifPressReleasing({
                         [activatableVars.anim] : activeAsClickVars.animPassive,
                     }),
