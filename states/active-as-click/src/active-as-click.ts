@@ -225,26 +225,30 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 ifActivating({
                     // there is a clicking activity:
                     // TODO: FIXED: conditional dummyActive vs original active:
-                    [activatableVars.anim] : activeAsClickVars.animActive,
+                    ...ifPressReleasing({
+                        [activatableVars.anim] : activeAsClickVars.animActive,
+                    }),
                     
                     // there is no clicking activity:
                     // TODO: conditional active vs activeas-press
-                    ...ifReleased({
+                    // ...ifReleased({
                         // animActive  => original animActive
                         [activatableVars.anim] : activatableVars.animActive,
-                    }),
+                    // }),
                 }),
                 ifPassivating({
                     // there is a clicking activity:
                     // TODO: FIXED: conditional dummyPassive vs original passive
-                    [activatableVars.anim] : activeAsClickVars.animPassive,
+                    ...ifPressReleasing({
+                        [activatableVars.anim] : activeAsClickVars.animPassive,
+                    }),
                     
                     // there is no clicking activity:
                     // TODO: conditional passive vs passiveas-release
-                    ...ifReleased({
+                    // ...ifReleased({
                         // animPassive => original animPassive
                         [activatableVars.anim] : activatableVars.animPassive,
-                    }),
+                    // }),
                 }),
                 //#endregion activating/passivating transition -- controllable
                 
