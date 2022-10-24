@@ -161,16 +161,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 
-                // regular animActive  => original animPress // TODO: rename to active-as-press
+                // regular animActive  => dummy animPress
                 [activeAsClickVars.animActive  ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
-                    // clickableVars.animPressAsActive, // TODO: remove
                     `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
-                // regular animPassive => original animRelease // TODO: rename to passive-as-release
+                // regular animPassive => dummy animRelease
                 [activeAsClickVars.animPassive ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
-                    // clickableVars.animReleaseAsPassive, // TODO: remove
                     `1ms ${keyframesDummyPassive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
             }),
@@ -225,16 +223,16 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         * outlined/mild : passivating_animation
                 */
                 ifActivating({
-                    // ...ifReleased({ // there is no clicking activity
-                    //     // TODO: not working on regular mode because the animation name is not containing 'active'
-                    // }),
                     [activatableVars.anim] : activeAsClickVars.animActive,
+                    // ...ifPressReleasing({ // there is a clicking activity
+                    //     [activatableVars.anim] : clickableVars.animPressAsActive,
+                    // }),
                 }),
                 ifPassivating({
-                    // ...ifReleased({ // there is no clicking activity
-                    //     // TODO: not working on regular mode because the animation name is not containing 'passive'
-                    // }),
                     [activatableVars.anim] : activeAsClickVars.animPassive,
+                    // ...ifPressReleasing({ // there is a clicking activity
+                    //     [activatableVars.anim] : clickableVars.animReleaseAsPassive,
+                    // }),
                 }),
                 //#endregion activating/passivating transition -- controllable
                 
