@@ -167,15 +167,15 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 
-                // regular animActive  => original animActive
+                // regular animActive  => pressAsActive
                 [activeAsClickVars.animActive        ]: switchOf(
                     activeAsClickVars.altAnimActiveTg,
-                    activatableVars.animActive,
+                    clickableVars.animPressAsActive,
                 ),
-                // regular animPassive => original animPassive
+                // regular animPassive => releaseAsPassive
                 [activeAsClickVars.animPassive       ]: switchOf(
                     activeAsClickVars.altAnimPassiveTg,
-                    activatableVars.animPassive,
+                    clickableVars.animReleaseAsPassive,
                 ),
                 
                 // regular animActiveAsClick  => dummy animPress
@@ -213,15 +213,15 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     clickableVars.animRelease,
                 ]],
                 
-                // alternate animActiveAsClick  => pressAsActive
+                // alternate animActiveAsClick  => original animActive
                 [activeAsClickVars.altAnimActiveTg        ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    clickableVars.animPressAsActive,
+                    activatableVars.animActive,
                 ]],
-                // alternate animPassiveAsClick => releaseAsPassive
+                // alternate animPassiveAsClick => original animPassive
                 [activeAsClickVars.altAnimPassiveTg       ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    clickableVars.animReleaseAsPassive,
+                    activatableVars.animPassive,
                 ]],
                 
                 // alternate animActiveAsClick  => original animActive
