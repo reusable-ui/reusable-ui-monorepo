@@ -65,6 +65,9 @@ export interface ActiveAsClickVars {
     animPress               : any
     animRelease             : any
     
+    animActive              : any
+    animPassive             : any
+    
     animActiveAsClick       : any
     animPassiveAsClick      : any
     
@@ -74,6 +77,9 @@ export interface ActiveAsClickVars {
     
     altAnimPressTg          : any
     altAnimReleaseTg        : any
+    
+    altAnimActiveTg         : any
+    altAnimPassiveTg        : any
     
     altAnimActiveAsClickTg  : any
     altAnimPassiveAsClickTg : any
@@ -161,6 +167,17 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 
+                // regular animActive  => original animActive
+                [activeAsClickVars.animActive        ]: switchOf(
+                    activeAsClickVars.altAnimActiveTg,
+                    activatableVars.animActive,
+                ),
+                // regular animPassive => original animPassive
+                [activeAsClickVars.animPassive       ]: switchOf(
+                    activeAsClickVars.altAnimPassiveTg,
+                    activatableVars.animPassive,
+                ),
+                
                 // regular animActiveAsClick  => dummy animPress
                 [activeAsClickVars.animActiveAsClick ]: switchOf(
                     activeAsClickVars.altAnimActiveAsClickTg,
@@ -194,6 +211,17 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 [activeAsClickVars.altAnimReleaseTg       ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animRelease,
+                ]],
+                
+                // alternate animActiveAsClick  => pressAsActive
+                [activeAsClickVars.altAnimActiveTg        ]: [[
+                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                    clickableVars.animPressAsActive,
+                ]],
+                // alternate animPassiveAsClick => releaseAsPassive
+                [activeAsClickVars.altAnimPassiveTg       ]: [[
+                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                    clickableVars.animReleaseAsPassive,
                 ]],
                 
                 // alternate animActiveAsClick  => original animActive
@@ -233,7 +261,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     // TODO: conditional active vs activeas-press
                     // ...ifReleased({
                         // animActive  => original animActive
-                        [activatableVars.anim] : activatableVars.animActive,
+                        [activatableVars.anim] : activeAsClickVars.animActive,
                     // }),
                 }),
                 ifPassivating({
@@ -247,7 +275,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     // TODO: conditional passive vs passiveas-release
                     // ...ifReleased({
                         // animPassive => original animPassive
-                        [activatableVars.anim] : activatableVars.animPassive,
+                        [activatableVars.anim] : activeAsClickVars.animPassive,
                     // }),
                 }),
                 //#endregion activating/passivating transition -- controllable
