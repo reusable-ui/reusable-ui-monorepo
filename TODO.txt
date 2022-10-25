@@ -1,13 +1,13 @@
-[med-prior ] fixed TODO in active-as-click
+[low prior ] fix button blinky effect when hover-in then hover-out quickly
 
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 [low prior ] test tree shake a Dropdown without Modal
 
-[low prior ] fix button blinky effect when hover-in then hover-out quickly
+[deferred  ] fixed minor animation_abort_effect in active-as-click
 
-[deferred  ] upgrade onAnimationEnd detection on excitable state
-[deferred  ] upgrade onAnimationEnd detection on animating-state
+[deferred  ] upgrade onAnimationEnd detection on excitable state (side effect of *hack* on active-as-click)
+[deferred  ] upgrade onAnimationEnd detection on animating-state (side effect of *hack* on active-as-click)
 
 [deferred  ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
 [deferred  ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
