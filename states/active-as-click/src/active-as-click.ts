@@ -293,14 +293,14 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         * outlined/mild :    pressing_animation
                 */
                 ifPressing({
-                    ...ifActivated({ // allows pressing_animation if the UI is being_activating
+                    ...ifActivated({ // allows '.pressing' animation if the UI is still being '.activating', disallow if already been '.activated'
                         ...vars({
                             [clickableVars.anim] : activeAsClickVars.animPress,
                         }),
                     }),
                 }),
                 ifReleasing({
-                    ...ifActive({ // hold `.releasing` when already `.activating|.activated`
+                    ...ifActive({ // hold '.releasing' when already '.activating'|'.activated'
                         ...vars({
                             [clickableVars.anim] : activeAsClickVars.animRelease,
                         }),
