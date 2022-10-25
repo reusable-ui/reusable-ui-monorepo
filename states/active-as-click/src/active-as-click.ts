@@ -300,7 +300,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     }),
                 }),
                 ifReleasing({
-                    ...ifActive({ // hold `.releasing` when already `.activating|.actived`
+                    ...ifActive({ // hold `.releasing` when already `.activating|.activated`
                         ...vars({
                             [clickableVars.anim] : activeAsClickVars.animRelease,
                         }),
