@@ -47,7 +47,6 @@ import {
     // hooks:
     ifPressing,
     ifReleasing,
-    ifReleased,
     ifPressReleasing,
     usesClickable,
 }                           from '@reusable-ui/clickable'       // a capability of UI to be clicked
@@ -182,6 +181,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 [activeAsClickVars.animActiveAsClick ]: switchOf(
                     activeAsClickVars.altAnimActiveAsClickTg,
                     `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+                    /*
+                        TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
+                    */
                 ),
                 // regular animPassiveAsClick => dummy animRelease
                 [activeAsClickVars.animPassiveAsClick]: switchOf(
@@ -293,6 +295,9 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         * outlined/mild :    pressing_animation
                 */
                 ifPressing({
+                    /*
+                        TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
+                    */
                     ...ifActivated({ // allows '.pressing' animation if the UI is still being '.activating', disallow if already been '.activated'
                         ...vars({
                             [clickableVars.anim] : activeAsClickVars.animPress,
