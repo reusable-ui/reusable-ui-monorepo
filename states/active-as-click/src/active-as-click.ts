@@ -60,23 +60,23 @@ import {
 
 //#region active-as-click
 export interface ActiveAsClickVars {
-    filterActive      : any
+    filterActive            : any
     
-    animPress         : any
-    animRelease       : any
+    animPress               : any
+    animRelease             : any
     
-    animActive        : any
-    animPassive       : any
+    animActiveAsClick       : any
+    animPassiveAsClick      : any
     
     
     
-    altFilterActiveTg : any
+    altFilterActiveTg       : any
     
-    altAnimPressTg    : any
-    altAnimReleaseTg  : any
+    altAnimPressTg          : any
+    altAnimReleaseTg        : any
     
-    altAnimActiveTg   : any
-    altAnimPassiveTg  : any
+    altAnimActiveAsClickTg  : any
+    altAnimPassiveAsClickTg : any
 }
 const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
@@ -136,7 +136,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         => uses filter `press` (the default is darken)
                 */
                 // filterActive => filterPress:
-                [activeAsClickVars.filterActive]: switchOf(
+                [activeAsClickVars.filterActive      ]: switchOf(
                     activeAsClickVars.altFilterActiveTg,
                     clickableVars.filterPress,
                 ),
@@ -151,24 +151,24 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                         => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
                 */
                 // regular animPress   => dummy animPress:
-                [activeAsClickVars.animPress   ]: switchOf(
+                [activeAsClickVars.animPress         ]: switchOf(
                     activeAsClickVars.altAnimPressTg,
                     `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 // regular animRelease => dummy animRelease:
-                [activeAsClickVars.animRelease ]: switchOf(
+                [activeAsClickVars.animRelease       ]: switchOf(
                     activeAsClickVars.altAnimReleaseTg,
                     `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
                 
-                // regular animActive  => dummy animPress
-                [activeAsClickVars.animActive  ]: switchOf(
-                    activeAsClickVars.altAnimActiveTg,
+                // regular animActiveAsClick  => dummy animPress
+                [activeAsClickVars.animActiveAsClick ]: switchOf(
+                    activeAsClickVars.altAnimActiveAsClickTg,
                     `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
-                // regular animPassive => dummy animRelease
-                [activeAsClickVars.animPassive ]: switchOf(
-                    activeAsClickVars.altAnimPassiveTg,
+                // regular animPassiveAsClick => dummy animRelease
+                [activeAsClickVars.animPassiveAsClick]: switchOf(
+                    activeAsClickVars.altAnimPassiveAsClickTg,
                     `1ms ${keyframesDummyPassive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 ),
             }),
@@ -178,7 +178,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
             // toggling functions:
             ...vars({
                 // alternate filterActive => filterActive:
-                [activeAsClickVars.altFilterActiveTg]: [[
+                [activeAsClickVars.altFilterActiveTg      ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     activatableVars.filterActive,
                 ]],
@@ -186,23 +186,23 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                 
                 
                 // alternate animPress   => original animPress:
-                [activeAsClickVars.altAnimPressTg   ]: [[
+                [activeAsClickVars.altAnimPressTg         ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animPress,
                 ]],
                 // alternate animRelease => original animRelease:
-                [activeAsClickVars.altAnimReleaseTg ]: [[
+                [activeAsClickVars.altAnimReleaseTg       ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     clickableVars.animRelease,
                 ]],
                 
-                // alternate animActive  => original animActive
-                [activeAsClickVars.altAnimActiveTg  ]: [[
+                // alternate animActiveAsClick  => original animActive
+                [activeAsClickVars.altAnimActiveAsClickTg ]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     activatableVars.animActive,
                 ]],
-                // alternate animPassive => original animPassive
-                [activeAsClickVars.altAnimPassiveTg ]: [[
+                // alternate animPassiveAsClick => original animPassive
+                [activeAsClickVars.altAnimPassiveAsClickTg]: [[
                     switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
                     activatableVars.animPassive,
                 ]],
@@ -226,7 +226,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     // there is a clicking activity:
                     // TODO: FIXED: conditional dummyActive vs original active:
                     ...ifPressReleasing({
-                        [activatableVars.anim] : activeAsClickVars.animActive,
+                        [activatableVars.anim] : activeAsClickVars.animActiveAsClick,
                     }),
                     
                     // there is no clicking activity:
@@ -240,7 +240,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     // there is a clicking activity:
                     // TODO: FIXED: conditional dummyPassive vs original passive:
                     ...ifPressReleasing({
-                        [activatableVars.anim] : activeAsClickVars.animPassive,
+                        [activatableVars.anim] : activeAsClickVars.animPassiveAsClick,
                     }),
                     
                     // there is no clicking activity:
