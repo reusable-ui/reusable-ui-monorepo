@@ -249,6 +249,16 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
                     when on controllable passivating:
                         * regular       : releasing_animation
                         * outlined/mild : passivating_animation
+                    
+                    
+                    
+                    when activating after click:
+                        * regular       : NO_activating_animation because the activating_state is already styled_as_pressing
+                        * outlined/mild :    activating_animation
+                    
+                    when passivating after click:
+                        * regular       : NO_passivating_animation because the passivating_state is already styled_as_releasing
+                        * outlined/mild :    passivating_animation
                 */
                 ifActivating({
                     // there is no clicking activity:
