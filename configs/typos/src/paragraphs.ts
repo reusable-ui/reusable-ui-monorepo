@@ -55,23 +55,25 @@ export { paragraphs as default }
 styleSheets([
     globalScope({
         ...rule(['p', '.p'], {
-            // layouts:
-            display : 'block',
-            
-            
-            
-            // spacings:
-            ...ifFirstChild({
-                marginBlockStart : 0, // kill the top_margin at the first paragraph
-            }),
-            ...ifLastChild({
-                marginBlockEnd   : 0, // kill the bottom_margin at the last paragraph
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(paragraphs),
+            ...rule(':not(.lead)', {
+                // layouts:
+                display : 'block',
+                
+                
+                
+                // spacings:
+                ...ifFirstChild({
+                    marginBlockStart : 0, // kill the top_margin at the first paragraph
+                }),
+                ...ifLastChild({
+                    marginBlockEnd   : 0, // kill the bottom_margin at the last paragraph
+                }),
+                
+                
+                
+                // customize:
+                ...usesCssProps(paragraphs),
+            }, { specificityWeight: 0 }),
         }),
     }),
 ]);
