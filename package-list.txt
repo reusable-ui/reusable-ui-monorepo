@@ -81,7 +81,7 @@
 
 // base-content-components:
 [modified  ] [documented  ] [          atomic] @reusable-ui/container
-[published ] [documented  ] [          atomic] @reusable-ui/content    *button
+[modified  ] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
 [modified  ] [documented  ] [          atomic] @reusable-ui/icon

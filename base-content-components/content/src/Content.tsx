@@ -143,6 +143,30 @@ const adjustChildSpecificity = (selectorGroup: PureSelectorGroup|null): PureSele
 
 
 
+// configs:
+export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
+    return {
+        // animations:
+        transition      : basics.transition as CssKnownProps['transition'],
+        
+        mediaTransition : basics.transition as CssKnownProps['transition'],
+        
+        
+        
+        // spacings:
+        paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlock    : spacers.default   as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineSm : spacers.sm        as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockSm  : spacers.sm        as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineLg : spacers.lg        as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockLg  : spacers.lg        as CssKnownProps['paddingBlock' ], // override to <Basic>
+        
+        linkSpacing     : spacers.sm        as CssKnownProps['gapInline'],
+    };
+}, { prefix: 'ct' });
+
+
+
 // styles:
 const mediaElm    : CssSelectorCollection = ['figure', 'img', 'svg', 'video', 'picture', 'embed', 'object', '.media'];
 const notMediaElm : CssSelectorCollection = '.not-media';
@@ -604,30 +628,6 @@ export const useContentStyleSheet = dynamicStyleSheet(() => ({
         usesContentChildren(),
     ]),
 }), { id: '2h0i4lc78z' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
-    return {
-        // animations:
-        transition      : basics.transition as CssKnownProps['transition'],
-        
-        mediaTransition : basics.transition as CssKnownProps['transition'],
-        
-        
-        
-        // spacings:
-        paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlock    : spacers.default   as CssKnownProps['paddingBlock' ], // override to <Basic>
-        paddingInlineSm : spacers.sm        as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlockSm  : spacers.sm        as CssKnownProps['paddingBlock' ], // override to <Basic>
-        paddingInlineLg : spacers.lg        as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlockLg  : spacers.lg        as CssKnownProps['paddingBlock' ], // override to <Basic>
-        
-        linkSpacing     : spacers.sm        as CssKnownProps['gapInline'],
-    };
-}, { prefix: 'ct' });
 
 
 
