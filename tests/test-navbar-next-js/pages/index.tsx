@@ -30,9 +30,27 @@ export default function Home() {
                     {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
                     <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={menuExpanded}>
                         <Nav tag='ul' role='' {...basicVariantProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
-                            <NavItem>
-                                <Link href='/' legacyBehavior>Home</Link>
-                            </NavItem>
+                          <NavItem>
+                              <Link href='/'>Home</Link>
+                          </NavItem>
+                          <NavItem>
+                              <Link href='/expenses'>Expenses</Link>
+                          </NavItem>
+                          <NavItem>
+                              <Link href='/invoices'>Invoices</Link>
+                          </NavItem>
+                          <NavItem enabled={false}>
+                              <Link href='/booh'>Disabled</Link>
+                          </NavItem>
+                          <NavItem href='https://github.com/nodestrap' target='_blank'>
+                              Menu 3
+                          </NavItem>
+                          <NavItem href='https://www.npmjs.com/org/nodestrap' target='_blank'>
+                              Menu 4
+                          </NavItem>
+                          <NavItem enabled={false} href='https://www.google.com' target='_blank'>
+                              Disabled
+                          </NavItem>
                         </Nav>
                     </Collapse>
                 </>}</Navbar>
