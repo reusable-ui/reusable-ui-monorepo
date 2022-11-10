@@ -15,7 +15,6 @@ import {
 import {
     HamburgerMenuButton,
 } from '@reusable-ui/hamburger-menu-button'
-import '@cssfn/cssfn-dom' // side effect for cssfn
 import {
     // Link,
     Outlet,

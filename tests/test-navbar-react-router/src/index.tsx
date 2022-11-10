@@ -11,6 +11,13 @@ import {
 import Expenses from "./routes/expenses";
 import Invoices from "./routes/invoices";
 
+import '@cssfn/cssfn-dom' // side effect for cssfn
+import { ensureRendererWorkersReady } from '@cssfn/cssfn'
+
+
+
+const _loaded = await ensureRendererWorkersReady();
+
 
 
 const root = ReactDOM.createRoot(
