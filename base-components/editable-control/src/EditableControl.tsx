@@ -204,6 +204,70 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
 
 
 
+// configs:
+export const [editableControls, editableControlValues, cssEditableControlConfig] = cssConfig(() => {
+    // dependencies:
+    
+    const {backgroundVars: {backg, altBackgColor}} = usesBackground();
+    const {foregroundVars: {foreg, altForeg     }} = usesForeground();
+    
+    
+    
+    //#region keyframes
+    const frameHighlighted = style({
+        backg : altBackgColor,
+        foreg : altForeg,
+    });
+    const frameNormalized  = style({
+        backg : backg,
+        foreg : foreg,
+    });
+    const [keyframesValidRule  , keyframesValid  ] = keyframes({
+        from : frameHighlighted,
+        to   : frameNormalized,
+    });
+    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useInvalidable`
+    const [keyframesInvalidRule, keyframesInvalid] = keyframes({
+        from : frameHighlighted,
+        to   : frameNormalized,
+    });
+    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useInvalidable`
+    
+    const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
+        /* no animation yet */
+    });
+    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useInvalidable`
+    const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
+        /* no animation yet */
+    });
+    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useInvalidable`
+    //#endregion keyframes
+    
+    
+    
+    return {
+        // animations:
+        ...keyframesValidRule,
+        ...keyframesInvalidRule,
+        ...keyframesUnvalidRule,
+        ...keyframesUninvalidRule,
+        animValid     : [
+            ['1000ms', 'ease-out', 'both', keyframesValid    ],
+        ]                       as CssKnownProps['animation'],
+        animInvalid   : [
+            ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
+        ]                       as CssKnownProps['animation'],
+        animUnvalid   : [
+            [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
+        ]                       as CssKnownProps['animation'],
+        animUninvalid : [
+            [ '100ms', 'ease-out', 'both', keyframesUninvalid],
+        ]                       as CssKnownProps['animation'],
+    };
+}, { prefix: 'edit' });
+
+
+
 // styles:
 export const usesEditableControlLayout = () => {
     return style({
@@ -274,70 +338,6 @@ export const useEditableControlStyleSheet = dynamicStyleSheet(() => ({
         usesEditableControlStates(),
     ]),
 }), { id: 'rww4hy9rmx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [editableControls, editableControlValues, cssEditableControlConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const {backgroundVars: {backg, altBackgColor}} = usesBackground();
-    const {foregroundVars: {foreg, altForeg     }} = usesForeground();
-    
-    
-    
-    //#region keyframes
-    const frameHighlighted = style({
-        backg : altBackgColor,
-        foreg : altForeg,
-    });
-    const frameNormalized  = style({
-        backg : backg,
-        foreg : foreg,
-    });
-    const [keyframesValidRule  , keyframesValid  ] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useInvalidable`
-    const [keyframesInvalidRule, keyframesInvalid] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useInvalidable`
-    
-    const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useInvalidable`
-    const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useInvalidable`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // animations:
-        ...keyframesValidRule,
-        ...keyframesInvalidRule,
-        ...keyframesUnvalidRule,
-        ...keyframesUninvalidRule,
-        animValid     : [
-            ['1000ms', 'ease-out', 'both', keyframesValid    ],
-        ]                       as CssKnownProps['animation'],
-        animInvalid   : [
-            ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
-        ]                       as CssKnownProps['animation'],
-        animUnvalid   : [
-            [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
-        ]                       as CssKnownProps['animation'],
-        animUninvalid : [
-            [ '100ms', 'ease-out', 'both', keyframesUninvalid],
-        ]                       as CssKnownProps['animation'],
-    };
-}, { prefix: 'edit' });
 
 
 
