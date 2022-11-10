@@ -92,92 +92,6 @@ import {
 
 
 
-// styles:
-export const usesControlLayout = () => {
-    return style({
-        ...imports([
-            // resets:
-            stripoutControl(), // clear browser's default styles
-            
-            // layouts:
-            usesIndicatorLayout(),
-        ]),
-        ...style({
-            // positions:
-            position: 'relative', // supports for boxShadowFocus, prevents boxShadowFocus from clipping
-            
-            
-            
-            // customize:
-            ...usesCssProps(controls), // apply config's cssProps
-        }),
-    });
-};
-export const usesControlVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(controls);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesControlStates = () => {
-    // dependencies:
-    
-    // states:
-    const {focusableRule   } = usesFocusable(controls);
-    const {interactableRule} = usesInteractable(controls);
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            usesIndicatorStates(),
-            focusableRule,
-            interactableRule,
-        ]),
-        ...states([
-            ifDisable({
-                // accessibilities:
-                cursor : controls.cursorDisable,
-            }),
-            
-            ifFocus({
-                // positions:
-                zIndex: 2, // prevents boxShadowFocus from clipping
-            }),
-            ifBlurring({
-                // positions:
-                zIndex: 1, // prevents boxShadowFocus from clipping but below the active one
-            }),
-        ]),
-    });
-};
-
-export const useControlStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesControlLayout(),
-        
-        // variants:
-        usesControlVariants(),
-        
-        // states:
-        usesControlStates(),
-    ]),
-}), { id: 'k8egfpu96l' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
 // configs:
 export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     // dependencies:
@@ -271,6 +185,92 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
         ]                               as CssKnownProps['animation'],
     };
 }, { prefix: 'ctrl' });
+
+
+
+// styles:
+export const usesControlLayout = () => {
+    return style({
+        ...imports([
+            // resets:
+            stripoutControl(), // clear browser's default styles
+            
+            // layouts:
+            usesIndicatorLayout(),
+        ]),
+        ...style({
+            // positions:
+            position: 'relative', // supports for boxShadowFocus, prevents boxShadowFocus from clipping
+            
+            
+            
+            // customize:
+            ...usesCssProps(controls), // apply config's cssProps
+        }),
+    });
+};
+export const usesControlVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(controls);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesIndicatorVariants(),
+            resizableRule,
+        ]),
+    });
+};
+export const usesControlStates = () => {
+    // dependencies:
+    
+    // states:
+    const {focusableRule   } = usesFocusable(controls);
+    const {interactableRule} = usesInteractable(controls);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            usesIndicatorStates(),
+            focusableRule,
+            interactableRule,
+        ]),
+        ...states([
+            ifDisable({
+                // accessibilities:
+                cursor : controls.cursorDisable,
+            }),
+            
+            ifFocus({
+                // positions:
+                zIndex: 2, // prevents boxShadowFocus from clipping
+            }),
+            ifBlurring({
+                // positions:
+                zIndex: 1, // prevents boxShadowFocus from clipping but below the active one
+            }),
+        ]),
+    });
+};
+
+export const useControlStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesControlLayout(),
+        
+        // variants:
+        usesControlVariants(),
+        
+        // states:
+        usesControlStates(),
+    ]),
+}), { id: 'k8egfpu96l' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
