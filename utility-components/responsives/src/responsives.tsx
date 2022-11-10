@@ -9,7 +9,6 @@ import {
     useState,
     useRef,
     useCallback,
-    useEffect,
     
     
     
@@ -532,26 +531,9 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     //#endregion reset the fallback index to zero every container's client area resized
     
     //#region (re)calculates the existence of overflowed_layout each time the generation updated
-    const cssLoaded = useRef<boolean>(false);
-    useEffect(() => {
-        // setups:
-        const cancelTimeout = setTimeout(() => {
-            cssLoaded.current = true;
-            triggerRender();
-        }, 1); // assumes all cssfn was fully loaded after 1ms since the event of first paint
-        
-        
-        
-        // cleanups:
-        return () => {
-            clearTimeout(cancelTimeout);
-        };
-    }, []);
-    
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (currentFallbackIndex.current >= maxFallbackIndex) return; // maximum fallbacks has already reached => nothing more fallback
-        if (!cssLoaded.current) return; // the cssfn is not fully loaded => ignore
         
         
         

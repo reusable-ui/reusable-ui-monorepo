@@ -243,7 +243,7 @@ export const useHamburgerMenuButtonStyleSheet = dynamicStyleSheet(() => ({
         // states:
         usesHamburgerMenuButtonStates(),
     ]),
-}), { id: '5sj70x1zsf' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { enabled: true, id: '5sj70x1zsf' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
