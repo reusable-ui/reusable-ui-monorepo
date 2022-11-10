@@ -12,7 +12,7 @@ import type {
 } from '../dist/colors.js'
 import type {
     // StyleSheet,
-    render             as _render,
+    renderStyleSheet   as _renderStyleSheet,
     styleSheetRegistry as _styleSheetRegistry,
 } from '@cssfn/core'
 import Color from 'color'
@@ -69,7 +69,7 @@ jest.isolateModules(() => {
     let defineForeg        : typeof _defineForeg = undefined as any;
     let defineTheme        : typeof _defineTheme = undefined as any;
     let styleSheetRegistry : typeof _styleSheetRegistry = undefined as any;
-    // let render             : typeof _render      = undefined as any;
+    // let renderStyleSheet             : typeof _renderStyleSheet = undefined as any;
     // let lastStyleSheet     : StyleSheet|null     = null;
     beforeAll(async () => {
         const jsdomModule    = await import('jsdom')
