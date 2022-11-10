@@ -83,75 +83,6 @@ import {
 
 
 
-// styles:
-export const usesIndicatorLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesBasicLayout(),
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(indicators), // apply config's cssProps
-        }),
-    });
-};
-export const usesIndicatorVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(indicators);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesBasicVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesIndicatorStates = () => {
-    // dependencies:
-    
-    // states:
-    const {disableableRule} = usesDisableable(indicators);
-    const {activatableRule} = usesActivatable(indicators);
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            disableableRule,
-            activatableRule,
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
-        ]),
-    });
-};
-
-export const useIndicatorStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesIndicatorLayout(),
-        
-        // variants:
-        usesIndicatorVariants(),
-        
-        // states:
-        usesIndicatorStates(),
-    ]),
-}), { id: '9i8stbnt0e' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
 // configs:
 export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() => {
     // dependencies:
@@ -240,6 +171,75 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
         ]                           as CssKnownProps['animation'],
     };
 }, { prefix: 'indi' });
+
+
+
+// styles:
+export const usesIndicatorLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesBasicLayout(),
+        ]),
+        ...style({
+            // customize:
+            ...usesCssProps(indicators), // apply config's cssProps
+        }),
+    });
+};
+export const usesIndicatorVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(indicators);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesBasicVariants(),
+            resizableRule,
+        ]),
+    });
+};
+export const usesIndicatorStates = () => {
+    // dependencies:
+    
+    // states:
+    const {disableableRule} = usesDisableable(indicators);
+    const {activatableRule} = usesActivatable(indicators);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            disableableRule,
+            activatableRule,
+        ]),
+        ...states([
+            ifActive({
+                ...imports([
+                    markActive(),
+                ]),
+            }),
+        ]),
+    });
+};
+
+export const useIndicatorStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesIndicatorLayout(),
+        
+        // variants:
+        usesIndicatorVariants(),
+        
+        // states:
+        usesIndicatorStates(),
+    ]),
+}), { id: '9i8stbnt0e' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
