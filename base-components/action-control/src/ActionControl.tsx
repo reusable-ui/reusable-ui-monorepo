@@ -98,73 +98,6 @@ const _defaultClickableOptions : ClickableOptions = {
 
 
 
-// styles:
-export const usesActionControlLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesControlLayout(),
-        ]),
-        ...style({
-            // accessibilities:
-            userSelect              : 'none',         // disable selecting text (double clicking not causing selecting text)
-            touchAction             : 'manipulation', // all gestures are preserved except a double click, to make clicking faster
-            WebkitTapHighlightColor : 'transparent',  // no tap_&_hold highlight
-            
-            
-            // customize:
-            ...usesCssProps(actionControls), // apply config's cssProps
-        }),
-    });
-};
-export const usesActionControlVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(actionControls);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesControlVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesActionControlStates = () => {
-    // dependencies:
-    
-    // states:
-    const {clickableRule} = usesClickable(actionControls);
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            usesControlStates(),
-            clickableRule,
-        ]),
-    });
-};
-
-export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesActionControlLayout(),
-        
-        // variants:
-        usesActionControlVariants(),
-        
-        // states:
-        usesActionControlStates(),
-    ]),
-}), { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
 // configs:
 export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
     // dependencies:
@@ -246,6 +179,73 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
         ]                       as CssKnownProps['animation'],
     };
 }, { prefix: 'act' });
+
+
+
+// styles:
+export const usesActionControlLayout = () => {
+    return style({
+        ...imports([
+            // layouts:
+            usesControlLayout(),
+        ]),
+        ...style({
+            // accessibilities:
+            userSelect              : 'none',         // disable selecting text (double clicking not causing selecting text)
+            touchAction             : 'manipulation', // all gestures are preserved except a double click, to make clicking faster
+            WebkitTapHighlightColor : 'transparent',  // no tap_&_hold highlight
+            
+            
+            // customize:
+            ...usesCssProps(actionControls), // apply config's cssProps
+        }),
+    });
+};
+export const usesActionControlVariants = () => {
+    // dependencies:
+    
+    // variants:
+    const {resizableRule} = usesResizable(actionControls);
+    
+    
+    
+    return style({
+        ...imports([
+            // variants:
+            usesControlVariants(),
+            resizableRule,
+        ]),
+    });
+};
+export const usesActionControlStates = () => {
+    // dependencies:
+    
+    // states:
+    const {clickableRule} = usesClickable(actionControls);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            usesControlStates(),
+            clickableRule,
+        ]),
+    });
+};
+
+export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesActionControlLayout(),
+        
+        // variants:
+        usesActionControlVariants(),
+        
+        // states:
+        usesActionControlStates(),
+    ]),
+}), { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
