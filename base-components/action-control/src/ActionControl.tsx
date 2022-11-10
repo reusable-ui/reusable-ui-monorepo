@@ -507,8 +507,9 @@ const ClientSideLinkSwapper = <TElement extends Element = HTMLElement>(props: Cl
             
             
             // link props:
-            ...(!isNextJsLink  ? { linkComponent : actionComponent } : undefined),
-            ...(isSemanticLink ? { passHref      : true            } : undefined),
+            ...( isNextJsLink  ? { legacyBehavior : true            } : undefined), // NextJs's <Link>
+            ...(!isNextJsLink  ? { linkComponent  : actionComponent } : undefined), // ReactRouterCompat's <Link>
+            ...(isSemanticLink ? { passHref       : true            } : undefined),
         },
         
         
