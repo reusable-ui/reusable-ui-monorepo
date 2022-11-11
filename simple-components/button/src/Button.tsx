@@ -156,6 +156,32 @@ const _defaultMild             : boolean      = false
 
 
 
+// configs:
+export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
+    return {
+        // spacings:
+        gapInline          : spacers.sm as CssKnownProps['gapInline'],
+        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
+        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
+        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
+        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
+        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
+        
+        
+        
+        // typos:
+        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
+        
+        
+        
+        // ghost style:
+        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
+        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
+    };
+}, { prefix: 'btn' });
+
+
+
 // styles:
 export const noBackground = () => {
     // dependencies:
@@ -405,32 +431,6 @@ export const useButtonVariant = (props: ButtonVariant) => {
         class: props.buttonStyle ?? null,
     };
 };
-
-
-
-// configs:
-export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
-    return {
-        // spacings:
-        gapInline          : spacers.sm as CssKnownProps['gapInline'],
-        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
-        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
-        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
-        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
-        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
-        
-        
-        
-        // typos:
-        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
-        
-        
-        
-        // ghost style:
-        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
-        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
-    };
-}, { prefix: 'btn' });
 
 
 
