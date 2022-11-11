@@ -83,79 +83,6 @@ export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
 
 
 
-// styles:
-export const usesCollapseLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
-    
-    
-    
-    // dependencies:
-    
-    // features:
-    const {animationRule, animationVars} = usesAnimation();
-    
-    
-    
-    return style({
-        ...imports([
-            // features:
-            animationRule,
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(collapses), // apply config's cssProps
-            ...ifOrientationInline({ // inline
-                // overwrites propName = propName{Inline}:
-                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'inline')),
-            }),
-            ...ifOrientationBlock({  // block
-                // overwrites propName = propName{Block}:
-                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
-            }),
-            
-            
-            
-            // animations:
-            anim : animationVars.anim,
-        }),
-    });
-};
-export const usesCollapseStates = () => {
-    // dependencies:
-    
-    // states:
-    const {collapsibleRule} = usesCollapsible(collapses);
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            collapsibleRule,
-        ]),
-        ...states([
-            ifCollapsed({
-                // appearances:
-                display: 'none', // hide the <Collapse>
-            }),
-        ]),
-    });
-};
-
-export const useCollapseStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesCollapseLayout(),
-        
-        // states:
-        usesCollapseStates(),
-    ]),
-}), { id: 'gh2oi6zjs0' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     //#region keyframes
@@ -249,6 +176,79 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ]                                                       as CssKnownProps['animation'],
     };
 }, { prefix: 'clps' });
+
+
+
+// styles:
+export const usesCollapseLayout = (options?: OrientationableOptions) => {
+    // options:
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    
+    
+    
+    // dependencies:
+    
+    // features:
+    const {animationRule, animationVars} = usesAnimation();
+    
+    
+    
+    return style({
+        ...imports([
+            // features:
+            animationRule,
+        ]),
+        ...style({
+            // customize:
+            ...usesCssProps(collapses), // apply config's cssProps
+            ...ifOrientationInline({ // inline
+                // overwrites propName = propName{Inline}:
+                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'inline')),
+            }),
+            ...ifOrientationBlock({  // block
+                // overwrites propName = propName{Block}:
+                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
+            }),
+            
+            
+            
+            // animations:
+            anim : animationVars.anim,
+        }),
+    });
+};
+export const usesCollapseStates = () => {
+    // dependencies:
+    
+    // states:
+    const {collapsibleRule} = usesCollapsible(collapses);
+    
+    
+    
+    return style({
+        ...imports([
+            // states:
+            collapsibleRule,
+        ]),
+        ...states([
+            ifCollapsed({
+                // appearances:
+                display: 'none', // hide the <Collapse>
+            }),
+        ]),
+    });
+};
+
+export const useCollapseStyleSheet = dynamicStyleSheet(() => ({
+    ...imports([
+        // layouts:
+        usesCollapseLayout(),
+        
+        // states:
+        usesCollapseStates(),
+    ]),
+}), { id: 'gh2oi6zjs0' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
