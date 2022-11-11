@@ -20,6 +20,7 @@ import {
     CssKnownProps,
     CssRule,
     CssStyleCollection,
+    CssSelector,
     
     
     
@@ -34,6 +35,11 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // checks if a certain css feature is supported by the running browser:
+    supportsHasPseudoClass,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui utilities:
@@ -98,18 +104,25 @@ const [focusableVars] = cssVars<FocusableVars>();
     polyfill:
     :focus-visible-within = :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))
 */
+export const selectorFocusVisibleWithin : CssSelector = (
+    supportsHasPseudoClass()
+    ?
+    ':is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))'
+    :
+    ':focus-visible'
+);
 
 // .focused will be added after focusing-animation done:
 const selectorIfFocused  = '.focused'
 // .focusing = styled focus, :focus-visible-within = native focus:
 // the .disabling, [aria-disabled], .disabled are used to kill native :focus-visible-within
 // the .focused, .blurring, .blurred are used to overwrite native :focus-visible-within
-const selectorIfFocusing = ':is(.focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .focused, .blurring, .blurred)))'
+const selectorIfFocusing = `:is(.focusing, ${selectorFocusVisibleWithin}:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .focused, .blurring, .blurred)))`
 // .blurring will be added after loosing focus and will be removed after blurring-animation done:
 const selectorIfBlurring = '.blurring'
 // if all above are not set => blurred:
 // optionally use .blurred to overwrite native :focus-visible-within
-const selectorIfBlurred  = ':is(:not(:is(.focused, .focusing, :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .blurring)), .blurred)'
+const selectorIfBlurred  = `:is(:not(:is(.focused, .focusing, ${selectorFocusVisibleWithin}:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .blurring)), .blurred)`
 
 export const ifFocused       = (styles: CssStyleCollection): CssRule => rule(selectorIfFocused , styles);
 export const ifFocusing      = (styles: CssStyleCollection): CssRule => rule(selectorIfFocusing, styles);
