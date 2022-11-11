@@ -74,6 +74,15 @@ export const defaultOrientationableOptions = defaultInlineOrientationableOptions
 
 
 
+// configs:
+export const [groups, groupValues, cssGroupConfig] = cssConfig(() => {
+    return {
+        /* no config props yet */
+    };
+}, { prefix: 'grp' });
+
+
+
 // styles:
 export const usesGroupItemLayout = (options?: OrientationableOptions) => {
     // options:
@@ -129,15 +138,6 @@ export const useGroupItemStyleSheet = dynamicStyleSheet(() => ({
         usesGroupItemVariants(),
     ]),
 }), { specificityWeight: 2, id: 'd2scsx4yqe' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [groups, groupValues, cssGroupConfig] = cssConfig(() => {
-    return {
-        /* no config props yet */
-    };
-}, { prefix: 'grp' });
 
 
 
