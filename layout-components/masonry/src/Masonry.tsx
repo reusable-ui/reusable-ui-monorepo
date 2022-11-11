@@ -84,6 +84,32 @@ const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'bor
 
 
 
+// configs:
+export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
+    return {
+        // sizes:
+        itemRaiseRowHeight   : '2px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeightSm : '1px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeightLg : '4px'                as CssKnownProps['blockSize'],
+        
+        itemMinColumnWidth   : 'calc(5 * 40px)'     as CssKnownProps['columnWidth'],
+        itemMinColumnWidthSm : 'calc(3 * 40px)'     as CssKnownProps['columnWidth'],
+        itemMinColumnWidthLg : 'calc(8 * 40px)'     as CssKnownProps['columnWidth'],
+        
+        
+        
+        // spacings:
+        gapInline            : spacers.sm           as CssKnownProps['gapInline'],
+        gapInlineSm          : spacers.xs           as CssKnownProps['gapInline'],
+        gapInlineLg          : spacers.md           as CssKnownProps['gapInline'],
+        gapBlock             : spacers.sm           as CssKnownProps['gapBlock' ],
+        gapBlockSm           : spacers.xs           as CssKnownProps['gapBlock' ],
+        gapBlockLg           : spacers.md           as CssKnownProps['gapBlock' ],
+    };
+}, { prefix: 'msry' });
+
+
+
 // styles:
 export const usesMasonryLayout = (options?: OrientationableOptions) => {
     // options:
@@ -204,32 +230,6 @@ export const useMasonryStyleSheet = dynamicStyleSheet(() => ({
         usesMasonryVariants(),
     ]),
 }), { id: 'fiuyy1jxpx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
-    return {
-        // sizes:
-        itemRaiseRowHeight   : '2px'                as CssKnownProps['blockSize'],
-        itemRaiseRowHeightSm : '1px'                as CssKnownProps['blockSize'],
-        itemRaiseRowHeightLg : '4px'                as CssKnownProps['blockSize'],
-        
-        itemMinColumnWidth   : 'calc(5 * 40px)'     as CssKnownProps['columnWidth'],
-        itemMinColumnWidthSm : 'calc(3 * 40px)'     as CssKnownProps['columnWidth'],
-        itemMinColumnWidthLg : 'calc(8 * 40px)'     as CssKnownProps['columnWidth'],
-        
-        
-        
-        // spacings:
-        gapInline            : spacers.sm           as CssKnownProps['gapInline'],
-        gapInlineSm          : spacers.xs           as CssKnownProps['gapInline'],
-        gapInlineLg          : spacers.md           as CssKnownProps['gapInline'],
-        gapBlock             : spacers.sm           as CssKnownProps['gapBlock' ],
-        gapBlockSm           : spacers.xs           as CssKnownProps['gapBlock' ],
-        gapBlockLg           : spacers.md           as CssKnownProps['gapBlock' ],
-    };
-}, { prefix: 'msry' });
 
 
 

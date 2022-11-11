@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/masonry",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A container in which the items are laid out one after the other in the inline (or block) direction.",
   "keywords": [
     "masonry",

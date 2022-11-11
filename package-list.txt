@@ -101,7 +101,7 @@
 // layout-components:
 [modified  ] [documented  ] [          atomic] @reusable-ui/list
 [modified  ] [documented  ] [          atomic] @reusable-ui/card
-[published ] [documented  ] [          atomic] @reusable-ui/masonry
+[modified  ] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
 [published ] [documented  ] [          atomic] @reusable-ui/popup
