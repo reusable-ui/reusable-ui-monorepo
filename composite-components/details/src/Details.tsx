@@ -138,6 +138,28 @@ const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // u
 
 
 
+// configs:
+export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
+    return {
+        // layouts:
+        togglerDisplay   : 'block'                  as CssKnownProps['display'  ],
+        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'],
+        
+        
+        
+        // borders:
+        borderStyle      : basics.borderStyle       as CssKnownProps['borderStyle' ],
+        borderWidth      : basics.borderWidth       as CssKnownProps['borderWidth' ],
+        borderColor      : basics.borderColor       as CssKnownProps['borderColor' ],
+        
+        borderRadius     : basics.borderRadius      as CssKnownProps['borderRadius'],
+        borderRadiusSm   : basics.borderRadiusSm    as CssKnownProps['borderRadius'],
+        borderRadiusLg   : basics.borderRadiusLg    as CssKnownProps['borderRadius'],
+    };
+}, { prefix: 'dtl' });
+
+
+
 // styles:
 export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsContent> component
 
@@ -346,28 +368,6 @@ export const useDetailsVariant = (props: DetailsVariant) => {
         class: props.detailsStyle ?? null,
     };
 };
-
-
-
-// configs:
-export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
-    return {
-        // layouts:
-        togglerDisplay   : 'block'                  as CssKnownProps['display'  ],
-        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'],
-        
-        
-        
-        // borders:
-        borderStyle      : basics.borderStyle       as CssKnownProps['borderStyle' ],
-        borderWidth      : basics.borderWidth       as CssKnownProps['borderWidth' ],
-        borderColor      : basics.borderColor       as CssKnownProps['borderColor' ],
-        
-        borderRadius     : basics.borderRadius      as CssKnownProps['borderRadius'],
-        borderRadiusSm   : basics.borderRadiusSm    as CssKnownProps['borderRadius'],
-        borderRadiusLg   : basics.borderRadiusLg    as CssKnownProps['borderRadius'],
-    };
-}, { prefix: 'dtl' });
 
 
 
