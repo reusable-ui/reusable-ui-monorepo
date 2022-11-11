@@ -150,6 +150,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     // dom effects:
+    const isLoaded = useRef<boolean>(true);
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!isVisible)  return; // <floatingUi> is fully hidden => no need to update
@@ -159,6 +160,11 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         const floatingUi = outerRef.current;
         if (!floatingUi) return; // <floatingUi> was unloaded => nothing to do
+        
+        
+        
+        // marks:
+        isLoaded.current = true;
         
         
         
@@ -192,6 +198,10 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             
             
             
+            if (!isLoaded.current) return;
+            
+            
+            
             // trigger the `onFloatingUpdate`
             handleFloatingUpdate?.(floatingPosition);
         };
@@ -200,14 +210,9 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         // setups:
         
-        // the first trigger:
-        let cancelRequest = requestAnimationFrame(() => {     // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
-            cancelRequest = requestAnimationFrame(() => {     // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
-                cancelRequest = requestAnimationFrame(() => { // wait until all cssfn (both for <floatingUi> and <target>) are fully loaded
-                    triggerFloatingUpdate();
-                });
-            });
-        });
+        const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
+        elmResizeObserver.observe(target, { box: 'border-box' });
+        elmResizeObserver.observe(floatingUi, { box: 'border-box' });
         
         // the live trigger:
         const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
@@ -216,7 +221,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         // cleanups:
         return () => {
-            cancelAnimationFrame(cancelRequest);
+            isLoaded.current = false;
+            elmResizeObserver.disconnect();
             stopUpdate();
         };
     }, [
