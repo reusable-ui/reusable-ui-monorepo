@@ -197,6 +197,19 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
 
 
 
+// configs:
+export const [forms, formValues, cssFormConfig] = cssConfig(() => {
+    return {
+        // animations:
+        animValid     : editableControls.animValid      as CssKnownProps['animation'],
+        animInvalid   : editableControls.animInvalid    as CssKnownProps['animation'],
+        animUnvalid   : editableControls.animUnvalid    as CssKnownProps['animation'],
+        animUninvalid : editableControls.animUninvalid  as CssKnownProps['animation'],
+    };
+}, { prefix: 'frm' });
+
+
+
 // styles:
 export const usesFormLayout = () => {
     return style({
@@ -266,19 +279,6 @@ export const useFormStyleSheet = dynamicStyleSheet(() => ({
         usesFormStates(),
     ]),
 }), { id: 'eqakn9c0py' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [forms, formValues, cssFormConfig] = cssConfig(() => {
-    return {
-        // animations:
-        animValid     : editableControls.animValid      as CssKnownProps['animation'],
-        animInvalid   : editableControls.animInvalid    as CssKnownProps['animation'],
-        animUnvalid   : editableControls.animUnvalid    as CssKnownProps['animation'],
-        animUninvalid : editableControls.animUninvalid  as CssKnownProps['animation'],
-    };
-}, { prefix: 'frm' });
 
 
 
