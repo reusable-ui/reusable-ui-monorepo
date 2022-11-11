@@ -112,6 +112,17 @@ const _defaultControlClasses : Optional<string>[] = ['control']
 
 
 
+// configs:
+export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
+    return {
+        // spacings:
+        gapInline : spacers.default as CssKnownProps['gapInline'],
+        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
+    };
+}, { prefix: 'alrt' });
+
+
+
 // styles:
 const iconElm    = '.icon'         // one degree specificity to overwrite <Icon> component
 const bodyElm    = ':where(.body)' // zero degree specificity to be easily overwritten
@@ -239,17 +250,6 @@ export const useAlertStyleSheet = dynamicStyleSheet(() => ({
         usesAlertStates(),
     ]),
 }), { id: 'a5qyy5nbby' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
-    return {
-        // spacings:
-        gapInline : spacers.default as CssKnownProps['gapInline'],
-        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
-    };
-}, { prefix: 'alrt' });
 
 
 
