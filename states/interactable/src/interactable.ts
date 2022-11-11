@@ -90,11 +90,6 @@ const [interactableVars] = cssVars<InteractableVars>();
 
 
 
-/*
-    polyfill:
-    :focus-visible-within = :is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))
-*/
-
 /***  arriving = hover(ing) + focus(ing|ed)  ***/
 
 // .arrived will be added after arriving-animation done:
