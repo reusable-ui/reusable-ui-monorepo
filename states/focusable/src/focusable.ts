@@ -253,8 +253,12 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     // handlers:
     const handleFocus   = useEvent<React.FocusEventHandler<TElement>>((event) => {
         // conditions:
-        if (!event.currentTarget.matches(selectorFocusVisibleWithin))
-                                   return; // not :focus-visible-within => supporess the actual focus
+        if (supportsHasPseudoClass()) {
+            if (!event.currentTarget.matches(selectorFocusVisibleWithin)) return; // not :focus-visible-within => supporess the actual focus
+        }
+        else {
+            if (!event.currentTarget.matches(':focus-visible') && !event.currentTarget.querySelector(':focus-visible')) return; // not :focus-visible-within => supporess the actual focus
+        } // if
         
         
         
