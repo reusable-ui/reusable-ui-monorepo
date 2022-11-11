@@ -112,6 +112,16 @@ const _defaultTabIndex   : number  = -1   // makes the <Card> programatically fo
 
 
 
+// configs:
+export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
+    return {
+        // spacings:
+        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
+    };
+}, { prefix: 'mdlsde' });
+
+
+
 // styles:
 export const usesModalSideLayout = () => {
     const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
@@ -385,16 +395,6 @@ export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
         class : modalSideStyle,
     };
 };
-
-
-
-// configs:
-export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
-    return {
-        // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
-    };
-}, { prefix: 'mdlsde' });
 
 
 
