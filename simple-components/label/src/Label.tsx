@@ -54,6 +54,15 @@ import {
 
 
 
+// configs:
+export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
+    return {
+        /* no config props yet */
+    };
+}, { prefix: 'lb' });
+
+
+
 // styles:
 export const usesLabelLayout = () => {
     return style({
@@ -135,15 +144,6 @@ export const useLabelVariant = (props: LabelVariant) => {
         class: props.labelStyle ?? null,
     };
 };
-
-
-
-// configs:
-export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
-    return {
-        /* no config props yet */
-    };
-}, { prefix: 'lb' });
 
 
 

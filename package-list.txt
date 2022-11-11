@@ -85,7 +85,7 @@
 
 // simple-components:
 [modified  ] [documented  ] [          atomic] @reusable-ui/icon
-[published ] [documented  ] [          atomic] @reusable-ui/label
+[modified  ] [documented  ] [          atomic] @reusable-ui/label
 [published ] [documented  ] [          atomic] @reusable-ui/button
 [published ] [new         ] [full    compound] @reusable-ui/toggle-button
 [published ] [documented  ] [full    compound] @reusable-ui/nav-button
