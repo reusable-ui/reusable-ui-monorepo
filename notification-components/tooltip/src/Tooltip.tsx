@@ -108,6 +108,52 @@ const _defaultArrowClasses    : Optional<string>[] = ['arrow']
 
 
 
+// configs:
+export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
+    const basics = {
+        // sizes:
+        arrowInlineSize      : '0.8rem'                                                                     as CssKnownProps['inlineSize'],
+        arrowBlockSize       : '0.8rem'                                                                     as CssKnownProps['blockSize' ],
+        
+     // arrowClipPath        : 'polygon(100% 0, 100% 100%, 0 100%)'                                         as CssKnownProps['clipPath'  ],
+        arrowClipPath        : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                 as CssKnownProps['clipPath'  ], // compensates for boxShadow
+        
+        arrowTopTransform    : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]]  as CssKnownProps['transform' ],
+        arrowRightTransform  : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']]  as CssKnownProps['transform' ],
+        arrowBottomTransform : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']]  as CssKnownProps['transform' ],
+        arrowLeftTransform   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']]  as CssKnownProps['transform' ],
+        
+        
+        
+        // borders:
+        boxShadow            : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]                                          as CssKnownProps['boxShadow'],
+        
+        
+        
+        // typos:
+        whiteSpace           : 'normal'                                                                     as CssKnownProps['whiteSpace'],
+        fontSize             : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]                as CssKnownProps['fontSize'  ],
+        fontSizeSm           : typos.fontSizeSm                                                             as CssKnownProps['fontSize'  ],
+        fontSizeLg           : typos.fontSizeNm                                                             as CssKnownProps['fontSize'  ],
+    };
+    
+    
+    
+    return {
+        ...basics,
+        
+        
+        
+        // sizes:
+        arrowInlineSizeSm    : [['calc((', basics.arrowInlineSize, ')*0.75)']]                              as CssKnownProps['inlineSize'],
+        arrowBlockSizeSm     : [['calc((', basics.arrowBlockSize , ')*0.75)']]                              as CssKnownProps['blockSize' ],
+        arrowInlineSizeLg    : [['calc((', basics.arrowInlineSize, ')*1.50)']]                              as CssKnownProps['inlineSize'],
+        arrowBlockSizeLg     : [['calc((', basics.arrowBlockSize , ')*1.50)']]                              as CssKnownProps['blockSize' ],
+    };
+}, { prefix: 'ttip' });
+
+
+
 // styles:
 export const arrowElm = '.arrow' // one degree specificity to overwrite <Arrow> component
 
@@ -213,52 +259,6 @@ export const useTooltipStyleSheet = dynamicStyleSheet(() => ({
         usesTooltipStates(),
     ]),
 }), { id: '3h41koviqh' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
-    const basics = {
-        // sizes:
-        arrowInlineSize      : '0.8rem'                                                                     as CssKnownProps['inlineSize'],
-        arrowBlockSize       : '0.8rem'                                                                     as CssKnownProps['blockSize' ],
-        
-     // arrowClipPath        : 'polygon(100% 0, 100% 100%, 0 100%)'                                         as CssKnownProps['clipPath'  ],
-        arrowClipPath        : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                 as CssKnownProps['clipPath'  ], // compensates for boxShadow
-        
-        arrowTopTransform    : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]]  as CssKnownProps['transform' ],
-        arrowRightTransform  : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']]  as CssKnownProps['transform' ],
-        arrowBottomTransform : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']]  as CssKnownProps['transform' ],
-        arrowLeftTransform   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']]  as CssKnownProps['transform' ],
-        
-        
-        
-        // borders:
-        boxShadow            : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]                                          as CssKnownProps['boxShadow'],
-        
-        
-        
-        // typos:
-        whiteSpace           : 'normal'                                                                     as CssKnownProps['whiteSpace'],
-        fontSize             : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]                as CssKnownProps['fontSize'  ],
-        fontSizeSm           : typos.fontSizeSm                                                             as CssKnownProps['fontSize'  ],
-        fontSizeLg           : typos.fontSizeNm                                                             as CssKnownProps['fontSize'  ],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // sizes:
-        arrowInlineSizeSm    : [['calc((', basics.arrowInlineSize, ')*0.75)']]                              as CssKnownProps['inlineSize'],
-        arrowBlockSizeSm     : [['calc((', basics.arrowBlockSize , ')*0.75)']]                              as CssKnownProps['blockSize' ],
-        arrowInlineSizeLg    : [['calc((', basics.arrowInlineSize, ')*1.50)']]                              as CssKnownProps['inlineSize'],
-        arrowBlockSizeLg     : [['calc((', basics.arrowBlockSize , ')*1.50)']]                              as CssKnownProps['blockSize' ],
-    };
-}, { prefix: 'ttip' });
 
 
 
