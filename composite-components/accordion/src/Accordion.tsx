@@ -109,6 +109,15 @@ const _defaultItemActionCtrl : boolean = true
 
 
 
+// configs:
+export const [accordions, accordionValues, cssAccordionConfig] = cssConfig(() => {
+    return {
+        /* no config props yet */
+    };
+}, { prefix: 'accr' });
+
+
+
 // styles:
 
 /*
@@ -203,15 +212,6 @@ export const useAccordionItemStyleSheet = dynamicStyleSheet(() => ({
         usesAccordionItemStates(),
     ]),
 }), { id: '3mq5z5qt4v' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [accordions, accordionValues, cssAccordionConfig] = cssConfig(() => {
-    return {
-        /* no config props yet */
-    };
-}, { prefix: 'accr' });
 
 
 
