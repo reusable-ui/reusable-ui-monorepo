@@ -92,7 +92,7 @@
 [modified  ] [documented  ] [full    compound] @reusable-ui/button-icon
 [published ] [documented  ] [full    compound] @reusable-ui/close-button
 [modified  ] [documented  ] [          atomic] @reusable-ui/form
-[published ] [documented  ] [          atomic] @reusable-ui/input
+[modified  ] [documented  ] [          atomic] @reusable-ui/input
 [published ] [documented  ] [full    compound] @reusable-ui/range
 [published ] [documented  ] [          atomic] @reusable-ui/check
 [published ] [documented  ] [          atomic] @reusable-ui/radio

@@ -77,6 +77,23 @@ import {
 
 
 
+// configs:
+export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
+    return {
+        // appearances:
+        placeholderOpacity : 0.5    as CssKnownProps['opacity'],
+        
+        
+        
+        // backgrounds:
+        backgGrad : [
+            ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
+        ]                           as CssKnownProps['backgroundImage'],
+    };
+}, { prefix: 'inp' });
+
+
+
 // styles:
 export const inputElm = ':where(:first-child)' // zero degree specificity to be easily overwritten
 
@@ -222,23 +239,6 @@ export const useInputStyleSheet = dynamicStyleSheet(() => ({
         usesInputStates(),
     ]),
 }), { id: 'b75oz4h9pp' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
-    return {
-        // appearances:
-        placeholderOpacity : 0.5    as CssKnownProps['opacity'],
-        
-        
-        
-        // backgrounds:
-        backgGrad : [
-            ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
-        ]                           as CssKnownProps['backgroundImage'],
-    };
-}, { prefix: 'inp' });
 
 
 
