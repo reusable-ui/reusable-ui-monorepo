@@ -94,7 +94,7 @@
 [modified  ] [documented  ] [          atomic] @reusable-ui/form
 [modified  ] [documented  ] [          atomic] @reusable-ui/input
 [modified  ] [documented  ] [full    compound] @reusable-ui/range
-[published ] [documented  ] [          atomic] @reusable-ui/check
+[modified  ] [documented  ] [          atomic] @reusable-ui/check
 [published ] [documented  ] [          atomic] @reusable-ui/radio
 [modified  ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
