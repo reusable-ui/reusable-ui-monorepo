@@ -73,6 +73,11 @@ import {
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
+    
+    
+    
+    // a capability of UI to be focused
+    selectorFocusVisibleWithin,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -630,7 +635,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         };
         const handleFocus  = (event: Event) => {
             if (!isTargetEnabled(target)) return; // <target> is disabled => no <Tooltip> required
-            if (!(event.currentTarget as HTMLElement|null)?.matches?.(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))'))
+            if (!(event.currentTarget as HTMLElement|null)?.matches?.(selectorFocusVisibleWithin))
                                           return; // not :focus-visible-within => supporess the actual focus
             
             
@@ -652,7 +657,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // setups:
         targetStates.hovered  = target.matches(':hover');
-        targetStates.focused  = target.matches(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))');
+        targetStates.focused  = target.matches(selectorFocusVisibleWithin);
         targetStates.expanded = (targetStates.hovered || targetStates.focused);
         
         target.addEventListener('mouseenter', handleHover);
