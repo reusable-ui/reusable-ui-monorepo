@@ -99,6 +99,19 @@ export { defaultOrientationableOptions };
 
 
 
+// configs:
+export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
+    return {
+        // borders:
+        // dropdownUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
+        filter: [
+            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
+        ] as CssKnownProps['filter'],
+    };
+}, { prefix: 'ddwn' });
+
+
+
 // styles:
 export const usesDropdownUiLayout = () => {
     return style({
@@ -166,19 +179,6 @@ export const useDropdownStyleSheet = dynamicStyleSheet(() => ({
         usesDropdownStates(),
     ]),
 }), { id: 'q723ad22au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
-    return {
-        // borders:
-        // dropdownUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
-        filter: [
-            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ] as CssKnownProps['filter'],
-    };
-}, { prefix: 'ddwn' });
 
 
 
