@@ -283,6 +283,101 @@ export const formatOf = (fileName: string): string|null => {
 
 
 
+// configs:
+export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
+    const basics = {
+        // color:
+        color      : 'currentColor'                                 as CssKnownProps['backgroundColor'],
+        altColor   : 'gray'                                         as CssKnownProps['backgroundColor'],
+        
+        
+        // sizes:
+        sizeNm     : '24px'                                         as CssKnownProps['blockSize'],
+    };
+    
+    
+    
+    return {
+        ...basics,
+        
+        
+        
+        // sizes:
+        size       :            basics.sizeNm                       as CssKnownProps['blockSize'],
+        sizeSm     : [['calc(', basics.sizeNm, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
+        sizeMd     : [['calc(', basics.sizeNm, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
+        sizeLg     : [['calc(', basics.sizeNm, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
+        size1em    : '1em'                                          as CssKnownProps['blockSize'],
+        
+        
+        
+        // animations:
+        transition : basicCssConfigs.transition                     as CssKnownProps['transition'],
+    };
+}, { prefix: 'ico' });
+
+export const iconConfig = {
+    font  : {
+        /**
+         * A `url directory` pointing to the collection of the icon's fonts.  
+         * It's the `front-end url`, not the physical path on the server.
+         */
+        path  : '/fonts',
+        
+        /**
+         * A list of icon's fonts with extensions.  
+         * The order does matter. Place the most preferred file on the first.
+         */
+        files : [
+            'MaterialIcons-Regular.woff2',
+            'MaterialIcons-Regular.woff',
+            'MaterialIcons-Regular.ttf',
+        ],
+        
+        // /**
+        //  * A list of valid icon-font's content.
+        //  */
+        // items : fontItems as unknown as string[],
+        
+        /**
+         * The css style of icon-font to be loaded.
+         */
+        style : style({
+            // typos:
+            fontFamily     : '"Material Icons"',
+            fontWeight     : 400,
+            fontStyle      : 'normal',
+            textDecoration : 'none',
+        }),
+    },
+    image : {
+        /**
+         * A `url directory` pointing to the collection of the icon's images.  
+         * It's the `front-end url`, not the physical path on the server.
+         */
+        path  : '/icons',
+        
+        /**
+         * A list of icon's images with extensions.  
+         * The order doesn't matter, but if there are any files with the same name but different extensions, the first one will be used.
+         */
+        files : [
+            'instagram.svg',
+            'whatsapp.svg',
+            'close.svg',
+            'busy.svg',
+            'prev.svg',
+            'next.svg',
+            'dropup.svg',
+            'dropdown.svg',
+            'dropright.svg',
+            'dropleft.svg',
+        ],
+    },
+};
+
+
+
 // styles:
 export const usesIconLayout      = () => {
     // dependencies:
@@ -540,102 +635,7 @@ export const useIconStyleSheet = dynamicStyleSheet(() => ({
             ]),
         }),
     ]),
-}), { id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
-    const basics = {
-        // color:
-        color      : 'currentColor'                                 as CssKnownProps['backgroundColor'],
-        altColor   : 'gray'                                         as CssKnownProps['backgroundColor'],
-        
-        
-        // sizes:
-        sizeNm     : '24px'                                         as CssKnownProps['blockSize'],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // sizes:
-        size       :            basics.sizeNm                       as CssKnownProps['blockSize'],
-        sizeSm     : [['calc(', basics.sizeNm, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
-        sizeMd     : [['calc(', basics.sizeNm, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
-        sizeLg     : [['calc(', basics.sizeNm, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
-        size1em    : '1em'                                          as CssKnownProps['blockSize'],
-        
-        
-        
-        // animations:
-        transition : basicCssConfigs.transition                     as CssKnownProps['transition'],
-    };
-}, { prefix: 'ico' });
-
-export const iconConfig = {
-    font  : {
-        /**
-         * A `url directory` pointing to the collection of the icon's fonts.  
-         * It's the `front-end url`, not the physical path on the server.
-         */
-        path  : '/fonts',
-        
-        /**
-         * A list of icon's fonts with extensions.  
-         * The order does matter. Place the most preferred file on the first.
-         */
-        files : [
-            'MaterialIcons-Regular.woff2',
-            'MaterialIcons-Regular.woff',
-            'MaterialIcons-Regular.ttf',
-        ],
-        
-        // /**
-        //  * A list of valid icon-font's content.
-        //  */
-        // items : fontItems as unknown as string[],
-        
-        /**
-         * The css style of icon-font to be loaded.
-         */
-        style : style({
-            // typos:
-            fontFamily     : '"Material Icons"',
-            fontWeight     : 400,
-            fontStyle      : 'normal',
-            textDecoration : 'none',
-        }),
-    },
-    image : {
-        /**
-         * A `url directory` pointing to the collection of the icon's images.  
-         * It's the `front-end url`, not the physical path on the server.
-         */
-        path  : '/icons',
-        
-        /**
-         * A list of icon's images with extensions.  
-         * The order doesn't matter, but if there are any files with the same name but different extensions, the first one will be used.
-         */
-        files : [
-            'instagram.svg',
-            'whatsapp.svg',
-            'close.svg',
-            'busy.svg',
-            'prev.svg',
-            'next.svg',
-            'dropup.svg',
-            'dropdown.svg',
-            'dropright.svg',
-            'dropleft.svg',
-        ],
-    },
-};
+}), { enabled: true, id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
