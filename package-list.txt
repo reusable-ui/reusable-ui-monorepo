@@ -125,7 +125,7 @@
 [modified  ] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
-[published ] [documented  ] [          atomic] @reusable-ui/progress
+[modified  ] [documented  ] [          atomic] @reusable-ui/progress
 [published ] [documented  ] [          atomic] @reusable-ui/group
 [published ] [documented  ] [full    compound] @reusable-ui/nav
 [published ] [documented  ] [full    compound] @reusable-ui/navscroll

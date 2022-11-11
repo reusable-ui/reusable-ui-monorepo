@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/progress",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A custom progress bar featuring support for stacked bars, animated backgrounds, text labels, and horizontal/vertical orientation.",
   "keywords": [
     "progress",
