@@ -76,6 +76,28 @@ const _defaultIconSize : IconSizeName = '1em'
 
 
 
+// configs:
+export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
+    const basics = {
+        // typos:
+        fontSize   : '1em'                                          as CssKnownProps['fontSize'      ],
+    };
+    
+    
+    
+    return {
+        ...basics,
+        
+        
+        
+        // typos:
+        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'      ],
+        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'      ],
+    };
+}, { prefix: 'busy' });
+
+
+
 // styles:
 export const usesBusyLayout = () => {
     return style({
@@ -126,28 +148,6 @@ export const useBusyStyleSheet = dynamicStyleSheet(() => ({
         usesBusyStates(),
     ]),
 }), { id: 'y6oksyrdiq' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
-    const basics = {
-        // typos:
-        fontSize   : '1em'                                          as CssKnownProps['fontSize'      ],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // typos:
-        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'      ],
-        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'      ],
-    };
-}, { prefix: 'busy' });
 
 
 
