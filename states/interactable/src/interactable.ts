@@ -225,6 +225,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         class : ((): string|null => {
             // arriving:
             if (animation === true) {
+                /*
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
                 
@@ -233,6 +234,10 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
                 
                 // otherwise use a combination of :hover || (.focused || .focusing || :focus-visible-within)
                 return null;
+                */
+                
+                // blinky free when not [arrived] but *still* animating of arriving:
+                return 'arriving';
             } // if
             
             // leaving:
