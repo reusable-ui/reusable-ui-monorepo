@@ -3,8 +3,6 @@
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 
-[low prior ] fix button blinky effect when hover-in then hover-out quickly
-
 [deferred  ] fixed minor animation_abort_effect in active-as-click
 
 [deferred  ] upgrade onAnimationEnd detection on excitable state (side effect of *hack* on active-as-click)
