@@ -99,7 +99,7 @@
 [modified  ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
-[published ] [documented  ] [          atomic] @reusable-ui/list
+[modified  ] [documented  ] [          atomic] @reusable-ui/list
 [published ] [documented  ] [          atomic] @reusable-ui/card
 [published ] [documented  ] [          atomic] @reusable-ui/masonry
 
