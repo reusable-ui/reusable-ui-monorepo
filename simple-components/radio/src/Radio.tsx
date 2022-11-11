@@ -89,6 +89,17 @@ import {
 
 
 
+// configs:
+export const [radios, radioValues, cssRadioConfig] = cssConfig(() => {
+    return {
+        // animations:
+        // forked from Bootstrap 5:
+        indicator : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
+    };
+}, { prefix: 'rad' });
+
+
+
 // styles:
 export const usesRadioLayout = () => {
     // dependencies:
@@ -165,17 +176,6 @@ export const useRadioStyleSheet = dynamicStyleSheet(() => ({
         usesRadioStates(),
     ]),
 }), { id: 'f4fvh7cm5b' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [radios, radioValues, cssRadioConfig] = cssConfig(() => {
-    return {
-        // animations:
-        // forked from Bootstrap 5:
-        indicator : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
-    };
-}, { prefix: 'rad' });
 
 
 
