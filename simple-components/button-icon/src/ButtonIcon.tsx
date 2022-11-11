@@ -131,6 +131,54 @@ export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'lg', 'xl'];
 
 
 
+// configs:
+export const [buttonIcons, buttonIconValues, cssButtonIconConfig] = cssConfig(() => {
+    return {
+        // borders:
+        borderRadius      : basics.borderRadius     as CssKnownProps['borderRadius'],
+        borderRadiusXs    : basics.borderRadiusSm   as CssKnownProps['borderRadius'],
+        borderRadiusSm    : basics.borderRadiusSm   as CssKnownProps['borderRadius'],
+        borderRadiusLg    : basics.borderRadiusLg   as CssKnownProps['borderRadius'],
+        borderRadiusXl    : basics.borderRadiusLg   as CssKnownProps['borderRadius'],
+        
+        
+        
+        // spacings:
+        paddingInline     : basics.paddingInline    as CssKnownProps['paddingInline'],
+        paddingBlock      : basics.paddingBlock     as CssKnownProps['paddingBlock' ],
+        paddingInlineXs   : basics.paddingInlineSm  as CssKnownProps['paddingInline'],
+        paddingBlockXs    : basics.paddingBlockSm   as CssKnownProps['paddingBlock' ],
+        paddingInlineSm   : basics.paddingInlineSm  as CssKnownProps['paddingInline'],
+        paddingBlockSm    : basics.paddingBlockSm   as CssKnownProps['paddingBlock' ],
+        paddingInlineLg   : basics.paddingInlineLg  as CssKnownProps['paddingInline'],
+        paddingBlockLg    : basics.paddingBlockLg   as CssKnownProps['paddingBlock' ],
+        paddingInlineXl   : basics.paddingInlineLg  as CssKnownProps['paddingInline'],
+        paddingBlockXl    : basics.paddingBlockLg   as CssKnownProps['paddingBlock' ],
+        
+        gapInline         : buttons.gapInline       as CssKnownProps['gapInline'],
+        gapBlock          : buttons.gapBlock        as CssKnownProps['gapBlock' ],
+        gapInlineXs       : buttons.gapInlineSm     as CssKnownProps['gapInline'],
+        gapBlockXs        : buttons.gapBlockSm      as CssKnownProps['gapBlock' ],
+        gapInlineSm       : buttons.gapInlineSm     as CssKnownProps['gapInline'],
+        gapBlockSm        : buttons.gapBlockSm      as CssKnownProps['gapBlock' ],
+        gapInlineLg       : buttons.gapInlineLg     as CssKnownProps['gapInline'],
+        gapBlockLg        : buttons.gapBlockLg      as CssKnownProps['gapBlock' ],
+        gapInlineXl       : buttons.gapInlineLg     as CssKnownProps['gapInline'],
+        gapBlockXl        : buttons.gapBlockLg      as CssKnownProps['gapBlock' ],
+        
+        
+        
+        // typos:
+        fontSize          : typos.fontSizeNm                                                as CssKnownProps['fontSize'      ],
+        fontSizeXs        : typos.fontSizeSm                                                as CssKnownProps['fontSize'      ],
+        fontSizeSm        : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]   as CssKnownProps['fontSize'      ],
+        fontSizeLg        : typos.fontSizeMd                                                as CssKnownProps['fontSize'      ],
+        fontSizeXl        : typos.fontSizeLg                                                as CssKnownProps['fontSize'      ],
+    };
+}, { prefix: 'btni' });
+
+
+
 // styles:
 export const usesButtonIconLayout = (options?: OrientationableOptions) => {
     // dependencies:
@@ -236,54 +284,6 @@ export const useButtonIconStyleSheet = dynamicStyleSheet(() => ({
         usesButtonIconStates(),
     ]),
 }), { id: 'x6fgydkqor' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// configs:
-export const [buttonIcons, buttonIconValues, cssButtonIconConfig] = cssConfig(() => {
-    return {
-        // borders:
-        borderRadius      : basics.borderRadius     as CssKnownProps['borderRadius'],
-        borderRadiusXs    : basics.borderRadiusSm   as CssKnownProps['borderRadius'],
-        borderRadiusSm    : basics.borderRadiusSm   as CssKnownProps['borderRadius'],
-        borderRadiusLg    : basics.borderRadiusLg   as CssKnownProps['borderRadius'],
-        borderRadiusXl    : basics.borderRadiusLg   as CssKnownProps['borderRadius'],
-        
-        
-        
-        // spacings:
-        paddingInline     : basics.paddingInline    as CssKnownProps['paddingInline'],
-        paddingBlock      : basics.paddingBlock     as CssKnownProps['paddingBlock' ],
-        paddingInlineXs   : basics.paddingInlineSm  as CssKnownProps['paddingInline'],
-        paddingBlockXs    : basics.paddingBlockSm   as CssKnownProps['paddingBlock' ],
-        paddingInlineSm   : basics.paddingInlineSm  as CssKnownProps['paddingInline'],
-        paddingBlockSm    : basics.paddingBlockSm   as CssKnownProps['paddingBlock' ],
-        paddingInlineLg   : basics.paddingInlineLg  as CssKnownProps['paddingInline'],
-        paddingBlockLg    : basics.paddingBlockLg   as CssKnownProps['paddingBlock' ],
-        paddingInlineXl   : basics.paddingInlineLg  as CssKnownProps['paddingInline'],
-        paddingBlockXl    : basics.paddingBlockLg   as CssKnownProps['paddingBlock' ],
-        
-        gapInline         : buttons.gapInline       as CssKnownProps['gapInline'],
-        gapBlock          : buttons.gapBlock        as CssKnownProps['gapBlock' ],
-        gapInlineXs       : buttons.gapInlineSm     as CssKnownProps['gapInline'],
-        gapBlockXs        : buttons.gapBlockSm      as CssKnownProps['gapBlock' ],
-        gapInlineSm       : buttons.gapInlineSm     as CssKnownProps['gapInline'],
-        gapBlockSm        : buttons.gapBlockSm      as CssKnownProps['gapBlock' ],
-        gapInlineLg       : buttons.gapInlineLg     as CssKnownProps['gapInline'],
-        gapBlockLg        : buttons.gapBlockLg      as CssKnownProps['gapBlock' ],
-        gapInlineXl       : buttons.gapInlineLg     as CssKnownProps['gapInline'],
-        gapBlockXl        : buttons.gapBlockLg      as CssKnownProps['gapBlock' ],
-        
-        
-        
-        // typos:
-        fontSize          : typos.fontSizeNm                                                as CssKnownProps['fontSize'      ],
-        fontSizeXs        : typos.fontSizeSm                                                as CssKnownProps['fontSize'      ],
-        fontSizeSm        : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]   as CssKnownProps['fontSize'      ],
-        fontSizeLg        : typos.fontSizeMd                                                as CssKnownProps['fontSize'      ],
-        fontSizeXl        : typos.fontSizeLg                                                as CssKnownProps['fontSize'      ],
-    };
-}, { prefix: 'btni' });
 
 
 
