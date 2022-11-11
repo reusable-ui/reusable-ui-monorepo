@@ -100,7 +100,7 @@
 
 // layout-components:
 [modified  ] [documented  ] [          atomic] @reusable-ui/list
-[published ] [documented  ] [          atomic] @reusable-ui/card
+[modified  ] [documented  ] [          atomic] @reusable-ui/card
 [published ] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
