@@ -1,3 +1,6 @@
+[high prior] add fallback when :has() selector is not supported
+[high prior] add resizeObserver when floatable resized
+
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 
