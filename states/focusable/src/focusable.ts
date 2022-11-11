@@ -253,7 +253,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     // handlers:
     const handleFocus   = useEvent<React.FocusEventHandler<TElement>>((event) => {
         // conditions:
-        if (!event.currentTarget.matches(':focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable]))'))
+        if (!event.currentTarget.matches(selectorFocusVisibleWithin))
                                    return; // not :focus-visible-within => supporess the actual focus
         
         
