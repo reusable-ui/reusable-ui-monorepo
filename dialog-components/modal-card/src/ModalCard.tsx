@@ -170,6 +170,22 @@ export const usesModalCard = (config?: ModalCardConfig): ModalCardStuff => {
 
 
 
+// configs:
+export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
+    return {
+        // positions:
+        horzAlign : 'center'                as CssKnownProps['justifyItems'],
+        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
+        
+        
+        
+        // spacings:
+        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
+    };
+}, { prefix: 'mdlcrd' });
+
+
+
 // styles:
 export const usesModalCardLayout = () => {
     return style({
@@ -407,22 +423,6 @@ export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }: Mo
         }), [horzAlign, vertAlign]),
     };
 };
-
-
-
-// configs:
-export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
-    return {
-        // positions:
-        horzAlign : 'center'                as CssKnownProps['justifyItems'],
-        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
-        
-        
-        
-        // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
-    };
-}, { prefix: 'mdlcrd' });
 
 
 
