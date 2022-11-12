@@ -46,7 +46,13 @@ export interface ToggleButtonProps
         ToggleActivatableProps,
         
         // components:
-        ButtonComponentProps
+        Omit<ButtonComponentProps,
+            // we don't need these extra properties because the <ToggleButton> is sub <Button>
+            |'buttonRef'
+            |'buttonOrientation'
+            |'buttonStyle'
+            |'buttonChildren'
+        >
 {
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
@@ -64,11 +70,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         
         
         // components:
-        buttonRef,
-        buttonOrientation,
-        buttonStyle,
-        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
-        buttonChildren,
+        buttonComponent = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
     ...restButtonProps} = props;
     
     
@@ -80,8 +82,6 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         
         
         
-        // preserves the original `buttonRef` from `props`:
-        buttonRef,
         // preserves the original `elmRef` from `props`:
         props.elmRef,
     );
@@ -128,6 +128,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         {
             // other props:
             ...restButtonProps,
+            ...buttonComponent.props, // overwrites restButtonProps (if any conflics)
             
             
             
@@ -138,12 +139,6 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             // semantics:
             'aria-expanded' : (activeFn || undefined) && (buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
-            
-            
-            
-            // variants:
-            orientation     : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
-            buttonStyle     : buttonComponent.props.buttonStyle ?? buttonStyle,
             
             
             
@@ -159,7 +154,7 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
         
         
         // children:
-        buttonComponent.props.children ?? buttonChildren ?? props.children,
+        buttonComponent.props.children ?? props.children,
     );
 };
 export {
