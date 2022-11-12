@@ -108,7 +108,9 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         ToggleCollapsibleProps<TDropdownExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
         
         // components:
-        ButtonComponentProps,
+        Omit<ButtonComponentProps,
+            |'buttonStyle' // the <DropdownButton> already have buttonStyle prop
+        >,
         ToggleButtonComponentProps,
         DropdownUiComponentProps<Element>,
         DropdownComponentProps<Element, TDropdownExpandedChangeEvent>
@@ -196,7 +198,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // components:
         buttonRef,
         buttonOrientation     = 'inline',
-        buttonStyle,
         buttonComponent       = (<ButtonIcon iconPosition={determineDropdownIconPosition(buttonOrientation)} icon={determineDropdownIcon()} />   as React.ReactComponentElement<any, ButtonProps>),
         buttonChildren,
         
@@ -351,11 +352,12 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     /* <Button> */
-                    buttonComponent : React.cloneElement<ButtonProps>(buttonComponent,
+                    buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps>(buttonComponent,
                         // props:
                         {
                             // other props:
                             ...restButtonProps,
+                            ...buttonComponent.props, // overwrites restButtonProps (if any conflics)
                             
                             
                             
@@ -366,7 +368,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                             
                             // variants:
                             orientation : buttonComponent.props.orientation ?? buttonOrientation,
-                            buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
                         },
                     ),
                 },
@@ -374,7 +375,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                 
                 
                 // children:
-                toggleButtonComponent.props.children ?? buttonComponent.props.children ?? buttonChildren,
+                buttonComponent.props.children ?? toggleButtonComponent.props.children ?? buttonChildren,
             )}
             
             {/* <Dropdown> */}
