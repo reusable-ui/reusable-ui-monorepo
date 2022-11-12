@@ -311,7 +311,13 @@ export interface ButtonIconProps
         
         // components:
         ButtonIconComponentProps<Element>,
-        ButtonComponentProps
+        Omit<ButtonComponentProps,
+            // we don't need these extra properties because the <ButtonIcon> is sub <Button>
+            |'buttonRef'
+            |'buttonOrientation'
+            |'buttonStyle'
+            |'buttonChildren'
+        >
 {
 }
 const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
@@ -329,14 +335,10 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         
         // components:
         icon,
-        iconPosition  = 'start',
-        iconComponent = icon && (<Icon<Element> icon={icon} /> as React.ReactComponentElement<any, IconProps<Element>>),
+        iconPosition    = 'start',
+        iconComponent   = icon && (<Icon<Element> icon={icon} /> as React.ReactComponentElement<any, IconProps<Element>>),
         
-        buttonRef,
-        buttonOrientation,
-        buttonStyle,
-        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
-        buttonChildren,
+        buttonComponent = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
         
         
         
@@ -353,8 +355,6 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         
         
         
-        // preserves the original `buttonRef` from `props`:
-        buttonRef,
         // preserves the original `elmRef` from `props`:
         props.elmRef,
     );
@@ -368,23 +368,22 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         {
             // other props:
             ...restButtonProps,
+            ...buttonComponent.props, // overwrites restButtonProps (if any conflics)
             
             
             
             // refs:
-            elmRef      : mergedButtonRef,
+            elmRef    : mergedButtonRef,
             
             
             
             // variants:
-            orientation : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
-            buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
-            size        : buttonComponent.props.size        ?? (size as ButtonProps['size']),
+            size      : buttonComponent.props.size      ?? (size as ButtonProps['size']),
             
             
             
             // classes:
-            mainClass   : buttonComponent.props.mainClass   ?? props.mainClass ?? styleSheet.main,
+            mainClass : buttonComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
         },
         
         
@@ -393,14 +392,14 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         buttonComponent.props.children ?? (
             /*<>
                 { (iconPosition === 'start') && iconComponent }
-                { buttonChildren ?? children }
+                { children }
                 { (iconPosition === 'end'  ) && iconComponent }
             </>*/
             
             // use an array instead of fragment, so the <Button> can see the existance of <Link> inside `children`:
             [
                 ( (iconPosition === 'start') && iconComponent && React.cloneElement(iconComponent, { key: iconComponent.key ?? '.icon' }) ),
-                ( buttonChildren ?? children ),
+                ( children ),
                 ( (iconPosition === 'end'  ) && iconComponent && React.cloneElement(iconComponent, { key: iconComponent.key ?? '.icon' }) ),
             ]
         ),
