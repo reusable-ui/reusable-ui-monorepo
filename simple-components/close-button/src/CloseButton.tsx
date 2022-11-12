@@ -43,8 +43,8 @@ const CloseButton = (props: CloseButtonProps): JSX.Element|null => {
             
             
             // variants:
+            mild={props.mild ?? 'inherit'}
             nude={props.nude ?? true}
-            buttonStyle='icon'
             
             
             

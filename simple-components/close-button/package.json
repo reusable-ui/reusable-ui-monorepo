@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/close-button",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A button for dismissing content.",
   "keywords": [
     "close",
