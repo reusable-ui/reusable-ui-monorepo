@@ -404,6 +404,7 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
         {
             // other props:
             ...restToggleButtonProps,
+            ...toggleButtonComponent.props, // overwrites restToggleButtonProps (if any conflics)
             
             
             

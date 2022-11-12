@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/hamburger-menu-button",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A toggleable hamburger button for showing/hiding menu in Navbar.",
   "keywords": [
     "toggle",
