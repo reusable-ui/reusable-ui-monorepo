@@ -49,7 +49,13 @@ export interface NavButtonProps
         DetermineCurrentPageProps,
         
         // components:
-        ButtonComponentProps
+        Omit<ButtonComponentProps,
+            // we don't need these extra properties because the <NavButton> is sub <Button>
+            |'buttonRef'
+            |'buttonOrientation'
+            |'buttonStyle'
+            |'buttonChildren'
+        >
 {
 }
 const NavButton = (props: NavButtonProps): JSX.Element|null => {
@@ -62,11 +68,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         
         
         // components:
-        buttonRef,
-        buttonOrientation,
-        buttonStyle,
-        buttonComponent     = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
-        buttonChildren,
+        buttonComponent = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
     ...restButtonProps} = props;
     
     
@@ -78,8 +80,6 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         
         
         
-        // preserves the original `buttonRef` from `props`:
-        buttonRef,
         // preserves the original `elmRef` from `props`:
         props.elmRef,
     );
@@ -100,6 +100,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         {
             // other props:
             ...restButtonProps,
+            ...buttonComponent.props, // overwrites restButtonProps (if any conflics)
             
             
             
@@ -113,12 +114,6 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             
             
             
-            // variants:
-            orientation    : buttonComponent.props.orientation ?? buttonOrientation ?? props.orientation,
-            buttonStyle    : buttonComponent.props.buttonStyle ?? buttonStyle,
-            
-            
-            
             // states:
             active         : activeFn,
         },
@@ -126,7 +121,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         
         
         // children:
-        buttonComponent.props.children ?? buttonChildren ?? props.children,
+        buttonComponent.props.children ?? props.children,
     );
 };
 export {

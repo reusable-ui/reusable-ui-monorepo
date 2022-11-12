@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nav-button",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A clickable button for navigation.",
   "keywords": [
     "navigation",
