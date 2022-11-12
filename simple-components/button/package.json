@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/button",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A button component for initiating an action.",
   "keywords": [
     "clickable",

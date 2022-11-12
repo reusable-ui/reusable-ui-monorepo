@@ -96,11 +96,6 @@ import {
     
     
     
-    // mild (soft color) variant of UI:
-    setMild,
-    
-    
-    
     // a capability of UI to be highlighted/selected/activated:
     ifActive,
     
@@ -151,6 +146,7 @@ const _defaultSemanticRole     : SemanticRole = ['button', 'link'] // uses [role
 const _defaultLinkSemanticTag  : SemanticTag  = ['a'   , 'button'] // uses <a>             as the default semantic, fallbacks to <button>
 const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role="link"]   as the default semantic, fallbacks to [role="button"]
 
+const _defaultButtonStyle      : ButtonStyle  = 'regular'
 const _defaultOutlined         : boolean      = false
 const _defaultMild             : boolean      = false
 
@@ -381,13 +377,6 @@ export const usesButtonVariants = () => {
                 ]),
             }),
         ]),
-        ...variants([
-            rule('.icon', {
-                ...imports([
-                    setMild('inherit'),
-                ]),
-            }),
-        ], { specificityWeight: 2 }), // increase the specificity to win with ':where(&):not(:is(.mild&, &.mild))'
     });
 };
 export const usesButtonStates = () => {
@@ -422,13 +411,13 @@ export const useButtonStyleSheet = dynamicStyleSheet(() => ({
 
 
 
-export type ButtonStyle = 'link'|'ghost'|'icon' // might be added more styles in the future
+export type ButtonStyle = 'regular'|'link'|'ghost' // might be added more styles in the future
 export interface ButtonVariant {
     buttonStyle ?: ButtonStyle
 }
-export const useButtonVariant = (props: ButtonVariant) => {
+export const useButtonVariant = ({buttonStyle = _defaultButtonStyle}: ButtonVariant) => {
     return {
-        class: props.buttonStyle ?? null,
+        class: (buttonStyle === 'regular') ? null : buttonStyle,
     };
 };
 
