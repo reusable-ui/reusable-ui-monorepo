@@ -653,7 +653,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     /* <Button> */
-                    buttonComponent : React.cloneElement<ButtonProps>(buttonComponent,
+                    buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps>(buttonComponent,
                         // props:
                         {
                             // refs:
@@ -671,7 +671,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 
                 
                 // children:
-                toggleButtonComponent.props.children ?? buttonComponent.props.children ?? buttonChildren ?? label,
+                buttonComponent.props.children ?? toggleButtonComponent.props.children ?? buttonChildren ?? label,
             )}
             
             
