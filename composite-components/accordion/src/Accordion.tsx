@@ -406,6 +406,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                 {
                     // other props:
                     ...restListItemProps,
+                    ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
                     
                     
                     
@@ -573,6 +574,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         {
             // other props:
             ...restListProps,
+            ...listComponent.props, // overwrites restListProps (if any conflics)
             
             
             
