@@ -992,6 +992,7 @@ const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: L
         {
             // other props:
             ...restListItemProps,
+            ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
             
             
             

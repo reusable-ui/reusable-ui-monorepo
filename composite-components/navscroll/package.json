@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navscroll",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A navigation component to navigate within current page, based on scroll position.",
   "keywords": [
     "navigation",
