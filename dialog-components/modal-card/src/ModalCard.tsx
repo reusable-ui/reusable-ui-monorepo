@@ -694,7 +694,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             // children:
             /* <Card> */
-            ((modalComponent.props.children !== cardComponent) ? modalComponent.props.children : React.cloneElement<CardProps<Element>>(cardComponent,
+            popupComponent.props.children ?? ((modalComponent.props.children !== cardComponent) ? modalComponent.props.children : React.cloneElement<CardProps<Element>>(cardComponent,
                 // props:
                 {
                     // other props:
