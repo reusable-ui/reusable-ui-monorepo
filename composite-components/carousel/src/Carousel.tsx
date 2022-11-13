@@ -1098,18 +1098,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         {
             // other props:
             ...restBasicProps,
+            ...basicComponent.props, // overwrites restBasicProps (if any conflics)
             
             
             
             // classes:
-            mainClass : props.mainClass ?? styleSheet.main,
+            mainClass : basicComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
         },
         
         
         
         // children:
-        
-        (children && <>
+        basicComponent.props.children ?? (<>
+            {children && <>
                 {/* .list */}
                 <Generic<TElement>
                     // refs:
@@ -1183,9 +1184,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                         );
                     })}
                 </Generic>}
-        </>),
-        
-        React.cloneElement<ButtonProps>(prevButtonComponent,
+            </>}
+            
+            {React.cloneElement<ButtonProps>(prevButtonComponent,
                 // props:
                 {
                     // basic variant props:
@@ -1217,9 +1218,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     // handlers:
                     onClick : handlePrevClick,
                 },
-        ),
-        
-        React.cloneElement<ButtonProps>(nextButtonComponent,
+            )}
+            
+            {React.cloneElement<ButtonProps>(nextButtonComponent,
                 // props:
                 {
                     // basic variant props:
@@ -1251,9 +1252,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     // handlers:
                     onClick : handleNextClick,
                 },
-        ),
-        
-        React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
+            )}
+            
+            {React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
                 // props:
                 {
                     // basic variant props:
@@ -1310,7 +1311,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                         />
                     );
                 }),
-        ),
+            )}
+        </>),
     );
 };
 export {
