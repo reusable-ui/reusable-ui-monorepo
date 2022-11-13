@@ -800,6 +800,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 ...Object.fromEntries(
                     Object.entries(restNestedNavProps).filter(([, value]) => (value !== undefined)) // prevents `undefined` props overwriting the existing ones
                 ),
+                ...navComponent.props, // overwrites restNavProps|restNestedNavProps (if any conflics)
                 
                 
                 
@@ -895,6 +896,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             // other props:
             ...defaultNavProps,
             ...restNavProps,
+            ...navComponent.props, // overwrites restNavProps (if any conflics)
         },
         
         
