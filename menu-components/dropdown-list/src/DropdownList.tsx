@@ -136,6 +136,13 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         
         // components:
         Omit<ListComponentProps<Element>,
+            // we don't need these extra properties because the <DropdownList> is sub <List>
+            |'listRef'
+            |'listOrientation'
+            |'listStyle'
+            
+            
+            
             // children:
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >,
@@ -172,9 +179,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         // components:
-        listRef,
-        listOrientation,
-        listStyle,
         listComponent         = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children              : listItems,
         
@@ -197,15 +201,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     
     // refs:
-    const mergedListRef = useMergeRefs(
-        // preserves the original `elmRef` from `listComponent`:
-        listComponent.props.elmRef,
-        
-        
-        
-        // preserves the original `listRef` from `props`:
-        listRef,
-    );
     const mergedDropdownRef = useMergeRefs(
         // preserves the original `outerRef` from `dropdownComponent`:
         dropdownComponent.props.outerRef,
@@ -345,19 +340,13 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 
-                // refs:
-                elmRef      : mergedListRef,
-                
-                
-                
                 // variants:
-                orientation : listComponent.props.orientation ?? listOrientation,
-                listStyle   : listComponent.props.listStyle   ?? listStyle ?? _defaultListStyle,
+                listStyle   : listComponent.props.listStyle  ?? props.listStyle ?? _defaultListStyle,
                 
                 
                 
                 // accessibilities:
-                tabIndex    : listComponent.props.tabIndex    ?? _defaultTabIndex,
+                tabIndex    : listComponent.props.tabIndex   ?? _defaultTabIndex,
                 
                 
                 
