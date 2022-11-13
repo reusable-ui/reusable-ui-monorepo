@@ -5,12 +5,12 @@ ToggleButtonComponentProps
 BasicComponentProps
 ControlComponentProps
 
-
-
-[unverified:]
 IconComponentProps
 ButtonIconComponentProps
 
+
+
+[unverified:]
 CardComponentProps
 
 ListComponentProps
