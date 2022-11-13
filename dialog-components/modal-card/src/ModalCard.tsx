@@ -451,6 +451,13 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
         
         // components:
         Omit<CardComponentProps<Element>,
+            // we don't need these extra properties because the <ModalCard> is sub <Card>
+            |'cardRef'
+            |'cardOrientation'
+            |'cardStyle'
+            
+            
+            
             // children:
             |'cardChildren' // we redefined `children` prop as <CardItem>(s)
         >,
@@ -496,9 +503,6 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         // components:
-        cardRef,
-        cardOrientation,
-        cardStyle,
         cardComponent    = (<Card<Element> /> as React.ReactComponentElement<any, CardProps<Element>>),
         children         : cardChildren,
         
@@ -513,15 +517,6 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     
     
     // refs:
-    const mergedCardRef  = useMergeRefs(
-        // preserves the original `elmRef` from `cardComponent`:
-        cardComponent.props.elmRef,
-        
-        
-        
-        // preserves the original `cardRef` from `props`:
-        cardRef,
-    );
     const mergedModalRef = useMergeRefs(
         // preserves the original `outerRef` from `modalComponent`:
         modalComponent.props.outerRef,
@@ -705,17 +700,6 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                     // other props:
                     ...restCardProps,
                     ...cardComponent.props, // overwrites restCardProps (if any conflics)
-                    
-                    
-                    
-                    // refs:
-                    elmRef      : mergedCardRef,
-                    
-                    
-                    
-                    // variants:
-                    orientation : cardComponent.props.orientation ?? cardOrientation,
-                    cardStyle   : cardComponent.props.cardStyle   ?? cardStyle,
                     
                     
                     
