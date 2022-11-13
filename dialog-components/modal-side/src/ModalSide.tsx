@@ -615,7 +615,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         // children:
         /* <Collapse> */
-        modalComponent.props.children ?? React.cloneElement<CollapseProps<Element, TModalExpandedChangeEvent>>(collapseComponent,
+        ((modalComponent.props.children !== cardComponent) ? modalComponent.props.children : React.cloneElement<CollapseProps<Element, TModalExpandedChangeEvent>>(collapseComponent,
             // props:
             {
                 // semantics:
@@ -659,7 +659,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 // children:
                 cardComponent.props.children ?? cardChildren,
             )),
-        ),
+        )),
     );
 };
 export {
