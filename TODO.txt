@@ -2,27 +2,39 @@
 ButtonComponentProps
 ToggleButtonComponentProps
 
-[unverified:]
 BasicComponentProps
 ControlComponentProps
-AccordionItemComponentProps
+
+
+
+[unverified:]
+IconComponentProps
+ButtonIconComponentProps
+
+CardComponentProps
+
+ListComponentProps
+ListItemComponentProps
+
 AccordionComponentProps
+AccordionItemComponentProps
+
 NavComponentProps
 NavscrollComponentProps
-PaginationComponentProps
-ModalUiComponentProps
-ModalComponentProps
-CardComponentProps
-ListItemComponentProps
-ListComponentProps
+
+PopupComponentProps
 CollapseComponentProps
+
 DropdownUiComponentProps
 DropdownComponentProps
+
+
 ArrowComponentProps
-ButtonIconComponentProps
-IconComponentProps
 RangeSubComponentProps
-PopupComponentProps
+PaginationComponentProps
+
+ModalUiComponentProps
+ModalComponentProps
 
 
 
