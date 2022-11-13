@@ -119,6 +119,7 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         {
             // other props:
             ...restNavProps,
+            ...navComponent.props, // overwrites restNavProps (if any conflics)
             
             
             
@@ -129,11 +130,11 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         
         
         // children:
-        ...[
+        ...(navComponent.props.children ? [navComponent.props.children] : [
             ...(prevItems ? [prevItems] : []),
             ...React.Children.toArray(navComponent.props.children ?? limitedChildren()),
             ...(nextItems ? [nextItems] : []),
-        ],
+        ]),
     );
 };
 export {

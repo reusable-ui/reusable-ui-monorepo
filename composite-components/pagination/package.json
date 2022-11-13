@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/pagination",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A navigation component with limited shown items.",
   "keywords": [
     "navigation",
