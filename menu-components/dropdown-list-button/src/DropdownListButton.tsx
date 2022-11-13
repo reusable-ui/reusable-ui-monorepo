@@ -116,8 +116,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
         
         dropdownComponent = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
             // components:
-            listRef={listRef}
-            listOrientation={listOrientation}
+            elmRef={listRef}
+            orientation={listOrientation}
             listStyle={listStyle}
             listComponent={React.cloneElement<ListProps<Element>>(listComponent,
                 // props:
