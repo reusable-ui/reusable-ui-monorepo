@@ -108,6 +108,7 @@ export const NavItem     = <TElement extends Element = HTMLElement>(props: NavIt
         {
             // other props:
             ...restListItemProps,
+            ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
             
             
             
@@ -243,6 +244,7 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
         {
             // other props:
             ...restListProps,
+            ...listComponent.props, // overwrites restListProps (if any conflics)
             
             
             
