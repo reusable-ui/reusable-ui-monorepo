@@ -411,8 +411,10 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     // classes:
     const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
+        // preserves the original `stateClasses` from `props`:
         props.stateClasses,
+        // preserves the original `stateClasses` from `basicComponent`:
+        basicComponent.props.stateClasses,
         
         
         
@@ -468,6 +470,8 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     const handleClick               = useMergeEvents(
         // preserves the original `onClick` from `props`:
         props.onClick,
+        // preserves the original `onClick` from `basicComponent`:
+        basicComponent.props.onClick,
         
         
         
@@ -515,17 +519,18 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             
             // other props:
             ...restBasicProps,
+            ...basicComponent.props, // overwrites restBasicProps (if any conflics)
             
             
             
             // semantics:
-            semanticTag  : props.semanticTag  ?? 'nav',
-            semanticRole : props.semanticRole ?? 'navigation',
+            semanticTag  : basicComponent.props.semanticTag  ?? props.semanticTag  ?? 'nav',
+            semanticRole : basicComponent.props.semanticRole ?? props.semanticRole ?? 'navigation',
             
             
             
             // classes:
-            mainClass    : props.mainClass ?? styleSheet.main,
+            mainClass    : basicComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
             stateClasses : stateClasses,
             
             
@@ -537,7 +542,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // children:
-        (typeof(children) !== 'function') ? children : children({
+        basicComponent.props.children ?? ((typeof(children) !== 'function') ? children : children({
             // basic variant props:
             basicVariantProps,
             
@@ -553,7 +558,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             toggleMenu,
             handleActiveChange,
             handleClickAsToggleMenu,
-        }),
+        })),
     );
 };
 export {
