@@ -6,11 +6,6 @@ import {
 
 // reusable-ui core:
 import {
-    // react helper hooks:
-    useMergeRefs,
-    
-    
-    
     // an accessibility management system:
     usePropActive,
     
@@ -200,6 +195,13 @@ export interface NavProps<TElement extends Element = HTMLElement>
         
         // components:
         Omit<ListComponentProps<TElement>,
+            // we don't need these extra properties because the <Nav> is sub <List>
+            |'listRef'
+            |'listOrientation'
+            |'listStyle'
+            
+            
+            
             // children:
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >
@@ -216,24 +218,8 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
         
         
         // components:
-        listRef,
-        listOrientation,
-        listStyle,
         listComponent = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
     ...restListProps} = props;
-    
-    
-    
-    // refs:
-    const mergedListRef = useMergeRefs(
-        // preserves the original `elmRef` from `listComponent`:
-        listComponent.props.elmRef,
-        
-        
-        
-        // preserves the original `listRef` from `props`:
-        listRef,
-    );
     
     
     
@@ -248,21 +234,10 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
             
             
             
-            // refs:
-            elmRef       : mergedListRef,
-            
-            
-            
             // semantics:
             semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag  ?? 'nav',
             semanticRole : listComponent.props.semanticRole  ?? props.semanticRole ?? 'navigation',
             'aria-label' : listComponent.props['aria-label'] ?? label,
-            
-            
-            
-            // variants:
-            orientation  : listComponent.props.orientation ?? listOrientation ?? props.orientation,
-            listStyle    : listComponent.props.listStyle   ?? listStyle,
             
             
             
