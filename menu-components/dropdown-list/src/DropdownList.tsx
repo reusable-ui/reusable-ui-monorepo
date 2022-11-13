@@ -341,6 +341,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             {
                 // other props:
                 ...restListProps,
+                ...listComponent.props, // overwrites restListProps (if any conflics)
                 
                 
                 
@@ -361,7 +362,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 // behaviors:
-                actionCtrl  : defaultActionCtrl,
+                actionCtrl  : listComponent.props.actionCtrl ?? defaultActionCtrl,
                 
                 
                 
@@ -493,6 +494,7 @@ const ListItemWithExpandedHandler = <TElement extends Element = HTMLElement, TDr
         {
             // other props:
             ...restListItemProps,
+            ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
             
             
             
