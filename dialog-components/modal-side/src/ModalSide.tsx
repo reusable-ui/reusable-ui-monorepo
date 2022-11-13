@@ -620,7 +620,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         // children:
         /* <Collapse> */
-        React.cloneElement<CollapseProps<Element, TModalExpandedChangeEvent>>(collapseComponent,
+        modalComponent.props.children ?? React.cloneElement<CollapseProps<Element, TModalExpandedChangeEvent>>(collapseComponent,
             // props:
             {
                 // semantics:
@@ -651,6 +651,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 {
                     // other props:
                     ...restCardProps,
+                    ...cardComponent.props, // overwrites restCardProps (if any conflics)
                     
                     
                     

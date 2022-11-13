@@ -8,11 +8,13 @@ ControlComponentProps
 IconComponentProps
 ButtonIconComponentProps
 
+CardComponentProps
+
+ModalUiComponentProps
+ModalComponentProps
 
 
 [unverified:]
-CardComponentProps
-
 ListComponentProps
 ListItemComponentProps
 
@@ -33,8 +35,6 @@ ArrowComponentProps
 RangeSubComponentProps
 PaginationComponentProps
 
-ModalUiComponentProps
-ModalComponentProps
 
 
 

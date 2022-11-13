@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal-side",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Overlays a card dialog to the side of site's page.",
   "keywords": [
     "modal",

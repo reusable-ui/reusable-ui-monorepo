@@ -673,7 +673,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         // children:
         /* <Popup> */
-        React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
+        modalComponent.props.children ?? React.cloneElement<PopupProps<Element, TModalExpandedChangeEvent>>(popupComponent,
             // props:
             {
                 // semantics:
@@ -704,6 +704,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 {
                     // other props:
                     ...restCardProps,
+                    ...cardComponent.props, // overwrites restCardProps (if any conflics)
                     
                     
                     
