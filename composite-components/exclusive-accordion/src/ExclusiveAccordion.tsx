@@ -159,6 +159,7 @@ export const AccordionItemWithExclusivity = <TElement extends Element = HTMLElem
         {
             // other props:
             ...restAccordionItemProps,
+            ...accordionItemComponent.props, // overwrites restAccordionItemProps (if any conflics)
             
             
             
