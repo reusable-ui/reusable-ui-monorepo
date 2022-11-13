@@ -16,15 +16,14 @@ ModalComponentProps
 ListComponentProps
 ListItemComponentProps
 
-
-
-[unverified:]
 AccordionComponentProps
 AccordionItemComponentProps
 
 NavComponentProps
 NavscrollComponentProps
 
+
+[unverified:]
 PopupComponentProps
 CollapseComponentProps
 
