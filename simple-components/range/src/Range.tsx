@@ -1598,11 +1598,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         
         // children:
-        <>
+        trackComponent.props.children ?? (<>
             { isOrientationBlock ? trackUpper : trackLower }
             { thumb }
             { isOrientationBlock ? trackLower : trackUpper }
-        </>
+        </>),
     );
     
     return (
