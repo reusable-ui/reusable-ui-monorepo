@@ -147,8 +147,6 @@ const _defaultLinkSemanticTag  : SemanticTag  = ['a'   , 'button'] // uses <a>  
 const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role="link"]   as the default semantic, fallbacks to [role="button"]
 
 const _defaultButtonStyle      : ButtonStyle  = 'regular'
-const _defaultOutlined         : boolean      = false
-const _defaultMild             : boolean      = false
 
 
 
@@ -553,9 +551,6 @@ const Button = (props: ButtonProps): JSX.Element|null => {
         orientation : _orientation, // remove
         buttonStyle : _buttonStyle, // remove
         
-        outlined    = _defaultOutlined,
-        mild        = _defaultMild,
-        
         
         
         // accessibilities:
@@ -611,8 +606,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             // variants:
-            outlined={outlined}
-            mild={mild}
+            mild={props.mild ?? false}
             
             
             
