@@ -1,0 +1,17 @@
+mild = true (Smooth)
+1. Indicator           // for indicating purpose
+2. EditableTextControl // for text friendly
+3. Container           // for content friendly
+4. Content             // for content friendly
+5. Label               // for text friendly
+6. Alert               // for text friendly => smoothing <Popup> => <Basic>
+7. Tooltip             // for text friendly => smoothing <Popup> => <Basic>
+
+mild = false (Bold)
+1. Group // cancel out List => Indicator => true => false
+2. Range // to calculate the mildAlternate
+
+mild = 'inherit' (<Parent> dependent)
+1. CloseButton => the icon color depends on <Parent>
+2. ProgressBar => dependent of <Progress>
+3. (Regular|Action)ListItem => dependent of <List>
