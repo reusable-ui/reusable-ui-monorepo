@@ -379,11 +379,6 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             
-            // variants:
-            mild={props.mild ?? false}
-            
-            
-            
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}

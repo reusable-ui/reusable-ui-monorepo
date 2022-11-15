@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/badge",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Represents counters or labels.",
   "keywords": [
     "badge",
