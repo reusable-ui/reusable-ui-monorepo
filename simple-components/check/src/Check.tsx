@@ -145,13 +145,6 @@ import {
 
 
 
-// defaults:
-const _defaultNude     : boolean = true
-const _defaultOutlined : boolean = false
-const _defaultMild     : boolean = false
-
-
-
 // configs:
 export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     // dependencies:
@@ -672,10 +665,6 @@ const Check = (props: CheckProps): JSX.Element|null => {
         // variants:
         checkStyle : _checkStyle, // remove
         
-        nude       = _defaultNude,
-        outlined   = _defaultOutlined,
-        mild       = _defaultMild,
-        
         
         
         // states:
@@ -874,9 +863,8 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // variants:
-            nude={nude}
-            outlined={outlined}
-            mild={mild}
+            nude={props.nude ?? true}
+            mild={props.mild ?? false}
             
             
             
