@@ -48,6 +48,15 @@ function App() {
                     <Button theme='primary' active={active} outlined={true}>
                         test &lt;Button&gt;
                     </Button>
+                    <Button theme='primary' buttonStyle='regular'>
+                        test regular
+                    </Button>
+                    <Button theme='primary' buttonStyle='ghost'>
+                        test ghost
+                    </Button>
+                    <Button theme='primary' buttonStyle='link'>
+                        test link
+                    </Button>
                 </article>
                 <hr />
                 <article className='actions'>

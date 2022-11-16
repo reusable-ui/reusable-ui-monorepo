@@ -177,7 +177,7 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
 
 
 // styles:
-export const noBackground = () => {
+const usesNoBackground = () => {
     // dependencies:
     
     // features:
@@ -223,50 +223,7 @@ export const noBackground = () => {
         ], { minSpecificityWeight: 4 }), // force to win with states' specificity weight
     });
 };
-
-export const usesButtonLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesActionControlLayout(),
-        ]),
-        ...style({
-            // layouts:
-            display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
-            ...ifOrientationInline({ // inline
-                flexDirection : 'row',         // items are stacked horizontally
-            }),
-            ...ifOrientationBlock({  // block
-                flexDirection : 'column',      // items are stacked vertically
-            }),
-            justifyContent    : 'center',      // center items (text, icon, etc) horizontally
-            alignItems        : 'center',      // center items (text, icon, etc) vertically
-            flexWrap          : 'wrap',        // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
-            
-            
-            
-            // positions:
-            verticalAlign     : 'baseline',    // <Button>'s text should be aligned with sibling text, so the <Button> behave like <span> wrapper
-            
-            
-            
-            // typos:
-            textAlign         : 'center',
-            
-            
-            
-            // customize:
-            ...usesCssProps(buttons), // apply config's cssProps
-        }),
-    });
-};
-export const usesButtonLinkVariant = () => {
+const usesButtonLinkVariant = () => {
     // dependencies:
     
     // features:
@@ -276,10 +233,6 @@ export const usesButtonLinkVariant = () => {
     
     
     return style({
-        ...imports([
-            // backgrounds:
-            noBackground(),
-        ]),
         ...style({
             // accessibilities:
             userSelect     : 'contain', // a link should be selectable
@@ -326,6 +279,74 @@ export const usesButtonLinkVariant = () => {
         ]),
     });
 };
+const usesButtonGhostVariant = () => {
+    return style({
+        ...style({
+            // borders:
+            boxShadow : ['none', '!important'], // no shadow & no focus animation
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(buttons, 'ghost')), // apply config's cssProps starting with ghost***
+        }),
+        ...states([
+            ifArrive({
+                // appearances:
+                opacity: buttons.ghostOpacityArrive, // increase the opacity to increase visibility
+            }),
+            ifLeave({
+                ...imports([
+                    // backgrounds:
+                    setGradient(false), // hide the gradient to increase invisibility
+                ]),
+            }),
+        ]),
+    });
+};
+
+export const usesButtonLayout = (options?: OrientationableOptions) => {
+    // options:
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    
+    
+    
+    return style({
+        ...imports([
+            // layouts:
+            usesActionControlLayout(),
+        ]),
+        ...style({
+            // layouts:
+            display           : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
+            ...ifOrientationInline({ // inline
+                flexDirection : 'row',         // items are stacked horizontally
+            }),
+            ...ifOrientationBlock({  // block
+                flexDirection : 'column',      // items are stacked vertically
+            }),
+            justifyContent    : 'center',      // center items (text, icon, etc) horizontally
+            alignItems        : 'center',      // center items (text, icon, etc) vertically
+            flexWrap          : 'wrap',        // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            
+            
+            
+            // positions:
+            verticalAlign     : 'baseline',    // <Button>'s text should be aligned with sibling text, so the <Button> behave like <span> wrapper
+            
+            
+            
+            // typos:
+            textAlign         : 'center',
+            
+            
+            
+            // customize:
+            ...usesCssProps(buttons), // apply config's cssProps
+        }),
+    });
+};
 export const usesButtonVariants = () => {
     // dependencies:
     
@@ -341,39 +362,9 @@ export const usesButtonVariants = () => {
             resizableRule,
         ]),
         ...variants([
-            rule(['.link', '.ghost'], {
-                ...imports([
-                    noBackground(),
-                ]),
-            }),
-            rule('.link', {
-                ...imports([
-                    usesButtonLinkVariant(),
-                ]),
-            }),
-            rule('.ghost', {
-                ...style({
-                    // borders:
-                    boxShadow : ['none', '!important'], // no shadow & no focus animation
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(buttons, 'ghost')), // apply config's cssProps starting with ghost***
-                }),
-                ...states([
-                    ifArrive({
-                        // appearances:
-                        opacity: buttons.ghostOpacityArrive, // increase the opacity to increase visibility
-                    }),
-                    ifLeave({
-                        ...imports([
-                            // backgrounds:
-                            setGradient(false), // hide the gradient to increase invisibility
-                        ]),
-                    }),
-                ]),
-            }),
+            rule(['.link', '.ghost'], usesNoBackground()       ),
+            rule( '.link'           , usesButtonLinkVariant()  ),
+            rule(          '.ghost' , usesButtonGhostVariant() ),
         ]),
     });
 };
