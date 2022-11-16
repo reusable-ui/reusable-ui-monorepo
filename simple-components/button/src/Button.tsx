@@ -179,9 +179,11 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
 
 // styles:
 interface CondBorderVars {
-    condBorderWidth : any
+    condBorderWidthTg : any
 }
 const [condBorderVars] = cssVars<CondBorderVars>();
+
+
 
 const usesAppearAsOutlined = () => {
     // dependencies:
@@ -195,20 +197,23 @@ const usesAppearAsOutlined = () => {
     
     
     return style({
-        // toggling functions:
-        ...vars({
-            [condBorderVars.condBorderWidth] : [[
-                outlineableVars.outlinedSw,  // border is supported only if `.outlined`
-                borderVars.borderWidth,
-            ]],
-        }),
-        
         // compositions:
         ...vars({
             [borderVars.border     ] : [[
                 borderVars.borderStyle,
-                condBorderVars.condBorderWidth,
+                switchOf(
+                    condBorderVars.condBorderWidthTg, // border is  supported
+                    '0px',                            // border not supported
+                ),
                 borderVars.borderColor,
+            ]],
+        }),
+        
+        // toggling functions:
+        ...vars({
+            [condBorderVars.condBorderWidthTg] : [[
+                outlineableVars.outlinedSw,  // border is supported only if `.outlined`
+                borderVars.borderWidth,
             ]],
         }),
         
