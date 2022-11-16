@@ -223,16 +223,13 @@ export interface ValidityChangeEvent
 }
 export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
     extends
-        // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>,
-        
         // validations:
         ValidationProps
 {
     // validations:
     onValidation ?: EventHandler<TValidityChangeEvent>
 }
-export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent>) => {
+export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & AccessibilityProps) => {
     // fn props:
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
