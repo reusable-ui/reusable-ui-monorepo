@@ -24,6 +24,7 @@ import {
     
     // strongly typed of css variables:
     cssVars,
+    switchOf,
     
     
     
@@ -46,6 +47,11 @@ import {
     
     // a spacer (gap) management system:
     spacers,
+    
+    
+    
+    // a typography management system:
+    typos,
     
     
     
@@ -113,6 +119,10 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
+import {
+    // configs:
+    basics,
+}                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
     usesActionControlLayout,
@@ -261,7 +271,7 @@ const usesButtonLinkVariant = () => {
             
             // spacings:
             [paddingVars.paddingInline] : spacers.xs,
-            [paddingVars.paddingBlock ] : spacers.xs,
+            [paddingVars.paddingBlock ] : `max(0px, ${spacers.xs} - (0.5em * (${switchOf(basics.lineHeight, typos.lineHeight)} - 1)))`,
             marginInline : `calc(0px - ${paddingVars.paddingInline})`, // cancels out the padding with negative margin
             marginBlock  : `calc(0px - ${paddingVars.paddingBlock })`, // cancels out the padding with negative margin
             
@@ -269,7 +279,7 @@ const usesButtonLinkVariant = () => {
             
             // typos:
             textDecoration : 'underline',
-            lineHeight     : 1,
+            lineHeight     : switchOf(basics.lineHeight, typos.lineHeight),
             
             
             

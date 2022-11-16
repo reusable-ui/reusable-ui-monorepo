@@ -48,6 +48,16 @@ function App() {
                     <Button theme='primary' active={active} outlined={true}>
                         test &lt;Button&gt;
                     </Button>
+                    <p>
+                        Lorem ipsum <Button theme='primary' buttonStyle='link'>
+                            test link
+                        </Button> dolor sit
+                    </p>
+                    <p>
+                        Lorem ipsum <Button theme='primary' buttonStyle='link' focused={true}>
+                            test link
+                        </Button> dolor sit
+                    </p>
                     <hr style={{width: '100%'}} />
                     <Button theme='primary' buttonStyle='regular'>
                         test regular
