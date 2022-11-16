@@ -39,6 +39,7 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    switchOf,
     
     
     
@@ -78,6 +79,8 @@ import {
     
     
     // background stuff of UI:
+    BackgroundStuff,
+    BackgroundConfig,
     usesBackground,
     
     
@@ -116,8 +119,13 @@ import {
     
     
     
+    // outlined (background-less) variant of UI:
+    usesOutlineable,
+    
+    
+    
     // mild (soft color) variant of UI:
-    ifMild,
+    usesMildable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -363,6 +371,57 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
 
 
 // styles:
+interface ProgressBackgroundVars {
+    mildAltBackgTg : any
+}
+const [progressBackgroundVars] = cssVars<ProgressBackgroundVars>();
+
+
+
+const usesProgressBackground = (config?: BackgroundConfig): BackgroundStuff => {
+    // dependencies:
+    
+    // features:
+    const {backgroundRule, backgroundVars} = usesBackground(config);
+    
+    // variants:
+    const {outlineableVars} = usesOutlineable();
+    const {mildableVars   } = usesMildable();
+    
+    
+    
+    return {
+        backgroundRule: () => style({
+            ...imports([
+                backgroundRule,
+            ]),
+            
+            
+            
+            // color functions:
+            ...vars({
+                // final color functions:
+                [backgroundVars.altBackgColor  ] : switchOf(
+                    outlineableVars.altBackgTg,            // toggle outlined (if `usesOutlineable()` applied)
+                    progressBackgroundVars.mildAltBackgTg, // toggle <Progress>'s mild
+                    
+                    backgroundVars.altBackgColorFn,        // default => uses our `altBackgColorFn`
+                ),
+            }),
+            
+            
+            
+            // toggling functions:
+            ...vars({
+                [progressBackgroundVars.mildAltBackgTg] : [[
+                    mildableVars.mildSw,  // the mild switching function
+                    colors.backg,         // the remaining area should lighter than the <ProgressBar>
+                ]],
+            }),
+        }),
+        backgroundVars,
+    }
+};
 export const usesProgressLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
@@ -374,7 +433,7 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {backgroundRule, backgroundVars} = usesBackground();
+    const {backgroundRule, backgroundVars} = usesProgressBackground();
     const {foregroundRule, foregroundVars} = usesForeground();
     
     
@@ -439,12 +498,6 @@ export const usesProgressVariants = () => {
             usesListBasicVariants(),
             resizableRule,
             gradientableRule,
-        ]),
-        ...variants([
-            ifMild({
-                // backgrounds:
-                backg : colors.backg, // the remaining area should lighter than the <ProgressBar>
-            }),
         ]),
     });
 };
