@@ -1,3 +1,27 @@
+ifGradient|ifNotGradient|ifInheritGradient|ifOutlined|ifNotOutlined|ifInheritOutlined|ifMild|ifNotMild|ifInheritMild
+
+
+
+ifGradient|ifNotGradient|ifInheritGradient
+
+------------------------------------------------------------------------------------
+
+ifOutlined|ifNotOutlined|ifInheritOutlined
+
+outlined = true (Semi nude)
+1. <Carousel> > <Navscroll> // outlined bullet
+2. <Busy>                   // makes bold_color spinner (currentColor)
+
+outlined = false (Regular)
+0. <-- none -->
+
+outlined = 'inherit'
+0. <-- none -->
+
+------------------------------------------------------------------------------------
+
+ifMild|ifNotMild|ifInheritMild
+
 mild = true (Smooth)
 1. <Indicator>           // for indicating purpose
 2. <EditableTextControl> // for text friendly
@@ -18,17 +42,7 @@ mild = 'inherit' (<Parent> dependent)
 
 ------------------------------------------------------------------------------------
 
-outlined = true (Semi nude)
-1. <Carousel> > <Navscroll> // outlined bullet
-2. <Busy>                   // makes bold_color spinner (currentColor)
-
-outlined = false (Regular)
-0. <-- none -->
-
-outlined = 'inherit'
-0. <-- none -->
-
-------------------------------------------------------------------------------------
+ifNude|ifNotNude
 
 nude = true (backgroundless & borderless)
 1. <ModalCard> > <Popup> // invisible_container for <Card>
