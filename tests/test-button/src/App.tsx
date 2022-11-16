@@ -48,6 +48,7 @@ function App() {
                     <Button theme='primary' active={active} outlined={true}>
                         test &lt;Button&gt;
                     </Button>
+                    <hr style={{width: '100%'}} />
                     <Button theme='primary' buttonStyle='regular'>
                         test regular
                     </Button>
@@ -55,6 +56,26 @@ function App() {
                         test ghost
                     </Button>
                     <Button theme='primary' buttonStyle='link'>
+                        test link
+                    </Button>
+                    <hr style={{width: '100%'}} />
+                    <Button theme='primary' buttonStyle='regular' gradient={true}>
+                        test regular
+                    </Button>
+                    <Button theme='primary' buttonStyle='ghost' gradient={true}>
+                        test ghost
+                    </Button>
+                    <Button theme='primary' buttonStyle='link' gradient={true}>
+                        test link
+                    </Button>
+                    <hr style={{width: '100%'}} />
+                    <Button theme='primary' buttonStyle='regular' gradient={true} outlined={true}>
+                        test regular
+                    </Button>
+                    <Button theme='primary' buttonStyle='ghost' gradient={true} outlined={true}>
+                        test ghost
+                    </Button>
+                    <Button theme='primary' buttonStyle='link' gradient={true} outlined={true}>
                         test link
                     </Button>
                 </article>

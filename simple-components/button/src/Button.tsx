@@ -17,7 +17,13 @@ import {
     states,
     fallbacks,
     style,
+    vars,
     imports,
+    
+    
+    
+    // strongly typed of css variables:
+    cssVars,
     
     
     
@@ -86,34 +92,19 @@ import {
     
     
     // gradient variant of UI:
+    usesGradientable,
     setGradient,
     
     
     
     // outlined (background-less) variant of UI:
-    ifNotOutlined,
-    setOutlined,
-    
-    
-    
-    // a capability of UI to be highlighted/selected/activated:
-    ifActive,
-    
-    
-    
-    // a capability of UI to be focused:
-    ifFocus,
+    usesOutlineable,
     
     
     
     // adds an interactive feel to a UI:
     ifArrive,
     ifLeave,
-    
-    
-    
-    // a capability of UI to be clicked:
-    ifPress,
     
     
     
@@ -177,58 +168,74 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
 
 
 // styles:
-const usesNoBackground = () => {
+interface CondBorderVars {
+    condBorderWidth : any
+}
+const [condBorderVars] = cssVars<CondBorderVars>();
+
+const usesAppearAsOutlined = () => {
     // dependencies:
     
     // features:
     const {borderVars} = usesBorder();
     
+    // variants:
+    const {outlineableVars } = usesOutlineable();
+    
     
     
     return style({
-        ...variants([
-            ifNotOutlined({
-                // borders:
-                [borderVars.borderWidth]: '0px', // no_border if not explicitly `.outlined`
-            }),
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    setOutlined(true), // keeps outlined (no background) variant
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    setOutlined(true), // keeps outlined (no background) variant
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    setOutlined(true), // keeps outlined (no background) variant
-                ]),
-            }),
-            ifPress({
-                ...imports([
-                    setOutlined(true), // keeps outlined (no background) variant
-                ]),
-            }),
-        ]),
-        ...variants([
-            ifNotOutlined({
-                ...imports([
-                    setOutlined(true), // keeps outlined (no background) variant
-                ]),
-            }),
-        ], { minSpecificityWeight: 4 }), // force to win with states' specificity weight
+        // toggling functions:
+        ...vars({
+            [condBorderVars.condBorderWidth] : [[
+                outlineableVars.outlinedSw,  // border is supported only if `.outlined`
+                borderVars.borderWidth,
+            ]],
+        }),
+        
+        // compositions:
+        ...vars({
+            [borderVars.border     ] : [[
+                borderVars.borderStyle,
+                condBorderVars.condBorderWidth,
+                borderVars.borderColor,
+            ]],
+        }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [outlineableVars.noBackgTg] : [[
+                'transparent',              // the no background color definition
+            ]],
+            
+            [outlineableVars.backgTg] : [[
+                outlineableVars.backgFn,    // the outlined background color definition
+            ]],
+            [outlineableVars.foregTg] : [[
+                outlineableVars.foregFn,    // the outlined foreground color definition
+            ]],
+            
+            [outlineableVars.altBackgTg] : [[
+                outlineableVars.altBackgFn, // the outlined alternate background color definition
+            ]],
+            [outlineableVars.altForegTg] : [[
+                outlineableVars.altForegFn, // the outlined alternate foreground color definition
+            ]],
+        }),
     });
 };
 const usesButtonLinkVariant = () => {
     // dependencies:
     
     // features:
-    const {borderVars } = usesBorder();
-    const {paddingVars} = usesPadding();
+    const {borderVars      } = usesBorder();
+    const {paddingVars     } = usesPadding();
+    
+    // variants:
+    const {gradientableVars} = usesGradientable();
+    const {outlineableVars } = usesOutlineable();
     
     
     
@@ -269,14 +276,17 @@ const usesButtonLinkVariant = () => {
             // customize:
             ...usesCssProps(usesPrefixedProps(buttons, 'link')), // apply config's cssProps starting with link***
         }),
-        ...variants([
-            ifNotOutlined({ // fully link style without `.outlined`:
-                ...imports([
-                    // backgrounds:
-                    setGradient(false), // gradient is not supported if not `.outlined`
-                ]),
-            }),
-        ]),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [gradientableVars.backgGradTg] : [[
+                outlineableVars.outlinedSw,  // gradient is supported only if `.outlined`
+                gradientableVars.gradientSw, // the gradient switching function
+                gradientableVars.backgGrad,  // the gradient definition
+            ]],
+        }),
     });
 };
 const usesButtonGhostVariant = () => {
@@ -362,7 +372,7 @@ export const usesButtonVariants = () => {
             resizableRule,
         ]),
         ...variants([
-            rule(['.link', '.ghost'], usesNoBackground()       ),
+            rule(['.link', '.ghost'], usesAppearAsOutlined()     ),
             rule( '.link'           , usesButtonLinkVariant()  ),
             rule(          '.ghost' , usesButtonGhostVariant() ),
         ]),
