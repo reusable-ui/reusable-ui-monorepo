@@ -2,18 +2,22 @@ done:
 ButtonVariant
 
 [high prior ] add 'regular' for:
+CardVariant
+ListVariant
+
+LabelVariant
+CheckVariant
+BadgeVariant
+
 CarouselVariant
 DetailsVariant
+
 ProgressVariant
 ProgressBarVariant
+
 BackdropVariant
 ModalCardVariant
 ModalSideVariant
-CardVariant
-ListVariant
-CheckVariant
-LabelVariant
-BadgeVariant
 
 
 
