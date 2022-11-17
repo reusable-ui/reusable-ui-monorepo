@@ -255,7 +255,9 @@ export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElem
 export interface InputProps
     extends
         // bases:
-        EditableTextControlProps<HTMLInputElement>,
+        Omit<EditableTextControlProps<HTMLInputElement>,
+            |'children'
+        >,
         
         // input:
         Omit<InputHTMLAttributes<HTMLInputElement>,
