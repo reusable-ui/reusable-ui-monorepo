@@ -666,7 +666,9 @@ export interface RangeSubComponentProps
 export interface RangeProps
     extends
         // bases:
-        EditableActionControlProps<HTMLInputElement>,
+        Omit<EditableActionControlProps<HTMLInputElement>,
+            |'children'
+        >,
         
         // input[type="range"]:
         Omit<InputHTMLAttributes<HTMLInputElement>,
