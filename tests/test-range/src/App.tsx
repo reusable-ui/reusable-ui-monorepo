@@ -41,6 +41,9 @@ function App() {
                 <article className='actions'>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <Range theme='primary' nude={false} onChange={handleChange} />
+                    <Range theme='primary' nude={true} onChange={handleChange} />
+                    <Range theme='primary' nude={false} onChange={handleChange} outlined={true} />
+                    <Range theme='primary' nude={true} onChange={handleChange} outlined={true} />
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>

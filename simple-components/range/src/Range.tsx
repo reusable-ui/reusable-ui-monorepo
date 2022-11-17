@@ -30,7 +30,6 @@ import {
     
     // writes css in javascript:
     rule,
-    states,
     children,
     style,
     vars,
@@ -124,21 +123,12 @@ import {
     
     
     
-    // a capability of UI to be highlighted/selected/activated:
-    ifActive,
-    MarkActiveOptions,
-    markActive,
-    
-    
-    
     // a capability of UI to be focused:
-    ifFocus,
     useFocusable,
     
     
     
     // adds an interactive feel to a UI:
-    ifArrive,
     useInteractable,
     
     
@@ -179,7 +169,6 @@ import type {
 
 // defaults:
 export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
-const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 
@@ -223,7 +212,7 @@ export const usesRange = (config?: RangeConfig): RangeStuff => {
     return {
         rangeRule: () => style({
             ...vars({
-                [rangeVars.trackBackg] : config?.trackBackg ?? backgroundVars.backgColor,
+                [rangeVars.trackBackg] : config?.trackBackg ?? backgroundVars.backg,
             }),
         }),
         rangeVars,
@@ -483,6 +472,17 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         
                         
                         
+                        // borders:
+                        // removes border at the center of <thumb> when <Range mild={true}>:
+                        ...ifParentOrientationInline({ // inline
+                            borderInlineEndWidth: '0px',
+                        }),
+                        ...ifParentOrientationBlock({  // block
+                            borderBlockEndWidth: '0px',
+                        }),
+                        
+                        
+                        
                         // customize:
                         ...usesCssProps(usesPrefixedProps(ranges, 'tracklower')), // apply config's cssProps starting with tracklower***
                     }),
@@ -495,6 +495,17 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                         }),
                         ...ifParentOrientationBlock({  // block
                             flex   : [[`calc(1 - ${rangeVars.valueRatio})`, 0, `calc(${ranges.thumbBlockSize } / 2)`]], // growable, shrinkable, initial from 0 width; using `1 - valueRatio` for the grow/shrink ratio
+                        }),
+                        
+                        
+                        
+                        // borders:
+                        // removes border at the center of <thumb> when <Range mild={true}>:
+                        ...ifParentOrientationInline({ // inline
+                            borderInlineStartWidth: '0px',
+                        }),
+                        ...ifParentOrientationBlock({  // block
+                            borderBlockStartWidth: '0px',
                         }),
                         
                         
@@ -611,31 +622,7 @@ export const usesRangeVariants = () => {
         ]),
     });
 };
-export const usesRangeStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesEditableControlStates(),
-        ]),
-        ...states([
-            ifActive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-        ]),
-    });
-};
+export const usesRangeStates = usesEditableControlStates;
 
 export const useRangeStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
