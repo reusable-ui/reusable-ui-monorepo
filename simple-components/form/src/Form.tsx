@@ -323,6 +323,15 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     // states:
     const formValidator    = useFormValidator(props.customValidator);
+    const handleValidation = useMergeEvents(
+        // preserves the original `onValidation`:
+        props.onValidation,
+        
+        
+        
+        // states:
+        formValidator.handleValidation,
+    );
     const invalidableState = useInvalidable<HTMLFormElement>({
         // enabled           : props.enabled,
         // inheritEnabled    : props.inheritEnabled,
@@ -333,7 +342,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         enableValidation  : props.enableValidation,
         isValid           : props.isValid,
         inheritValidation : props.inheritValidation,
-        onValidation      : formValidator.handleValidation,
+        onValidation      : handleValidation,
     });
     
     
