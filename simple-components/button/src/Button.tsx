@@ -565,7 +565,7 @@ const Button = (props: ButtonProps): JSX.Element|null => {
     const {
         // variants:
         orientation : _orientation, // remove
-        buttonStyle : _buttonStyle, // remove
+        buttonStyle : buttonStyle,  // use
         
         
         
@@ -622,7 +622,13 @@ const Button = (props: ButtonProps): JSX.Element|null => {
             
             
             // variants:
-            mild={props.mild ?? false}
+            mild={props.mild ?? (
+                ((buttonStyle === 'link') || (buttonStyle === 'ghost'))
+                ?
+                'inherit' // <Parent> dependent of <Link> | <Ghost>
+                :
+                false     // bold <Button>
+            )}
             
             
             

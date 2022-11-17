@@ -11,6 +11,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
+import Basic from '@reusable-ui/basic';
 
 
 
@@ -68,6 +69,28 @@ function App() {
                     <Button theme='primary' buttonStyle='link'>
                         test link
                     </Button>
+                    <Basic theme='danger' mild={false}>
+                        <Button theme='primary' buttonStyle='regular'>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost'>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link'>
+                            test link
+                        </Button>
+                    </Basic>
+                    <Basic theme='danger' mild={true}>
+                        <Button theme='primary' buttonStyle='regular'>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost'>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link'>
+                            test link
+                        </Button>
+                    </Basic>
                     <hr style={{width: '100%'}} />
                     <Button theme='primary' buttonStyle='regular' gradient={true}>
                         test regular
@@ -78,6 +101,28 @@ function App() {
                     <Button theme='primary' buttonStyle='link' gradient={true}>
                         test link
                     </Button>
+                    <Basic theme='danger' mild={false}>
+                        <Button theme='primary' buttonStyle='regular' gradient={true}>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost' gradient={true}>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link' gradient={true}>
+                            test link
+                        </Button>
+                    </Basic>
+                    <Basic theme='danger' mild={true}>
+                        <Button theme='primary' buttonStyle='regular' gradient={true}>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost' gradient={true}>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link' gradient={true}>
+                            test link
+                        </Button>
+                    </Basic>
                     <hr style={{width: '100%'}} />
                     <Button theme='primary' buttonStyle='regular' gradient={true} outlined={true}>
                         test regular
@@ -88,6 +133,29 @@ function App() {
                     <Button theme='primary' buttonStyle='link' gradient={true} outlined={true}>
                         test link
                     </Button>
+                    <Basic theme='danger' mild={false}>
+                        <Button theme='primary' buttonStyle='regular' gradient={true} outlined={true}>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost' gradient={true} outlined={true}>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link' gradient={true} outlined={true}>
+                            test link
+                        </Button>
+                    </Basic>
+                    <Basic theme='danger' mild={true}>
+                        <Button theme='primary' buttonStyle='regular' gradient={true} outlined={true}>
+                            test regular
+                        </Button>
+                        <Button theme='primary' buttonStyle='ghost' gradient={true} outlined={true}>
+                            test ghost
+                        </Button>
+                        <Button theme='primary' buttonStyle='link' gradient={true} outlined={true}>
+                            test link
+                        </Button>
+                    </Basic>
+                    <hr style={{width: '100%'}} />
                 </article>
                 <hr />
                 <article className='actions'>
