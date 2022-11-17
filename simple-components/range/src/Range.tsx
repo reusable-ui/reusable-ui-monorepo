@@ -646,8 +646,31 @@ export interface RangeSubComponentProps
     trackComponent      ?: React.ReactComponentElement<any, EditableControlProps<Element>>
     trackLowerComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
     trackUpperComponent ?: React.ReactComponentElement<any, GenericProps<Element>>
-    
     thumbComponent      ?: React.ReactComponentElement<any, EditableActionControlProps<Element>>
+    
+    
+    
+    // refs:
+    trackRef          ?: React.Ref<Element> // setter ref
+    trackLowerRef     ?: React.Ref<Element> // setter ref
+    trackUpperRef     ?: React.Ref<Element> // setter ref
+    thumbRef          ?: React.Ref<Element> // setter ref
+    
+    
+    
+    // classes:
+    trackClasses      ?: Optional<string>[]
+    trackLowerClasses ?: Optional<string>[]
+    trackUpperClasses ?: Optional<string>[]
+    thumbClasses      ?: Optional<string>[]
+    
+    
+    
+    // styles:
+    trackStyle        ?: React.CSSProperties
+    trackLowerStyle   ?: React.CSSProperties
+    trackUpperStyle   ?: React.CSSProperties
+    thumbStyle        ?: React.CSSProperties
 }
 
 export interface RangeProps
@@ -685,30 +708,6 @@ export interface RangeProps
         // components:
         RangeSubComponentProps
 {
-    // refs:
-    trackRef          ?: React.Ref<Element> // setter ref
-    trackLowerRef     ?: React.Ref<Element> // setter ref
-    trackUpperRef     ?: React.Ref<Element> // setter ref
-    thumbRef          ?: React.Ref<Element> // setter ref
-    
-    
-    
-    // classes:
-    trackClasses      ?: Optional<string>[]
-    trackLowerClasses ?: Optional<string>[]
-    trackUpperClasses ?: Optional<string>[]
-    thumbClasses      ?: Optional<string>[]
-    
-    
-    
-    // styles:
-    trackStyle        ?: React.CSSProperties
-    trackLowerStyle   ?: React.CSSProperties
-    trackUpperStyle   ?: React.CSSProperties
-    thumbStyle        ?: React.CSSProperties
-    
-    
-    
     // validations:
     min               ?: string | number
     max               ?: string | number
@@ -750,31 +749,10 @@ const Range = (props: RangeProps): JSX.Element|null => {
         outerRef,
         elmRef,
         
-        trackRef,
-        trackLowerRef,
-        trackUpperRef,
-        thumbRef,
-        
         
         
         // variants:
-        orientation  : _orientation,  // remove
-        
-        
-        
-        // classes:
-        trackClasses,
-        trackLowerClasses,
-        trackUpperClasses,
-        thumbClasses,
-        
-        
-        
-        // styles:
-        trackStyle,
-        trackLowerStyle,
-        trackUpperStyle,
-        thumbStyle,
+        orientation : _orientation,  // remove
         
         
         
@@ -825,7 +803,22 @@ const Range = (props: RangeProps): JSX.Element|null => {
         trackLowerComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps<Element>>),
         trackUpperComponent = (<Generic />               as React.ReactComponentElement<any, GenericProps<Element>>),
         thumbComponent      = (<EditableActionControl /> as React.ReactComponentElement<any, EditableActionControlProps<Element>>),
-    ...restEditableControlProps}  = props;
+        
+        trackRef,
+        trackLowerRef,
+        trackUpperRef,
+        thumbRef,
+        
+        trackClasses,
+        trackLowerClasses,
+        trackUpperClasses,
+        thumbClasses,
+        
+        trackStyle,
+        trackLowerStyle,
+        trackUpperStyle,
+        thumbStyle,
+    ...restEditableControlProps} = props;
     
     
     
@@ -1104,7 +1097,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // features:
-    const {rangeVars}     = usesRange();
+    const {rangeVars} = usesRange();
     
     
     
