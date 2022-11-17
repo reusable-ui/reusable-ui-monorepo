@@ -65,7 +65,7 @@ import {
     
     
     // a possibility of UI having an invalid state:
-    ifNoValidation,
+    ifNeutralize,
     
     
     
@@ -232,7 +232,7 @@ export const usesEditableTextControlStates = () => {
                 ]),
             }),
             
-            ifNoValidation({
+            ifNeutralize({
                 ...children(iconElm, {
                     display: 'none', // hide the validation icon image
                 }),
