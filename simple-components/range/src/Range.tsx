@@ -226,7 +226,7 @@ export const usesRange = (config?: RangeConfig): RangeStuff => {
 export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
     return {
         // sizes:
-        minInlineSize        : 'unset'              as CssKnownProps['minInlineSize'],
+        minInlineSize        : '8rem'               as CssKnownProps['minInlineSize'],
         minBlockSize         : 'unset'              as CssKnownProps['minBlockSize' ],
         
         minInlineSizeBlock   : 'unset'              as CssKnownProps['minInlineSize'],
