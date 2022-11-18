@@ -478,7 +478,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             borderInlineEndWidth: '0px',
                         }),
                         ...ifParentOrientationBlock({  // block
-                            borderBlockEndWidth: '0px',
+                            borderBlockStartWidth: '0px',
                         }),
                         
                         
@@ -505,7 +505,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                             borderInlineStartWidth: '0px',
                         }),
                         ...ifParentOrientationBlock({  // block
-                            borderBlockStartWidth: '0px',
+                            borderBlockEndWidth: '0px',
                         }),
                         
                         
