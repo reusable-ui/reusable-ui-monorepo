@@ -121,11 +121,7 @@ export const usesLabelVariants = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesBasicVariants(),
-            resizableRule,
-        ]),
+        /* write specific labelStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule('.content', { // content
                 ...imports([
@@ -136,6 +132,11 @@ export const usesLabelVariants = () => {
                     usesContentBasicVariants(),
                 ]),
             }),
+        ]),
+        ...imports([
+            // variants:
+            usesBasicVariants(),
+            resizableRule,
         ]),
     });
 };
