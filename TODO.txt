@@ -1,12 +1,12 @@
 done:
 ButtonVariant
+CheckVariant
 
 [high prior ] add 'regular' for:
 CardVariant
 ListVariant
 
 LabelVariant
-CheckVariant
 BadgeVariant
 
 CarouselVariant

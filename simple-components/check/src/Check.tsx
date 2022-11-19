@@ -145,6 +145,11 @@ import {
 
 
 
+// defaults:
+const _defaultCheckStyle : CheckStyle  = 'regular'
+
+
+
 // configs:
 export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     // dependencies:
@@ -273,6 +278,18 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
 
 
 // styles:
+export type CheckStyle = 'regular'|'button'|'toggleButton'|'switch' // might be added more styles in the future
+export interface CheckVariant {
+    checkStyle ?: CheckStyle
+}
+export const useCheckVariant = ({checkStyle = _defaultCheckStyle}: CheckVariant) => {
+    return {
+        class: (checkStyle === 'regular') ? null : checkStyle,
+    };
+};
+
+
+
 export const dummyElm = '::before'
 export const inputElm = ':where(:first-child)'     // zero degree specificity to be easily overwritten
 export const checkElm = '::before'
@@ -435,11 +452,7 @@ export const usesCheckVariants = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesEditableActionControlVariants(),
-            resizableRule,
-        ]),
+        /* write specific checkStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.button', '.toggleButton'], {
                 ...imports([
@@ -500,6 +513,11 @@ export const usesCheckVariants = () => {
                 ...overwriteProps(checks, usesPrefixedProps(checks, 'switch')),
             }),
         ], { specificityWeight: 1 }),
+        ...imports([
+            // variants:
+            usesEditableActionControlVariants(),
+            resizableRule,
+        ]),
         ...variants([
             ifNotNude({
                 // children:
@@ -569,18 +587,6 @@ export const useCheckStyleSheet = dynamicStyleSheet(() => ({
         usesCheckStates(),
     ]),
 }), { id: 'nx58strmq2' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type CheckStyle = 'button'|'toggleButton'|'switch' // might be added more styles in the future
-export interface CheckVariant {
-    checkStyle ?: CheckStyle
-}
-export const useCheckVariant = (props: CheckVariant) => {
-    return {
-        class: props.checkStyle ?? null,
-    };
-};
 
 
 
@@ -663,7 +669,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         
         
         // variants:
-        checkStyle : _checkStyle, // remove
+        checkStyle : checkStyle, // use
         
         
         
@@ -863,8 +869,14 @@ const Check = (props: CheckProps): JSX.Element|null => {
             
             
             // variants:
-            nude={props.nude ?? true}
-            mild={props.mild ?? false}
+            nude={props.nude ?? (
+                ((checkStyle === 'button') || (checkStyle === 'toggleButton'))
+                ?
+                false // filled : <Check checkStyle='button'> | <Check checkStyle='toggleButton'>
+                :
+                true  // nude   : <Check> | <Check checkStyle='switch'>
+            )}
+            mild={props.mild ?? false} // bold <Check>
             
             
             
