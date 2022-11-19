@@ -375,8 +375,18 @@ export interface HamburgerMenuButtonProps
     extends
         // bases:
         Omit<ToggleButtonProps,
+            // links:
+            |'href' // link href is not supported
+            
+            
+            
+            // variants:
+            |'orientation' // orientation is not supported
+            
+            
+            
             // children:
-            |'children'|'buttonChildren' // children is not supported
+            |'children' // children is not supported
         >,
         
         // components:
