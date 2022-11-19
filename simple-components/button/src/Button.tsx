@@ -178,6 +178,18 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
 
 
 // styles:
+export type ButtonStyle = 'regular'|'link'|'ghost' // might be added more styles in the future
+export interface ButtonVariant {
+    buttonStyle ?: ButtonStyle
+}
+export const useButtonVariant = ({buttonStyle = _defaultButtonStyle}: ButtonVariant) => {
+    return {
+        class: (buttonStyle === 'regular') ? null : buttonStyle,
+    };
+};
+
+
+
 interface CondBorderVars {
     condBorderWidthTg : any
 }
@@ -381,15 +393,16 @@ export const usesButtonVariants = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesActionControlVariants(),
-            resizableRule,
-        ]),
+        /* write specific buttonStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.link', '.ghost'], usesAppearAsOutlined()     ),
             rule( '.link'           , usesButtonLinkVariant()  ),
             rule(          '.ghost' , usesButtonGhostVariant() ),
+        ]),
+        ...imports([
+            // variants:
+            usesActionControlVariants(),
+            resizableRule,
         ]),
     });
 };
@@ -422,18 +435,6 @@ export const useButtonStyleSheet = dynamicStyleSheet(() => ({
         usesButtonStates(),
     ]),
 }), { id: '7rehb2h20q' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type ButtonStyle = 'regular'|'link'|'ghost' // might be added more styles in the future
-export interface ButtonVariant {
-    buttonStyle ?: ButtonStyle
-}
-export const useButtonVariant = ({buttonStyle = _defaultButtonStyle}: ButtonVariant) => {
-    return {
-        class: (buttonStyle === 'regular') ? null : buttonStyle,
-    };
-};
 
 
 
