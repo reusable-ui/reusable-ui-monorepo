@@ -1,4 +1,5 @@
 done:
+LabelVariant
 ButtonVariant
 CheckVariant
 
@@ -6,7 +7,6 @@ CheckVariant
 CardVariant
 ListVariant
 
-LabelVariant
 BadgeVariant
 
 CarouselVariant

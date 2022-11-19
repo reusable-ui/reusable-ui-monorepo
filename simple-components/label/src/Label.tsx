@@ -54,6 +54,11 @@ import {
 
 
 
+// defaults:
+const _defaultLabelStyle : LabelStyle = 'regular'
+
+
+
 // configs:
 export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
     return {
@@ -64,6 +69,18 @@ export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
 
 
 // styles:
+export type LabelStyle = 'regular'|'content' // might be added more styles in the future
+export interface LabelVariant {
+    labelStyle ?: LabelStyle
+}
+export const useLabelVariant = ({labelStyle = _defaultLabelStyle}: LabelVariant) => {
+    return {
+        class: (labelStyle === 'regular') ? null : labelStyle,
+    };
+};
+
+
+
 export const usesLabelLayout = () => {
     return style({
         ...imports([
@@ -132,18 +149,6 @@ export const useLabelStyleSheet = dynamicStyleSheet(() => ({
         usesLabelVariants(),
     ]),
 }), { id: 'si01upz9vr' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type LabelStyle = 'content' // might be added more styles in the future
-export interface LabelVariant {
-    labelStyle ?: LabelStyle
-}
-export const useLabelVariant = (props: LabelVariant) => {
-    return {
-        class: props.labelStyle ?? null,
-    };
-};
 
 
 
