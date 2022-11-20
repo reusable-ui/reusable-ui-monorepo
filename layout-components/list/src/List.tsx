@@ -8,7 +8,6 @@ import {
 import {
     // cssfn general types:
     Optional,
-    SingleOrArray,
     
     
     
@@ -294,9 +293,16 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
 
 // styles:
 export type ListBasicStyle = 'regular'|'flat'|'flush'|'joined';
-export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export type ListSpecificStyle = 'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export type ListStyle =
+    |ListBasicStyle
+    |ListSpecificStyle
+    |[ListBasicStyle]
+    |[ListSpecificStyle]
+    |[ListBasicStyle, ListSpecificStyle]
+    |[ListSpecificStyle, ListBasicStyle]
 export interface ListVariant {
-    listStyle ?: SingleOrArray<ListStyle>
+    listStyle ?: ListStyle
 }
 export const useListVariant = ({ listStyle }: ListVariant) => {
     return {
