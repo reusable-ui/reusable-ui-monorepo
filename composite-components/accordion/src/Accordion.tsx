@@ -11,11 +11,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn general types:
-    SingleOrArray,
-    
-    
-    
     // writes css in javascript:
     style,
     imports,
@@ -76,7 +71,9 @@ import {
     usesListItemLayout,
     usesListItemVariants,
     usesListItemStates,
-    ListStyle,
+    ListBasicStyle,
+    ListSpecificStyle,
+    ListCompositeStyle,
     ListVariant,
     
     
@@ -498,7 +495,8 @@ export {
 
 
 
-export type ListStyleLimited = Exclude<ListStyle, 'tab'|'bullet'> // 'tab' and 'bullet' are not supported in <Accordion>
+export type ListSpecificStyleLimited = Exclude<ListSpecificStyle, 'tab'|'bullet'> // 'tab' and 'bullet' are not supported in <Accordion>
+export type ListStyleLimited = ListCompositeStyle<ListBasicStyle, ListSpecificStyleLimited>
 export interface AccordionProps<TElement extends Element = HTMLElement>
     extends
         // bases:
@@ -521,7 +519,7 @@ export interface AccordionProps<TElement extends Element = HTMLElement>
         >
 {
     // variants:
-    listStyle ?: SingleOrArray<ListStyleLimited>
+    listStyle ?: ListStyleLimited
     
     
     
