@@ -124,6 +124,8 @@ const _defaultFooterSemanticRole : SemanticRole = ''        // no corresponding 
 const _defaultBodySemanticTag    : SemanticTag  = ''        // no corresponding semantic tag => defaults to <div>
 const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding role
 
+const _defaultCardStyle          : CardStyle = 'regular'
+
 
 
 // configs:
@@ -168,6 +170,18 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
 
 
 // styles:
+export type CardStyle = 'regular'|'flat'|'flush'|'joined' // might be added more styles in the future
+export interface CardVariant {
+    cardStyle ?: CardStyle
+}
+export const useCardVariant = ({cardStyle = _defaultCardStyle}: CardVariant) => {
+    return {
+        class: (cardStyle === 'regular') ? null : cardStyle,
+    };
+};
+
+
+
 export const headerElm = '.header' // one degree specificity to overwrite <CardHeader> component
 export const footerElm = '.footer' // one degree specificity to overwrite <CardFooter> component
 export const bodyElm   = '.body'   // one degree specificity to overwrite <CardBody>   component
@@ -427,12 +441,7 @@ export const usesCardVariants = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            usesContentVariants(),
-            resizableRule,
-        ]),
+        /* write specific cardStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.flat', '.flush'], {
                 // borders:
@@ -454,6 +463,12 @@ export const usesCardVariants = () => {
                     [borderVars.borderWidth] : '0px',
                 }),
             }),
+        ]),
+        ...imports([
+            // variants:
+            usesIndicatorVariants(),
+            usesContentVariants(),
+            resizableRule,
         ]),
     });
 };
@@ -478,18 +493,6 @@ export const useCardStyleSheet = dynamicStyleSheet(() => ({
         usesCardStates(),
     ]),
 }), { id: 'wfc3nwgtcn' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type CardStyle = 'flat'|'flush'|'joined' // might be added more styles in the future
-export interface CardVariant {
-    cardStyle ?: CardStyle
-}
-export const useCardVariant = (props: CardVariant) => {
-    return {
-        class: props.cardStyle ?? null,
-    };
-};
 
 
 

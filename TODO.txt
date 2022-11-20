@@ -3,10 +3,10 @@ LabelVariant
 ButtonVariant
 CheckVariant
 ListVariant
+CardVariant
 
 
 [high prior ] add 'regular' for:
-CardVariant
 
 BadgeVariant
 
