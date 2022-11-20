@@ -293,6 +293,24 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
 
 
 // styles:
+export type ListBasicStyle = 'regular'|'flat'|'flush'|'joined';
+export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export interface ListVariant {
+    listStyle ?: SingleOrArray<ListStyle>
+}
+export const useListVariant = ({ listStyle }: ListVariant) => {
+    return {
+        class: (
+            (Array.isArray(listStyle) ? listStyle : [listStyle])
+            .filter((style) => !!style && (style !== 'regular')).join(' ')
+            ||
+            null
+        ),
+    };
+};
+
+
+
 export const wrapperElm  = '*'                    // zero degree specificity to be easily overwritten
 export const listItemElm = ':where(:first-child)' // zero degree specificity to be easily overwritten
 // not exported:
@@ -872,11 +890,9 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            resizableRule,
-        ]),
+        /* write specific listStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
+        
+        /* the most general variants: */
         ...variants([
             rule('.content', { // content
                 ...imports([
@@ -918,6 +934,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                 }),
             }),
         ]),
+        
+        /* a more specific variants: */
         ...imports([
             usesListBasicVariants({
                 additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
@@ -925,6 +943,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                 // specificityWeight            : 1, // not needed
             }),
         ]),
+        
+        /* the most specific variants: */
         ...variants([ 
             rule('.button', {
                 // spacings:
@@ -1259,6 +1279,13 @@ export const usesListVariants = (options?: OrientationableOptions) => {
             *      `:not(.inline)>*>.listItem:not(_)`           , the specificity weight = 2.1 (<listItem>'s borderSeparator)
             * `:not(.inline).list>*>:not(_):where(:first-child)`, the specificity weight = 2.1 (<listItem>'s borderRadius)
         */
+        
+        /* the king variants: */
+        ...imports([
+            // variants:
+            usesIndicatorVariants(),
+            resizableRule,
+        ]),
     });
 };
 export const usesListStates = () => {
@@ -1282,24 +1309,6 @@ export const useListStyleSheet = dynamicStyleSheet(() => ({
         usesListStates(),
     ]),
 }), { id: 'dj4jw72kyr' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type ListBasicStyle = 'flat'|'flush'|'joined';
-export type ListStyle = ListBasicStyle|'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
-export interface ListVariant {
-    listStyle ?: SingleOrArray<ListStyle>
-}
-export const useListVariant = ({ listStyle }: ListVariant) => {
-    return {
-        class: (
-            (Array.isArray(listStyle) ? listStyle : [listStyle])
-            .filter((style) => !!style).join(' ')
-            ||
-            null
-        ),
-    };
-};
 
 
 
