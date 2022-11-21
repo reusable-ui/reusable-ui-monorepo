@@ -88,9 +88,9 @@ const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'bor
 export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
     return {
         // sizes:
-        itemRaiseRowHeight   : '2px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeight   : '1px'                as CssKnownProps['blockSize'],
         itemRaiseRowHeightSm : '1px'                as CssKnownProps['blockSize'],
-        itemRaiseRowHeightLg : '4px'                as CssKnownProps['blockSize'],
+        itemRaiseRowHeightLg : '2px'                as CssKnownProps['blockSize'],
         
         itemMinColumnWidth   : 'calc(5 * 40px)'     as CssKnownProps['columnWidth'],
         itemMinColumnWidthSm : 'calc(3 * 40px)'     as CssKnownProps['columnWidth'],
@@ -318,35 +318,35 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     
     
     // dom effects:
-    const itemsRaiseSizeCache = useRef<number>(1);
-    useIsomorphicLayoutEffect(() => {
+    const itemsRaiseSizeCache = useRef<number|null>(null);
+    const calculateItemsRaiseSize = (): number|null => {
         // conditions:
         const masonry = masonryRefInternal.current;
-        if (!masonry) return; // masonry was unloaded => nothing to do
+        if (!masonry) return null; // masonry was unloaded => nothing to do
         
         
         
+        const gridAutoXString = (
+            isOrientationBlock
+            ?
+            getComputedStyle(masonry).gridAutoRows
+            :
+            getComputedStyle(masonry).gridAutoColumns
+        );
+        if (!gridAutoXString) return null; // the cssfn is not ready => nothing to do
+        
+        
+        
+        const gridAutoXNumber = Number.parseInt(gridAutoXString);
+        if (isNaN(gridAutoXNumber)) return null; // invalid number => nothing to do
+        
+        
+        
+        return Math.max(1, gridAutoXNumber); // limits the precision to 1px, any value less than 1px will be scaled up to 1px
+    }
+    useIsomorphicLayoutEffect(() => {
         // setups:
-        const cancelRequest = requestAnimationFrame(() => { // wait until the cssfn is fully loaded
-            itemsRaiseSizeCache.current = Math.max(1, // limits the precision to 1px, any value less than 1px will be scaled up to 1px
-                Number.parseInt(
-                    isOrientationBlock
-                    ?
-                    getComputedStyle(masonry).gridAutoRows
-                    :
-                    getComputedStyle(masonry).gridAutoColumns
-                )
-                ||
-                1 // if parsing error (NaN) => falsy => default to 1px
-            );
-        });
-        
-        
-        
-        // cleanups:
-        return () => {
-            cancelAnimationFrame(cancelRequest);
-        };
+        itemsRaiseSizeCache.current = calculateItemsRaiseSize();
     }, [isOrientationBlock, props.size]); // rebuild the itemsRaiseSizeCache if [orientation] or [size] changed
     
     useIsomorphicLayoutEffect(() => {
@@ -388,7 +388,8 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
             // update the item's height by modifying item's inline css:
             requestAnimationFrame(() => { // delaying to modify the css, so the next_loop of `updateItemHeight` doesn't cause to force_reflow
                 const style = (item as HTMLElement|SVGElement).style;
-                const spanWidth = `span ${Math.round(totalSize / itemsRaiseSizeCache.current)}`;
+                if (itemsRaiseSizeCache.current === null) itemsRaiseSizeCache.current = calculateItemsRaiseSize();
+                const spanWidth = `span ${Math.round(totalSize / (itemsRaiseSizeCache.current ?? 1))}`;
                 if (isOrientationBlock) {
                     style.gridRowEnd    = spanWidth;
                     style.gridColumnEnd = ''; // clear from residual effect from <Masonry orientation="inline"> (if was)
@@ -463,12 +464,15 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         let overallResize = true;
         const handleMasonryResize = () => {
-            overallResize = true;
-            updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
-            
-            setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
-                overallResize = false;
-            }, 0);
+            try {
+                overallResize = true; // mark_in
+                updateFirstRowItems(); // side effect: modify item's [class] => modify some item's [margin(Inline|Block)Start]
+            }
+            finally {
+                setTimeout(() => { // wait until all items have processed the resize event and the browser has already paint the ui
+                    overallResize = false; // mark_out
+                }, 0);
+            } // try
         };
         
         masonryResizeObserver.observe(masonry, _defaultMasonryResizeObserverOptions);
