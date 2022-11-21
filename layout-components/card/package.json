@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/card",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A flexible and extensible content container, with optional header and footer.",
   "keywords": [
     "card",

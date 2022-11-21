@@ -344,7 +344,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     return style({
         ...imports([
             // features:
-            borderRule,
+            // borderRule, // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
             animationRule,
             groupableRule, // make a nicely rounded corners
         ]),
@@ -367,6 +367,16 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             // sizes:
             // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
             minInlineSize     : 0,
+            
+            
+            
+            // borders:
+            ...children(['&', headerElm, footerElm, bodyElm], {
+                ...imports([
+                    // features:
+                    borderRule, // dedicated border stroke for each <Card> & <CardItem>(s), so each borderRule can be turn on/off indepenently, eg: `cardStyle='flush'`
+                ]),
+            }),
             
             
             
