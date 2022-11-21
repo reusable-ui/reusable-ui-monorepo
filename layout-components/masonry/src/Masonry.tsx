@@ -337,7 +337,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
         
         
         
-        const gridAutoXNumber = Number.parseInt(gridAutoXString);
+        const gridAutoXNumber = Math.round(Number.parseFloat(gridAutoXString));
         if (isNaN(gridAutoXNumber)) return null; // invalid number => nothing to do
         
         
