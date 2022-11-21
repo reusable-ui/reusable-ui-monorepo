@@ -365,20 +365,20 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
                 
                 if (isOrientationBlock) {
                     return (
-                        Number.parseInt(style.marginBlockStart)
+                        Number.parseFloat(style.marginBlockStart)
                         +
-                        Number.parseInt(style.blockSize)
+                        Number.parseFloat(style.blockSize)
                         +
-                        Number.parseInt(style.marginBlockEnd)
+                        Number.parseFloat(style.marginBlockEnd)
                     );
                 }
                 else {
                     return (
-                        Number.parseInt(style.marginInlineStart)
+                        Number.parseFloat(style.marginInlineStart)
                         +
-                        Number.parseInt(style.inlineSize)
+                        Number.parseFloat(style.inlineSize)
                         +
-                        Number.parseInt(style.marginInlineEnd)
+                        Number.parseFloat(style.marginInlineEnd)
                     );
                 } // if
             })();
