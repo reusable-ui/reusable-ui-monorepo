@@ -176,8 +176,9 @@ export const usesBadgeLayout = () => {
             
             
             // sizes:
-            justifySelf   : 'center', // protect from stretching by flex/grid
-            alignSelf     : 'center', // protect from stretching by flex/grid
+            justifySelf   : 'center',         // protect from stretching by flex/grid
+            alignSelf     : 'center',         // protect from stretching by flex/grid
+            flex          : [[0, 0, 'auto']], // protect from stretching by flex
             ...ifEmpty({
                 // makes the width and height equal, by filling `width === height === line(Height/Width)`:
                 
