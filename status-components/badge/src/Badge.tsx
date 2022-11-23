@@ -133,6 +133,18 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
 
 
 // styles:
+export type BadgeStyle = 'regular'|'pill'|'square'|'circle' // might be added more styles in the future
+export interface BadgeVariant {
+    badgeStyle ?: BadgeStyle
+}
+export const useBadgeVariant = ({badgeStyle}: BadgeVariant) => {
+    return {
+        class: (badgeStyle === 'regular') ? null : badgeStyle,
+    };
+};
+
+
+
 export const usesBadgeLayout = () => {
     // dependencies:
     
@@ -164,6 +176,8 @@ export const usesBadgeLayout = () => {
             
             
             // sizes:
+            justifySelf   : 'center', // protect from stretching by flex/grid
+            alignSelf     : 'center', // protect from stretching by flex/grid
             ...ifEmpty({
                 // makes the width and height equal, by filling `width === height === line(Height/Width)`:
                 
@@ -281,18 +295,6 @@ export const useBadgeStyleSheet = dynamicStyleSheet(() => ({
         usesBadgeStates(),
     ]),
 }), { id: 'a7wkthow0k' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type BadgeStyle = 'pill'|'square'|'circle' // might be added more styles in the future
-export interface BadgeVariant {
-    badgeStyle ?: BadgeStyle
-}
-export const useBadgeVariant = (props: BadgeVariant) => {
-    return {
-        class: props.badgeStyle ?? null,
-    };
-};
 
 
 

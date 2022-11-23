@@ -4,12 +4,11 @@ ButtonVariant
 CheckVariant
 ListVariant
 CardVariant
+BadgeVariant
+
 
 
 [high prior ] add 'regular' for:
-
-BadgeVariant
-
 CarouselVariant
 DetailsVariant
 
