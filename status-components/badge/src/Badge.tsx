@@ -237,11 +237,7 @@ export const usesBadgeVariants = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            usesPopupVariants(),
-            resizableRule,
-        ]),
+        /* write specific badgeStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.pill', '.circle'], {
                 // borders:
@@ -271,6 +267,11 @@ export const usesBadgeVariants = () => {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(badges, 'circle')), // apply config's cssProps starting with circle***
             }),
+        ]),
+        ...imports([
+            // variants:
+            usesPopupVariants(),
+            resizableRule,
         ]),
     });
 };
