@@ -118,7 +118,7 @@ import {
 // variants:
 
 //#region resizable
-export type SizeName = 'xs'|'sm'|'lg'|'xl'
+export type SizeName = 'xs'|'sm'|'md'|'lg'|'xl'
 
 
 
@@ -126,7 +126,7 @@ export type SizeName = 'xs'|'sm'|'lg'|'xl'
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
-export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'lg', 'xl'];
+export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'md', 'lg', 'xl'];
 //#endregion resizable
 
 
