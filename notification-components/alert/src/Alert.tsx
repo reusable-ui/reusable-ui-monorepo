@@ -104,7 +104,7 @@ import {
 
 
 // defaults:
-const _defaultIconSizes : { [key: string]: IconSizeName } = {
+const _defaultIconSizes      : { [key: string]: IconSizeName } = {
     sm: 'md',
     md: 'lg',
     lg: 'xl',
