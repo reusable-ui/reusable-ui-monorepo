@@ -394,46 +394,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         return {
             name: 'arrowOffset',
             async fn({ placement, x, y }) {
-                const [width, height]  = await (async (): Promise<ArrowSize> => {
-                    const tooltip = arrow.parentElement;
-                    if (!tooltip) {
-                        // measure size:
-                        return await calculateArrowSize({ arrow: arrow, placement });
-                    } // if
-                    
-                    
-                    
-                    // backup:
-                    const tooltipStyle = tooltip.style;
-                    const {
-                        display,
-                        visibility,
-                        transition,
-                        animation,
-                    } = tooltipStyle;
-                    
-                    
-                    
-                    try {
-                        // temporary modify:
-                        tooltipStyle.display    = 'block';
-                        tooltipStyle.visibility = 'hidden';
-                        tooltipStyle.transition = 'none';
-                        tooltipStyle.animation  = 'none';
-                        
-                        
-                        
-                        // measure size:
-                        return await calculateArrowSize({ arrow: arrow, placement });
-                    }
-                    finally {
-                        // restore:
-                        tooltipStyle.display    = display;
-                        tooltipStyle.visibility = visibility;
-                        tooltipStyle.transition = transition;
-                        tooltipStyle.animation  = animation;
-                    } // try
-                })();
+                const [width, height] = await calculateArrowSize({ arrow: arrow, placement });
                 
                 
                 
