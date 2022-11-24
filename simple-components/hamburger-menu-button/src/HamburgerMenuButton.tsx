@@ -110,22 +110,22 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
     const topTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
     const topTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const topTransformCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
-    const topTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.35)', 'translate(0, 37.5%)' ]];
+    const topTransformCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.34)', 'translate(0, 33.3%)' ]];
+    const topTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.34)', 'translate(0, 33.3%)' ]];
     
     
     const midTransformHamburger     : CssKnownProps['transform'] = [[                  'scaleX(1)'   ,                       ]];
-    const midTransformHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
+    const midTransformHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.34)'                        ]];
     
     const midTransformCrossed       : CssKnownProps['transform'] = [[                  'scaleX(0)'   ,                       ]];
-    const midTransformCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.35)'                        ]];
+    const midTransformCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.34)'                        ]];
     
     
     const btmTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
     const btmTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const btmTransformCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
-    const btmTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.35)', 'translate(0, -37.5%)']];
+    const btmTransformCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.34)', 'translate(0, -33.3%)']];
+    const btmTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.34)', 'translate(0, -33.3%)']];
     
     
     
@@ -432,9 +432,9 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
         // children:
         toggleButtonComponent.props.children ?? (
             <svg viewBox='0 0 24 24'>
-                <polyline points='2,3 22,3' />
-                <polyline points='2,12 22,12' />
-                <polyline points='2,21 22,21' />
+                <polyline points='3,4 21,4' />
+                <polyline points='3,12 21,12' />
+                <polyline points='3,20 21,20' />
             </svg>
         ),
     );
