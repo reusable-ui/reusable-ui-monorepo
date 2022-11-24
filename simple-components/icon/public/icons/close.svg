@@ -6,6 +6,6 @@
             stroke-linecap: round;
         }
     </style>
-    <polyline points="3,20 21,4" />
-    <polyline points="3,4 21,20" />
+    <polyline points="4,20 20,4" />
+    <polyline points="4,4 20,20" />
 </svg>
