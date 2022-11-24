@@ -10,5 +10,5 @@
             }
         }
     </style>
-    <path id="indicator" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" d="M12,22.5A10.5,10.5,0,1,1,22.5,12"/>
+    <path id="indicator" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" d="M12,21.5A9.5,9.5,0,1,1,21.5,12"/>
 </svg>
