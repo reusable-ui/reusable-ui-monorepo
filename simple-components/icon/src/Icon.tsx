@@ -655,12 +655,11 @@ export const customIconList = [
     'dropright',
     'dropleft',
 ] as const;
-export type CustomIconList  = (typeof customIconList)[number]
+export type CustomIconList  = (typeof customIconList)[number] | (string & {})
 
 export type IconList =
     |BuiltinIconList
     |CustomIconList
-    |(string & {})
 
 export interface IconProps<TElement extends Element = HTMLSpanElement>
     extends
