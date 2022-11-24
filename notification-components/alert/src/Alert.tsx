@@ -104,10 +104,18 @@ import {
 
 
 // defaults:
-const _defaultIconSize       : IconSizeName       = 'md'
+const _defaultIconSizes : { [key: string]: IconSizeName } = {
+    sm: 'md',
+    md: 'lg',
+    lg: 'xl',
+};
 const _defaultIconClasses    : Optional<string>[] = ['icon']
 
-const _defaultControlSize    : ButtonIconSizeName = 'xs'
+const _defaultControlSizes   : { [key: string]: ButtonIconSizeName } = {
+    sm: 'xs',
+    md: 'xs',
+    lg: 'sm',
+};
 const _defaultControlClasses : Optional<string>[] = ['control']
 
 
@@ -116,8 +124,12 @@ const _defaultControlClasses : Optional<string>[] = ['control']
 export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
     return {
         // spacings:
-        gapInline : spacers.default as CssKnownProps['gapInline'],
-        gapBlock  : spacers.default as CssKnownProps['gapBlock' ],
+        gapInline   : spacers.md    as CssKnownProps['gapInline'],
+        gapBlock    : spacers.md    as CssKnownProps['gapBlock' ],
+        gapInlineSm : spacers.sm    as CssKnownProps['gapInline'],
+        gapBlockSm  : spacers.sm    as CssKnownProps['gapBlock' ],
+        gapInlineLg : spacers.lg    as CssKnownProps['gapInline'],
+        gapBlockLg  : spacers.lg    as CssKnownProps['gapBlock' ],
     };
 }, { prefix: 'alrt' });
 
@@ -294,6 +306,11 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
+        // variants:
+        size = 'md',
+        
+        
+        
         // states:
         onExpandedChange,
         
@@ -351,6 +368,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             // variants:
+            size={size}
             mild={props.mild ?? true}
             
             
@@ -363,7 +381,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
                 // props:
                 {
                     // variants:
-                    size    : iconComponent.props.size ?? _defaultIconSize,
+                    size    : iconComponent.props.size    ?? _defaultIconSizes[size],
                     
                     
                     
@@ -381,7 +399,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
                 // props:
                 {
                     // variants:
-                    size    : controlComponent.props.size ?? (_defaultControlSize as ControlProps<Element>['size']),
+                    size    : controlComponent.props.size    ?? (_defaultControlSizes[size] as ControlProps<Element>['size']),
                     
                     
                     
