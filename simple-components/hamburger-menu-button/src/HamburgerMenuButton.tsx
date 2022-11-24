@@ -110,22 +110,22 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
     const topTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
     const topTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(15deg)' , 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const topTransformCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.34)', 'translate(0, 33.3%)' ]];
-    const topTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.34)', 'translate(0, 33.3%)' ]];
+    const topTransformCrossed       : CssKnownProps['transform'] = [['rotate(-45deg)', 'scaleX(1.41)', 'translate(0, 33.3%)' ]];
+    const topTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(-60deg)', 'scaleX(1.41)', 'translate(0, 33.3%)' ]];
     
     
     const midTransformHamburger     : CssKnownProps['transform'] = [[                  'scaleX(1)'   ,                       ]];
-    const midTransformHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.34)'                        ]];
+    const midTransformHamburgerOver : CssKnownProps['transform'] = [[                  'scaleX(1.41)'                        ]];
     
     const midTransformCrossed       : CssKnownProps['transform'] = [[                  'scaleX(0)'   ,                       ]];
-    const midTransformCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.34)'                        ]];
+    const midTransformCrossedOver   : CssKnownProps['transform'] = [[                  'scaleX(1.41)'                        ]];
     
     
     const btmTransformHamburger     : CssKnownProps['transform'] = [['rotate(0deg)'  , 'scaleX(1)'   , 'translate(0, 0)'     ]];
     const btmTransformHamburgerOver : CssKnownProps['transform'] = [['rotate(-15deg)', 'scaleX(1)'   , 'translate(0, 0)',    ]];
     
-    const btmTransformCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.34)', 'translate(0, -33.3%)']];
-    const btmTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.34)', 'translate(0, -33.3%)']];
+    const btmTransformCrossed       : CssKnownProps['transform'] = [['rotate(45deg)' , 'scaleX(1.41)', 'translate(0, -33.3%)']];
+    const btmTransformCrossedOver   : CssKnownProps['transform'] = [['rotate(60deg)' , 'scaleX(1.41)', 'translate(0, -33.3%)']];
     
     
     
