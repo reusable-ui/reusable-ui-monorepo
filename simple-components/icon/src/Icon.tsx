@@ -226,7 +226,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
 // variants:
 
 //#region resizable
-export type SizeName = 'sm'|'md'|'lg'|'xl'|'1em'
+export type SizeName = 'xs'|'sm'|'md'|'lg'|'xl'|'1em'
 
 
 
@@ -234,7 +234,7 @@ export type SizeName = 'sm'|'md'|'lg'|'xl'|'1em'
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
-export const sizeOptions = (): SizeName[] => ['sm', 'md', 'lg', 'xl', '1em'];
+export const sizeOptions = (): SizeName[] => ['xs', 'sm', 'md', 'lg', 'xl', '1em'];
 //#endregion resizable
 
 
@@ -304,6 +304,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         // sizes:
         size       :            basics.sizeMd                       as CssKnownProps['blockSize'],
+        sizeXs     : [['calc(', basics.sizeMd, '*', 0.50  , ')']]   as CssKnownProps['blockSize'],
         sizeSm     : [['calc(', basics.sizeMd, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
         sizeLg     : [['calc(', basics.sizeMd, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
         sizeXl     : [['calc(', basics.sizeMd, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
