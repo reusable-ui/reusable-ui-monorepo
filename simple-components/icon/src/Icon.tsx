@@ -98,7 +98,7 @@ import {
 
 // internals:
 import type {
-    default as fontItems,
+    default as builtinIconList,
 }                           from './icon-font-material.js'
 
 
@@ -226,7 +226,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
 // variants:
 
 //#region resizable
-export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
+export type SizeName = 'sm'|'md'|'lg'|'xl'|'1em'
 
 
 
@@ -234,7 +234,7 @@ export type SizeName = 'sm'|'nm'|'md'|'lg'|'1em'
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
-export const sizeOptions = (): SizeName[] => ['sm', 'nm', 'md', 'lg', '1em'];
+export const sizeOptions = (): SizeName[] => ['sm', 'md', 'lg', 'xl', '1em'];
 //#endregion resizable
 
 
@@ -292,7 +292,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         
         // sizes:
-        sizeNm     : '24px'                                         as CssKnownProps['blockSize'],
+        sizeMd     : '24px'                                         as CssKnownProps['blockSize'],
     };
     
     
@@ -303,10 +303,10 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         
         // sizes:
-        size       :            basics.sizeNm                       as CssKnownProps['blockSize'],
-        sizeSm     : [['calc(', basics.sizeNm, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
-        sizeMd     : [['calc(', basics.sizeNm, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
-        sizeLg     : [['calc(', basics.sizeNm, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
+        size       :            basics.sizeMd                       as CssKnownProps['blockSize'],
+        sizeSm     : [['calc(', basics.sizeMd, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
+        sizeLg     : [['calc(', basics.sizeMd, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
+        sizeXl     : [['calc(', basics.sizeMd, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
         size1em    : '1em'                                          as CssKnownProps['blockSize'],
         
         
@@ -337,7 +337,7 @@ export const iconConfig = {
         // /**
         //  * A list of valid icon-font's content.
         //  */
-        // items : fontItems as unknown as string[],
+        // items : builtinIconList as unknown as string[],
         
         /**
          * The css style of icon-font to be loaded.
@@ -640,18 +640,27 @@ export const useIconStyleSheet = dynamicStyleSheet(() => ({
 
 
 // react components:
-type CustomIconList  =
-|'instagram'
-|'whatsapp'
-|'close'
-|'busy'
-|'prev'
-|'next'
-|'dropup'
-|'dropdown'
-|'dropright'
-|'dropleft';
-export type IconList = CustomIconList | ((typeof fontItems)[number]) | (string & {})
+export { builtinIconList }
+export type BuiltinIconList = (typeof builtinIconList)[number]
+
+export const customIconList = [
+    'instagram',
+    'whatsapp',
+    'close',
+    'busy',
+    'prev',
+    'next',
+    'dropup',
+    'dropdown',
+    'dropright',
+    'dropleft',
+] as const;
+export type CustomIconList  = (typeof customIconList)[number]
+
+export type IconList =
+    |BuiltinIconList
+    |CustomIconList
+    |(string & {})
 
 export interface IconProps<TElement extends Element = HTMLSpanElement>
     extends
