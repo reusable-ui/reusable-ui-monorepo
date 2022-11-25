@@ -26,6 +26,7 @@ ModalSideVariant
 
 
 [med prior ] fix <HamburgerMenuButton> animation
+[med prior ] fix <Tooltip outlined={true}> <Arrow>
 
 
 
