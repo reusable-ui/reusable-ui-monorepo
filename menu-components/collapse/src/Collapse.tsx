@@ -158,7 +158,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesExpandRule,
         ...keyframesCollapseRule,
         animExpand         : [
-            ['300ms', 'ease-out', 'both', keyframesExpand  ],
+            ['300ms', 'ease-in' , 'both', keyframesExpand  ],
         ]                                                       as CssKnownProps['animation'],
         animCollapse       : [
             ['500ms', 'ease-out', 'both', keyframesCollapse],
@@ -169,7 +169,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesExpandInlineRule,
         ...keyframesCollapseInlineRule,
         animExpandInline   : [
-            ['300ms', 'ease-out', 'both', keyframesExpandInline  ],
+            ['300ms', 'ease-in' , 'both', keyframesExpandInline  ],
         ]                                                       as CssKnownProps['animation'],
         animCollapseInline : [
             ['500ms', 'ease-out', 'both', keyframesCollapseInline],
