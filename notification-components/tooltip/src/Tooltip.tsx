@@ -172,7 +172,7 @@ export const usesTooltipLayout = () => {
         ]),
         ...style({
             // layouts:
-            display : 'block',
+            display : 'inline-block', // use inline block, so it takes the width & height as needed
             
             
             
@@ -187,7 +187,7 @@ export const usesTooltipLayout = () => {
             ...children(arrowElm, {
                 // layouts:
                 content     : '""',
-                display     : 'block',
+                display     : 'inline-block', // use inline block, so it takes the width & height as needed
                 ...rule([':not(.overlay)&', '.nude&'], {
                     display : 'none', // the arrow is not supported when [not overlayed] or [nude=true]
                 }),
@@ -303,7 +303,7 @@ const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
     try {
         // temporary modify:
         if (tooltipStyle) {
-            tooltipStyle.display    = 'block';
+            tooltipStyle.display    = 'inline-block';
             tooltipStyle.visibility = 'hidden';
             tooltipStyle.transition = 'none';
             tooltipStyle.animation  = 'none';
