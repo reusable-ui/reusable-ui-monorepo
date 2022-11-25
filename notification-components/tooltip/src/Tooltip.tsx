@@ -293,11 +293,40 @@ export interface ArrowProps {
 export type ArrowSize           = readonly [number, number]
 export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
 const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
-    const { width, height, }   = arrow.getBoundingClientRect();
-    return [
-        (width  / 2) - 1,
-        (height / 2) - 1,
-    ];
+    const tooltipStyle = arrow.parentElement?.style;
+    const {
+        display,
+        visibility,
+        transition,
+        animation,
+    } = tooltipStyle ?? {};
+    try {
+        // temporary modify:
+        if (tooltipStyle) {
+            tooltipStyle.display    = 'block';
+            tooltipStyle.visibility = 'hidden';
+            tooltipStyle.transition = 'none';
+            tooltipStyle.animation  = 'none';
+        } // if
+        
+        
+        
+        // perform main calculations:
+        const { width, height, }   = arrow.getBoundingClientRect();
+        return [
+            (width  / 2) - 1,
+            (height / 2) - 1,
+        ];
+    }
+    finally {
+        // restore:
+        if (tooltipStyle) {
+            tooltipStyle.display    = display    ?? '';
+            tooltipStyle.visibility = visibility ?? '';
+            tooltipStyle.transition = transition ?? '';
+            tooltipStyle.animation  = animation  ?? '';
+        } // if
+    } // try
 };
 
 
