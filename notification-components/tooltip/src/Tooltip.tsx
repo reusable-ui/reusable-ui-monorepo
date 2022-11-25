@@ -248,7 +248,7 @@ export const usesTooltipLayout = () => {
                         `.${tooltipPos}-end&`,
                     ], {
                         // customize:
-                        ...usesCssProps(usesPrefixedProps(tooltips, tooltipPos)), // apply config's cssProps starting with ***${tooltipPos}
+                        ...usesCssProps(usesPrefixedProps(tooltips, tooltipPos)), // apply config's cssProps starting with ${tooltipPos}
                     }),
                 ),
             ]),
