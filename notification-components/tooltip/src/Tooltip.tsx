@@ -176,6 +176,13 @@ export const usesTooltipLayout = () => {
             
             
             
+            // sizes:
+            justifySelf   : 'center',         // protect from stretching by flex/grid
+            alignSelf     : 'center',         // protect from stretching by flex/grid
+            flex          : [[0, 0, 'auto']], // protect from stretching by flex
+            
+            
+            
             // children:
             ...children(arrowElm, {
                 // layouts:
