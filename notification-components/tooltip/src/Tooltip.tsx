@@ -37,6 +37,8 @@ import {
     cssConfig,
     usesCssProps,
     usesPrefixedProps,
+    usesSuffixedProps,
+    overwriteProps,
 }                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
@@ -123,10 +125,11 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
      // arrowClipPath         : 'polygon(100% 0, 100% 100%, 0 100%)'                                        as CssKnownProps['clipPath'  ],
         arrowClipPath         : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                as CssKnownProps['clipPath'  ], // compensates for boxShadow
         
-        arrowTopTransform     : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]] as CssKnownProps['transform' ],
-        arrowRightTransform   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']] as CssKnownProps['transform' ],
-        arrowBottomTransform  : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']] as CssKnownProps['transform' ],
-        arrowLeftTransform    : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']] as CssKnownProps['transform' ],
+        arrowTransform        : 'none'                                                                      as CssKnownProps['transform' ],
+        arrowTransformTop     : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]] as CssKnownProps['transform' ],
+        arrowTransformRight   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']] as CssKnownProps['transform' ],
+        arrowTransformBottom  : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']] as CssKnownProps['transform' ],
+        arrowTransformLeft    : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']] as CssKnownProps['transform' ],
         
         
         
@@ -158,10 +161,11 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
         
         
         // animations:
-        topTransformOrigin    : 'bottom'                                                                    as CssKnownProps['transformOrigin'],
-        rightTransformOrigin  : 'left'                                                                      as CssKnownProps['transformOrigin'],
-        bottomTransformOrigin : 'top'                                                                       as CssKnownProps['transformOrigin'],
-        leftTransformOrigin   : 'right'                                                                     as CssKnownProps['transformOrigin'],
+        transformOrigin       : 'center'                                                                    as CssKnownProps['transformOrigin'],
+        transformOriginTop    : 'bottom'                                                                    as CssKnownProps['transformOrigin'],
+        transformOriginRight  : 'left'                                                                      as CssKnownProps['transformOrigin'],
+        transformOriginBottom : 'top'                                                                       as CssKnownProps['transformOrigin'],
+        transformOriginLeft   : 'right'                                                                     as CssKnownProps['transformOrigin'],
     };
 }, { prefix: 'ttip' });
 
@@ -220,19 +224,6 @@ export const usesTooltipLayout = () => {
                 
                 // customize:
                 ...usesCssProps(usesPrefixedProps(tooltips, 'arrow')), // apply config's cssProps starting with arrow***
-                ...rules([
-                    ...['top', 'bottom', 'left', 'right']
-                    .map((tooltipPos) =>
-                        rule([
-                            `.${tooltipPos}&`,
-                            `.${tooltipPos}-start&`,
-                            `.${tooltipPos}-end&`,
-                        ], {
-                            // customize:
-                            ...usesCssProps(usesPrefixedProps(usesPrefixedProps(tooltips, 'arrow'), tooltipPos)), // apply config's cssProps starting with arrow*** and then starting with ***${tooltipPos}
-                        }),
-                    ),
-                ]),
             }),
             
             
@@ -247,8 +238,8 @@ export const usesTooltipLayout = () => {
                         `.${tooltipPos}-start&`,
                         `.${tooltipPos}-end&`,
                     ], {
-                        // customize:
-                        ...usesCssProps(usesPrefixedProps(tooltips, tooltipPos)), // apply config's cssProps starting with ${tooltipPos}
+                        // overwrites propName = propName{tooltipPos}:
+                        ...overwriteProps(tooltips, usesSuffixedProps(tooltips, tooltipPos)),
                     }),
                 ),
             ]),
