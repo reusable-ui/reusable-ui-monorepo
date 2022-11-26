@@ -56,3 +56,56 @@ nude = false
 
 nude = 'inherit'
 0. <-- none -->
+
+
+=========================================================================================
+
+
+do need (inherit)?Active:
+    Indicator
+    Control
+    ActionControl
+    EditableControl
+    EditableActionControl
+
+    Button
+    HamburgerMenuButton
+    ButtonIcon
+
+    Check
+    Radio
+
+    Card
+    List
+
+not need (inherit)?Active:
+    ToggleButton
+    NavButton
+    CloseButton
+
+
+=========================================================================================
+
+
+do need (inherit)Readonly:
+    Indicator ???
+    Control ???
+    EditableControl
+    EditableTextControl
+    EditableActionControl
+    Check
+    Radio
+    Input
+    Range
+
+not need (inherit)Readonly:
+    ActionControl
+    Button
+    ButtonIcon
+    ToggleButton
+    HamburgerMenuButton
+    NavButton
+    CloseButton
+    
+    Card
+    List
