@@ -69,8 +69,8 @@ do need (inherit)?Active:
     EditableActionControl
 
     Button
-    HamburgerMenuButton
     ButtonIcon
+    HamburgerMenuButton + onActiveChange
 
     Check
     Radio
@@ -79,7 +79,8 @@ do need (inherit)?Active:
     List
 
 not need (inherit)?Active:
-    ToggleButton
+    EditableTextControl (hidden feature)
+    ToggleButton + onActiveChange
     NavButton
     CloseButton
 
@@ -88,8 +89,8 @@ not need (inherit)?Active:
 
 
 do need (inherit)Readonly:
-    Indicator ???
-    Control ???
+    Indicator (hidden feature)
+    Control (hidden feature)
     EditableControl
     EditableTextControl
     EditableActionControl
@@ -107,5 +108,5 @@ not need (inherit)Readonly:
     NavButton
     CloseButton
     
-    Card
-    List
+    Card (hidden feature)
+    List (hidden feature)
