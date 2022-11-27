@@ -110,3 +110,33 @@ not need (inherit)Readonly:
     
     Card (hidden feature)
     List (hidden feature)
+
+
+=========================================================================================
+
+
+do need (inherit)?Enabled:
+    Indicator
+    Control
+    ActionControl
+    EditableControl
+    EditableTextControl
+    EditableActionControl
+
+    Button
+    ButtonIcon
+    HamburgerMenuButton
+    ToggleButton
+    NavButton
+    CloseButton
+
+    Check
+    Radio
+    Input
+    Range
+
+    Card
+    List
+
+not need (inherit)?Enabled:
+    <none>
