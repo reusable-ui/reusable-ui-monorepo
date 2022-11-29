@@ -143,6 +143,9 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
                     inheritActive   : listComponent.props.inheritActive   ?? inheritActive,
                 },
             )}
+            
+            dropdownRef={dropdownRef}
+            dropdownOrientation={dropdownOrientation}
         >
             {listItems}
         </DropdownList> as React.ReactComponentElement<any, DropdownProps<Element, TDropdownListExpandedChangeEvent>>),
@@ -159,8 +162,6 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
             
             
             // components:
-            dropdownRef={dropdownRef}
-            dropdownOrientation={dropdownOrientation}
             dropdownComponent={dropdownComponent}
         >
             {dropdownComponent.props.children}
