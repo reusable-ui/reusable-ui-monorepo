@@ -1490,7 +1490,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
 export interface ListSeparatorItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        Pick<ListItemProps<TElement>, keyof IndicatorProps> // [actionCtrl] & related props are not supported
+        Omit<Pick<ListItemProps<TElement>, keyof IndicatorProps>, 'children'> // [actionCtrl] & related props are not supported
 {
 }
 export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props: ListSeparatorItemProps<TElement>): JSX.Element|null => {
