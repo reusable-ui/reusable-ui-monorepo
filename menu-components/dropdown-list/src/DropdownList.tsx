@@ -298,7 +298,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // variants:
-            orientation      : dropdownComponent.props.orientation ?? dropdownOrientation ?? props.orientation,
+            orientation      : dropdownComponent.props.orientation ?? dropdownOrientation,
             
             
             
