@@ -114,6 +114,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
         listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
         children          : listItems,
         
+        dropdownRef,
+        dropdownOrientation,
         dropdownComponent = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
             // components:
             elmRef={listRef}
@@ -157,6 +159,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
             
             
             // components:
+            dropdownRef={dropdownRef}
+            dropdownOrientation={dropdownOrientation}
             dropdownComponent={dropdownComponent}
         >
             {dropdownComponent.props.children}
