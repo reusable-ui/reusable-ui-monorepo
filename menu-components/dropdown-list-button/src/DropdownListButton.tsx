@@ -26,6 +26,7 @@ import {
     DropdownListActionType,
     DropdownListExpandedChangeEvent,
     
+    DropdownListProps,
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
@@ -162,7 +163,9 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
             
             
             // components:
-            dropdownComponent={dropdownComponent}
+            dropdownRef         = {((dropdownComponent as React.ReactComponentElement<any, DropdownListProps<Element, TDropdownListExpandedChangeEvent>>).props.dropdownRef         === dropdownRef        ) ? undefined : dropdownRef        }
+            dropdownOrientation = {((dropdownComponent as React.ReactComponentElement<any, DropdownListProps<Element, TDropdownListExpandedChangeEvent>>).props.dropdownOrientation === dropdownOrientation) ? undefined : dropdownOrientation}
+            dropdownComponent   = {dropdownComponent}
         >
             {dropdownComponent.props.children}
         </DropdownButton>
