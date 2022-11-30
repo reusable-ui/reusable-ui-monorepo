@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-list",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Overlays a list element (menu).",
   "keywords": [
     "dropdown",

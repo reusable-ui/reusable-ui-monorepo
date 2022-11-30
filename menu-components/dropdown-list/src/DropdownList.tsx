@@ -152,6 +152,12 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
+        // accessibilities:
+        setFocus,
+        restoreFocus,
+        
+        
+        
         // behaviors:
         lazy,
         
@@ -298,17 +304,23 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // variants:
-            orientation      : dropdownComponent.props.orientation ?? dropdownOrientation,
+            orientation      : dropdownComponent.props.orientation  ?? dropdownOrientation,
+            
+            
+            
+            // accessibilities:
+            setFocus         : dropdownComponent.props.setFocus     ?? setFocus,
+            restoreFocus     : dropdownComponent.props.restoreFocus ?? restoreFocus,
             
             
             
             // behaviors:
-            lazy             : dropdownComponent.props.lazy ?? lazy,
+            lazy             : dropdownComponent.props.lazy         ?? lazy,
             
             
             
             // states:
-            expanded         : dropdownComponent.props.expanded ?? expanded,
+            expanded         : dropdownComponent.props.expanded     ?? expanded,
             onExpandedChange : handleDropdownExpandedChange,
             
             
