@@ -427,7 +427,8 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             
             
             // semantics:
-            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
+            // no need to set [aria-orientation], because the expand/collapse is for styling purpose:
+            // aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             
             
             
