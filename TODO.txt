@@ -10,6 +10,8 @@ ListVariant
 CardVariant
 BadgeVariant
 
+BackdropVariant
+
 
 
 [high prior ] add 'regular' for:
@@ -19,7 +21,6 @@ DetailsVariant
 ProgressVariant
 ProgressBarVariant
 
-BackdropVariant
 ModalCardVariant
 ModalSideVariant
 

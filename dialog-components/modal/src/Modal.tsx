@@ -106,6 +106,11 @@ import {
 
 
 
+// defaults:
+const _defaultBackdropStyle : BackdropStyle  = 'regular'
+
+
+
 // utilities:
 const getViewportOrDefault = (modalViewport: React.RefObject<Element>|Element|null|undefined): Element => {
     return (
@@ -219,6 +224,18 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
 
 
 // styles:
+export type BackdropStyle = 'regular'|'hidden'|'interactive'|'static' // might be added more styles in the future
+export interface BackdropVariant {
+    backdropStyle ?: BackdropStyle
+}
+export const useBackdropVariant = ({backdropStyle = _defaultBackdropStyle}: BackdropVariant) => {
+    return {
+        class: (backdropStyle === 'regular') ? null : backdropStyle,
+    };
+};
+
+
+
 export const usesModalUiLayout = () => {
     // dependencies:
     
@@ -387,18 +404,6 @@ export const useBackdropStyleSheet = dynamicStyleSheet(() => ({
 
 
 
-export type BackdropStyle = 'hidden'|'interactive'|'static' // might be added more styles in the future
-export interface BackdropVariant {
-    backdropStyle ?: BackdropStyle
-}
-export const useBackdropVariant = (props: BackdropVariant) => {
-    return {
-        class: props.backdropStyle ?? null,
-    };
-};
-
-
-
 // react components:
 
 export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
@@ -464,7 +469,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // behaviors:
-        backdropStyle = undefined,
+        backdropStyle = 'regular',
         lazy          = false,
         
         
@@ -485,7 +490,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const collapsibleState = useCollapsible<TElement, TModalExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isExpanded       = collapsibleState.expanded;
-    const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle ?? '');
+    const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle);
     
     const [excitedDn, setExcitedDn] = useState(false);
     const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
