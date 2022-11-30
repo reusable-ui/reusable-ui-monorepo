@@ -440,9 +440,14 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         // components:
         ModalUiComponentProps<Element>
 {
+    // accessibilities:
+    setFocus      ?: boolean
+    restoreFocus  ?: boolean
+    
+    
+    
     // behaviors:
     lazy          ?: boolean
-    restoreFocus  ?: boolean
     
     
     
@@ -463,6 +468,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
+        // accessibilities:
+        setFocus      = true,
+        restoreFocus  = true,
+        
+        
+        
         // states:
         expanded      : _expanded, // remove
         onExpandedChange,
@@ -472,7 +483,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // behaviors:
         backdropStyle = 'regular',
         lazy          = false,
-        restoreFocus  = true,
         
         
         
@@ -730,7 +740,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             prevFocusRef.current = document.activeElement;
             
             // when shown => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
-            (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            if (setFocus) {
+                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            } // if
         }
         else {
             // if current focused element is inside the <Modal> => back focus to <prevFocusRef>:
