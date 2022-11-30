@@ -645,7 +645,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         if (backdropStyle === 'static') {
             setExcitedDn(true); // make <ModalUi> blinking
-            (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
+            if (setFocus) {
+                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
+            } // if
         }
         else {
             // backdrop clicked => request to hide the <Modal>:
