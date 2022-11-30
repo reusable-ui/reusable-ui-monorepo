@@ -6,6 +6,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a capability of UI to rotate its layout:
+    useOrientationableWithDirection,
+    
+    
+    
     // basic variants of UI:
     useBasicVariantProps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -30,6 +35,11 @@ import {
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
+    // defaults:
+    defaultOrientationableWithDirectionOptions,
+    
+    
+    
     // styles:
     ButtonStyle,
     ButtonVariant,
@@ -94,6 +104,19 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
     
     
     
+    // variants:
+    const dropdownOrientationableVariant = useOrientationableWithDirection(props, defaultOrientationableWithDirectionOptions);
+    const determineDropdownOrientation = () => {
+        switch(dropdownOrientationableVariant.orientation) {
+            case 'inline-start': return 'inline';
+            case 'inline-end'  : return 'inline';
+            case 'block-start' : return 'block';
+            default            : return 'block';
+        } // switch
+    };
+    
+    
+    
     // accessibility props:
     const {
         enabled,
@@ -110,14 +133,14 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
     const {
         // components:
         listRef,
-        listOrientation,
+        listOrientation     = 'block',
         listStyle,
-        listComponent     = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
-        children          : listItems,
+        listComponent       = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
+        children            : listItems,
         
         dropdownRef,
-        dropdownOrientation,
-        dropdownComponent = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
+        dropdownOrientation = determineDropdownOrientation(),
+        dropdownComponent   = (<DropdownList<Element, TDropdownListExpandedChangeEvent>
             // components:
             elmRef={listRef}
             orientation={listOrientation}

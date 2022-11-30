@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-list-button",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A button component with a dropdown list UI.",
   "keywords": [
     "dropdown",
