@@ -173,6 +173,12 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     // rest props:
     const {
+        // accessibilities:
+        setFocus,
+        restoreFocus,
+        
+        
+        
         // behaviors:
         lazy,
         
@@ -398,17 +404,23 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     // variants:
-                    orientation        : dropdownComponent.props.orientation ?? dropdownOrientation,
+                    orientation        : dropdownComponent.props.orientation  ?? dropdownOrientation,
+                    
+                    
+                    
+                    // accessibilities:
+                    setFocus           : dropdownComponent.props.setFocus     ?? setFocus,
+                    restoreFocus       : dropdownComponent.props.restoreFocus ?? restoreFocus,
                     
                     
                     
                     // behaviors:
-                    lazy               : dropdownComponent.props.lazy            ?? lazy,
+                    lazy               : dropdownComponent.props.lazy         ?? lazy,
                     
                     
                     
                     // states:
-                    expanded           : dropdownComponent.props.expanded ?? isExpanded,
+                    expanded           : dropdownComponent.props.expanded     ?? isExpanded,
                     onExpandedChange   : handleDropdownExpandedChange,
                     
                     
