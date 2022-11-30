@@ -214,6 +214,8 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // components:
         DropdownUiComponentProps<Element>
 {
+    // behaviors:
+    restoreFocus ?: boolean
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -241,6 +243,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     const {
         // states:
         onExpandedChange,
+        
+        
+        
+        // behaviors:
+        restoreFocus = true,
         
         
         
@@ -383,7 +390,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         else {
             // if current focused element is inside the <Dropdown> or inside the <floatingOn> => back focus to <floatingOn>:
             const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
-            if (target && (target as HTMLElement|SVGElement).focus) {
+            if (restoreFocus && target && (target as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
                     // conditions:
                     const focusedElm = document.activeElement;
