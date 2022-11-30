@@ -442,6 +442,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
 {
     // behaviors:
     lazy          ?: boolean
+    restoreFocus  ?: boolean
     
     
     
@@ -471,6 +472,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // behaviors:
         backdropStyle = 'regular',
         lazy          = false,
+        restoreFocus  = true,
         
         
         
@@ -733,7 +735,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         else {
             // if current focused element is inside the <Modal> => back focus to <prevFocusRef>:
             const prevFocusElm = prevFocusRef.current;
-            if (prevFocusElm && (prevFocusElm as HTMLElement|SVGElement).focus) {
+            if (restoreFocus && prevFocusElm && (prevFocusElm as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
                     // conditions:
                     const focusedElm = document.activeElement;
