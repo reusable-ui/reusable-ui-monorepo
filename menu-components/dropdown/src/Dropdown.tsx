@@ -414,7 +414,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                 }, 0); // wait until the user decided to change the focus to another <element>
             } // if
         } // if
-    }, [isExpanded, props.floatingOn]);
+    }, [isExpanded, props.floatingOn, setFocus, restoreFocus]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
