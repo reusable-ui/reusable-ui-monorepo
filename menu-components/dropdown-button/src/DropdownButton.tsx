@@ -22,7 +22,7 @@ import {
     
     
     // a capability of UI to rotate its layout:
-    defaultBlockEndOrientationableWithDirectionOptions as dropdownDefaultOrientationableWithDirectionOptions,
+    defaultBlockEndOrientationableWithDirectionOptions,
     OrientationName,
     OrientationableWithDirectionProps,
     useOrientationableWithDirection,
@@ -77,6 +77,11 @@ import {
 
 
 
+// defaults:
+export const defaultOrientationableWithDirectionOptions = defaultBlockEndOrientationableWithDirectionOptions;
+
+
+
 // react components:
 export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
     extends
@@ -118,7 +123,7 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
 }
 const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // variants:
-    const dropdownOrientationableVariant = useOrientationableWithDirection(props, dropdownDefaultOrientationableWithDirectionOptions);
+    const dropdownOrientationableVariant = useOrientationableWithDirection(props, defaultOrientationableWithDirectionOptions);
     const determineDropdownIcon = () => {
         // TODO: RTL direction aware
         switch(dropdownOrientationableVariant.orientation) {
