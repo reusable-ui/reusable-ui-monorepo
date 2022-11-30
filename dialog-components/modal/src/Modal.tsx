@@ -585,6 +585,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             
             if (isModal && (keyCode === 'tab'))
             {
+                if (!isModal) return false; // interactive|hidden => do not trap the [tab]
+                
                 setFocusNext(event.currentTarget);
             }
             else if (
