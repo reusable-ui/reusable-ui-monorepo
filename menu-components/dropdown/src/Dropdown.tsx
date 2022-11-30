@@ -214,7 +214,8 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // components:
         DropdownUiComponentProps<Element>
 {
-    // behaviors:
+    // accessibilities:
+    setFocus     ?: boolean
     restoreFocus ?: boolean
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
@@ -241,13 +242,14 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     // rest props:
     const {
+        // accessibilities:
+        setFocus     = true,
+        restoreFocus = true,
+        
+        
+        
         // states:
         onExpandedChange,
-        
-        
-        
-        // behaviors:
-        restoreFocus = true,
         
         
         
@@ -385,7 +387,9 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         // setups:
         if (isExpanded) {
             // when shown => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
-            (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            if (setFocus) {
+                (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
+            } // if
         }
         else {
             // if current focused element is inside the <Dropdown> or inside the <floatingOn> => back focus to <floatingOn>:
