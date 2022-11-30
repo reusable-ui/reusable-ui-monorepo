@@ -770,7 +770,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             // unreference the restored focused element:
             prevFocusRef.current = null;
         } // if
-    }, [isExpanded]);
+    }, [isExpanded, setFocus, restoreFocus]);
     
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {
