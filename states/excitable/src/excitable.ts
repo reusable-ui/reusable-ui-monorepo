@@ -149,26 +149,31 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     
     
     // states:
-    // local storages without causing to (re)render, we need to manual control the (re)render event:
-    /**
-     * `true`      => has excited  
-     * `false`     => has normal
-     * `null`      => need to restart
-     * `undefined` => force to stop because the <control> has unmounted
-     */
-    const isExcited = useRef<boolean|null|undefined>(excitedFn);
+    const isUnloaded = useRef<boolean>(false);
     useEffect(() => {
+        // setups:
+        isUnloaded.current = false;
+        
+        
+        
         // cleanups:
         return () => {
-            // mark the <component> has unmounted:
-            isExcited.current = undefined;
+            isUnloaded.current = true;
         };
-    }, [])
+    }, []);
+    
+    // local storages without causing to (re)render, we need to manual control the (re)render event:
+    /**
+     * `true`  => has excited  
+     * `false` => has normal
+     * `null`  => need to restart
+     */
+    const isExcited = useRef<boolean|null>(excitedFn);
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
-    if ((isExcited.current !== null) && (isExcited.current !== undefined) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
+    if ((isExcited.current !== null) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
         isExcited.current = excitedFn; // remember the last change
         triggerRender(); // need to apply the animation
     } // if
@@ -186,7 +191,7 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         // need to *briefly* apply the *un-animated* before continue to *re-animated*:
         const cancelRequest = requestAnimationFrame(() => {
             // conditions:
-            if (isExcited.current === undefined) return;
+            if (isUnloaded.current) return;
             
             
             
