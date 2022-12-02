@@ -123,6 +123,18 @@ export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() =>
 
 
 // styles:
+export type ModalSideStyle = 'inlineStart'|'inlineEnd'|'blockStart'|'blockEnd' // might be added more styles in the future
+export interface ModalSideVariant {
+    modalSideStyle : ModalSideStyle // required prop
+}
+export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
+    return {
+        class : modalSideStyle,
+    };
+};
+
+
+
 export const usesModalSideLayout = () => {
     const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
     const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
@@ -330,6 +342,8 @@ export const usesBackdropSideVariants = () => {
             // variants:
             usesBackdropVariants(),
         ]),
+        
+        /* write more specific backdropStyle: */
         ...variants([
             rule('.blockStart', {
                 // layouts:
@@ -383,18 +397,6 @@ export const useBackdropSideStyleSheet = dynamicStyleSheet(() => ({
         usesBackdropSideStates(),
     ]),
 }), { id: 'g93sfdvlhc' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type ModalSideStyle = 'inlineStart'|'inlineEnd'|'blockStart'|'blockEnd' // might be added more styles in the future
-export interface ModalSideVariant {
-    modalSideStyle : ModalSideStyle // required prop
-}
-export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
-    return {
-        class : modalSideStyle,
-    };
-};
 
 
 
@@ -458,6 +460,12 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
     const {
         // variants:
         modalSideStyle : _modalSideStyle, // remove
+        
+        
+        
+        // accessibilities:
+        setFocus,
+        restoreFocus,
         
         
         
@@ -587,6 +595,12 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             // classes:
             mainClass        : modalComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
             variantClasses,
+            
+            
+            
+            // accessibilities:
+            setFocus         : modalComponent.props.setFocus     ?? setFocus,
+            restoreFocus     : modalComponent.props.restoreFocus ?? restoreFocus,
             
             
             
