@@ -121,7 +121,8 @@ import {
 
 
 // defaults:
-const _defaultTabIndex   : number  = -1   // makes the <Card> programatically focusable
+const _defaultModalCardStyle : ModalCardStyle = 'regular'
+const _defaultTabIndex       : number         = -1   // makes the <Card> programatically focusable
 
 
 
@@ -187,6 +188,40 @@ export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() =>
 
 
 // styles:
+export type ModalCardStyle = 'regular'|'scrollable' // might be added more styles in the future
+export interface ModalCardVariant {
+    modalCardStyle ?: ModalCardStyle
+    
+    horzAlign      ?: CssKnownProps['justifyItems']
+    vertAlign      ?: CssKnownProps['alignItems'  ]
+}
+export const useModalCardVariant = ({ modalCardStyle = _defaultModalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
+    // dependencies:
+    
+    // features:
+    const {modalCardVars} = usesModalCard();
+    
+    
+    
+    return {
+        class: (modalCardStyle === 'regular') ? null : modalCardStyle,
+        
+        style : useMemo(() => ({
+            [
+                modalCardVars.horzAlign
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+            ] : horzAlign,
+            
+            [
+                modalCardVars.vertAlign
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+            ] : vertAlign,
+        }), [horzAlign, vertAlign]),
+    };
+};
+
+
+
 export const usesModalCardLayout = () => {
     return style({
         ...style({
@@ -359,6 +394,8 @@ export const usesBackdropCardVariants = () => {
             // variants:
             usesBackdropVariants(),
         ]),
+        
+        /* write more specific backdropStyle: */
         ...variants([
             rule(':not(.scrollable)', {
                 // scrolls:
@@ -389,40 +426,6 @@ export const useBackdropCardStyleSheet = dynamicStyleSheet(() => ({
         usesBackdropCardStates(),
     ]),
 }), { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type ModalCardStyle = 'scrollable' // might be added more styles in the future
-export interface ModalCardVariant {
-    modalCardStyle ?: ModalCardStyle
-    
-    horzAlign      ?: CssKnownProps['justifyItems']
-    vertAlign      ?: CssKnownProps['alignItems'  ]
-}
-export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
-    // dependencies:
-    
-    // features:
-    const {modalCardVars} = usesModalCard();
-    
-    
-    
-    return {
-        class : modalCardStyle ?? null,
-        
-        style : useMemo(() => ({
-            [
-                modalCardVars.horzAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : horzAlign,
-            
-            [
-                modalCardVars.vertAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : vertAlign,
-        }), [horzAlign, vertAlign]),
-    };
-};
 
 
 
@@ -488,6 +491,12 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         modalCardStyle : _modalCardStyle, // remove
         horzAlign      : _horzAlign,      // remove
         vertAlign      : _vertAlign,      // remove
+        
+        
+        
+        // accessibilities:
+        setFocus,
+        restoreFocus,
         
         
         
@@ -640,6 +649,12 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             // styles:
             style            : mergedStyle,
+            
+            
+            
+            // accessibilities:
+            setFocus         : modalComponent.props.setFocus     ?? setFocus,
+            restoreFocus     : modalComponent.props.restoreFocus ?? restoreFocus,
             
             
             
