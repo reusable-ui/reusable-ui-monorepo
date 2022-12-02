@@ -207,7 +207,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
             ['300ms', 'ease-out', 'both', keyframesExpand  ],
         ]                                                           as CssKnownProps['animation'],
         animCollapse        : [
-            ['500ms', 'ease-out', 'both', keyframesCollapse],
+            ['500ms', 'ease-in' , 'both', keyframesCollapse],
         ]                                                           as CssKnownProps['animation'],
         
         modalUiFilterExcite : [[
