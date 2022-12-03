@@ -159,7 +159,7 @@ export const usesModalSideLayout = () => {
             
             
             // children:
-            ...children('*', { // <Collapse> & <Card>
+            ...children(['&', '*'], { // <Collapse> & <Card>
                 // sizes:
                 boxSizing     : 'border-box',     // the final size is including borders & paddings
                 inlineSize    : 'auto',           // follows the content's width, but
@@ -270,32 +270,16 @@ export const usesModalSideVariants = () => {
     
     return style({
         ...variants([
-            rule('.inlineStart>&', {
+            rule('.inlineStart>&', { // <Collapse>
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
-                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                        
-                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                    }),
-                    ...style({
                         // borders:
                         // fit rounded corners on left to <backdrop>:
-                        [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                        [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                    }),
-                    
-                    
-                    
-                    // hacks:
-                    ...children(':nth-child(n)', {
-                        ...vars({
-                            // the <Card> already overflow: hidden
-                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
-                            [borderVars.borderStartStartRadius   ] : ['0px', '!important'],
-                            [borderVars.borderEndStartRadius     ] : ['0px', '!important'],
-                        }),
+                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                        [borderVars.borderStartStartRadius   ] : groupableVars.borderStartStartRadius,
+                        [borderVars.borderEndStartRadius     ] : groupableVars.borderEndStartRadius,
                     }),
                 }),
             }),
@@ -303,28 +287,12 @@ export const usesModalSideVariants = () => {
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
-                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                        
-                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                    }),
-                    ...style({
                         // borders:
                         // fit rounded corners on right to <backdrop>:
-                        [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                        [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                    }),
-                    
-                    
-                    
-                    // hacks:
-                    ...children(':nth-child(n)', {
-                        ...vars({
-                            // the <Card> already overflow: hidden
-                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
-                            [borderVars.borderStartEndRadius     ] : ['0px', '!important'],
-                            [borderVars.borderEndEndRadius       ] : ['0px', '!important'],
-                        }),
+                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                        [borderVars.borderStartEndRadius     ] : groupableVars.borderStartEndRadius,
+                        [borderVars.borderEndEndRadius       ] : groupableVars.borderEndEndRadius,
                     }),
                 }),
             }),
@@ -332,28 +300,12 @@ export const usesModalSideVariants = () => {
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
-                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                        
-                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                    }),
-                    ...style({
                         // borders:
                         // fit rounded corners on top to <backdrop>:
-                        [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                        [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                    }),
-                    
-                    
-                    
-                    // hacks:
-                    ...children(':nth-child(n)', {
-                        ...vars({
-                            // the <Card> already overflow: hidden
-                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
-                            [borderVars.borderStartStartRadius   ] : ['0px', '!important'],
-                            [borderVars.borderStartEndRadius     ] : ['0px', '!important'],
-                        }),
+                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                        [borderVars.borderStartStartRadius   ] : groupableVars.borderStartStartRadius,
+                        [borderVars.borderStartEndRadius     ] : groupableVars.borderStartEndRadius,
                     }),
                 }),
             }),
@@ -361,28 +313,12 @@ export const usesModalSideVariants = () => {
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
-                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                        
-                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                    }),
-                    ...style({
                         // borders:
                         // fit rounded corners on bottom to <backdrop>:
-                        [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                        [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                    }),
-                    
-                    
-                    
-                    // hacks:
-                    ...children(':nth-child(n)', {
-                        ...vars({
-                            // the <Card> already overflow: hidden
-                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
-                            [borderVars.borderEndStartRadius     ] : ['0px', '!important'],
-                            [borderVars.borderEndEndRadius       ] : ['0px', '!important'],
-                        }),
+                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                        [borderVars.borderEndStartRadius     ] : groupableVars.borderEndStartRadius,
+                        [borderVars.borderEndEndRadius       ] : groupableVars.borderEndEndRadius,
                     }),
                 }),
             }),

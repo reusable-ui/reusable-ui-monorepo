@@ -28,7 +28,7 @@ function App() {
         setValue(value + 1);
     };
     
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState<boolean>(true);
     const handleExpandedChange = useCallback((event: ModalExpandedChangeEvent) => {
         console.log('onExpandedChange', event.expanded, event.actionType);
         setShowModal(event.expanded);
@@ -45,7 +45,7 @@ function App() {
     const [tallContent, setTallContent] = useState<boolean>(false);
     
     const containerRef = useRef<HTMLElement>(null);
-    const [inContainer, setInContainer] = useState(false);
+    const [inContainer, setInContainer] = useState(true);
     
     
     
@@ -96,6 +96,21 @@ function App() {
                 </ModalSide>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <Basic elmRef={containerRef} theme='primary' size='lg' mild={true} style={{margin: '2rem', minHeight: '50vh'}}>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
                     <p>
                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
                     </p>

@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {borderRadiusValues, borderValues} from '@reusable-ui/core'
+
+borderRadiusValues.md = '20px';
+borderRadiusValues.lg = '50px';
+borderValues.hair = '8px';
+borderValues.style = 'dashed';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
