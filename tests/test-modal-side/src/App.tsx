@@ -3,6 +3,7 @@ import {
     useState,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
@@ -17,6 +18,7 @@ import { CardBody, CardFooter, CardHeader } from '@reusable-ui/card';
 import { Button } from '@reusable-ui/button';
 import CloseButton from '@reusable-ui/close-button';
 import Check from '@reusable-ui/check';
+import Basic from '@reusable-ui/basic';
 
 
 
@@ -42,6 +44,9 @@ function App() {
     const [wideContent, setWideContent] = useState<boolean>(false);
     const [tallContent, setTallContent] = useState<boolean>(false);
     
+    const containerRef = useRef<HTMLElement>(null);
+    const [inContainer, setInContainer] = useState(false);
+    
     
     
     return (
@@ -56,13 +61,16 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
+                <p>
+                    <input type='checkbox' checked={inContainer} onChange={(e) => setInContainer(e.target.checked)} /> Inside container
+                </p>
                 <button onClick={() => setShowModal(!showModal)}>
                     Show modal
                 </button>
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary'>
+                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary' modalViewport={inContainer ? containerRef : null}>
                     <CardHeader>
                         Test Modal Card
                         <CloseButton onClick={handleClose} size='xs' />
@@ -87,6 +95,17 @@ function App() {
                     </CardFooter>
                 </ModalSide>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
+                <Basic elmRef={containerRef} theme='primary' size='lg' mild={true} style={{margin: '2rem', minHeight: '50vh'}}>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit consectetur natus eaque quidem a, magnam alias? Quisquam earum sit similique porro autem necessitatibus quae. Quia velit aliquam animi debitis praesentium.
+                    </p>
+                </Basic>
             </div>
         </>
     );

@@ -16,6 +16,7 @@ import {
     variants,
     children,
     style,
+    vars,
     imports,
     
     
@@ -46,6 +47,11 @@ import {
     
     // border (stroke) stuff of UI:
     usesBorder,
+    
+    
+    
+    // groups a list of UIs into a single UI:
+    usesGroupable,
     
     
     
@@ -153,7 +159,7 @@ export const usesModalSideLayout = () => {
             
             
             // children:
-            ...children(['&', '*'], { // <Collapse> & <Card>
+            ...children('*', { // <Collapse> & <Card>
                 // sizes:
                 boxSizing     : 'border-box',     // the final size is including borders & paddings
                 inlineSize    : 'auto',           // follows the content's width, but
@@ -255,46 +261,129 @@ export const usesModalSideVariants = () => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
+    const {borderVars   } = usesBorder();
+    
+    // capabilities:
+    const {groupableVars} = usesGroupable();
     
     
     
     return style({
         ...variants([
-            rule('.blockStart>&', {
-                // children:
-                ...children(['&', '*'], { // <Collapse> & <Card>
-                    // borders:
-                    // remove rounded corners on top:
-                    [borderVars.borderStartStartRadius] : '0px',
-                    [borderVars.borderStartEndRadius  ] : '0px',
-                }),
-            }),
-            rule('.blockEnd>&', {
-                // children:
-                ...children(['&', '*'], { // <Collapse> & <Card>
-                    // borders:
-                    // remove rounded corners on bottom:
-                    [borderVars.borderEndStartRadius  ] : '0px',
-                    [borderVars.borderEndEndRadius    ] : '0px',
-                }),
-            }),
             rule('.inlineStart>&', {
                 // children:
-                ...children(['&', '*'], { // <Collapse> & <Card>
-                    // borders:
-                    // remove rounded corners on left:
-                    [borderVars.borderStartStartRadius] : '0px',
-                    [borderVars.borderEndStartRadius  ] : '0px',
+                ...children('*', { // <Card>
+                    ...vars({
+                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                        
+                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                    }),
+                    ...style({
+                        // borders:
+                        // fit rounded corners on left to <backdrop>:
+                        [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                    }),
+                    
+                    
+                    
+                    // hacks:
+                    ...children(':nth-child(n)', {
+                        ...vars({
+                            // the <Card> already overflow: hidden
+                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
+                            [borderVars.borderStartStartRadius   ] : ['0px', '!important'],
+                            [borderVars.borderEndStartRadius     ] : ['0px', '!important'],
+                        }),
+                    }),
                 }),
             }),
             rule('.inlineEnd>&', {
                 // children:
-                ...children(['&', '*'], { // <Collapse> & <Card>
-                    // borders:
-                    // remove rounded corners on right:
-                    [borderVars.borderStartEndRadius  ] : '0px',
-                    [borderVars.borderEndEndRadius    ] : '0px',
+                ...children('*', { // <Card>
+                    ...vars({
+                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                        
+                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                    }),
+                    ...style({
+                        // borders:
+                        // fit rounded corners on right to <backdrop>:
+                        [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                    }),
+                    
+                    
+                    
+                    // hacks:
+                    ...children(':nth-child(n)', {
+                        ...vars({
+                            // the <Card> already overflow: hidden
+                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
+                            [borderVars.borderStartEndRadius     ] : ['0px', '!important'],
+                            [borderVars.borderEndEndRadius       ] : ['0px', '!important'],
+                        }),
+                    }),
+                }),
+            }),
+            rule('.blockStart>&', {
+                // children:
+                ...children('*', { // <Card>
+                    ...vars({
+                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                        
+                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                    }),
+                    ...style({
+                        // borders:
+                        // fit rounded corners on top to <backdrop>:
+                        [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                    }),
+                    
+                    
+                    
+                    // hacks:
+                    ...children(':nth-child(n)', {
+                        ...vars({
+                            // the <Card> already overflow: hidden
+                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
+                            [borderVars.borderStartStartRadius   ] : ['0px', '!important'],
+                            [borderVars.borderStartEndRadius     ] : ['0px', '!important'],
+                        }),
+                    }),
+                }),
+            }),
+            rule('.blockEnd>&', {
+                // children:
+                ...children('*', { // <Card>
+                    ...vars({
+                        [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                        
+                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                    }),
+                    ...style({
+                        // borders:
+                        // fit rounded corners on bottom to <backdrop>:
+                        [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                        [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                    }),
+                    
+                    
+                    
+                    // hacks:
+                    ...children(':nth-child(n)', {
+                        ...vars({
+                            // the <Card> already overflow: hidden
+                            [groupableVars.borderWidth           ] : [borderVars.borderWidth, '!important'],
+                            [borderVars.borderEndStartRadius     ] : ['0px', '!important'],
+                            [borderVars.borderEndEndRadius       ] : ['0px', '!important'],
+                        }),
+                    }),
                 }),
             }),
         ]),
