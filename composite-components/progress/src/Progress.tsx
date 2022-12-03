@@ -163,6 +163,8 @@ import {
 
 // defaults:
 export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
+const _defaultProgressStyle    : ProgressStyle    = 'regular'
+const _defaultProgressBarStyle : ProgressBarStyle = 'regular'
 
 
 
@@ -371,6 +373,18 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
 
 
 // styles:
+export type ProgressStyle = ListBasicStyle // might be added more styles in the future
+export interface ProgressVariant {
+    progressStyle ?: ProgressStyle
+}
+export const useProgressVariant = ({progressStyle = _defaultProgressStyle}: ProgressVariant) => {
+    return {
+        class: (progressStyle === 'regular') ? null : progressStyle,
+    };
+};
+
+
+
 interface ProgressBackgroundVars {
     mildAltBackgTg : any
 }
@@ -494,8 +508,12 @@ export const usesProgressVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesBasicVariants(),
+            
+            /* the most general variants: */
             usesListBasicVariants(),
+            
+            /* the king variants: */
+            usesBasicVariants(),
             resizableRule,
             gradientableRule,
         ]),
@@ -514,13 +532,13 @@ export const useProgressStyleSheet = dynamicStyleSheet(() => ({
 
 
 
-export type ProgressStyle = ListBasicStyle // might be added more styles in the future
-export interface ProgressVariant {
-    progressStyle ?: ProgressStyle
+export type ProgressBarStyle = 'regular'|'striped' // might be added more styles in the future
+export interface ProgressBarVariant {
+    progressBarStyle ?: ProgressBarStyle
 }
-export const useProgressVariant = (props: ProgressVariant) => {
+export const useProgressBarVariant = ({progressBarStyle = _defaultProgressBarStyle}: ProgressBarVariant) => {
     return {
-        class: props.progressStyle ?? null,
+        class: (progressBarStyle === 'regular') ? null : progressBarStyle,
     };
 };
 
@@ -646,18 +664,6 @@ export const useProgressBarStyleSheet = dynamicStyleSheet(() => ({
         usesProgressBarStates(),
     ]),
 }), { specificityWeight: 2, id: 'ymt3ybn64g' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type ProgressBarStyle = 'striped' // might be added more styles in the future
-export interface ProgressBarVariant {
-    progressBarStyle ?: ProgressBarStyle
-}
-export const useProgressBarVariant = (props: ProgressBarVariant) => {
-    return {
-        class: props.progressBarStyle ?? null,
-    };
-};
 
 
 
