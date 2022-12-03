@@ -14,12 +14,12 @@ BackdropVariant
 ModalCardVariant
 ModalSideVariant
 
-
-
-[high prior ] add 'regular' for:
 ProgressVariant
 ProgressBarVariant
 
+
+
+[high prior ] add 'regular' for:
 CarouselVariant
 DetailsVariant
 
