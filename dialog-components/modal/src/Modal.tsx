@@ -30,6 +30,7 @@ import {
     keyframes,
     children,
     style,
+    vars,
     imports,
     
     
@@ -76,8 +77,18 @@ import {
     
     
     
+    // border (stroke) stuff of UI:
+    usesBorder,
+    
+    
+    
     // animation stuff of UI:
     usesAnimation,
+    
+    
+    
+    // groups a list of UIs into a single UI:
+    usesGroupable,
     
     
     
@@ -297,13 +308,21 @@ export const usesBackdropLayout = () => {
     // dependencies:
     
     // features:
-    const {animationRule, animationVars} = usesAnimation();
+    const {borderRule    , borderVars   } = usesBorder({
+        borderWidth  : 'inherit',
+        borderRadius : 'inherit',
+    });
+    const {animationRule , animationVars} = usesAnimation();
+    
+    // capabilities:
+    const {                groupableVars} = usesGroupable();
     
     
     
     return style({
         ...imports([
             // features:
+            borderRule,
             animationRule,
         ]),
         ...style({
@@ -342,6 +361,43 @@ export const usesBackdropLayout = () => {
             
             // animations:
             anim         : animationVars.anim,
+        }),
+        
+        
+        
+        ...vars({
+            // borders:
+            // makes the backdrop as a <group> by calculating <parent>'s border & borderRadius:
+            
+            [groupableVars.borderWidth           ] : '0px',
+            
+            [groupableVars.borderStartStartRadius] : `calc(${borderVars.borderStartStartRadius} - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
+            [groupableVars.borderStartEndRadius  ] : `calc(${borderVars.borderStartEndRadius  } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
+            [groupableVars.borderEndStartRadius  ] : `calc(${borderVars.borderEndStartRadius  } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
+            [groupableVars.borderEndEndRadius    ] : `calc(${borderVars.borderEndEndRadius    } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
+            
+            
+            
+            // spacings:
+            [groupableVars.paddingInline         ] : '0px',
+            [groupableVars.paddingBlock          ] : '0px',
+        }),
+        ...style({
+            // borders:
+            // fit the backdrop borderRadius to <container>'s borderRadius:
+            
+            borderWidth            : groupableVars.borderWidth,
+            
+            borderStartStartRadius : groupableVars.borderStartStartRadius,
+            borderStartEndRadius   : groupableVars.borderStartEndRadius,
+            borderEndStartRadius   : groupableVars.borderEndStartRadius,
+            borderEndEndRadius     : groupableVars.borderEndEndRadius,
+            
+            
+            
+            // spacings:
+            paddingInline          : groupableVars.paddingInline,
+            paddingBlock           : groupableVars.paddingBlock,
         }),
     });
 };
