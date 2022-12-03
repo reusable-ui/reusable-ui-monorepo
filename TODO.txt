@@ -11,18 +11,17 @@ CardVariant
 BadgeVariant
 
 BackdropVariant
+ModalCardVariant
+ModalSideVariant
 
 
 
 [high prior ] add 'regular' for:
-CarouselVariant
-DetailsVariant
-
 ProgressVariant
 ProgressBarVariant
 
-ModalCardVariant
-ModalSideVariant
+CarouselVariant
+DetailsVariant
 
 
 
