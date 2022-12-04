@@ -315,11 +315,11 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
     
     return {
         // sizes:
-        minInlineSize            : 'unset'      as CssKnownProps['minInlineSize'], // fills the entire parent's width:
+        minInlineSize            : '8rem'       as CssKnownProps['minInlineSize'], // fills the entire parent's width:
         minBlockSize             : 'auto'       as CssKnownProps['minBlockSize' ], // depends on ProgressBar's height
         
         minInlineSizeBlock       : 'auto'       as CssKnownProps['minInlineSize'], // depends on ProgressBar's width
-        minBlockSizeBlock        : '10rem'      as CssKnownProps['minBlockSize' ], // manually set the min height
+        minBlockSizeBlock        : '8rem'       as CssKnownProps['minBlockSize' ], // manually set the min height
         
         
         
@@ -332,9 +332,12 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         })()                                    as CssKnownProps['backgroundImage'],
         
         barBackgStripedImg       : 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)'   as CssKnownProps['backgroundImage'],
-        barBackgStripedSize      : '1rem'       as CssKnownProps['backgroundSize' ],
-        barBackgStripedSizeSm    : '0.25rem'    as CssKnownProps['backgroundSize' ],
-        barBackgStripedSizeLg    : '3rem'       as CssKnownProps['backgroundSize' ],
+        barBackgStripedWidth     : '1rem'       as CssKnownProps['backgroundSize' ],
+        barBackgStripedWidthSm   : '0.25rem'    as CssKnownProps['backgroundSize' ],
+        barBackgStripedWidthLg   : '3rem'       as CssKnownProps['backgroundSize' ],
+        barBackgStripedHeight    : '1rem'       as CssKnownProps['backgroundSize' ],
+        barBackgStripedHeightSm  : '0.25rem'    as CssKnownProps['backgroundSize' ],
+        barBackgStripedHeightLg  : '3rem'       as CssKnownProps['backgroundSize' ],
         
         
         
@@ -619,7 +622,7 @@ export const usesProgressBarVariants = () => {
                         // layering: backg1 | backg2 | backg3 ...
                         
                         // top layer:
-                        `${progresses.barBackgStripedImg} left/${progresses.barBackgStripedSize} ${progresses.barBackgStripedSize}`,
+                        `${progresses.barBackgStripedImg} left/${progresses.barBackgStripedWidth} ${progresses.barBackgStripedHeight}`,
                         
                         // bottom layer:
                         backgroundVars.backg,
