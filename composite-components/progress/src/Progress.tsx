@@ -67,11 +67,6 @@ import {
     
     
     
-    // a set of numeric utility functions:
-    parseNumber,
-    
-    
-    
     // react helper hooks:
     useMergeClasses,
     useMergeStyles,
@@ -673,9 +668,9 @@ export const useProgressBarStyleSheet = dynamicStyleSheet(() => ({
 // utilities:
 const calculateValues = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>) => {
     // fn props:
-    const valueFn    : number  = parseNumber(props.value)  ?? 0;
-    const minFn      : number  = parseNumber(props.min)    ?? 0;
-    const maxFn      : number  = parseNumber(props.max)    ?? 100;
+    const valueFn    : number  = props.value ?? 0;
+    const minFn      : number  = props.min   ?? 0;
+    const maxFn      : number  = props.max   ?? 100;
     const negativeFn : boolean = (maxFn < minFn);
     const valueRatio : number  = (valueFn - minFn) / (maxFn - minFn);
     
@@ -839,9 +834,9 @@ export interface ProgressBarProps<TElement extends Element = HTMLElement>
         ProgressBarVariant
 {
     // values:
-    value ?: string | number
-    min   ?: string | number
-    max   ?: string | number
+    value ?: number
+    min   ?: number
+    max   ?: number
 }
 export const ProgressBar = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>): JSX.Element|null => {
     // styles:
