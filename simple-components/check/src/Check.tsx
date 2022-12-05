@@ -623,6 +623,9 @@ export interface CheckProps
             // formats:
             |'type'                              // always [type="checkbox"] or [type="radio"]
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
+            
+            // values:
+            |'defaultValue'|'value'  // supports numeric and string value
         >,
         
         // variants:
