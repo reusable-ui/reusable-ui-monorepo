@@ -62,11 +62,6 @@ import {
     
     
     
-    // a set of numeric utility functions:
-    parseNumber,
-    
-    
-    
     // reusable common layouts:
     fillTextLineHeightLayout,
     fillTextLineWidthLayout,
@@ -677,7 +672,11 @@ export interface RangeProps
     extends
         // bases:
         Omit<EditableActionControlProps<HTMLInputElement>,
-            |'children'
+            // values:
+            |'defaultValue'|'value'  // only supports numeric value
+            
+            // children:
+            |'children'              // no nested children
         >,
         
         // input[type="range"]:
@@ -700,6 +699,9 @@ export interface RangeProps
             // formats:
             |'type'                              // always [type="range"]
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
+            
+            // values:
+            |'defaultValue'|'value'  // only supports numeric value
         >,
         
         // variants:
@@ -709,9 +711,15 @@ export interface RangeProps
         RangeSubComponentProps
 {
     // validations:
-    min               ?: string | number
-    max               ?: string | number
-    step              ?: string | number
+    min               ?: number
+    max               ?: number
+    step              ?: number|'any'
+    
+    
+    
+    // values:
+    defaultValue      ?: number
+    value             ?: number
 }
 const Range = (props: RangeProps): JSX.Element|null => {
     // styles:
@@ -831,9 +839,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const mild           = props.mild  ?? false;
     const mildAlternate  = !mild;
     
-    const minFn          : number      = parseNumber(min)  ?? 0;
-    const maxFn          : number      = parseNumber(max)  ?? 100;
-    const stepFn         : number      = (step === 'any') ? 0 : Math.abs(parseNumber(step) ?? 1);
+    const minFn          : number      = min ?? 0;
+    const maxFn          : number      = max ?? 100;
+    const stepFn         : number      = (step === 'any') ? 0 : Math.abs(step ?? 1);
     const negativeFn     : boolean     = (maxFn < minFn);
     
     
@@ -862,9 +870,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         return value;
     }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
-    const trimValueOpt = (value: number|null|undefined): number|null => {
+    const trimValueOpt = (value: number|undefined): number|null => {
         // conditions:
-        if ((value === null) || (value === undefined)) return null;
+        if (value === undefined) return null;
         
         
         
@@ -874,8 +882,8 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // fn props:
-    const valueFn        : number|null = trimValueOpt(parseNumber(value));
-    const defaultValueFn : number|null = trimValueOpt(parseNumber(defaultValue));
+    const valueFn        : number|null = trimValueOpt(value);
+    const defaultValueFn : number|null = trimValueOpt(defaultValue);
     
     
     
