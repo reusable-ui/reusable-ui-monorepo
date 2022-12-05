@@ -368,8 +368,8 @@ export interface EditableControlProps<TElement extends Element = HTMLElement>
     
     
     // values:
-    defaultValue    ?: string | number | ReadonlyArray<string>
-    value           ?: string | number | ReadonlyArray<string>
+    defaultValue    ?: number|string
+    value           ?: number|string
     onChange        ?: React.ChangeEventHandler<TElement>
 }
 const EditableControl = <TElement extends Element = HTMLElement>(props: EditableControlProps<TElement>): JSX.Element|null => {
