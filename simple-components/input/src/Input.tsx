@@ -256,10 +256,11 @@ export interface InputProps
     extends
         // bases:
         Omit<EditableTextControlProps<HTMLInputElement>,
-            |'children'
+            // children:
+            |'children'              // no nested children
         >,
         
-        // input:
+        // input[type="***"]:
         Omit<InputHTMLAttributes<HTMLInputElement>,
             // semantics:
             |'role'                  // we redefined [role] in <Generic>
@@ -269,12 +270,15 @@ export interface InputProps
             
             // accessibilities:
             |'disabled'              // we use [enabled] instead of [disabled]
+            
+            // values:
+            |'defaultValue'|'value'  // supports numeric and string value
         >
 {
     // validations:
-    min          ?: string | number
-    max          ?: string | number
-    step         ?: string | number
+    min          ?: number|string
+    max          ?: number|string
+    step         ?: number|string
     pattern      ?: string
     
     

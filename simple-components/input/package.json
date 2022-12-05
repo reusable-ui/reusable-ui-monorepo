@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/input",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "An interactive control in order to accept data from the user.",
   "keywords": [
     "input",
