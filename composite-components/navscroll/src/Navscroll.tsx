@@ -850,7 +850,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     
                     // states:
-                    active={(index === activeIndices[deepLevelsCurrent.length - 1])}
+                    active={listItem.props.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
                     
                     
                     
