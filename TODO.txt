@@ -2,6 +2,11 @@ remove Nm to Md:
 \w+Nm|'nm'
 
 
+simplify:
+gridTemplateAreas => gridTemplate
+gridTemplateRows => delete
+gridTemplateColumns => delete
+
 done:
 LabelVariant
 ButtonVariant
