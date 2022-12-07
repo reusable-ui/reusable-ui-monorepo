@@ -22,10 +22,11 @@ ModalSideVariant
 ProgressVariant
 ProgressBarVariant
 
+CarouselVariant
+
 
 
 [high prior ] add 'regular' for:
-CarouselVariant
 DetailsVariant
 
 

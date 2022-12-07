@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/carousel",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "A slideshow component for cycling through images, slides, or another elements.",
   "keywords": [
     "carousel",

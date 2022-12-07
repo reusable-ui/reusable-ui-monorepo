@@ -136,6 +136,8 @@ const _defaultPrevButtonClasses   : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses   : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
 
+const _defaultInfiniteLoop        : boolean = false
+
 
 
 // configs:
@@ -160,6 +162,16 @@ export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
 
 
 // styles:
+export interface CarouselVariant {
+    infiniteLoop ?: boolean
+}
+export const useCarouselVariant = ({infiniteLoop = _defaultInfiniteLoop}: CarouselVariant) => {
+    return {
+        infiniteLoop,
+    };
+};
+
+
 
 // .carousel > .list > .item > .media
 const listElm      = ':where(.list)' // zero degree specificity to be easily overwritten
@@ -377,27 +389,24 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
         ]),
         ...style({
             // layouts:
-            display             : 'grid', // use css grid for layouting, so we can customize the desired area later.
+            display      : 'grid', // use css grid for layouting, so we can customize the desired area later.
             
             // explicit areas:
-            gridTemplateRows    : [[
-                '1fr',
-                'min-content',
-            ]],
-            gridTemplateColumns : [['15%', '1fr', '15%']],
-            gridTemplateAreas   : [[
-                '"prevBtn main nextBtn"',
-                '"prevBtn nav  nextBtn"',
+            gridTemplate : [[
+                '"prevBtn main nextBtn" 1fr',
+                '"prevBtn nav  nextBtn" min-content',
+                '/',
+                '   15%   1fr    15%'
             ]],
             
             // child default sizes:
-            justifyItems        : 'stretch', // each section fills the entire area's width
-            alignItems          : 'stretch', // each section fills the entire area's height
+            justifyItems : 'stretch', // each section fills the entire area's width
+            alignItems   : 'stretch', // each section fills the entire area's height
             
             
             
             // borders:
-            overflow            : 'hidden', // clip the children at the rounded corners
+            overflow     : 'hidden', // clip the children at the rounded corners
             
             
             
@@ -477,17 +486,6 @@ export const useCarouselStyleSheet = dynamicStyleSheet(() => ({
         usesCarouselVariants(),
     ]),
 }), { id: 'v35mas3qt6' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export interface CarouselVariant {
-    infiniteLoop ?: boolean
-}
-export const useCarouselVariant = (props: CarouselVariant) => {
-    return {
-        infiniteLoop: props.infiniteLoop ?? false,
-    };
-};
 
 
 
