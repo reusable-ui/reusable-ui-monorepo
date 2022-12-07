@@ -203,14 +203,14 @@ export const usesResponsiveContainerGridLayout = () => {
         ]),
         ...style({
             // layouts:
-            display             : 'grid', // use css grid for layouting
+            display      : 'grid', // use css grid for layouting
             // define our logical paddings:
-            gridTemplateRows    : [[paddingVars.paddingBlock,  'auto', paddingVars.paddingBlock ]], // the height of each row
-            gridTemplateColumns : [[paddingVars.paddingInline, 'auto', paddingVars.paddingInline]], // the width of each column
-            gridTemplateAreas   : [[
-                '"........... blockStart ........."',
-                '"inlineStart  content   inlineEnd"',
-                '"...........  blockEnd  ........."',
+            gridTemplate : [[
+                `"........... blockStart ........." ${paddingVars.paddingBlock}`,
+                `"inlineStart  content   inlineEnd" auto`,
+                `"...........  blockEnd  ........." ${paddingVars.paddingBlock}`,
+                '/',
+                `${paddingVars.paddingInline} auto ${paddingVars.paddingInline}`
             ]],
             
             
