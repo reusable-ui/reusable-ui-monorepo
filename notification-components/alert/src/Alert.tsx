@@ -177,7 +177,8 @@ export const usesAlertLayout = () => {
             
             
             // scrolls:
-            overflow        : 'auto', // enable horz & vert scrolling
+            overflow        : 'hidden',     // force to overflowWrap
+            overflowWrap    : 'break-word', // break long word to the next line
             
             
             

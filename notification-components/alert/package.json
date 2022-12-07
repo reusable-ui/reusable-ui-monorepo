@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/alert",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A UI for displaying feedback messages.",
   "keywords": [
     "alert",
