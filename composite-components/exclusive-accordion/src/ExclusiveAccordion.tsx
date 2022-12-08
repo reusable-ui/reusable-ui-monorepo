@@ -52,23 +52,23 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 // hooks:
 export interface ExclusiveAccordionStateProps
 {
-    defaultExpandedListIndex ?: number|null
+    defaultExpandedListIndex ?: number
 }
 export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
-    expandedListIndex    : number|null,
+    expandedListIndex    : number,
     handleExpandedChange : EventHandler<TExclusiveExpandedChangeEvent>
 }
 export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props?: ExclusiveAccordionStateProps): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
     // states:
-    const [expandedListIndex, setExpandedListIndex] = useState<number|null>(props?.defaultExpandedListIndex ?? null);
+    const [expandedListIndex, setExpandedListIndex] = useState<number>(props?.defaultExpandedListIndex ?? -1);
     
     
     
     // handlers:
     const handleExpandedChange = useEvent<EventHandler<TExclusiveExpandedChangeEvent>>((event) => {
         // actions:
-        setExpandedListIndex(event.expanded ? event.listIndex : null);
+        setExpandedListIndex(event.expanded ? event.listIndex : -1);
     });
     
     
@@ -192,7 +192,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     // rest props:
     const {
         // states:
-        defaultExpandedListIndex = null,
+        defaultExpandedListIndex,
         expandedListIndex,
         onExpandedChange,
         
@@ -211,11 +211,9 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     
     // fn props:
-    const expandedListIndexFn : number|null = (
-        (expandedListIndex !== undefined)
-        ?
+    const expandedListIndexFn : number = (
         expandedListIndex /*controllable*/
-        :
+        ??
         exclusiveAccordionState.expandedListIndex /*uncontrollable*/
     );
     
