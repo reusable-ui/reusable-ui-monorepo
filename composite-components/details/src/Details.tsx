@@ -136,6 +136,8 @@ const _defaultSemanticRole        : SemanticRole = 'group' // uses [role="group"
 const _defaultTogglerSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // no corresponding semantic tag => defaults to <div>, fallbacks to <button>, <a>
 const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
 
+const _defaultDetailsStyle        : DetailsStyle = 'regular'
+
 
 
 // configs:
@@ -161,6 +163,18 @@ export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
 
 
 // styles:
+export type DetailsStyle = 'regular'|'content' // might be added more styles in the future
+export interface DetailsVariant {
+    detailsStyle ?: DetailsStyle
+}
+export const useDetailsVariant = ({detailsStyle = _defaultDetailsStyle}: DetailsVariant) => {
+    return {
+        class: (detailsStyle === 'regular') ? null : detailsStyle,
+    };
+};
+
+
+
 export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsContent> component
 
 
@@ -356,18 +370,6 @@ export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
         ]),
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .basic's specificity weight
 ]), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export type DetailsStyle = 'content' // might be added more styles in the future
-export interface DetailsVariant {
-    detailsStyle ?: DetailsStyle
-}
-export const useDetailsVariant = (props: DetailsVariant) => {
-    return {
-        class: props.detailsStyle ?? null,
-    };
-};
 
 
 

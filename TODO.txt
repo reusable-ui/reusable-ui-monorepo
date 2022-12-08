@@ -2,29 +2,6 @@ remove Nm to Md:
 \w+Nm|'nm'
 
 
-done:
-LabelVariant
-ButtonVariant
-CheckVariant
-ListVariant
-CardVariant
-BadgeVariant
-
-BackdropVariant
-ModalCardVariant
-ModalSideVariant
-
-ProgressVariant
-ProgressBarVariant
-
-CarouselVariant
-
-
-
-[high prior ] add 'regular' for:
-DetailsVariant
-
-
 
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <Tooltip outlined={true}> <Arrow>
