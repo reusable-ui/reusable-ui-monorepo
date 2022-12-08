@@ -1,10 +1,11 @@
 {
   "name": "@reusable-ui/pagination",
   "version": "5.0.2",
-  "description": "A navigation component with limited shown items.",
+  "description": "A list of huge page numbers with limited displayed list.",
   "keywords": [
     "navigation",
     "menu",
+    "pages",
     "links",
     "pagination",
     "component",
@@ -36,7 +37,6 @@
   "dependencies": {
     "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/list": "^5.0.0",
-    "@reusable-ui/nav": "^5.0.0",
     "@types/react": "^18.0.10"
   },
   "peerDependencies": {

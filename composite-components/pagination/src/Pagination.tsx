@@ -11,7 +11,7 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
-import type {
+import {
     // styles:
     ListStyle,
     ListVariant,
@@ -20,14 +20,11 @@ import type {
     
     // react components:
     ListItemProps,
-}                           from '@reusable-ui/list'            // represents a series of content
-import {
-    // react components:
-    NavProps,
-    Nav,
+    ListProps,
+    List,
     
-    NavComponentProps,
-}                           from '@reusable-ui/nav'             // a navigation component to navigate between pages
+    ListComponentProps,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 
 
@@ -40,10 +37,20 @@ export const defaultOrientationableOptions = defaultInlineOrientationableOptions
 export interface PaginationProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        NavProps<TElement>,
+        ListProps<TElement>,
         
         // components:
-        NavComponentProps<TElement>
+        Omit<ListComponentProps<TElement>,
+            // we don't need these extra properties because the <Pagination> is sub <List>
+            |'listRef'
+            |'listOrientation'
+            |'listStyle'
+            
+            
+            
+            // children:
+            |'listItems' // we redefined `children` prop as <ListItem>(s)
+        >
 {
     // paginations:
     itemsLimit ?: number|null
@@ -63,7 +70,7 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         
         
         // components:
-        navComponent = (<Nav<TElement> /> as React.ReactComponentElement<any, NavProps<TElement>>),
+        listComponent = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
         
         
         
@@ -71,7 +78,7 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
         prevItems,
         nextItems,
         children,
-    ...restNavProps} = props;
+    ...restListProps} = props;
     
     
     
@@ -113,26 +120,26 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
     
     
     // jsx:
-    /* <Nav> */
-    return React.cloneElement<NavProps<TElement>>(navComponent,
+    /* <List> */
+    return React.cloneElement<ListProps<TElement>>(listComponent,
         // props:
         {
             // other props:
-            ...restNavProps,
-            ...navComponent.props, // overwrites restNavProps (if any conflics)
+            ...restListProps,
+            ...listComponent.props, // overwrites restListProps (if any conflics)
             
             
             
             // variants:
-            orientation : navComponent.props.orientation ?? props.orientation ?? 'inline',
+            orientation : listComponent.props.orientation ?? props.orientation ?? 'inline',
         },
         
         
         
         // children:
-        ...(navComponent.props.children ? [navComponent.props.children] : [
+        ...(listComponent.props.children ? [listComponent.props.children] : [
             ...(prevItems ? [prevItems] : []),
-            ...React.Children.toArray(navComponent.props.children ?? limitedChildren()),
+            ...React.Children.toArray(listComponent.props.children ?? limitedChildren()),
             ...(nextItems ? [nextItems] : []),
         ]),
     );
