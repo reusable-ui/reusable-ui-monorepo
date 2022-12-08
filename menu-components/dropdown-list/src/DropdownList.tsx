@@ -135,7 +135,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         
         // components:
-        Omit<ListComponentProps<Element>,
+        Omit<ListComponentProps<TElement>,
             // we don't need these extra properties because the <DropdownList> is sub <List>
             |'listRef'
             |'listOrientation'
@@ -185,7 +185,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         // components:
-        listComponent         = (<List<Element> /> as React.ReactComponentElement<any, ListProps<Element>>),
+        listComponent         = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
         children              : listItems,
         
         dropdownRef,
@@ -343,7 +343,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         // children:
         /* <List> */
-        ((dropdownComponent.props.children !== listComponent) ? dropdownComponent.props.children : React.cloneElement<ListProps<Element>>(listComponent,
+        ((dropdownComponent.props.children !== listComponent) ? dropdownComponent.props.children : React.cloneElement<ListProps<TElement>>(listComponent,
             // props:
             {
                 // other props:
