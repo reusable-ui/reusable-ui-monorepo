@@ -46,7 +46,7 @@ export interface PaginationProps<TElement extends Element = HTMLElement>
         NavComponentProps<TElement>
 {
     // paginations:
-    itemsLimit ?: number|null
+    itemsLimit ?: number
     
     
     
@@ -78,7 +78,8 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
     // fn props:
     const limitedChildren = (): React.ReactNode => {
         // conditions:
-        if ((itemsLimit === undefined) || (itemsLimit === null)) return children; // limiter was not set => nothing to limit
+        if (itemsLimit === undefined) return children; // limiter was not set => nothing to limit
+        if (itemsLimit <= 0) return [];
         
         
         
