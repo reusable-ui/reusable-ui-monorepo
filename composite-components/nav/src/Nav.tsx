@@ -69,7 +69,7 @@ export interface NavItemProps<TElement extends Element = HTMLElement>
     // accessibilities:
     label ?: string
 }
-export const NavItem     = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
+export const NavItem       = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // accessibilities:
@@ -124,10 +124,57 @@ export const NavItem     = <TElement extends Element = HTMLElement>(props: NavIt
     );
 };
 
-export const NavPrevItem = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
+export interface NavActionItemProps<TElement extends Element = HTMLElement>
+    extends
+        // bases:
+        ListItemProps<TElement>,
+        
+        // components:
+        ListItemComponentProps<TElement>
+{
+    // accessibilities:
+    label ?: string
+}
+export const NavActionItem = <TElement extends Element = HTMLElement>(props: NavActionItemProps<TElement>): JSX.Element|null => {
+    // rest props:
+    const {
+        // accessibilities:
+        label,
+        
+        
+        
+        // components:
+        listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+    ...restListItemProps} = props;
+    
+    
+    
+    // jsx:
+    /* <ListItem> */
+    return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+        // props:
+        {
+            // other props:
+            ...restListItemProps,
+            ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
+            
+            
+            
+            // semantics:
+            'aria-label'   : listItemComponent.props['aria-label'] ?? label,
+        },
+        
+        
+        
+        // children:
+        listItemComponent.props.children ?? props.children,
+    );
+};
+
+export const NavPrevItem   = <TElement extends Element = HTMLElement>(props: NavActionItemProps<TElement>): JSX.Element|null => {
     // jsx:
     return (
-        <NavItem<TElement>
+        <NavActionItem<TElement>
             // other props:
             {...props}
             
@@ -149,13 +196,13 @@ export const NavPrevItem = <TElement extends Element = HTMLElement>(props: NavIt
                     size='1em'
                 />
             }
-        </NavItem>
+        </NavActionItem>
     );
 };
-export const NavNextItem = <TElement extends Element = HTMLElement>(props: NavItemProps<TElement>): JSX.Element|null => {
+export const NavNextItem   = <TElement extends Element = HTMLElement>(props: NavActionItemProps<TElement>): JSX.Element|null => {
     // jsx:
     return (
-        <NavItem<TElement>
+        <NavActionItem<TElement>
             // other props:
             {...props}
             
@@ -177,7 +224,7 @@ export const NavNextItem = <TElement extends Element = HTMLElement>(props: NavIt
                     size='1em'
                 />
             }
-        </NavItem>
+        </NavActionItem>
     );
 };
 
