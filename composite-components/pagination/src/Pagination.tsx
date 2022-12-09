@@ -11,7 +11,7 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
-import type {
+import {
     // styles:
     ListStyle,
     ListVariant,
@@ -20,9 +20,14 @@ import type {
     
     // react components:
     ListItemProps,
+    ListItem,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
     // react components:
+    NavActionItemProps,
+    NavPrevItem,
+    NavNextItem,
+    
     NavProps,
     Nav,
     
@@ -37,6 +42,18 @@ export const defaultOrientationableOptions = defaultInlineOrientationableOptions
 
 
 // react components:
+
+export {
+    ListItemProps,
+    ListItem,
+    
+    NavActionItemProps,
+    NavPrevItem,
+    NavNextItem,
+}
+
+
+
 export interface PaginationProps<TElement extends Element = HTMLElement>
     extends
         // bases:
