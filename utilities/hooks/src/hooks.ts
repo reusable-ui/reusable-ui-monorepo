@@ -93,9 +93,8 @@ export const useMergeEvents = <TEvent>(...eventHandlers: Optional<EventHandler<T
             for (const eventHandler of eventHandlers) {
                 eventHandler?.(event);
             } // for
-            // eslint-disable-next-line
         };
-    }, [...eventHandlers]);
+    }, eventHandlers);
 };
 
 
@@ -125,16 +124,18 @@ export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Re
         // merge refs:
         return (value) => {
             for (const ref of refs) {
-                if (typeof(ref) === 'function') {
+                if (!ref) { // ignores empty ref
+                    continue;
+                }
+                else if (typeof(ref) === 'function') {
                     ref?.(value);
                 }
                 else {
                     (ref as React.MutableRefObject<TValue|null>).current = value;
                 } // if
             } // for
-            // eslint-disable-next-line
         };
-    }, [...refs]);
+    }, refs);
 };
 
 
