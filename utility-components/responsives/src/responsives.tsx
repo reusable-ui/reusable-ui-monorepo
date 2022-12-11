@@ -446,13 +446,13 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     // dom effects:
-    //#region reset the fallback index to zero every container's client area resized
+    //#region reset the fallback index to zero every <container>'s client area resized
     const [prevSizes] = useState<WeakMap<Element, ResizeObserverSize>>(() => new Map()); // remember prev element's sizes
     
     useIsomorphicLayoutEffect(() => {
         // setups:
         const clientAreaResizeObserver = new ResizeObserver((entries) => {
-            let resized = false;
+            let hasResized = false;
             for (const entry of entries) {
                 // conditions:
                 const item = entry.target;
@@ -462,12 +462,12 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                 
                 const currentSize = entry.contentBoxSize[0]; // get the client size
                 const prevSize    = prevSizes.get(item);     // get the previous client size (for size-changed detection)
-                if (prevSize && !resized) { // if has prev size record => now is the resize event
+                if (prevSize && !hasResized) { // if has prev size record => partially/fully compare prev vs current
                     if      (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
-                        resized = true; // mark has resized
+                        hasResized = true; // mark has resized
                     } // if
                     else if (vertResponsive && (prevSize.blockSize  !== currentSize.blockSize )) { // resized at vert axis
-                        resized = true; // mark has resized
+                        hasResized = true; // mark has resized
                     } // if
                 } // if
                 
@@ -480,21 +480,93 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             
             
             // fire the resize callback:
-            if (resized) handleClientAreaResize();
+            if (hasResized) handleResponsiveResize();
         });
-        getElements(childRefs).forEach((outerElm) => outerElm && clientAreaResizeObserver.observe(outerElm, { box: 'content-box' })); // only watch for client area
+        
+        
+        
+        //#region resize of <descendant>s may cause the <container>s overflowed
+        const descendantsResizeObserver = new ResizeObserver((entries) => {
+            let hasResized = false;
+            for (const entry of entries) {
+                // conditions:
+                const item = entry.target;
+                if (!item.parentElement) continue; // the item is being removed => ignore
+                
+                
+                
+                const currentSize = entry.borderBoxSize[0]; // get the offset size
+                const prevSize    = prevSizes.get(item);     // get the previous client size (for size-changed detection)
+                if (prevSize && !hasResized) { // if has prev size record => fully compare prev vs current
+                    if (
+                        (prevSize.inlineSize !== currentSize.inlineSize)
+                        ||
+                        (prevSize.blockSize  !== currentSize.blockSize )
+                    ) {
+                        const {
+                            display,
+                            position,
+                        } = getComputedStyle(item); // warning: force reflow => major performance bottleneck!
+                        if (
+                            (display !== 'none')    // ignore hidden element
+                            &&
+                            (position === 'static') // ignore position other than 'static' (ignore 'relative'|'absolute'|'fixed'|'sticky')
+                        ) {
+                            hasResized = true; // mark has resized
+                        } // if
+                    } // if
+                } // if
+                
+                
+                
+                // record the current size to be compared in the future event:
+                prevSizes.set(item, currentSize);
+            } // for
+            
+            
+            
+            // fire the resize callback:
+            if (hasResized) {
+                const hasOverflowed = Array.from(childRefs.values()).some((outerElm) => !!outerElm && isOverflowed(outerElm));
+                if (hasOverflowed) handleResponsiveResize();
+            } // if
+        });
+        //#endregion resize of <descendant>s may cause the <container>s overflowed
+        
+        
+        
+        getElements(childRefs).forEach((outerElm) => {
+            // conditions:
+            if (!outerElm) return;
+            
+            
+            
+            // watchdog for the <container>:
+            clientAreaResizeObserver.observe(outerElm, { box: 'content-box' }); // watch for client size changed
+            
+            
+            
+            // watchdog for the <container>'s <descendant>s:
+            // we only watchdog for the direct children (not the deep <descendant>s), for performance reason
+            for (const descendant of outerElm.children) {
+                descendantsResizeObserver.observe(descendant, { box: 'border-box' }) // watch for offset size changed
+            } // for
+        });
         
         
         
         // cleanups:
         return () => {
             clientAreaResizeObserver.disconnect();
+            descendantsResizeObserver.disconnect();
         };
     }, [horzResponsive, vertResponsive, ...getElements(childRefs)]);
     
-    const handleClientAreaResize = useEvent((): void => {
+    const handleResponsiveResize = useEvent((): void => {
         // reset to the first fallback (0th):
         currentFallbackIndex.current = 0;
+        
+        
         
         if (useTransition) {
             // lazy responsives => a bit delayed of responsives is ok:
@@ -507,7 +579,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             triggerRender();
         } // if
     });
-    //#endregion reset the fallback index to zero every container's client area resized
+    //#endregion reset the fallback index to zero every <container>'s client area resized
     
     //#region (re)calculates the existence of overflowed_layout each time the generation updated
     useIsomorphicLayoutEffect(() => {
