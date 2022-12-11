@@ -35,6 +35,12 @@ import {
 
 // reusable-ui core:
 import {
+    // a responsive management system:
+    breakpoints,
+    BreakpointName,
+    
+    
+    
     // react helper hooks:
     useIsomorphicLayoutEffect,
     useEvent,
@@ -103,6 +109,11 @@ import {
     // react components:
     Container,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
+import {
+    // hooks:
+    WindowResizeCallback,
+    useWindowResizeObserver,
+}                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements.
 import {
     // react components:
     Fallbacks,
@@ -358,28 +369,82 @@ export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedCh
         // components:
         BasicComponentProps<TElement>
 {
+    // breakpoints:
+    breakpoint ?: BreakpointName
+    
+    
+    
     // children:
-    children ?: NavbarChildren
+    children   ?: NavbarChildren
 }
 const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // fn props:
-    const expanded = props.expanded;
+    const breakpoint    = props.breakpoint;
+    const mediaMinWidth = breakpoint ? breakpoints[breakpoint] : undefined;
+    
+    const expanded      = props.expanded;
     
     
     
     // jsx:
+    
+    // controllable [expanded]:
     if (expanded !== undefined) return (
         <NavbarInternal {...props} expanded={expanded} />
     );
     
-    // wrap the actual <NavbarInternal> into <ResponsiveProvider>,
-    // so the hooks are controlled by <ResponsiveProvider>
+    // internal controllable [expanded] using provided [breakpoint]:
+    if (mediaMinWidth || (mediaMinWidth === 0)) return (
+        <WindowResponsive mediaMinWidth={mediaMinWidth}>{(expanded) => (
+            <NavbarInternal {...props} expanded={expanded} />
+        )}</WindowResponsive>
+    );
+    
+    // internal controllable [expanded] using overflow detection:
     return (
         <ResponsiveProvider fallbacks={_defaultResponsiveFallbacks}>{(fallback) => (
             <NavbarInternal {...props} expanded={fallback} />
         )}</ResponsiveProvider>
     );
 };
+
+interface WindowResponsiveProps {
+    // breakpoints:
+    mediaMinWidth : number
+    
+    
+    
+    // children:
+    children      : React.ReactNode | ((expanded: boolean) => React.ReactNode);
+}
+const WindowResponsive = ({mediaMinWidth, children: childrenFn}: WindowResponsiveProps): JSX.Element|null => {
+    // states:
+    const [expanded, setExpanded] = useState<boolean>(mediaMinWidth === 0); // initially expanded if (mediaMinWidth === 0); otherwise initially collapsed
+    
+    
+    
+    // dom effects:
+    const handleWindowResize = useEvent<WindowResizeCallback>(({inlineSize: mediaCurrentWidth}) => {
+        const newExpanded = (mediaCurrentWidth >= mediaMinWidth);
+        if (expanded === newExpanded) return;
+        setExpanded(newExpanded);
+    });
+    useWindowResizeObserver(handleWindowResize);
+    
+    
+    
+    // jsx:
+    return (
+        <>{
+            (typeof(childrenFn) !== 'function')
+            ?
+            childrenFn
+            :
+            childrenFn(expanded)
+        }</>
+    );
+};
+
 const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet        = useNavbarStyleSheet();
@@ -393,8 +458,13 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     // rest props:
     const {
+        // breakpoints:
+        breakpoint : _breakpoint, // remove
+        
+        
+        
         // states:
-        expanded : navbarExpanded = false, // take
+        expanded   : navbarExpanded = false, // take
         
         
         
@@ -561,6 +631,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         })),
     );
 };
+
 export {
     Navbar,
     Navbar as default,

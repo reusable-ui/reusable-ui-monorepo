@@ -39,6 +39,7 @@
     "@reusable-ui/basic": "^5.0.1",
     "@reusable-ui/container": "^5.0.0",
     "@reusable-ui/core": "^5.0.0",
+    "@reusable-ui/dimensions": "^5.0.0",
     "@reusable-ui/responsives": "^5.0.0",
     "@types/react": "^18.0.10"
   },

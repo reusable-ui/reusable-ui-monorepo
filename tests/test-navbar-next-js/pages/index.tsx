@@ -21,7 +21,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div className={styles.container}>
-      <Navbar theme='primary' expanded={undefined}>{({
+      <Navbar theme='primary' expanded={undefined} breakpoint='lg'>{({
                     basicVariantProps,
                     navbarExpanded,
                     menuExpanded,
