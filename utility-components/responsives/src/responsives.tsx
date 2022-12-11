@@ -8,7 +8,6 @@ import {
     // hooks:
     useState,
     useRef,
-    useCallback,
     
     
     
@@ -240,74 +239,6 @@ const getElements = (elementRefs: Map<any, Element|null>|Iterable<Element|null>|
 
 
 
-// hooks:
-export interface ClientAreaResizeObserverOptions {
-    // responsives:
-    horzResponsive? : boolean
-    vertResponsive? : boolean
-}
-export const useClientAreaResizeObserver = (resizingElementRefs: Map<any, Element|null>|Iterable<Element|null>|React.RefObject<Element>, clientAreaResizeCallback: () => void, options: ClientAreaResizeObserverOptions = {}) => {
-    // options:
-    const {
-        horzResponsive = true,
-        vertResponsive = false,
-    } = options;
-    
-    
-    
-    // states:
-    const [prevSizes] = useState<Map<Element, ResizeObserverSize>>(() => new Map()); // remember prev element's sizes
-    
-    
-    
-    // dom effects:
-    useIsomorphicLayoutEffect(() => {
-        // setups:
-        const handleResize = (entries: ResizeObserverEntry[]) => {
-            let resized = false;
-            for (const entry of entries) {
-                const currentSize = entry.contentBoxSize[0];
-                
-                
-                
-                const prevSize = prevSizes.get(entry.target);
-                if (prevSize && !resized) { // if has prev size record => now is the resize event
-                         if (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
-                        resized = true; // mark has resized
-                    } // if
-                    else if (vertResponsive && (prevSize.blockSize  !== currentSize.blockSize )) { // resized at vert axis
-                        resized = true; // mark has resized
-                    } // if
-                } // if
-                
-                
-                
-                // record the current size to be compared in the future event:
-                prevSizes.set(entry.target, currentSize);
-            } // for
-            
-            
-            
-            // fire the resize callback:
-            if (resized) clientAreaResizeCallback();
-        };
-        
-        const observer = new ResizeObserver(handleResize);
-        const sizeOptions : ResizeObserverOptions = { box: 'content-box' }; // only watch for client area
-        getElements(resizingElementRefs).forEach((outerElm) => !!outerElm && observer.observe(outerElm, sizeOptions));
-        
-        
-        
-        // cleanups:
-        return () => {
-            observer.disconnect();
-            prevSizes.clear(); // un-reference all Element(s)
-        };
-    }, [...getElements(resizingElementRefs), horzResponsive, vertResponsive, clientAreaResizeCallback]); // runs once
-};
-
-
-
 // react components:
 
 interface ChildWithRefProps
@@ -395,11 +326,13 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
 
 
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
-export interface ResponsiveProviderProps<TFallback> extends ClientAreaResizeObserverOptions
+export interface ResponsiveProviderProps<TFallback>
 {
     // responsives:
-    fallbacks      : Fallbacks<TFallback>
-    useTransition ?: boolean
+    horzResponsive ?: boolean
+    vertResponsive ?: boolean
+    fallbacks       : Fallbacks<TFallback>
+    useTransition   ?: boolean
     
     
     
@@ -410,8 +343,10 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     // rest props:
     const {
         // responsives:
+        horzResponsive = true,
+        vertResponsive = false,
         fallbacks,
-        useTransition = true,
+        useTransition  = true,
         
         
         
@@ -512,7 +447,52 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     // dom effects:
     //#region reset the fallback index to zero every container's client area resized
-    const clientAreaResizeCallback = useCallback((): void => {
+    const [prevSizes] = useState<WeakMap<Element, ResizeObserverSize>>(() => new Map()); // remember prev element's sizes
+    
+    useIsomorphicLayoutEffect(() => {
+        // setups:
+        const clientAreaResizeObserver = new ResizeObserver((entries) => {
+            let resized = false;
+            for (const entry of entries) {
+                // conditions:
+                const item = entry.target;
+                if (!item.parentElement) continue; // the item is being removed => ignore
+                
+                
+                
+                const currentSize = entry.contentBoxSize[0]; // get the client size
+                const prevSize    = prevSizes.get(item);     // get the previous client size (for size-changed detection)
+                if (prevSize && !resized) { // if has prev size record => now is the resize event
+                         if (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
+                        resized = true; // mark has resized
+                    } // if
+                    else if (vertResponsive && (prevSize.blockSize  !== currentSize.blockSize )) { // resized at vert axis
+                        resized = true; // mark has resized
+                    } // if
+                } // if
+                
+                
+                
+                // record the current size to be compared in the future event:
+                prevSizes.set(item, currentSize);
+            } // for
+            
+            
+            
+            // fire the resize callback:
+            if (resized) clientAreaResizeCallback();
+        });
+        getElements(childRefs).forEach((outerElm) => outerElm && clientAreaResizeObserver.observe(outerElm, { box: 'content-box' })); // only watch for client area
+        
+        
+        
+        // cleanups:
+        return () => {
+            clientAreaResizeObserver.disconnect();
+        };
+    }, [horzResponsive, vertResponsive, ...getElements(childRefs)]);
+    
+    const clientAreaResizeCallback = useEvent((): void => {
         // reset to the first fallback (0th):
         currentFallbackIndex.current = 0;
         
@@ -526,8 +506,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             // greedy responsives => no delayed of responsives:
             triggerRender();
         } // if
-    }, [useTransition]);
-    useClientAreaResizeObserver(childRefs, clientAreaResizeCallback, props);
+    });
     //#endregion reset the fallback index to zero every container's client area resized
     
     //#region (re)calculates the existence of overflowed_layout each time the generation updated
