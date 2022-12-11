@@ -480,7 +480,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
             
             
             // fire the resize callback:
-            if (resized) clientAreaResizeCallback();
+            if (resized) handleClientAreaResize();
         });
         getElements(childRefs).forEach((outerElm) => outerElm && clientAreaResizeObserver.observe(outerElm, { box: 'content-box' })); // only watch for client area
         
@@ -492,7 +492,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         };
     }, [horzResponsive, vertResponsive, ...getElements(childRefs)]);
     
-    const clientAreaResizeCallback = useEvent((): void => {
+    const handleClientAreaResize = useEvent((): void => {
         // reset to the first fallback (0th):
         currentFallbackIndex.current = 0;
         
