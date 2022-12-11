@@ -152,6 +152,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // sizes:
+        boxSizing                 : 'content-box'               as CssKnownProps['boxSizing'],
         blockSize                 : 'auto'                      as CssKnownProps['blockSize'],
         
         
@@ -321,7 +322,7 @@ export const useNavbarStyleSheet = dynamicStyleSheet(() => ({
         // states:
         usesNavbarStates(),
     ]),
-}), { enabled: true, id: 'xf4hlnf0au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { enabled: false, id: 'xf4hlnf0au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
