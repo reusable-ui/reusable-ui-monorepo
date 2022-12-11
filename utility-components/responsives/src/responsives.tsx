@@ -89,7 +89,7 @@ const isOverflowable = (element: Element): boolean => {
 };
 
 const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop: number|null, maxRight: number|null, maxBottom: number|null): boolean => {
-    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1;
+    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1; // compensates for inaccurate calculation by rounding effect
     const children   = element.children;
     for (let index = 0; index < children.length; index++) {
         const child = children[index];
@@ -195,7 +195,7 @@ export const isOverflowed = (element: Element): boolean => {
     
     
     
-    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1;
+    const pixelScale = ((typeof(window) !== 'undefined') && window.devicePixelRatio) || 1; // compensates for inaccurate calculation by rounding effect
     
     
     
