@@ -463,7 +463,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                 const currentSize = entry.contentBoxSize[0]; // get the client size
                 const prevSize    = prevSizes.get(item);     // get the previous client size (for size-changed detection)
                 if (prevSize && !resized) { // if has prev size record => now is the resize event
-                         if (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
+                    if      (horzResponsive && (prevSize.inlineSize !== currentSize.inlineSize)) { // resized at horz axis
                         resized = true; // mark has resized
                     } // if
                     else if (vertResponsive && (prevSize.blockSize  !== currentSize.blockSize )) { // resized at vert axis
