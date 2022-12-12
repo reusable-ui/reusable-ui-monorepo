@@ -132,10 +132,10 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
     return {
         // layouts:
         display                   : 'grid'                      as CssKnownProps['display'         ],
-        gridAutoFlow              : 'column'                    as CssKnownProps['gridAutoFlow'    ], // the excess items flows automatically to a new column
-        gridAutoColumns           : 'auto'                      as CssKnownProps['gridAutoColumns' ], // a new column
+        gridAutoFlow              : 'column'                    as CssKnownProps['gridAutoFlow'    ], // the items (logo, toggler, etc) placed automatically to a new column
+        gridAutoColumns           : 'auto'                      as CssKnownProps['gridAutoColumns' ], // each items (logo, toggler, etc) take a space automatically
         gridTemplateRows          : [[
-            '1fr', // limiting only one row, so the excess items flows automatically to a new column
+            '1fr', // limiting only one row, so the items (logo, toggler, etc) placed automatically to a new column
         ]]                                                      as CssKnownProps['gridTemplateRows'],
         justifyContent            : 'space-between'             as CssKnownProps['justifyContent'  ], // separates each items as far as possible
         alignContent              : 'center'                    as CssKnownProps['alignContent'    ], // the excess vertical space placed at the top & bottom
@@ -176,12 +176,14 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         // list:
         listGridArea              : '2/1/2/3'                   as CssKnownProps['gridArea'       ],
+        listGridAreaExpand        : 'unset'                     as CssKnownProps['gridArea'       ],
+        
         listDisplay               : 'flex'                      as CssKnownProps['display'        ],
         listFlexDirection         : 'column'                    as CssKnownProps['flexDirection'  ],
         listFlexDirectionExpand   : 'row'                       as CssKnownProps['flexDirection'  ],
-        listGridAreaExpand        : 'unset'                     as CssKnownProps['gridArea'       ],
         listJustifySelf           : 'stretch'                   as CssKnownProps['justifySelf'    ],
         listAlignSelf             : 'stretch'                   as CssKnownProps['alignSelf'      ],
+        
         listMarginInline          : [[
             'calc(0px - ', containers.paddingInline, ')',
         ]]                                                      as CssKnownProps['marginInline'   ],
@@ -335,14 +337,14 @@ export interface NavbarParams {
     
     // states:
     navbarExpanded          : boolean
-    menuExpanded            : boolean
+    listExpanded            : boolean
     
     
     
     // handlers:
-    toggleMenu              : EventHandler<boolean|undefined>
+    toggleList              : EventHandler<boolean|undefined>
     handleActiveChange      : EventHandler<ActiveChangeEvent>
-    handleClickAsToggleMenu : React.MouseEventHandler<Element>
+    handleClickToToggleList : React.MouseEventHandler<Element>
 }
 export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.ReactNode)
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
@@ -370,7 +372,7 @@ export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedCh
         // components:
         BasicComponentProps<TElement>
 {
-    // breakpoints:
+    // behaviors:
     breakpoint ?: BreakpointName
     
     
@@ -410,7 +412,7 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
 };
 
 interface WindowResponsiveProps {
-    // breakpoints:
+    // behaviors:
     mediaMinWidth : number
     
     
@@ -459,7 +461,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     // rest props:
     const {
-        // breakpoints:
+        // behaviors:
         breakpoint : _breakpoint, // remove
         
         
@@ -496,36 +498,36 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
     
     
     // states:
-    const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
+    const [listExpanded, setListExpanded] = useState<boolean>(false);
     
     
     
     // handlers:
-    const toggleMenu                = useEvent<EventHandler<boolean|undefined>>((newMenuExpanded) => {
+    const toggleList                = useEvent<EventHandler<boolean|undefined>>((newListExpanded) => {
         // conditions:
         if (navbarExpanded) return; // the expand/collapse functionality is only for the mobile version of <Navbar>
         
         
         
         // actions:
-        setMenuExpanded(newMenuExpanded ?? !menuExpanded);
-    }) as ((newMenuExpanded ?: boolean) => void);
+        setListExpanded(newListExpanded ?? !listExpanded);
+    }) as ((newListExpanded ?: boolean) => void);
     const handleActiveChange        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
         // actions:
-        toggleMenu(event.active);
+        toggleList(event.active);
     });
-    const handleClickAsToggleMenu   = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickToToggleList   = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
         
         
         // actions:
-        toggleMenu();
+        toggleList();
         event.preventDefault(); // handled
     });
     
-    const handleClickAsCollapseMenu = useEvent<React.MouseEventHandler<Element>>((event) => {
+    const handleClickToCollapseList = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         // if (event.defaultPrevented) return; // always handle click even if the event has been handled
         if (event.target === event.currentTarget) return; // ignores non bubbling
@@ -535,7 +537,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // actions:
-        toggleMenu(false);
+        toggleList(false);
         // event.preventDefault(); // handled
     });
     const handleClick               = useMergeEvents(
@@ -547,16 +549,16 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // actions:
-        handleClickAsCollapseMenu,
+        handleClickToCollapseList,
     );
     
     
     
     // dom effects:
-    // collapses the <Navbar>'s menu if switched from mobile to desktop:
+    // collapses the <Navbar>'s list if switched from mobile to desktop:
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!menuExpanded)  return;  // the <Navbar>'s menu was already collapsed => ignore
+        if (!listExpanded)  return;  // the <Navbar>'s list was already collapsed => ignore
         if (!navbarExpanded) return; // the <Navbar> is in mobile version         => ignore
         
         
@@ -564,7 +566,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         // setups:
         let cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
             cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
-                setMenuExpanded(false); // collapsing the <Navbar>'s menu
+                setListExpanded(false); // collapsing the <Navbar>'s list
             });
         });
         
@@ -575,7 +577,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             // the <Navbar> immediately switched to mobile version => aborts
             cancelAnimationFrame(cancelRequest);
         };
-    }, [navbarExpanded, menuExpanded]);
+    }, [navbarExpanded, listExpanded]);
     
     
     
@@ -621,14 +623,14 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             
             // states:
             navbarExpanded,
-            menuExpanded,
+            listExpanded,
             
             
             
             // handlers:
-            toggleMenu,
+            toggleList,
             handleActiveChange,
-            handleClickAsToggleMenu,
+            handleClickToToggleList,
         })),
     );
 };
