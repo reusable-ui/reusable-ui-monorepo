@@ -2,6 +2,18 @@ remove Nm to Md:
 \w+Nm|'nm'
 
 
+
+optimize:
+
+        [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+
+// excessive creating string th**
+export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
+for size too `sz**
+
+combines requestAnimationFrame with setTimeout
+
+
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <Tooltip outlined={true}> <Arrow>
