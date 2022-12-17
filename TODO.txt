@@ -11,6 +11,9 @@ optimize:
 export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
 for size too `sz**
 
+cache:
+export const usesActiveAsClick = (): ActiveAsClickStuff => {
+
 combines requestAnimationFrame with setTimeout
 
 
