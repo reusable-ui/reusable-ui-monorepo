@@ -1,12 +1,3 @@
-// cssfn:
-[upgraded] [undocumented] @cssfn/types
-[upgraded] [undocumented] @cssfn/css-selector
-[upgraded] [undocumented] @cssfn/css-types
-[upgraded] [undocumented] @cssfn/css-var
-[upgraded] [undocumented] @cssfn/cssfn
-[upgraded] [undocumented] @cssfn/css-config
-[upgraded] [undocumented] @cssfn/react-cssfn
-
 // reusable-ui configs:
 [published ] [documented  ] @reusable-ui/colors
 [published ] [documented  ] @reusable-ui/borders
