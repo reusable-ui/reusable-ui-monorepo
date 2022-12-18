@@ -24,7 +24,7 @@ utility-components/*/dist/
 barrels/*/dist/
 
 
-package-lock.json
+# package-lock.json # do not ignore this
 
 lerna-debug.log
 npm-debug.log
