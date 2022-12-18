@@ -31,7 +31,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@floating-ui/dom": "^0.5.4",
+    "@floating-ui/dom": "^1.0.12",
     "@reusable-ui/hooks": "^5.0.0",
     "@types/react": "^18.0.26"
   },

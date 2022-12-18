@@ -37,7 +37,7 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@floating-ui/dom": "^0.5.4",
+    "@floating-ui/dom": "^1.0.12",
     "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
     "@reusable-ui/popup": "^5.0.0",
