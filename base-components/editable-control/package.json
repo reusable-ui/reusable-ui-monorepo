@@ -39,9 +39,9 @@
     "@cssfn/cssfn-react": "^2.0.21",
     "@reusable-ui/control": "^5.0.2",
     "@reusable-ui/core": "^5.0.0",
-    "@types/react": "^18.0.24"
+    "@types/react": "^18.0.26"
   },
   "peerDependencies": {
-    "react": "^18.1.0"
+    "react": "^18.2.0"
   }
 }
