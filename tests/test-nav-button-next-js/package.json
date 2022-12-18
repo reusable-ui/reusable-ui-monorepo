@@ -9,19 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@reusable-ui/nav-button": "^5.0.0",
-    "@reusable-ui/nav": "^5.0.0",
-    "@cssfn/cssfn-dom": "^2.0.7",
-    "next": "^12.1.6",
+    "@reusable-ui/nav-button": "^5.0.1",
+    "@reusable-ui/nav": "^5.0.2",
+    "@cssfn/cssfn-dom": "^2.0.16",
+    "next": "^13.0.7",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.11.17",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
-    "eslint": "^8.17.0",
-    "eslint-config-next": "^12.1.6",
+    "eslint": "^8.30.0",
+    "eslint-config-next": "^13.0.7",
     "typescript": "^4.9.4"
   }
 }
