@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cssfn/core": "^2.0.1",
+    "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.13",
     "@reusable-ui/breakpoints": "^5.0.0",
     "@testing-library/jest-dom": "^5.16.4",

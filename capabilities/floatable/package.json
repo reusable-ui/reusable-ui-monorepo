@@ -33,7 +33,7 @@
   "dependencies": {
     "@floating-ui/dom": "^0.5.4",
     "@reusable-ui/hooks": "^5.0.0",
-    "@types/react": "^18.0.10"
+    "@types/react": "^18.0.24"
   },
   "peerDependencies": {
     "react": "^18.1.0"

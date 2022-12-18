@@ -39,15 +39,15 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^2.0.1",
+    "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.13",
     "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/generic": "^5.0.0",
-    "@types/react": "^18.0.10",
-    "@types/react-dom": "^18.0.6"
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8"
   },
   "peerDependencies": {
     "react": "^18.1.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.1.0"
   }
 }
