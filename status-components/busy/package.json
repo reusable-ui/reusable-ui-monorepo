@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.6",
-    "@cssfn/cssfn-react": "^2.0.13",
+    "@cssfn/cssfn-react": "^2.0.21",
     "@reusable-ui/badge": "^5.0.0",
     "@reusable-ui/core": "^5.0.0",
     "@reusable-ui/icon": "^5.0.0",
