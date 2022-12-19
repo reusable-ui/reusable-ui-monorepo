@@ -76,7 +76,7 @@ export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':where(&
 
 
 export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssVars<NudibleVars> }
-const createNudibleRule = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude) => {
+const createNudibleRule = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude): CssRule => {
     // dependencies:
     
     // features:
@@ -163,8 +163,8 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
             ?
             getDefaultNudibleRule
             :
-            () => createNudibleRule(nudeDefinition))
-        ,
+            () => createNudibleRule(nudeDefinition)
+        ),
         nudibleVars,
     };
 };
