@@ -63,6 +63,7 @@ const [nudibleVars] = cssVars<NudibleVars>();
 
 //#region caches
 const nudeDefinitionsCache = new Map<ToggleNude, CssRule>();
+let nudibleStuffCache      : WeakRef<NudibleStuff> | null = null;
 //#endregion caches
 
 
@@ -81,6 +82,14 @@ export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssV
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
 export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude): NudibleStuff => {
+    const builtInFunc = (nudeDefinition === defineNude);
+    if (builtInFunc) {
+        const cached = nudibleStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
     // dependencies:
     
     // features:
@@ -89,7 +98,7 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
     
     
     
-    return {
+    const nudibleStuff : NudibleStuff = {
         nudibleRule: () => style({
             // configs:
             ...vars({
@@ -147,6 +156,8 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
         }),
         nudibleVars,
     };
+    if (builtInFunc) nudibleStuffCache = new WeakRef<NudibleStuff>(nudibleStuff);
+    return nudibleStuff;
 };
 
 /**
