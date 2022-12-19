@@ -59,6 +59,7 @@ import {
 // variants:
 
 //#region colorable
+export type ToggleColor = boolean|'inherit'|null
 export interface ColorableVars {
     /**
      * the outlined switching function.
@@ -98,6 +99,13 @@ const [colorableVars] = cssVars<ColorableVars>();
 
 
 
+//#region caches
+const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
+const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
+//#endregion caches
+
+
+
 export interface ColorableStuff { colorableRule: Factory<CssRule>, colorableVars: CssVars<ColorableVars> }
 export interface ColorableConfig {
     color    ?: CssKnownProps['backgroundColor']
@@ -110,7 +118,7 @@ export interface ColorableConfig {
  * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `ColorableStuff` represents the color rules.
  */
-export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
+export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
     // dependencies:
     
     // features:
@@ -195,36 +203,54 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineSelfOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-const defineSelfOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off/inherit* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                inherit => inherit           => follows      the <ancestor> decision.
-                null    => null              => remove the prev declaration
-        */
-        [colorableVars.outlinedSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+const defineSelfOutlined = (toggle: ToggleColor): CssRule => {
+    const cached = selfOutlinedDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const selfOutlinedDef = style({
+        ...vars({
+            /*
+                *switch on/off/inherit* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    inherit => inherit           => follows      the <ancestor> decision.
+                    null    => null              => remove the prev declaration
+            */
+            [colorableVars.outlinedSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    selfOutlinedDefinitionsCache.set(toggle, selfOutlinedDef);
+    return selfOutlinedDef;
+};
 
 /**
  * Defines a mildification preference rules for the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineSelfMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-const defineSelfMild = (toggle: boolean|'inherit'|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off/inherit* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                inherit => inherit           => follows      the <ancestor> decision.
-                null    => null              => remove the prev declaration
-        */
-        [colorableVars.mildSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+const defineSelfMild = (toggle: ToggleColor): CssRule => {
+    const cached = selfMildDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const selfMildDef = style({
+        ...vars({
+            /*
+                *switch on/off/inherit* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    inherit => inherit           => follows      the <ancestor> decision.
+                    null    => null              => remove the prev declaration
+            */
+            [colorableVars.mildSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    selfMildDefinitionsCache.set(toggle, selfMildDef);
+    return selfMildDef;
+};
 //#endregion colorable
