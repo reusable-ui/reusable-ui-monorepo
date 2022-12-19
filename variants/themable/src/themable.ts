@@ -189,10 +189,12 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
-let hasThemeSelectorsCache : CssSelector[] | null = null;
-let noThemeSelectorsCache  : CssSelector   | null = null;
+let hasThemeSelectorsCache  : CssSelector[] | null = null;
+let noThemeSelectorsCache   : CssSelector   | null = null;
 
 const themeDefinitionsCache = new Map<ThemeName, CssRule>();
+
+let themeOptionsCache       : ThemeName[]   | null = null;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
@@ -200,6 +202,7 @@ cssColorConfig.onChange.subscribe(() => {
     hasThemeSelectorsCache = null;
     noThemeSelectorsCache  = null;
     themeDefinitionsCache.clear();
+    themeOptionsCache = null;
 });
 //#endregion caches
 
@@ -292,7 +295,7 @@ export const defineTheme = (themeName: ThemeName): CssRule => {
  * Gets all available theme color options.
  * @returns A `ThemeName[]` represents all available theme color options.
  */
-export const themeOptions = (): ThemeName[] => Object.keys(themes) as ThemeName[];
+export const themeOptions = (): ThemeName[] => themeOptionsCache ?? (themeOptionsCache = Object.keys(themes) as ThemeName[]);
 
 
 
