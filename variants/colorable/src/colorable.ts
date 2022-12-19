@@ -102,6 +102,7 @@ const [colorableVars] = cssVars<ColorableVars>();
 //#region caches
 const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
 const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
+let colorableStuffCache            : WeakRef<ColorableStuff> | null = null;
 //#endregion caches
 
 
@@ -119,6 +120,14 @@ export interface ColorableConfig {
  * @returns A `ColorableStuff` represents the color rules.
  */
 export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
+    const builtInFunc = (config === undefined) && (outlinedDefinition === defineSelfOutlined) && (mildDefinition === defineSelfMild);
+    if (builtInFunc) {
+        const cached = colorableStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
     // dependencies:
     
     // features:
@@ -134,7 +143,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
     
     
     
-    return {
+    const colorableStuff : ColorableStuff = {
         colorableRule: () => style({
             ...imports([
                 // features:
@@ -196,6 +205,8 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
         }),
         colorableVars,
     };
+    if (builtInFunc) colorableStuffCache = new WeakRef<ColorableStuff>(colorableStuff);
+    return colorableStuff;
 };
 
 /**
