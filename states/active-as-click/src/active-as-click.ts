@@ -87,12 +87,23 @@ const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
 
 
+//#region caches
+let activeAsClickStuffCache : WeakRef<ActiveAsClickStuff> | null = null;
+//#endregion caches
+
+
+
 export interface ActiveAsClickStuff { activeAsClickRule: Factory<CssRule>, activeAsClickVars: CssVars<ActiveAsClickVars> }
 /**
  * Shows the UI as clicked when activated.
  * @returns A `ActiveAsClickStuff` represents an active-as-click state.
  */
 export const usesActiveAsClick = (): ActiveAsClickStuff => {
+    const cached = activeAsClickStuffCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -121,7 +132,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
     
     
     
-    return {
+    const activeAsClickStuff : ActiveAsClickStuff = {
         activeAsClickRule: () => style({
             // animations:
             ...keyframesDummyPressRule,
@@ -346,5 +357,7 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
         }),
         activeAsClickVars,
     };
+    activeAsClickStuffCache = new WeakRef<ActiveAsClickStuff>(activeAsClickStuff);
+    return activeAsClickStuff;
 };
 //#endregion active-as-click
