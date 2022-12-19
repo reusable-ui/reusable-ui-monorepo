@@ -47,8 +47,8 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
         orientationInlineSelector,
         orientationBlockSelector,
         
-        ifOrientationInline (styles: CssStyleCollection) { return rule(this.orientationInlineSelector, styles) },
-        ifOrientationBlock  (styles: CssStyleCollection) { return rule(this.orientationBlockSelector , styles) },
+        ifOrientationInline : (styles: CssStyleCollection) => rule(orientationInlineSelector, styles),
+        ifOrientationBlock  : (styles: CssStyleCollection) => rule(orientationBlockSelector , styles),
     };
 };
 
@@ -127,13 +127,13 @@ export const usesOrientationableWithDirection = (options?: OrientationableWithDi
         orientationBlockStartSelector,
         orientationBlockEndSelector,
         
-        ifOrientationInlineStart (styles: CssStyleCollection) { return rule(this.orientationInlineStartSelector, styles) },
-        ifOrientationInlineEnd   (styles: CssStyleCollection) { return rule(this.orientationInlineEndSelector  , styles) },
-        ifOrientationBlockStart  (styles: CssStyleCollection) { return rule(this.orientationBlockStartSelector , styles) },
-        ifOrientationBlockEnd    (styles: CssStyleCollection) { return rule(this.orientationBlockEndSelector   , styles) },
+        ifOrientationInlineStart : (styles: CssStyleCollection) => rule(orientationInlineStartSelector, styles),
+        ifOrientationInlineEnd   : (styles: CssStyleCollection) => rule(orientationInlineEndSelector  , styles),
+        ifOrientationBlockStart  : (styles: CssStyleCollection) => rule(orientationBlockStartSelector , styles),
+        ifOrientationBlockEnd    : (styles: CssStyleCollection) => rule(orientationBlockEndSelector   , styles),
         
-        ifOrientationInline      (styles: CssStyleCollection) { return rule([this.orientationInlineStartSelector, this.orientationInlineEndSelector], styles) },
-        ifOrientationBlock       (styles: CssStyleCollection) { return rule([this.orientationBlockStartSelector , this.orientationBlockEndSelector ], styles) },
+        ifOrientationInline      : (styles: CssStyleCollection) => rule([orientationInlineStartSelector, orientationInlineEndSelector], styles),
+        ifOrientationBlock       : (styles: CssStyleCollection) => rule([orientationBlockStartSelector , orientationBlockEndSelector ], styles),
     };
 };
 
