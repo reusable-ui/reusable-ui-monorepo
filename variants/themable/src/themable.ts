@@ -192,14 +192,14 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
 let hasThemeSelectorsCache : CssSelector[] | null = null;
 let noThemeSelectorsCache  : CssSelector   | null = null;
 
-const themeDefsCache = new Map<ThemeName, CssRule>();
+const themeDefinitionsCache = new Map<ThemeName, CssRule>();
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
     hasThemeSelectorsCache = null;
     noThemeSelectorsCache  = null;
-    themeDefsCache.clear();
+    themeDefinitionsCache.clear();
 });
 //#endregion caches
 
@@ -234,17 +234,17 @@ export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: C
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
- * @param factory A callback to create a theme rules for each theme color in `options`.
+ * @param themeDefinition A callback to create a theme rules for each theme color in `options`.
  * @param options Defines all available theme color options.
  * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
-export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollection) = themeOf, options : ThemeName[] = themeOptions()): ThemableStuff => {
+export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineTheme, options : ThemeName[] = themeOptions()): ThemableStuff => {
     return {
         themableRule: () => style({
             ...variants([
                 options.map((themeName) =>
                     ifTheme(themeName,
-                        factory(themeName)
+                        themeDefinition(themeName)
                     )
                 ),
             ]),
@@ -254,12 +254,12 @@ export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollec
 };
 
 /**
- * Creates a theme rules for the given `themeName`.
+ * Defines a theme rules for the given `themeName`.
  * @param themeName The theme name.
  * @returns A `CssRule` represents a theme rules for the given `themeName`.
  */
-export const themeOf = (themeName: ThemeName): CssRule => {
-    const cached = themeDefsCache.get(themeName);
+export const defineTheme = (themeName: ThemeName): CssRule => {
+    const cached = themeDefinitionsCache.get(themeName);
     if (cached !== undefined) return cached;
     
     
@@ -284,7 +284,7 @@ export const themeOf = (themeName: ThemeName): CssRule => {
             [themableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
         }),
     });
-    themeDefsCache.set(themeName, themeDef);
+    themeDefinitionsCache.set(themeName, themeDef);
     return themeDef;
 };
 
