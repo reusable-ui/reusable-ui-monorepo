@@ -65,6 +65,7 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 //#region caches
 const gradientDefinitionsCache = new Map<ToggleGradient, CssRule>();
+let gradientableStuffCache     : WeakRef<GradientableStuff> | null = null;
 //#endregion caches
 
 
@@ -88,7 +89,15 @@ export interface GradientableConfig {
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
 export const usesGradientable = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): GradientableStuff => {
-    return {
+    const builtInFunc = (config === undefined) && (gradientDefinition === defineGradient);
+    if (builtInFunc) {
+        const cached = gradientableStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
+    const gradientableStuff : GradientableStuff = {
         gradientableRule: () => style({
             // configs:
             ...vars({
@@ -124,6 +133,8 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
         }),
         gradientableVars,
     };
+    if (builtInFunc) gradientableStuffCache = new WeakRef<GradientableStuff>(gradientableStuff);
+    return gradientableStuff;
 };
 
 /**
