@@ -1,18 +1,3 @@
-verify:
-gradientable [ok]
-outlineable [ok]
-mildable [ok]
-nudible [ok]
-
-resizable [ok]
-themable [ok]
-
-colorable [ok]
-orientationable
-activeAsClick [ok]
-
-
-
 optimize:
 export const useFloatable
 combines requestAnimationFrame with setTimeout
