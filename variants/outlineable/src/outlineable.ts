@@ -107,6 +107,7 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 //#region caches
 const outlinedDefinitionsCache = new Map<ToggleOutlined, CssRule>();
+let outlineableStuffCache      : WeakRef<OutlineableStuff> | null = null;
 //#endregion caches
 
 
@@ -133,12 +134,20 @@ export interface OutlineableConfig {
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
 export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
+    const builtInFunc = (config === undefined) && (outlinedDefinition === defineOutlined);
+    if (builtInFunc) {
+        const cached = outlineableStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
     
     
-    return {
+    const outlineableStuff : OutlineableStuff = {
         outlineableRule: () => style({
             ...imports([
                 // makes   `usesOutlineable()` implicitly `usesThemable()`
@@ -243,6 +252,8 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
         }),
         outlineableVars,
     };
+    if (builtInFunc) outlineableStuffCache = new WeakRef<OutlineableStuff>(outlineableStuff);
+    return outlineableStuff;
 };
 
 /**
