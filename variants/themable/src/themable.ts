@@ -9,6 +9,10 @@ import {
     CssRule,
     CssStyleCollection,
     
+    CssSelector,
+    
+    CssClassName,
+    
     
     
     // writes css in javascript:
@@ -16,7 +20,7 @@ import {
     variants,
     style,
     vars,
-    pascalCase,
+    startsCapitalized,
     
     
     
@@ -30,6 +34,7 @@ import {
     // configs:
     colors,
     themes,
+    cssColorConfig,
 }                           from '@reusable-ui/colors'          // a color management system
 
 
@@ -159,11 +164,44 @@ const [themableVars] = cssVars<ThemableVars>();
 
 
 
-export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
+//#region caches
+const themeClassesCache = new Map<ThemeName, CssClassName>();
+export const createThemeClass = (themeName: ThemeName): CssClassName => {
+    const cached = themeClassesCache.get(themeName);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const themeClass = `th${startsCapitalized(themeName)}`;
+    themeClassesCache.set(themeName, themeClass);
+    return themeClass;
+};
+
+const themeSelectorsCache = new Map<ThemeName, CssSelector>();
+export const createThemeSelector = (themeName: ThemeName): CssSelector => {
+    const cached = themeSelectorsCache.get(themeName);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const themeRule : CssSelector = `.${createThemeClass(themeName)}`;
+    themeSelectorsCache.set(themeName, themeRule);
+    return themeRule;
+};
+
+cssColorConfig.onChange.subscribe(() => {
+    themeClassesCache.clear();
+    themeSelectorsCache.clear();
+});
+//#endregion caches
+
+
+
+export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(createThemeSelector(themeName), styles);
 export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
         Object.keys(themes)
-        .map((themeName) => `.th${pascalCase(themeName)}`)
+        .map((themeName) => createThemeSelector(themeName))
         ,
         styles
     );
@@ -172,7 +210,7 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
         `:not(:is(${
             Object.keys(themes)
-            .map((themeName) => `.th${pascalCase(themeName)}`)
+            .map((themeName) => createThemeSelector(themeName))
             .join(', ')
         }))`
         ,
@@ -272,6 +310,6 @@ export interface ThemableProps {
     theme ?: ThemeName
 }
 export const useThemable = ({theme}: ThemableProps) => ({
-    class: theme ? `th${pascalCase(theme)}` : null,
+    class: theme ? createThemeClass(theme) : null,
 });
 //#endregion themable
