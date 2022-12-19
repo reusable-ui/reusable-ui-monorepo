@@ -189,22 +189,22 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
-let hasThemeSelectorsCache  : CssSelector[] | null = null;
-let noThemeSelectorsCache   : CssSelector   | null = null;
+let hasThemeSelectorsCache   : CssSelector[] | null = null;
+let noThemeSelectorsCache    : CssSelector   | null = null;
 
-const themeDefinitionsCache = new Map<ThemeName, CssRule>();
+const themeDefinitionsCache  = new Map<ThemeName, CssRule>();
 
-let themeOptionsCache       : ThemeName[]   | null = null;
-let themableStuffCache      : WeakRef<ThemableStuff> | null = null;
+let themeOptionsCache        : ThemeName[]   | null = null;
+let defaultThemableRuleCache : WeakRef<CssRule> | null = null;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
-    hasThemeSelectorsCache = null;
-    noThemeSelectorsCache  = null;
+    hasThemeSelectorsCache   = null;
+    noThemeSelectorsCache    = null;
     themeDefinitionsCache.clear();
-    themeOptionsCache      = null;
-    themableStuffCache     = null;
+    themeOptionsCache        = null;
+    defaultThemableRuleCache = null;
 });
 //#endregion caches
 
@@ -236,6 +236,27 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
 
 
 export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
+const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()) => {
+    return style({
+        ...variants([
+            options.map((themeName) =>
+                ifTheme(themeName,
+                    themeDefinition(themeName)
+                )
+            ),
+        ]),
+    });
+};
+const getDefaultThemableRule = () => {
+    const cached = defaultThemableRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultThemableRule = createThemableRule();
+    defaultThemableRuleCache = new WeakRef<CssRule>(defaultThemableRule);
+    return defaultThemableRule;
+};
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
@@ -244,28 +265,16 @@ export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: C
  * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
 export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): ThemableStuff => {
-    const builtInFunc = (themeDefinition === defineThemeRule) && (options === themeOptions());
-    if (builtInFunc) {
-        const cached = themableStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
-    const themableStuff : ThemableStuff = {
-        themableRule: () => style({
-            ...variants([
-                options.map((themeName) =>
-                    ifTheme(themeName,
-                        themeDefinition(themeName)
-                    )
-                ),
-            ]),
-        }),
+    return {
+        themableRule: (
+            ((themeDefinition === defineThemeRule) && (options === themeOptions()))
+            ?
+            getDefaultThemableRule
+            :
+            () => createThemableRule(themeDefinition, options))
+        ,
         themableVars,
     };
-    if (builtInFunc) themableStuffCache = new WeakRef<ThemableStuff>(themableStuff);
-    return themableStuff;
 };
 
 /**

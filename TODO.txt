@@ -4,8 +4,8 @@ outlineable [ok]
 mildable [ok]
 nudible [ok]
 
-size
-theme
+resizable [ok]
+themable [ok]
 
 colorable
 orientationable
