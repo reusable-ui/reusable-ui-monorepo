@@ -127,7 +127,7 @@ export interface OutlineableConfig {
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
-const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined) => {
+const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): CssRule => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -259,8 +259,8 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
             ?
             getDefaultOutlineableRule
             :
-            () => createOutlineableRule(config, outlinedDefinition))
-        ,
+            () => createOutlineableRule(config, outlinedDefinition)
+        ),
         outlineableVars,
     };
 };
