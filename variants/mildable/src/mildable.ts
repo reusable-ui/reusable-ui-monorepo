@@ -103,6 +103,7 @@ const [mildableVars] = cssVars<MildableVars>();
 
 //#region caches
 const mildDefinitionsCache = new Map<ToggleMild, CssRule>();
+let mildableStuffCache     : WeakRef<MildableStuff> | null = null;
 //#endregion caches
 
 
@@ -129,12 +130,20 @@ export interface MildableConfig {
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
 export const usesMildable = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): MildableStuff => {
+    const builtInFunc = (config === undefined) && (mildDefinition === defineMild);
+    if (builtInFunc) {
+        const cached = mildableStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
     
     
-    return {
+    const mildableStuff : MildableStuff = {
         mildableRule: () => style({
             ...imports([
                 // makes   `usesMildable()` implicitly `usesThemable()`
@@ -226,6 +235,8 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
         }),
         mildableVars,
     };
+    if (builtInFunc) mildableStuffCache = new WeakRef<MildableStuff>(mildableStuff);
+    return mildableStuff;
 };
 
 /**
