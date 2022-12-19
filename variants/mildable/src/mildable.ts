@@ -102,8 +102,8 @@ const [mildableVars] = cssVars<MildableVars>();
 
 
 //#region caches
-const mildDefinitionsCache = new Map<ToggleMild, CssRule>();
-let mildableStuffCache     : WeakRef<MildableStuff> | null = null;
+const mildDefinitionsCache   = new Map<ToggleMild, CssRule>();
+let defaultmildableRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -123,6 +123,112 @@ export interface MildableConfig {
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
+const createMildableRule = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild) => {
+    // dependencies:
+    const {themableRule, themableVars} = usesThemable();
+    
+    
+    
+    return style({
+        ...imports([
+            // makes   `usesMildable()` implicitly `usesThemable()`
+            // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+            themableRule,
+        ]),
+        
+        
+        
+        // configs:
+        ...vars({
+            /*
+                supports for `usesColorable()`:
+                only reset `mildableVars.mildSw = mildableVars.mildPr` if `mildDefinition` provided,
+                so the *modified* `mildableVars.mildSw` by `setMild()` still *preserved*,
+                thus the `usesColorable()` can see the <parent>'s actual [mild] status.
+            */
+            [mildableVars.mildSw] : (mildDefinition || undefined) && mildableVars.mildPr,
+        }),
+        
+        
+        
+        // color functions:
+        ...vars({
+            // adaptive color functions:
+            
+            [mildableVars.backgFn   ] : switchOf(
+                themableVars.backgMildCond,    // first  priority
+                themableVars.backgMild,        // second priority
+                
+                config?.backg,                 // default => uses config's background
+            ),
+            
+            [mildableVars.foregFn   ] : switchOf(
+                themableVars.foregMildCond,    // first  priority
+                themableVars.foregMild,        // second priority
+                
+                config?.foreg,                 // default => uses config's foreground
+            ),
+            
+            
+            
+            [mildableVars.altBackgFn] : switchOf(
+                themableVars.altBackgMildCond, // first  priority
+                themableVars.altBackgMild,     // second priority
+                
+                config?.altBackg,              // default => uses config's alternate background
+            ),
+            
+            [mildableVars.altForegFn] : switchOf(
+                themableVars.altForegMildCond, // first  priority
+                themableVars.altForegMild,     // second priority
+                
+                config?.altForeg,              // default => uses config's alternate foreground
+            ),
+        }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [mildableVars.backgTg] : [[
+                mildableVars.mildSw,  // the mild switching function
+                mildableVars.backgFn, // the mild background color definition
+            ]],
+            [mildableVars.foregTg] : [[
+                mildableVars.mildSw,  // the mild switching function
+                mildableVars.foregFn, // the mild foreground color definition
+            ]],
+            
+            [mildableVars.altBackgTg] : [[
+                mildableVars.mildSw,     // the mild switching function
+                mildableVars.altBackgFn, // the mild alternate background color definition
+            ]],
+            [mildableVars.altForegTg] : [[
+                mildableVars.mildSw,     // the mild switching function
+                mildableVars.altForegFn, // the mild alternate foreground color definition
+            ]],
+        }),
+        
+        
+        
+        // toggling conditions:
+        ...variants([
+            mildDefinition && ifMild(mildDefinition(true)),
+            mildDefinition && ifNotMild(mildDefinition(false)),
+            mildDefinition && ifInheritMild(mildDefinition('inherit')),
+        ]),
+    });
+};
+const getDefaultMildableRule = () => {
+    const cached = defaultmildableRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultMildableRule = createMildableRule();
+    defaultmildableRuleCache = new WeakRef<CssRule>(defaultMildableRule);
+    return defaultMildableRule;
+};
 /**
  * Uses a toggleable mildification.  
  * @param config  A configuration of `mildableRule`.
@@ -130,113 +236,16 @@ export interface MildableConfig {
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
 export const usesMildable = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): MildableStuff => {
-    const builtInFunc = (config === undefined) && (mildDefinition === defineMild);
-    if (builtInFunc) {
-        const cached = mildableStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
-    // dependencies:
-    const {themableRule, themableVars} = usesThemable();
-    
-    
-    
-    const mildableStuff : MildableStuff = {
-        mildableRule: () => style({
-            ...imports([
-                // makes   `usesMildable()` implicitly `usesThemable()`
-                // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themableRule,
-            ]),
-            
-            
-            
-            // configs:
-            ...vars({
-                /*
-                    supports for `usesColorable()`:
-                    only reset `mildableVars.mildSw = mildableVars.mildPr` if `mildDefinition` provided,
-                    so the *modified* `mildableVars.mildSw` by `setMild()` still *preserved*,
-                    thus the `usesColorable()` can see the <parent>'s actual [mild] status.
-                */
-                [mildableVars.mildSw] : (mildDefinition || undefined) && mildableVars.mildPr,
-            }),
-            
-            
-            
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                
-                [mildableVars.backgFn   ] : switchOf(
-                    themableVars.backgMildCond,    // first  priority
-                    themableVars.backgMild,        // second priority
-                    
-                    config?.backg,                 // default => uses config's background
-                ),
-                
-                [mildableVars.foregFn   ] : switchOf(
-                    themableVars.foregMildCond,    // first  priority
-                    themableVars.foregMild,        // second priority
-                    
-                    config?.foreg,                 // default => uses config's foreground
-                ),
-                
-                
-                
-                [mildableVars.altBackgFn] : switchOf(
-                    themableVars.altBackgMildCond, // first  priority
-                    themableVars.altBackgMild,     // second priority
-                    
-                    config?.altBackg,              // default => uses config's alternate background
-                ),
-                
-                [mildableVars.altForegFn] : switchOf(
-                    themableVars.altForegMildCond, // first  priority
-                    themableVars.altForegMild,     // second priority
-                    
-                    config?.altForeg,              // default => uses config's alternate foreground
-                ),
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                [mildableVars.backgTg] : [[
-                    mildableVars.mildSw,  // the mild switching function
-                    mildableVars.backgFn, // the mild background color definition
-                ]],
-                [mildableVars.foregTg] : [[
-                    mildableVars.mildSw,  // the mild switching function
-                    mildableVars.foregFn, // the mild foreground color definition
-                ]],
-                
-                [mildableVars.altBackgTg] : [[
-                    mildableVars.mildSw,     // the mild switching function
-                    mildableVars.altBackgFn, // the mild alternate background color definition
-                ]],
-                [mildableVars.altForegTg] : [[
-                    mildableVars.mildSw,     // the mild switching function
-                    mildableVars.altForegFn, // the mild alternate foreground color definition
-                ]],
-            }),
-            
-            
-            
-            // toggling conditions:
-            ...variants([
-                mildDefinition && ifMild(mildDefinition(true)),
-                mildDefinition && ifNotMild(mildDefinition(false)),
-                mildDefinition && ifInheritMild(mildDefinition('inherit')),
-            ]),
-        }),
+    return {
+        mildableRule: (
+            ((config === undefined) && (mildDefinition === defineMild))
+            ?
+            getDefaultMildableRule
+            :
+            () => createMildableRule(config, mildDefinition))
+        ,
         mildableVars,
     };
-    if (builtInFunc) mildableStuffCache = new WeakRef<MildableStuff>(mildableStuff);
-    return mildableStuff;
 };
 
 /**

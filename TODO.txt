@@ -1,7 +1,7 @@
 verify:
 gradient
 outlined
-mild
+mildable [ok]
 nude
 
 size
