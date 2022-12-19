@@ -1,5 +1,5 @@
 verify:
-gradient
+gradientable [ok]
 outlined
 mildable [ok]
 nude

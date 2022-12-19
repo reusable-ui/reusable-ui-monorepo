@@ -65,7 +65,7 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 //#region caches
 const gradientDefinitionsCache = new Map<ToggleGradient, CssRule>();
-let gradientableStuffCache     : WeakRef<GradientableStuff> | null = null;
+let gradientableRuleCache      : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -82,6 +82,51 @@ export interface GradientableStuff { gradientableRule: Factory<CssRule>, gradien
 export interface GradientableConfig {
     backgGrad ?: CssKnownProps['backgroundImage']
 }
+const createGradientableRule = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient) => {
+    return style({
+        // configs:
+        ...vars({
+            [gradientableVars.backgGrad ] : config?.backgGrad,
+            
+            /*
+                supports for `usesColorable()`:
+                only reset `gradientableVars.gradientSw = gradientableVars.gradientPr` if `gradientDefinition` provided,
+                so the *modified* `gradientableVars.gradientSw` by `setGradient()` still *preserved*,
+                thus the `usesColorable()` can see the <parent>'s actual [gradient] status.
+            */
+            [gradientableVars.gradientSw] : (gradientDefinition || undefined) && gradientableVars.gradientPr,
+        }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [gradientableVars.backgGradTg] : [[
+                gradientableVars.gradientSw, // the gradient switching function
+                gradientableVars.backgGrad,  // the gradient definition
+            ]],
+        }),
+        
+        
+        
+        // toggling conditions:
+        ...variants([
+            gradientDefinition && ifGradient(gradientDefinition(true)),
+            gradientDefinition && ifNotGradient(gradientDefinition(false)),
+            gradientDefinition && ifInheritGradient(gradientDefinition('inherit')),
+        ]),
+    });
+};
+const getDefaultGradientableRule = () => {
+    const cached = gradientableRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultGradientableRule = createGradientableRule();
+    gradientableRuleCache = new WeakRef<CssRule>(defaultGradientableRule);
+    return defaultGradientableRule;
+};
 /**
  * Uses a toggleable gradient.  
  * @param config  A configuration of `gradientableRule`.
@@ -89,52 +134,16 @@ export interface GradientableConfig {
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
 export const usesGradientable = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): GradientableStuff => {
-    const builtInFunc = (config === undefined) && (gradientDefinition === defineGradient);
-    if (builtInFunc) {
-        const cached = gradientableStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
-    const gradientableStuff : GradientableStuff = {
-        gradientableRule: () => style({
-            // configs:
-            ...vars({
-                [gradientableVars.backgGrad ] : config?.backgGrad,
-                
-                /*
-                    supports for `usesColorable()`:
-                    only reset `gradientableVars.gradientSw = gradientableVars.gradientPr` if `gradientDefinition` provided,
-                    so the *modified* `gradientableVars.gradientSw` by `setGradient()` still *preserved*,
-                    thus the `usesColorable()` can see the <parent>'s actual [gradient] status.
-                */
-                [gradientableVars.gradientSw] : (gradientDefinition || undefined) && gradientableVars.gradientPr,
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                [gradientableVars.backgGradTg] : [[
-                    gradientableVars.gradientSw, // the gradient switching function
-                    gradientableVars.backgGrad,  // the gradient definition
-                ]],
-            }),
-            
-            
-            
-            // toggling conditions:
-            ...variants([
-                gradientDefinition && ifGradient(gradientDefinition(true)),
-                gradientDefinition && ifNotGradient(gradientDefinition(false)),
-                gradientDefinition && ifInheritGradient(gradientDefinition('inherit')),
-            ]),
-        }),
+    return {
+        gradientableRule: (
+            ((config === undefined) && (gradientDefinition === defineGradient))
+            ?
+            getDefaultGradientableRule
+            :
+            () => createGradientableRule(config, gradientDefinition))
+        ,
         gradientableVars,
     };
-    if (builtInFunc) gradientableStuffCache = new WeakRef<GradientableStuff>(gradientableStuff);
-    return gradientableStuff;
 };
 
 /**
