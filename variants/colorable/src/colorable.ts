@@ -102,7 +102,7 @@ const [colorableVars] = cssVars<ColorableVars>();
 //#region caches
 const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
 const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
-let colorableStuffCache            : WeakRef<ColorableStuff> | null = null;
+let defaultColorableRuleCache      : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -112,22 +112,7 @@ export interface ColorableConfig {
     color    ?: CssKnownProps['backgroundColor']
     altColor ?: CssKnownProps['backgroundColor']
 }
-/**
- * Uses color.
- * @param config  A configuration of `colorableRule`.
- * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
- * @param mildDefinition A callback to create a mildification rules for each toggle state.
- * @returns A `ColorableStuff` represents the color rules.
- */
-export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
-    const builtInFunc = (config === undefined) && (outlinedDefinition === defineSelfOutlined) && (mildDefinition === defineSelfMild);
-    if (builtInFunc) {
-        const cached = colorableStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
+const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild) => {
     // dependencies:
     
     // features:
@@ -143,70 +128,94 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
     
     
     
-    const colorableStuff : ColorableStuff = {
-        colorableRule: () => style({
-            ...imports([
-                // features:
-                backgroundRule, // overrides the default `backg` => `altColor` and `altBackg` => `color`
-            ]),
+    return style({
+        ...imports([
+            // features:
+            backgroundRule, // overrides the default `backg` => `altColor` and `altBackg` => `color`
+        ]),
+        
+        
+        
+        // color functions:
+        ...vars({
+            // adaptive color functions:
+            [colorableVars.colorFn   ] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
+            [colorableVars.altColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
             
             
             
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                [colorableVars.colorFn   ] : backgroundVars.altBackgColor, // uses <parent>'s alt color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
-                [colorableVars.altColorFn] : backgroundVars.backgColor,    // uses <parent>'s reg color (including the adaption of outlined ?? mild ?? conditional ?? themed ?? default)
+            // final color functions:
+            [colorableVars.color] : switchOf(
+                colorableVars.altColorTg, // toggle alternate color
                 
-                
-                
-                // final color functions:
-                [colorableVars.color] : switchOf(
-                    colorableVars.altColorTg, // toggle alternate color
-                    
-                    colorableVars.colorFn,    // default => uses our `colorFn`
-                ),
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                [colorableVars.altColorTg] : [[
-                    switchOf(colorableVars.outlinedSw, colorableVars.mildSw), // the (outlined|mild) switching function
-                    colorableVars.altColorFn,
-                ]],
-            }),
-            
-            
-            
-            // toggling conditions:
-            ...variants([
-                ifHasTheme({
-                    ...imports([
-                        // variants:
-                        outlineableRule, // the theme has been modified => need to re-define the outlined version of color, otherwise it still using the <parent>'s theme
-                        mildableRule,    // the theme has been modified => need to re-define the mild     version of color, otherwise it still using the <parent>'s theme
-                    ]),
-                }),
-                
-                
-                
-                outlinedDefinition && ifOutlined(outlinedDefinition(true)),
-                outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
-                outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
-                
-                
-                
-                mildDefinition     && ifMild(mildDefinition(true)),
-                mildDefinition     && ifNotMild(mildDefinition(false)),
-                mildDefinition     && ifInheritMild(mildDefinition('inherit')),
-            ]),
+                colorableVars.colorFn,    // default => uses our `colorFn`
+            ),
         }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [colorableVars.altColorTg] : [[
+                switchOf(colorableVars.outlinedSw, colorableVars.mildSw), // the (outlined|mild) switching function
+                colorableVars.altColorFn,
+            ]],
+        }),
+        
+        
+        
+        // toggling conditions:
+        ...variants([
+            ifHasTheme({
+                ...imports([
+                    // variants:
+                    outlineableRule, // the theme has been modified => need to re-define the outlined version of color, otherwise it still using the <parent>'s theme
+                    mildableRule,    // the theme has been modified => need to re-define the mild     version of color, otherwise it still using the <parent>'s theme
+                ]),
+            }),
+            
+            
+            
+            outlinedDefinition && ifOutlined(outlinedDefinition(true)),
+            outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
+            outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
+            
+            
+            
+            mildDefinition     && ifMild(mildDefinition(true)),
+            mildDefinition     && ifNotMild(mildDefinition(false)),
+            mildDefinition     && ifInheritMild(mildDefinition('inherit')),
+        ]),
+    });
+};
+const getDefaultColorableRule = () => {
+    const cached = defaultColorableRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultColorableRule = createColorableRule();
+    defaultColorableRuleCache = new WeakRef<CssRule>(defaultColorableRule);
+    return defaultColorableRule;
+};
+/**
+ * Uses color.
+ * @param config  A configuration of `colorableRule`.
+ * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
+ * @param mildDefinition A callback to create a mildification rules for each toggle state.
+ * @returns A `ColorableStuff` represents the color rules.
+ */
+export const usesColorable = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild): ColorableStuff => {
+    return {
+        colorableRule: (
+            ((config === undefined) && (outlinedDefinition === defineSelfOutlined) && (mildDefinition === defineSelfMild))
+            ?
+            getDefaultColorableRule
+            :
+            () => createColorableRule(config, outlinedDefinition))
+        ,
         colorableVars,
     };
-    if (builtInFunc) colorableStuffCache = new WeakRef<ColorableStuff>(colorableStuff);
-    return colorableStuff;
 };
 
 /**

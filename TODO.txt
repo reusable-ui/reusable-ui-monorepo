@@ -7,7 +7,7 @@ nudible [ok]
 resizable [ok]
 themable [ok]
 
-colorable
+colorable [ok]
 orientationable
 active-as-click
 
