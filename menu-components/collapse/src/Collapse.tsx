@@ -37,7 +37,6 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    useMergeStyles,
     
     
     
@@ -378,19 +377,6 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
-    // styles:
-    const mergedStyle = useMergeStyles(
-        // floatable:
-        floatable.style,
-        
-        
-        
-        // preserves the original `style` (can overwrite the `floatable.style`):
-        props.style,
-    );
-    
-    
-    
     // handlers:
     const handleAnimationStart = useMergeEvents(
         // preserves the original `onAnimationStart`:
@@ -437,11 +423,6 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             variantClasses={variantClasses}
             stateClasses={stateClasses}
             classes={classes}
-            
-            
-            
-            // styles:
-            style={mergedStyle}
             
             
             

@@ -35,7 +35,6 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    useMergeStyles,
     
     
     
@@ -295,19 +294,6 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     
-    // styles:
-    const mergedStyle = useMergeStyles(
-        // floatable:
-        floatable.style,
-        
-        
-        
-        // preserves the original `style` (can overwrite the `floatable.style`):
-        props.style,
-    );
-    
-    
-    
     // handlers:
     const handleAnimationStart = useMergeEvents(
         // preserves the original `onAnimationStart`:
@@ -352,11 +338,6 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             mainClass={props.mainClass ?? styleSheet.main}
             stateClasses={stateClasses}
             classes={classes}
-            
-            
-            
-            // styles:
-            style={mergedStyle}
             
             
             
