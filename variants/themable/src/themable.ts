@@ -241,7 +241,7 @@ export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: C
  * @param options Defines all available theme color options.
  * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
-export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineTheme, options : ThemeName[] = themeOptions()): ThemableStuff => {
+export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): ThemableStuff => {
     return {
         themableRule: () => style({
             ...variants([
@@ -261,7 +261,7 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
  * @param themeName The theme name.
  * @returns A `CssRule` represents a theme rules for the given `themeName`.
  */
-export const defineTheme = (themeName: ThemeName): CssRule => {
+export const defineThemeRule = (themeName: ThemeName): CssRule => {
     const cached = themeDefinitionsCache.get(themeName);
     if (cached !== undefined) return cached;
     
