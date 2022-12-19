@@ -9,9 +9,6 @@ export const useFloatable
 
         [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
 
-// excessive creating string th**
-export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(`.th${pascalCase(themeName)}`, styles);
-for size too `sz**
 
 cache:
 export const usesActiveAsClick = (): ActiveAsClickStuff => {
