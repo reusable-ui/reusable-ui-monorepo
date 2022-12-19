@@ -9,6 +9,10 @@ import {
     CssRule,
     CssStyleCollection,
     
+    CssSelector,
+    
+    CssClassName,
+    
     
     
     // writes css in javascript:
@@ -16,7 +20,7 @@ import {
     variants,
     alwaysRule,
     style,
-    pascalCase,
+    startsCapitalized,
     
     
     
@@ -38,9 +42,50 @@ export type SizeName = 'sm'|'md'|'lg'
 
 
 
+//#region caches
+const sizeClassesCache = new Map<string, CssClassName|null>();
+export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssClassName|null => {
+    const cached = sizeClassesCache.get(sizeName);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    if (sizeName === 'md') {
+        sizeClassesCache.set(sizeName, null);
+        return null;
+    } // if
+    
+    
+    
+    const sizeClass = `sz${startsCapitalized(sizeName)}`;
+    sizeClassesCache.set(sizeName, sizeClass);
+    return sizeClass;
+};
+
+const sizeSelectorsCache = new Map<string, CssSelector|'&'>();
+export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector|'&' => {
+    const cached = sizeSelectorsCache.get(sizeName);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const sizeClass = createSizeClass(sizeName);
+    if (sizeClass === null) return '&';
+    
+    
+    
+    const sizeRule : CssSelector = `.${sizeClass}`;
+    sizeSelectorsCache.set(sizeName, sizeRule);
+    return sizeRule;
+};
+//#endregion caches
+
+
+
 export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => {
-    if (sizeName === 'md') return alwaysRule(styles);
-    return rule(`.sz${pascalCase(sizeName)}`, styles);
+    const sizeSelector = createSizeSelector(sizeName);
+    if (sizeSelector === '&') return alwaysRule(styles);
+    return rule(sizeSelector, styles);
 };
 
 
@@ -81,6 +126,6 @@ export interface ResizableProps<TSizeName extends string = SizeName> {
     size ?: TSizeName
 }
 export const useResizable = <TSizeName extends string = SizeName>({size}: ResizableProps<TSizeName>) => ({
-    class: (!size || (size === 'md')) ? null : `sz${pascalCase(size)}`,
+    class: size ? createSizeClass(size) : null,
 });
 //#endregion resizable
