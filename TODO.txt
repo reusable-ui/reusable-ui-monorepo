@@ -2,7 +2,7 @@ verify:
 gradientable [ok]
 outlineable [ok]
 mildable [ok]
-nude
+nudible [ok]
 
 size
 theme

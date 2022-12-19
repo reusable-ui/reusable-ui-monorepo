@@ -62,8 +62,8 @@ const [nudibleVars] = cssVars<NudibleVars>();
 
 
 //#region caches
-const nudeDefinitionsCache = new Map<ToggleNude, CssRule>();
-let nudibleStuffCache      : WeakRef<NudibleStuff> | null = null;
+const nudeDefinitionsCache  = new Map<ToggleNude, CssRule>();
+let defaultNudibleRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -76,20 +76,7 @@ export const ifNotNude = (styles: CssStyleCollection): CssRule => rule(':where(&
 
 
 export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssVars<NudibleVars> }
-/**
- * Uses a toggleable nudeification (removes background, border & padding).
- * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
- * @returns A `NudibleStuff` represents the nudeification rules.
- */
-export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude): NudibleStuff => {
-    const builtInFunc = (nudeDefinition === defineNude);
-    if (builtInFunc) {
-        const cached = nudibleStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
+const createNudibleRule = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude) => {
     // dependencies:
     
     // features:
@@ -98,66 +85,88 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
     
     
     
-    const nudibleStuff : NudibleStuff = {
-        nudibleRule: () => style({
-            // configs:
-            ...vars({
-                /*
-                    supports for `usesColorable()`:
-                    only reset `nudibleVars.nudeSw = nudibleVars.nudePr` if `nudeDefinition` provided,
-                    so the *modified* `nudibleVars.nudeSw` by `setNude()` still *preserved*,
-                    thus the `usesColorable()` can see the <parent>'s actual [nude] status.
-                */
-                [nudibleVars.nudeSw] : (nudeDefinition || undefined) && nudibleVars.nudePr,
-            }),
-            
-            
-            
-            // toggling props:
-            ...variants([
-                ifNude({
-                    // backgrounds:
-                    // discard background, no valid/invalid animation:
-                    backg : [['none'], '!important'],
-                    
-                    
-                    
-                    // borders:
-                    // discard border stroke:
-                    [borderVars.borderWidth           ] : '0px',
-                    
-                    // discard borderRadius:
-                    // remove rounded corners on top:
-                    [borderVars.borderStartStartRadius] : '0px',
-                    [borderVars.borderStartEndRadius  ] : '0px',
-                    // remove rounded corners on bottom:
-                    [borderVars.borderEndStartRadius  ] : '0px',
-                    [borderVars.borderEndEndRadius    ] : '0px',
-                    
-                    // no shadow & no focus animation:
-                    boxShadow : [['none'], '!important'],
-                    
-                    
-                    
-                    // spacings:
-                    // discard padding:
-                    [paddingVars.paddingInline] : '0px',
-                    [paddingVars.paddingBlock ] : '0px',
-                }),
-            ]),
-            
-            
-            
-            // toggling conditions:
-            ...variants([
-                nudeDefinition && ifNude(nudeDefinition(true)),
-                nudeDefinition && ifNotNude(nudeDefinition(false)),
-            ]),
+    return style({
+        // configs:
+        ...vars({
+            /*
+                supports for `usesColorable()`:
+                only reset `nudibleVars.nudeSw = nudibleVars.nudePr` if `nudeDefinition` provided,
+                so the *modified* `nudibleVars.nudeSw` by `setNude()` still *preserved*,
+                thus the `usesColorable()` can see the <parent>'s actual [nude] status.
+            */
+            [nudibleVars.nudeSw] : (nudeDefinition || undefined) && nudibleVars.nudePr,
         }),
+        
+        
+        
+        // toggling props:
+        ...variants([
+            ifNude({
+                // backgrounds:
+                // discard background, no valid/invalid animation:
+                backg : [['none'], '!important'],
+                
+                
+                
+                // borders:
+                // discard border stroke:
+                [borderVars.borderWidth           ] : '0px',
+                
+                // discard borderRadius:
+                // remove rounded corners on top:
+                [borderVars.borderStartStartRadius] : '0px',
+                [borderVars.borderStartEndRadius  ] : '0px',
+                // remove rounded corners on bottom:
+                [borderVars.borderEndStartRadius  ] : '0px',
+                [borderVars.borderEndEndRadius    ] : '0px',
+                
+                // no shadow & no focus animation:
+                boxShadow : [['none'], '!important'],
+                
+                
+                
+                // spacings:
+                // discard padding:
+                [paddingVars.paddingInline] : '0px',
+                [paddingVars.paddingBlock ] : '0px',
+            }),
+        ]),
+        
+        
+        
+        // toggling conditions:
+        ...variants([
+            nudeDefinition && ifNude(nudeDefinition(true)),
+            nudeDefinition && ifNotNude(nudeDefinition(false)),
+        ]),
+    });
+};
+const getDefaultNudibleRule = () => {
+    const cached = defaultNudibleRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultNudibleRule = createNudibleRule();
+    defaultNudibleRuleCache = new WeakRef<CssRule>(defaultNudibleRule);
+    return defaultNudibleRule;
+};
+/**
+ * Uses a toggleable nudeification (removes background, border & padding).
+ * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
+ * @returns A `NudibleStuff` represents the nudeification rules.
+ */
+export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude): NudibleStuff => {
+    return {
+        nudibleRule: (
+            (nudeDefinition === defineNude)
+            ?
+            getDefaultNudibleRule
+            :
+            () => createNudibleRule(nudeDefinition))
+        ,
         nudibleVars,
     };
-    if (builtInFunc) nudibleStuffCache = new WeakRef<NudibleStuff>(nudibleStuff);
-    return nudibleStuff;
 };
 
 /**
