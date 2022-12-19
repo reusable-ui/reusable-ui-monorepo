@@ -236,7 +236,7 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
 
 
 export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
-const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()) => {
+const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): CssRule => {
     return style({
         ...variants([
             options.map((themeName) =>
@@ -271,8 +271,8 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
             ?
             getDefaultThemableRule
             :
-            () => createThemableRule(themeDefinition, options))
-        ,
+            () => createThemableRule(themeDefinition, options)
+        ),
         themableVars,
     };
 };
