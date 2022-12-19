@@ -189,9 +189,14 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
+let hasThemeSelectorsCache : CssSelector[] | null = null;
+let noThemeSelectorsCache  : string        | null = null;
+
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
+    hasThemeSelectorsCache = null;
+    noThemeSelectorsCache  = null;
 });
 //#endregion caches
 
@@ -200,19 +205,21 @@ cssColorConfig.onChange.subscribe(() => {
 export const ifTheme = (themeName: ThemeName, styles: CssStyleCollection): CssRule => rule(createThemeSelector(themeName), styles);
 export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
-        Object.keys(themes)
-        .map((themeName) => createThemeSelector(themeName))
+        hasThemeSelectorsCache ?? (hasThemeSelectorsCache = (
+            Object.keys(themes)
+            .map((themeName) => createThemeSelector(themeName))
+        ))
         ,
         styles
     );
 };
 export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
-        `:not(:is(${
+        noThemeSelectorsCache ?? (noThemeSelectorsCache = (`:not(:is(${
             Object.keys(themes)
             .map((themeName) => createThemeSelector(themeName))
             .join(', ')
-        }))`
+        }))`))
         ,
         styles
     );
