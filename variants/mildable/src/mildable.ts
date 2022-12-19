@@ -123,7 +123,7 @@ export interface MildableConfig {
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
-const createMildableRule = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild) => {
+const createMildableRule = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): CssRule => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -242,8 +242,8 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
             ?
             getDefaultMildableRule
             :
-            () => createMildableRule(config, mildDefinition))
-        ,
+            () => createMildableRule(config, mildDefinition)
+        ),
         mildableVars,
     };
 };
