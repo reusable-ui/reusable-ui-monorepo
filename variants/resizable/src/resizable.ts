@@ -93,6 +93,18 @@ export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName,
 
 
 export interface ResizableStuff { resizableRule: Factory<CssRule> }
+const createResizableRule = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(config : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): CssRule => {
+    return style({
+        ...variants([
+            options.map((sizeName) =>
+                ifSize(sizeName, {
+                    // overwrites propName = propName{SizeName}:
+                    ...overwriteProps(config, usesSuffixedProps(config, sizeName)),
+                })
+            ),
+        ]),
+    });
+};
 /**
  * Uses size options.  
  * For example: `sm`, `md`, `lg`.
@@ -102,16 +114,7 @@ export interface ResizableStuff { resizableRule: Factory<CssRule> }
  */
 export const usesResizable = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(config : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableStuff => {
     return {
-        resizableRule: () => style({
-            ...variants([
-                options.map((sizeName) =>
-                    ifSize(sizeName, {
-                        // overwrites propName = propName{SizeName}:
-                        ...overwriteProps(config, usesSuffixedProps(config, sizeName)),
-                    })
-                ),
-            ]),
-        }),
+        resizableRule: () => createResizableRule(config, options),
     };
 };
 
