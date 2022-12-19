@@ -190,7 +190,7 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
 };
 
 let hasThemeSelectorsCache : CssSelector[] | null = null;
-let noThemeSelectorsCache  : string        | null = null;
+let noThemeSelectorsCache  : CssSelector   | null = null;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
