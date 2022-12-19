@@ -1,6 +1,6 @@
 verify:
 gradientable [ok]
-outlined
+outlineable [ok]
 mildable [ok]
 nude
 

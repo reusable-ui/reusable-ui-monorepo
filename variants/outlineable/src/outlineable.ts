@@ -106,8 +106,8 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 
 //#region caches
-const outlinedDefinitionsCache = new Map<ToggleOutlined, CssRule>();
-let outlineableStuffCache      : WeakRef<OutlineableStuff> | null = null;
+const outlinedDefinitionsCache  = new Map<ToggleOutlined, CssRule>();
+let defaultOutlineableRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -127,6 +127,125 @@ export interface OutlineableConfig {
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
+const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined) => {
+    // dependencies:
+    const {themableRule, themableVars} = usesThemable();
+    
+    
+    
+    return style({
+        ...imports([
+            // makes   `usesOutlineable()` implicitly `usesThemable()`
+            // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+            themableRule,
+        ]),
+        
+        
+        
+        // configs:
+        ...vars({
+            /*
+                supports for `usesColorable()`:
+                only reset `outlineableVars.outlinedSw = outlineableVars.outlinedPr` if `outlinedDefinition` provided,
+                so the *modified* `outlineableVars.outlinedSw` by `setOutlined()` still *preserved*,
+                thus the `usesColorable()` can see the <parent>'s actual [outlined] status.
+            */
+            [outlineableVars.outlinedSw] : (outlinedDefinition || undefined) && outlineableVars.outlinedPr,
+        }),
+        
+        
+        
+        // color functions:
+        ...vars({
+            // adaptive color functions:
+            
+         // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
+            /*
+                copied from [mildable],
+                for supporting <icon> having mild color (copied from [mildable] background).
+                
+                when [outlined], the background color definition is not gone,
+                just not be included to background layers.
+            */
+            [outlineableVars.backgFn   ] : switchOf(
+                themableVars.backgMildCond,        // first  priority
+                themableVars.backgMild,            // second priority
+                
+                config?.backg,                     // default => uses config's background
+            ),
+            
+            [outlineableVars.foregFn   ] : switchOf(
+                themableVars.foregOutlinedCond,    // first  priority
+                themableVars.foregOutlined,        // second priority
+                
+                config?.foreg,                     // default => uses config's foreground
+            ),
+            
+            
+            
+            [outlineableVars.altBackgFn] : switchOf(
+                themableVars.altBackgOutlinedCond, // first  priority
+                themableVars.altBackgOutlined,     // second priority
+                
+                config?.altBackg,                  // default => uses config's alternate background
+            ),
+            
+            [outlineableVars.altForegFn] : switchOf(
+                themableVars.altForegOutlinedCond, // first  priority
+                themableVars.altForegOutlined,     // second priority
+                
+                config?.altForeg,                  // default => uses config's alternate foreground
+            ),
+        }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            [outlineableVars.noBackgTg] : [[
+                outlineableVars.outlinedSw, // the outlined switching function
+                'transparent',              // the no background color definition
+            ]],
+            
+            [outlineableVars.backgTg] : [[
+                outlineableVars.outlinedSw, // the outlined switching function
+                outlineableVars.backgFn,    // the outlined background color definition
+            ]],
+            [outlineableVars.foregTg] : [[
+                outlineableVars.outlinedSw, // the outlined switching function
+                outlineableVars.foregFn,    // the outlined foreground color definition
+            ]],
+            
+            [outlineableVars.altBackgTg] : [[
+                outlineableVars.outlinedSw, // the outlined switching function
+                outlineableVars.altBackgFn, // the outlined alternate background color definition
+            ]],
+            [outlineableVars.altForegTg] : [[
+                outlineableVars.outlinedSw, // the outlined switching function
+                outlineableVars.altForegFn, // the outlined alternate foreground color definition
+            ]],
+        }),
+        
+        
+        
+        // toggling conditions:
+        ...variants([
+            outlinedDefinition && ifOutlined(outlinedDefinition(true)),
+            outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
+            outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
+        ]),
+    });
+};
+const getDefaultOutlineableRule = () => {
+    const cached = defaultOutlineableRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultOutlineableRule = createOutlineableRule();
+    defaultOutlineableRuleCache = new WeakRef<CssRule>(defaultOutlineableRule);
+    return defaultOutlineableRule;
+};
 /**
  * Uses a toggleable outlining.  
  * @param config  A configuration of `outlineableRule`.
@@ -134,126 +253,16 @@ export interface OutlineableConfig {
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
 export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
-    const builtInFunc = (config === undefined) && (outlinedDefinition === defineOutlined);
-    if (builtInFunc) {
-        const cached = outlineableStuffCache?.deref();
-        if (cached !== undefined) return cached;
-    } // if
-    
-    
-    
-    // dependencies:
-    const {themableRule, themableVars} = usesThemable();
-    
-    
-    
-    const outlineableStuff : OutlineableStuff = {
-        outlineableRule: () => style({
-            ...imports([
-                // makes   `usesOutlineable()` implicitly `usesThemable()`
-                // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-                themableRule,
-            ]),
-            
-            
-            
-            // configs:
-            ...vars({
-                /*
-                    supports for `usesColorable()`:
-                    only reset `outlineableVars.outlinedSw = outlineableVars.outlinedPr` if `outlinedDefinition` provided,
-                    so the *modified* `outlineableVars.outlinedSw` by `setOutlined()` still *preserved*,
-                    thus the `usesColorable()` can see the <parent>'s actual [outlined] status.
-                */
-                [outlineableVars.outlinedSw] : (outlinedDefinition || undefined) && outlineableVars.outlinedPr,
-            }),
-            
-            
-            
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                
-             // [outlineableVars.backgFn   ] : 'transparent', // set background to transparent, regardless of the theme colors
-                /*
-                    copied from [mildable],
-                    for supporting <icon> having mild color (copied from [mildable] background).
-                    
-                    when [outlined], the background color definition is not gone,
-                    just not be included to background layers.
-                */
-                [outlineableVars.backgFn   ] : switchOf(
-                    themableVars.backgMildCond,        // first  priority
-                    themableVars.backgMild,            // second priority
-                    
-                    config?.backg,                     // default => uses config's background
-                ),
-                
-                [outlineableVars.foregFn   ] : switchOf(
-                    themableVars.foregOutlinedCond,    // first  priority
-                    themableVars.foregOutlined,        // second priority
-                    
-                    config?.foreg,                     // default => uses config's foreground
-                ),
-                
-                
-                
-                [outlineableVars.altBackgFn] : switchOf(
-                    themableVars.altBackgOutlinedCond, // first  priority
-                    themableVars.altBackgOutlined,     // second priority
-                    
-                    config?.altBackg,                  // default => uses config's alternate background
-                ),
-                
-                [outlineableVars.altForegFn] : switchOf(
-                    themableVars.altForegOutlinedCond, // first  priority
-                    themableVars.altForegOutlined,     // second priority
-                    
-                    config?.altForeg,                  // default => uses config's alternate foreground
-                ),
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                [outlineableVars.noBackgTg] : [[
-                    outlineableVars.outlinedSw, // the outlined switching function
-                    'transparent',              // the no background color definition
-                ]],
-                
-                [outlineableVars.backgTg] : [[
-                    outlineableVars.outlinedSw, // the outlined switching function
-                    outlineableVars.backgFn,    // the outlined background color definition
-                ]],
-                [outlineableVars.foregTg] : [[
-                    outlineableVars.outlinedSw, // the outlined switching function
-                    outlineableVars.foregFn,    // the outlined foreground color definition
-                ]],
-                
-                [outlineableVars.altBackgTg] : [[
-                    outlineableVars.outlinedSw, // the outlined switching function
-                    outlineableVars.altBackgFn, // the outlined alternate background color definition
-                ]],
-                [outlineableVars.altForegTg] : [[
-                    outlineableVars.outlinedSw, // the outlined switching function
-                    outlineableVars.altForegFn, // the outlined alternate foreground color definition
-                ]],
-            }),
-            
-            
-            
-            // toggling conditions:
-            ...variants([
-                outlinedDefinition && ifOutlined(outlinedDefinition(true)),
-                outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
-                outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
-            ]),
-        }),
+    return {
+        outlineableRule: (
+            ((config === undefined) && (outlinedDefinition === defineOutlined))
+            ?
+            getDefaultOutlineableRule
+            :
+            () => createOutlineableRule(config, outlinedDefinition))
+        ,
         outlineableVars,
     };
-    if (builtInFunc) outlineableStuffCache = new WeakRef<OutlineableStuff>(outlineableStuff);
-    return outlineableStuff;
 };
 
 /**
