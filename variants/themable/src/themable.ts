@@ -195,6 +195,7 @@ let noThemeSelectorsCache   : CssSelector   | null = null;
 const themeDefinitionsCache = new Map<ThemeName, CssRule>();
 
 let themeOptionsCache       : ThemeName[]   | null = null;
+let themableStuffCache      : WeakRef<ThemableStuff> | null = null;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
@@ -203,6 +204,7 @@ cssColorConfig.onChange.subscribe(() => {
     noThemeSelectorsCache  = null;
     themeDefinitionsCache.clear();
     themeOptionsCache      = null;
+    themableStuffCache     = null;
 });
 //#endregion caches
 
@@ -242,7 +244,15 @@ export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: C
  * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
  */
 export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): ThemableStuff => {
-    return {
+    const builtInFunc = (themeDefinition === defineThemeRule) && (options === themeOptions());
+    if (builtInFunc) {
+        const cached = themableStuffCache?.deref();
+        if (cached !== undefined) return cached;
+    } // if
+    
+    
+    
+    const themableStuff : ThemableStuff = {
         themableRule: () => style({
             ...variants([
                 options.map((themeName) =>
@@ -254,6 +264,8 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
         }),
         themableVars,
     };
+    if (builtInFunc) themableStuffCache = new WeakRef<ThemableStuff>(themableStuff);
+    return themableStuff;
 };
 
 /**
