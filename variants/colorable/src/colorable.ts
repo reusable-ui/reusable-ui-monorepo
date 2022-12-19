@@ -212,8 +212,8 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
             ?
             getDefaultColorableRule
             :
-            () => createColorableRule(config, outlinedDefinition))
-        ,
+            () => createColorableRule(config, outlinedDefinition)
+        ),
         colorableVars,
     };
 };
