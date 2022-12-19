@@ -211,9 +211,9 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSize             : typos.fontSizeNm                                                 as CssKnownProps['fontSize'      ],
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]    as CssKnownProps['fontSize'      ],
-        fontSizeLg           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'      ],
+        fontSize             : typos.fontSizeMd                                                 as CssKnownProps['fontSize'      ],
+        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]    as CssKnownProps['fontSize'      ],
+        fontSizeLg           : typos.fontSizeLg                                                 as CssKnownProps['fontSize'      ],
         fontFamily           : 'inherit'                                                        as CssKnownProps['fontFamily'    ],
         fontWeight           : 'inherit'                                                        as CssKnownProps['fontWeight'    ],
         fontStyle            : 'inherit'                                                        as CssKnownProps['fontStyle'     ],
