@@ -140,9 +140,9 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
         
         // typos:
         whiteSpace            : 'normal'                                                                    as CssKnownProps['whiteSpace'],
-        fontSize              : [['calc((', typos.fontSizeSm, '+', typos.fontSizeNm, ')/2)']]               as CssKnownProps['fontSize'  ],
+        fontSize              : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]               as CssKnownProps['fontSize'  ],
         fontSizeSm            : typos.fontSizeSm                                                            as CssKnownProps['fontSize'  ],
-        fontSizeLg            : typos.fontSizeNm                                                            as CssKnownProps['fontSize'  ],
+        fontSizeLg            : typos.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
     };
     
     
