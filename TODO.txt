@@ -1,5 +1,4 @@
 optimize:
-export const useFloatable
 combines requestAnimationFrame with setTimeout
 
 
