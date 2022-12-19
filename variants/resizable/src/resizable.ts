@@ -78,6 +78,8 @@ export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName
     sizeSelectorsCache.set(sizeName, sizeRule);
     return sizeRule;
 };
+
+let sizeOptionsCache : SizeName[] | null = null;
 //#endregion caches
 
 
@@ -117,7 +119,7 @@ export const usesResizable = <TSizeName extends string = SizeName, TConfigProps 
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
-export const sizeOptions = (): SizeName[] => ['sm', 'md', 'lg'];
+export const sizeOptions = (): SizeName[] => sizeOptionsCache ?? (sizeOptionsCache = ['sm', 'md', 'lg']);
 
 
 
