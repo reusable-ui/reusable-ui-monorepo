@@ -65,7 +65,6 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 //#region caches
 const gradientDefinitionsCache   = new Map<ToggleGradient, CssRule>();
-let defaultGradientableRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -82,7 +81,7 @@ export interface GradientableStuff { gradientableRule: Factory<CssRule>, gradien
 export interface GradientableConfig {
     backgGrad ?: CssKnownProps['backgroundImage']
 }
-const createGradientableRule = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient) => {
+const createGradientableRule = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): CssRule => {
     return style({
         // configs:
         ...vars({
@@ -117,16 +116,6 @@ const createGradientableRule = (config?: GradientableConfig, gradientDefinition 
         ]),
     });
 };
-const getDefaultGradientableRule = () => {
-    const cached = defaultGradientableRuleCache?.deref();
-    if (cached !== undefined) return cached;
-    
-    
-    
-    const defaultGradientableRule = createGradientableRule();
-    defaultGradientableRuleCache = new WeakRef<CssRule>(defaultGradientableRule);
-    return defaultGradientableRule;
-};
 /**
  * Uses a toggleable gradient.  
  * @param config  A configuration of `gradientableRule`.
@@ -135,13 +124,7 @@ const getDefaultGradientableRule = () => {
  */
 export const usesGradientable = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): GradientableStuff => {
     return {
-        gradientableRule: (
-            ((config === undefined) && (gradientDefinition === defineGradient))
-            ?
-            getDefaultGradientableRule
-            :
-            () => createGradientableRule(config, gradientDefinition))
-        ,
+        gradientableRule: () => createGradientableRule(config, gradientDefinition),
         gradientableVars,
     };
 };
