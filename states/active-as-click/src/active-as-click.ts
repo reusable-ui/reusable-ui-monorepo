@@ -88,22 +88,13 @@ const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
 
 //#region caches
-let activeAsClickStuffCache : WeakRef<ActiveAsClickStuff> | null = null;
+let defaultActiveAsClickRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
 
 export interface ActiveAsClickStuff { activeAsClickRule: Factory<CssRule>, activeAsClickVars: CssVars<ActiveAsClickVars> }
-/**
- * Shows the UI as clicked when activated.
- * @returns A `ActiveAsClickStuff` represents an active-as-click state.
- */
-export const usesActiveAsClick = (): ActiveAsClickStuff => {
-    const cached = activeAsClickStuffCache?.deref();
-    if (cached !== undefined) return cached;
-    
-    
-    
+const createActiveAsClickRule = () => {
     // dependencies:
     
     // variants:
@@ -132,232 +123,247 @@ export const usesActiveAsClick = (): ActiveAsClickStuff => {
     
     
     
-    const activeAsClickStuff : ActiveAsClickStuff = {
-        activeAsClickRule: () => style({
-            // animations:
-            ...keyframesDummyPressRule,
-            ...keyframesDummyReleaseRule,
-            ...keyframesDummyActiveRule,
-            ...keyframesDummyPassiveRule,
+    return style({
+        // animations:
+        ...keyframesDummyPressRule,
+        ...keyframesDummyReleaseRule,
+        ...keyframesDummyActiveRule,
+        ...keyframesDummyPassiveRule,
+        
+        
+        
+        // animation functions:
+        ...vars({
+            /*
+                a <button> with [outlined=true] or [mild=true] style:
+                    => uses filter `active` (the default is do nothing)
+                
+                a <button> with regular style:
+                    => uses filter `press` (the default is darken)
+            */
+            // filterActive => filterPress:
+            [activeAsClickVars.filterActive      ]: switchOf(
+                activeAsClickVars.altFilterActiveTg,
+                clickableVars.filterPress,
+            ),
             
             
             
-            // animation functions:
-            ...vars({
+            /*
+                a <button> with [outlined=true] or [mild=true] style:
+                    => uses the .pressing & .releasing animations
+                
+                a <button> with regular style:
+                    => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
+            */
+            // regular animPress   => dummy animPress:
+            [activeAsClickVars.animPress         ]: switchOf(
+                activeAsClickVars.altAnimPressTg,
+                `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+            ),
+            // regular animRelease => dummy animRelease:
+            [activeAsClickVars.animRelease       ]: switchOf(
+                activeAsClickVars.altAnimReleaseTg,
+                `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+            ),
+            
+            // regular animActive  => pressAsActive
+            [activeAsClickVars.animActive        ]: switchOf(
+                activeAsClickVars.altAnimActiveTg,
+                clickableVars.animPressAsActive,
+            ),
+            // regular animPassive => releaseAsPassive
+            [activeAsClickVars.animPassive       ]: switchOf(
+                activeAsClickVars.altAnimPassiveTg,
+                clickableVars.animReleaseAsPassive,
+            ),
+            
+            // regular animActiveAsClick  => dummy animPress
+            [activeAsClickVars.animActiveAsClick ]: switchOf(
+                activeAsClickVars.altAnimActiveAsClickTg,
+                `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
                 /*
-                    a <button> with [outlined=true] or [mild=true] style:
-                        => uses filter `active` (the default is do nothing)
-                    
-                    a <button> with regular style:
-                        => uses filter `press` (the default is darken)
+                    TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
                 */
-                // filterActive => filterPress:
-                [activeAsClickVars.filterActive      ]: switchOf(
-                    activeAsClickVars.altFilterActiveTg,
-                    clickableVars.filterPress,
-                ),
-                
-                
-                
-                /*
-                    a <button> with [outlined=true] or [mild=true] style:
-                        => uses the .pressing & .releasing animations
-                    
-                    a <button> with regular style:
-                        => prevents the .pressing & .releasing animations, without making `useClickable()` stalling, by using dummyPress & dummyRelease
-                */
-                // regular animPress   => dummy animPress:
-                [activeAsClickVars.animPress         ]: switchOf(
-                    activeAsClickVars.altAnimPressTg,
-                    `1ms ${keyframesDummyPress}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
-                ),
-                // regular animRelease => dummy animRelease:
-                [activeAsClickVars.animRelease       ]: switchOf(
-                    activeAsClickVars.altAnimReleaseTg,
-                    `1ms ${keyframesDummyRelease}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
-                ),
-                
-                // regular animActive  => pressAsActive
-                [activeAsClickVars.animActive        ]: switchOf(
-                    activeAsClickVars.altAnimActiveTg,
-                    clickableVars.animPressAsActive,
-                ),
-                // regular animPassive => releaseAsPassive
-                [activeAsClickVars.animPassive       ]: switchOf(
-                    activeAsClickVars.altAnimPassiveTg,
-                    clickableVars.animReleaseAsPassive,
-                ),
-                
-                // regular animActiveAsClick  => dummy animPress
-                [activeAsClickVars.animActiveAsClick ]: switchOf(
-                    activeAsClickVars.altAnimActiveAsClickTg,
-                    `1ms ${keyframesDummyActive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
-                    /*
-                        TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
-                    */
-                ),
-                // regular animPassiveAsClick => dummy animRelease
-                [activeAsClickVars.animPassiveAsClick]: switchOf(
-                    activeAsClickVars.altAnimPassiveAsClickTg,
-                    `1ms ${keyframesDummyPassive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
-                ),
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                // alternate filterActive => filterActive:
-                [activeAsClickVars.altFilterActiveTg      ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.filterActive,
-                ]],
-                
-                
-                
-                // alternate animPress   => original animPress:
-                [activeAsClickVars.altAnimPressTg         ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    clickableVars.animPress,
-                ]],
-                // alternate animRelease => original animRelease:
-                [activeAsClickVars.altAnimReleaseTg       ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    clickableVars.animRelease,
-                ]],
-                
-                // alternate animActiveAsClick  => original animActive
-                [activeAsClickVars.altAnimActiveTg        ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animActive,
-                ]],
-                // alternate animPassiveAsClick => original animPassive
-                [activeAsClickVars.altAnimPassiveTg       ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animPassive,
-                ]],
-                
-                // alternate animActiveAsClick  => original animActive
-                [activeAsClickVars.altAnimActiveAsClickTg ]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animActive,
-                ]],
-                // alternate animPassiveAsClick => original animPassive
-                [activeAsClickVars.altAnimPassiveAsClickTg]: [[
-                    switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
-                    activatableVars.animPassive,
-                ]],
-            }),
-            
-            
-            
-            // animation states:
-            ...states([
-                //#region activating/passivating transition -- controllable
-                /*
-                    when on controllable activating:
-                        * regular       : pressing_animation
-                        * outlined/mild : activating_animation
-                    
-                    when on controllable passivating:
-                        * regular       : releasing_animation
-                        * outlined/mild : passivating_animation
-                    
-                    
-                    
-                    when activating after click:
-                        * regular       : NO_activating_animation because the activating_state is already styled_as_pressing
-                        * outlined/mild :    activating_animation
-                    
-                    when passivating after click:
-                        * regular       : NO_passivating_animation because the passivating_state is already styled_as_releasing
-                        * outlined/mild :    passivating_animation
-                */
-                ifActivating({
-                    // there is no clicking activity:
-                    [activatableVars.anim] : activeAsClickVars.animActive,
-                    
-                    // there is a clicking activity:
-                    ...ifPressReleasing({
-                        [activatableVars.anim] : activeAsClickVars.animActiveAsClick,
-                    }),
-                }),
-                ifPassivating({
-                    // there is no clicking activity:
-                    [activatableVars.anim] : activeAsClickVars.animPassive,
-                    
-                    // there is a clicking activity:
-                    ...ifPressReleasing({
-                        [activatableVars.anim] : activeAsClickVars.animPassiveAsClick,
-                    }),
-                }),
-                //#endregion activating/passivating transition -- controllable
-                
-                
-                
-                //#region clicking feedback
-                /*
-                    when clicking for activating:
-                        * regular       : NO_releasing_animation because the UI is already styled_as_pressed
-                        * outlined/mild :    releasing_animation
-                    
-                    when clicking for passivating:
-                        * regular       : NO_pressing_animation because the UI is already styled_as_pressed
-                        * outlined/mild :    pressing_animation
-                */
-                ifPressing({
-                    /*
-                        TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
-                    */
-                    ...ifActivated({ // allows '.pressing' animation if the UI is still being '.activating', disallow if already been '.activated'
-                        ...vars({
-                            [clickableVars.anim] : activeAsClickVars.animPress,
-                        }),
-                    }),
-                }),
-                ifReleasing({
-                    ...ifActive({ // hold '.releasing' when already '.activating'|'.activated'
-                        ...vars({
-                            [clickableVars.anim] : activeAsClickVars.animRelease,
-                        }),
-                    }),
-                }),
-                //#endregion clicking feedback
-            ]),
-            // animation filters:
-            ...states([
-                ifActivated({
-                    ...vars({
-                        [clickableVars.filter] : activeAsClickVars.filterActive,
-                    }),
-                }),
-                ifActivating({
-                    ...vars({
-                        [clickableVars.filter] : activeAsClickVars.filterActive,
-                    }),
-                }),
-                ifPassivating({
-                    ...vars({
-                        [clickableVars.filter] : activeAsClickVars.filterActive,
-                    }),
-                }),
-                
-                /*
-                    put at the last, so the action states (.pressing/.pressed/.releasing) always win than toggling states (.activating/.activated/.passivating)
-                    the cases of a <button> with [outlined=true] or [mild=true] style:
-                        * when toggling on , the mouse_up will not cause blinking effect
-                        * when toggling off, the mouse_down will make pressing effect
-                */
-                ifPressReleasing({
-                    ...vars({
-                        [clickableVars.filter] : clickableVars.filterPress,
-                    }),
-                }),
-            ]),
+            ),
+            // regular animPassiveAsClick => dummy animRelease
+            [activeAsClickVars.animPassiveAsClick]: switchOf(
+                activeAsClickVars.altAnimPassiveAsClickTg,
+                `1ms ${keyframesDummyPassive}`, // note: do not set interval to '0ms' => some browser just simply ignored the animation of zero duration
+            ),
         }),
+        
+        
+        
+        // toggling functions:
+        ...vars({
+            // alternate filterActive => filterActive:
+            [activeAsClickVars.altFilterActiveTg      ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                activatableVars.filterActive,
+            ]],
+            
+            
+            
+            // alternate animPress   => original animPress:
+            [activeAsClickVars.altAnimPressTg         ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                clickableVars.animPress,
+            ]],
+            // alternate animRelease => original animRelease:
+            [activeAsClickVars.altAnimReleaseTg       ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                clickableVars.animRelease,
+            ]],
+            
+            // alternate animActiveAsClick  => original animActive
+            [activeAsClickVars.altAnimActiveTg        ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                activatableVars.animActive,
+            ]],
+            // alternate animPassiveAsClick => original animPassive
+            [activeAsClickVars.altAnimPassiveTg       ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                activatableVars.animPassive,
+            ]],
+            
+            // alternate animActiveAsClick  => original animActive
+            [activeAsClickVars.altAnimActiveAsClickTg ]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                activatableVars.animActive,
+            ]],
+            // alternate animPassiveAsClick => original animPassive
+            [activeAsClickVars.altAnimPassiveAsClickTg]: [[
+                switchOf(outlineableVars.outlinedPr, mildableVars.mildPr),
+                activatableVars.animPassive,
+            ]],
+        }),
+        
+        
+        
+        // animation states:
+        ...states([
+            //#region activating/passivating transition -- controllable
+            /*
+                when on controllable activating:
+                    * regular       : pressing_animation
+                    * outlined/mild : activating_animation
+                
+                when on controllable passivating:
+                    * regular       : releasing_animation
+                    * outlined/mild : passivating_animation
+                
+                
+                
+                when activating after click:
+                    * regular       : NO_activating_animation because the activating_state is already styled_as_pressing
+                    * outlined/mild :    activating_animation
+                
+                when passivating after click:
+                    * regular       : NO_passivating_animation because the passivating_state is already styled_as_releasing
+                    * outlined/mild :    passivating_animation
+            */
+            ifActivating({
+                // there is no clicking activity:
+                [activatableVars.anim] : activeAsClickVars.animActive,
+                
+                // there is a clicking activity:
+                ...ifPressReleasing({
+                    [activatableVars.anim] : activeAsClickVars.animActiveAsClick,
+                }),
+            }),
+            ifPassivating({
+                // there is no clicking activity:
+                [activatableVars.anim] : activeAsClickVars.animPassive,
+                
+                // there is a clicking activity:
+                ...ifPressReleasing({
+                    [activatableVars.anim] : activeAsClickVars.animPassiveAsClick,
+                }),
+            }),
+            //#endregion activating/passivating transition -- controllable
+            
+            
+            
+            //#region clicking feedback
+            /*
+                when clicking for activating:
+                    * regular       : NO_releasing_animation because the UI is already styled_as_pressed
+                    * outlined/mild :    releasing_animation
+                
+                when clicking for passivating:
+                    * regular       : NO_pressing_animation because the UI is already styled_as_pressed
+                    * outlined/mild :    pressing_animation
+            */
+            ifPressing({
+                /*
+                    TODO: fix a minor pressing_animation_ABORT because the '.activated' state is occured BEFORE the pressing_animation_DONE
+                */
+                ...ifActivated({ // allows '.pressing' animation if the UI is still being '.activating', disallow if already been '.activated'
+                    ...vars({
+                        [clickableVars.anim] : activeAsClickVars.animPress,
+                    }),
+                }),
+            }),
+            ifReleasing({
+                ...ifActive({ // hold '.releasing' when already '.activating'|'.activated'
+                    ...vars({
+                        [clickableVars.anim] : activeAsClickVars.animRelease,
+                    }),
+                }),
+            }),
+            //#endregion clicking feedback
+        ]),
+        // animation filters:
+        ...states([
+            ifActivated({
+                ...vars({
+                    [clickableVars.filter] : activeAsClickVars.filterActive,
+                }),
+            }),
+            ifActivating({
+                ...vars({
+                    [clickableVars.filter] : activeAsClickVars.filterActive,
+                }),
+            }),
+            ifPassivating({
+                ...vars({
+                    [clickableVars.filter] : activeAsClickVars.filterActive,
+                }),
+            }),
+            
+            /*
+                put at the last, so the action states (.pressing/.pressed/.releasing) always win than toggling states (.activating/.activated/.passivating)
+                the cases of a <button> with [outlined=true] or [mild=true] style:
+                    * when toggling on , the mouse_up will not cause blinking effect
+                    * when toggling off, the mouse_down will make pressing effect
+            */
+            ifPressReleasing({
+                ...vars({
+                    [clickableVars.filter] : clickableVars.filterPress,
+                }),
+            }),
+        ]),
+    });
+};
+const getDefaultActiveAsClickRule = () => {
+    const cached = defaultActiveAsClickRuleCache?.deref();
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const defaultActiveAsClickRule = createActiveAsClickRule();
+    defaultActiveAsClickRuleCache = new WeakRef<CssRule>(defaultActiveAsClickRule);
+    return defaultActiveAsClickRule;
+};
+/**
+ * Shows the UI as clicked when activated.
+ * @returns A `ActiveAsClickStuff` represents an active-as-click state.
+ */
+export const usesActiveAsClick = (): ActiveAsClickStuff => {
+    return {
+        activeAsClickRule: getDefaultActiveAsClickRule,
         activeAsClickVars,
     };
-    activeAsClickStuffCache = new WeakRef<ActiveAsClickStuff>(activeAsClickStuff);
-    return activeAsClickStuff;
 };
 //#endregion active-as-click

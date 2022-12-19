@@ -9,7 +9,7 @@ themable [ok]
 
 colorable [ok]
 orientationable
-active-as-click
+activeAsClick [ok]
 
 
 
