@@ -192,11 +192,14 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
 let hasThemeSelectorsCache : CssSelector[] | null = null;
 let noThemeSelectorsCache  : CssSelector   | null = null;
 
+const themeDefsCache = new Map<ThemeName, CssRule>();
+
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
     hasThemeSelectorsCache = null;
     noThemeSelectorsCache  = null;
+    themeDefsCache.clear();
 });
 //#endregion caches
 
@@ -255,26 +258,35 @@ export const usesThemable = (factory : ((themeName: ThemeName) => CssStyleCollec
  * @param themeName The theme name.
  * @returns A `CssRule` represents a theme rules for the given `themeName`.
  */
-export const themeOf = (themeName: ThemeName): CssRule => style({
-    ...vars({
-        [themableVars.backg               ] : colors[   themeName       as keyof typeof colors], // base color
-        [themableVars.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themableVars.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themableVars.altBackg            ] : themableVars.backgMild,
-        [themableVars.altForeg            ] : themableVars.foregMild,
-        
-        [themableVars.foregOutlined       ] : themableVars.backg,
-        [themableVars.altBackgOutlined    ] : themableVars.backg,
-        [themableVars.altForegOutlined    ] : themableVars.foreg,
-        
-        [themableVars.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themableVars.foregMild           ] : themableVars.border,
-        [themableVars.altBackgMild        ] : themableVars.backg,
-        [themableVars.altForegMild        ] : themableVars.foreg,
-        
-        [themableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
-    }),
-});
+export const themeOf = (themeName: ThemeName): CssRule => {
+    const cached = themeDefsCache.get(themeName);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const themeDef = style({
+        ...vars({
+            [themableVars.backg               ] : colors[   themeName       as keyof typeof colors], // base color
+            [themableVars.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+            [themableVars.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+            [themableVars.altBackg            ] : themableVars.backgMild,
+            [themableVars.altForeg            ] : themableVars.foregMild,
+            
+            [themableVars.foregOutlined       ] : themableVars.backg,
+            [themableVars.altBackgOutlined    ] : themableVars.backg,
+            [themableVars.altForegOutlined    ] : themableVars.foreg,
+            
+            [themableVars.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+            [themableVars.foregMild           ] : themableVars.border,
+            [themableVars.altBackgMild        ] : themableVars.backg,
+            [themableVars.altForegMild        ] : themableVars.foreg,
+            
+            [themableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        }),
+    });
+    themeDefsCache.set(themeName, themeDef);
+    return themeDef;
+};
 
 /**
  * Gets all available theme color options.
