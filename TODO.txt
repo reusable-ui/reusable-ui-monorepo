@@ -1,8 +1,3 @@
-remove Nm to Md:
-\w+Nm|'nm'
-
-
-
 optimize:
 
 gradient, outlined, mild, nude
