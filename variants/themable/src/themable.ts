@@ -202,7 +202,7 @@ cssColorConfig.onChange.subscribe(() => {
     hasThemeSelectorsCache = null;
     noThemeSelectorsCache  = null;
     themeDefinitionsCache.clear();
-    themeOptionsCache = null;
+    themeOptionsCache      = null;
 });
 //#endregion caches
 
