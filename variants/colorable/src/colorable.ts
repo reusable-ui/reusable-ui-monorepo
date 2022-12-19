@@ -112,7 +112,7 @@ export interface ColorableConfig {
     color    ?: CssKnownProps['backgroundColor']
     altColor ?: CssKnownProps['backgroundColor']
 }
-const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild) => {
+const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfOutlined, mildDefinition : null|((toggle: ToggleColor) => CssStyleCollection) = defineSelfMild): CssRule => {
     // dependencies:
     
     // features:
@@ -212,7 +212,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
             ?
             getDefaultColorableRule
             :
-            () => createColorableRule(config, outlinedDefinition)
+            () => createColorableRule(config, outlinedDefinition, mildDefinition)
         ),
         colorableVars,
     };
