@@ -6,7 +6,6 @@ import {
     
     
     // hooks:
-    useReducer,
     useRef,
     useMemo,
 }                           from 'react'
@@ -43,28 +42,6 @@ import {
 
 
 
-// utilities:
-type Coordinate = Pick<FloatingPosition, 'x'|'y'|'placement'>
-const coordinateReducer = (oldCoordinate: Coordinate|null, newCoordinate: Coordinate|null): Coordinate|null => {
-    if (
-        (oldCoordinate === newCoordinate)
-        ||
-        (
-            !!oldCoordinate  &&  !!newCoordinate
-            &&
-            (oldCoordinate.x === newCoordinate.x)
-            &&
-            (oldCoordinate.y === newCoordinate.y)
-            &&
-            (oldCoordinate.placement === newCoordinate.placement)
-        )
-    ) return oldCoordinate;
-    
-    return newCoordinate;
-};
-
-
-
 // hooks:
 
 // features:
@@ -86,11 +63,6 @@ export interface FloatableProps
     onFloatingUpdate   ?: EventHandler<FloatingPosition>
 }
 export const useFloatable = <TElement extends Element = HTMLElement>(props: FloatableProps, isVisible: boolean = true) => {
-    // states:
-    const [floatingPos, setFloatingPos] = useReducer(coordinateReducer, null);
-    
-    
-    
     // rest props:
     const {
         // floatable:
@@ -117,25 +89,31 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     // classes:
     const classes = useMergeClasses(
         // floatable:
-        ( floatingOn                 || null) && 'overlay',
-        ((floatingOn && floatingPos) || null) && floatingPos?.placement,
+        (floatingOn || null) && 'overlay',
+        (floatingOn || null) && floatingPlacement,
     );
-    
-    
-    
-    // styles:
-    const style = useMemo(() => ({
-        // positions:
-        position : ( floatingOn                 || undefined) && floatingStrategy,
-        left     : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.x}px`,
-        top      : ((floatingOn && floatingPos) || undefined) && `${floatingPos?.y}px`,
-    }), [floatingOn, floatingPos, floatingStrategy]);
     
     
     
     // handlers:
     const handleFloatingUpdateInternal = useEvent<EventHandler<FloatingPosition>>((floatingPosition) => {
-        setFloatingPos(floatingPosition);
+        // conditions:
+        const floatingUi = outerRef.current;
+        if (!floatingUi) return; // <floatingUi> was unloaded => nothing to do
+        
+        
+        
+        const {
+            strategy: position,
+            x, y,
+        } = floatingPosition;
+        
+        
+        
+        const style = (floatingUi as unknown as HTMLElement|SVGElement).style;
+        style.position = position;
+        style.left = `${x}px`;
+        style.top  = `${y}px`;
     });
     const handleFloatingUpdate         = useMergeEvents(
         // preserves the original `onFloatingUpdate`:
@@ -254,8 +232,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     return useMemo(() => ({
         outerRef,
         classes,
-        style,
-    }), [outerRef, classes, style]);
+    }), [outerRef, classes]);
 };
 
 export type { FloatingPlacement, FloatingMiddleware, FloatingStrategy, FloatingPosition, FloatingSide }
