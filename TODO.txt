@@ -1,12 +1,7 @@
 optimize:
-
 export const useFloatable
-
-
-cache:
-export const usesActiveAsClick = (): ActiveAsClickStuff => {
-
 combines requestAnimationFrame with setTimeout
+
 
 
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
