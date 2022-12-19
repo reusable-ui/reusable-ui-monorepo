@@ -55,7 +55,7 @@ export { paragraphs as default }
 styleSheets([
     globalScope({
         ...rule(['p', '.p'], {
-            ...rule(':not(.lead)', {
+            ...rule(`:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`, {
                 // layouts:
                 display : 'block',
                 
