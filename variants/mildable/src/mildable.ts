@@ -48,6 +48,7 @@ const _defaultMild : Required<MildableProps>['mild'] = false
 // variants:
 
 //#region mildable
+export type ToggleMild = boolean|'inherit'|null
 export interface MildableVars {
     /**
      * the mildable preference.
@@ -100,6 +101,12 @@ const [mildableVars] = cssVars<MildableVars>();
 
 
 
+//#region caches
+const mildDefinitionsCache = new Map<ToggleMild, CssRule>();
+//#endregion caches
+
+
+
 // parent is     `.mild` -or- current is     `.mild`:
 export const ifMild        = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
 // parent is `.not-mild` -or- current is `.not-mild`:
@@ -121,7 +128,7 @@ export interface MildableConfig {
  * @param mildDefinition A callback to create a mildification rules for each toggle state.
  * @returns A `MildableStuff` represents the mildification rules for each toggle state.
  */
-export const usesMildable = (config?: MildableConfig, mildDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineMild): MildableStuff => {
+export const usesMildable = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): MildableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -226,25 +233,34 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const defineMild = (toggle: boolean|'inherit'|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off/inherit* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                inherit => inherit           => follows      the <ancestor> decision.
-                null    => null              => remove the prev declaration
-        */
-        [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+export const defineMild = (toggle: ToggleMild): CssRule => {
+    const cached = mildDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const mildDef = style({
+        ...vars({
+            /*
+                *switch on/off/inherit* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    inherit => inherit           => follows      the <ancestor> decision.
+                    null    => null              => remove the prev declaration
+            */
+            [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    mildDefinitionsCache.set(toggle, mildDef);
+    return mildDef;
+};
 /**
  * Sets the current mildification state by the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `setMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const setMild = (toggle: boolean|'inherit'|null): CssRule => style({
+export const setMild = (toggle: ToggleMild): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.

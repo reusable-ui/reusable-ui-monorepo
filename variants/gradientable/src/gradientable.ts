@@ -37,6 +37,7 @@ const _defaultGradient : Required<GradientableProps>['gradient'] = 'inherit'
 // variants:
 
 //#region gradientable
+export type ToggleGradient = boolean|'inherit'|null
 export interface GradientableVars {
     /**
      * the gradientable preference.
@@ -62,6 +63,12 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 
 
+//#region caches
+const gradientDefinitionsCache = new Map<ToggleGradient, CssRule>();
+//#endregion caches
+
+
+
 // parent is     `.gradient` -or- current is     `.gradient`:
 export const ifGradient        = (styles: CssStyleCollection): CssRule => rule(              ':is(.gradient&, &.gradient)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
 // parent is `.not-gradient` -or- current is `.not-gradient`:
@@ -80,7 +87,7 @@ export interface GradientableConfig {
  * @param gradientDefinition A callback to create a gradient rules for each toggle state.
  * @returns A `GradientableStuff` represents the gradient rules for each toggle state.
  */
-export const usesGradientable = (config?: GradientableConfig, gradientDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineGradient): GradientableStuff => {
+export const usesGradientable = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): GradientableStuff => {
     return {
         gradientableRule: () => style({
             // configs:
@@ -124,25 +131,34 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `defineGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const defineGradient = (toggle: boolean|'inherit'|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off/inherit* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                inherit => inherit           => follows      the <ancestor> decision.
-                null    => null              => remove the prev declaration
-        */
-        [gradientableVars.gradientPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+export const defineGradient = (toggle: ToggleGradient): CssRule => {
+    const cached = gradientDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const gradientDef = style({
+        ...vars({
+            /*
+                *switch on/off/inherit* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    inherit => inherit           => follows      the <ancestor> decision.
+                    null    => null              => remove the prev declaration
+            */
+            [gradientableVars.gradientPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    gradientDefinitionsCache.set(toggle, gradientDef);
+    return gradientDef;
+};
 /**
  * Sets the current gradient state by the given `toggle` state.
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `setGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const setGradient = (toggle: boolean|'inherit'|null): CssRule => style({
+export const setGradient = (toggle: ToggleGradient): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.

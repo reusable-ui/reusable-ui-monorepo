@@ -46,6 +46,7 @@ const _defaultNude : Required<NudibleProps>['nude'] = false
 // variants:
 
 //#region nudible
+export type ToggleNude = boolean|null
 export interface NudibleVars {
     /**
      * the nudible preference.
@@ -57,6 +58,12 @@ export interface NudibleVars {
     nudeSw : any
 }
 const [nudibleVars] = cssVars<NudibleVars>();
+
+
+
+//#region caches
+const nudeDefinitionsCache = new Map<ToggleNude, CssRule>();
+//#endregion caches
 
 
 
@@ -73,7 +80,7 @@ export interface NudibleStuff { nudibleRule: Factory<CssRule>, nudibleVars: CssV
  * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
  * @returns A `NudibleStuff` represents the nudeification rules.
  */
-export const usesNudible = (nudeDefinition : null|((toggle: boolean|null) => CssStyleCollection) = defineNude): NudibleStuff => {
+export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssStyleCollection) = defineNude): NudibleStuff => {
     // dependencies:
     
     // features:
@@ -147,24 +154,33 @@ export const usesNudible = (nudeDefinition : null|((toggle: boolean|null) => Css
  * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `defineNude`.
  * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
-export const defineNude = (toggle: boolean|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                null    => null              => remove the prev declaration
-        */
-        [nudibleVars.nudePr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+export const defineNude = (toggle: ToggleNude): CssRule => {
+    const cached = nudeDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const nudeDef = style({
+        ...vars({
+            /*
+                *switch on/off* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    null    => null              => remove the prev declaration
+            */
+            [nudibleVars.nudePr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    nudeDefinitionsCache.set(toggle, nudeDef);
+    return nudeDef;
+};
 /**
  * Sets the current nudeification state by the given `toggle` state.
  * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `setNude`.
  * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
-export const setNude = (toggle: boolean|null): CssRule => style({
+export const setNude = (toggle: ToggleNude): CssRule => style({
     ...vars({
         /*
             *switch on/off* the `**Tg` prop.

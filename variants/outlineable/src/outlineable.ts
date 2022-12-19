@@ -45,6 +45,7 @@ const _defaultOutlined : Required<OutlineableProps>['outlined'] = 'inherit'
 // variants:
 
 //#region outlineable
+export type ToggleOutlined = boolean|'inherit'|null
 export interface OutlineableVars {
     /**
      * the outlineable preference.
@@ -104,6 +105,12 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 
 
+//#region caches
+const outlinedDefinitionsCache = new Map<ToggleOutlined, CssRule>();
+//#endregion caches
+
+
+
 // parent is     `.outlined` -or- current is     `.outlined`:
 export const ifOutlined        = (styles: CssStyleCollection): CssRule => rule(              ':is(.outlined&, &.outlined)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
 // parent is `.not-outlined` -or- current is `.not-outlined`:
@@ -125,7 +132,7 @@ export interface OutlineableConfig {
  * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
  * @returns An `OutlineableStuff` represents the outlining rules for each toggle state.
  */
-export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: boolean|'inherit'|null) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
+export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): OutlineableStuff => {
     // dependencies:
     const {themableRule, themableVars} = usesThemable();
     
@@ -243,25 +250,34 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const defineOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
-    ...vars({
-        /*
-            *switch on/off/inherit* the `**Tg` prop.
-            toggle:
-                true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
-                false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
-                inherit => inherit           => follows      the <ancestor> decision.
-                null    => null              => remove the prev declaration
-        */
-        [outlineableVars.outlinedPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-    }),
-});
+export const defineOutlined = (toggle: ToggleOutlined): CssRule => {
+    const cached = outlinedDefinitionsCache.get(toggle);
+    if (cached !== undefined) return cached;
+    
+    
+    
+    const outlinedDef = style({
+        ...vars({
+            /*
+                *switch on/off/inherit* the `**Tg` prop.
+                toggle:
+                    true    => empty string      => do not alter the `**Tg`'s value => activates   `**Tg` variable.
+                    false   => initial (invalid) => destroy      the `**Tg`'s value => deactivates `**Tg` variable.
+                    inherit => inherit           => follows      the <ancestor> decision.
+                    null    => null              => remove the prev declaration
+            */
+            [outlineableVars.outlinedPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
+        }),
+    });
+    outlinedDefinitionsCache.set(toggle, outlinedDef);
+    return outlinedDef;
+};
 /**
  * Sets the current outlining state by the given `toggle` state.
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `setOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const setOutlined = (toggle: boolean|'inherit'|null): CssRule => style({
+export const setOutlined = (toggle: ToggleOutlined): CssRule => style({
     ...vars({
         /*
             *switch on/off/inherit* the `**Tg` prop.
