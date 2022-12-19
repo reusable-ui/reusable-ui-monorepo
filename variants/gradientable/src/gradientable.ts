@@ -64,8 +64,8 @@ const [gradientableVars] = cssVars<GradientableVars>();
 
 
 //#region caches
-const gradientDefinitionsCache = new Map<ToggleGradient, CssRule>();
-let gradientableRuleCache      : WeakRef<CssRule> | null = null;
+const gradientDefinitionsCache   = new Map<ToggleGradient, CssRule>();
+let defaultGradientableRuleCache : WeakRef<CssRule> | null = null;
 //#endregion caches
 
 
@@ -118,13 +118,13 @@ const createGradientableRule = (config?: GradientableConfig, gradientDefinition 
     });
 };
 const getDefaultGradientableRule = () => {
-    const cached = gradientableRuleCache?.deref();
+    const cached = defaultGradientableRuleCache?.deref();
     if (cached !== undefined) return cached;
     
     
     
     const defaultGradientableRule = createGradientableRule();
-    gradientableRuleCache = new WeakRef<CssRule>(defaultGradientableRule);
+    defaultGradientableRuleCache = new WeakRef<CssRule>(defaultGradientableRule);
     return defaultGradientableRule;
 };
 /**
