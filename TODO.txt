@@ -1,9 +1,5 @@
 optimize:
 
-gradient, outlined, mild, nude
-
-        [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
-
 export const useFloatable
 
 
