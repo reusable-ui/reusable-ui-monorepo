@@ -1,9 +1,9 @@
 {
   "name": "test-alert",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "dependencies": {
-    "@reusable-ui/alert": "^5.0.10",
+    "@reusable-ui/alert": "^5.0.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

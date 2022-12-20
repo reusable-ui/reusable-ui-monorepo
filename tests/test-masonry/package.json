@@ -1,10 +1,10 @@
 {
   "name": "test-masonry",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "dependencies": {
     "@cssfn/cssfn-dom": "^2.0.16",
-    "@reusable-ui/masonry": "^5.0.7",
+    "@reusable-ui/masonry": "^5.0.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/progress",
-  "version": "5.0.10",
+  "version": "5.0.11",
   "description": "A custom progress bar featuring support for stacked bars, animated backgrounds, text labels, and horizontal/vertical orientation.",
   "keywords": [
     "progress",
@@ -34,10 +34,10 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.7",
-    "@reusable-ui/core": "^5.0.7",
-    "@reusable-ui/generic": "^5.0.5",
-    "@reusable-ui/list": "^5.0.10",
+    "@reusable-ui/basic": "^5.0.8",
+    "@reusable-ui/core": "^5.0.8",
+    "@reusable-ui/generic": "^5.0.6",
+    "@reusable-ui/list": "^5.0.11",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
