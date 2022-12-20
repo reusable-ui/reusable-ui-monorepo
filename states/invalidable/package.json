@@ -40,7 +40,7 @@
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^5.0.1",
     "@reusable-ui/animation": "^5.0.1",
-    "@reusable-ui/themable": "^5.0.1",
+    "@reusable-ui/themable": "^5.0.2",
     "@reusable-ui/validations": "^5.0.1",
     "react": "^18.2.0"
   }
