@@ -67,7 +67,7 @@
     "@reusable-ui/colors": "^5.0.2",
     "@reusable-ui/foreground": "^5.0.2",
     "@reusable-ui/gradientable": "^5.0.1",
-    "@reusable-ui/groupable": "^5.0.1",
+    "@reusable-ui/groupable": "^5.0.3",
     "@reusable-ui/mildable": "^5.0.1",
     "@reusable-ui/nudible": "^5.0.1",
     "@reusable-ui/orientationable": "^5.0.1",
