@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/list",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "description": "Represents a series of content.",
   "keywords": [
     "list",
@@ -37,14 +37,14 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/action-control": "^5.0.7",
-    "@reusable-ui/basic": "^5.0.6",
-    "@reusable-ui/button": "^5.0.12",
-    "@reusable-ui/content": "^5.0.5",
-    "@reusable-ui/core": "^5.0.5",
-    "@reusable-ui/generic": "^5.0.4",
-    "@reusable-ui/icon": "^5.0.13",
-    "@reusable-ui/indicator": "^5.0.6",
+    "@reusable-ui/action-control": "^5.0.8",
+    "@reusable-ui/basic": "^5.0.7",
+    "@reusable-ui/button": "^5.0.13",
+    "@reusable-ui/content": "^5.0.6",
+    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/generic": "^5.0.5",
+    "@reusable-ui/icon": "^5.0.14",
+    "@reusable-ui/indicator": "^5.0.7",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

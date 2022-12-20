@@ -1,6 +1,6 @@
 {
   "name": "test-nav-button-next-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@cssfn/cssfn-dom": "^2.0.16",
-    "@reusable-ui/nav": "^5.0.6",
-    "@reusable-ui/nav-button": "^5.0.5",
+    "@reusable-ui/nav": "^5.0.7",
+    "@reusable-ui/nav-button": "^5.0.6",
     "next": "^13.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
