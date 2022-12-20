@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/content",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A generic element for displaying contents such as paragraphs, images, videos, etc.",
   "keywords": [
     "content",
@@ -37,9 +37,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.3",
-    "@reusable-ui/button": "^5.0.9",
-    "@reusable-ui/core": "^5.0.2",
+    "@reusable-ui/basic": "^5.0.4",
+    "@reusable-ui/button": "^5.0.10",
+    "@reusable-ui/core": "^5.0.3",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

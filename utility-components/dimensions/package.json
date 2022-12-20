@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dimensions",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A set of React helper for fetching the dimension of elements.",
   "keywords": [
     "react",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.6",
-    "@reusable-ui/core": "^5.0.2",
+    "@reusable-ui/core": "^5.0.3",
     "@types/react": "^18.0.26",
     "rxjs": "^7.8.0"
   },

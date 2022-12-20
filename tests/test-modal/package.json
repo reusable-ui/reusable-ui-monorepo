@@ -1,9 +1,9 @@
 {
   "name": "test-modal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "@reusable-ui/modal": "^5.0.7",
+    "@reusable-ui/modal": "^5.0.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

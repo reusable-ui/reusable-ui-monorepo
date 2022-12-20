@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/clickable",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A capability of UI to be clicked.",
   "keywords": [
     "clickable",

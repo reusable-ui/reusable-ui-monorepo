@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/form",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Represents a document section containing interactive controls for submitting.",
   "keywords": [
     "container",
@@ -35,9 +35,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/content": "^5.0.2",
-    "@reusable-ui/core": "^5.0.2",
-    "@reusable-ui/editable-control": "^5.0.4",
+    "@reusable-ui/content": "^5.0.3",
+    "@reusable-ui/core": "^5.0.3",
+    "@reusable-ui/editable-control": "^5.0.5",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/activatable",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "A capability of UI to be highlighted/selected/activated.",
   "keywords": [
     "activatable",

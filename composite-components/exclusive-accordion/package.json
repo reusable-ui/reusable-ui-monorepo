@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/exclusive-accordion",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Represents a series of toggleable collapsing content with only one expanding content allowed.",
   "keywords": [
     "list",
@@ -40,8 +40,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/accordion": "^5.0.6",
-    "@reusable-ui/core": "^5.0.2",
+    "@reusable-ui/accordion": "^5.0.7",
+    "@reusable-ui/core": "^5.0.3",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
