@@ -35,6 +35,6 @@
     "@reusable-ui/activatable": "^5.0.5"
   },
   "peerDependencies": {
-    "@reusable-ui/animation": "^5.0.0"
+    "@reusable-ui/animation": "^5.0.1"
   }
 }
