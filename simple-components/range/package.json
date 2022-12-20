@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/range",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "A UI for the user defines a numeric value in the specified range.",
   "keywords": [
     "input",
@@ -38,11 +38,11 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/core": "^5.0.3",
-    "@reusable-ui/editable-action-control": "^5.0.4",
-    "@reusable-ui/editable-control": "^5.0.5",
-    "@reusable-ui/generic": "^5.0.2",
-    "@reusable-ui/input": "^5.0.5",
+    "@reusable-ui/core": "^5.0.4",
+    "@reusable-ui/editable-action-control": "^5.0.5",
+    "@reusable-ui/editable-control": "^5.0.6",
+    "@reusable-ui/generic": "^5.0.3",
+    "@reusable-ui/input": "^5.0.6",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/tooltip",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Represents advisory information related to the element it belongs.",
   "keywords": [
     "tooltip",
@@ -38,9 +38,9 @@
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
     "@floating-ui/dom": "^1.0.12",
-    "@reusable-ui/core": "^5.0.3",
-    "@reusable-ui/generic": "^5.0.2",
-    "@reusable-ui/popup": "^5.0.4",
+    "@reusable-ui/core": "^5.0.4",
+    "@reusable-ui/generic": "^5.0.3",
+    "@reusable-ui/popup": "^5.0.5",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
