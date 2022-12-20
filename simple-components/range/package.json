@@ -38,7 +38,7 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/core": "^5.0.7",
     "@reusable-ui/editable-action-control": "^5.0.7",
     "@reusable-ui/editable-control": "^5.0.8",
     "@reusable-ui/generic": "^5.0.5",

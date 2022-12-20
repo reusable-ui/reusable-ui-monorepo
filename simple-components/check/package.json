@@ -36,7 +36,7 @@
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
     "@reusable-ui/button": "^5.0.13",
-    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/core": "^5.0.7",
     "@reusable-ui/editable-action-control": "^5.0.7",
     "@reusable-ui/icon": "^5.0.14",
     "@reusable-ui/input": "^5.0.8",

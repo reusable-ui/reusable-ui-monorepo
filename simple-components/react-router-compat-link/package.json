@@ -32,7 +32,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/core": "^5.0.7",
     "@reusable-ui/generic": "^5.0.5",
     "@types/react": "^18.0.26"
   },

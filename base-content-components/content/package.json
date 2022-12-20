@@ -39,7 +39,7 @@
     "@cssfn/cssfn-react": "^2.0.21",
     "@reusable-ui/basic": "^5.0.7",
     "@reusable-ui/button": "^5.0.13",
-    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/core": "^5.0.7",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -32,14 +32,14 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/activatable": "^5.0.6",
-    "@reusable-ui/active-as-click": "^5.0.3",
+    "@reusable-ui/activatable": "^5.0.7",
+    "@reusable-ui/active-as-click": "^5.0.4",
     "@reusable-ui/animating-state": "^5.0.3",
     "@reusable-ui/checkable": "^5.0.2",
     "@reusable-ui/clickable": "^5.0.3",
     "@reusable-ui/client-sides": "^5.0.1",
     "@reusable-ui/collapsible": "^5.0.3",
-    "@reusable-ui/colorable": "^5.0.4",
+    "@reusable-ui/colorable": "^5.0.5",
     "@reusable-ui/disableable": "^5.0.4",
     "@reusable-ui/excitable": "^5.0.4",
     "@reusable-ui/floatable": "^5.0.3",
@@ -59,13 +59,13 @@
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^5.0.1",
     "@reusable-ui/animation": "^5.0.1",
-    "@reusable-ui/background": "^5.0.2",
-    "@reusable-ui/basic-variants": "^5.0.1",
-    "@reusable-ui/border": "^5.0.2",
+    "@reusable-ui/background": "^5.0.4",
+    "@reusable-ui/basic-variants": "^5.0.4",
+    "@reusable-ui/border": "^5.0.4",
     "@reusable-ui/borders": "^5.0.2",
     "@reusable-ui/breakpoints": "^5.0.3",
     "@reusable-ui/colors": "^5.0.2",
-    "@reusable-ui/foreground": "^5.0.2",
+    "@reusable-ui/foreground": "^5.0.4",
     "@reusable-ui/gradientable": "^5.0.1",
     "@reusable-ui/groupable": "^5.0.3",
     "@reusable-ui/mildable": "^5.0.3",

@@ -42,7 +42,7 @@
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
     "@reusable-ui/collapse": "^5.0.9",
-    "@reusable-ui/core": "^5.0.6",
+    "@reusable-ui/core": "^5.0.7",
     "@reusable-ui/generic": "^5.0.5",
     "@types/react": "^18.0.26"
   },
