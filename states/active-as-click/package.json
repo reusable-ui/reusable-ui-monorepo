@@ -41,7 +41,7 @@
     "@reusable-ui/clickable": "^5.0.3"
   },
   "peerDependencies": {
-    "@reusable-ui/mildable": "^5.0.1",
-    "@reusable-ui/outlineable": "^5.0.1"
+    "@reusable-ui/mildable": "^5.0.3",
+    "@reusable-ui/outlineable": "^5.0.3"
   }
 }

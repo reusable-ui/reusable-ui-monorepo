@@ -37,8 +37,8 @@
   },
   "peerDependencies": {
     "@reusable-ui/background": "^5.0.2",
-    "@reusable-ui/mildable": "^5.0.1",
-    "@reusable-ui/outlineable": "^5.0.1",
+    "@reusable-ui/mildable": "^5.0.3",
+    "@reusable-ui/outlineable": "^5.0.3",
     "@reusable-ui/themable": "^5.0.2"
   }
 }

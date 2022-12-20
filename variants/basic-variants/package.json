@@ -40,8 +40,8 @@
   },
   "peerDependencies": {
     "@reusable-ui/gradientable": "^5.0.1",
-    "@reusable-ui/mildable": "^5.0.1",
-    "@reusable-ui/outlineable": "^5.0.1",
+    "@reusable-ui/mildable": "^5.0.3",
+    "@reusable-ui/outlineable": "^5.0.3",
     "@reusable-ui/resizable": "^5.0.2",
     "@reusable-ui/themable": "^5.0.2",
     "react": "^18.2.0"
