@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/focuses",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A set of focusing functions.",
   "keywords": [
     "utility",
@@ -29,7 +29,5 @@
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
-  },
-  "dependencies": {
   }
 }

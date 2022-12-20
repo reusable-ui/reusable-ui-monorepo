@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/label",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A complementary element represents a caption for a user interface.",
   "keywords": [
     "label",
@@ -35,9 +35,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.0",
-    "@reusable-ui/content": "^5.0.0",
-    "@reusable-ui/core": "^5.0.0",
+    "@reusable-ui/basic": "^5.0.3",
+    "@reusable-ui/content": "^5.0.2",
+    "@reusable-ui/core": "^5.0.2",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

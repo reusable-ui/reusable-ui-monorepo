@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/checkable",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A capability of UI to be checked.",
   "keywords": [
     "checkable",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.6",
-    "@reusable-ui/activatable": "^5.0.0"
+    "@reusable-ui/activatable": "^5.0.5"
   },
   "peerDependencies": {
     "@reusable-ui/animation": "^5.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/responsives",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "A responsive management system for react web components.",
   "keywords": [
     "responsive",
@@ -29,8 +29,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.0.0",
-    "@reusable-ui/generic": "^5.0.0",
+    "@reusable-ui/core": "^5.0.2",
+    "@reusable-ui/generic": "^5.0.1",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
