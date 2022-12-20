@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/button",
-  "version": "5.0.14",
+  "version": "5.0.15",
   "description": "A button component for initiating an action.",
   "keywords": [
     "clickable",
@@ -35,9 +35,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/action-control": "^5.0.9",
-    "@reusable-ui/basic": "^5.0.8",
-    "@reusable-ui/core": "^5.0.8",
+    "@reusable-ui/action-control": "^5.0.10",
+    "@reusable-ui/basic": "^5.0.9",
+    "@reusable-ui/core": "^5.0.9",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

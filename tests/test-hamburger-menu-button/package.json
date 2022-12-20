@@ -1,9 +1,9 @@
 {
   "name": "test-hamburger-menu-button",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "dependencies": {
-    "@reusable-ui/hamburger-menu-button": "^5.0.11",
+    "@reusable-ui/hamburger-menu-button": "^5.0.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

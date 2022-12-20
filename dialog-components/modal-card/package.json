@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal-card",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "Overlays a card dialog to the entire site's page.",
   "keywords": [
     "modal",
@@ -40,11 +40,11 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/card": "^5.0.9",
-    "@reusable-ui/container": "^5.0.9",
-    "@reusable-ui/core": "^5.0.8",
-    "@reusable-ui/modal": "^5.0.12",
-    "@reusable-ui/popup": "^5.0.8",
+    "@reusable-ui/card": "^5.0.10",
+    "@reusable-ui/container": "^5.0.10",
+    "@reusable-ui/core": "^5.0.9",
+    "@reusable-ui/modal": "^5.0.13",
+    "@reusable-ui/popup": "^5.0.9",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

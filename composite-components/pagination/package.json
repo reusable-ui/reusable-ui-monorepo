@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/pagination",
-  "version": "5.0.10",
+  "version": "5.0.11",
   "description": "A list of huge page numbers with limited displayed list.",
   "keywords": [
     "navigation",
@@ -35,9 +35,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.0.8",
-    "@reusable-ui/list": "^5.0.11",
-    "@reusable-ui/nav": "^5.0.8",
+    "@reusable-ui/core": "^5.0.9",
+    "@reusable-ui/list": "^5.0.12",
+    "@reusable-ui/nav": "^5.0.9",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

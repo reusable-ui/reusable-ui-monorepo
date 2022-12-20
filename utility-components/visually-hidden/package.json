@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/visually-hidden",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "A generic element that is visually invisible while still allowing it to be exposed to screen readers.",
   "keywords": [
     "hidden",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/generic": "^5.0.6",
+    "@reusable-ui/generic": "^5.0.7",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
