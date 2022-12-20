@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nav",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "A navigation component to navigate between pages.",
   "keywords": [
     "navigation",
@@ -33,9 +33,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.0.4",
-    "@reusable-ui/icon": "^5.0.12",
-    "@reusable-ui/list": "^5.0.8",
+    "@reusable-ui/core": "^5.0.5",
+    "@reusable-ui/icon": "^5.0.13",
+    "@reusable-ui/list": "^5.0.9",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

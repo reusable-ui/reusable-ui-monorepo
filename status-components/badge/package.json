@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/badge",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Represents counters or labels.",
   "keywords": [
     "badge",
@@ -40,8 +40,8 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/core": "^5.0.4",
-    "@reusable-ui/popup": "^5.0.5",
+    "@reusable-ui/core": "^5.0.5",
+    "@reusable-ui/popup": "^5.0.6",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

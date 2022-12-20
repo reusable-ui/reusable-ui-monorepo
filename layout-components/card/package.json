@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/card",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "A flexible and extensible content container, with optional header and footer.",
   "keywords": [
     "card",
@@ -36,11 +36,11 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.5",
-    "@reusable-ui/content": "^5.0.4",
-    "@reusable-ui/core": "^5.0.4",
-    "@reusable-ui/generic": "^5.0.3",
-    "@reusable-ui/indicator": "^5.0.5",
+    "@reusable-ui/basic": "^5.0.6",
+    "@reusable-ui/content": "^5.0.5",
+    "@reusable-ui/core": "^5.0.5",
+    "@reusable-ui/generic": "^5.0.4",
+    "@reusable-ui/indicator": "^5.0.6",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

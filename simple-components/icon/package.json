@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/icon",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "An icon set component for React app.",
   "keywords": [
     "icon",
@@ -36,9 +36,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.5",
-    "@reusable-ui/core": "^5.0.4",
-    "@reusable-ui/generic": "^5.0.3",
+    "@reusable-ui/basic": "^5.0.6",
+    "@reusable-ui/core": "^5.0.5",
+    "@reusable-ui/generic": "^5.0.4",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

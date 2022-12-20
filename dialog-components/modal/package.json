@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "description": "Overlays a dialog to the entire site's page.",
   "keywords": [
     "modal",
@@ -41,8 +41,8 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/core": "^5.0.4",
-    "@reusable-ui/generic": "^5.0.3",
+    "@reusable-ui/core": "^5.0.5",
+    "@reusable-ui/generic": "^5.0.4",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9"
   },
