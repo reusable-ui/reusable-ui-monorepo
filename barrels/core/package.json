@@ -77,7 +77,7 @@
     "@reusable-ui/ring": "^5.0.1",
     "@reusable-ui/spacers": "^5.0.2",
     "@reusable-ui/themable": "^5.0.1",
-    "@reusable-ui/typos": "^5.0.4",
+    "@reusable-ui/typos": "^5.0.3",
     "@reusable-ui/validations": "^5.0.1"
   }
 }
