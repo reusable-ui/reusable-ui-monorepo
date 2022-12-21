@@ -1,12 +1,12 @@
 {
   "name": "test-group",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "dependencies": {
-    "@reusable-ui/button": "^5.0.16",
-    "@reusable-ui/check": "^5.0.13",
-    "@reusable-ui/group": "^5.0.10",
-    "@reusable-ui/input": "^5.0.11",
+    "@reusable-ui/button": "^5.0.17",
+    "@reusable-ui/check": "^5.0.14",
+    "@reusable-ui/group": "^5.0.11",
+    "@reusable-ui/input": "^5.0.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

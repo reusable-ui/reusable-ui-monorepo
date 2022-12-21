@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nav-button",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "description": "A clickable button for navigation.",
   "keywords": [
     "navigation",
@@ -34,8 +34,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/button": "^5.0.16",
-    "@reusable-ui/core": "^5.0.10",
+    "@reusable-ui/button": "^5.0.17",
+    "@reusable-ui/core": "^5.0.11",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
