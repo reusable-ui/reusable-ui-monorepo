@@ -1,10 +1,10 @@
 {
   "name": "test-form",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "dependencies": {
-    "@reusable-ui/editable-text-control": "^5.0.11",
-    "@reusable-ui/form": "^5.0.10",
+    "@reusable-ui/editable-text-control": "^5.0.12",
+    "@reusable-ui/form": "^5.0.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

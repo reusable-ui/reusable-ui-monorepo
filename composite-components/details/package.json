@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/details",
-  "version": "5.0.11",
+  "version": "5.0.12",
   "description": "A foldable content widget.",
   "keywords": [
     "details",
@@ -37,12 +37,12 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/basic": "^5.0.9",
-    "@reusable-ui/button": "^5.0.15",
-    "@reusable-ui/collapse": "^5.0.11",
-    "@reusable-ui/content": "^5.0.8",
-    "@reusable-ui/core": "^5.0.9",
-    "@reusable-ui/toggle-button": "^5.0.8",
+    "@reusable-ui/basic": "^5.0.10",
+    "@reusable-ui/button": "^5.0.16",
+    "@reusable-ui/collapse": "^5.0.12",
+    "@reusable-ui/content": "^5.0.9",
+    "@reusable-ui/core": "^5.0.10",
+    "@reusable-ui/toggle-button": "^5.0.9",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
