@@ -36,7 +36,7 @@
     "@cssfn/core": "^2.0.6"
   },
   "peerDependencies": {
-    "@reusable-ui/background": "^5.0.4",
+    "@reusable-ui/background": "^5.0.5",
     "@reusable-ui/mildable": "^5.0.3",
     "@reusable-ui/outlineable": "^5.0.3",
     "@reusable-ui/themable": "^5.0.2"
