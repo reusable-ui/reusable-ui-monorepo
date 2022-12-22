@@ -29,7 +29,6 @@ import {
     Side                  as FloatingSide,
     
     ComputePositionReturn as FloatingPosition,
-    DetectOverflowOptions,
     
     
     
@@ -160,39 +159,34 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         // handlers:
-        const ancestors : Element[] = [];
-        if (typeof(window) !== 'undefined') { // client_side only
-            const theBody = window.document?.body;
-            for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
-                ancestors.push(parent); // collect the ancestor(s)
-                if (parent === theBody) break; // stop iterating when reaching the <body>
-            } // for
-        } // if
-        const detectOverflowOptions: Partial<DetectOverflowOptions> = {
-            boundary: ancestors,
-        };
         const defaultMiddleware: FloatingMiddleware[] = [
             ...((floatingOffset || floatingShift) ? [offset({ // requires to be placed at the first order
                 mainAxis  : floatingOffset,
                 crossAxis : floatingShift,
             })] : []),
             
-            ...(floatingAutoFlip  ? [flip(detectOverflowOptions) ] : []),
-            ...(floatingAutoShift ? [shift(detectOverflowOptions)] : []),
+            ...(floatingAutoFlip  ? [flip() ] : []),
+            ...(floatingAutoShift ? [shift()] : []),
         ];
+        const middleware : FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>) = (
+            floatingMiddleware
+            ?
+            (
+                Array.isArray(floatingMiddleware)
+                ?
+                floatingMiddleware
+                :
+                floatingMiddleware
+            )
+            :
+            defaultMiddleware
+        );
         
         const triggerFloatingUpdate = async () => {
             // calculate the proper position of the <floatingUi>:
             const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
                 placement  : floatingPlacement,
-                middleware : await (async (): Promise<FloatingMiddleware[]> => {
-                    if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
-                    
-                    
-                    
-                    if (floatingMiddleware) return await floatingMiddleware(defaultMiddleware);
-                    return defaultMiddleware;
-                })(),
+                middleware : Array.isArray(middleware) ? middleware : (await middleware(defaultMiddleware)),
                 strategy   : floatingStrategy,
             });
             
