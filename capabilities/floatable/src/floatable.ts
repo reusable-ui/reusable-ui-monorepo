@@ -202,24 +202,17 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // setups:
         
         // watch scrolling of <target>'s <parent> up to <offsetParent>:
-        const ancestors : Element[] = [];
+        const offsetAncestors : Element[] = [];
         if (typeof(window) !== 'undefined') { // client_side only
             const offsetParent = (target as HTMLElement).offsetParent;
             if (offsetParent) {
-                let currentElm = target;
-                do {
-                    const parent = currentElm.parentElement;
-                    if (!parent) break;
-                    
-                    
-                    
-                    ancestors.push(parent); // collect the ancestor(s)
-                    currentElm = parent;    // move up
-                }
-                while (currentElm && (currentElm !== offsetParent));
+                for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+                    offsetAncestors.push(parent); // collect the ancestor(s)
+                    if (parent === offsetParent) break; // stop iterating on nearest offsetParent
+                } // for
             } // if
         } // if
-        for (const ancestor of ancestors) {
+        for (const ancestor of offsetAncestors) {
             ancestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
         } // for
         
@@ -228,7 +221,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
         const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
         elmResizeObserver.observe(target, { box: 'border-box' });
-        for (const ancestor of ancestors) {
+        for (const ancestor of offsetAncestors) {
             elmResizeObserver.observe(ancestor, { box: 'content-box' });
         } // for
         elmResizeObserver.observe(floatingUi, { box: 'border-box' });
@@ -243,7 +236,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             
             
             // un-watch scrolling of <target>'s <parent> up to <offsetParent>:
-            for (const ancestor of ancestors) {
+            for (const ancestor of offsetAncestors) {
                 ancestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
             } // for
             
