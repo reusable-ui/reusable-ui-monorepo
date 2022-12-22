@@ -115,13 +115,17 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         style.left = `${x}px`;
         style.top  = `${y}px`;
         
-        const classList = floatingUi.classList;
-        if (!classList.contains(dynamicFloatingPlacement)) {
-            classList.remove(
-                'top', 'right', 'bottom', 'left',
-                'top-start', 'top-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end', 'left-start', 'left-end',
-            );
-            classList.add(dynamicFloatingPlacement);
+        
+        
+        if (dynamicFloatingPlacement) {
+            const classList = floatingUi.classList;
+            if (!classList.contains(dynamicFloatingPlacement)) {
+                classList.remove(
+                    'top', 'right', 'bottom', 'left',
+                    'top-start', 'top-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end', 'left-start', 'left-end',
+                );
+                classList.add(dynamicFloatingPlacement);
+            } // if
         } // if
     });
     const handleFloatingUpdate         = useMergeEvents(
@@ -159,7 +163,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         const ancestors : Element[] = [];
         if (typeof(window) !== 'undefined') { // client_side only
             const theBody = window.document?.body;
-            for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+            for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
                 ancestors.push(parent); // collect the ancestor(s)
                 if (parent === theBody) break; // stop iterating when reaching the <body>
             } // for
@@ -225,7 +229,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         if (typeof(window) !== 'undefined') { // client_side only
             const offsetParent = (target as HTMLElement).offsetParent;
             if (offsetParent) {
-                for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+                for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
                     offsetAncestors.push(parent); // collect the ancestor(s)
                     if (parent === offsetParent) break; // stop iterating on nearest offsetParent
                 } // for
