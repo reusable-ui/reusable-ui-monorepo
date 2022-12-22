@@ -149,8 +149,10 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // handlers:
         const ancestors : Element[] = [];
         if (typeof(window) !== 'undefined') { // client_side only
+            const theBody = window.document?.body;
             for (let parent = target.parentElement; parent; parent = parent.parentElement) {
                 ancestors.push(parent); // collect the ancestor(s)
+                if (parent === theBody) break; // stop iterating when reaching the <body>
             } // for
         } // if
         const detectOverflowOptions: Partial<DetectOverflowOptions> = {
