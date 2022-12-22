@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "5.0.11",
+  "version": "5.0.12",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -42,7 +42,7 @@
     "@reusable-ui/colorable": "^5.0.7",
     "@reusable-ui/disableable": "^5.0.4",
     "@reusable-ui/excitable": "^5.0.4",
-    "@reusable-ui/floatable": "^5.0.3",
+    "@reusable-ui/floatable": "^5.0.4",
     "@reusable-ui/focusable": "^5.0.6",
     "@reusable-ui/focuses": "^5.0.1",
     "@reusable-ui/hooks": "^5.0.3",
