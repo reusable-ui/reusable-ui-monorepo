@@ -37,7 +37,6 @@ import {
     flip,
     shift,
     offset,
-    autoUpdate,
 }                           from '@floating-ui/dom'             // a floating UI utility
 
 
@@ -183,25 +182,75 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             // trigger the `onFloatingUpdate`
             handleFloatingUpdate?.(floatingPosition);
         };
+        let scrollHandled = false;
+        const handleOffsetAncestorsScroll = () => {
+            // conditions:
+            if (scrollHandled) return; // already handled => nothing to do
+            
+            
+            
+            // actions:
+            scrollHandled = true; // mark as handled
+            requestAnimationFrame(() => { // the throttling limit
+                triggerFloatingUpdate();
+                scrollHandled = false; // un-mark as handled
+            });
+        };
         
         
         
         // setups:
         
+        // watch scrolling of <target>'s <parent> up to <offsetParent>:
+        const ancestors : Element[] = [];
+        if (typeof(window) !== 'undefined') { // client_side only
+            const offsetParent = (target as HTMLElement).offsetParent;
+            if (offsetParent) {
+                let currentElm = target;
+                do {
+                    const parent = currentElm.parentElement;
+                    if (!parent) break;
+                    
+                    
+                    
+                    ancestors.push(parent); // collect the ancestor(s)
+                    currentElm = parent;    // move up
+                }
+                while (currentElm && (currentElm !== offsetParent));
+            } // if
+        } // if
+        for (const ancestor of ancestors) {
+            ancestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
+        } // for
+        
+        
+        
+        // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
         const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
         elmResizeObserver.observe(target, { box: 'border-box' });
+        for (const ancestor of ancestors) {
+            elmResizeObserver.observe(ancestor, { box: 'content-box' });
+        } // for
         elmResizeObserver.observe(floatingUi, { box: 'border-box' });
-        
-        // the live trigger:
-        const stopUpdate = autoUpdate(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, triggerFloatingUpdate);
         
         
         
         // cleanups:
         return () => {
+            // marks:
             isLoaded.current = false;
+            
+            
+            
+            // un-watch scrolling of <target>'s <parent> up to <offsetParent>:
+            for (const ancestor of ancestors) {
+                ancestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
+            } // for
+            
+            
+            
+            // un-watch size changes of the <target>, <ancestor>s, & <floatingUi>:
             elmResizeObserver.disconnect();
-            stopUpdate();
         };
     }, [
         // conditions:
