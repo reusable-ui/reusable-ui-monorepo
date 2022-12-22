@@ -238,6 +238,9 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         for (const offsetAncestor of offsetAncestors) {
             offsetAncestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
         } // for
+        if (typeof(document) !== 'undefined') {
+            document.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
+        } // if
         
         
         
@@ -262,6 +265,9 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             for (const offsetAncestor of offsetAncestors) {
                 offsetAncestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
             } // for
+            if (typeof(document) !== 'undefined') {
+                document.removeEventListener('scroll', handleOffsetAncestorsScroll);
+            } // if
             
             
             
