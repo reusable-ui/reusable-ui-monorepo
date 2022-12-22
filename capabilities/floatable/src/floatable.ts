@@ -158,6 +158,15 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         const detectOverflowOptions: Partial<DetectOverflowOptions> = {
             boundary: ancestors,
         };
+        const defaultMiddleware: FloatingMiddleware[] = [
+            ...((floatingOffset || floatingShift) ? [offset({ // requires to be placed at the first order
+                mainAxis  : floatingOffset,
+                crossAxis : floatingShift,
+            })] : []),
+            
+            ...(floatingAutoFlip  ? [flip(detectOverflowOptions) ] : []),
+            ...(floatingAutoShift ? [shift(detectOverflowOptions)] : []),
+        ];
         
         const triggerFloatingUpdate = async () => {
             // calculate the proper position of the <floatingUi>:
@@ -165,17 +174,6 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
                 placement  : floatingPlacement,
                 middleware : await (async (): Promise<FloatingMiddleware[]> => {
                     if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
-                    
-                    
-                    const defaultMiddleware: FloatingMiddleware[] = [
-                        ...((floatingOffset || floatingShift) ? [offset({ // requires to be placed at the first order
-                            mainAxis  : floatingOffset,
-                            crossAxis : floatingShift,
-                        })] : []),
-                        
-                        ...(floatingAutoFlip  ? [flip(detectOverflowOptions) ] : []),
-                        ...(floatingAutoShift ? [shift(detectOverflowOptions)] : []),
-                    ];
                     
                     
                     
