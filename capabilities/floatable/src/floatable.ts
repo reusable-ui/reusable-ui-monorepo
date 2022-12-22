@@ -90,7 +90,6 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     const classes = useMergeClasses(
         // floatable:
         (floatingOn || null) && 'overlay',
-        (floatingOn || null) && floatingPlacement,
     );
     
     
@@ -104,8 +103,9 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         const {
-            strategy: position,
+            strategy  : position,
             x, y,
+            placement : dynamicFloatingPlacement,
         } = floatingPosition;
         
         
@@ -114,6 +114,15 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         style.position = position;
         style.left = `${x}px`;
         style.top  = `${y}px`;
+        
+        const classList = floatingUi.classList;
+        if (!classList.contains(dynamicFloatingPlacement)) {
+            classList.remove(
+                'top', 'right', 'bottom', 'left',
+                'top-start', 'top-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end', 'left-start', 'left-end',
+            );
+            classList.add(dynamicFloatingPlacement);
+        } // if
     });
     const handleFloatingUpdate         = useMergeEvents(
         // preserves the original `onFloatingUpdate`:
