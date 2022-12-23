@@ -304,8 +304,26 @@ export interface ArrowProps {
 }
 export type ArrowSize           = readonly [number, number]
 export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
-const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
-    const tooltipStyle = arrow.parentElement?.style;
+
+const isSizeClassName = (className: string) => className.startsWith('sz') && (className.at(2) === className.at(2)?.toUpperCase());
+const arrowSizeCache = new WeakMap<Element, readonly [string, string, ArrowSize]>();
+const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow, placement }) => {
+    const basePlacement = placement.split('-')[0];
+    const tooltip  = arrow.parentElement;
+    const sizeName = (tooltip ? Array.from(tooltip.classList).find(isSizeClassName) : undefined) ?? 'szMd';
+    
+    
+    
+    const cached = arrowSizeCache.get(arrow);
+    if (cached) {
+        const [cachedSizeName, cachedPlacement, cachedArrowSize] = cached;
+        if ((cachedSizeName === sizeName) && (cachedPlacement === basePlacement)) return cachedArrowSize;
+    } // if
+    
+    
+    
+    // const size
+    const tooltipStyle = tooltip?.style;
     const {
         display,
         visibility,
@@ -325,10 +343,12 @@ const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow }) => {
         
         // perform main calculations:
         const { width, height, }   = arrow.getBoundingClientRect();
-        return [
+        const arrowSize : ArrowSize = [
             (width  / 2) - 1,
             (height / 2) - 1,
         ];
+        arrowSizeCache.set(arrow, [sizeName, basePlacement, arrowSize]);
+        return arrowSize;
     }
     finally {
         // restore:
