@@ -309,8 +309,8 @@ const isSizeClassName = (className: string) => className.startsWith('sz') && (cl
 const arrowSizeCache = new WeakMap<Element, readonly [string, string, ArrowSize]>();
 const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow, placement }) => {
     const basePlacement = placement.split('-')[0];
-    const tooltip  = arrow.parentElement;
-    const sizeName = (tooltip ? Array.from(tooltip.classList).find(isSizeClassName) : undefined) ?? 'szMd';
+    const tooltip       = arrow.parentElement;
+    const sizeName      = (tooltip ? Array.from(tooltip.classList).find(isSizeClassName) : undefined) ?? 'szMd';
     
     
     
