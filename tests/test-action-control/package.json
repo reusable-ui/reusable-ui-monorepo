@@ -1,9 +1,9 @@
 {
   "name": "test-action-control",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": true,
   "dependencies": {
-    "@reusable-ui/action-control": "^5.0.13",
+    "@reusable-ui/action-control": "^5.0.14",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

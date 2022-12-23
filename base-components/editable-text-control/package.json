@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/editable-text-control",
-  "version": "5.0.14",
+  "version": "5.0.15",
   "description": "A base text editor of Reusable-UI components.",
   "keywords": [
     "control",
@@ -38,9 +38,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/core": "^5.0.12",
-    "@reusable-ui/editable-control": "^5.0.13",
-    "@reusable-ui/icon": "^5.0.19",
+    "@reusable-ui/core": "^5.0.13",
+    "@reusable-ui/editable-control": "^5.0.14",
+    "@reusable-ui/icon": "^5.0.20",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

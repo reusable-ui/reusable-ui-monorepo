@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/floatable",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "A capability of UI to float/overlay on the top/beside the another UI.",
   "keywords": [
     "floatable",

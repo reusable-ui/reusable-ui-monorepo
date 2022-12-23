@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown",
-  "version": "5.0.13",
+  "version": "5.0.14",
   "description": "Overlays contextual element such as lists, menus, and more.",
   "keywords": [
     "dropdown",
@@ -41,9 +41,9 @@
   "dependencies": {
     "@cssfn/core": "^2.0.6",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/collapse": "^5.0.14",
-    "@reusable-ui/core": "^5.0.12",
-    "@reusable-ui/generic": "^5.0.10",
+    "@reusable-ui/collapse": "^5.0.15",
+    "@reusable-ui/core": "^5.0.13",
+    "@reusable-ui/generic": "^5.0.11",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
