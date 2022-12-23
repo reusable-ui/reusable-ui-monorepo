@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useMemo,
+    useState,
 }                           from 'react'
 
 // reusable-ui utilities:
@@ -85,10 +86,16 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     
+    // states:
+    const [dynamicFloatingPlacement, setDynamicFloatingPlacement] = useState<FloatingPlacement>(floatingPlacement);
+    
+    
+    
     // classes:
     const classes = useMergeClasses(
         // floatable:
         (floatingOn || null) && 'overlay',
+        (floatingOn || null) && dynamicFloatingPlacement,
     );
     
     
@@ -104,7 +111,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         const {
             strategy  : position,
             x, y,
-            placement : dynamicFloatingPlacement,
+            placement : newDynamicFloatingPlacement,
         } = floatingPosition;
         
         
@@ -116,15 +123,14 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         
-        if (dynamicFloatingPlacement) {
+        if (dynamicFloatingPlacement !== newDynamicFloatingPlacement) {
+            // instantly change the className:
             const classList = floatingUi.classList;
-            if (!classList.contains(dynamicFloatingPlacement)) {
-                classList.remove(
-                    'top', 'right', 'bottom', 'left',
-                    'top-start', 'top-end', 'right-start', 'right-end', 'bottom-start', 'bottom-end', 'left-start', 'left-end',
-                );
-                classList.add(dynamicFloatingPlacement);
-            } // if
+            classList.remove(dynamicFloatingPlacement);
+            classList.add(newDynamicFloatingPlacement);
+            
+            // change the className for next re-render:
+            setDynamicFloatingPlacement(newDynamicFloatingPlacement)
         } // if
     });
     const handleFloatingUpdate         = useMergeEvents(
