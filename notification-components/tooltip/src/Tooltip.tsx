@@ -308,6 +308,11 @@ export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
 const isSizeClassName = (className: string) => className.startsWith('sz') && (className.at(2) === className.at(2)?.toUpperCase());
 const arrowSizeCache = new WeakMap<Element, readonly [string, string, ArrowSize]>();
 const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow, placement }) => {
+    const arrowPosition = getComputedStyle(arrow).position;
+    if (arrowPosition === 'static') return [0, 0]; // cssfn is not fully loaded => ignore calculation
+    
+    
+    
     const basePlacement = placement.split('-')[0];
     const tooltip       = arrow.parentElement;
     const sizeName      = (tooltip ? Array.from(tooltip.classList).find(isSizeClassName) : undefined) ?? 'szMd';
