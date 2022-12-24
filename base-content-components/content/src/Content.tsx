@@ -13,6 +13,7 @@ import {
     
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     CssSelectorCollection,
     
     
@@ -231,7 +232,13 @@ export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOp
     if (options === undefined) defaultContentChildrenMediaOptionsResultCache = new WeakRef<ContentChildrenMediaOptionsResult>(result);
     return result;
 };
+let contentChildrenFillCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContentChildrenFill         = (options?: ContentChildrenMediaOptions) => {
+    const cached = contentChildrenFillCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // options:
     const {
         mediaSelectorWithExcept,
@@ -255,7 +262,7 @@ export const usesContentChildrenFill         = (options?: ContentChildrenMediaOp
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             groupableRule, // make a nicely rounded corners
@@ -294,6 +301,8 @@ export const usesContentChildrenFill         = (options?: ContentChildrenMediaOp
             }),
         }),
     });
+    contentChildrenFillCache = new WeakRef<CssRule>(result);
+    return result;
 };
 const isFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>)    =>  isElementSelectorOf(selectorEntry, 'figure');
 const isNotFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>) => !isElementSelectorOf(selectorEntry, 'figure');
