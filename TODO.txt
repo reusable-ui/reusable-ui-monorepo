@@ -1,3 +1,10 @@
+optimize animationRule
+
+simplify:
+if (cached !== undefined) return cached;
+to
+if (cached) return cached;
+
 simplify single import:
 export\s+const\s+uses(\w+)\s*=\s*\(\)\s*=>\s*\{[\s\n]*return\s*style\(\{[\s\n]*\.\.\.imports\(\[[\s\n]*(//.*)?[\s\n]*uses(\w+)\(\),?[\s\n]*\]\),?[\s\n]*\}\);?[\s\n]*\};?
 
