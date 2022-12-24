@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -225,7 +226,13 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
 
 
 // styles:
+let basicLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBasicLayout = () => {
+    const cached = basicLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -238,7 +245,7 @@ export const usesBasicLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             backgroundRule,
@@ -305,8 +312,16 @@ export const usesBasicLayout = () => {
             paddingBlock  : paddingVars.paddingBlock,
         }),
     });
+    basicLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+let basicVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBasicVariants = () => {
+    const cached = basicVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -319,7 +334,7 @@ export const usesBasicVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             resizableRule,
@@ -330,7 +345,15 @@ export const usesBasicVariants = () => {
             nudibleRule,
         ]),
     });
+    basicVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssBasicConfig.onChange.subscribe(() => {
+    // clear caches:
+    basicLayoutCache   = undefined;
+    basicVariantsCache = undefined;
+});
 
 export const useBasicStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
