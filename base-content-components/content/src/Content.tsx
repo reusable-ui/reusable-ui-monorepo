@@ -6,6 +6,11 @@ import {
 
 // cssfn:
 import {
+    // common typescript definitions:
+    OptionalOrBoolean,
+    
+    
+    
     // cssfn css specific types:
     CssKnownProps,
     CssSelectorCollection,
@@ -31,6 +36,7 @@ import {
     
     // manipulates css selectors:
     PseudoClassSelector,
+    SelectorEntry,
     Selector,
     SelectorGroup,
     PureSelectorGroup,
@@ -40,8 +46,8 @@ import {
     isElementSelectorOf,
     createSelector,
     createSelectorGroup,
-    isNotEmptySelector,
     isNotEmptySelectors,
+    convertSelectorGroupToPureSelectorGroup,
     selectorsToString,
     groupSelectors,
     groupSelector,
@@ -205,7 +211,7 @@ export const usesContentChildrenMediaOptions = (options: ContentChildrenMediaOpt
         mediaSelectorWithExcept     : toSelectors(adjustChildSpecificity(mediaSelectorWithExceptZero)),
         mediaSelectorWithExceptZero : toSelectors(mediaSelectorWithExceptZero),
         
-        mediaSelector,
+        mediaSelector: mediaSelector && convertSelectorGroupToPureSelectorGroup(mediaSelector),
         notNotMediaSelector,
     };
 };
@@ -273,6 +279,8 @@ export const usesContentChildrenFill         = (options: ContentChildrenMediaOpt
         }),
     });
 };
+const isFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>)    =>  isElementSelectorOf(selectorEntry, 'figure');
+const isNotFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>) => !isElementSelectorOf(selectorEntry, 'figure');
 export const usesContentChildrenMedia        = (options: ContentChildrenMediaOptions = {}) => {
     // options:
     const {
@@ -282,8 +290,8 @@ export const usesContentChildrenMedia        = (options: ContentChildrenMediaOpt
         mediaSelector,
         notNotMediaSelector,
     } = usesContentChildrenMediaOptions(options);
-    const figureSelector               : Selector|null          = mediaSelector     && (mediaSelector.find(  (selector): selector is Selector => isNotEmptySelector(selector) && selector.some( (selectorEntry) =>  isElementSelectorOf(selectorEntry, 'figure'))) ?? null);
-    const nonFigureSelector            : PureSelectorGroup|null = mediaSelector     &&  mediaSelector.filter((selector): selector is Selector => isNotEmptySelector(selector) && selector.every((selectorEntry) => !isElementSelectorOf(selectorEntry, 'figure')));
+    const figureSelector               : Selector|null          = mediaSelector     && (mediaSelector.find(  (selector) => selector.some( isFigureElement   )) ?? null);
+    const nonFigureSelector            : PureSelectorGroup|null = mediaSelector     &&  mediaSelector.filter((selector) => selector.every(isNotFigureElement));
     
     const figureSelectorWithExceptMod  : PureSelectorGroup|null = figureSelector    && (
         groupSelector(figureSelector, { selectorName: 'where' }) // group multiple selectors with `:where()`, to suppress the specificity weight
@@ -493,7 +501,7 @@ export const usesContentChildrenLinksOptions = (options: ContentChildrenLinksOpt
         linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
         linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
-        linksSelector,
+        linksSelector : linksSelector && convertSelectorGroupToPureSelectorGroup(linksSelector),
         notNotLinksSelector,
     };
 };
