@@ -232,10 +232,12 @@ export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOp
     if (options === undefined) defaultContentChildrenMediaOptionsResultCache = new WeakRef<ContentChildrenMediaOptionsResult>(result);
     return result;
 };
-let contentChildrenFillCache : WeakRef<CssRule>|undefined = undefined;
+let defaultContentChildrenFillCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContentChildrenFill         = (options?: ContentChildrenMediaOptions) => {
-    const cached = contentChildrenFillCache?.deref();
-    if (cached) return cached;
+    if (options === undefined) {
+        const cached = defaultContentChildrenFillCache?.deref();
+        if (cached) return cached;
+    } // if
     
     
     
@@ -301,7 +303,7 @@ export const usesContentChildrenFill         = (options?: ContentChildrenMediaOp
             }),
         }),
     });
-    contentChildrenFillCache = new WeakRef<CssRule>(result);
+    if (options === undefined) defaultContentChildrenFillCache = new WeakRef<CssRule>(result);
     return result;
 };
 const isFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>)    =>  isElementSelectorOf(selectorEntry, 'figure');
