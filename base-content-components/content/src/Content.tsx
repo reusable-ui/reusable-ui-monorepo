@@ -183,12 +183,26 @@ export interface ContentChildrenMediaOptions {
     mediaSelector    ?: CssSelectorCollection
     notMediaSelector ?: CssSelectorCollection
 }
-export const usesContentChildrenMediaOptions = (options: ContentChildrenMediaOptions = {}) => {
+export interface ContentChildrenMediaOptionsResult {
+    mediaSelectorWithExcept     : CssSelectorCollection
+    mediaSelectorWithExceptZero : CssSelectorCollection
+    mediaSelector               : PureSelectorGroup|null
+    notNotMediaSelector         : PseudoClassSelector|null
+}
+let defaultContentChildrenMediaOptionsResultCache : WeakRef<ContentChildrenMediaOptionsResult>|undefined = undefined;
+export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOptions): ContentChildrenMediaOptionsResult => {
+    if (options === undefined) {
+        const cached = defaultContentChildrenMediaOptionsResultCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     // options:
     const {
         mediaSelector    : mediaSelectorStr    = mediaElm,
         notMediaSelector : notMediaSelectorStr = notMediaElm,
-    } = options;
+    } = options ?? {};
     
     const mediaSelector                : SelectorGroup|null       = parseSelectors(mediaSelectorStr);
     const notMediaSelector             : SelectorGroup|null       = parseSelectors(notMediaSelectorStr);
@@ -207,15 +221,17 @@ export const usesContentChildrenMediaOptions = (options: ContentChildrenMediaOpt
         )
     );
     
-    return {
+    const result : ContentChildrenMediaOptionsResult = {
         mediaSelectorWithExcept     : toSelectors(adjustChildSpecificity(mediaSelectorWithExceptZero)),
         mediaSelectorWithExceptZero : toSelectors(mediaSelectorWithExceptZero),
         
         mediaSelector: mediaSelector && convertSelectorGroupToPureSelectorGroup(mediaSelector),
         notNotMediaSelector,
     };
+    if (options === undefined) defaultContentChildrenMediaOptionsResultCache = new WeakRef<ContentChildrenMediaOptionsResult>(result);
+    return result;
 };
-export const usesContentChildrenFill         = (options: ContentChildrenMediaOptions = {}) => {
+export const usesContentChildrenFill         = (options?: ContentChildrenMediaOptions) => {
     // options:
     const {
         mediaSelectorWithExcept,
@@ -281,7 +297,7 @@ export const usesContentChildrenFill         = (options: ContentChildrenMediaOpt
 };
 const isFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>)    =>  isElementSelectorOf(selectorEntry, 'figure');
 const isNotFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>) => !isElementSelectorOf(selectorEntry, 'figure');
-export const usesContentChildrenMedia        = (options: ContentChildrenMediaOptions = {}) => {
+export const usesContentChildrenMedia        = (options?: ContentChildrenMediaOptions) => {
     // options:
     const {
         mediaSelectorWithExcept,
@@ -473,12 +489,26 @@ export interface ContentChildrenLinksOptions {
     linksSelector    ?: CssSelectorCollection
     notLinksSelector ?: CssSelectorCollection
 }
-export const usesContentChildrenLinksOptions = (options: ContentChildrenLinksOptions = {}) => {
+export interface ContentChildrenLinksOptionsResult {
+    linksSelectorWithExcept     : CssSelectorCollection
+    linksSelectorWithExceptZero : CssSelectorCollection
+    linksSelector               : PureSelectorGroup|null
+    notNotLinksSelector         : PseudoClassSelector|null
+}
+let defaultContentChildrenLinksOptionsResultCache : WeakRef<ContentChildrenLinksOptionsResult>|undefined = undefined;
+export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOptions): ContentChildrenLinksOptionsResult => {
+    if (options === undefined) {
+        const cached = defaultContentChildrenLinksOptionsResultCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     // options:
     const {
         linksSelector    : linksSelectorStr    = linksElm,
         notLinksSelector : notLinksSelectorStr = notLinksElm,
-    } = options;
+    } = options ?? {};
     
     const linksSelector                : SelectorGroup|null       = parseSelectors(linksSelectorStr);
     const notLinksSelector             : SelectorGroup|null       = parseSelectors(notLinksSelectorStr);
@@ -497,15 +527,17 @@ export const usesContentChildrenLinksOptions = (options: ContentChildrenLinksOpt
         )
     );
     
-    return {
+    const result: ContentChildrenLinksOptionsResult = {
         linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
         linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
         linksSelector : linksSelector && convertSelectorGroupToPureSelectorGroup(linksSelector),
         notNotLinksSelector,
     };
+    if (options === undefined) defaultContentChildrenLinksOptionsResultCache = new WeakRef<ContentChildrenLinksOptionsResult>(result);
+    return result;
 };
-export const usesContentChildrenLinks        = (options: ContentChildrenLinksOptions = {}) => {
+export const usesContentChildrenLinks        = (options?: ContentChildrenLinksOptions) => {
     // options:
     const {
         linksSelectorWithExcept,
@@ -533,7 +565,7 @@ export const usesContentChildrenLinks        = (options: ContentChildrenLinksOpt
     });
 };
 
-export const usesContentChildren             = (options: (ContentChildrenMediaOptions & ContentChildrenLinksOptions) = {}) => {
+export const usesContentChildren             = (options?: (ContentChildrenMediaOptions & ContentChildrenLinksOptions)) => {
     return style({
         ...imports([
             // media:
