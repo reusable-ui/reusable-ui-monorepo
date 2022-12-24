@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     CssSelectorCollection,
     
     
@@ -230,12 +231,20 @@ export interface ContainerChildrenOptions {
     fillSelector     ?: CssSelectorCollection
     fillSelfSelector ?: CssSelectorCollection
 }
-export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}) => {
+let defaultContainerChildrenFillCache : WeakRef<CssRule>|undefined = undefined;
+export const usesContainerChildrenFill = (options?: ContainerChildrenOptions) => {
+    if (options === undefined) {
+        const cached = defaultContainerChildrenFillCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     // options:
     const {
         fillSelector     = '.fill',
         fillSelfSelector = '.fill-self',
-    } = options;
+    } = options ?? {};
     
     
     
@@ -259,7 +268,7 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             groupableRule, // make a nicely rounded corners
@@ -314,8 +323,10 @@ export const usesContainerChildrenFill = (options: ContainerChildrenOptions = {}
             }),
         }),
     });
+    if (options === undefined) defaultContainerChildrenFillCache = new WeakRef<CssRule>(result);
+    return result;
 };
-export const usesContainerChildren = (options: ContainerChildrenOptions = {}) => {
+export const usesContainerChildren = (options?: ContainerChildrenOptions) => {
     return style({
         ...imports([
             // spacings:
@@ -345,14 +356,7 @@ export const usesContainerLayout = () => {
         ]),
     });
 };
-export const usesContainerVariants = () => {
-    return style({
-        ...imports([
-            // variants:
-            usesBasicVariants(),
-        ]),
-    });
-};
+export const usesContainerVariants = usesBasicVariants;
 
 export const useContainerStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
