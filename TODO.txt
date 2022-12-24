@@ -1,4 +1,5 @@
-tagging version to repo
+simplify single import:
+export\s+const\s+uses(\w+)\s*=\s*\(\)\s*=>\s*\{[\s\n]*return\s*style\(\{[\s\n]*\.\.\.imports\(\[[\s\n]*(//.*)?[\s\n]*uses(\w+)\(\),?[\s\n]*\]\),?[\s\n]*\}\);?[\s\n]*\};?
 
 
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
