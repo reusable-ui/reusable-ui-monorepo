@@ -76,6 +76,13 @@ const [groupableVars] = cssVars<GroupableVars>();
 
 
 
+//#region caches
+let defaultSeparatorRuleInlineCache : WeakRef<CssRule> | undefined = undefined;
+let defaultSeparatorRuleBlockCache  : WeakRef<CssRule> | undefined = undefined;
+//#endregion caches
+
+
+
 // rules:
 // :where(...) => zero specificity => easy to overwrite further:
 export const ifVisibleChild          = (styles: CssStyleCollection): CssRule => rule(':not(:where(.overlay, .foreign))'                                           , styles);
@@ -243,21 +250,45 @@ export const usesGroupable = (options?: GroupableOptions): GroupableStuff => {
         }),
         separatorRule: () => style({
             ...ifOrientationInline(() => // inline
-                separatorRuleOf(false, options)
+                (
+                    (options === undefined)
+                    ||
+                    (
+                        (options.itemsSelector === '*')
+                        &&
+                        (options.swapFirstItem === false)
+                    )
+                )
+                ?
+                getDefaultSeparatorRuleInline()
+                :
+                createSeparatorRuleInline(options)
             ),
             ...ifOrientationBlock(() =>  // block
-                separatorRuleOf(true, options)
+                (
+                    (options === undefined)
+                    ||
+                    (
+                        (options.itemsSelector === '*')
+                        &&
+                        (options.swapFirstItem === false)
+                    )
+                )
+                ?
+                getDefaultSeparatorRuleBlock()
+                :
+                createSeparatorRuleBlock(options)
             ),
         }),
         groupableVars,
     };
 };
-const separatorRuleOf = (block: boolean, options: GroupableOptions = {}): CssRule => {
+const createSeparatorRuleOf = (block: boolean, options?: GroupableOptions): CssRule => {
     // options:
     const {
         itemsSelector = '*',
         swapFirstItem = false,
-    } = options;
+    } = options ?? {};
     
     
     
@@ -369,5 +400,27 @@ const separatorRuleOf = (block: boolean, options: GroupableOptions = {}): CssRul
             ),
         }),
     });
+};
+const createSeparatorRuleInline = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(false, options);
+const createSeparatorRuleBlock  = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(true , options);
+const getDefaultSeparatorRuleInline = (): CssRule => {
+    const cached = defaultSeparatorRuleInlineCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const defaultSeparatorRuleInline = createSeparatorRuleInline();
+    defaultSeparatorRuleInlineCache = new WeakRef<CssRule>(defaultSeparatorRuleInline);
+    return defaultSeparatorRuleInline;
+};
+const getDefaultSeparatorRuleBlock = (): CssRule => {
+    const cached = defaultSeparatorRuleBlockCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const defaultSeparatorRuleBlock = createSeparatorRuleBlock();
+    defaultSeparatorRuleBlockCache = new WeakRef<CssRule>(defaultSeparatorRuleBlock);
+    return defaultSeparatorRuleBlock;
 };
 //#endregion groupable
