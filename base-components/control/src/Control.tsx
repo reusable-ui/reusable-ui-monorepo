@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -189,8 +190,14 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
 
 
 // styles:
+let controlLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesControlLayout = () => {
-    return style({
+    const cached = controlLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // resets:
             stripoutControl(), // clear browser's default styles
@@ -208,8 +215,17 @@ export const usesControlLayout = () => {
             ...usesCssProps(controls), // apply config's cssProps
         }),
     });
+    controlLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let controlVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesControlVariants = () => {
+    const cached = controlVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -217,15 +233,24 @@ export const usesControlVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesIndicatorVariants(),
             resizableRule,
         ]),
     });
+    controlVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let controlStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesControlStates = () => {
+    const cached = controlStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -234,7 +259,7 @@ export const usesControlStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesIndicatorStates(),
@@ -257,7 +282,16 @@ export const usesControlStates = () => {
             }),
         ]),
     });
+    controlStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssControlConfig.onChange.subscribe(() => {
+    // clear caches:
+    controlLayoutCache   = undefined;
+    controlVariantsCache = undefined;
+    controlStatesCache   = undefined;
+});
 
 export const useControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
