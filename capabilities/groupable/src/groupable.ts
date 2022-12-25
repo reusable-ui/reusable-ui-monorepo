@@ -77,8 +77,10 @@ const [groupableVars] = cssVars<GroupableVars>();
 
 
 //#region caches
-let defaultSeparatorRuleInlineCache : WeakRef<CssRule> | undefined = undefined;
-let defaultSeparatorRuleBlockCache  : WeakRef<CssRule> | undefined = undefined;
+let defaultSeparatorRuleInlineCache               : WeakRef<CssRule> | undefined = undefined;
+let defaultSeparatorRuleBlockCache                : WeakRef<CssRule> | undefined = undefined;
+let groupableChildrenRuleOfOrientationInlineCache : WeakRef<CssRule> | undefined = undefined;
+let groupableChildrenRuleOfOrientationBlockCache  : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -102,6 +104,134 @@ export interface GroupableOptions extends OrientationableOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
+const groupableChildrenRuleOfOrientationInline = (): CssRule => {
+    const cached = groupableChildrenRuleOfOrientationInlineCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
+    
+    
+    
+    const result = style({
+        ...ifFirstVisibleChild({
+            ...vars({
+                /*
+                    if the_current_element is a_child_of_container and also a_separator,
+                    the deleted `groupableVars.borderWidth` in separator must be pointed to container,
+                    so we can calculate the correct inner_borderRadius.
+                    
+                    that's why we set `!important` to the `groupableVars.borderWidth`.
+                */
+                [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                
+                [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+            }),
+            ...style({
+                // borders:
+                // add rounded corners on left:
+                [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                
+                /* recursive calculation of borderRadius is not supported yet */
+            }),
+        }),
+        ...ifLastVisibleChild({
+            ...vars({
+                /*
+                    if the_current_element is a_child_of_container and also a_separator,
+                    the deleted `groupableVars.borderWidth` in separator must be pointed to container,
+                    so we can calculate the correct inner_borderRadius.
+                    
+                    that's why we set `!important` to the `groupableVars.borderWidth`.
+                */
+                [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                
+                [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+            }),
+            ...style({
+                // borders:
+                // add rounded corners on right:
+                [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                
+                /* recursive calculation of borderRadius is not supported yet */
+            }),
+        }),
+    });
+    groupableChildrenRuleOfOrientationInlineCache = new WeakRef<CssRule>(result);
+    return result;
+};
+const groupableChildrenRuleOfOrientationBlock  = (): CssRule => {
+    const cached = groupableChildrenRuleOfOrientationBlockCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
+    
+    
+    
+    const result = style({
+        ...ifFirstVisibleChild({
+            ...vars({
+                /*
+                    if the_current_element is a_child_of_container and also a_separator,
+                    the deleted `groupableVars.borderWidth` in separator must be pointed to container,
+                    so we can calculate the correct inner_borderRadius.
+                    
+                    that's why we set `!important` to the `groupableVars.borderWidth`.
+                */
+                [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                
+                [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
+                [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+            }),
+            ...style({
+                // borders:
+                // add rounded corners on top:
+                [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                
+                /* recursive calculation of borderRadius is not supported yet */
+            }),
+        }),
+        ...ifLastVisibleChild({
+            ...vars({
+                /*
+                    if the_current_element is a_child_of_container and also a_separator,
+                    the deleted `groupableVars.borderWidth` in separator must be pointed to container,
+                    so we can calculate the correct inner_borderRadius.
+                    
+                    that's why we set `!important` to the `groupableVars.borderWidth`.
+                */
+                [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
+                
+                [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+            }),
+            ...style({
+                // borders:
+                // add rounded corners on bottom:
+                [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                
+                /* recursive calculation of borderRadius is not supported yet */
+            }),
+        }),
+    });
+    groupableChildrenRuleOfOrientationBlockCache = new WeakRef<CssRule>(result);
+    return result;
+};
 /**
  * Groups a list of UIs into a single UI.
  * @param options  Options of `groupableRule`.
@@ -148,104 +278,10 @@ export const usesGroupable = (options?: GroupableOptions): GroupableStuff => {
             //     overflow : 'hidden', // clip the children at the rounded corners // bad idea, causing child's focus boxShadow to be clipped off
             // }),
             ...ifOrientationInline(() => // inline
-                children(itemsSelector, {
-                    ...ifFirstVisibleChild({
-                        ...vars({
-                            /*
-                                if the_current_element is a_child_of_container and also a_separator,
-                                the deleted `groupableVars.borderWidth` in separator must be pointed to container,
-                                so we can calculate the correct inner_borderRadius.
-                                
-                                that's why we set `!important` to the `groupableVars.borderWidth`.
-                            */
-                            [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                            
-                            [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                            [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                        }),
-                        ...style({
-                            // borders:
-                            // add rounded corners on left:
-                            [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            
-                            /* recursive calculation of borderRadius is not supported yet */
-                        }),
-                    }),
-                    ...ifLastVisibleChild({
-                        ...vars({
-                            /*
-                                if the_current_element is a_child_of_container and also a_separator,
-                                the deleted `groupableVars.borderWidth` in separator must be pointed to container,
-                                so we can calculate the correct inner_borderRadius.
-                                
-                                that's why we set `!important` to the `groupableVars.borderWidth`.
-                            */
-                            [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                            
-                            [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                            [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                        }),
-                        ...style({
-                            // borders:
-                            // add rounded corners on right:
-                            [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            
-                            /* recursive calculation of borderRadius is not supported yet */
-                        }),
-                    }),
-                }),
+                children(itemsSelector, groupableChildrenRuleOfOrientationInline),
             ),
             ...ifOrientationBlock(() =>  // block
-                children(itemsSelector, {
-                    ...ifFirstVisibleChild({
-                        ...vars({
-                            /*
-                                if the_current_element is a_child_of_container and also a_separator,
-                                the deleted `groupableVars.borderWidth` in separator must be pointed to container,
-                                so we can calculate the correct inner_borderRadius.
-                                
-                                that's why we set `!important` to the `groupableVars.borderWidth`.
-                            */
-                            [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                            
-                            [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                            [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                        }),
-                        ...style({
-                            // borders:
-                            // add rounded corners on top:
-                            [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            
-                            /* recursive calculation of borderRadius is not supported yet */
-                        }),
-                    }),
-                    ...ifLastVisibleChild({
-                        ...vars({
-                            /*
-                                if the_current_element is a_child_of_container and also a_separator,
-                                the deleted `groupableVars.borderWidth` in separator must be pointed to container,
-                                so we can calculate the correct inner_borderRadius.
-                                
-                                that's why we set `!important` to the `groupableVars.borderWidth`.
-                            */
-                            [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
-                            
-                            [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                            [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                        }),
-                        ...style({
-                            // borders:
-                            // add rounded corners on bottom:
-                            [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                            
-                            /* recursive calculation of borderRadius is not supported yet */
-                        }),
-                    }),
-                }),
+                children(itemsSelector, groupableChildrenRuleOfOrientationBlock),
             ),
         }),
         separatorRule: () => style({
