@@ -315,6 +315,7 @@ export const usesBasicLayout = () => {
     basicLayoutCache = new WeakRef<CssRule>(result);
     return result;
 };
+
 let basicVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBasicVariants = () => {
     const cached = basicVariantsCache?.deref();
