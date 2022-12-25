@@ -335,8 +335,14 @@ export const usesContainerChildren = (options?: ContainerChildrenOptions) => {
     });
 };
 
+let containerLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContainerLayout = () => {
-    return style({
+    const cached = containerLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // layouts:
             usesBasicLayout(),
@@ -355,8 +361,16 @@ export const usesContainerLayout = () => {
             usesResponsiveContainerLayout(), // must be placed at the last
         ]),
     });
+    containerLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
 export const usesContainerVariants = usesBasicVariants;
+
+cssContainerConfig.onChange.subscribe(() => {
+    // clear caches:
+    containerLayoutCache = undefined;
+});
 
 export const useContainerStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
