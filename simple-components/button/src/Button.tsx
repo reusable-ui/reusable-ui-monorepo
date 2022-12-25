@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -342,14 +343,22 @@ const usesButtonGhostVariant = () => {
     });
 };
 
+let defaultButtonLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesButtonLayout = (options?: OrientationableOptions) => {
+    if (options === undefined) {
+        const cached = defaultButtonLayoutCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
     const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // layouts:
             usesActionControlLayout(),
@@ -383,8 +392,17 @@ export const usesButtonLayout = (options?: OrientationableOptions) => {
             ...usesCssProps(buttons), // apply config's cssProps
         }),
     });
+    if (options === undefined) defaultButtonLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let buttonVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesButtonVariants = () => {
+    const cached = buttonVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -392,7 +410,7 @@ export const usesButtonVariants = () => {
     
     
     
-    return style({
+    const result = style({
         /* write specific buttonStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.link', '.ghost'], usesAppearAsOutlined()     ),
@@ -405,8 +423,17 @@ export const usesButtonVariants = () => {
             resizableRule,
         ]),
     });
+    buttonVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let buttonStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesButtonStates = () => {
+    const cached = buttonStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -414,14 +441,23 @@ export const usesButtonStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesActionControlStates(),
             activeAsClickRule,
         ]),
     });
+    buttonStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssButtonConfig.onChange.subscribe(() => {
+    // clear caches:
+    defaultButtonLayoutCache = undefined;
+    buttonVariantsCache      = undefined;
+    buttonStatesCache        = undefined;
+});
 
 export const useButtonStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
