@@ -140,9 +140,8 @@ export const usesGroupable = (options?: GroupableOptions): GroupableStuff => {
             //     // borders:
             //     overflow : 'hidden', // clip the children at the rounded corners // bad idea, causing child's focus boxShadow to be clipped off
             // }),
-            ...ifOrientationInline({ // inline
-                // children:
-                ...children(itemsSelector, {
+            ...ifOrientationInline(() => // inline
+                children(itemsSelector, {
                     ...ifFirstVisibleChild({
                         ...vars({
                             /*
@@ -190,10 +189,9 @@ export const usesGroupable = (options?: GroupableOptions): GroupableStuff => {
                         }),
                     }),
                 }),
-            }),
-            ...ifOrientationBlock({  // block
-                // children:
-                ...children(itemsSelector, {
+            ),
+            ...ifOrientationBlock(() =>  // block
+                children(itemsSelector, {
                     ...ifFirstVisibleChild({
                         ...vars({
                             /*
@@ -241,13 +239,13 @@ export const usesGroupable = (options?: GroupableOptions): GroupableStuff => {
                         }),
                     }),
                 }),
-            }),
+            ),
         }),
         separatorRule: () => style({
-            ...ifOrientationInline( // inline
+            ...ifOrientationInline(() => // inline
                 separatorRuleOf(false, options)
             ),
-            ...ifOrientationBlock(  // block
+            ...ifOrientationBlock(() =>  // block
                 separatorRuleOf(true, options)
             ),
         }),
