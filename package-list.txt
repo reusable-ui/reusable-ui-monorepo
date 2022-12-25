@@ -68,7 +68,7 @@
 [optimized ] [documented  ] [          atomic] @reusable-ui/action-control
 [optimized ] [documented  ] [          atomic] @reusable-ui/editable-control
 [optimized ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
-[published ] [documented  ] [          atomic] @reusable-ui/editable-action-control
+[notneedopt] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
 [optimized ] [documented  ] [          atomic] @reusable-ui/container
