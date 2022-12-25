@@ -20,6 +20,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -269,8 +270,14 @@ export const [editableControls, editableControlValues, cssEditableControlConfig]
 
 
 // styles:
+let editableControlLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableControlLayout = () => {
-    return style({
+    const cached = editableControlLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // layouts:
             usesControlLayout(),
@@ -280,8 +287,17 @@ export const usesEditableControlLayout = () => {
             ...usesCssProps(editableControls), // apply config's cssProps
         }),
     });
+    editableControlLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let editableControlVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableControlVariants = () => {
+    const cached = editableControlVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -289,15 +305,24 @@ export const usesEditableControlVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesControlVariants(),
             resizableRule,
         ]),
     });
+    editableControlVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let editableControlStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableControlStates = () => {
+    const cached = editableControlStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -305,7 +330,7 @@ export const usesEditableControlStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesControlStates(),
@@ -324,7 +349,16 @@ export const usesEditableControlStates = () => {
             }),
         ]),
     });
+    editableControlStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssEditableControlConfig.onChange.subscribe(() => {
+    // clear caches:
+    editableControlLayoutCache   = undefined;
+    editableControlVariantsCache = undefined;
+    editableControlStatesCache   = undefined;
+});
 
 export const useEditableControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
