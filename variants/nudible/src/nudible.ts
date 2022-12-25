@@ -63,7 +63,7 @@ const [nudibleVars] = cssVars<NudibleVars>();
 
 //#region caches
 const nudeDefinitionsCache  = new Map<ToggleNude, CssRule>();
-let defaultNudibleRuleCache : WeakRef<CssRule> | null = null;
+let defaultNudibleRuleCache : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -141,9 +141,9 @@ const createNudibleRule = (nudeDefinition : null|((toggle: ToggleNude) => CssSty
         ]),
     });
 };
-const getDefaultNudibleRule = () => {
+const getDefaultNudibleRule = (): CssRule => {
     const cached = defaultNudibleRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -176,7 +176,7 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
  */
 export const defineNude = (toggle: ToggleNude): CssRule => {
     const cached = nudeDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

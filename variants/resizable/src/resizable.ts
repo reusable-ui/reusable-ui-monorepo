@@ -46,7 +46,7 @@ export type SizeName = 'sm'|'md'|'lg'
 const sizeClassesCache = new Map<string, CssClassName|null>();
 export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssClassName|null => {
     const cached = sizeClassesCache.get(sizeName);
-    if (cached !== undefined) return cached;
+    if (cached !== undefined) return cached; // null is allowed
     
     
     
@@ -65,7 +65,7 @@ export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: T
 const sizeSelectorsCache = new Map<string, CssSelector|'&'>();
 export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector|'&' => {
     const cached = sizeSelectorsCache.get(sizeName);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -79,7 +79,7 @@ export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName
     return sizeRule;
 };
 
-let sizeOptionsCache : SizeName[] | null = null;
+let sizeOptionsCache : SizeName[] | undefined = undefined;
 //#endregion caches
 
 

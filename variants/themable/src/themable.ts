@@ -168,7 +168,7 @@ const [themableVars] = cssVars<ThemableVars>();
 const themeClassesCache = new Map<ThemeName, CssClassName>();
 export const createThemeClass = (themeName: ThemeName): CssClassName => {
     const cached = themeClassesCache.get(themeName);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -180,7 +180,7 @@ export const createThemeClass = (themeName: ThemeName): CssClassName => {
 const themeSelectorsCache = new Map<ThemeName, CssSelector>();
 export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     const cached = themeSelectorsCache.get(themeName);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -189,22 +189,22 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
-let hasThemeSelectorsCache   : CssSelector[] | null = null;
-let noThemeSelectorsCache    : CssSelector   | null = null;
+let hasThemeSelectorsCache   : CssSelector[]    | undefined = undefined;
+let noThemeSelectorsCache    : CssSelector      | undefined = undefined;
 
 const themeDefinitionsCache  = new Map<ThemeName, CssRule>();
 
-let themeOptionsCache        : ThemeName[]   | null = null;
-let defaultThemableRuleCache : WeakRef<CssRule> | null = null;
+let themeOptionsCache        : ThemeName[]      | undefined = undefined;
+let defaultThemableRuleCache : WeakRef<CssRule> | undefined = undefined;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
-    hasThemeSelectorsCache   = null;
-    noThemeSelectorsCache    = null;
+    hasThemeSelectorsCache   = undefined;
+    noThemeSelectorsCache    = undefined;
     themeDefinitionsCache.clear();
-    themeOptionsCache        = null;
-    defaultThemableRuleCache = null;
+    themeOptionsCache        = undefined;
+    defaultThemableRuleCache = undefined;
 });
 //#endregion caches
 
@@ -247,9 +247,9 @@ const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyl
         ]),
     });
 };
-const getDefaultThemableRule = () => {
+const getDefaultThemableRule = (): CssRule => {
     const cached = defaultThemableRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -284,7 +284,7 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
  */
 export const defineThemeRule = (themeName: ThemeName): CssRule => {
     const cached = themeDefinitionsCache.get(themeName);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

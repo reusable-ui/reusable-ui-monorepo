@@ -88,7 +88,7 @@ const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
 
 
 //#region caches
-let defaultActiveAsClickRuleCache : WeakRef<CssRule> | null = null;
+let defaultActiveAsClickRuleCache : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -346,9 +346,9 @@ const createActiveAsClickRule = () => {
         ]),
     });
 };
-const getDefaultActiveAsClickRule = () => {
+const getDefaultActiveAsClickRule = (): CssRule => {
     const cached = defaultActiveAsClickRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

@@ -103,7 +103,7 @@ const [mildableVars] = cssVars<MildableVars>();
 
 //#region caches
 const mildDefinitionsCache   = new Map<ToggleMild, CssRule>();
-let defaultmildableRuleCache : WeakRef<CssRule> | null = null;
+let defaultmildableRuleCache : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -219,9 +219,9 @@ const createMildableRule = (config?: MildableConfig, mildDefinition : null|((tog
         ]),
     });
 };
-const getDefaultMildableRule = () => {
+const getDefaultMildableRule = (): CssRule => {
     const cached = defaultmildableRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -255,7 +255,7 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
  */
 export const defineMild = (toggle: ToggleMild): CssRule => {
     const cached = mildDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

@@ -107,7 +107,7 @@ const [outlineableVars] = cssVars<OutlineableVars>();
 
 //#region caches
 const outlinedDefinitionsCache  = new Map<ToggleOutlined, CssRule>();
-let defaultOutlineableRuleCache : WeakRef<CssRule> | null = null;
+let defaultOutlineableRuleCache : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -236,9 +236,9 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
         ]),
     });
 };
-const getDefaultOutlineableRule = () => {
+const getDefaultOutlineableRule = (): CssRule => {
     const cached = defaultOutlineableRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -272,7 +272,7 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
  */
 export const defineOutlined = (toggle: ToggleOutlined): CssRule => {
     const cached = outlinedDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

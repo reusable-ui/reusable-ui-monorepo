@@ -102,7 +102,7 @@ const [colorableVars] = cssVars<ColorableVars>();
 //#region caches
 const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
 const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
-let defaultColorableRuleCache      : WeakRef<CssRule> | null = null;
+let defaultColorableRuleCache      : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -188,9 +188,9 @@ const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null
         ]),
     });
 };
-const getDefaultColorableRule = () => {
+const getDefaultColorableRule = (): CssRule => {
     const cached = defaultColorableRuleCache?.deref();
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -225,7 +225,7 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
  */
 const defineSelfOutlined = (toggle: ToggleColor): CssRule => {
     const cached = selfOutlinedDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
@@ -253,7 +253,7 @@ const defineSelfOutlined = (toggle: ToggleColor): CssRule => {
  */
 const defineSelfMild = (toggle: ToggleColor): CssRule => {
     const cached = selfMildDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     

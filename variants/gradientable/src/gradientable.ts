@@ -136,7 +136,7 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
  */
 export const defineGradient = (toggle: ToggleGradient): CssRule => {
     const cached = gradientDefinitionsCache.get(toggle);
-    if (cached !== undefined) return cached;
+    if (cached) return cached;
     
     
     
