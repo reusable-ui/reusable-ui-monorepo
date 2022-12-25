@@ -18,6 +18,19 @@ import {
 // variants:
 
 //#region orientationable
+//#region caches
+let defaultInlineOrientationableStuffsCache : WeakRef<OrientationableStuff>|undefined = undefined;
+let defaultBlockOrientationableStuffsCache  : WeakRef<OrientationableStuff>|undefined = undefined;
+
+// rarely used:
+// let defaultInlineStartOrientationableWithDirectionStuffsCache : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
+// let defaultInlineEndOrientationableWithDirectionStuffsCache   : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
+// let defaultBlockStartOrientationableWithDirectionStuffsCache  : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
+// let defaultBlockEndOrientationableWithDirectionStuffsCache    : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
+//#endregion caches
+
+
+
 export type OrientationName = 'inline'|'block'
 export interface OrientationableStuff {
     defaultOrientation        : OrientationName
@@ -34,13 +47,58 @@ export const defaultInlineOrientationableOptions : OrientationableOptions = { de
 export const defaultBlockOrientationableOptions  : OrientationableOptions = { defaultOrientation: 'block'  };
 
 export const usesOrientationable = (options?: OrientationableOptions, defaultOptions = defaultBlockOrientationableOptions): OrientationableStuff => {
+    const isDefaultBlock  = (
+        (defaultOptions === defaultBlockOrientationableOptions)
+        &&
+        (
+            (options === undefined)
+            ||
+            (options === defaultOptions)
+            ||
+            (
+                (options.defaultOrientation        === defaultOptions.defaultOrientation       )
+                &&
+                (options.orientationInlineSelector === defaultOptions.orientationInlineSelector)
+                &&
+                (options.orientationBlockSelector  === defaultOptions.orientationBlockSelector )
+            )
+        )
+    );
+    const isDefaultInline = !isDefaultBlock && (
+        (defaultOptions === defaultInlineOrientationableOptions)
+        &&
+        (
+            (options === undefined)
+            ||
+            (options === defaultOptions)
+            ||
+            (
+                (options.defaultOrientation        === defaultOptions.defaultOrientation       )
+                &&
+                (options.orientationInlineSelector === defaultOptions.orientationInlineSelector)
+                &&
+                (options.orientationBlockSelector  === defaultOptions.orientationBlockSelector )
+            )
+        )
+    );
+    if (isDefaultBlock) {
+        const cached = defaultBlockOrientationableStuffsCache?.deref();
+        if (cached) return cached;
+    }
+    else if (isDefaultInline) {
+        const cached = defaultInlineOrientationableStuffsCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
     const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(:is(.block, .block-start, .block-end))'    : ':is(.inline, .inline-start, .inline-end)');
     const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(:is(.inline, .inline-start, .inline-end))' : ':is(.block, .block-start, .block-end)' );
     
     
     
-    return {
+    const result : OrientationableStuff = {
         ...options, // preserves foreign props
         
         defaultOrientation,
@@ -50,6 +108,13 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
         ifOrientationInline : (styles: CssStyleCollection) => rule(orientationInlineSelector, styles),
         ifOrientationBlock  : (styles: CssStyleCollection) => rule(orientationBlockSelector , styles),
     };
+    if (isDefaultBlock) {
+        defaultBlockOrientationableStuffsCache = new WeakRef<OrientationableStuff>(result);
+    }
+    else if (isDefaultInline) {
+        defaultInlineOrientationableStuffsCache = new WeakRef<OrientationableStuff>(result);
+    } // if
+    return result;
 };
 
 
