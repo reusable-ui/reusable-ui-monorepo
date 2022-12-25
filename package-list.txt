@@ -91,8 +91,8 @@
 
 // layout-components:
 [published ] [documented  ] [          atomic] @reusable-ui/list
-[published ] [documented  ] [          atomic] @reusable-ui/card
-[published ] [documented  ] [          atomic] @reusable-ui/masonry
+[notneedopt] [documented  ] [          atomic] @reusable-ui/card
+[notneedopt] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
 [published ] [documented  ] [          atomic] @reusable-ui/popup
