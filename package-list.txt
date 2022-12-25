@@ -62,7 +62,7 @@
 
 // base-components:
 [published ] [documented  ] [          atomic] @reusable-ui/generic
-[published ] [documented  ] [          atomic] @reusable-ui/basic
+[optimized ] [documented  ] [          atomic] @reusable-ui/basic
 [published ] [documented  ] [          atomic] @reusable-ui/indicator
 [published ] [documented  ] [          atomic] @reusable-ui/control
 [published ] [documented  ] [          atomic] @reusable-ui/action-control
@@ -71,8 +71,8 @@
 [published ] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
-[modified  ] [documented  ] [          atomic] @reusable-ui/container
-[modified  ] [documented  ] [          atomic] @reusable-ui/content    *button
+[optimized ] [documented  ] [          atomic] @reusable-ui/container
+[optimized ] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
 [published ] [documented  ] [          atomic] @reusable-ui/icon
