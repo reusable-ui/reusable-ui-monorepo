@@ -576,8 +576,16 @@ export const usesContentChildrenLinks        = (options?: ContentChildrenLinksOp
     });
 };
 
+let defaultContentChildrenCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContentChildren             = (options?: (ContentChildrenMediaOptions & ContentChildrenLinksOptions)) => {
-    return style({
+    if (options === undefined) {
+        const cached = defaultContentChildrenCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
+    const result = style({
         ...imports([
             // media:
             usesContentChildrenMedia(options),
@@ -589,9 +597,17 @@ export const usesContentChildren             = (options?: (ContentChildrenMediaO
             usesContentChildrenFill(options), // must be placed at the last
         ]),
     });
+    if (options === undefined) defaultContentChildrenCache = new WeakRef<CssRule>(result);
+    return result;
 };
 
+let contentBasicLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContentBasicLayout = () => {
+    const cached = contentBasicLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -600,7 +616,7 @@ export const usesContentBasicLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             borderRule,
@@ -628,6 +644,8 @@ export const usesContentBasicLayout = () => {
             paddingBlock  : paddingVars.paddingBlock,
         }),
     });
+    contentBasicLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
 export const usesContentLayout = () => {
     return style({
@@ -642,7 +660,14 @@ export const usesContentLayout = () => {
         }),
     });
 };
+
+let contentBasicVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesContentBasicVariants = () => {
+    const cached = contentBasicVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -650,12 +675,14 @@ export const usesContentBasicVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             resizableRule,
         ]),
     });
+    contentBasicVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
 export const usesContentVariants = () => {
     return style({
@@ -666,6 +693,13 @@ export const usesContentVariants = () => {
         ]),
     });
 };
+
+cssContentConfig.onChange.subscribe(() => {
+    // clear caches:
+    defaultContentChildrenCache = undefined;
+    contentBasicLayoutCache     = undefined;
+    contentBasicVariantsCache   = undefined;
+});
 
 export const useContentStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
