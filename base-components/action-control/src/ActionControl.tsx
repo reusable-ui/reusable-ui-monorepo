@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -183,8 +184,14 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
 
 
 // styles:
+let actionControlLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesActionControlLayout = () => {
-    return style({
+    const cached = actionControlLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // layouts:
             usesControlLayout(),
@@ -200,8 +207,17 @@ export const usesActionControlLayout = () => {
             ...usesCssProps(actionControls), // apply config's cssProps
         }),
     });
+    actionControlLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let actionControlVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesActionControlVariants = () => {
+    const cached = actionControlVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -209,15 +225,24 @@ export const usesActionControlVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesControlVariants(),
             resizableRule,
         ]),
     });
+    actionControlVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let actionControlStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesActionControlStates = () => {
+    const cached = actionControlStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -225,14 +250,23 @@ export const usesActionControlStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesControlStates(),
             clickableRule,
         ]),
     });
+    actionControlStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssActionControlConfig.onChange.subscribe(() => {
+    // clear caches:
+    actionControlLayoutCache   = undefined;
+    actionControlVariantsCache = undefined;
+    actionControlStatesCache   = undefined;
+});
 
 export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
