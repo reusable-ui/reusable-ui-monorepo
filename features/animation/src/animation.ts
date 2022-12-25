@@ -80,6 +80,7 @@ const [animationVars] = cssVars<AnimationVars>();
 
 
 //#region caches
+let constantsAnimationRuleCache        : WeakRef<CssRule>|undefined = undefined;
 let resetAnimationRuleCache            : WeakRef<CssRule>|undefined = undefined;
 let defaultAnimationFunctionsRuleCache : WeakRef<CssRule>|undefined = undefined;
 //#endregion caches
@@ -160,6 +161,21 @@ export interface AnimationConfig {
     transform ?: CssKnownProps['transform'] & Array<any>
     anim      ?: CssKnownProps['animation'] & Array<any>
 }
+const constantsAnimationRule = (): CssRule => {
+    const cached = constantsAnimationRuleCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = vars({
+        [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
+        [animationVars.filterNone   ] : 'brightness(100%)',
+        [animationVars.transformNone] : 'translate(0)',
+        [animationVars.animNone     ] : 'none',
+    });
+    constantsAnimationRuleCache = new WeakRef<CssRule>(result);
+    return result;
+};
 const resetAnimationRule = (): CssRule => {
     const cached = resetAnimationRuleCache?.deref();
     if (cached) return cached;
@@ -167,13 +183,9 @@ const resetAnimationRule = (): CssRule => {
     
     
     const result = style({
-        // constants:
-        ...vars({
-            [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
-            [animationVars.filterNone   ] : 'brightness(100%)',
-            [animationVars.transformNone] : 'translate(0)',
-            [animationVars.animNone     ] : 'none',
-        }),
+        ...imports([
+            constantsAnimationRule,
+        ]),
         
         
         
