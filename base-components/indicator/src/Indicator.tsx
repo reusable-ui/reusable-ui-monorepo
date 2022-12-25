@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -175,8 +176,14 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
 
 
 // styles:
+let indicatorLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesIndicatorLayout = () => {
-    return style({
+    const cached = indicatorLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // layouts:
             usesBasicLayout(),
@@ -186,8 +193,17 @@ export const usesIndicatorLayout = () => {
             ...usesCssProps(indicators), // apply config's cssProps
         }),
     });
+    indicatorLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let indicatorVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesIndicatorVariants = () => {
+    const cached = indicatorVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -195,15 +211,24 @@ export const usesIndicatorVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesBasicVariants(),
             resizableRule,
         ]),
     });
+    indicatorVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let indicatorStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesIndicatorStates = () => {
+    const cached = indicatorStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -212,7 +237,7 @@ export const usesIndicatorStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             disableableRule,
@@ -226,7 +251,16 @@ export const usesIndicatorStates = () => {
             }),
         ]),
     });
+    indicatorStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssIndicatorConfig.onChange.subscribe(() => {
+    // clear caches:
+    indicatorLayoutCache   = undefined;
+    indicatorVariantsCache = undefined;
+    indicatorStatesCache   = undefined;
+});
 
 export const useIndicatorStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
