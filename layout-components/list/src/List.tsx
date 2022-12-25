@@ -589,14 +589,7 @@ export const usesListActionItemLayout = () => {
         ]),
     });
 };
-export const usesListActionItemVariants = () => {
-    return style({
-        ...imports([
-            // variants:
-            usesActionControlVariants(),
-        ]),
-    });
-};
+export const usesListActionItemVariants = usesActionControlVariants;
 export const usesListActionItemStates = () => {
     return style({
         ...imports([
@@ -1295,14 +1288,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         ]),
     });
 };
-export const usesListStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesIndicatorStates(),
-        ]),
-    });
-};
+export const usesListStates = usesIndicatorStates;
 
 export const useListStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
