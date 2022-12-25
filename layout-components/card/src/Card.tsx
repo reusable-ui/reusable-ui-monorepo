@@ -482,14 +482,7 @@ export const usesCardVariants = () => {
         ]),
     });
 };
-export const usesCardStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesIndicatorStates(),
-        ]),
-    });
-};
+export const usesCardStates = usesIndicatorStates;
 
 export const useCardStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
