@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -120,7 +121,13 @@ export const iconElm = '::after'
 
 
 
+let editableTextControlLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableTextControlLayout = () => {
+    const cached = editableTextControlLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -132,7 +139,7 @@ export const usesEditableTextControlLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // layouts:
             usesEditableControlLayout(),
@@ -184,8 +191,17 @@ export const usesEditableTextControlLayout = () => {
             ...usesCssProps(editableTextControls), // apply config's cssProps
         }),
     });
+    editableTextControlLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let editableTextControlVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableTextControlVariants = () => {
+    const cached = editableTextControlVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -193,15 +209,24 @@ export const usesEditableTextControlVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesEditableControlVariants(),
             resizableRule,
         ]),
     });
+    editableTextControlVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let editableTextControlStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesEditableTextControlStates = () => {
+    const cached = editableTextControlStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -209,7 +234,7 @@ export const usesEditableTextControlStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesEditableControlStates(),
@@ -239,7 +264,16 @@ export const usesEditableTextControlStates = () => {
             }),
         ]),
     });
+    editableTextControlStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssEditableTextControlConfig.onChange.subscribe(() => {
+    // clear caches:
+    editableTextControlLayoutCache   = undefined;
+    editableTextControlVariantsCache = undefined;
+    editableTextControlStatesCache   = undefined;
+});
 
 export const useEditableTextControlStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
