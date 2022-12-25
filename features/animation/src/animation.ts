@@ -16,6 +16,7 @@ import {
     fallbacks,
     style,
     vars,
+    imports,
     
     
     
@@ -78,6 +79,13 @@ const [animationVars] = cssVars<AnimationVars>();
 
 
 
+//#region caches
+let resetAnimationRuleCache            : WeakRef<CssRule>|undefined = undefined;
+let defaultAnimationFunctionsRuleCache : WeakRef<CssRule>|undefined = undefined;
+//#endregion caches
+
+
+
 const setsBoxShadow     = new Set<CssCustomSimpleRef>();
 const setsFilter        = new Set<CssCustomSimpleRef>();
 const setsTransform     = new Set<CssCustomSimpleRef>();
@@ -93,8 +101,8 @@ const animationRegistry = {
             animationVars.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
         ];
     },
-    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    },
-    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) },
+    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    ; resetAnimationRuleCache = undefined },
+    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) ; resetAnimationRuleCache = undefined },
     
     
     
@@ -108,8 +116,8 @@ const animationRegistry = {
             animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
         ];
     },
-    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       },
-    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    },
+    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       ; resetAnimationRuleCache = undefined },
+    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    ; resetAnimationRuleCache = undefined },
     
     
     
@@ -123,8 +131,8 @@ const animationRegistry = {
             ...Array.from(setsTransform).reverse(), // reverse the order
         ];
     },
-    registerTransform   (item: CssCustomSimpleRef): void { setsTransform.add(item)    },
-    unregisterTransform (item: CssCustomSimpleRef): void { setsTransform.delete(item) },
+    registerTransform   (item: CssCustomSimpleRef): void { setsTransform.add(item)    ; resetAnimationRuleCache = undefined },
+    unregisterTransform (item: CssCustomSimpleRef): void { setsTransform.delete(item) ; resetAnimationRuleCache = undefined },
     
     
     
@@ -138,8 +146,8 @@ const animationRegistry = {
             animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
         ];
     },
-    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         },
-    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      },
+    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         ; resetAnimationRuleCache = undefined },
+    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      ; resetAnimationRuleCache = undefined },
 };
 export type AnimationRegistry = typeof animationRegistry
 
@@ -152,6 +160,101 @@ export interface AnimationConfig {
     transform ?: CssKnownProps['transform'] & Array<any>
     anim      ?: CssKnownProps['animation'] & Array<any>
 }
+const resetAnimationRule = (): CssRule => {
+    const cached = resetAnimationRuleCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
+        // constants:
+        ...vars({
+            [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
+            [animationVars.filterNone   ] : 'brightness(100%)',
+            [animationVars.transformNone] : 'translate(0)',
+            [animationVars.animNone     ] : 'none',
+        }),
+        
+        
+        
+        // reset functions:
+        // declare default values at lowest specificity (except for **None):
+        ...fallbacks({
+            ...vars(Object.fromEntries([
+                ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
+                ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
+                ...animationRegistry.transforms.filter((ref) => (ref !== animationVars.transformNone)).map((ref) => [ ref, animationVars.transformNone ]),
+                ...animationRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
+            ])),
+        }),
+    });
+    resetAnimationRuleCache = new WeakRef<CssRule>(result);
+    return result;
+};
+const createAnimationFunctionsRule = (config?: AnimationConfig): CssRule => {
+    return style({
+        // animation functions:
+        ...vars({ // always re-declare the final function below, so the [boxShadow], [filter], [transform] and [animation] can be manipulated by corresponding state(s)
+            [animationVars.boxShadow] : [
+                // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
+                
+                // front-to-back order, the first is placed on top, the last is placed on bottom
+                
+                // the config's boxShadow(s) are placed on top:
+                ...(config?.boxShadow ?? ([] as CssKnownProps['boxShadow'] & Array<any>)), // default => uses config's boxShadow
+                
+                // the conditional boxShadow(s) are placed on bottom:
+                ...animationRegistry.boxShadows,
+            ],
+            
+            [animationVars.filter   ] : [[
+                // combining: filter1 * filter2 * filter3 ...
+                
+                // front-to-back order, the first is processed first, the last is processed last
+                
+                // the config's filter(s) are processed first:
+                ...(config?.filter ?? ([] as CssKnownProps['filter'] & Array<any>)), // default => uses config's filter
+                
+                // the conditional filter(s) are processed last:
+                ...animationRegistry.filters,
+            ]],
+            
+            [animationVars.transform] : [[
+                // combining: transform3 * transform2 * transform1 ...
+                
+                // back-to-front order, the last is processed first, the first is processed last
+                
+                // the conditional transform(s) are processed last:
+                ...animationRegistry.transforms,
+                
+                // the config's transform(s) are processed first:
+                ...(config?.transform ?? ([] as CssKnownProps['transform'] & Array<any>)), // default => uses config's transform
+            ]],
+            
+            [animationVars.anim     ] : [
+                // paralleling: anim1 & anim2 & anim3 ...
+                
+                // front-to-back order, the first has the lowest specificity, the last has the highest specificity
+                
+                // the config's animation(s) have the lowest specificity:
+                ...(config?.anim ?? ([] as CssKnownProps['animation'] & Array<any>)), // default => uses config's animation
+                
+                // the conditional animation(s) have the highest specificity:
+                ...animationRegistry.anims,
+            ],
+        }),
+    });
+};
+const getDefaultAnimationFunctionsRule = () => {
+    const cached = defaultAnimationFunctionsRuleCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const defaultAnimationFunctionsRule = createAnimationFunctionsRule();
+    defaultAnimationFunctionsRuleCache = new WeakRef<CssRule>(defaultAnimationFunctionsRule);
+    return defaultAnimationFunctionsRule;
+};
 /**
  * Uses Animation.
  * @param config  A configuration of `animationRule`.
@@ -159,81 +262,17 @@ export interface AnimationConfig {
  */
 export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
     return {
-        animationRule: () => style({
-            // constants:
-            ...vars({
-                [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
-                [animationVars.filterNone   ] : 'brightness(100%)',
-                [animationVars.transformNone] : 'translate(0)',
-                [animationVars.animNone     ] : 'none',
-            }),
+        animationRule: () => imports([
+            resetAnimationRule,
             
-            
-            
-            // reset functions:
-            // declare default values at lowest specificity (except for **None):
-            ...fallbacks({
-                ...vars(Object.fromEntries([
-                    ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
-                    ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),
-                    ...animationRegistry.transforms.filter((ref) => (ref !== animationVars.transformNone)).map((ref) => [ ref, animationVars.transformNone ]),
-                    ...animationRegistry.anims     .filter((ref) => (ref !== animationVars.animNone     )).map((ref) => [ ref, animationVars.animNone      ]),
-                ])),
-            }),
-            
-            
-            
-            // animation functions:
-            ...vars({ // always re-declare the final function below, so the [boxShadow], [filter], [transform] and [animation] can be manipulated by corresponding state(s)
-                [animationVars.boxShadow] : [
-                    // layering: boxShadow1 | boxShadow2 | boxShadow3 ...
-                    
-                    // front-to-back order, the first is placed on top, the last is placed on bottom
-                    
-                    // the config's boxShadow(s) are placed on top:
-                    ...(config?.boxShadow ?? ([] as CssKnownProps['boxShadow'] & Array<any>)), // default => uses config's boxShadow
-                    
-                    // the conditional boxShadow(s) are placed on bottom:
-                    ...animationRegistry.boxShadows,
-                ],
-                
-                [animationVars.filter   ] : [[
-                    // combining: filter1 * filter2 * filter3 ...
-                    
-                    // front-to-back order, the first is processed first, the last is processed last
-                    
-                    // the config's filter(s) are processed first:
-                    ...(config?.filter ?? ([] as CssKnownProps['filter'] & Array<any>)), // default => uses config's filter
-                    
-                    // the conditional filter(s) are processed last:
-                    ...animationRegistry.filters,
-                ]],
-                
-                [animationVars.transform] : [[
-                    // combining: transform3 * transform2 * transform1 ...
-                    
-                    // back-to-front order, the last is processed first, the first is processed last
-                    
-                    // the conditional transform(s) are processed last:
-                    ...animationRegistry.transforms,
-                    
-                    // the config's transform(s) are processed first:
-                    ...(config?.transform ?? ([] as CssKnownProps['transform'] & Array<any>)), // default => uses config's transform
-                ]],
-                
-                [animationVars.anim     ] : [
-                    // paralleling: anim1 & anim2 & anim3 ...
-                    
-                    // front-to-back order, the first has the lowest specificity, the last has the highest specificity
-                    
-                    // the config's animation(s) have the lowest specificity:
-                    ...(config?.anim ?? ([] as CssKnownProps['animation'] & Array<any>)), // default => uses config's animation
-                    
-                    // the conditional animation(s) have the highest specificity:
-                    ...animationRegistry.anims,
-                ],
-            }),
-        }),
+            (
+                (config === undefined)
+                ?
+                getDefaultAnimationFunctionsRule
+                :
+                () => createAnimationFunctionsRule(config)
+            ),
+        ]),
         animationVars,
         animationRegistry,
     };

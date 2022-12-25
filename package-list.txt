@@ -24,7 +24,7 @@
 [published ] @reusable-ui/foreground
 [published ] @reusable-ui/border
 [published ] @reusable-ui/ring
-[published ] @reusable-ui/animation
+[optimized ] @reusable-ui/animation
 [published ] @reusable-ui/padding
 
 // reusable-ui capabilities:
