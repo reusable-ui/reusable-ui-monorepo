@@ -263,14 +263,7 @@ export const usesButtonIconVariants = () => {
         ]),
     });
 };
-export const usesButtonIconStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesButtonStates(),
-        ]),
-    });
-};
+export const usesButtonIconStates = usesButtonStates;
 
 export const useButtonIconStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
