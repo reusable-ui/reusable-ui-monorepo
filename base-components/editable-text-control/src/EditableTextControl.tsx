@@ -234,6 +234,10 @@ export const usesEditableTextControlStates = () => {
     
     
     
+    const markActiveRule = markActive(_defaultMarkActiveOptions);
+    
+    
+    
     const result = style({
         ...imports([
             // states:
@@ -241,21 +245,9 @@ export const usesEditableTextControlStates = () => {
             validationIconRule,
         ]),
         ...states([
-            ifActive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
+            ifActive(markActiveRule),
+            ifFocus(markActiveRule),
+            ifArrive(markActiveRule),
             
             ifNeutralize({
                 ...children(iconElm, {
