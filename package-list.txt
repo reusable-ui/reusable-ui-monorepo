@@ -61,7 +61,7 @@
 [published ] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
 
 // base-components:
-[published ] [documented  ] [          atomic] @reusable-ui/generic
+[no css    ] [documented  ] [          atomic] @reusable-ui/generic
 [optimized ] [documented  ] [          atomic] @reusable-ui/basic
 [optimized ] [documented  ] [          atomic] @reusable-ui/indicator
 [optimized ] [documented  ] [          atomic] @reusable-ui/control
@@ -76,10 +76,10 @@
 
 // simple-components:
 [optimized ] [documented  ] [          atomic] @reusable-ui/icon
-[published ] [documented  ] [          atomic] @reusable-ui/label
+[notneedopt] [documented  ] [          atomic] @reusable-ui/label
 [optimized ] [documented  ] [          atomic] @reusable-ui/button
-[published ] [new         ] [full    compound] @reusable-ui/toggle-button
-[published ] [documented  ] [full    compound] @reusable-ui/nav-button
+[no css    ] [new         ] [full    compound] @reusable-ui/toggle-button
+[no css    ] [documented  ] [full    compound] @reusable-ui/nav-button
 [published ] [documented  ] [full    compound] @reusable-ui/button-icon
 [published ] [documented  ] [full    compound] @reusable-ui/close-button
 [published ] [documented  ] [          atomic] @reusable-ui/form
