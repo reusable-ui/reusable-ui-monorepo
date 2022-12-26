@@ -244,11 +244,7 @@ export const usesIndicatorStates = () => {
             activatableRule,
         ]),
         ...states([
-            ifActive({
-                ...imports([
-                    markActive(),
-                ]),
-            }),
+            ifActive(markActive()),
         ]),
     });
     indicatorStatesCache = new WeakRef<CssRule>(result);
