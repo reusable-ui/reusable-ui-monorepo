@@ -324,6 +324,10 @@ export const usesHamburgerMenuButtonStates = () => {
     
     
     
+    const markActiveRule = markActive(_defaultMarkActiveOptions);
+    
+    
+    
     return style({
         ...imports([
             // states:
@@ -331,26 +335,10 @@ export const usesHamburgerMenuButtonStates = () => {
             hamburgerableRule,
         ]),
         ...states([
-            ifActive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifFocus({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifArrive({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
-            ifPress({
-                ...imports([
-                    markActive(_defaultMarkActiveOptions),
-                ]),
-            }),
+            ifActive(markActiveRule),
+            ifFocus(markActiveRule),
+            ifArrive(markActiveRule),
+            ifPress(markActiveRule),
         ]),
     });
 };
