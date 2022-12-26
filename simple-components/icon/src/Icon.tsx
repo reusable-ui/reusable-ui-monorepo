@@ -434,6 +434,7 @@ export const usesIconLayout      = () => {
         }),
     });
 };
+
 export const usesIconFontLayout  = () => {
     // dependencies:
     
@@ -518,7 +519,14 @@ export const usesIconFontLayout  = () => {
         }),
     });
 };
+
+let iconImageLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesIconImageLayout = () => {
+    const cached = iconImageLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -526,7 +534,7 @@ export const usesIconImageLayout = () => {
     
     
     
-    return style({
+    const result = style({
         // appearances:
         maskSize      : 'contain',       // image's size is as big as possible without being cropped
         maskRepeat    : 'no-repeat',     // just one image, no repetition
@@ -568,7 +576,10 @@ export const usesIconImageLayout = () => {
         // backgrounds:
         backg         : iconVars.color,  // set icon's color
     });
+    iconImageLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
 export const usesIconVariants    = () => {
     // dependencies:
     
@@ -613,6 +624,11 @@ export const usesIconImage       = (config: IconImageConfig) => {
         ]),
     });
 };
+
+cssIconConfig.onChange.subscribe(() => {
+    // clear caches:
+    iconImageLayoutCache = undefined;
+});
 
 export const useIconStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
