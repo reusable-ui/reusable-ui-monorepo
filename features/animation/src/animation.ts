@@ -167,11 +167,13 @@ const constantsAnimationRule = (): CssRule => {
     
     
     
-    const result = vars({
-        [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
-        [animationVars.filterNone   ] : 'brightness(100%)',
-        [animationVars.transformNone] : 'translate(0)',
-        [animationVars.animNone     ] : 'none',
+    const result = style({
+        ...vars({
+            [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
+            [animationVars.filterNone   ] : 'brightness(100%)',
+            [animationVars.transformNone] : 'translate(0)',
+            [animationVars.animNone     ] : 'none',
+        }),
     });
     constantsAnimationRuleCache = new WeakRef<CssRule>(result);
     return result;
