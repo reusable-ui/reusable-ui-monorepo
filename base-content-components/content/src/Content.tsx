@@ -43,10 +43,11 @@ import {
     PureSelectorGroup,
     parseSelectors,
     createElementSelector,
+    createClassSelector,
     createPseudoClassSelector,
     isElementSelectorOf,
     createSelector,
-    createSelectorGroup,
+    createPureSelectorGroup,
     isNotEmptySelectors,
     convertSelectorGroupToPureSelectorGroup,
     selectorsToString,
@@ -131,7 +132,7 @@ const childSelector          = createSelector( // the specificity weight includi
     // specificity weight = 0.1
     createPseudoClassSelector( // :not(_)
         'not',
-        createSelectorGroup(
+        createPureSelectorGroup(
             createSelector(
                 createElementSelector('_')
             )
@@ -175,10 +176,10 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
 
 
 // styles:
-const mediaElm    : CssSelectorCollection = ['figure', 'img', 'svg', 'video', 'picture', 'embed', 'object', '.media'];
-const notMediaElm : CssSelectorCollection = '.not-media';
-const linksElm    : CssSelectorCollection = ['a', '.link'];
-const notLinksElm : CssSelectorCollection = '.not-link';
+// const mediaElm    : CssSelectorCollection = ['figure', 'img', 'svg', 'video', 'picture', 'embed', 'object', '.media'];
+// const notMediaElm : CssSelectorCollection = '.not-media';
+// const linksElm    : CssSelectorCollection = ['a', '.link'];
+// const notLinksElm : CssSelectorCollection = '.not-link';
 
 export interface ContentChildrenMediaOptions {
     mediaSelector    ?: CssSelectorCollection
@@ -201,12 +202,25 @@ export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOp
     
     // options:
     const {
-        mediaSelector    : mediaSelectorStr    = mediaElm,
-        notMediaSelector : notMediaSelectorStr = notMediaElm,
+        mediaSelector    : mediaSelectorStr,
+        notMediaSelector : notMediaSelectorStr,
     } = options ?? {};
     
-    const mediaSelector                : SelectorGroup|null       = parseSelectors(mediaSelectorStr);
-    const notMediaSelector             : SelectorGroup|null       = parseSelectors(notMediaSelectorStr);
+    const mediaSelector                : SelectorGroup|null       = mediaSelectorStr ? parseSelectors(mediaSelectorStr) : createPureSelectorGroup(
+        // <figure>, <img>, <svg>, <video>, <picture>, <embed>, <object>, .media:
+        ...['figure', 'img', 'svg', 'video', 'picture', 'embed', 'object'].map((elmName) => createSelector(
+            createElementSelector(elmName)
+        )),
+        createSelector(
+            createClassSelector('media')
+        ),
+    );
+    const notMediaSelector             : SelectorGroup|null       = notMediaSelectorStr ? parseSelectors(notMediaSelectorStr) : createPureSelectorGroup(
+        // .not-media:
+        createSelector(
+            createClassSelector('not-media')
+        ),
+    );
     const notNotMediaSelector          : PseudoClassSelector|null = notMediaSelector && createPseudoClassSelector( // create pseudo_class `:not()`
         'not',
         groupSelectors(notMediaSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
@@ -346,7 +360,7 @@ export const usesContentChildrenMedia        = (options?: ContentChildrenMediaOp
                 ...groupedNonFigureSelector,
                 notNotMediaSelector,                                 // :not(:where(...notMediaSelector))
             );
-            return createSelectorGroup(
+            return createPureSelectorGroup(
                 // media outside <figure>:
                 nonFigureSelectorWithExcept,
                 
@@ -517,12 +531,25 @@ export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOp
     
     // options:
     const {
-        linksSelector    : linksSelectorStr    = linksElm,
-        notLinksSelector : notLinksSelectorStr = notLinksElm,
+        linksSelector    : linksSelectorStr,
+        notLinksSelector : notLinksSelectorStr,
     } = options ?? {};
     
-    const linksSelector                : SelectorGroup|null       = parseSelectors(linksSelectorStr);
-    const notLinksSelector             : SelectorGroup|null       = parseSelectors(notLinksSelectorStr);
+    const linksSelector                : SelectorGroup|null       = linksSelectorStr ? parseSelectors(linksSelectorStr) : createPureSelectorGroup(
+        // <a>, .link:
+        createSelector(
+            createElementSelector('a')
+        ),
+        createSelector(
+            createClassSelector('link')
+        ),
+    );
+    const notLinksSelector             : SelectorGroup|null       = notLinksSelectorStr ? parseSelectors(notLinksSelectorStr) : createPureSelectorGroup(
+        // .not-link:
+        createSelector(
+            createClassSelector('not-link')
+        ),
+    );
     const notNotLinksSelector          : PseudoClassSelector|null = notLinksSelector && createPseudoClassSelector( // create pseudo_class `:not()`
         'not',
         groupSelectors(notLinksSelector, { selectorName: 'where' }), // group multiple selectors with `:where()`, to suppress the specificity weight
