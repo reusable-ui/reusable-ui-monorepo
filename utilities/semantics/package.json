@@ -30,7 +30,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^2.0.6",
+    "@cssfn/core": "^2.0.11",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
