@@ -262,14 +262,7 @@ export const usesTooltipVariants = () => {
         ]),
     });
 };
-export const usesTooltipStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesPopupStates(),
-        ]),
-    });
-};
+export const usesTooltipStates = usesPopupStates;
 
 export const useTooltipStyleSheet = dynamicStyleSheet(() => ({
     ...imports([

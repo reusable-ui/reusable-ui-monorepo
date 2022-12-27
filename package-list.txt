@@ -101,7 +101,7 @@
 
 // notification-components:
 [optimized ] [documented  ] [partial compound] @reusable-ui/alert
-[published ] [documented  ] [partial compound] @reusable-ui/tooltip
+[optimized ] [documented  ] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
 [published ] [documented  ] [          atomic] @reusable-ui/collapse
