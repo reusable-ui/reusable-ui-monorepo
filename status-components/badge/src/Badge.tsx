@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -145,7 +146,13 @@ export const useBadgeVariant = ({badgeStyle}: BadgeVariant) => {
 
 
 
+let badgeLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBadgeLayout = () => {
+    const cached = badgeLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -153,7 +160,7 @@ export const usesBadgeLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // layouts:
             usesPopupLayout(),
@@ -224,8 +231,17 @@ export const usesBadgeLayout = () => {
             paddingBlock  : paddingVars.paddingBlock,
         }),
     });
+    badgeLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let badgeVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBadgeVariants = () => {
+    const cached = badgeVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -237,7 +253,7 @@ export const usesBadgeVariants = () => {
     
     
     
-    return style({
+    const result = style({
         /* write specific badgeStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.pill', '.circle'], {
@@ -275,15 +291,17 @@ export const usesBadgeVariants = () => {
             resizableRule,
         ]),
     });
+    badgeVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
-export const usesBadgeStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesPopupStates(),
-        ]),
-    });
-};
+
+export const usesBadgeStates = usesPopupStates;
+
+cssBadgeConfig.onChange.subscribe(() => {
+    // clear caches:
+    badgeLayoutCache   = undefined;
+    badgeVariantsCache = undefined;
+});
 
 export const useBadgeStyleSheet = dynamicStyleSheet(() => ({
     ...imports([

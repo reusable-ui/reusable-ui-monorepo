@@ -96,7 +96,7 @@
 
 // status-components:
 [optimized ] [documented  ] [          atomic] @reusable-ui/popup
-[published ] [documented  ] [          atomic] @reusable-ui/badge
+[optimized ] [documented  ] [          atomic] @reusable-ui/badge
 [published ] [documented  ] [partial compound] @reusable-ui/busy
 
 // notification-components:
