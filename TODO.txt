@@ -1,13 +1,3 @@
-optimize animationRule
-
-simplify single import:
-export\s+const\s+uses(\w+)\s*=\s*\(\)\s*=>\s*\{[\s\n]*return\s*style\(\{[\s\n]*\.\.\.imports\(\[[\s\n]*(//.*)?[\s\n]*uses(\w+)\(\),?[\s\n]*\]\),?[\s\n]*\}\);?[\s\n]*\};?
-
-replace with undefined:
-WeakRef<CssRule> | null = null
-WeakRef<CssRule> | undefined = undefined
-
-
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
