@@ -247,14 +247,7 @@ export const usesAlertVariants = () => {
         ]),
     });
 };
-export const usesAlertStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesPopupStates(),
-        ]),
-    });
-};
+export const usesAlertStates = usesPopupStates;
 
 export const useAlertStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
