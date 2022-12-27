@@ -81,11 +81,11 @@
 [no css    ] [new         ] [full    compound] @reusable-ui/toggle-button
 [no css    ] [documented  ] [full    compound] @reusable-ui/nav-button
 [optimized ] [documented  ] [full    compound] @reusable-ui/button-icon
-[published ] [documented  ] [full    compound] @reusable-ui/close-button
-[published ] [documented  ] [          atomic] @reusable-ui/form
-[published ] [documented  ] [          atomic] @reusable-ui/input
-[published ] [documented  ] [full    compound] @reusable-ui/range
-[published ] [documented  ] [          atomic] @reusable-ui/check
+[no css    ] [documented  ] [full    compound] @reusable-ui/close-button
+[notneedopt] [documented  ] [          atomic] @reusable-ui/form
+[notneedopt] [documented  ] [          atomic] @reusable-ui/input
+[notneedopt] [documented  ] [full    compound] @reusable-ui/range
+[optimized ] [documented  ] [          atomic] @reusable-ui/check
 [published ] [documented  ] [          atomic] @reusable-ui/radio
 [published ] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 

@@ -13,6 +13,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -295,7 +296,15 @@ export const inputElm = ':where(:first-child)'     // zero degree specificity to
 export const checkElm = '::before'
 export const labelElm = ':where(:nth-child(1n+2))' // zero degree specificity to be easily overwritten
 
+
+
+let checkLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesCheckLayout = () => {
+    const cached = checkLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -307,7 +316,7 @@ export const usesCheckLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // layouts:
             usesEditableActionControlLayout(),
@@ -437,8 +446,17 @@ export const usesCheckLayout = () => {
             }),
         }),
     });
+    checkLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let checkVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesCheckVariants = () => {
+    const cached = checkVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -451,7 +469,7 @@ export const usesCheckVariants = () => {
     
     
     
-    return style({
+    const result = style({
         /* write specific checkStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
             rule(['.button', '.toggleButton'], {
@@ -537,8 +555,17 @@ export const usesCheckVariants = () => {
             }),
         ], { specificityWeight: 2 }),
     });
+    checkVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let checkStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesCheckStates = () => {
+    const cached = checkStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -548,7 +575,7 @@ export const usesCheckStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             usesEditableActionControlStates(),
@@ -573,7 +600,16 @@ export const usesCheckStates = () => {
             }),
         }),
     });
+    checkStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssCheckConfig.onChange.subscribe(() => {
+    // clear caches:
+    checkLayoutCache   = undefined;
+    checkVariantsCache = undefined;
+    checkStatesCache   = undefined;
+});
 
 export const useCheckStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
