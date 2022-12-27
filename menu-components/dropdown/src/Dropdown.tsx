@@ -161,14 +161,7 @@ export const usesDropdownLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
-export const usesDropdownStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesCollapseStates(),
-        ]),
-    });
-};
+export const usesDropdownStates = usesCollapseStates;
 
 export const useDropdownStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
