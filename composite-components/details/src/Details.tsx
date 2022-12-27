@@ -329,14 +329,7 @@ export const usesContentVariants = () => {
         ]),
     });
 };
-export const usesContentStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesCollapseStates(),
-        ]),
-    });
-};
+export const usesContentStates = usesCollapseStates;
 
 export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
     mainScope({

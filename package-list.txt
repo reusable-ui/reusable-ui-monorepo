@@ -125,7 +125,7 @@
 [published ] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
 [published ] [documented  ] [full    compound] @reusable-ui/carousel
 [published ] [documented  ] [          atomic] @reusable-ui/navbar
-[published ] [undocumented] [full    compound] @reusable-ui/details
+[optimized ] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
 [published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
