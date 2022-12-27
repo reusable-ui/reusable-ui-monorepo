@@ -13,6 +13,7 @@ import {
     
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     CssStyleCollection,
     CssSelectorCollection,
     
@@ -402,6 +403,47 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
+
+let listItemSelfLayoutCache : WeakRef<CssRule>|undefined = undefined;
+export const usesListItemSelfLayout = () => {
+    const cached = listItemSelfLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
+        // layouts:
+        display   : 'block',  // fills the entire wrapper's width
+        
+        
+        
+        // sizes:
+        flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(lists, 'item')), // apply config's cssProps starting with item***
+        
+        
+        
+        // animations:
+        ...style({
+            transition : [
+                // original:
+                [lists.itemTransition],
+                
+                // overwrites:
+                
+                // borders:
+                ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
+            ],
+        }),
+    });
+    listItemSelfLayoutCache = new WeakRef<CssRule>(result);
+    return result;
+};
+
 export const usesListItemLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
@@ -417,39 +459,18 @@ export const usesListItemLayout = (options?: OrientationableOptions) => {
             
             // layouts:
             usesListItemBaseLayout(options), // must be placed at the last
+            usesListItemSelfLayout(),        // must be placed at the last
         ]),
-        ...style({
-            // layouts:
-            display   : 'block',  // fills the entire wrapper's width
-            
-            
-            
-            // sizes:
-            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(lists, 'item')), // apply config's cssProps starting with item***
-            
-            
-            
-            // animations:
-            ...style({
-                transition : [
-                    // original:
-                    [lists.itemTransition],
-                    
-                    // overwrites:
-                    
-                    // borders:
-                    ['border-width', '0s'], // does not support transition on border width, because we use it to make a separator
-                ],
-            }),
-        }),
     });
 };
+
+let listItemVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesListItemVariants = () => {
+    const cached = listItemVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -457,14 +478,17 @@ export const usesListItemVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesIndicatorVariants(),
             resizableRule,
         ]),
     });
+    listItemVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
 export const usesListItemStates = () => {
     // dependencies:
     
@@ -481,6 +505,12 @@ export const usesListItemStates = () => {
         ]),
     });
 };
+
+cssListConfig.onChange.subscribe(() => {
+    // clear caches:
+    listItemSelfLayoutCache = undefined;
+    listItemVariantsCache   = undefined;
+});
 
 export const useListItemStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
