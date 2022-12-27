@@ -112,8 +112,8 @@
 
 // dialog-components:
 [optimized ] [documented  ] [          atomic] @reusable-ui/modal
-[published ] [documented  ] [full    compound] @reusable-ui/modal-card
-[published ] [documented  ] [full    compound] @reusable-ui/modal-side
+[optimized ] [documented  ] [full    compound] @reusable-ui/modal-card
+[optimized ] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
 [published ] [documented  ] [          atomic] @reusable-ui/progress

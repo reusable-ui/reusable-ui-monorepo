@@ -405,14 +405,7 @@ export const usesBackdropCardVariants = () => {
         ]),
     });
 };
-export const usesBackdropCardStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesBackdropStates(),
-        ]),
-    });
-};
+export const usesBackdropCardStates = usesBackdropStates;
 
 export const useBackdropCardStyleSheet = dynamicStyleSheet(() => ({
     ...imports([

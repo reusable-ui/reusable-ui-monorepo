@@ -401,14 +401,7 @@ export const usesBackdropSideVariants = () => {
         ]),
     });
 };
-export const usesBackdropSideStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesBackdropStates(),
-        ]),
-    });
-};
+export const usesBackdropSideStates = usesBackdropStates;
 
 export const useBackdropSideStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
