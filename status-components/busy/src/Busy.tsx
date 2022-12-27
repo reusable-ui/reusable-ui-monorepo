@@ -127,14 +127,7 @@ export const usesBusyVariants = () => {
         ]),
     });
 };
-export const usesBusyStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesBadgeStates(),
-        ]),
-    });
-};
+export const usesBusyStates = usesBadgeStates;
 
 export const useBusyStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
