@@ -83,7 +83,7 @@
 [optimized ] [documented  ] [full    compound] @reusable-ui/button-icon
 [no css    ] [documented  ] [full    compound] @reusable-ui/close-button
 [notneedopt] [documented  ] [          atomic] @reusable-ui/form
-[notneedopt] [documented  ] [          atomic] @reusable-ui/input
+[optimized ] [documented  ] [          atomic] @reusable-ui/input
 [notneedopt] [documented  ] [full    compound] @reusable-ui/range
 [optimized ] [documented  ] [          atomic] @reusable-ui/check
 [notneedopt] [documented  ] [          atomic] @reusable-ui/radio

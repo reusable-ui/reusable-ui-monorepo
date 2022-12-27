@@ -218,14 +218,7 @@ export const usesInputVariants = () => {
         ]),
     });
 };
-export const usesInputStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesEditableTextControlStates(),
-        ]),
-    });
-};
+export const usesInputStates = usesEditableTextControlStates;
 
 export const useInputStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
