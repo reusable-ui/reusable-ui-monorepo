@@ -106,9 +106,9 @@
 // menu-components:
 [optimized ] [documented  ] [          atomic] @reusable-ui/collapse
 [optimized ] [documented  ] [partial compound] @reusable-ui/dropdown
-[published ] [documented  ] [full    compound] @reusable-ui/dropdown-button
-[published ] [documented  ] [full    compound] @reusable-ui/dropdown-list
-[published ] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
+[notneedopt] [documented  ] [full    compound] @reusable-ui/dropdown-button
+[notneedopt] [documented  ] [full    compound] @reusable-ui/dropdown-list
+[notneedopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
 
 // dialog-components:
 [published ] [documented  ] [          atomic] @reusable-ui/modal
