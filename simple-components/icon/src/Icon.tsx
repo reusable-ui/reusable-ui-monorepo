@@ -652,7 +652,7 @@ export const useIconStyleSheet = dynamicStyleSheet(() => ({
             ]),
         }),
     ]),
-}), { enabled: true, id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+}), { id: 'oqfct2z8qv' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
