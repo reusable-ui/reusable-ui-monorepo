@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -179,7 +180,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
 
 
 // styles:
+let collapseLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesCollapseLayout = (options?: OrientationableOptions) => {
+    const cached = collapseLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
     const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
@@ -193,7 +200,7 @@ export const usesCollapseLayout = (options?: OrientationableOptions) => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             animationRule,
@@ -216,8 +223,17 @@ export const usesCollapseLayout = (options?: OrientationableOptions) => {
             anim : animationVars.anim,
         }),
     });
+    collapseLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let collapseStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesCollapseStates = () => {
+    const cached = collapseStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -225,7 +241,7 @@ export const usesCollapseStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             collapsibleRule,
@@ -237,7 +253,15 @@ export const usesCollapseStates = () => {
             }),
         ]),
     });
+    collapseStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssCollapseConfig.onChange.subscribe(() => {
+    // clear caches:
+    collapseLayoutCache = undefined;
+    collapseStatesCache = undefined;
+});
 
 export const useCollapseStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
