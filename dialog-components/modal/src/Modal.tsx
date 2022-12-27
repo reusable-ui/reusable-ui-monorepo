@@ -304,7 +304,13 @@ export const useModalUiStyleSheet = dynamicStyleSheet(() => ({
 
 
 
+let backdropLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBackdropLayout = () => {
+    const cached = backdropLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // features:
@@ -319,7 +325,7 @@ export const usesBackdropLayout = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // features:
             borderRule,
@@ -400,9 +406,18 @@ export const usesBackdropLayout = () => {
             paddingBlock           : groupableVars.paddingBlock,
         }),
     });
+    backdropLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let backdropVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBackdropVariants = () => {
-    return style({
+    const cached = backdropVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...variants([
             rule('.hidden', {
                 // backgrounds:
@@ -422,8 +437,17 @@ export const usesBackdropVariants = () => {
             }),
         ]),
     });
+    backdropVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let backdropStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesBackdropStates = () => {
+    const cached = backdropStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -431,7 +455,7 @@ export const usesBackdropStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             collapsibleRule,
@@ -443,7 +467,16 @@ export const usesBackdropStates = () => {
             }),
         ]),
     });
+    backdropStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssModalConfig.onChange.subscribe(() => {
+    // clear caches:
+    backdropLayoutCache   = undefined;
+    backdropVariantsCache = undefined;
+    backdropStatesCache   = undefined;
+});
 
 export const useBackdropStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
