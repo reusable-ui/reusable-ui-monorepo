@@ -155,14 +155,7 @@ export const usesRadioVariants = () => {
         ]),
     });
 };
-export const usesRadioStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesCheckStates(),
-        ]),
-    });
-};
+export const usesRadioStates = usesCheckStates;
 
 export const useRadioStyleSheet = dynamicStyleSheet(() => ({
     ...imports([

@@ -86,7 +86,7 @@
 [optimized ] [documented  ] [          atomic] @reusable-ui/input
 [notneedopt] [documented  ] [full    compound] @reusable-ui/range
 [optimized ] [documented  ] [          atomic] @reusable-ui/check
-[notneedopt] [documented  ] [          atomic] @reusable-ui/radio
+[optimized ] [documented  ] [          atomic] @reusable-ui/radio
 [notneedopt] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
