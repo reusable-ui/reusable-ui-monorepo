@@ -116,20 +116,20 @@
 [optimized ] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
-[published ] [documented  ] [          atomic] @reusable-ui/progress
-[published ] [documented  ] [          atomic] @reusable-ui/group
-[published ] [documented  ] [full    compound] @reusable-ui/nav
-[published ] [documented  ] [full    compound] @reusable-ui/navscroll
-[published ] [documented  ] [full    compound] @reusable-ui/pagination
-[published ] [documented  ] [full    compound] @reusable-ui/accordion
-[published ] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
-[published ] [documented  ] [full    compound] @reusable-ui/carousel
-[published ] [documented  ] [          atomic] @reusable-ui/navbar
+[notneedopt] [documented  ] [          atomic] @reusable-ui/progress
+[notneedopt] [documented  ] [          atomic] @reusable-ui/group
+[notneedopt] [documented  ] [full    compound] @reusable-ui/nav
+[notneedopt] [documented  ] [full    compound] @reusable-ui/navscroll
+[notneedopt] [documented  ] [full    compound] @reusable-ui/pagination
+[notneedopt] [documented  ] [full    compound] @reusable-ui/accordion
+[notneedopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
+[notneedopt] [documented  ] [full    compound] @reusable-ui/carousel
+[notneedopt] [documented  ] [          atomic] @reusable-ui/navbar
 [optimized ] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
-[published ] [documented  ] [          atomic] @reusable-ui/visually-hidden
-[published ] [undocumented] @reusable-ui/dimensions
-[published ] [undocumented] @reusable-ui/responsives
+[notneedopt] [documented  ] [          atomic] @reusable-ui/visually-hidden
+[notneedopt] [undocumented] @reusable-ui/dimensions
+[notneedopt] [undocumented] @reusable-ui/responsives
 
 [published ] @reusable-ui/components
