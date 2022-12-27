@@ -8,6 +8,7 @@ import {
 import {
     // cssfn css specific types:
     CssKnownProps,
+    CssRule,
     
     
     
@@ -118,8 +119,14 @@ export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
 
 
 // styles:
+let popupLayoutCache : WeakRef<CssRule>|undefined = undefined;
 export const usesPopupLayout = () => {
-    return style({
+    const cached = popupLayoutCache?.deref();
+    if (cached) return cached;
+    
+    
+    
+    const result = style({
         ...imports([
             // layouts:
             usesBasicLayout(),
@@ -136,8 +143,17 @@ export const usesPopupLayout = () => {
             ...usesCssProps(popups), // apply config's cssProps
         }),
     });
+    popupLayoutCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let popupVariantsCache : WeakRef<CssRule>|undefined = undefined;
 export const usesPopupVariants = () => {
+    const cached = popupVariantsCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // variants:
@@ -145,15 +161,24 @@ export const usesPopupVariants = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // variants:
             usesBasicVariants(),
             resizableRule,
         ]),
     });
+    popupVariantsCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+let popupStatesCache : WeakRef<CssRule>|undefined = undefined;
 export const usesPopupStates = () => {
+    const cached = popupStatesCache?.deref();
+    if (cached) return cached;
+    
+    
+    
     // dependencies:
     
     // states:
@@ -161,7 +186,7 @@ export const usesPopupStates = () => {
     
     
     
-    return style({
+    const result = style({
         ...imports([
             // states:
             collapsibleRule,
@@ -173,7 +198,16 @@ export const usesPopupStates = () => {
             }),
         ]),
     });
+    popupStatesCache = new WeakRef<CssRule>(result);
+    return result;
 };
+
+cssPopupConfig.onChange.subscribe(() => {
+    // clear caches:
+    popupLayoutCache   = undefined;
+    popupVariantsCache = undefined;
+    popupStatesCache   = undefined;
+});
 
 export const usePopupStyleSheet = dynamicStyleSheet(() => ({
     ...imports([
