@@ -1,10 +1,10 @@
 {
   "name": "test-spacers",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/spacers": "^5.0.2",
+    "@reusable-ui/spacers": "^5.0.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

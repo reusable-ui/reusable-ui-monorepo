@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/hooks",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A set of React helper hooks.",
   "keywords": [
     "react",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.11",
-    "@reusable-ui/client-sides": "^5.0.1",
+    "@reusable-ui/client-sides": "^5.0.2",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/colorable",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Colorize the UI based on its theme or the background theme.",
   "keywords": [
     "colorable",
@@ -36,9 +36,9 @@
     "@cssfn/core": "^2.0.11"
   },
   "peerDependencies": {
-    "@reusable-ui/background": "^5.0.5",
-    "@reusable-ui/mildable": "^5.0.3",
-    "@reusable-ui/outlineable": "^5.0.3",
-    "@reusable-ui/themable": "^5.0.2"
+    "@reusable-ui/background": "^5.0.6",
+    "@reusable-ui/mildable": "^5.0.4",
+    "@reusable-ui/outlineable": "^5.0.4",
+    "@reusable-ui/themable": "^5.0.3"
   }
 }

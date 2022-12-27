@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/stripouts",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Removes browser's default stylesheet.",
   "keywords": [
     "clear",

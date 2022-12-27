@@ -1,9 +1,9 @@
 {
   "name": "test-dropdown-button",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": true,
   "dependencies": {
-    "@reusable-ui/dropdown-button": "^5.0.14",
+    "@reusable-ui/dropdown-button": "^5.0.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

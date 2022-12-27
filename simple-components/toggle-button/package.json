@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/toggle-button",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "A button with toggleable active state.",
   "keywords": [
     "toggle",
@@ -34,8 +34,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/button": "^5.0.19",
-    "@reusable-ui/core": "^5.0.13",
+    "@reusable-ui/button": "^5.0.20",
+    "@reusable-ui/core": "^5.0.14",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

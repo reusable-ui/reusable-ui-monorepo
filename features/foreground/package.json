@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/foreground",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "Foreground (text color) stuff of UI.",
   "keywords": [
     "foreground",
@@ -34,8 +34,8 @@
     "@cssfn/core": "^2.0.11"
   },
   "peerDependencies": {
-    "@reusable-ui/mildable": "^5.0.3",
-    "@reusable-ui/outlineable": "^5.0.3",
-    "@reusable-ui/themable": "^5.0.2"
+    "@reusable-ui/mildable": "^5.0.4",
+    "@reusable-ui/outlineable": "^5.0.4",
+    "@reusable-ui/themable": "^5.0.3"
   }
 }

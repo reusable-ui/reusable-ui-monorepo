@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/semantics",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "A semantic management system for react web components.",
   "keywords": [
     "semantics",

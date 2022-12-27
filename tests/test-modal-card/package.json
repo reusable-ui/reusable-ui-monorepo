@@ -1,12 +1,12 @@
 {
   "name": "test-modal-card",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": true,
   "dependencies": {
-    "@reusable-ui/button": "^5.0.19",
-    "@reusable-ui/check": "^5.0.16",
-    "@reusable-ui/close-button": "^5.0.12",
-    "@reusable-ui/modal-card": "^5.0.17",
+    "@reusable-ui/button": "^5.0.20",
+    "@reusable-ui/check": "^5.0.17",
+    "@reusable-ui/close-button": "^5.0.13",
+    "@reusable-ui/modal-card": "^5.0.18",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

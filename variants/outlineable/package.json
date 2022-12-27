@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/outlineable",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Outlined (background-less) variant of UI.",
   "keywords": [
     "outlineable",
@@ -37,6 +37,6 @@
     "@cssfn/core": "^2.0.11"
   },
   "peerDependencies": {
-    "@reusable-ui/themable": "^5.0.2"
+    "@reusable-ui/themable": "^5.0.3"
   }
 }

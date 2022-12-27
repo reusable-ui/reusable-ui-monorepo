@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/animating-state",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A hook for creating animating state.",
   "keywords": [
     "utility",
@@ -31,7 +31,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/hooks": "^5.0.3",
+    "@reusable-ui/hooks": "^5.0.4",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {

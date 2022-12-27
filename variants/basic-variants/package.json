@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/basic-variants",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "Basic variants of UI.",
   "keywords": [
     "variants",
@@ -39,11 +39,11 @@
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
-    "@reusable-ui/gradientable": "^5.0.1",
-    "@reusable-ui/mildable": "^5.0.3",
-    "@reusable-ui/outlineable": "^5.0.3",
-    "@reusable-ui/resizable": "^5.0.2",
-    "@reusable-ui/themable": "^5.0.2",
+    "@reusable-ui/gradientable": "^5.0.2",
+    "@reusable-ui/mildable": "^5.0.4",
+    "@reusable-ui/outlineable": "^5.0.4",
+    "@reusable-ui/resizable": "^5.0.3",
+    "@reusable-ui/themable": "^5.0.3",
     "react": "^18.2.0"
   }
 }

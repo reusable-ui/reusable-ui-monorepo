@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/alert",
-  "version": "5.0.16",
+  "version": "5.0.17",
   "description": "A UI for displaying feedback messages.",
   "keywords": [
     "alert",
@@ -42,13 +42,13 @@
   "dependencies": {
     "@cssfn/core": "^2.0.11",
     "@cssfn/cssfn-react": "^2.0.21",
-    "@reusable-ui/button-icon": "^5.0.15",
-    "@reusable-ui/close-button": "^5.0.12",
-    "@reusable-ui/content": "^5.0.12",
-    "@reusable-ui/control": "^5.0.13",
-    "@reusable-ui/core": "^5.0.13",
-    "@reusable-ui/icon": "^5.0.20",
-    "@reusable-ui/popup": "^5.0.13",
+    "@reusable-ui/button-icon": "^5.0.16",
+    "@reusable-ui/close-button": "^5.0.13",
+    "@reusable-ui/content": "^5.0.13",
+    "@reusable-ui/control": "^5.0.14",
+    "@reusable-ui/core": "^5.0.14",
+    "@reusable-ui/icon": "^5.0.21",
+    "@reusable-ui/popup": "^5.0.14",
     "@types/react": "^18.0.26"
   },
   "peerDependencies": {
