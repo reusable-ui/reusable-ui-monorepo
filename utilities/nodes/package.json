@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nodes",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "A set of React node utility functions.",
   "keywords": [
     "nodes",

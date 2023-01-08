@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/breakpoints",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "A responsive management system based on screen width.",
   "keywords": [
     "responsive",

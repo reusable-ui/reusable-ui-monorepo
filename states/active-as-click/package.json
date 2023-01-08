@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/active-as-click",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "description": "Shows the UI as clicked when activated.",
   "keywords": [
     "activatable",
@@ -37,8 +37,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.0.11",
-    "@reusable-ui/activatable": "^5.0.9",
-    "@reusable-ui/clickable": "^5.0.4"
+    "@reusable-ui/activatable": "^5.0.10",
+    "@reusable-ui/clickable": "^5.0.5"
   },
   "peerDependencies": {
     "@reusable-ui/mildable": "^5.0.4",
