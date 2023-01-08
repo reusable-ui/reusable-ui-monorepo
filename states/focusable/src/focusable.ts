@@ -279,7 +279,10 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     const handleKeyDown = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
-        if (event.code.toLowerCase() === 'tab') return; // ignores [tab] key
+        /* note: the `code` may `undefined` on autoComplete */
+        const keyCode = (event.code as string|undefined)?.toLowerCase();
+        // if (!keyCode)       return; // allows [unidentified] key
+        if (keyCode === 'tab') return; // ignores [tab] key
         
         
         

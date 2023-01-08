@@ -226,10 +226,13 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
+        /* note: the `code` may `undefined` on autoComplete */
+        const keyCode = (event.code as string|undefined)?.toLowerCase();
+        if (!keyCode) return; // ignores [unidentified] key
+        
         
         
         if (((): boolean => {
-            const keyCode = event.code.toLowerCase();
             const isRtl   = (getComputedStyle(event.currentTarget).direction === 'rtl');
             
             

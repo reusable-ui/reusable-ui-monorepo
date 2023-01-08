@@ -304,13 +304,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
+        /* note: the `code` may `undefined` on autoComplete */
+        const keyCode = (event.code as string|undefined)?.toLowerCase();
+        if (!keyCode) return; // ignores [unidentified] key
+        
         
         
         if (((): boolean => {
-            const keyCode = event.code.toLowerCase();
-            
-            
-            
             if ((keyCode === 'escape')) {
                 // [esc] key pressed => request to hide the <Dropdown>:
                 handleExpandedChange?.({ expanded: false, actionType: 'shortcut' } as TDropdownExpandedChangeEvent);

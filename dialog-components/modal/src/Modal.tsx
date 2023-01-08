@@ -677,13 +677,13 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
+        /* note: the `code` may `undefined` on autoComplete */
+        const keyCode = (event.code as string|undefined)?.toLowerCase();
+        if (!keyCode) return; // ignores [unidentified] key
+        
         
         
         if (((): boolean => {
-            const keyCode = event.code.toLowerCase();
-            
-            
-            
             if (!isModal) {
                 return false; // interactive|hidden => do not trap the [tab]
             }
@@ -941,7 +941,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         // handlers:
         const handleKeyDown = (event: KeyboardEvent) => {
-            const keyCode = event.code.toLowerCase();
+            // conditions:
+            /* note: the `code` may `undefined` on autoComplete */
+            const keyCode = (event.code as string|undefined)?.toLowerCase();
+            if (!keyCode) return; // ignores [unidentified] key
             
             
             

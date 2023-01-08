@@ -325,7 +325,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             );
         },
         logKeyEvent : function(event: KeyboardEvent, isKeyDown: boolean, actionKeys: string[]|null) {
-            const keyCode = event.code.toLowerCase();
+            // conditions:
+            /* note: the `code` may `undefined` on autoComplete */
+            const keyCode = (event.code as string|undefined)?.toLowerCase();
+            if (!keyCode) return; // ignores [unidentified] key
+            
+            
+            
             if (isKeyDown) {
                 this.activeKeys.add(keyCode);
             }
@@ -410,6 +416,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (!logs.isActive) handleReleaseAfterClick();
         };
         const handleKeyUp             = (event: KeyboardEvent): void => {
+            // conditions:
+            /* note: the `code` may `undefined` on autoComplete */
+            const keyCode = (event.code as string|undefined)?.toLowerCase();
+            if (!keyCode) return; // ignores [unidentified] key
+            
+            
+            
             // logs:
             logs.logKeyEvent(event, false /*key_up*/, actionKeys);
             
@@ -434,7 +447,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                     // prevents triggering a *double* `onClick` event fired by native <button>
                     // prevents scrolling the whole page by [space] key
                     // still alowing scrolling the whole page by arrows, pgup, pgdown, home, end:
-                    const keyCode = event.code.toLowerCase();
                     if ((keyCode === 'enter') || (keyCode === 'space') || (!actionKeys || actionKeys.includes(keyCode))) {
                         event.preventDefault();
                     } // if
@@ -514,6 +526,13 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handlePressRelease();
     });
     const handleKeyDown      = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+        // conditions:
+        /* note: the `code` may `undefined` on autoComplete */
+        const keyCode = (event.code as string|undefined)?.toLowerCase();
+        if (!keyCode) return; // ignores [unidentified] key
+        
+        
+        
         // logs:
         logs.logKeyEvent(event.nativeEvent, true /*key_down*/, actionKeys);
         
@@ -525,7 +544,6 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         
         
         // actions:
-        const keyCode = event.code.toLowerCase();
         if (logs.isActive) { // <kbd>actionKeys</kbd> key was handled
             if (handleActionCtrlEvents) {
                 // actions:
