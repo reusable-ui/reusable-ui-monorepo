@@ -3,6 +3,8 @@ export const usesListVariants = (options?: OrientationableOptions) // try to sim
     export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOptions) // expensive!
         selectorsToString // expensive!
 
+[high prior] rename convertSelectorGroupToPureSelectorGroup to selectPureSelectorGroupFromSelectorGroup
+
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
