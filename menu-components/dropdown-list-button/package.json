@@ -44,9 +44,9 @@
     "@reusable-ui/dropdown-button": "^5.0.16",
     "@reusable-ui/dropdown-list": "^5.0.17",
     "@reusable-ui/list": "^5.0.18",
-    "@types/react": "^18.0.26"
+    "@types/react": "^18.0.27"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.0.0"
   }
 }

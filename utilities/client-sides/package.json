@@ -30,11 +30,11 @@
   },
   "dependencies": {
     "@reusable-ui/nodes": "^5.0.3",
-    "@types/react": "^18.0.26",
+    "@types/react": "^18.0.27",
     "history": "^5.3.0",
     "is-in-browser": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.0.0"
   }
 }

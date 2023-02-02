@@ -30,7 +30,7 @@
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
-  "peerDependencies": {
-    "@cssfn/core": "^2.0.11"
+  "dependencies": {
+    "@cssfn/core": "^2.1.0"
   }
 }

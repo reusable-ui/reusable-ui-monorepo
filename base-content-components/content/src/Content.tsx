@@ -49,7 +49,7 @@ import {
     createSelector,
     createPureSelectorGroup,
     isNotEmptySelectors,
-    convertSelectorGroupToPureSelectorGroup,
+    selectPureSelectorGroupFromSelectorGroup,
     selectorsToString,
     groupSelectors,
     groupSelector,
@@ -240,7 +240,7 @@ export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOp
         mediaSelectorWithExcept     : toSelectors(adjustChildSpecificity(mediaSelectorWithExceptZero)),
         mediaSelectorWithExceptZero : toSelectors(mediaSelectorWithExceptZero),
         
-        mediaSelector: mediaSelector && convertSelectorGroupToPureSelectorGroup(mediaSelector),
+        mediaSelector: mediaSelector && selectPureSelectorGroupFromSelectorGroup(mediaSelector),
         notNotMediaSelector,
     };
     if (options === undefined) defaultContentChildrenMediaOptionsResultCache = new WeakRef<ContentChildrenMediaOptionsResult>(result);
@@ -569,7 +569,7 @@ export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOp
         linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
         linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
-        linksSelector : linksSelector && convertSelectorGroupToPureSelectorGroup(linksSelector),
+        linksSelector : linksSelector && selectPureSelectorGroupFromSelectorGroup(linksSelector),
         notNotLinksSelector,
     };
     if (options === undefined) defaultContentChildrenLinksOptionsResultCache = new WeakRef<ContentChildrenLinksOptionsResult>(result);
