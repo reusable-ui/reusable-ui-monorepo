@@ -126,7 +126,7 @@ export const [containers, containerValues, cssContainerConfig] = cssConfig(() =>
 }, { prefix: 'con' });
 
 // configs adjusted by screen width:
-styleSheet({
+styleSheet(() => ({
     ...atGlobal({
         ...atRoot({
             ...rules([
@@ -141,7 +141,7 @@ styleSheet({
             ]),
         }, { specificityWeight: 2 }), // increase the specificity to win with the specificity in cssConfig's :root
     }),
-});
+}), { id: 'tnf33osvif' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
