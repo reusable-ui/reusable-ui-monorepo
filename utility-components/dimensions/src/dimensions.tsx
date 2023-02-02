@@ -63,7 +63,7 @@ const getElement = <TElement extends Element = HTMLElement>(elementRef: TElement
 
 
 // hooks:
-export type ElementResizeCallback<TElement extends Element = HTMLElement> = (element: TElement, size: ResizeObserverSize) => void
+export type ElementResizeCallback<TElement extends Element = HTMLElement> = (size: ResizeObserverSize, element: TElement) => void
 export const useElementResizeObserver = <TElement extends Element = HTMLElement>(elementRef: TElement|React.RefObject<TElement>|null, elementResizeCallback: ElementResizeCallback<TElement>, options = _defaultElementResizeOptions) => {
     // dom effects:
     useIsomorphicLayoutEffect(() => {
@@ -78,15 +78,15 @@ export const useElementResizeObserver = <TElement extends Element = HTMLElement>
             switch (options.box ?? 'content-box') {
                 case 'content-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        elementResizeCallback(element, entry.contentBoxSize[0]);
+                        elementResizeCallback(entry.contentBoxSize[0], element);
                     };
                 case 'border-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        elementResizeCallback(element, entry.borderBoxSize[0]);
+                        elementResizeCallback(entry.borderBoxSize[0], element);
                     };
                 case 'device-pixel-content-box':
                     return ([entry]: ResizeObserverEntry[]) => {
-                        elementResizeCallback(element, entry.devicePixelContentBoxSize[0]);
+                        elementResizeCallback(entry.devicePixelContentBoxSize[0], element);
                     };
                 default:
                     throw TypeError();
@@ -166,6 +166,32 @@ export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallba
 
 
 
+const useResizeCallback = (liveStyleSheet: Subject<CssStyle|null>, options: CssSizeOptions) => {
+    // dom effects:
+    const {
+        selector = ':root',
+        varInlineSize,
+        varBlockSize,
+    } = options;
+    return useCallback((size: ResizeObserverSize) => {
+        // update the `liveStyleSheet`:
+        liveStyleSheet.next({
+            ...atGlobal({
+                ...rule(selector, {
+                    ...iif(!!varInlineSize, vars({
+                        [varInlineSize ?? ''] : `${size.inlineSize}px`,
+                    })),
+                    ...iif(!!varBlockSize, vars({
+                        [varBlockSize  ?? ''] : `${size.blockSize }px`,
+                    })),
+                }),
+            }),
+        });
+    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
+};
+
+
+
 type ReusableLiveStyleSheet = [boolean, Subject<CssStyle|null>];
 const reusableLiveStyleSheets : ReusableLiveStyleSheet[] = [];
 const allocateLiveStyleSheet = (): Subject<CssStyle|null> => {
@@ -179,7 +205,7 @@ const allocateLiveStyleSheet = (): Subject<CssStyle|null> => {
     
     // create a new liveStyleSheet:
     const newLiveStyleSheet = new Subject<CssStyle|null>();
-    styleSheet(newLiveStyleSheet);
+    styleSheet(newLiveStyleSheet); // TODO: add options: { ssr: false }
     reusableLiveStyleSheets.push([
         true,             // mark as in_use
         newLiveStyleSheet // the new liveStyleSheet
@@ -208,27 +234,7 @@ export const useElementCssSize = <TElement extends Element = HTMLElement>(elemen
     
     
     // dom effects:
-    const {
-        selector = ':root',
-        varInlineSize,
-        varBlockSize,
-    } = options;
-    const elementResizeCallback = useCallback((_element: TElement, size: ResizeObserverSize) => {
-        // update the `liveStyleSheet`:
-        liveStyleSheet.next({
-            ...atGlobal({
-                ...rule(selector, {
-                    ...iif(!!varInlineSize, vars({
-                        [varInlineSize ?? ''] : `${size.inlineSize}px`,
-                    })),
-                    ...iif(!!varBlockSize, vars({
-                        [varBlockSize  ?? ''] : `${size.blockSize }px`,
-                    })),
-                }),
-            }),
-        });
-    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
-    
+    const elementResizeCallback = useResizeCallback(liveStyleSheet, options);
     useElementResizeObserver(elementRef, elementResizeCallback);
     
     
@@ -248,27 +254,7 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
     
     
     // dom effects:
-    const {
-        selector = ':root',
-        varInlineSize,
-        varBlockSize,
-    } = options;
-    const windowResizeCallback = useCallback((size: ResizeObserverSize) => {
-        // update the `liveStyleSheet`:
-        liveStyleSheet.next({
-            ...atGlobal({
-                ...rule(selector, {
-                    ...iif(!!varInlineSize, vars({
-                        [varInlineSize ?? ''] : `${size.inlineSize}px`,
-                    })),
-                    ...iif(!!varBlockSize, vars({
-                        [varBlockSize  ?? ''] : `${size.blockSize }px`,
-                    })),
-                }),
-            }),
-        });
-    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
-    
+    const windowResizeCallback = useResizeCallback(liveStyleSheet, options);
     useWindowResizeObserver(windowResizeCallback);
     
     
