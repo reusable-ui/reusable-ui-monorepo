@@ -1,26 +1,26 @@
 packages                        VAR     CFG
-@reusable-ui/colors             -       
-@reusable-ui/borders            -       
-@reusable-ui/spacers            -       
-@reusable-ui/breakpoints        -       
-@reusable-ui/typos              -       
-@reusable-ui/accessibilities    -       
-@reusable-ui/validations        -       
-@reusable-ui/background         bg      
-@reusable-ui/foreground         fg      
-@reusable-ui/border             bd      
-@reusable-ui/ring               rg      
-@reusable-ui/animation          an      
-@reusable-ui/padding            pd      
-@reusable-ui/groupable          gr      
-@reusable-ui/orientationable    -       
-@reusable-ui/resizable          -       
-@reusable-ui/themable           th      
-@reusable-ui/gradientable       gd      
-@reusable-ui/outlineable        ol      
-@reusable-ui/mildable           mi      
-@reusable-ui/nudible            nu      
-@reusable-ui/basic-variants     -       
+@reusable-ui/colors             -       col
+@reusable-ui/borders            -       bor  bor-rd     // modify
+@reusable-ui/spacers            -       spc
+@reusable-ui/breakpoints        -       -
+@reusable-ui/typos              -       ""
+@reusable-ui/accessibilities    -       -
+@reusable-ui/validations        -       -
+@reusable-ui/background         bg      -   // modify
+@reusable-ui/foreground         fg      -   // modify
+@reusable-ui/border             bd      -   // modify
+@reusable-ui/ring               ri      -   // modify
+@reusable-ui/animation          an      -   // modify
+@reusable-ui/padding            pd      -   // modify
+@reusable-ui/groupable          gr      -   // modify
+@reusable-ui/orientationable    -       -
+@reusable-ui/resizable          -       -
+@reusable-ui/themable           th      -   // modify
+@reusable-ui/gradientable       gd      -   // modify
+@reusable-ui/outlineable        ol      -   // modify
+@reusable-ui/mildable           mi      -   // modify
+@reusable-ui/nudible            nu      -   // modify
+@reusable-ui/basic-variants     -       -
 
 
 
