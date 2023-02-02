@@ -75,9 +75,9 @@ export { displays as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...usesHeadingRule(displays, ['.display-']),
     }),
-]);
+]), { id: 'p7ufa8wbx4' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

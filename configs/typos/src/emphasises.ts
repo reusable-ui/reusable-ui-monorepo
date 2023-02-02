@@ -15,7 +15,7 @@ import {
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['del', 's', 'ins', 'u', 'small', '.small', 'strong', 'b', 'em', 'i'], {
             // layouts:
@@ -42,5 +42,5 @@ styleSheets([
             fontStyle      : 'italic',
         }),
     }),
-]);
+]), { id: '1uabr1zyyb' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

@@ -55,7 +55,7 @@ export { horzRules as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule('hr', {
             // layouts:
@@ -74,5 +74,5 @@ styleSheets([
             ...usesCssProps(horzRules),
         }),
     }),
-]);
+]), { id: 'b1y9111nws' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

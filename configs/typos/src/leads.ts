@@ -62,7 +62,7 @@ export { leads as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule('.lead', {
             // layouts:
@@ -84,5 +84,5 @@ styleSheets([
             ...usesCssProps(leads),
         }),
     }),
-]);
+]), { id: 'dnycox8vns' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

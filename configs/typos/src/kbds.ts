@@ -76,7 +76,7 @@ export { kbds as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['kbd', '.kbd'], {
             // layouts:
@@ -88,5 +88,5 @@ styleSheets([
             ...usesCssProps(kbds),
         }),
     }),
-]);
+]), { id: 'dxux9w7w0j' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

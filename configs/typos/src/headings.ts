@@ -165,9 +165,9 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
         ),
     ]);
 };
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...usesHeadingRule(headings, ['h', '.h'], `:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`),
     }),
-]);
+]), { id: 'n5yxez3ko5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

@@ -52,7 +52,7 @@ export { paragraphs as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['p', '.p'], {
             ...rule(`:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`, {
@@ -76,5 +76,5 @@ styleSheets([
             }, { specificityWeight: 0 }),
         }),
     }),
-]);
+]), { id: '3jcwr3almp' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

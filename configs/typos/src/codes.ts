@@ -79,7 +79,7 @@ export { codes as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['code', '.code', 'var', '.var', 'samp', '.samp'], {
             // layouts:
@@ -91,5 +91,5 @@ styleSheets([
             ...usesCssProps(codes),
         }),
     }),
-]);
+]), { id: 'h42u1er4ya' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

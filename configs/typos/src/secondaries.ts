@@ -47,12 +47,12 @@ export { secondaries as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['small', '.txt-sec'], {
             // customize:
             ...usesCssProps(secondaries),
         }),
     }),
-]);
+]), { id: '6xcjkza3h9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

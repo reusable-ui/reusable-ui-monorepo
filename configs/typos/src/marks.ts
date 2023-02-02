@@ -71,7 +71,7 @@ export { marks as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['mark', '.mark'], {
             // layouts:
@@ -83,5 +83,5 @@ styleSheets([
             ...usesCssProps(marks),
         }),
     }),
-]);
+]), { id: 'jtbgwy6kbb' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

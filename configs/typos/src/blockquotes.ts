@@ -58,7 +58,7 @@ export { blockquotes as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...rule(['blockquote', '.blockquote'], {
             // layouts:
@@ -80,5 +80,5 @@ styleSheets([
             ...usesCssProps(blockquotes),
         }),
     }),
-]);
+]), { id: '6h0f4cwli6' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets

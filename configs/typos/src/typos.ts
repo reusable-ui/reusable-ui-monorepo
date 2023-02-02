@@ -114,12 +114,12 @@ export { typos as default }
 
 
 //#region style sheets
-styleSheets([
+styleSheets(() => ([
     globalScope({
         ...atRoot({
             // customize:
             ...usesCssProps(typos),
         }),
     }),
-]);
+]), { id: 'wnmkok4wrw' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 //#endregion style sheets
