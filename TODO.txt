@@ -1,3 +1,29 @@
+packages                        VAR     CFG
+@reusable-ui/colors             -       
+@reusable-ui/borders            -       
+@reusable-ui/spacers            -       
+@reusable-ui/breakpoints        -       
+@reusable-ui/typos              -       
+@reusable-ui/accessibilities    -       
+@reusable-ui/validations        -       
+@reusable-ui/background         bg      
+@reusable-ui/foreground         fg      
+@reusable-ui/border             bd      
+@reusable-ui/ring               rg      
+@reusable-ui/animation          an      
+@reusable-ui/padding            pd      
+@reusable-ui/groupable          gr      
+@reusable-ui/orientationable    -       
+@reusable-ui/resizable          -       
+@reusable-ui/themable           th      
+@reusable-ui/gradientable       gd      
+@reusable-ui/outlineable        ol      
+@reusable-ui/mildable           mi      
+@reusable-ui/nudible            nu      
+@reusable-ui/basic-variants     -       
+
+
+
 [med prior] : dimensions: styleSheet(newLiveStyleSheet); // TODO: add options: { ssr: false }
 
 
