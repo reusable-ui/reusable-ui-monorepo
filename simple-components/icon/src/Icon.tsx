@@ -444,7 +444,12 @@ export const usesIconFontLayout  = () => {
     
     
     return style({
-        // load a custom font:
+        // sizes:
+        aspectRatio : '1/1', // assumes the font_icon is always square -- in order to the custom_font is not yet loaded
+        
+        
+        
+        // load a custom_font:
         ...fontFace({
             ...imports([
                 iconConfig.font.style, // define the font's properties
@@ -465,19 +470,20 @@ export const usesIconFontLayout  = () => {
         // children:
         ...children('::after', {
             ...imports([
-                // use the loaded custom font:
+                // use the loaded custom_font:
                 iconConfig.font.style, // apply the defined font's properties
             ]),
             ...style({
                 // layouts:
-                content       : iconVars.image, // put the icon's name here, the font system will replace the name to the actual image
+                content       : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
                 display       : 'inline',       // use inline, so it takes the width & height automatically
                 
                 
                 
                 // sizes:
                 fontSize      : iconVars.size,  // set icon's size
-                overflowY     : 'hidden',       // a hack: hides the pseudo-inherited underline
+             // overflowY     : 'hidden',       // a hack: hides the pseudo-inherited underline
+                overflow      : 'hidden',       // we need to squash the text both vertically and horizontally when the custom_font is not yet loaded
                 
                 
                 
@@ -536,10 +542,14 @@ export const usesIconImageLayout = () => {
     
     const result = style({
         // appearances:
-        maskSize      : 'contain',       // image's size is as big as possible without being cropped
-        maskRepeat    : 'no-repeat',     // just one image, no repetition
-        maskPosition  : 'center',        // place the image at the center
-        maskImage     : iconVars.image,  // set icon's image
+        maskSize           : 'contain',       // image's size is as big as possible without being cropped
+        WebkitMaskSize     : 'contain',       // supports for Chrome, WebKit browsers, & Opera
+        maskRepeat         : 'no-repeat',     // just one image, no repetition
+        WebkitMaskRepeat   : 'no-repeat',     // supports for Chrome, WebKit browsers, & Opera
+        maskPosition       : 'center',        // place the image at the center
+        WebkitMaskPosition : 'center',        // supports for Chrome, WebKit browsers, & Opera
+        maskImage          : iconVars.image,  // set icon's image
+        WebkitMaskImage    : iconVars.image,  // supports for Chrome, WebKit browsers, & Opera
         
         
         
