@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nudible",
-  "version": "5.0.7",
+  "version": "5.1.0",
   "description": "Nude variant of UI.",
   "keywords": [
     "nudible",
@@ -34,7 +34,7 @@
     "@cssfn/core": "^2.1.0"
   },
   "peerDependencies": {
-    "@reusable-ui/border": "^5.0.6",
-    "@reusable-ui/padding": "^5.0.2"
+    "@reusable-ui/border": "^5.1.0",
+    "@reusable-ui/padding": "^5.1.0"
   }
 }

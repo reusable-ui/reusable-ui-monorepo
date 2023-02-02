@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/activatable",
-  "version": "5.0.10",
+  "version": "5.1.0",
   "description": "A capability of UI to be highlighted/selected/activated.",
   "keywords": [
     "activatable",
@@ -34,16 +34,16 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.1.0",
-    "@reusable-ui/animating-state": "^5.0.5",
-    "@reusable-ui/hooks": "^5.0.5",
-    "@reusable-ui/semantics": "^5.0.3",
+    "@reusable-ui/animating-state": "^5.1.0",
+    "@reusable-ui/hooks": "^5.1.0",
+    "@reusable-ui/semantics": "^5.1.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^5.0.2",
-    "@reusable-ui/animation": "^5.0.2",
-    "@reusable-ui/mildable": "^5.0.4",
-    "@reusable-ui/outlineable": "^5.0.4",
+    "@reusable-ui/accessibilities": "^5.1.0",
+    "@reusable-ui/animation": "^5.1.0",
+    "@reusable-ui/mildable": "^5.1.0",
+    "@reusable-ui/outlineable": "^5.1.0",
     "react": "^18.0.0"
   }
 }

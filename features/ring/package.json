@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/ring",
-  "version": "5.0.5",
+  "version": "5.1.0",
   "description": "Ring (focus indicator) color of UI.",
   "keywords": [
     "ring",
@@ -35,6 +35,6 @@
     "@cssfn/core": "^2.1.0"
   },
   "peerDependencies": {
-    "@reusable-ui/themable": "^5.0.3"
+    "@reusable-ui/themable": "^5.1.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/container",
-  "version": "5.0.16",
+  "version": "5.1.0",
   "description": "A base container UI of Reusable-UI components.",
   "keywords": [
     "container",
@@ -38,8 +38,8 @@
   "dependencies": {
     "@cssfn/core": "^2.1.0",
     "@cssfn/cssfn-react": "^2.1.0",
-    "@reusable-ui/basic": "^5.0.15",
-    "@reusable-ui/core": "^5.0.15",
+    "@reusable-ui/basic": "^5.1.0",
+    "@reusable-ui/core": "^5.1.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {

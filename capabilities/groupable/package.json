@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/groupable",
-  "version": "5.0.7",
+  "version": "5.1.0",
   "description": "Groups a list of UIs into a single UI.",
   "keywords": [
     "groupable",
@@ -36,8 +36,8 @@
     "@cssfn/core": "^2.1.0"
   },
   "peerDependencies": {
-    "@reusable-ui/border": "^5.0.6",
-    "@reusable-ui/orientationable": "^5.0.2",
-    "@reusable-ui/padding": "^5.0.2"
+    "@reusable-ui/border": "^5.1.0",
+    "@reusable-ui/orientationable": "^5.1.0",
+    "@reusable-ui/padding": "^5.1.0"
   }
 }

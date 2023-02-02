@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/button-icon",
-  "version": "5.0.17",
+  "version": "5.1.0",
   "description": "A button component with a nice icon.",
   "keywords": [
     "icon",
@@ -36,10 +36,10 @@
   "dependencies": {
     "@cssfn/core": "^2.1.0",
     "@cssfn/cssfn-react": "^2.1.0",
-    "@reusable-ui/basic": "^5.0.15",
-    "@reusable-ui/button": "^5.0.21",
-    "@reusable-ui/core": "^5.0.15",
-    "@reusable-ui/icon": "^5.0.22",
+    "@reusable-ui/basic": "^5.1.0",
+    "@reusable-ui/button": "^5.1.0",
+    "@reusable-ui/core": "^5.1.0",
+    "@reusable-ui/icon": "^5.1.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {
