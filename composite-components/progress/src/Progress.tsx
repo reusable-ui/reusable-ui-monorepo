@@ -174,7 +174,7 @@ export interface ProgressBarVars {
      */
     valueRatio : any
 }
-const [progressBarVars] = cssVars<ProgressBarVars>({ minify: false, prefix: 'progressBar' }); // do not minify to make sure `style={{ --progressBar-valueRatio: ... }}` is the same between in server
+const [progressBarVars] = cssVars<ProgressBarVars>({ prefix: 'progressBar', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
