@@ -75,7 +75,7 @@ export interface AnimationVars {
      */
     anim          : any
 }
-const [animationVars] = cssVars<AnimationVars>();
+const [animationVars] = cssVars<AnimationVars>({ prefix: 'an', minify: false });
 
 
 
