@@ -160,7 +160,7 @@ export interface ThemableVars {
      */
     ringCond             : any
 }
-const [themableVars] = cssVars<ThemableVars>();
+const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false });
 
 
 
