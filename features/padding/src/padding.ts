@@ -47,7 +47,7 @@ export interface PaddingVars {
      */
     padding       : any
 }
-const [paddingVars] = cssVars<PaddingVars>();
+const [paddingVars] = cssVars<PaddingVars>({ prefix: 'pd', minify: false });
 
 
 
