@@ -228,10 +228,6 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                     .slice(4, -1) // fix: var(--customProp) => --customProp
                 ]: iconRatio ?? '1/1', // defaults to '1/1' if the ratio is not defined
             },
-            
-            children: (!!iconImage && (
-                <img key='icon-image' src={iconImage} alt='' />
-            )),
         };
     }, [icon]);
 };
@@ -500,6 +496,8 @@ export const usesIconFontLayout  = () => {
                 fontSize      : iconVars.size,  // set icon's size
              // overflowY     : 'hidden',       // a hack: hides the pseudo-inherited underline
                 overflow      : 'hidden',       // we need to squash the text both vertically and horizontally when the custom_font is not yet loaded
+                blockSize     : 'inherit',      // follows <parent>'s height
+                aspectRatio   : 'inherit',      // follows <parent>'s aspect_ratio
                 
                 
                 
@@ -569,38 +567,8 @@ export const usesIconImageLayout = () => {
         
         
         
-        // sizes:
-        // a dummy element, for making the image's width
-        ...children('img', {
-            // layouts:
-            display    : 'inline-block', // use inline-block, so it takes the width & height as we set
-            
-            
-            
-            // appearances:
-            visibility : 'hidden',       // hide the element, but still consumes the dimension
-            
-            
-            
-            // sizes:
-            inlineSize : 'auto',         // calculates the width by [blockSize * aspect_ratio]
-            blockSize  : '100%',         // set icon's height as tall as container
-            
-            
-            
-            // accessibilities:
-            userSelect : 'none',         // disable selecting icon's image
-            
-            
-            
-            // animations:
-            transition : 'inherit',      // inherit transition for smooth sizing changes
-        }),
-        
-        
-        
         // backgrounds:
-        backg         : iconVars.color,  // set icon's color
+        backg              : iconVars.color,  // set icon's color
     });
     iconImageLayoutCache = new WeakRef<CssRule>(result);
     return result;
@@ -824,9 +792,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
             
             // styles:
             style={mergedStyle}
-        >
-            { icon.children }
-        </Generic>
+        />
     );
 };
 export {
