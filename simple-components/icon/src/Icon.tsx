@@ -333,8 +333,7 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
 }, { prefix: 'ico' });
 
 export type IconFileExpression = `${string}.${string}` | (string & {})
-export type NumberExpression   = '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
-export type IconImageFile      = IconFileExpression | { name: IconFileExpression, ratio?: `${NumberExpression}/${NumberExpression}` }
+export type IconImageFile      = IconFileExpression | { name: IconFileExpression, ratio?: `${string}/${string}` }
 export const iconConfig = {
     font  : {
         /**
