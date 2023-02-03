@@ -130,7 +130,7 @@ export interface IconVars {
      */
     color : any
 }
-const [iconVars] = cssVars<IconVars>({ prefix: 'icon', minify: false }); // do not minify to make sure `style={{ --icon-image: ... }}` is the same between in server
+const [iconVars] = cssVars<IconVars>({ prefix: 'icon', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
