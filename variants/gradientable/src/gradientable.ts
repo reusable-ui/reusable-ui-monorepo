@@ -59,7 +59,7 @@ export interface GradientableVars {
      */
     backgGradTg : any
 }
-const [gradientableVars] = cssVars<GradientableVars>();
+const [gradientableVars] = cssVars<GradientableVars>({ prefix: 'gd', minify: false });
 
 
 
