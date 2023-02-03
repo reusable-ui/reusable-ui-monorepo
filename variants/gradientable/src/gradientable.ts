@@ -59,7 +59,7 @@ export interface GradientableVars {
      */
     backgGradTg : any
 }
-const [gradientableVars] = cssVars<GradientableVars>({ prefix: 'gd', minify: false });
+const [gradientableVars] = cssVars<GradientableVars>({ prefix: 'gd', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

@@ -85,7 +85,7 @@ export interface BackgroundVars {
      */
     altBackg        : any
 }
-const [backgroundVars] = cssVars<BackgroundVars>({ prefix: 'bg', minify: false });
+const [backgroundVars] = cssVars<BackgroundVars>({ prefix: 'bg', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

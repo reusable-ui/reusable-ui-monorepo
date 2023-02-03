@@ -97,7 +97,7 @@ export interface MildableVars {
      */
     altForegTg : any
 }
-const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false });
+const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

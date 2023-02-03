@@ -72,7 +72,7 @@ export interface GroupableVars {
     paddingInline          : any
     paddingBlock           : any
 }
-const [groupableVars] = cssVars<GroupableVars>({ prefix: 'gr', minify: false });
+const [groupableVars] = cssVars<GroupableVars>({ prefix: 'gr', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

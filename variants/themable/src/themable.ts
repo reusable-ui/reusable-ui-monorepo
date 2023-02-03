@@ -160,7 +160,7 @@ export interface ThemableVars {
      */
     ringCond             : any
 }
-const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false });
+const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

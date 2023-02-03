@@ -101,7 +101,7 @@ export interface OutlineableVars {
      */
     altForegTg : any
 }
-const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false });
+const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

@@ -46,7 +46,7 @@ export interface RingVars {
      */
     ring   : any
 }
-const [ringVars] = cssVars<RingVars>({ prefix: 'ri', minify: false });
+const [ringVars] = cssVars<RingVars>({ prefix: 'ri', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

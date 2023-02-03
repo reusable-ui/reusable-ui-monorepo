@@ -57,7 +57,7 @@ export interface NudibleVars {
      */
     nudeSw : any
 }
-const [nudibleVars] = cssVars<NudibleVars>({ prefix: 'nu', minify: false });
+const [nudibleVars] = cssVars<NudibleVars>({ prefix: 'nu', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

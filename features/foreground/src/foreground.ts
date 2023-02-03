@@ -62,7 +62,7 @@ export interface ForegroundVars {
      */
     altForeg   : any
 }
-const [foregroundVars] = cssVars<ForegroundVars>({ prefix: 'fg', minify: false });
+const [foregroundVars] = cssVars<ForegroundVars>({ prefix: 'fg', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

@@ -47,7 +47,7 @@ export interface PaddingVars {
      */
     padding       : any
 }
-const [paddingVars] = cssVars<PaddingVars>({ prefix: 'pd', minify: false });
+const [paddingVars] = cssVars<PaddingVars>({ prefix: 'pd', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

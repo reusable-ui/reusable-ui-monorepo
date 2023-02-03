@@ -94,7 +94,7 @@ export interface BorderVars {
      */
     borderRadius           : any
 }
-const [borderVars] = cssVars<BorderVars>({ prefix: 'bd', minify: false });
+const [borderVars] = cssVars<BorderVars>({ prefix: 'bd', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
