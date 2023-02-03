@@ -40,6 +40,6 @@ export const [radiuses, radiusValues, cssBorderRadiusConfig] = cssConfig(() => {
         ...basics,
         ...defaults,
     };
-}, { prefix: 'bd-rd' });
+}, { prefix: 'bor-rd' });
 export { radiuses as default }
 //#endregion configs

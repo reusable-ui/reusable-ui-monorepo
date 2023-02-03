@@ -63,6 +63,6 @@ export const [borders, borderValues, cssBorderConfig] = cssConfig(() => {
         ...styles,
         ...defaults,
     };
-}, { prefix: 'bd' });
+}, { prefix: 'bor' });
 export { borders as default }
 //#endregion configs
