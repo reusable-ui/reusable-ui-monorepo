@@ -94,7 +94,7 @@ export interface BorderVars {
      */
     borderRadius           : any
 }
-const [borderVars] = cssVars<BorderVars>();
+const [borderVars] = cssVars<BorderVars>({ prefix: 'bd', minify: false });
 
 
 
