@@ -36,6 +36,7 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    switchOf,
     
     
     
@@ -418,22 +419,25 @@ export const usesIconLayout      = () => {
         ]),
         ...style({
             // layouts:
-            display        : 'inline-flex',  // use inline flexbox, so it takes the width & height as we set
-            flexDirection  : 'row',          // flow to the document's writing flow
-            justifyContent : 'center',       // center items horizontally
-            alignItems     : 'center',       // center items vertically
-            flexWrap       : 'nowrap',       // no wrapping
+            display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
+            flexDirection  : 'row',         // flow to the document's writing flow
+            justifyContent : 'center',      // center items horizontally
+            alignItems     : 'center',      // center items vertically
+            flexWrap       : 'nowrap',      // no wrapping
             
             
             
             // positions:
-            verticalAlign  : 'baseline',     // <Icon>'s text should be aligned with sibling text, so the <Icon> behave like <span> wrapper
+            verticalAlign  : 'baseline',    // <Icon>'s text should be aligned with sibling text, so the <Icon> behave like <span> wrapper
             
             
             
             // sizes:
-            blockSize      : iconVars.size,  // set background_image's height
-            aspectRatio    : iconVars.ratio, // set background_image's aspect_ratio
+            blockSize      : iconVars.size, // set background_image's height
+            aspectRatio    : switchOf(      // set background_image's aspect_ratio
+                iconVars.ratio,
+                'initial',                  // protect from inheritance, if the ratio is not defined
+            ),
             
             
             
