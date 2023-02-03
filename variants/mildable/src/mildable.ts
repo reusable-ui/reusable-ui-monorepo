@@ -97,7 +97,7 @@ export interface MildableVars {
      */
     altForegTg : any
 }
-const [mildableVars] = cssVars<MildableVars>();
+const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false });
 
 
 
