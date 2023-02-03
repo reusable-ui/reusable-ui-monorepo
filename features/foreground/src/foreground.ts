@@ -62,7 +62,7 @@ export interface ForegroundVars {
      */
     altForeg   : any
 }
-const [foregroundVars] = cssVars<ForegroundVars>();
+const [foregroundVars] = cssVars<ForegroundVars>({ prefix: 'fg', minify: false });
 
 
 
