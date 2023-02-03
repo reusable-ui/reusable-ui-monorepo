@@ -110,17 +110,22 @@ import type {
 //#region icon
 export interface IconVars {
     /**
-     * Icon image url or icon name.
+     * Icon's image url or icon name.
      */
     image : any
     
     /**
-     * Icon size.
+     * Icon's block-size (height).
      */
     size  : any
     
     /**
-     * Icon color.
+     * Icon's ratio of width/height.
+     */
+    ratio : any
+    
+    /**
+     * Icon's color.
      */
     color : any
 }
@@ -162,11 +167,12 @@ export const usesIcon = (config?: IconConfig): IconStuff => {
 };
 
 
-const getFileNameWithoutExtension = (fileName: string): string|null => {
-    if (!fileName) return null;
+const getFileNameWithoutExtension = (file: IconImageFile): string|null => {
+    if (!file) return null;
     
     
     
+    const fileName = (typeof(file) === 'string') ? file : file.name;
     const lastDotIndex = fileName.lastIndexOf('.');
     if (lastDotIndex < 0) return fileName; // extension is not found => it's a pure fileName without extension
     return fileName.slice(0, lastDotIndex);
@@ -180,10 +186,13 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
         
         
         
-        const iconImage    : string|null = (() => {
+        const [iconImage, iconRatio] = ((): [string|null, string|null] => {
             const file = iconConfig.image.files.find((file) => getFileNameWithoutExtension(file) === icon);
-            if (!file) return null;
-            return concatUrl(iconConfig.image.path, file);
+            if (!file) return [null, null];
+            return [
+                concatUrl(iconConfig.image.path, (typeof(file) === 'string') ? file : file.name),
+                (typeof(file) === 'string') ? null : (file.ratio ?? null)
+            ];
         })();
         
         const isIconFont : boolean = !iconImage; // && iconConfig.font.items.includes(icon); // assumes the user use TypeScript for validating the font name
@@ -212,6 +221,11 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                     
                     return undefined; // icon name is not found in both iconImage & iconFont
                 })(),
+                
+                [
+                    iconVars.ratio
+                    .slice(4, -1) // fix: var(--customProp) => --customProp
+                ]: iconRatio ?? '1/1',
             },
             
             children: (!!iconImage && (
@@ -317,6 +331,9 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
     };
 }, { prefix: 'ico' });
 
+export type IconFileExpression = `${string}.${string}` | (string & {})
+export type NumberExpression   = '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
+export type IconImageFile      = IconFileExpression | { name: IconFileExpression, ratio?: `${NumberExpression}/${NumberExpression}` }
 export const iconConfig = {
     font  : {
         /**
@@ -369,11 +386,11 @@ export const iconConfig = {
             'busy.svg',
             'prev.svg',
             'next.svg',
-            'dropup.svg',
-            'dropdown.svg',
-            'dropright.svg',
-            'dropleft.svg',
-        ],
+            { name: 'dropup.svg'    , ratio: '10/24' },
+            { name: 'dropdown.svg'  , ratio: '10/24' },
+            { name: 'dropright.svg' , ratio:  '5/24' },
+            { name: 'dropleft.svg'  , ratio:  '5/24' },
+        ] as IconImageFile[],
     },
 };
 
@@ -401,21 +418,22 @@ export const usesIconLayout      = () => {
         ]),
         ...style({
             // layouts:
-            display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
-            flexDirection  : 'row',         // flow to the document's writing flow
-            justifyContent : 'center',      // center items horizontally
-            alignItems     : 'center',      // center items vertically
-            flexWrap       : 'nowrap',      // no wrapping
+            display        : 'inline-flex',  // use inline flexbox, so it takes the width & height as we set
+            flexDirection  : 'row',          // flow to the document's writing flow
+            justifyContent : 'center',       // center items horizontally
+            alignItems     : 'center',       // center items vertically
+            flexWrap       : 'nowrap',       // no wrapping
             
             
             
             // positions:
-            verticalAlign  : 'baseline',    // <Icon>'s text should be aligned with sibling text, so the <Icon> behave like <span> wrapper
+            verticalAlign  : 'baseline',     // <Icon>'s text should be aligned with sibling text, so the <Icon> behave like <span> wrapper
             
             
             
             // sizes:
-            blockSize      : iconVars.size, // set background_image's height
+            blockSize      : iconVars.size,  // set background_image's height
+            aspectRatio    : iconVars.ratio, // set background_image's aspect_ratio
             
             
             
@@ -444,11 +462,6 @@ export const usesIconFontLayout  = () => {
     
     
     return style({
-        // sizes:
-        aspectRatio : '1/1', // assumes the font_icon is always square -- in order to the custom_font is not yet loaded
-        
-        
-        
         // load a custom_font:
         ...fontFace({
             ...imports([
