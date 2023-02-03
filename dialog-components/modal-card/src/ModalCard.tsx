@@ -141,7 +141,7 @@ export interface ModalCardVars {
      */
     vertAlign : any
 }
-const [modalCardVars] = cssVars<ModalCardVars>({ minify: false, prefix: 'modalCard' }); // do not minify to make sure `style={{ --modalCard-horzAlign: ... }}` is the same between in server
+const [modalCardVars] = cssVars<ModalCardVars>({ prefix: 'modalCard', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
