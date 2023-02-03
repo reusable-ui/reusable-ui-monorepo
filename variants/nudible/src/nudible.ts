@@ -57,7 +57,7 @@ export interface NudibleVars {
      */
     nudeSw : any
 }
-const [nudibleVars] = cssVars<NudibleVars>();
+const [nudibleVars] = cssVars<NudibleVars>({ prefix: 'nu', minify: false });
 
 
 
