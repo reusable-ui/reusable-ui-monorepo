@@ -183,7 +183,7 @@ export interface RangeVars {
      */
     trackBackg : any
 }
-const [rangeVars] = cssVars<RangeVars>({ minify: false, prefix: 'range' }); // do not minify to make sure `style={{ --range-valueRatio: ... }}` is the same between in server
+const [rangeVars] = cssVars<RangeVars>({ prefix: 'range', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
