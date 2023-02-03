@@ -46,7 +46,7 @@ export interface RingVars {
      */
     ring   : any
 }
-const [ringVars] = cssVars<RingVars>();
+const [ringVars] = cssVars<RingVars>({ prefix: 'ri', minify: false });
 
 
 
