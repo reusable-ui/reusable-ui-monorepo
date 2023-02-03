@@ -101,7 +101,7 @@ export interface OutlineableVars {
      */
     altForegTg : any
 }
-const [outlineableVars] = cssVars<OutlineableVars>();
+const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false });
 
 
 
