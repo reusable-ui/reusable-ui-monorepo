@@ -226,7 +226,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                 [
                     iconVars.ratio
                     .slice(4, -1) // fix: var(--customProp) => --customProp
-                ]: iconRatio ?? '1/1',
+                ]: iconRatio ?? '1/1', // defaults to '1/1' if the ratio is not defined
             },
             
             children: (!!iconImage && (
