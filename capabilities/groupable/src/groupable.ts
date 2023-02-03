@@ -72,7 +72,7 @@ export interface GroupableVars {
     paddingInline          : any
     paddingBlock           : any
 }
-const [groupableVars] = cssVars<GroupableVars>();
+const [groupableVars] = cssVars<GroupableVars>({ prefix: 'gr', minify: false });
 
 
 
