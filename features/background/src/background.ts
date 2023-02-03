@@ -85,7 +85,7 @@ export interface BackgroundVars {
      */
     altBackg        : any
 }
-const [backgroundVars] = cssVars<BackgroundVars>();
+const [backgroundVars] = cssVars<BackgroundVars>({ prefix: 'bg', minify: false });
 
 
 
