@@ -218,7 +218,7 @@ export const useIcon = <TElement extends Element = HTMLSpanElement>({ icon }: Ic
                 ]: (() => {
                     if (iconImage)  return `url("${iconImage}")`; // the url of the icon's image
                     
-                    if (isIconFont) return `"${icon}"`;         // the icon's name
+                    if (isIconFont) return `"${icon}"`;           // the icon's name
                     
                     return undefined; // icon name is not found in both iconImage & iconFont
                 })(),
