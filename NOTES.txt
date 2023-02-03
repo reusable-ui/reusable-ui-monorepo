@@ -1,25 +1,27 @@
+css namespaces: -------------------------------------------------------------------------
+
 packages                        VAR     CFG
 @reusable-ui/colors             -       col
-@reusable-ui/borders            -       bor  bor-rd     // modify
+@reusable-ui/borders            -       bor  bor-rd     // UPDATED
 @reusable-ui/spacers            -       spc
 @reusable-ui/breakpoints        -       -
 @reusable-ui/typos              -       ""
 @reusable-ui/accessibilities    -       -
 @reusable-ui/validations        -       -
-@reusable-ui/background         bg      -   // modify
-@reusable-ui/foreground         fg      -   // modify
-@reusable-ui/border             bd      -   // modify
-@reusable-ui/ring               ri      -   // modify
-@reusable-ui/animation          an      -   // modify
-@reusable-ui/padding            pd      -   // modify
-@reusable-ui/groupable          gr      -   // modify
+@reusable-ui/background         bg      -   // UPDATED
+@reusable-ui/foreground         fg      -   // UPDATED
+@reusable-ui/border             bd      -   // UPDATED
+@reusable-ui/ring               ri      -   // UPDATED
+@reusable-ui/animation          an      -   // UPDATED
+@reusable-ui/padding            pd      -   // UPDATED
+@reusable-ui/groupable          gr      -   // UPDATED
 @reusable-ui/orientationable    -       -
 @reusable-ui/resizable          -       -
-@reusable-ui/themable           th      -   // modify
-@reusable-ui/gradientable       gd      -   // modify
-@reusable-ui/outlineable        ol      -   // modify
-@reusable-ui/mildable           mi      -   // modify
-@reusable-ui/nudible            nu      -   // modify
+@reusable-ui/themable           th      -   // UPDATED
+@reusable-ui/gradientable       gd      -   // UPDATED
+@reusable-ui/outlineable        ol      -   // UPDATED
+@reusable-ui/mildable           mi      -   // UPDATED
+@reusable-ui/nudible            nu      -   // UPDATED
 @reusable-ui/basic-variants     -       -
 
 
