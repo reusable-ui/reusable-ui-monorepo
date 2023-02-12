@@ -38,8 +38,8 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^2.1.0",
-    "@cssfn/cssfn-react": "^2.1.0",
+    "@cssfn/core": "^2.3.0",
+    "@cssfn/cssfn-react": "^2.3.0",
     "@reusable-ui/card": "^5.1.0",
     "@reusable-ui/collapse": "^5.1.0",
     "@reusable-ui/core": "^5.1.0",

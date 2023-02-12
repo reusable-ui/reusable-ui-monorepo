@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.20.12",
-    "@cssfn/cssfn-dom": "^2.1.0",
+    "@cssfn/cssfn-dom": "^2.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@reusable-ui/collapse": "^5.1.0",
     "@reusable-ui/hamburger-menu-button": "^5.1.0",
