@@ -46,17 +46,17 @@ packages                        VAR     CFG
 
 
 // reusable-ui states:
-@reusable-ui/excitable          ex  // UPDATED              // SSR support      PEER: shared in config
-@reusable-ui/collapsible        co  // UPDATED              // SSR support      NO_PEER: no shared variables
-@reusable-ui/disableable        di  // UPDATED              // SSR support      PEER: shared in config
-@reusable-ui/activatable        ac  // UPDATED              // SSR support      PEER: shared in config , supports for usesActiveAsClick()
-@reusable-ui/focusable          fo  // UPDATED              // SSR support      PEER: shared in config
-@reusable-ui/interactable       in  // UPDATED              // SSR support      PEER: shared in config
-@reusable-ui/clickable          cl  // UPDATED              // SSR support      PEER: supports for usesActiveAsClick()
-@reusable-ui/invalidable        iv  // UPDATED              // SSR support      NO_PEER: no shared variables
-@reusable-ui/active-as-click    ak  // only private vars    // SSR support      NO_PEER: no shared variables
-@reusable-ui/checkable          ch  // only private vars    // SSR support      PEER: shared in config , shared in CssStyle of [filter, transform, anim]
-@reusable-ui/validation-icon    vi  // only private vars    // SSR support      PEER: shared in config , shared in CssStyle of [iconImage]
+@reusable-ui/excitable          ex  // UPDATED              PEER: shared in config of [filter]                                                                  , register [anim, filter]
+@reusable-ui/collapsible        co  // UPDATED              NO_PEER: no shared variables                                                                        , register [anim]
+@reusable-ui/disableable        di  // UPDATED              PEER: shared in config of [filter]                                                                  , register [anim, filter]
+@reusable-ui/activatable        ac  // UPDATED              PEER: shared in config of [filter] + supports for usesActiveAsClick()                               , register [anim, filter]
+@reusable-ui/focusable          fo  // UPDATED              PEER: shared in config of [boxShadow]                                                               , register [anim, boxShadow]
+@reusable-ui/interactable       in  // UPDATED              PEER: shared in config of [filter]                                                                  , register [anim, filter]
+@reusable-ui/clickable          cl  // UPDATED              PEER: shared in config of [filter] + supports for usesActiveAsClick()                               , register [anim, filter]
+@reusable-ui/invalidable        iv  // UPDATED              NO_PEER: no shared variables                                                                        , register [animValid, animInvalid]
+@reusable-ui/active-as-click    ak  // only private vars    NO_PEER: no shared variables                                                                        , no_register
+@reusable-ui/checkable          ch  // only private vars    PEER: shared in config of [filterIn, filterOut, transformIn, transformOut, filter, transform, anim] , no_register
+@reusable-ui/validation-icon    vi  // only private vars    PEER: shared in CssStyle of [iconImage]                                                             , no_register
 
 
 
