@@ -43,14 +43,14 @@ export * from '@reusable-ui/colorable'                      // colorize the UI b
 /*peer*/ export * from '@reusable-ui/basic-variants'        // basic variants of UI
 
 // reusable-ui states:
-export * from '@reusable-ui/excitable'                      // a capability of UI to highlight itself to attract user's attention
+/*peer*/ export * from '@reusable-ui/excitable'             // a capability of UI to highlight itself to attract user's attention
 export * from '@reusable-ui/collapsible'                    // a capability of UI to expand/reduce its size or toggle the visibility
-export * from '@reusable-ui/disableable'                    // a capability of UI to be disabled
-export * from '@reusable-ui/activatable'                    // a capability of UI to be highlighted/selected/activated
-export * from '@reusable-ui/focusable'                      // a capability of UI to be focused
-export * from '@reusable-ui/interactable'                   // adds an interactive feel to a UI
-export * from '@reusable-ui/clickable'                      // a capability of UI to be clicked
+/*peer*/ export * from '@reusable-ui/disableable'           // a capability of UI to be disabled
+/*peer*/ export * from '@reusable-ui/activatable'           // a capability of UI to be highlighted/selected/activated
+/*peer*/ export * from '@reusable-ui/focusable'             // a capability of UI to be focused
+/*peer*/ export * from '@reusable-ui/interactable'          // adds an interactive feel to a UI
+/*peer*/ export * from '@reusable-ui/clickable'             // a capability of UI to be clicked
 export * from '@reusable-ui/active-as-click'                // shows the UI as clicked when activated
 export * from '@reusable-ui/invalidable'                    // a possibility of UI having an invalid state.
-export * from '@reusable-ui/checkable'                      // a capability of UI to be checked
-export * from '@reusable-ui/validation-icon'                // an icon for indicating a validity status
+/*peer*/ export * from '@reusable-ui/checkable'             // a capability of UI to be checked
+/*peer*/ export * from '@reusable-ui/validation-icon'       // an icon for indicating a validity status

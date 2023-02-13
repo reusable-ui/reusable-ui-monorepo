@@ -32,29 +32,21 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/activatable": "^5.1.0",
     "@reusable-ui/active-as-click": "^5.1.0",
     "@reusable-ui/animating-state": "^5.1.0",
-    "@reusable-ui/checkable": "^5.1.0",
-    "@reusable-ui/clickable": "^5.1.0",
     "@reusable-ui/client-sides": "^5.1.0",
     "@reusable-ui/collapsible": "^5.1.0",
     "@reusable-ui/colorable": "^5.1.0",
-    "@reusable-ui/disableable": "^5.1.0",
-    "@reusable-ui/excitable": "^5.1.0",
     "@reusable-ui/floatable": "^5.1.0",
-    "@reusable-ui/focusable": "^5.1.0",
     "@reusable-ui/focuses": "^5.1.0",
     "@reusable-ui/hooks": "^5.1.0",
-    "@reusable-ui/interactable": "^5.1.0",
     "@reusable-ui/invalidable": "^5.1.0",
     "@reusable-ui/layouts": "^5.1.0",
     "@reusable-ui/navigations": "^5.1.0",
     "@reusable-ui/nodes": "^5.1.0",
     "@reusable-ui/numbers": "^5.1.0",
     "@reusable-ui/semantics": "^5.1.0",
-    "@reusable-ui/stripouts": "^5.1.0",
-    "@reusable-ui/validation-icon": "^5.1.0"
+    "@reusable-ui/stripouts": "^5.1.0"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^5.1.0",
@@ -78,6 +70,14 @@
     "@reusable-ui/spacers": "^5.1.0",
     "@reusable-ui/themable": "^5.1.0",
     "@reusable-ui/typos": "^5.1.0",
-    "@reusable-ui/validations": "^5.1.0"
+    "@reusable-ui/validations": "^5.1.0",
+    "@reusable-ui/excitable": "^5.1.0",
+    "@reusable-ui/disableable": "^5.1.0",
+    "@reusable-ui/activatable": "^5.1.0",
+    "@reusable-ui/focusable": "^5.1.0",
+    "@reusable-ui/interactable": "^5.1.0",
+    "@reusable-ui/clickable": "^5.1.0",
+    "@reusable-ui/checkable": "^5.1.0",
+    "@reusable-ui/validation-icon": "^5.1.0"
   }
 }
