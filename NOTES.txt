@@ -26,6 +26,20 @@ packages                        VAR     CFG
 
 
 
+@reusable-ui/excitable          ex
+@reusable-ui/collapsible        co
+@reusable-ui/disableable        di
+@reusable-ui/activatable        ac
+@reusable-ui/focusable          fo
+@reusable-ui/interactable       in
+@reusable-ui/clickable          cl
+@reusable-ui/active-as-click    ak
+@reusable-ui/invalidable        iv
+@reusable-ui/checkable          ch
+@reusable-ui/validation-icon    vi
+
+
+
 =========================================================================================
 
 
@@ -47,7 +61,7 @@ outlined = true (Semi nude)
 outlined = false (Regular)
 0. <-- none -->
 
-outlined = 'inherit'
+outlined = inherit
 0. <-- none -->
 
 ------------------------------------------------------------------------------------
@@ -67,7 +81,7 @@ mild = false (Bold)
 1. <Group> // cancel out List => Indicator => true => false
 2. <Range> // to calculate the mildAlternate
 
-mild = 'inherit' (<Parent> dependent)
+mild = inherit(<Parent> dependent)
 1. <CloseButton> => the icon color depends on <Parent>
 2. <ProgressBar> => dependent of <Progress>
 3. (Regular|Action)<ListItem> => dependent of <List>
@@ -86,7 +100,7 @@ nude = true (backgroundless & borderless)
 nude = false
 0. <-- none -->
 
-nude = 'inherit'
+nude = inherit
 0. <-- none -->
 
 
