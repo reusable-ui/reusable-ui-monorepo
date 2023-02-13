@@ -63,7 +63,7 @@ export interface ExcitableVars {
     
     anim   : any
 }
-const [excitableVars] = cssVars<ExcitableVars>();
+const [excitableVars] = cssVars<ExcitableVars>({ prefix: 'ex', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 {
     const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();

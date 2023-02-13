@@ -83,7 +83,7 @@ export interface ActiveAsClickVars {
     altAnimActiveAsClickTg  : any
     altAnimPassiveAsClickTg : any
 }
-const [activeAsClickVars] = cssVars<ActiveAsClickVars>();
+const [activeAsClickVars] = cssVars<ActiveAsClickVars>({ prefix: 'ak', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

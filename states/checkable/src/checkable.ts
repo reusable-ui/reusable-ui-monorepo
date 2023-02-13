@@ -71,7 +71,7 @@ export interface CheckableVars {
      */
     anim         : any
 }
-const [checkableVars] = cssVars<CheckableVars>();
+const [checkableVars] = cssVars<CheckableVars>({ prefix: 'ch', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

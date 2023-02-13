@@ -101,7 +101,7 @@ export interface ClickableVars {
     
     anim                 : any
 }
-const [clickableVars] = cssVars<ClickableVars>();
+const [clickableVars] = cssVars<ClickableVars>({ prefix: 'cl', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 {
     const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();

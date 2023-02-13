@@ -77,7 +77,7 @@ import {
 export interface CollapsibleVars {
     anim : any
 }
-const [collapsibleVars] = cssVars<CollapsibleVars>();
+const [collapsibleVars] = cssVars<CollapsibleVars>({ prefix: 'co', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 {
     const {animationRegistry: {registerAnim}} = usesAnimation();

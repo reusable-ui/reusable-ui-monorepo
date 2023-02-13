@@ -44,7 +44,7 @@ export interface ValidationIconVars {
      */
     iconImage : any
 }
-const [validationIconVars] = cssVars<ValidationIconVars>();
+const [validationIconVars] = cssVars<ValidationIconVars>({ prefix: 'vi', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 

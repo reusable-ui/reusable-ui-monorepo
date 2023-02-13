@@ -26,17 +26,17 @@ packages                        VAR     CFG
 
 
 
-@reusable-ui/excitable          ex
-@reusable-ui/collapsible        co
-@reusable-ui/disableable        di
-@reusable-ui/activatable        ac
-@reusable-ui/focusable          fo
-@reusable-ui/interactable       in
-@reusable-ui/clickable          cl
-@reusable-ui/active-as-click    ak
-@reusable-ui/invalidable        iv
-@reusable-ui/checkable          ch
-@reusable-ui/validation-icon    vi
+@reusable-ui/excitable          ex  // UPDATED              // SSR support      PEER: shared in config
+@reusable-ui/collapsible        co  // UPDATED              // SSR support      NO_PEER: no shared variables
+@reusable-ui/disableable        di  // UPDATED              // SSR support      PEER: shared in config
+@reusable-ui/activatable        ac  // UPDATED              // SSR support      PEER: shared in config , supports for usesActiveAsClick()
+@reusable-ui/focusable          fo  // UPDATED              // SSR support      PEER: shared in config
+@reusable-ui/interactable       in  // UPDATED              // SSR support      PEER: shared in config
+@reusable-ui/clickable          cl  // UPDATED              // SSR support      PEER: supports for usesActiveAsClick()
+@reusable-ui/invalidable        iv  // UPDATED              // SSR support      NO_PEER: no shared variables
+@reusable-ui/active-as-click    ak  // only private vars    // SSR support      NO_PEER: no shared variables
+@reusable-ui/checkable          ch  // only private vars    // SSR support      PEER: shared in config , shared in CssStyle of [filter, transform, anim]
+@reusable-ui/validation-icon    vi  // only private vars    // SSR support      PEER: shared in config , shared in CssStyle of [iconImage]
 
 
 

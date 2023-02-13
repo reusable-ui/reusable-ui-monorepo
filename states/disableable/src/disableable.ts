@@ -63,7 +63,7 @@ export interface DisableableVars {
     
     anim   : any
 }
-const [disableableVars] = cssVars<DisableableVars>();
+const [disableableVars] = cssVars<DisableableVars>({ prefix: 'di', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 {
     const {animationRegistry: {registerFilter, registerAnim}} = usesAnimation();
