@@ -1,20 +1,39 @@
 css namespaces: -------------------------------------------------------------------------
 
+
+
+// reusable-ui configs:
 packages                        VAR     CFG
 @reusable-ui/colors             -       col
 @reusable-ui/borders            -       bor  bor-rd     // UPDATED
 @reusable-ui/spacers            -       spc
 @reusable-ui/breakpoints        -       -
 @reusable-ui/typos              -       ""
+
+
+
+// reusable-ui utilities:
 @reusable-ui/accessibilities    -       -
 @reusable-ui/validations        -       -
+
+
+
+// reusable-ui features:
 @reusable-ui/background         bg      -   // UPDATED
 @reusable-ui/foreground         fg      -   // UPDATED
 @reusable-ui/border             bd      -   // UPDATED
 @reusable-ui/ring               ri      -   // UPDATED
 @reusable-ui/animation          an      -   // UPDATED
 @reusable-ui/padding            pd      -   // UPDATED
+
+
+
+// reusable-ui capabilities:
 @reusable-ui/groupable          gr      -   // UPDATED
+
+
+
+// reusable-ui variants:
 @reusable-ui/orientationable    -       -
 @reusable-ui/resizable          -       -
 @reusable-ui/themable           th      -   // UPDATED
@@ -26,6 +45,7 @@ packages                        VAR     CFG
 
 
 
+// reusable-ui states:
 @reusable-ui/excitable          ex  // UPDATED              // SSR support      PEER: shared in config
 @reusable-ui/collapsible        co  // UPDATED              // SSR support      NO_PEER: no shared variables
 @reusable-ui/disableable        di  // UPDATED              // SSR support      PEER: shared in config
