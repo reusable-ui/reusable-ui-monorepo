@@ -13,7 +13,7 @@ import {
 import type {
     // cssfn general types:
     Optional,
-    SingleOrArray,
+    MaybeArray,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 
@@ -23,8 +23,8 @@ import type {
 // semantics:
 export type Tag          = keyof JSX.IntrinsicElements | ''
 export type Role         = React.AriaRole | '' | (string & {})
-export type SemanticTag  = SingleOrArray<Optional<Tag>>
-export type SemanticRole = SingleOrArray<Optional<Role>>
+export type SemanticTag  = MaybeArray<Optional<Tag>>
+export type SemanticRole = MaybeArray<Optional<Role>>
 
 
 

@@ -13,7 +13,7 @@ import {
 import type {
     // cssfn general types:
     Optional,
-    SingleOrArray,
+    MaybeArray,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui utilities:
@@ -140,7 +140,7 @@ export const useMergeRefs = <TValue>(...refs: Optional<React.Ref<TValue>>[]): Re
 
 
 
-export const useMergeClasses = (...classes: SingleOrArray<Optional<string>>[]): Optional<string>[] => {
+export const useMergeClasses = (...classes: MaybeArray<Optional<string>>[]): Optional<string>[] => {
     return useMemo<Optional<string>[]>(() => {
         return classes.flat();
     }, [...classes]);
