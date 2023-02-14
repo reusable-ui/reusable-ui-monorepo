@@ -4,23 +4,21 @@ import {
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import {
-    typos,
-    typoValues,
-    cssTypoConfig,
-} from '@reusable-ui/typos'
-import {
-    Styles,
-    HeadPortal,
-} from '@cssfn/cssfn-react'
+// import {
+//     typos,
+//     typoValues,
+//     cssTypoConfig,
+// } from '@reusable-ui/typos'
+import '@reusable-ui/typos';
+import '@cssfn/cssfn-dom'
 
 
 
-Object.assign(globalThis, {
-    typos,
-    typoValues,
-    cssTypoConfig,
-});
+// Object.assign(globalThis, {
+//     typos,
+//     typoValues,
+//     cssTypoConfig,
+// });
 
 
 
@@ -33,18 +31,17 @@ function App() {
     
     
     return (
-        <>
-            <HeadPortal>
-                <Styles />
-            </HeadPortal>
-            <div className="App">
-                <article className='actions'>
-                    <button onClick={handleTriggerRerender}>
-                        Trigger re-render whole app
-                    </button>
-                </article>
-            </div>
-        </>
+        <div className="App">
+            <article className='actions'>
+                <button onClick={handleTriggerRerender}>
+                    Trigger re-render whole app
+                </button>
+                <p>
+                    Hello world!
+                </p>
+                <code>some-code</code>
+            </article>
+        </div>
     );
 }
 
