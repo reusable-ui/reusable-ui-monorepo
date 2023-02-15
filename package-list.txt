@@ -37,7 +37,7 @@
 [published  ] @reusable-ui/themable
 [published  ] @reusable-ui/gradientable
 [published  ] @reusable-ui/outlineable
-[published  ] @reusable-ui/mildable
+[modularized] @reusable-ui/mildable
 [published  ] @reusable-ui/nudible
 [published  ] @reusable-ui/colorable
 [published  ] @reusable-ui/basic-variants
