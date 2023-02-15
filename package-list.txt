@@ -64,7 +64,7 @@
 [no css     ] [documented  ] [          atomic] @reusable-ui/generic
 [modularized] [documented  ] [          atomic] @reusable-ui/basic
 [modularized] [documented  ] [          atomic] @reusable-ui/indicator
-[optimized  ] [documented  ] [          atomic] @reusable-ui/control
+[modularized] [documented  ] [          atomic] @reusable-ui/control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/action-control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/editable-control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
