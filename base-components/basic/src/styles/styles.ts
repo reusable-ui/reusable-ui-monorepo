@@ -199,4 +199,4 @@ export default memoizeStyle(() => style({
     
     // variants:
     ...usesBasicVariants(),
-}));
+}), cssBasicConfig.onChange);
