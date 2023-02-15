@@ -32,7 +32,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^2.3.0"
+    "@cssfn/core": "^2.4.0"
   },
   "peerDependencies": {
     "@reusable-ui/themable": "^5.1.0"
