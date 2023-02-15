@@ -33,6 +33,9 @@ import {
     usesThemable,
 }                           from '@reusable-ui/themable'        // color options of UI
 
+// internals:
+import                           './effects/styles.js'          // side effect
+
 
 
 // defaults:

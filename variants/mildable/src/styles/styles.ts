@@ -6,6 +6,12 @@ import {
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // internals:
+/*
+    A circular dependencies:
+    mildable.js   import   =>   effects/styles.js   dynamic import   =>   mildable.js
+    
+    It seems OK because the last import is dynamic.
+*/
 import {
     // hooks:
     setMild,

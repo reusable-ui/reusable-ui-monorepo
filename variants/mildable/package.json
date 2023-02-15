@@ -18,10 +18,12 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/mildable.js",
+  "types": "dist/mildable.d.ts",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "dist/effects/styles.js"
+  ],
   "publishConfig": {
     "access": "public"
   },
