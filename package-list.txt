@@ -63,7 +63,7 @@
 // base-components:
 [no css     ] [documented  ] [          atomic] @reusable-ui/generic
 [modularized] [documented  ] [          atomic] @reusable-ui/basic
-[optimized  ] [documented  ] [          atomic] @reusable-ui/indicator
+[modularized] [documented  ] [          atomic] @reusable-ui/indicator
 [optimized  ] [documented  ] [          atomic] @reusable-ui/control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/action-control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/editable-control
