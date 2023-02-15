@@ -6,24 +6,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    
-    
-    
-    // writes css in javascript:
-    keyframes,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -55,18 +37,7 @@ import {
     
     
     
-    // animation stuff of UI:
-    usesAnimation,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
-    
-    
-    
     // a capability of UI to be clicked:
-    usesClickable,
     ClickableProps,
     ClickableOptions,
     useClickable,
@@ -74,13 +45,6 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesControlLayout,
-    usesControlVariants,
-    usesControlStates,
-    
-    
-    
     // react components:
     ControlProps,
     Control,
@@ -99,187 +63,10 @@ const _defaultClickableOptions : ClickableOptions = {
 
 
 
-// configs:
-export const [actionControls, actionControlValues, cssActionControlConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const {animationRegistry : {filters            }} = usesAnimation();
-    const {clickableVars     : {filter: filterPress}} = usesClickable();
-    
-    
-    
-    //#region keyframes
-    const frameReleased = style({
-        filter : [[
-            ...filters.filter((f) => (f !== filterPress)), // the rest filter(s)
-        ]],
-    });
-    const framePressed  = style({
-        filter : [[
-            ...filters.filter((f) => (f !== filterPress)), // the rest filter(s)
-            filterPress, // the interpolating filter
-        ]],
-    });
-    const [keyframesPressRule  , keyframesPress  ] = keyframes({
-        from : frameReleased,
-        to   : framePressed,
-    });
-    keyframesPress.value   = 'press';   // the @keyframes name should contain 'press'   in order to be recognized by `useClickable`
-    const [keyframesReleaseRule, keyframesRelease] = keyframes({
-        from : framePressed,
-        to   : frameReleased,
-    });
-    keyframesRelease.value = 'release'; // the @keyframes name should contain 'release' in order to be recognized by `useClickable`
-    
-    
-    
-    // supports for `usesActiveAsClick()`:
-    const [keyframesPressAsActiveRule  , keyframesPressAsActive  ] = keyframes({
-        from : frameReleased,
-        to   : framePressed,
-    });
-    keyframesPressAsActive.value   = `${keyframesPress.value}as-active`;     // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
-    const [keyframesReleaseAsPassiveRule, keyframesReleaseAsPassive] = keyframes({
-        from : framePressed,
-        to   : frameReleased,
-    });
-    keyframesReleaseAsPassive.value = `${keyframesRelease.value}as-passive`; // the @keyframes name should contain 'passive' in order to be recognized by `useActivatable`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // accessibilities:
-        cursor      : 'pointer' as CssKnownProps['cursor'],
-        
-        
-        
-        // animations:
-        filterPress : [[
-            'brightness(65%)',
-            'contrast(150%)',
-        ]]                      as CssKnownProps['filter'],
-        
-        ...keyframesPressRule,
-        ...keyframesReleaseRule,
-        animPress   : [
-            ['150ms', 'ease-out', 'both', keyframesPress ],
-        ]                       as CssKnownProps['animation'],
-        animRelease : [
-            ['300ms', 'ease-out', 'both', keyframesRelease],
-        ]                       as CssKnownProps['animation'],
-        
-        // supports for `usesActiveAsClick()`:
-        ...keyframesPressAsActiveRule,
-        ...keyframesReleaseAsPassiveRule,
-        animPressAsActive   : [
-            ['150ms', 'ease-out', 'both', keyframesPressAsActive   ],
-        ]                       as CssKnownProps['animation'],
-        animReleaseAsPassive : [
-            ['300ms', 'ease-out', 'both', keyframesReleaseAsPassive],
-        ]                       as CssKnownProps['animation'],
-    };
-}, { prefix: 'act' });
-
-
-
 // styles:
-let actionControlLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesActionControlLayout = () => {
-    const cached = actionControlLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
-        ...imports([
-            // layouts:
-            usesControlLayout(),
-        ]),
-        ...style({
-            // accessibilities:
-            userSelect              : 'none',         // disable selecting text (double clicking not causing selecting text)
-            touchAction             : 'manipulation', // all gestures are preserved except a double click, to make clicking faster
-            WebkitTapHighlightColor : 'transparent',  // no tap_&_hold highlight
-            
-            
-            // customize:
-            ...usesCssProps(actionControls), // apply config's cssProps
-        }),
-    });
-    actionControlLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let actionControlVariantsCache : WeakRef<CssRule>|undefined = undefined;
-export const usesActionControlVariants = () => {
-    const cached = actionControlVariantsCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(actionControls);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // variants:
-            usesControlVariants(),
-            resizableRule,
-        ]),
-    });
-    actionControlVariantsCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let actionControlStatesCache : WeakRef<CssRule>|undefined = undefined;
-export const usesActionControlStates = () => {
-    const cached = actionControlStatesCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // states:
-    const {clickableRule} = usesClickable(actionControls);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // states:
-            usesControlStates(),
-            clickableRule,
-        ]),
-    });
-    actionControlStatesCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-cssActionControlConfig.onChange.subscribe(() => {
-    // clear caches:
-    actionControlLayoutCache   = undefined;
-    actionControlVariantsCache = undefined;
-    actionControlStatesCache   = undefined;
-});
-
-export const useActionControlStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesActionControlLayout(),
-        
-        // variants:
-        usesActionControlVariants(),
-        
-        // states:
-        usesActionControlStates(),
-    ]),
-}), { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useActionControlStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

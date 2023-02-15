@@ -65,7 +65,7 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/basic
 [modularized] [documented  ] [          atomic] @reusable-ui/indicator
 [modularized] [documented  ] [          atomic] @reusable-ui/control
-[optimized  ] [documented  ] [          atomic] @reusable-ui/action-control
+[modularized] [documented  ] [          atomic] @reusable-ui/action-control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/editable-control
 [optimized  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
 [not needopt] [documented  ] [          atomic] @reusable-ui/editable-action-control
