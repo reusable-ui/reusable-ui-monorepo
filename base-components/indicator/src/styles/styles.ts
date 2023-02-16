@@ -12,6 +12,7 @@ import {
     
     
     // writes complex stylesheets in simpler way:
+    watchChanges,
     memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
@@ -35,12 +36,8 @@ import {
 
 // reusable-ui components:
 import {
-    // configs:
-    cssBasicConfig,
-    
-    
-    
     // styles:
+    onBasicStylesChange,
     usesBasicLayout,
     usesBasicVariants,
 }                           from '@reusable-ui/basic'           // a base component
@@ -55,6 +52,8 @@ import {
 
 
 // styles:
+export const onIndicatorStylesChange = watchChanges(onBasicStylesChange, cssIndicatorConfig.onChange);
+
 export const usesIndicatorLayout = memoizeStyle(() => {
     return style({
         // layouts:
@@ -64,7 +63,7 @@ export const usesIndicatorLayout = memoizeStyle(() => {
             ...usesCssProps(indicators), // apply config's cssProps
         }),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange]);
+}, onIndicatorStylesChange);
 
 export const usesIndicatorVariants = memoizeStyle(() => {
     // dependencies:
@@ -79,7 +78,7 @@ export const usesIndicatorVariants = memoizeStyle(() => {
         ...usesBasicVariants(),
         ...resizableRule(),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange]);
+}, onIndicatorStylesChange);
 
 export const usesIndicatorStates = memoizeStyle(() => {
     // dependencies:
@@ -98,7 +97,7 @@ export const usesIndicatorStates = memoizeStyle(() => {
             ifActive(markActive()),
         ]),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange]);
+}, onIndicatorStylesChange);
 
 export default memoizeStyle(() => style({
     // layouts:
@@ -109,4 +108,4 @@ export default memoizeStyle(() => style({
     
     // states:
     ...usesIndicatorStates(),
-}), [cssBasicConfig.onChange, cssIndicatorConfig.onChange]);
+}), onIndicatorStylesChange);
