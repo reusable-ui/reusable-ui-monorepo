@@ -1,3 +1,8 @@
+[hi prior ] : remove imports(...)
+[hi prior ] : replace WeakRef, WeakMap with memoizeStyle()
+
+
+
 [med prior] : dimensions: styleSheet(newLiveStyleSheet); // TODO: add options: { ssr: false }
 
 
