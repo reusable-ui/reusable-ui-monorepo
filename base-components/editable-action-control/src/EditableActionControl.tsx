@@ -6,11 +6,6 @@ import {
 
 // cssfn:
 import {
-    // writes css in javascript:
-    style,
-    imports,
-}                           from '@cssfn/core'                      // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'               // writes css in react hook
@@ -29,24 +24,10 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesActionControlLayout,
-    usesActionControlVariants,
-    usesActionControlStates,
-    
-    
-    
     // react components:
     ActionControlProps,
 }                           from '@reusable-ui/action-control'      // a base component
 import {
-    // styles:
-    usesEditableControlLayout,
-    usesEditableControlVariants,
-    usesEditableControlStates,
-    
-    
-    
     // react components:
     EditableControlProps,
     EditableControl,
@@ -55,46 +36,9 @@ import {
 
 
 // styles:
-export const usesEditableActionControlLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesEditableControlLayout(),
-            usesActionControlLayout(),
-        ]),
-    });
-};
-export const usesEditableActionControlVariants = () => {
-    return style({
-        ...imports([
-            // variants:
-            usesEditableControlVariants(),
-            usesActionControlVariants(),
-        ]),
-    });
-};
-export const usesEditableActionControlStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesEditableControlStates(),
-            usesActionControlStates(),
-        ]),
-    });
-};
-
-export const useEditableActionControlStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesEditableActionControlLayout(),
-        
-        // variants:
-        usesEditableActionControlVariants(),
-        
-        // states:
-        usesEditableActionControlStates(),
-    ]),
-}), { id: 'viprxwh99g' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useEditableActionControlStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'viprxwh99g' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
