@@ -91,12 +91,8 @@ export const usesEditableControlStates = memoizeStyle(() => {
         ...usesControlStates(),
         ...invalidableRule(),
         ...states([
-            ifValid({
-                ...markValid(),
-            }),
-            ifInvalid({
-                ...markInvalid(),
-            }),
+            ifValid(markValid),
+            ifInvalid(markInvalid),
         ]),
     });
 }, onEditableControlStylesChange);
