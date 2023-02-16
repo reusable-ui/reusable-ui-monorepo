@@ -11,7 +11,7 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
-import {
+import type {
     // a semantic management system for react web components:
     Tag,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -24,8 +24,8 @@ import {
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // react components:
-    Button,
     ButtonProps,
+    Button,
 }                           from '@reusable-ui/button'          // a button component
 
 
