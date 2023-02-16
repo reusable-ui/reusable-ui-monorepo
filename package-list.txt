@@ -71,7 +71,7 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
-[optimized  ] [documented  ] [          atomic] @reusable-ui/container
+[modularized] [documented  ] [          atomic] @reusable-ui/container
 [optimized  ] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
