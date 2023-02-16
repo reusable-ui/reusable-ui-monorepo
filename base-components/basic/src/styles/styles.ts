@@ -12,6 +12,7 @@ import {
     
     
     // writes complex stylesheets in simpler way:
+    watchChanges,
     memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
@@ -86,6 +87,8 @@ import {
 
 
 // styles:
+export const onBasicStylesChange = watchChanges(cssBasicConfig.onChange);
+
 export const usesBasicLayout = memoizeStyle(() => {
     // dependencies:
     
@@ -168,7 +171,7 @@ export const usesBasicLayout = memoizeStyle(() => {
             paddingBlock  : paddingVars.paddingBlock,
         }),
     });
-}, cssBasicConfig.onChange);
+}, onBasicStylesChange);
 
 export const usesBasicVariants = memoizeStyle(() => {
     // dependencies:
@@ -192,7 +195,7 @@ export const usesBasicVariants = memoizeStyle(() => {
         ...mildableRule(),
         ...nudibleRule(),
     });
-}, cssBasicConfig.onChange);
+}, onBasicStylesChange);
 
 export default memoizeStyle(() => style({
     // layouts:
@@ -200,4 +203,4 @@ export default memoizeStyle(() => style({
     
     // variants:
     ...usesBasicVariants(),
-}), cssBasicConfig.onChange);
+}), onBasicStylesChange);
