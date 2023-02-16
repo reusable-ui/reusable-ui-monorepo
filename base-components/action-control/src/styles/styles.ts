@@ -11,6 +11,7 @@ import {
     
     
     // writes complex stylesheets in simpler way:
+    watchChanges,
     memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
@@ -27,20 +28,8 @@ import {
 
 // reusable-ui components:
 import {
-    // configs:
-    cssBasicConfig,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // configs:
-    cssIndicatorConfig,
-}                           from '@reusable-ui/indicator'       // a base component
-import {
-    // configs:
-    cssControlConfig,
-    
-    
-    
     // styles:
+    onControlStylesChange,
     usesControlLayout,
     usesControlVariants,
     usesControlStates,
@@ -56,6 +45,8 @@ import {
 
 
 // styles:
+export const onActionControlStylesChange = watchChanges(onControlStylesChange, cssActionControlConfig.onChange);
+
 export const usesActionControlLayout = memoizeStyle(() => {
     return style({
         // layouts:
@@ -72,7 +63,7 @@ export const usesActionControlLayout = memoizeStyle(() => {
             ...usesCssProps(actionControls), // apply config's cssProps
         }),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange, cssActionControlConfig.onChange]);
+}, onActionControlStylesChange);
 
 export const usesActionControlVariants = memoizeStyle(() => {
     // dependencies:
@@ -87,7 +78,7 @@ export const usesActionControlVariants = memoizeStyle(() => {
         ...usesControlVariants(),
         ...resizableRule(),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange, cssActionControlConfig.onChange]);
+}, onActionControlStylesChange);
 
 export const usesActionControlStates = memoizeStyle(() => {
     // dependencies:
@@ -102,7 +93,7 @@ export const usesActionControlStates = memoizeStyle(() => {
         ...usesControlStates(),
         ...clickableRule(),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange, cssActionControlConfig.onChange]);
+}, onActionControlStylesChange);
 
 export default memoizeStyle(() => style({
     // layouts:
@@ -113,4 +104,4 @@ export default memoizeStyle(() => style({
     
     // states:
     ...usesActionControlStates(),
-}), [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange, cssActionControlConfig.onChange]);
+}), onActionControlStylesChange);
