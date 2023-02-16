@@ -263,7 +263,7 @@ export const usesContentChildrenFill         = memoizeStyle((options?: ContentCh
         }),
     });
 });
-const isFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>)    =>  isElementSelectorOf(selectorEntry, 'figure');
+const isFigureElement    = (selectorEntry: OptionalOrBoolean<SelectorEntry>) =>  isElementSelectorOf(selectorEntry, 'figure');
 const isNotFigureElement = (selectorEntry: OptionalOrBoolean<SelectorEntry>) => !isElementSelectorOf(selectorEntry, 'figure');
 export const usesContentChildrenMedia        = memoizeStyle((options?: ContentChildrenMediaOptions) => {
     // options:
@@ -350,7 +350,7 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
         // first: reset top_level <figure>
         ...children(figureSelectorWithExcept, {
             // resets:
-            ...stripoutFigure(),      // clear browser's default styling on `<figure>`
+            ...stripoutFigure(), // clear browser's default styling on `<figure>`
             
             
             
@@ -439,23 +439,20 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
         
         // finally: styling top_level <figure> & top_level <media> as separator:
         ...children(mediaSelectorWithExcept, {
+            // features:
+            ...borderRule(),
+            
+            
+            
             // layouts:
             ...style({
-                // features:
-                ...borderRule(),
-                
-                
-                
-                // layouts:
-                ...style({
-                    // borders:
-                    border                 : borderVars.border,
-                 // borderRadius           : borderVars.borderRadius,
-                    borderStartStartRadius : borderVars.borderStartStartRadius,
-                    borderStartEndRadius   : borderVars.borderStartEndRadius,
-                    borderEndStartRadius   : borderVars.borderEndStartRadius,
-                    borderEndEndRadius     : borderVars.borderEndEndRadius,
-                }),
+                // borders:
+                border                 : borderVars.border,
+             // borderRadius           : borderVars.borderRadius,
+                borderStartStartRadius : borderVars.borderStartStartRadius,
+                borderStartEndRadius   : borderVars.borderStartEndRadius,
+                borderEndStartRadius   : borderVars.borderEndStartRadius,
+                borderEndEndRadius     : borderVars.borderEndEndRadius,
             }),
             
             
