@@ -12,6 +12,7 @@ import {
     
     
     // writes complex stylesheets in simpler way:
+    watchChanges,
     memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
@@ -45,16 +46,8 @@ import {
 
 // reusable-ui components:
 import {
-    // configs:
-    cssBasicConfig,
-}                           from '@reusable-ui/basic'           // a base component
-import {
-    // configs:
-    cssIndicatorConfig,
-    
-    
-    
     // styles:
+    onIndicatorStylesChange,
     usesIndicatorLayout,
     usesIndicatorVariants,
     usesIndicatorStates,
@@ -70,6 +63,8 @@ import {
 
 
 // styles:
+export const onControlStylesChange = watchChanges(onIndicatorStylesChange, cssControlConfig.onChange);
+
 export const usesControlLayout = memoizeStyle(() => {
     return style({
         // resets:
@@ -89,7 +84,7 @@ export const usesControlLayout = memoizeStyle(() => {
             ...usesCssProps(controls), // apply config's cssProps
         }),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange]);
+}, onControlStylesChange);
 
 export const usesControlVariants = memoizeStyle(() => {
     // dependencies:
@@ -104,7 +99,7 @@ export const usesControlVariants = memoizeStyle(() => {
         ...usesIndicatorVariants(),
         ...resizableRule(),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange]);
+}, onControlStylesChange);
 
 export const usesControlStates = memoizeStyle(() => {
     // dependencies:
@@ -136,7 +131,7 @@ export const usesControlStates = memoizeStyle(() => {
             }),
         ]),
     });
-}, [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange]);
+}, onControlStylesChange);
 
 export default memoizeStyle(() => style({
     // layouts:
@@ -147,4 +142,4 @@ export default memoizeStyle(() => style({
     
     // states:
     ...usesControlStates(),
-}), [cssBasicConfig.onChange, cssIndicatorConfig.onChange, cssControlConfig.onChange]);
+}), onControlStylesChange);
