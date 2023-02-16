@@ -18,25 +18,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    
-    
-    
-    // writes css in javascript:
-    states,
-    keyframes,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -58,27 +39,7 @@ import {
     
     
     
-    // background stuff of UI:
-    usesBackground,
-    
-    
-    
-    // foreground (text color) stuff of UI:
-    usesForeground,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
-    
-    
-    
     // a possibility of UI having an invalid state:
-    ifValid,
-    ifInvalid,
-    usesInvalidable,
-    markValid,
-    markInvalid,
     ValidityChangeEvent,
     InvalidableProps,
     useInvalidable,
@@ -86,13 +47,6 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesControlLayout,
-    usesControlVariants,
-    usesControlStates,
-    
-    
-    
     // react components:
     ControlProps,
     Control,
@@ -205,173 +159,10 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
 
 
 
-// configs:
-export const [editableControls, editableControlValues, cssEditableControlConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const {backgroundVars: {backg, altBackgColor}} = usesBackground();
-    const {foregroundVars: {foreg, altForeg     }} = usesForeground();
-    
-    
-    
-    //#region keyframes
-    const frameHighlighted = style({
-        backg : altBackgColor,
-        foreg : altForeg,
-    });
-    const frameNormalized  = style({
-        backg : backg,
-        foreg : foreg,
-    });
-    const [keyframesValidRule  , keyframesValid  ] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesValid.value     = 'valid';     // the @keyframes name should contain 'valid'     in order to be recognized by `useInvalidable`
-    const [keyframesInvalidRule, keyframesInvalid] = keyframes({
-        from : frameHighlighted,
-        to   : frameNormalized,
-    });
-    keyframesInvalid.value   = 'invalid';   // the @keyframes name should contain 'invalid'   in order to be recognized by `useInvalidable`
-    
-    const [keyframesUnvalidRule  , keyframesUnvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUnvalid.value   = 'unvalid';   // the @keyframes name should contain 'unvalid'   in order to be recognized by `useInvalidable`
-    const [keyframesUninvalidRule  , keyframesUninvalid  ] = keyframes({
-        /* no animation yet */
-    });
-    keyframesUninvalid.value = 'uninvalid'; // the @keyframes name should contain 'uninvalid' in order to be recognized by `useInvalidable`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // animations:
-        ...keyframesValidRule,
-        ...keyframesInvalidRule,
-        ...keyframesUnvalidRule,
-        ...keyframesUninvalidRule,
-        animValid     : [
-            ['1000ms', 'ease-out', 'both', keyframesValid    ],
-        ]                       as CssKnownProps['animation'],
-        animInvalid   : [
-            ['1000ms', 'ease-out', 'both', keyframesInvalid  ],
-        ]                       as CssKnownProps['animation'],
-        animUnvalid   : [
-            [ '100ms', 'ease-out', 'both', keyframesUnvalid  ],
-        ]                       as CssKnownProps['animation'],
-        animUninvalid : [
-            [ '100ms', 'ease-out', 'both', keyframesUninvalid],
-        ]                       as CssKnownProps['animation'],
-    };
-}, { prefix: 'edit' });
-
-
-
 // styles:
-let editableControlLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesEditableControlLayout = () => {
-    const cached = editableControlLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
-        ...imports([
-            // layouts:
-            usesControlLayout(),
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(editableControls), // apply config's cssProps
-        }),
-    });
-    editableControlLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let editableControlVariantsCache : WeakRef<CssRule>|undefined = undefined;
-export const usesEditableControlVariants = () => {
-    const cached = editableControlVariantsCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(editableControls);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // variants:
-            usesControlVariants(),
-            resizableRule,
-        ]),
-    });
-    editableControlVariantsCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let editableControlStatesCache : WeakRef<CssRule>|undefined = undefined;
-export const usesEditableControlStates = () => {
-    const cached = editableControlStatesCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // states:
-    const {invalidableRule} = usesInvalidable(editableControls);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // states:
-            usesControlStates(),
-            invalidableRule,
-        ]),
-        ...states([
-            ifValid({
-                ...imports([
-                    markValid(),
-                ]),
-            }),
-            ifInvalid({
-                ...imports([
-                    markInvalid(),
-                ]),
-            }),
-        ]),
-    });
-    editableControlStatesCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-cssEditableControlConfig.onChange.subscribe(() => {
-    // clear caches:
-    editableControlLayoutCache   = undefined;
-    editableControlVariantsCache = undefined;
-    editableControlStatesCache   = undefined;
-});
-
-export const useEditableControlStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesEditableControlLayout(),
-        
-        // variants:
-        usesEditableControlVariants(),
-        
-        // states:
-        usesEditableControlStates(),
-    ]),
-}), { id: 'rww4hy9rmx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useEditableControlStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'rww4hy9rmx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
