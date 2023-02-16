@@ -67,12 +67,8 @@ export const onControlStylesChange = watchChanges(onIndicatorStylesChange, cssCo
 
 export const usesControlLayout = memoizeStyle(() => {
     return style({
-        // resets:
-        ...stripoutControl(), // clear browser's default styles
-        
-        
-        
         // layouts:
+        ...stripoutControl(), // clear browser's default styles
         ...usesIndicatorLayout(),
         ...style({
             // positions:
