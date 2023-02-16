@@ -474,7 +474,15 @@ export interface ContentChildrenLinksOptionsResult {
     linksSelector               : PureSelectorGroup|null
     notNotLinksSelector         : PseudoClassSelector|null
 }
+let defaultContentChildrenLinksOptionsResultCache : WeakRef<ContentChildrenLinksOptionsResult>|undefined = undefined;
 export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOptions): ContentChildrenLinksOptionsResult => {
+    if (options === undefined) {
+        const cached = defaultContentChildrenLinksOptionsResultCache?.deref();
+        if (cached) return cached;
+    } // if
+    
+    
+    
     // options:
     const {
         linksSelector    : linksSelectorStr,
@@ -511,13 +519,15 @@ export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOp
         )
     );
     
-    return {
+    const result : ContentChildrenLinksOptionsResult = {
         linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
         linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
         linksSelector : linksSelector && selectPureSelectorGroupFromSelectorGroup(linksSelector),
         notNotLinksSelector,
-    } as ContentChildrenLinksOptionsResult;
+    };
+    if (options === undefined) defaultContentChildrenLinksOptionsResultCache = new WeakRef<ContentChildrenLinksOptionsResult>(result);
+    return result;
 };
 export const usesContentChildrenLinks        = memoizeStyle((options?: ContentChildrenLinksOptions) => {
     // options:
