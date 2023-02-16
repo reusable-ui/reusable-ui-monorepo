@@ -67,7 +67,7 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/control
 [modularized] [documented  ] [          atomic] @reusable-ui/action-control
 [modularized] [documented  ] [          atomic] @reusable-ui/editable-control
-[optimized  ] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
+[modularized] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon
 [not needopt] [documented  ] [          atomic] @reusable-ui/editable-action-control
 
 // base-content-components:
