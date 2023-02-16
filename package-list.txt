@@ -72,7 +72,7 @@
 
 // base-content-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/container
-[optimized  ] [documented  ] [          atomic] @reusable-ui/content    *button
+[modularized] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
 [optimized  ] [documented  ] [          atomic] @reusable-ui/icon
