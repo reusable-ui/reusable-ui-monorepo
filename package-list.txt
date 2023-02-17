@@ -75,7 +75,7 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/content    *button
 
 // simple-components:
-[optimized  ] [documented  ] [          atomic] @reusable-ui/icon
+[modularized] [documented  ] [          atomic] @reusable-ui/icon
 [not needopt] [documented  ] [          atomic] @reusable-ui/label
 [optimized  ] [documented  ] [          atomic] @reusable-ui/button
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button
