@@ -116,7 +116,6 @@ import {
 
 
 // utility styles:
-
 const usesAppearAsOutlined   = () => {
     // dependencies:
     
