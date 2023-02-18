@@ -33,14 +33,14 @@ import {
     // configs:
     IconImageFile,
     iconConfig,
-}                           from './config.js'
+}                           from '../config.js'
 import {
     concatUrl,
-}                           from './utilities.js'
+}                           from '../utilities.js'
 import type {
     // react components:
     IconProps,
-}                           from './Icon.js'
+}                           from '../Icon.js'
 
 
 

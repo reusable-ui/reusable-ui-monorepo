@@ -1,5 +1,5 @@
-export * from './features.js'
-export * from './variants.js'
+export * from './features/icon.js'
+export * from './variants/resizable.js'
 export * from './config.js'
 
 export * from './styles/config.js'

@@ -46,11 +46,11 @@ import {
 import {
     // features:
     useIcon,
-}                           from './features.js'
+}                           from './features/icon.js'
 import type {
     // variants:
     SizeName,
-}                           from './variants.js'
+}                           from './variants/resizable.js'
 import type {
     default as builtinIconList,
 }                           from './icon-font-material.js'

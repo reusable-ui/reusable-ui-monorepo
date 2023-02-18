@@ -58,12 +58,12 @@ import {
     // features:
     IconConfig,
     usesIcon,
-}                           from '../features.js'
+}                           from '../features/icon.js'
 import {
     // variants:
     SizeName,
     sizeOptions,
-}                           from '../variants.js'
+}                           from '../variants/resizable.js'
 import {
     // utilities:
     concatUrl,
