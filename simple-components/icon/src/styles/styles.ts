@@ -6,7 +6,6 @@ import {
     fontFace,
     children,
     style,
-    imports,
     
     
     
@@ -92,10 +91,12 @@ export const usesIconLayout      = () => {
     
     
     return style({
-        ...imports([
-            // features:
-            iconRule,
-        ]),
+        // features:
+        ...iconRule(),
+        
+        
+        
+        // layouts:
         ...style({
             // layouts:
             display        : 'inline-flex', // use inline flexbox, so it takes the width & height as we set
@@ -122,9 +123,8 @@ export const usesIconLayout      = () => {
             
             // children:
             ...children('::before', {
-                ...imports([
-                    fillTextLineHeightLayout(),
-                ]),
+                // layouts:
+                ...fillTextLineHeightLayout(),
             }),
             
             
@@ -147,9 +147,8 @@ export const usesIconFontLayout  = () => {
     return style({
         // load a custom_font:
         ...fontFace({
-            ...imports([
-                iconConfig.font.style, // define the font's properties
-            ]),
+            // fonts:
+            ...iconConfig.font.style, // define the font's properties
             ...style({
                 src: [
                     ...iconConfig.font.files
@@ -165,10 +164,13 @@ export const usesIconFontLayout  = () => {
         
         // children:
         ...children('::after', {
-            ...imports([
-                // use the loaded custom_font:
-                iconConfig.font.style, // apply the defined font's properties
-            ]),
+            // fonts:
+            // use the loaded custom_font:
+            ...iconConfig.font.style, // apply the defined font's properties
+            
+            
+            
+            // layouts:
             ...style({
                 // layouts:
                 content       : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
@@ -261,12 +263,10 @@ export const usesIconVariants    = () => {
     
     
     return style({
-        ...imports([
-            // variants:
-            resizableRule,
-            themableRule,
-            colorableRule,
-        ]),
+        // variants:
+        ...resizableRule(),
+        ...themableRule(),
+        ...colorableRule(),
     });
 };
 
@@ -285,13 +285,13 @@ export const usesIconImage       = (config: IconImageConfig) => {
     
     
     return style({
-        ...imports([
-            // layouts:
-            usesIconImageLayout(),
-            
-            // features:
-            iconRule,
-        ]),
+        // features:
+        ...iconRule(),
+        
+        
+        
+        // layouts:
+        ...usesIconImageLayout(),
     });
 };
 
