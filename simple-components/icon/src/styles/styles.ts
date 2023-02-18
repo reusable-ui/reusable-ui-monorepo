@@ -2,7 +2,6 @@
 import {
     // writes css in javascript:
     rule,
-    variants,
     fontFace,
     children,
     style,
@@ -74,9 +73,9 @@ import {
 
 
 // styles:
-export const onIconStylesChange = watchChanges(cssIconConfig.onChange);
+export const onIconStylesChange  = watchChanges(cssIconConfig.onChange);
 
-export const usesIconLayout      = () => {
+export const usesIconLayout      = memoizeStyle(() => {
     // dependencies:
     
     // variants:
@@ -134,7 +133,7 @@ export const usesIconLayout      = () => {
             color : null, // delete color prop from config, we use color prop in special way
         }),
     });
-};
+}, onIconStylesChange);
 
 export const usesIconFontLayout  = () => {
     // dependencies:
@@ -250,9 +249,9 @@ export const usesIconImageLayout = memoizeStyle(() => {
         // backgrounds:
         backg              : iconVars.color,  // set icon's color
     });
-}, onIconStylesChange);
+});
 
-export const usesIconVariants    = () => {
+export const usesIconVariants    = memoizeStyle(() => {
     // dependencies:
     
     // variants:
@@ -268,7 +267,7 @@ export const usesIconVariants    = () => {
         ...themableRule(),
         ...colorableRule(),
     });
-};
+}, onIconStylesChange);
 
 export interface IconImageConfig
     extends
@@ -298,17 +297,15 @@ export const usesIconImage       = (config: IconImageConfig) => {
 export default memoizeStyle(() => style({
     // layouts:
     ...usesIconLayout(),
+    ...rule('.font', {
+        // layouts:
+        ...usesIconFontLayout(),
+    }),
+    ...rule('.image', {
+        // layouts:
+        ...usesIconImageLayout(),
+    }),
     
     // variants:
     ...usesIconVariants(),
-    ...variants([
-        rule('.font', {
-            // layouts:
-            ...usesIconFontLayout(),
-        }),
-        rule('.image', {
-            // layouts:
-            ...usesIconImageLayout(),
-        }),
-    ]),
 }), onIconStylesChange);
