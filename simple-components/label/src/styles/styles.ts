@@ -26,11 +26,13 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    onBasicStylesChange,
     usesBasicLayout,
     usesBasicVariants,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
+    onContentStylesChange,
     usesContentBasicLayout,
     usesContentBasicVariants,
 }                           from '@reusable-ui/content'         // a neighbor component
@@ -45,7 +47,7 @@ import {
 
 
 // styles:
-export const onLabelStylesChange = watchChanges(cssLabelConfig.onChange);
+export const onLabelStylesChange = watchChanges(onBasicStylesChange, onContentStylesChange, cssLabelConfig.onChange);
 
 export const usesLabelLayout = memoizeStyle(() => {
     return style({
