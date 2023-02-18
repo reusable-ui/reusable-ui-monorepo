@@ -233,6 +233,7 @@ export const usesIconImageLayout = memoizeStyle(() => {
     
     
     
+    // layouts:
     return style({
         // appearances:
         maskSize           : 'contain',       // image's size is as big as possible without being cropped
