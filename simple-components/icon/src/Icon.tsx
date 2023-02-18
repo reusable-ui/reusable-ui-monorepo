@@ -117,15 +117,15 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     
     
+    // features:
+    const icon             = useIcon(props);
+    
+    
+    
     // variants:
     const resizableVariant = useResizable<SizeName>(props);
     const themableVariant  = useThemable(props);
     const mildableVariant  = useMildable(props);
-    
-    
-    
-    // features:
-    const icon             = useIcon(props);
     
     
     
@@ -138,8 +138,6 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         // variants:
         size     : _size,  // remove
-        
-        // colors:
         theme    : _theme, // remove
         mild     : _mild,  // remove
     ...restGenericProps} = props;
@@ -192,8 +190,8 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
             
             
             // semantics:
-            tag='span'
-            role='img'
+            tag  = {props.tag  ?? 'span'}
+            role = {props.role ?? 'img' }
             
             
             
