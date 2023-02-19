@@ -34,10 +34,10 @@ import {
     defaultOrientationableOptions,
 }                           from './defaults.js'
 import {
-    // hooks:
+    // semantics:
     SemanticButtonProps,
     useSemanticButton,
-}                           from './hooks/semanticButton.js'
+}                           from './semantics/SemanticButton.js'
 import {
     // variants:
     ButtonVariant,

@@ -37,6 +37,9 @@ const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role
 
 // hooks:
 
+// semantics:
+
+//#region SemanticButton
 export type ButtonType = 'button'|'submit'|'reset'
 export interface SemanticButtonProps<TElement extends Element = HTMLButtonElement>
     extends
@@ -126,3 +129,4 @@ export const useSemanticButton = <TElement extends Element = HTMLButtonElement>(
         type,
     };
 };
+//#endregion SemanticButton
