@@ -6,11 +6,19 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
+    // semantics:
+    ButtonType,
+    
+    
+    
+    // appearances:
+    IconPosition,
+    
+    
+    
+    // variants:
     ButtonStyle,
     ButtonVariant,
-    ButtonType,
-    IconPosition,
     
     
     
@@ -58,4 +66,4 @@ export {
     CloseButton as default,
 }
 
-export type { ButtonStyle, ButtonVariant, ButtonType, IconPosition }
+export type { ButtonType, IconPosition, ButtonStyle, ButtonVariant }
