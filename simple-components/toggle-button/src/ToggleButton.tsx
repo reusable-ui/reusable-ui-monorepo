@@ -20,10 +20,14 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
+    // semantics:
+    ButtonType,
+    
+    
+    
+    // variants:
     ButtonStyle,
     ButtonVariant,
-    ButtonType,
     
     
     
@@ -162,7 +166,7 @@ export {
     ToggleButton as default,
 }
 
-export type { ButtonStyle, ButtonVariant, ButtonType }
+export type { ButtonType, ButtonStyle, ButtonVariant }
 
 
 
