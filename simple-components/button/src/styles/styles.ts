@@ -120,10 +120,10 @@ const usesAppearAsOutlined   = () => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
+    const {borderVars     } = usesBorder();
     
     // variants:
-    const {outlineableVars } = usesOutlineable();
+    const {outlineableVars} = usesOutlineable();
     
     
     
@@ -186,6 +186,7 @@ const usesButtonLinkVariant  = () => {
     
     
     return style({
+        // layouts:
         ...style({
             // accessibilities:
             userSelect     : 'contain', // a link should be selectable
@@ -237,6 +238,7 @@ const usesButtonLinkVariant  = () => {
 };
 const usesButtonGhostVariant = () => {
     return style({
+        // layouts:
         ...style({
             // borders:
             boxShadow : ['none', '!important'], // no shadow & no focus animation
@@ -246,6 +248,10 @@ const usesButtonGhostVariant = () => {
             // customize:
             ...usesCssProps(usesPrefixedProps(buttons, 'ghost')), // apply config's cssProps starting with ghost***
         }),
+        
+        
+        
+        // states:
         ...states([
             ifArrive({
                 // appearances:
@@ -317,7 +323,7 @@ export const usesButtonVariants = memoizeStyle(() => {
         // variants:
         /* write specific buttonStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
         ...variants([
-            rule(['.link', '.ghost'], usesAppearAsOutlined()     ),
+            rule(['.link', '.ghost'], usesAppearAsOutlined()   ),
             rule( '.link'           , usesButtonLinkVariant()  ),
             rule(          '.ghost' , usesButtonGhostVariant() ),
         ]),
