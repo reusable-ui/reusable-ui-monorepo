@@ -80,7 +80,7 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/button
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button
-[optimized  ] [documented  ] [full    compound] @reusable-ui/button-icon
+[modularized] [documented  ] [full    compound] @reusable-ui/button-icon
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button
 [not needopt] [documented  ] [          atomic] @reusable-ui/form
 [optimized  ] [documented  ] [          atomic] @reusable-ui/input
