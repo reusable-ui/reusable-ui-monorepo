@@ -1,6 +1,8 @@
 [hi prior ] : remove imports(...)
 [hi prior ] : replace WeakRef, WeakMap with memoizeStyle()
 [hi prior ] : move // defaults: to dedicated defaults.ts
+[hi prior ] : verify annonymous cssVars<\w+>\(\)
+[hi prior ] : move cssVars<\w+> to standalone variables.ts
 
 
 
