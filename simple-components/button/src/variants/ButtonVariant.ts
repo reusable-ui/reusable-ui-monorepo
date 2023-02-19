@@ -1,5 +1,5 @@
 // defaults:
-const _defaultButtonStyle      : ButtonStyle  = 'regular'
+const _defaultButtonStyle : ButtonStyle = 'regular'
 
 
 
