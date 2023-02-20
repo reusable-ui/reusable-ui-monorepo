@@ -186,4 +186,4 @@ export {
     ButtonIcon as default,
 }
 
-export type { ButtonStyle, ButtonVariant, ButtonType }
+export type { ButtonType, ButtonStyle, ButtonVariant }

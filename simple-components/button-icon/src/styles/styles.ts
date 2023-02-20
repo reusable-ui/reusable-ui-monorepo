@@ -51,6 +51,7 @@ import {
 // reusable-ui components:
 import {
     // configs:
+    onBasicStylesChange,
     basics,
 }                           from '@reusable-ui/basic'           // a base component
 import {
@@ -61,13 +62,14 @@ import {
     usesButtonStates,
 }                           from '@reusable-ui/button'          // a base component
 import {
+    // configs:
+    onIconStylesChange,
+    icons,
+    
+    
+    
     // hooks:
     usesIcon,
-    
-    
-    
-    // configs:
-    icons,
 }                           from '@reusable-ui/icon'            // an icon component
 
 // internals:
@@ -85,7 +87,7 @@ import {
 
 
 // styles:
-export const onButtonIconStylesChange  = watchChanges(onButtonStylesChange, cssButtonIconConfig.onChange);
+export const onButtonIconStylesChange  = watchChanges(onBasicStylesChange, onButtonStylesChange, onIconStylesChange, cssButtonIconConfig.onChange);
 
 export const usesButtonIconLayout = memoizeStyle((options?: OrientationableOptions) => {
     // dependencies:
@@ -138,7 +140,7 @@ export const usesButtonIconLayout = memoizeStyle((options?: OrientationableOptio
             
             
             // borders:
-            border        : borderVars.border,
+            border                 : borderVars.border,
          // borderRadius           : borderVars.borderRadius,
             borderStartStartRadius : borderVars.borderStartStartRadius,
             borderStartEndRadius   : borderVars.borderStartEndRadius,
