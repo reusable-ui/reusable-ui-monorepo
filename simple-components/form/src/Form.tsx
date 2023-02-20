@@ -2,11 +2,6 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -18,6 +13,7 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -121,6 +117,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     });
     
     
+    
     // rest props:
     const {
         // validations:
@@ -134,14 +131,14 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     
     // refs:
-    const setFormRef = useCallback<React.RefCallback<HTMLFormElement>>((element) => {
+    const setFormRef = useEvent<React.RefCallback<HTMLFormElement>>((element) => {
         // conditions:
         if (!element) return;
         
         
         
         formValidator.handleInit(element);
-    }, [formValidator.handleInit]);
+    });
     const elmRef = useMergeRefs(
         // preserves the original `elmRef`:
         props.elmRef,
