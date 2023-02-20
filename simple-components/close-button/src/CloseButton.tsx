@@ -11,7 +11,7 @@ import {
     
     
     
-    // appearances:
+    // positions:
     IconPosition,
     
     
