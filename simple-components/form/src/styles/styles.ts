@@ -42,7 +42,7 @@ import {
 import {
     // configs:
     forms,
-    cssFormConfig
+    cssFormConfig,
 }                           from './config.js'
 
 
