@@ -84,7 +84,7 @@
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button
 [slimmodular] [documented  ] [          atomic] @reusable-ui/form
 [modularized] [documented  ] [          atomic] @reusable-ui/input
-[not needopt] [documented  ] [full    compound] @reusable-ui/range
+[slimmodular] [documented  ] [full    compound] @reusable-ui/range
 [optimized  ] [documented  ] [          atomic] @reusable-ui/check
 [optimized  ] [documented  ] [          atomic] @reusable-ui/radio
 [not needopt] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
