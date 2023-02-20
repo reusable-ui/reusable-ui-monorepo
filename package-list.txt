@@ -82,7 +82,7 @@
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button
 [modularized] [documented  ] [full    compound] @reusable-ui/button-icon
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button
-[not needopt] [documented  ] [          atomic] @reusable-ui/form
+[modularized] [documented  ] [          atomic] @reusable-ui/form
 [optimized  ] [documented  ] [          atomic] @reusable-ui/input
 [not needopt] [documented  ] [full    compound] @reusable-ui/range
 [optimized  ] [documented  ] [          atomic] @reusable-ui/check
