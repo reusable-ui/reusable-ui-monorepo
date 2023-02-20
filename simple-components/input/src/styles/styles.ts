@@ -57,7 +57,7 @@ import {
 import {
     // configs:
     inputs,
-    cssInputConfig
+    cssInputConfig,
 }                           from './config.js'
 
 
@@ -65,7 +65,7 @@ import {
 // styles:
 export const inputElm = ':where(:first-child)' // zero degree specificity to be easily overwritten
 
-export const onInputStylesChange  = watchChanges(onEditableTextControlStylesChange, cssInputConfig.onChange);
+export const onInputStylesChange = watchChanges(onEditableTextControlStylesChange, cssInputConfig.onChange);
 
 export const usesInputLayout = memoizeStyle(() => {
     // dependencies:
