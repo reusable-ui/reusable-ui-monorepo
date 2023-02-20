@@ -48,7 +48,7 @@ import {
 
 
 // styles:
-export const onFormStylesChange  = watchChanges(onContentStylesChange, cssFormConfig.onChange);
+export const onFormStylesChange = watchChanges(onContentStylesChange, cssFormConfig.onChange);
 
 export const usesFormLayout = () => {
     return style({

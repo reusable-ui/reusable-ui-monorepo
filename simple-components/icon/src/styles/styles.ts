@@ -73,7 +73,7 @@ import {
 
 
 // styles:
-export const onIconStylesChange  = watchChanges(cssIconConfig.onChange);
+export const onIconStylesChange = watchChanges(cssIconConfig.onChange);
 
 export const usesIconLayout      = memoizeStyle(() => {
     // dependencies:

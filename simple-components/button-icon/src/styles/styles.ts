@@ -87,7 +87,7 @@ import {
 
 
 // styles:
-export const onButtonIconStylesChange  = watchChanges(onBasicStylesChange, onButtonStylesChange, onIconStylesChange, cssButtonIconConfig.onChange);
+export const onButtonIconStylesChange = watchChanges(onBasicStylesChange, onButtonStylesChange, onIconStylesChange, cssButtonIconConfig.onChange);
 
 export const usesButtonIconLayout = memoizeStyle((options?: OrientationableOptions) => {
     // dependencies:
