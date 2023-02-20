@@ -14,7 +14,6 @@ import {
     
     // writes complex stylesheets in simpler way:
     watchChanges,
-    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
@@ -49,7 +48,7 @@ import {
 // styles:
 export const onLabelStylesChange = watchChanges(onBasicStylesChange, onContentStylesChange, cssLabelConfig.onChange);
 
-export const usesLabelLayout = memoizeStyle(() => {
+export const usesLabelLayout = () => {
     return style({
         // layouts:
         ...usesBasicLayout(),
@@ -77,9 +76,9 @@ export const usesLabelLayout = memoizeStyle(() => {
             ...usesCssProps(labels),         // apply config's cssProps
         }),
     });
-}, onLabelStylesChange);
+};
 
-export const usesLabelVariants = memoizeStyle(() => {
+export const usesLabelVariants = () => {
     // dependencies:
     
     // variants:
@@ -102,12 +101,12 @@ export const usesLabelVariants = memoizeStyle(() => {
         ...usesBasicVariants(),
         ...resizableRule(),
     });
-}, onLabelStylesChange);
+};
 
-export default memoizeStyle(() => style({
+export default () => style({
     // layouts:
     ...usesLabelLayout(),
     
     // variants:
     ...usesLabelVariants(),
-}), onLabelStylesChange);
+});
