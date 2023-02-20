@@ -76,14 +76,14 @@
 
 // simple-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/icon
-[modularized] [documented  ] [          atomic] @reusable-ui/label
+[slimmodular] [documented  ] [          atomic] @reusable-ui/label
 [modularized] [documented  ] [          atomic] @reusable-ui/button
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button
 [modularized] [documented  ] [full    compound] @reusable-ui/button-icon
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button
-[modularized] [documented  ] [          atomic] @reusable-ui/form
-[optimized  ] [documented  ] [          atomic] @reusable-ui/input
+[slimmodular] [documented  ] [          atomic] @reusable-ui/form
+[modularized] [documented  ] [          atomic] @reusable-ui/input
 [not needopt] [documented  ] [full    compound] @reusable-ui/range
 [optimized  ] [documented  ] [          atomic] @reusable-ui/check
 [optimized  ] [documented  ] [          atomic] @reusable-ui/radio
