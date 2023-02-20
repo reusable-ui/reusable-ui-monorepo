@@ -13,7 +13,6 @@ import {
     
     // writes complex stylesheets in simpler way:
     watchChanges,
-    memoizeStyle,
 }                           from '@cssfn/core'                      // writes css in javascript
 
 // reusable-ui core:
@@ -51,7 +50,7 @@ import {
 // styles:
 export const onFormStylesChange  = watchChanges(onContentStylesChange, cssFormConfig.onChange);
 
-export const usesFormLayout = memoizeStyle(() => {
+export const usesFormLayout = () => {
     return style({
         // layouts:
         ...usesContentLayout(),
@@ -60,9 +59,9 @@ export const usesFormLayout = memoizeStyle(() => {
             ...usesCssProps(forms), // apply config's cssProps
         }),
     });
-}, onFormStylesChange);
+};
 
-export const usesFormVariants = memoizeStyle(() => {
+export const usesFormVariants = () => {
     // dependencies:
     
     // variants:
@@ -75,9 +74,9 @@ export const usesFormVariants = memoizeStyle(() => {
         ...usesContentVariants(),
         ...resizableRule(),
     });
-}, onFormStylesChange);
+};
 
-export const usesFormStates = memoizeStyle(() => {
+export const usesFormStates = () => {
     // dependencies:
     
     // states:
@@ -93,9 +92,9 @@ export const usesFormStates = memoizeStyle(() => {
             ifInvalid(markInvalid()),
         ]),
     });
-}, onFormStylesChange);
+};
 
-export default memoizeStyle(() => style({
+export default () => style({
     // layouts:
     ...usesFormLayout(),
     
@@ -104,4 +103,4 @@ export default memoizeStyle(() => style({
     
     // states:
     ...usesFormStates(),
-}), onFormStylesChange);
+});
