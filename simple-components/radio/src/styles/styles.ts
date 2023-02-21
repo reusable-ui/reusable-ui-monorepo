@@ -35,6 +35,11 @@ import {
 
 // reusable-ui components:
 import {
+    // configs:
+    checks,
+    
+    
+    
     // styles:
     inputElm,
     
@@ -43,11 +48,6 @@ import {
     usesCheckLayout,
     usesCheckVariants,
     usesCheckStates,
-    
-    
-    
-    // configs:
-    checks,
 }                           from '@reusable-ui/check'           // a base component
 
 // internals:
@@ -76,20 +76,18 @@ export const usesRadioLayout = memoizeStyle(() => {
         ...style({
             // children:
             ...children(inputElm, {
-                ...style({
-                    // borders:
-                    // circle corners on top:
-                    [borderVars.borderStartStartRadius] : borderRadiuses.pill,
-                    [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
-                    // circle corners on bottom:
-                    [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
-                    [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(radios), // apply config's cssProps
-                }),
+                // borders:
+                // circle corners on top:
+                [borderVars.borderStartStartRadius] : borderRadiuses.pill,
+                [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
+                // circle corners on bottom:
+                [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
+                [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
+                
+                
+                
+                // customize:
+                ...usesCssProps(radios), // apply config's cssProps
             }),
         }),
         

@@ -71,7 +71,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         
         
         
-        // accessibilities:
+        // states:
         defaultActive,  // take, to be handled by `useToggleActivatable`
         active,         // take, to be handled by `useToggleActivatable`
         inheritActive,  // take, to be handled by `useToggleActivatable`
