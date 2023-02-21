@@ -12,50 +12,16 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    children,
-    style,
-    vars,
-    imports,
-    escapeSvg,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
 import {
-    // a border (stroke) management system:
-    borderRadiuses,
-    
-    
-    
     // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
-    
-    
-    
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
     
     
     
@@ -65,20 +31,9 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    inputElm,
-    
-    usesCheckLayout,
-    usesCheckVariants,
-    usesCheckStates,
-    
+    // variants:
     CheckStyle,
     CheckVariant,
-    
-    
-    
-    // configs:
-    checks,
     
     
     
@@ -89,86 +44,10 @@ import {
 
 
 
-// configs:
-export const [radios, radioValues, cssRadioConfig] = cssConfig(() => {
-    return {
-        // animations:
-        // forked from Bootstrap 5:
-        indicator : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#000'/></svg>")}")` as CssKnownProps['maskImage'],
-    };
-}, { prefix: 'rad' });
-
-
-
 // styles:
-export const usesRadioLayout = () => {
-    // dependencies:
-    
-    // features:
-    const {borderVars} = usesBorder();
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesCheckLayout(),
-        ]),
-        ...style({
-            // children:
-            ...children(inputElm, {
-                ...style({
-                    // borders:
-                    // circle corners on top:
-                    [borderVars.borderStartStartRadius] : borderRadiuses.pill,
-                    [borderVars.borderStartEndRadius  ] : borderRadiuses.pill,
-                    // circle corners on bottom:
-                    [borderVars.borderEndStartRadius  ] : borderRadiuses.pill,
-                    [borderVars.borderEndEndRadius    ] : borderRadiuses.pill,
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(radios), // apply config's cssProps
-                }),
-            }),
-        }),
-        ...vars({
-            // overwrite <Check>'s selected indicator:
-            [checks.indicator] : radios.indicator,
-        }),
-    });
-};
-export const usesRadioVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(radios);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesCheckVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesRadioStates = usesCheckStates;
-
-export const useRadioStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesRadioLayout(),
-        
-        // variants:
-        usesRadioVariants(),
-        
-        // states:
-        usesRadioStates(),
-    ]),
-}), { id: 'f4fvh7cm5b' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useRadioStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'f4fvh7cm5b' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
