@@ -87,7 +87,7 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/range
 [modularized] [documented  ] [          atomic] @reusable-ui/check
 [modularized] [documented  ] [          atomic] @reusable-ui/radio
-[not needopt] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
+[slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
 [not needopt] [documented  ] [          atomic] @reusable-ui/list
