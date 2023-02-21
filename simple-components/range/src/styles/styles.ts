@@ -423,6 +423,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
+
 export const usesRangeVariants = () => {
     // dependencies:
     
@@ -437,6 +438,7 @@ export const usesRangeVariants = () => {
         ...resizableRule(),
     });
 };
+
 export const usesRangeStates = usesEditableControlStates;
 
 export default () => style({
