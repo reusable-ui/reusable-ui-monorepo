@@ -3,6 +3,7 @@
 [hi prior ] : move // defaults: to dedicated defaults.ts
 [hi prior ] : verify annonymous cssVars<\w+>\(\)
 [hi prior ] : cssVars<\w+> must be in variables.ts or features/*.ts or states/*.ts or variants/*.ts
+[hi prior ] : disable lazyCsr for :has(...)
 
 
 
