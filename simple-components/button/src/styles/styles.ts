@@ -321,12 +321,15 @@ export const usesButtonVariants = memoizeStyle(() => {
     
     return style({
         // variants:
+        
         /* write specific buttonStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
+        
         ...variants([
             rule(['.link', '.ghost'], usesAppearAsOutlined()   ),
             rule( '.link'           , usesButtonLinkVariant()  ),
             rule(          '.ghost' , usesButtonGhostVariant() ),
         ]),
+        
         ...usesActionControlVariants(),
         ...resizableRule(),
     });
