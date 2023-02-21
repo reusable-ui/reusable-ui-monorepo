@@ -1,5 +1,5 @@
 // defaults:
-const _defaultCheckStyle : CheckStyle  = 'regular'
+const _defaultCheckStyle : CheckStyle = 'regular'
 
 
 

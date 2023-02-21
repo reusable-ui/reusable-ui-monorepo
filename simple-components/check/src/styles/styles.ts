@@ -268,6 +268,7 @@ export const usesCheckVariants = memoizeStyle(() => {
         // variants:
         
         /* write specific checkStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
+        
         ...variants([
             rule(['.button', '.toggleButton'], {
                 // layouts:
@@ -326,8 +327,6 @@ export const usesCheckVariants = memoizeStyle(() => {
                 ...overwriteProps(checks, usesPrefixedProps(checks, 'switch')),
             }),
         ], { specificityWeight: 1 }),
-        
-        
         
         ...usesEditableActionControlVariants(),
         ...resizableRule(),
