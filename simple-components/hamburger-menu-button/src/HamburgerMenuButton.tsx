@@ -93,9 +93,9 @@ import {
 
 // internals:
 import {
-    // a hamburger menu animation:
+    // states:
     usesHamburgerable,
-}                           from './hamburgerable.js'
+}                           from './states/hamburgerable.js'
 
 
 
