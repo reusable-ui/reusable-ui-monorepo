@@ -53,11 +53,14 @@ import {
     ListVariant,
     useListVariant,
 }                           from './variants/ListVariant.js'
-import {
+import type {
     // react components:
     ListItemProps,
-    ListSeparatorItem,
 }                           from './ListItem'
+import {
+    // react components:
+    ListSeparatorItem,
+}                           from './ListSeparatorItem'
 
 
 
