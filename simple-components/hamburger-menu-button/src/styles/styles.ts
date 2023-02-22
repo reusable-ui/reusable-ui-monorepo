@@ -59,6 +59,7 @@ import {
 import {
     // configs:
     basics,
+    cssBasicConfig,
 }                           from '@reusable-ui/basic'           // a base component
 import {
     // styles:
@@ -89,7 +90,7 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 // styles:
 export const svgElm = ':where(svg)' // zero degree specificity to be easily overwritten
 
-export const onHamburgerMenuButtonStylesChange = watchChanges(onButtonStylesChange, cssHamburgerMenuButtonConfig.onChange);
+export const onHamburgerMenuButtonStylesChange = watchChanges(cssBasicConfig.onChange, onButtonStylesChange, cssHamburgerMenuButtonConfig.onChange);
 
 export const usesHamburgerLayout = () => {
     // dependencies:

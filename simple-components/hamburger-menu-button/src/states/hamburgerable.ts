@@ -16,7 +16,6 @@ import {
     fallbacks,
     style,
     vars,
-    imports,
     
     
     
@@ -159,10 +158,8 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
     
     return {
         hamburgerableRule: () => style({
-            ...imports([
-                // features:
-                animationRule,
-            ]),
+            // features:
+            ...animationRule(),
             
             
             
@@ -178,30 +175,22 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
             // animation states:
             ...states([
                 ifActivated({
-                    ...imports([
-                        transformInVars(),
-                    ]),
+                    ...transformInVars(),
                 }),
                 ifActivating({
-                    ...imports([
-                        transformInVars(),
-                        transformOutVars(),
-                        
-                        animInVars(),
-                    ]),
+                    ...transformInVars(),
+                    ...transformOutVars(),
+                    
+                    ...animInVars(),
                 }),
                 ifPassivating({
-                    ...imports([
-                        transformInVars(),
-                        transformOutVars(),
-                        
-                        animOutVars(),
-                    ]),
+                    ...transformInVars(),
+                    ...transformOutVars(),
+                    
+                    ...animOutVars(),
                 }),
                 ifPassivated({
-                    ...imports([
-                        transformOutVars(),
-                    ]),
+                    ...transformOutVars(),
                 }),
             ]),
             
