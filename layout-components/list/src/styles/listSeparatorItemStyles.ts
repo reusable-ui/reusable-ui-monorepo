@@ -9,11 +9,6 @@ import {
     rule,
     children,
     style,
-    
-    
-    
-    // writes complex stylesheets in simpler way:
-    watchChanges,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
@@ -40,8 +35,6 @@ import {
 }                           from '../defaults.js'
 import {
     // elements:
-    wrapperElm,
-    listItemElm,
     horzRuleElm,
 }                           from './elements'
 

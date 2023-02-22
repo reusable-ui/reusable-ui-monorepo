@@ -3,24 +3,12 @@ import {
     // writes css in javascript:
     states,
     style,
-    imports,
-    
-    
-    
-    // writes complex stylesheets in simpler way:
-    watchChanges,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
 import {
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
     // a capability of UI to be highlighted/selected/activated:
     ifActive,
-    ifPassive,
     MarkActiveOptions,
     markActive,
     
@@ -64,24 +52,22 @@ const _defaultMarkActiveOptions        : MarkActiveOptions  = { outlined: null, 
 // styles:
 export const usesListActionItemLayout = () => {
     return style({
-        ...imports([
-            // layouts:
-            usesActionControlLayout(),
-            inheritBorderFromParent(),
-        ]),
+        // layouts:
+        ...usesActionControlLayout(),
+        ...inheritBorderFromParent(),
     });
 };
+
 export const usesListActionItemVariants = usesActionControlVariants;
+
 export const usesListActionItemStates = () => {
     const markActiveRule = markActive(_defaultMarkActiveOptions);
     
     
     
     return style({
-        ...imports([
-            // states:
-            usesActionControlStates(),
-        ]),
+        // states:
+        ...usesActionControlStates(),
         ...states([
             ifActive(markActiveRule),
             ifFocus(markActiveRule),
