@@ -87,16 +87,16 @@ import {
     usesIndicatorStates,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
+    // configs:
+    contents,
+    
+    
+    
     // styles:
     onContentStylesChange,
     usesContentBasicLayout,
     usesContentBasicVariants,
     usesContentChildren,
-    
-    
-    
-    // configs:
-    contents,
 }                           from '@reusable-ui/content'         // a neighbor component
 import {
     // styles:
