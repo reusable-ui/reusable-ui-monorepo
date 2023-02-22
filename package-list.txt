@@ -90,7 +90,7 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button
 
 // layout-components:
-[not needopt] [documented  ] [          atomic] @reusable-ui/list
+[slimmodular] [documented  ] [          atomic] @reusable-ui/list
 [slimmodular] [documented  ] [          atomic] @reusable-ui/card
 [not needopt] [documented  ] [          atomic] @reusable-ui/masonry
 
