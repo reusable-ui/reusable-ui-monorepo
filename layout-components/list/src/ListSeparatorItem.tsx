@@ -91,7 +91,7 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
             
             
             // classes:
-            mainClass={props.mainClass ?? [styleSheet.main, separatorStyleSheet.main].join(' ')}
+            mainClass={props.mainClass ?? `${styleSheet.main} ${separatorStyleSheet.main}`}
             classes={classes}
         >
             <hr />
