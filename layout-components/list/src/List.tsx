@@ -65,10 +65,10 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag              : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
-const _defaultSemanticRole             : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic
+const _defaultSemanticTag  : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticRole : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic
 
-const _defaultActionCtrl               : boolean|undefined  = undefined
+const _defaultActionCtrl   : boolean|undefined  = undefined
 
 
 
@@ -108,6 +108,8 @@ interface WrapperItemProps<TElement extends Element = HTMLElement>
         // bases:
         GenericProps<TElement>
 {
+    // children:
+    children ?: React.ReactNode
 }
 const WrapperItem = <TElement extends Element = HTMLElement>(props: WrapperItemProps<TElement>): JSX.Element|null => {
     // rest props:
