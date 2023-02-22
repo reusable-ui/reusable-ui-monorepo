@@ -55,16 +55,16 @@ import {
     usesIndicatorStates,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
+    // configs:
+    contents,
+    
+    
+    
     // styles:
     onContentStylesChange,
     usesContentLayout,
     usesContentVariants,
     usesContentChildren,
-    
-    
-    
-    // configs:
-    contents,
 }                           from '@reusable-ui/content'         // a neighbor component
 
 // internals:
@@ -124,6 +124,10 @@ export const usesCardItemLayout    = () => {
         // layouts:
         ...usesIndicatorLayout(),
         ...usesContentLayout(),
+        
+        
+        
+        // borders:
         ...inheritBorderFromParent(),
         
         
@@ -145,6 +149,7 @@ export const usesCardItemLayout    = () => {
             
             
             
+            // configs:
             ...vars({
                 // animations:
                 
@@ -216,7 +221,7 @@ export const usesCardBodyLayout    = () => {
 
 
 // styles:
-export const onCardStylesChange = watchChanges(onContentStylesChange, onIndicatorStylesChange, cssCardConfig.onChange);
+export const onCardStylesChange = watchChanges(onIndicatorStylesChange, onContentStylesChange, cssCardConfig.onChange);
 
 export const usesCardLayout = (options?: OrientationableOptions) => {
     // options:
@@ -248,7 +253,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     return style({
         // features:
-        // borderRule, // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
+        // borderRule(),    // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
         ...animationRule(),
         ...groupableRule(), // make a nicely rounded corners
         
