@@ -28,7 +28,7 @@ import {
 
 
 // defaults:
-const _defaultItemActionCtrl           : boolean            = false
+const _defaultItemActionCtrl : boolean = false
 
 
 
@@ -140,7 +140,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
             
             
             // classes:
-            mainClass={props.mainClass ?? [styleSheet.main, actionStyleSheet.main].join(' ')}
+            mainClass={props.mainClass ?? `${styleSheet.main} ${actionStyleSheet.main}`}
             
             
             
