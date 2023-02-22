@@ -13,7 +13,6 @@ import {
     children,
     style,
     vars,
-    imports,
     
     
     
@@ -83,12 +82,13 @@ import {
 // reusable-ui components:
 import {
     // styles:
-    usesIndicatorLayout,
+    onIndicatorStylesChange,
     usesIndicatorVariants,
     usesIndicatorStates,
 }                           from '@reusable-ui/indicator'       // a base component
 import {
     // styles:
+    onContentStylesChange,
     usesContentBasicLayout,
     usesContentBasicVariants,
     usesContentChildren,
@@ -100,10 +100,12 @@ import {
 }                           from '@reusable-ui/content'         // a neighbor component
 import {
     // styles:
+    onIconStylesChange,
     usesIconImage,
 }                           from '@reusable-ui/icon'            // an icon component
 import {
     // styles:
+    onButtonStylesChange,
     usesButtonLayout,
 }                           from '@reusable-ui/button'          // a button component
 
@@ -126,6 +128,8 @@ import {
 
 
 // styles:
+export const onListStylesChange = watchChanges(onIconStylesChange, onButtonStylesChange, onIndicatorStylesChange, onContentStylesChange, cssListConfig.onChange);
+
 export const usesListLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
@@ -155,14 +159,16 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...imports([
-            // resets:
-            stripoutList(), // clear browser's default styles
-            
-            // features:
-            // borderRule,  // moved out to dedicated border stroke for each list & wrapper
-            groupableRule,  // make a nicely rounded corners
-        ]),
+        // resets:
+        ...stripoutList(),  // clear browser's default styles
+        
+        // features:
+        // borderRule(),    // moved out to dedicated border stroke for each list & wrapper
+        ...groupableRule(), // make a nicely rounded corners
+        
+        
+        
+        // layouts:
         ...style({
             // layouts:
             ...ifOrientationInline({ // inline
@@ -187,20 +193,20 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             
             // borders:
             ...children(['&', wrapperElm], {
-                ...imports([
-                    // features:
-                    borderRule, // dedicated border stroke for each <List> & <wrapper>(s)
-                ]),
+                // features:
+                ...borderRule(), // dedicated border stroke for each <List> & <wrapper>(s)
             }),
             
             
             
             // children:
             ...children(wrapperElm, {
-                ...imports([
-                    // borders:
-                    separatorRule, // turns the current border as separator between <wrapper>(s)
-                ]),
+                // borders:
+                ...separatorRule(), // turns the current border as separator between <wrapper>(s)
+                
+                
+                
+                // layouts:
                 ...style({
                     // layouts:
                     display        : 'flex',    // use block flexbox, so it takes the entire <List>'s width
@@ -277,7 +283,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             // borders:
             ...children(['&', wrapperElm], {
                 // borders:
-                border       : borderVars.border,
+                border                 : borderVars.border,
              // borderRadius           : borderVars.borderRadius,
                 borderStartStartRadius : borderVars.borderStartStartRadius,
                 borderStartEndRadius   : borderVars.borderStartEndRadius,
@@ -305,6 +311,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
         }),
     });
 };
+
 export interface ListBasicVariantOptions {
     additionRemoveBorderSelector    ?: CssSelectorCollection
     additionRemoveSeparatorSelector ?: CssSelectorCollection
@@ -354,6 +361,7 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
         ], { specificityWeight }),
     });
 };
+
 export const usesListVariants = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
@@ -385,10 +393,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         /* the most general variants: */
         ...variants([
             rule('.content', { // content
-                ...imports([
-                    // variants:
-                    usesContentBasicVariants(),
-                ]),
+                // variants:
+                ...usesContentBasicVariants(),
                 
                 
                 
@@ -396,13 +402,17 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                 ...children(wrapperElm, {
                     // children:
                     ...children('*', { // <Accordion> support, both for <listItem> and <secondListItem>
-                        ...imports([
-                            // layouts:
-                            usesContentBasicLayout(),
-                            
-                            // children:
-                            usesContentChildren(),
-                        ]),
+                        // layouts:
+                        ...usesContentBasicLayout(),
+                        
+                        
+                        
+                        // children:
+                        ...usesContentChildren(),
+                        
+                        
+                        
+                        // configs:
                         ...vars({
                             // animations:
                             
@@ -426,13 +436,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         ]),
         
         /* a more specific variants: */
-        ...imports([
-            usesListBasicVariants({
-                additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
-                additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet'],
-                // specificityWeight            : 1, // not needed
-            }),
-        ]),
+        ...usesListBasicVariants({
+            additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
+            additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet'],
+            // specificityWeight            : 1, // not needed
+        }),
         
         /* the most specific variants: */
         ...variants([ 
@@ -447,13 +455,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                 ...children(wrapperElm, {
                     // children:
                     ...children(listItemElm, {
-                        ...imports([
-                            // layouts:
-                            usesButtonLayout({
-                                orientationInlineSelector : '&',  // always => the <Button> is always stacked in horizontal regradless the orientation of the <List>
-                                orientationBlockSelector  : null, // never  => the <Button> is never  stacked in vertical   regradless the orientation of the <List>
-                            }),
-                        ]),
+                        // layouts:
+                        ...usesButtonLayout({
+                            orientationInlineSelector : '&',  // always => the <Button> is always stacked in horizontal regradless the orientation of the <List>
+                            orientationBlockSelector  : null, // never  => the <Button> is never  stacked in vertical   regradless the orientation of the <List>
+                        }),
                         ...style({
                             // layouts:
                             // tweak from `usesButtonLayout` : `inline-flex` => `flex`
@@ -502,10 +508,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     
                     // children:
                     ...children(listItemElm, {
-                        ...imports([
-                            // features:
-                            borderRule, // restore border stripped out by `inheritBorderFromParent`
-                        ]),
+                        // features:
+                        ...borderRule, // restore border stripped out by `inheritBorderFromParent`
+                        
+                        
+                        
+                        // layouts:
                         ...style({
                             // borders:
                             [borderVars.borderColor] : 'inherit', // change borderColor independent to child's theme color
@@ -519,7 +527,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,                 // restore border stripped out by `inheritBorderFromParent`
+                            border                 : borderVars.border,       // restore border stripped out by `inheritBorderFromParent`
                          // borderRadius           : borderVars.borderRadius, // restore border stripped out by `inheritBorderFromParent`
                             borderStartStartRadius : borderVars.borderStartStartRadius,
                             borderStartEndRadius   : borderVars.borderStartEndRadius,
@@ -554,6 +562,10 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                 ],
                             }),
                         }),
+                        
+                        
+                        
+                        // states:
                         ...states([
                             ifPassive({
                                 ...ifParentOrientationInline({ // inline
@@ -626,12 +638,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     ...ifNotFirstVisibleChild({
                         // children:
                         ...children('::before', {
-                            ...imports([
-                                usesIconImage({
-                                    image : lists.breadcrumbSeparatorImage,
-                                    color : backgroundVars.altBackgColor,
-                                }),
-                            ]),
+                            // layouts:
+                            ...usesIconImage({
+                                image : lists.breadcrumbSeparatorImage,
+                                color : backgroundVars.altBackgColor,
+                            }),
                             ...style({
                                 // layouts:
                                 display    : 'block', // fills the entire wrapper's width
@@ -690,10 +701,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     
                     // children:
                     ...children(listItemElm, {
-                        ...imports([
-                            // features:
-                            borderRule, // restore border stripped out by `inheritBorderFromParent`
-                        ]),
+                        // features:
+                        ...borderRule(), // restore border stripped out by `inheritBorderFromParent`
+                        
+                        
+                        
+                        // layouts:
                         ...style({
                             // layouts:
                             display        : 'flex',    // use block flexbox, so it takes the entire List's width
@@ -727,7 +740,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             
                             
                             // borders:
-                            border       : borderVars.border,                 // restore border stripped out by `inheritBorderFromParent`
+                            border                 : borderVars.border,       // restore border stripped out by `inheritBorderFromParent`
                          // borderRadius           : borderVars.borderRadius, // restore border stripped out by `inheritBorderFromParent`
                             borderStartStartRadius : borderVars.borderStartStartRadius,
                             borderStartEndRadius   : borderVars.borderStartEndRadius,
@@ -771,13 +784,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         */
         
         /* the king variants: */
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            resizableRule,
-        ]),
+        ...usesIndicatorVariants(),
+        ...resizableRule(),
     });
 };
+
 export const usesListStates = usesIndicatorStates;
 
 export default () => style({
