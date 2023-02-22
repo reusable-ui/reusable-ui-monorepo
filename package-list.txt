@@ -91,7 +91,7 @@
 
 // layout-components:
 [not needopt] [documented  ] [          atomic] @reusable-ui/list
-[not needopt] [documented  ] [          atomic] @reusable-ui/card
+[slimmodular] [documented  ] [          atomic] @reusable-ui/card
 [not needopt] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
