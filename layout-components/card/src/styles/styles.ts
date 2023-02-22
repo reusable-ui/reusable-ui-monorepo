@@ -6,7 +6,6 @@ import {
     children,
     style,
     vars,
-    imports,
     
     
     
@@ -81,13 +80,7 @@ import {
 
 
 
-// styles:
-export const headerElm = '.header' // one degree specificity to overwrite <CardHeader> component
-export const footerElm = '.footer' // one degree specificity to overwrite <CardFooter> component
-export const bodyElm   = '.body'   // one degree specificity to overwrite <CardBody>   component
-
-
-
+// utility styles:
 const inheritBorderFromParent = () => {
     // dependencies:
     
@@ -121,17 +114,26 @@ const inheritBorderFromParent = () => {
 
 
 
+// child styles:
+export const headerElm = '.header' // one degree specificity to overwrite <CardHeader> component
+export const footerElm = '.footer' // one degree specificity to overwrite <CardFooter> component
+export const bodyElm   = '.body'   // one degree specificity to overwrite <CardBody>   component
+
 export const usesCardItemLayout    = () => {
     return style({
-        ...imports([
-            // layouts:
-            usesIndicatorLayout(),
-            usesContentLayout(),
-            inheritBorderFromParent(),
-            
-            // children:
-            usesContentChildren(),
-        ]),
+        // layouts:
+        ...usesIndicatorLayout(),
+        ...usesContentLayout(),
+        ...inheritBorderFromParent(),
+        
+        
+        
+        // children:
+        ...usesContentChildren(),
+        
+        
+        
+        // layouts:
         ...style({
             // layouts:
             display : 'block', // fills the entire parent's width
@@ -213,6 +215,7 @@ export const usesCardBodyLayout    = () => {
 
 
 
+// styles:
 export const onCardStylesChange = watchChanges(onContentStylesChange, onIndicatorStylesChange, cssCardConfig.onChange);
 
 export const usesCardLayout = (options?: OrientationableOptions) => {
@@ -244,12 +247,14 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...imports([
-            // features:
-            // borderRule, // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
-            animationRule,
-            groupableRule, // make a nicely rounded corners
-        ]),
+        // features:
+        // borderRule, // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
+        ...animationRule(),
+        ...groupableRule(), // make a nicely rounded corners
+        
+        
+        
+        // layouts:
         ...style({
             // layouts:
             ...ifOrientationInline({ // inline
@@ -274,10 +279,8 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             
             // borders:
             ...children(['&', headerElm, footerElm, bodyElm], {
-                ...imports([
-                    // features:
-                    borderRule, // dedicated border stroke for each <Card> & <CardItem>(s), so each borderRule can be turn on/off indepenently, eg: `cardStyle='flush'`
-                ]),
+                // features:
+                ...borderRule(), // dedicated border stroke for each <Card> & <CardItem>(s), so each borderRule can be turn on/off indepenently, eg: `cardStyle='flush'`
             }),
             
             
@@ -291,37 +294,29 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             
             // children:
             ...children([headerElm, footerElm, bodyElm], {
-                ...imports([
-                    // layouts:
-                    usesCardItemLayout(),
-                    
-                    // borders:
-                    separatorRule, // turns the current border as separator between <CardItem>(s)
-                ]),
+                // layouts:
+                ...usesCardItemLayout(),
+                
+                
+                
+                // borders:
+                ...separatorRule(), // turns the current border as separator between <CardItem>(s)
             }),
             ...children([headerElm, footerElm], {
-                ...imports([
-                    // layouts:
-                    usesCardCaptionLayout(),
-                ]),
+                // layouts:
+                ...usesCardCaptionLayout(),
             }),
             ...children(headerElm, {
-                ...imports([
-                    // layouts:
-                    usesCardHeaderLayout(),
-                ]),
+                // layouts:
+                ...usesCardHeaderLayout(),
             }),
             ...children(footerElm, {
-                ...imports([
-                    // layouts:
-                    usesCardFooterLayout(),
-                ]),
+                // layouts:
+                ...usesCardFooterLayout(),
             }),
             ...children(bodyElm, {
-                ...imports([
-                    // layouts:
-                    usesCardBodyLayout(),
-                ]),
+                // layouts:
+                ...usesCardBodyLayout(),
             }),
             
             
@@ -332,7 +327,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             
             
             // borders:
-            border            : borderVars.border,
+            border                 : borderVars.border,
          // borderRadius           : borderVars.borderRadius,
             borderStartStartRadius : borderVars.borderStartStartRadius,
             borderStartEndRadius   : borderVars.borderStartEndRadius,
@@ -353,7 +348,10 @@ export const usesCardVariants = () => {
     
     
     return style({
+        // variants:
+        
         /* write specific cardStyle first, so it can be overriden by `.nude`, `.mild`, `.outlined`, etc */
+        
         ...variants([
             rule(['.flat', '.flush'], {
                 // borders:
@@ -376,12 +374,10 @@ export const usesCardVariants = () => {
                 }),
             }),
         ]),
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            usesContentVariants(),
-            resizableRule,
-        ]),
+        
+        ...usesIndicatorVariants(),
+        ...usesContentVariants(),
+        ...resizableRule(),
     });
 };
 export const usesCardStates = usesIndicatorStates;
