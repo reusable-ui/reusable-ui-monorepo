@@ -1,13 +1,7 @@
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssRule,
-    
-    
-    
     // writes css in javascript:
     style,
-    imports,
     
     
     
@@ -18,16 +12,11 @@ import {
     
     
     // writes complex stylesheets in simpler way:
-    watchChanges,
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui core:
 import {
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
     // groups a list of UIs into a single UI:
     usesGroupable,
     
@@ -105,13 +94,15 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...imports([
-            // borders:
-            /*
-                Accordion supports: a separator between Accordion's header & body.
-            */
-            separatorRule, // turns the current border as separator between <ListItem> & <foreign-elm>
-        ]),
+        // borders:
+        /*
+            Accordion supports: a separator between Accordion's header & body.
+        */
+        ...separatorRule, // turns the current border as separator between <ListItem> & <foreign-elm>
+        
+        
+        
+        // layouts:
         ...style({
             // spacings:
             margin: 0, // a fix for marginBlockEnd of <h1>...<h6>
@@ -119,14 +110,8 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     });
 };
 
-let listItemSelfLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesListItemSelfLayout = () => {
-    const cached = listItemSelfLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
+export const usesListItemSelfLayout = memoizeStyle(() => {
+    return style({
         // layouts:
         display   : 'block',  // fills the entire wrapper's width
         
@@ -155,9 +140,7 @@ export const usesListItemSelfLayout = () => {
             ],
         }),
     });
-    listItemSelfLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
+}, cssListConfig.onChange);
 
 export const usesListItemLayout = (options?: OrientationableOptions) => {
     // options:
@@ -167,25 +150,15 @@ export const usesListItemLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        ...imports([
-            // layouts:
-            usesIndicatorLayout(),
-            inheritBorderFromParent(),
-            
-            // layouts:
-            usesListItemBaseLayout(options), // must be placed at the last
-            usesListItemSelfLayout(),        // must be placed at the last
-        ]),
+        // layouts:
+        ...usesIndicatorLayout(),
+        ...inheritBorderFromParent(),
+        ...usesListItemBaseLayout(options), // must be placed at the last
+        ...usesListItemSelfLayout(),        // must be placed at the last
     });
 };
 
-let listItemVariantsCache : WeakRef<CssRule>|undefined = undefined;
-export const usesListItemVariants = () => {
-    const cached = listItemVariantsCache?.deref();
-    if (cached) return cached;
-    
-    
-    
+export const usesListItemVariants = memoizeStyle(() => {
     // dependencies:
     
     // variants:
@@ -193,16 +166,12 @@ export const usesListItemVariants = () => {
     
     
     
-    const result = style({
-        ...imports([
-            // variants:
-            usesIndicatorVariants(),
-            resizableRule,
-        ]),
+    return style({
+        // variants:
+        ...usesIndicatorVariants(),
+        ...resizableRule(),
     });
-    listItemVariantsCache = new WeakRef<CssRule>(result);
-    return result;
-};
+}, cssListConfig.onChange);
 
 export const usesListItemStates = () => {
     // dependencies:
@@ -213,19 +182,11 @@ export const usesListItemStates = () => {
     
     
     return style({
-        ...imports([
-            // states:
-            usesIndicatorStates(),
-            activeAsClickRule,
-        ]),
+        // states:
+        ...usesIndicatorStates(),
+        ...activeAsClickRule(),
     });
 };
-
-cssListConfig.onChange.subscribe(() => {
-    // clear caches:
-    listItemSelfLayoutCache = undefined;
-    listItemVariantsCache   = undefined;
-});
 
 export default () => style({
     // layouts:
