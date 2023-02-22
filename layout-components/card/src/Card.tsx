@@ -109,6 +109,8 @@ export interface CardItemProps<TElement extends Element = HTMLElement>
             |'role' // we redefined [role] in <Generic>
         >
 {
+    // children:
+    children ?: React.ReactNode
 }
 export interface CardCaptionProps<TElement extends Element = HTMLElement>
     extends
@@ -134,7 +136,7 @@ export interface CardBodyProps<TElement extends Element = HTMLElement>
         CardItemProps<TElement>
 {
 }
-export const CardHeader = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+export const CardHeader = <TElement extends Element = HTMLElement>(props: CardHeaderProps<TElement>): JSX.Element|null => {
     // classes:
     const classes = useMergeClasses(
         // preserves the original `classes`:
@@ -167,7 +169,7 @@ export const CardHeader = <TElement extends Element = HTMLElement>(props: CardPr
         />
     );
 };
-export const CardFooter = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+export const CardFooter = <TElement extends Element = HTMLElement>(props: CardFooterProps<TElement>): JSX.Element|null => {
     // classes:
     const classes = useMergeClasses(
         // preserves the original `classes`:
@@ -200,7 +202,7 @@ export const CardFooter = <TElement extends Element = HTMLElement>(props: CardPr
         />
     );
 };
-export const CardBody   = <TElement extends Element = HTMLElement>(props: CardProps<TElement>): JSX.Element|null => {
+export const CardBody   = <TElement extends Element = HTMLElement>(props: CardBodyProps<TElement>): JSX.Element|null => {
     // classes:
     const classes = useMergeClasses(
         // preserves the original `classes`:

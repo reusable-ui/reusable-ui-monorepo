@@ -1,5 +1,5 @@
 // defaults:
-const _defaultCardStyle          : CardStyle = 'regular'
+const _defaultCardStyle : CardStyle = 'regular'
 
 
 
