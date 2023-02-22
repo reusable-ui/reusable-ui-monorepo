@@ -4,6 +4,7 @@
 [hi prior ] : verify annonymous cssVars<\w+>\(\)
 [hi prior ] : cssVars<\w+> must be in variables.ts or features/*.ts or states/*.ts or variants/*.ts
 [hi prior ] : disable lazyCsr for :has(...)
+[hi prior ] : replace defaultOrientationableOptions with as, in defaults.ts
 
 
 
