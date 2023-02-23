@@ -134,6 +134,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         usesPrefixedProps(ranges, 'thumb'), // fetch config's cssProps starting with thumb***
     );
     
+    // capabilities:
     const {groupableRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
@@ -145,6 +146,7 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
         itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
     });
     
+    // features:
     const {rangeRule, rangeVars} = usesRange();
     
     
@@ -208,6 +210,8 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                 // features:
                 ...trackBorderRule(),
                 ...trackPaddingRule(),
+                
+                // capabilities:
                 ...groupableRule(), // make a nicely rounded corners
                 
                 
