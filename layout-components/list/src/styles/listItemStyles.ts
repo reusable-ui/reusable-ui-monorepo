@@ -84,7 +84,7 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // features:
+    // capabilities:
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
@@ -98,7 +98,7 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
         /*
             Accordion supports: a separator between Accordion's header & body.
         */
-        ...separatorRule, // turns the current border as separator between <ListItem> & <foreign-elm>
+        ...separatorRule(), // turns the current border as separator between <ListItem> & <foreign-elm>
         
         
         

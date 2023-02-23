@@ -144,17 +144,19 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // features:
-    const {borderRule, borderVars} = usesBorder(lists);
-    const {groupableRule         } = usesGroupable({
+    // capabilities:
+    const {groupableRule} = usesGroupable({
         ...options,
         itemsSelector             : wrapperElm,
     });
-    const {separatorRule         } = usesGroupable({
+    const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
         itemsSelector             : wrapperElm,
     });
+    
+    // features:
+    const {borderRule, borderVars} = usesBorder(lists);
     
     
     
@@ -162,9 +164,15 @@ export const usesListLayout = (options?: OrientationableOptions) => {
         // resets:
         ...stripoutList(),  // clear browser's default styles
         
+        
+        
+        // capabilities:
+        ...groupableRule(), // make a nicely rounded corners
+        
+        
+        
         // features:
         // borderRule(),    // moved out to dedicated border stroke for each list & wrapper
-        ...groupableRule(), // make a nicely rounded corners
         
         
         
