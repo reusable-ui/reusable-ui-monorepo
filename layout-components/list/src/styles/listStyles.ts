@@ -118,7 +118,7 @@ import {
     // elements:
     wrapperElm,
     listItemElm,
-}                           from './elements'
+}                           from './elements.js'
 import {
     // configs:
     lists,

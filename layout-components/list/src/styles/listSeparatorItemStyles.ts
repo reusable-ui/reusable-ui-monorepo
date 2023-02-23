@@ -36,7 +36,7 @@ import {
 import {
     // elements:
     horzRuleElm,
-}                           from './elements'
+}                           from './elements.js'
 
 
 

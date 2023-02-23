@@ -56,11 +56,11 @@ import {
 import type {
     // react components:
     ListItemProps,
-}                           from './ListItem'
+}                           from './ListItem.js'
 import {
     // react components:
     ListSeparatorItem,
-}                           from './ListSeparatorItem'
+}                           from './ListSeparatorItem.js'
 
 
 

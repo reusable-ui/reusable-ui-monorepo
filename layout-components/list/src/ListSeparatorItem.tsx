@@ -36,7 +36,7 @@ import {
     // react components:
     ListItemProps,
     ListItem,
-}                           from './ListItem'
+}                           from './ListItem.js'
 
 
 
