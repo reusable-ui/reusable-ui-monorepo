@@ -238,6 +238,8 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     // features:
     const {borderRule   , borderVars   } = usesBorder(cards);
     const {animationRule, animationVars} = usesAnimation(cards as any);
+    
+    // capabilities:
     const {groupableRule               } = usesGroupable({
         ...options,
         itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
@@ -255,6 +257,8 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         // features:
         // borderRule(),    // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
         ...animationRule(),
+        
+        // capabilities:
         ...groupableRule(), // make a nicely rounded corners
         
         
