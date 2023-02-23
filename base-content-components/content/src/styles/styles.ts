@@ -208,7 +208,7 @@ export const usesContentChildrenFill         = memoizeStyle((options?: ContentCh
     
     // dependencies:
     
-    // features:
+    // capabilities:
     const {groupableRule, groupableVars} = usesGroupable({
         itemsSelector : mediaSelectorWithExcept, // select all <media> inside <Content> for trimming their corners
     });
@@ -222,7 +222,7 @@ export const usesContentChildrenFill         = memoizeStyle((options?: ContentCh
     
     
     return style({
-        // features:
+        // capabilities:
         ...groupableRule(), // make a nicely rounded corners
         
         
@@ -324,15 +324,20 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
     
     // features:
     const {borderRule, borderVars} = usesBorder();
+    
+    // capabilities:
     const {separatorRule         } = usesGroupable({
         orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
         itemsSelector             : mediaSelectorWithExceptZero,
     });
     
+    // features:
     const {borderRule    : figureItemBorderRule, borderVars: figureItemBorderVars} = usesBorder({
         borderRadius : 'initial', // protect from inheritance
     });
+    
+    // capabilities:
     const {separatorRule : figureItemSeparatorRule} = usesGroupable({
         orientationInlineSelector : null, // never  => the <figureItem> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <figureItem> are always stacked in vertical
@@ -354,7 +359,7 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
             
             
             
-            // features:
+            // capabilities:
             // making the <figure> as border_container => the inner media can have a separator between them
             ...figureGroupableRule(), // make a nicely rounded corners
             
