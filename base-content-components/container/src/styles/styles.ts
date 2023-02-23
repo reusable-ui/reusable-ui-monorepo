@@ -163,14 +163,15 @@ export const usesContainerChildrenFill = memoizeStyle((options?: ContainerChildr
     
     // dependencies:
     
-    // features:
-    const {borderRule, borderVars} = usesBorder({
-        borderRadius : 'initial', // protect from inheritance
-    });
-    
+    // capabilities:
     const fillSelectorAndSelf = [fillSelector, fillSelfSelector];
     const {groupableRule, groupableVars} = usesGroupable({
         itemsSelector: fillSelectorAndSelf, // select .fill & .fill-selft for trimming their corners
+    });
+    
+    // features:
+    const {borderRule, borderVars} = usesBorder({
+        borderRadius : 'initial', // protect from inheritance
     });
     
     // spacings:
@@ -182,7 +183,7 @@ export const usesContainerChildrenFill = memoizeStyle((options?: ContainerChildr
     
     
     return style({
-        // features:
+        // capabilities:
         ...groupableRule(), // make a nicely rounded corners
         
         
