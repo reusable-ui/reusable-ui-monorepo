@@ -235,31 +235,33 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // features:
-    const {borderRule   , borderVars   } = usesBorder(cards);
-    const {animationRule, animationVars} = usesAnimation(cards as any);
-    
     // capabilities:
-    const {groupableRule               } = usesGroupable({
+    const {groupableRule} = usesGroupable({
         ...options,
         itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
     });
-    const {separatorRule               } = usesGroupable({
+    const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
         orientationBlockSelector  : parentOrientationBlockSelector,
         itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
         swapFirstItem             : true,
     });
     
+    // features:
+    const {borderRule   , borderVars   } = usesBorder(cards);
+    const {animationRule, animationVars} = usesAnimation(cards as any);
+    
     
     
     return style({
+        // capabilities:
+        ...groupableRule(), // make a nicely rounded corners
+        
+        
+        
         // features:
         // borderRule(),    // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
         ...animationRule(),
-        
-        // capabilities:
-        ...groupableRule(), // make a nicely rounded corners
         
         
         
