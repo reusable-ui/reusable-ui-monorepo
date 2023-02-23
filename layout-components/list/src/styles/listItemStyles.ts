@@ -40,6 +40,7 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    onIndicatorStylesChange,
     usesIndicatorLayout,
     usesIndicatorVariants,
     usesIndicatorStates,
@@ -171,7 +172,7 @@ export const usesListItemVariants = memoizeStyle(() => {
         ...usesIndicatorVariants(),
         ...resizableRule(),
     });
-}, cssListConfig.onChange);
+}, [onIndicatorStylesChange, cssListConfig.onChange]);
 
 export const usesListItemStates = () => {
     // dependencies:
