@@ -92,7 +92,7 @@
 // layout-components:
 [slimmodular] [documented  ] [          atomic] @reusable-ui/list
 [slimmodular] [documented  ] [          atomic] @reusable-ui/card
-[not needopt] [documented  ] [          atomic] @reusable-ui/masonry
+[slimmodular] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
 [optimized  ] [documented  ] [          atomic] @reusable-ui/popup

@@ -11,36 +11,12 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssStyleCollection,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    children,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
 import {
-    // a spacer (gap) management system:
-    spacers,
-    
-    
-    
     // react helper hooks:
     useIsomorphicLayoutEffect,
     useMergeRefs,
@@ -49,187 +25,35 @@ import {
     
     
     // a capability of UI to rotate its layout:
-    OrientationableOptions,
-    defaultBlockOrientationableOptions,
-    usesOrientationable,
     OrientationableProps,
     useOrientationable,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
-    // styles:
-    usesContentLayout,
-    usesContentVariants,
-    
-    
-    
     // react components:
     ContentProps,
     Content,
 }                           from '@reusable-ui/content'         // a base component
 
+// internals:
+import {
+    // defaults:
+    defaultOrientationableOptions,
+}                           from './defaults.js'
+
 
 
 // defaults:
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-
 const _defaultMasonryResizeObserverOptions : ResizeObserverOptions = { box: 'content-box' } // get the client size
 const _defaultItemResizeObserverOptions    : ResizeObserverOptions = { box: 'border-box'  } // get the offset size
 
 
 
-// configs:
-export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
-    return {
-        // sizes:
-        itemRaiseRowHeight   : '1px'                as CssKnownProps['blockSize'],
-        itemRaiseRowHeightSm : '1px'                as CssKnownProps['blockSize'],
-        itemRaiseRowHeightLg : '2px'                as CssKnownProps['blockSize'],
-        
-        itemMinColumnWidth   : 'calc(5 * 40px)'     as CssKnownProps['columnWidth'],
-        itemMinColumnWidthSm : 'calc(3 * 40px)'     as CssKnownProps['columnWidth'],
-        itemMinColumnWidthLg : 'calc(8 * 40px)'     as CssKnownProps['columnWidth'],
-        
-        
-        
-        // spacings:
-        gapInline            : spacers.sm           as CssKnownProps['gapInline'],
-        gapInlineSm          : spacers.xs           as CssKnownProps['gapInline'],
-        gapInlineLg          : spacers.md           as CssKnownProps['gapInline'],
-        gapBlock             : spacers.sm           as CssKnownProps['gapBlock' ],
-        gapBlockSm           : spacers.xs           as CssKnownProps['gapBlock' ],
-        gapBlockLg           : spacers.md           as CssKnownProps['gapBlock' ],
-    };
-}, { prefix: 'msry' });
-
-
-
 // styles:
-export const usesMasonryLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
-    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesContentLayout(),
-        ]),
-        ...style({
-            // layouts:
-            ...ifOrientationInline({ // inline
-                display             : 'inline-grid', // use css inline grid for layouting, the core of our Masonry layout
-                gridAutoFlow        : 'column',      // items direction is to block & masonry's direction is to inline
-                gridAutoColumns     : masonries.itemRaiseRowHeight,
-                gridTemplateRows    : `repeat(auto-fill, minmax(${masonries.itemMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                alignItems          : 'stretch',     // each item fills the entire Masonry's column height
-             // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
-                justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
-            ...ifOrientationBlock({  // block
-                display             : 'grid',        // use css block grid for layouting, the core of our Masonry layout
-                gridAutoFlow        : 'row',         // items direction is to inline & masonry's direction is to block
-                gridAutoRows        : masonries.itemRaiseRowHeight,
-                gridTemplateColumns : `repeat(auto-fill, minmax(${masonries.itemMinColumnWidth}, 1fr))`,
-                
-                // item default sizes:
-                justifyItems        : 'stretch',     // each item fills the entire Masonry's column width
-             // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
-                alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
-            }),
-            
-            
-            
-            // spacings:
-            ...ifOrientationInline({ // inline
-                gapInline           : [0, '!important'], // strip out the `gapInline` because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...ifOrientationBlock({  // block
-                gapBlock            : [0, '!important'], // strip out the `gapBlock`  because it will conflict with programatically_adjust_height_and_gap
-            }),
-            ...children('*', {
-                ...rule(':not(.firstRow)', {
-                    ...ifParentOrientationInline({ // inline
-                        /*
-                        * we use `marginInlineStart` as the replacement of the stripped out `gapInline`
-                        * we use `marginInlineStart` instead of `marginInlineEnd`
-                        * because looping grid's items at the first_masonry_row is much faster than at the last_masonry_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginInlineStart : masonries.gapInline,
-                    }),
-                    ...ifParentOrientationBlock({  // block
-                        /*
-                        * we use `marginBlockStart` as the replacement of the stripped out `gapBlock`
-                        * we use `marginBlockStart` instead of `marginBlockEnd`
-                        * because looping grid's items at the first_masonry_row is much faster than at the last_masonry_row
-                        * (we don't need to count the number of grid's item)
-                        */
-                        marginBlockStart  : masonries.gapBlock,
-                    }),
-                }),
-            }),
-            
-            
-            
-            // children:
-            ...children('*', {
-                // sizes:
-                ...ifParentOrientationInline({ // inline
-                    gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Masonry orientation="block"> (if was)
-                }),
-                ...ifParentOrientationBlock({  // block
-                    gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Masonry orientation="inline"> (if was)
-                }),
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(masonries), // apply config's cssProps
-        }),
-    });
-};
-export const usesMasonryVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(masonries);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesContentVariants(),
-            resizableRule,
-        ]),
-    });
-};
-
-export const useMasonryStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesMasonryLayout(),
-        
-        // variants:
-        usesMasonryVariants(),
-    ]),
-}), { id: 'fiuyy1jxpx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useMasonryStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'fiuyy1jxpx' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
