@@ -344,6 +344,7 @@ export const usesListBasicVariants = (options?: ListBasicVariantOptions) => {
     
     
     return style({
+        // variants:
         ...variants([
             rule(['.flat', '.flush', additionRemoveBorderSelector], {
                 // borders:
@@ -384,14 +385,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
+    const {backgroundVars             } = usesBackground();
     const {borderRule    , borderVars } = usesBorder(lists);
     const {                paddingVars} = usesPadding();
     
     // variants:
     const {resizableRule              } = usesResizable(lists);
-    
-    // features:
-    const {backgroundVars             } = usesBackground();
     
     
     
@@ -517,7 +516,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     // children:
                     ...children(listItemElm, {
                         // features:
-                        ...borderRule, // restore border stripped out by `inheritBorderFromParent`
+                        ...borderRule(), // restore border stripped out by `inheritBorderFromParent`
                         
                         
                         
