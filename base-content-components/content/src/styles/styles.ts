@@ -322,22 +322,12 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
     
     // dependencies:
     
-    // features:
-    const {borderRule, borderVars} = usesBorder();
-    
     // capabilities:
-    const {separatorRule         } = usesGroupable({
+    const {separatorRule} = usesGroupable({
         orientationInlineSelector : null, // never  => the <media> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <media> are always stacked in vertical
         itemsSelector             : mediaSelectorWithExceptZero,
     });
-    
-    // features:
-    const {borderRule    : figureItemBorderRule, borderVars: figureItemBorderVars} = usesBorder({
-        borderRadius : 'initial', // protect from inheritance
-    });
-    
-    // capabilities:
     const {separatorRule : figureItemSeparatorRule} = usesGroupable({
         orientationInlineSelector : null, // never  => the <figureItem> are never  stacked in horizontal
         orientationBlockSelector  : '&',  // always => the <figureItem> are always stacked in vertical
@@ -345,6 +335,12 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
     });
     const {groupableRule : figureGroupableRule    } = usesGroupable({
         itemsSelector             : '*', // select all <figureItem>(s) inside <figure> for trimming their corners
+    });
+    
+    // features:
+    const {borderRule, borderVars} = usesBorder();
+    const {borderRule    : figureItemBorderRule, borderVars: figureItemBorderVars} = usesBorder({
+        borderRadius : 'initial', // protect from inheritance
     });
     
     
