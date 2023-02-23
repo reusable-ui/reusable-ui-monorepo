@@ -45,7 +45,7 @@ import {
 
 
 // defaults:
-const _defaultMarkActiveOptions        : MarkActiveOptions  = { outlined: null, mild: null };
+const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: null, mild: null };
 
 
 
