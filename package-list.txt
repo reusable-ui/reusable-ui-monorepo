@@ -105,7 +105,7 @@
 
 // menu-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/collapse
-[optimized  ] [documented  ] [partial compound] @reusable-ui/dropdown
+[slimmodular] [documented  ] [partial compound] @reusable-ui/dropdown
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button

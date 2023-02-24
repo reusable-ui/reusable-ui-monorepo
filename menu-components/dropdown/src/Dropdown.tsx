@@ -12,23 +12,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -37,11 +20,6 @@ import {
 import {
     // a set of React node utility functions:
     isReusableUiComponent,
-    
-    
-    
-    // removes browser's default stylesheet:
-    stripoutFocusableElement,
     
     
     
@@ -59,7 +37,6 @@ import {
     
     
     // a capability of UI to rotate its layout:
-    OrientationableOptions,
     useOrientationable,
     
     
@@ -76,102 +53,27 @@ import type {
     GenericProps,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // defaults:
-    defaultOrientationableOptions,
-    
-    
-    
-    // styles:
-    usesCollapseLayout,
-    usesCollapseStates,
-    
-    
-    
     // react components:
     CollapseProps,
     Collapse,
 }                           from '@reusable-ui/collapse'        // a base component
 
-
-
-// defaults:
-export { defaultOrientationableOptions };
-
-
-
-// configs:
-export const [dropdowns, dropdownValues, cssDropdownConfig] = cssConfig(() => {
-    return {
-        // borders:
-        // dropdownUiBoxShadow : [[0, 0, '10px', 'rgba(0,0,0,0.5)']] as CssKnownProps['boxShadow'], // doesn't work perfectly with borderRadius
-        filter: [
-            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ] as CssKnownProps['filter'],
-    };
-}, { prefix: 'ddwn' });
+// internals:
+import {
+    // defaults:
+    defaultOrientationableOptions,
+}                           from './defaults.js'
 
 
 
 // styles:
-export const usesDropdownUiLayout = () => {
-    return style({
-        ...imports([
-            // resets:
-            stripoutFocusableElement(), // clear browser's default styles
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(usesPrefixedProps(dropdowns, 'dropdownUi')), // apply config's cssProps starting with dropdownUi***
-        }),
-    });
-};
+export const useDropdownUiStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/dropdownUiStyles.js')
+, { specificityWeight: 0, id: 'g8pud07qti' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
-export const useDropdownUiStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesDropdownUiLayout(),
-    ]),
-}), { specificityWeight: 0, id: 'g8pud07qti' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export const usesDropdownLayout = (options?: OrientationableOptions) => {
-    return style({
-        ...imports([
-            // layouts:
-            usesCollapseLayout(options),
-        ]),
-        ...style({
-            // layouts:
-            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
-            flexDirection  : 'column', // items are stacked vertically
-            justifyContent : 'center', // center items (text, icon, etc) horizontally
-            alignItems     : 'center', // center items (text, icon, etc) vertically
-            flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
-            
-            
-            
-            // sizes:
-            inlineSize     : 'fit-content',
-            
-            
-            
-            // customize:
-            ...usesCssProps(dropdowns), // apply config's cssProps
-        }),
-    });
-};
-export const usesDropdownStates = usesCollapseStates;
-
-export const useDropdownStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesDropdownLayout(),
-        
-        // states:
-        usesDropdownStates(),
-    ]),
-}), { id: 'q723ad22au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useDropdownStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/dropdownStyles.js')
+, { id: 'q723ad22au' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
