@@ -65,7 +65,7 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
         // bases:
         GenericProps<TElement>,
         
-        // features:
+        // capabilities:
         FloatableProps,
         
         // variants:
@@ -99,7 +99,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
-    // features:
+    // capabilities:
     const floatable              = useFloatable<TElement>(props, isVisible);
     
     
@@ -179,7 +179,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         
         
-        // features:
+        // capabilities:
         floatable.classes,
     );
     
