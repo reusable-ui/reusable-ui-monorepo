@@ -94,7 +94,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     /*
      * state is expand/collapse based on [controllable expanded] (if set) and fallback to [uncontrollable expanded]
      */
-    const autoExpanded : boolean = !!(props.children || false);
+    const autoExpanded : boolean = !!(children && (children !== true));
     const expandedFn   : boolean = expanded /*controllable*/ ?? autoExpanded /*uncontrollable*/;
     
     
@@ -136,7 +136,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             // states:
             expanded={expandedFn}
         >
-            { props.children }
+            { children }
         </Popup>
     );
 };

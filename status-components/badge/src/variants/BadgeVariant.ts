@@ -1,3 +1,8 @@
+// defaults:
+const _defaultBadgeStyle : BadgeStyle = 'regular'
+
+
+
 // hooks:
 
 // variants:
@@ -7,7 +12,7 @@ export type BadgeStyle = 'regular'|'pill'|'square'|'circle' // might be added mo
 export interface BadgeVariant {
     badgeStyle ?: BadgeStyle
 }
-export const useBadgeVariant = ({badgeStyle}: BadgeVariant) => {
+export const useBadgeVariant = ({badgeStyle = _defaultBadgeStyle}: BadgeVariant) => {
     return {
         class: (badgeStyle === 'regular') ? null : badgeStyle,
     };
