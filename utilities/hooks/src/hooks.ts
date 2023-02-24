@@ -3,6 +3,7 @@ import {
     // hooks:
     useEffect,
     useLayoutEffect,
+    useInsertionEffect,
     useReducer,
     useCallback,
     useRef,
@@ -53,7 +54,7 @@ export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TC
     
     
     // dom effects:
-    useIsomorphicLayoutEffect(() => {
+    useInsertionEffect(() => {
         // re-update the callbackRef:
         callbackRef.current = callback;
     }); // runs on every render
