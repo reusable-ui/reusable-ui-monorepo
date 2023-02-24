@@ -53,7 +53,7 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         // bases:
         BasicProps<TElement>,
         
-        // features:
+        // capabilities:
         FloatableProps,
         
         // states:
@@ -79,7 +79,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     
-    // features:
+    // capabilities:
     const floatable        = useFloatable<TElement>(props, isVisible);
     
     
@@ -145,7 +145,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         
-        // features:
+        // capabilities:
         floatable.classes,
     );
     
