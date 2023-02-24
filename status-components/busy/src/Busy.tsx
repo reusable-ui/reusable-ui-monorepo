@@ -6,22 +6,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -30,20 +14,11 @@ import {
 import {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
-    // styles:
-    usesBadgeLayout,
-    usesBadgeVariants,
-    usesBadgeStates,
-    
+    // variants:
     BadgeStyle,
     
     
@@ -76,71 +51,10 @@ const _defaultIconSize : IconSizeName = '1em'
 
 
 
-// configs:
-export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
-    const basics = {
-        // typos:
-        fontSize   : '1em'                                          as CssKnownProps['fontSize'      ],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // typos:
-        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'      ],
-        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'      ],
-    };
-}, { prefix: 'busy' });
-
-
-
 // styles:
-export const usesBusyLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesBadgeLayout(),
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(busies), // apply config's cssProps
-        }),
-    });
-};
-export const usesBusyVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(busies);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesBadgeVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesBusyStates = usesBadgeStates;
-
-export const useBusyStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesBusyLayout(),
-        
-        // variants:
-        usesBusyVariants(),
-        
-        // states:
-        usesBusyStates(),
-    ]),
-}), { id: 'y6oksyrdiq' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useBusyStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'y6oksyrdiq' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
