@@ -1,10 +1,5 @@
 // reusable-ui components:
-import {
+export {
     // defaults:
     defaultOrientationableOptions,
 }                           from '@reusable-ui/collapse'        // a base component
-
-
-
-// defaults:
-export { defaultOrientationableOptions };
