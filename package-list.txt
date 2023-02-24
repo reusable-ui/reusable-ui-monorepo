@@ -95,7 +95,7 @@
 [slimmodular] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
-[optimized  ] [documented  ] [          atomic] @reusable-ui/popup
+[modularized] [documented  ] [          atomic] @reusable-ui/popup
 [optimized  ] [documented  ] [          atomic] @reusable-ui/badge
 [optimized  ] [documented  ] [partial compound] @reusable-ui/busy
 

@@ -6,26 +6,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    states,
-    keyframes,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -46,26 +26,13 @@ import {
     
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
-    ifCollapsed,
-    usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
-    // styles:
-    usesBasicLayout,
-    usesBasicVariants,
-    
-    
-    
     // react components:
     BasicProps,
     Basic,
@@ -73,154 +40,10 @@ import {
 
 
 
-// configs:
-export const [popups, popupValues, cssPopupConfig] = cssConfig(() => {
-    //#region keyframes
-    const frameCollapsed    = style({
-        opacity   : 0,
-        transform : 'scale(0)',
-    });
-    const frameIntermediate = style({
-        transform : 'scale(1.02)',
-    });
-    const frameExpanded     = style({
-        opacity   : 1,
-        transform : 'scale(1)',
-    });
-    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
-        from  : frameCollapsed,
-        '70%' : frameIntermediate,
-        to    : frameExpanded,
-    });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
-    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
-        from  : frameExpanded,
-        '30%' : frameIntermediate,
-        to    : frameCollapsed,
-    });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // animations:
-        ...keyframesExpandRule,
-        ...keyframesCollapseRule,
-        animExpand       : [
-            ['300ms', 'ease-out', 'both', keyframesExpand  ],
-        ]                                                       as CssKnownProps['animation'],
-        animCollapse     : [
-            ['500ms', 'ease-out', 'both', keyframesCollapse],
-        ]                                                       as CssKnownProps['animation'],
-    };
-}, { prefix: 'pop' });
-
-
-
 // styles:
-let popupLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesPopupLayout = () => {
-    const cached = popupLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
-        ...imports([
-            // layouts:
-            usesBasicLayout(),
-        ]),
-        ...style({
-            // positions:
-            ...rule('.overlay', {
-                zIndex: 1080,
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(popups), // apply config's cssProps
-        }),
-    });
-    popupLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let popupVariantsCache : WeakRef<CssRule>|undefined = undefined;
-export const usesPopupVariants = () => {
-    const cached = popupVariantsCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(popups);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // variants:
-            usesBasicVariants(),
-            resizableRule,
-        ]),
-    });
-    popupVariantsCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let popupStatesCache : WeakRef<CssRule>|undefined = undefined;
-export const usesPopupStates = () => {
-    const cached = popupStatesCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // states:
-    const {collapsibleRule} = usesCollapsible(popups);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // states:
-            collapsibleRule,
-        ]),
-        ...states([
-            ifCollapsed({
-                // appearances:
-                display: 'none', // hide the <Popup>
-            }),
-        ]),
-    });
-    popupStatesCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-cssPopupConfig.onChange.subscribe(() => {
-    // clear caches:
-    popupLayoutCache   = undefined;
-    popupVariantsCache = undefined;
-    popupStatesCache   = undefined;
-});
-
-export const usePopupStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesPopupLayout(),
-        
-        // variants:
-        usesPopupVariants(),
-        
-        // states:
-        usesPopupStates(),
-    ]),
-}), { id: 'usjjnl1scl' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const usePopupStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'usjjnl1scl' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
