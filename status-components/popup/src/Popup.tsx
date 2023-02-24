@@ -86,13 +86,13 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     // rest props:
     const {
-        // states:
-        expanded           : _expanded,           // remove
-        
-        
-        
         // behaviors:
         lazy               = false,
+        
+        
+        
+        // states:
+        expanded           : _expanded,           // remove
         
         
         
