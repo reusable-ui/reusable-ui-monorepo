@@ -11,7 +11,7 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
-import {
+import type {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -28,7 +28,7 @@ import {
     Badge,
 }                           from '@reusable-ui/badge'           // a base component
 import {
-    // hooks:
+    // variants:
     SizeName as IconSizeName,
     
     
