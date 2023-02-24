@@ -13,7 +13,7 @@ import {
 }                           from 'react'
 
 // cssfn:
-import {
+import type {
     // cssfn general types:
     Optional,
 }                           from '@cssfn/core'                  // writes css in javascript
@@ -78,7 +78,8 @@ import {
 // defaults:
 const _defaultArrowAriaHidden : boolean            = true      // the arrow is just for decoration purpose, no meaningful content
 const _defaultArrowClasses    : Optional<string>[] = ['arrow']
-
+const _defaultExpandDelay     : number             = 300 /* ms */
+const _defaultCollapseDelay   : number             = 500 /* ms */
 
 
 // styles:
@@ -132,7 +133,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
 }
 const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: TooltipProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet          = useTooltipStyleSheet();
+    const styleSheet                  = useTooltipStyleSheet();
     
     
     
@@ -155,8 +156,8 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // debounces:
-        expandDelay    = 300,
-        collapseDelay  = 500,
+        expandDelay    = _defaultExpandDelay,
+        collapseDelay  = _defaultCollapseDelay,
         
         
         

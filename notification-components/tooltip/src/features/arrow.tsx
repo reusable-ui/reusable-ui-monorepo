@@ -1,5 +1,5 @@
 // reusable-ui core:
-import {
+import type {
     // a capability of UI to float/overlay on the top/beside the another UI:
     FloatingPlacement,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
