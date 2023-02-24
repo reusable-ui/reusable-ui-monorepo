@@ -5,7 +5,7 @@ import {
 }                           from 'react'
 
 // cssfn:
-import {
+import type {
     // cssfn general types:
     Optional,
 }                           from '@cssfn/core'                  // writes css in javascript
