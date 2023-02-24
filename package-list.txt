@@ -100,7 +100,7 @@
 [modularized] [documented  ] [partial compound] @reusable-ui/busy
 
 // notification-components:
-[optimized  ] [documented  ] [partial compound] @reusable-ui/alert
+[slimmodular] [documented  ] [partial compound] @reusable-ui/alert
 [optimized  ] [documented  ] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
