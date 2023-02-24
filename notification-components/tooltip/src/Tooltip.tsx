@@ -16,29 +16,6 @@ import {
 import {
     // cssfn general types:
     Optional,
-    
-    
-    
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    rules,
-    children,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
@@ -47,11 +24,6 @@ import {
 
 // reusable-ui core:
 import {
-    // a typography management system:
-    typos,
-    
-    
-    
     // react helper hooks:
     useEvent,
     EventHandler,
@@ -61,15 +33,9 @@ import {
     
     
     // a capability of UI to float/overlay on the top/beside the another UI:
-    FloatingPlacement,
     FloatingMiddleware,
     FloatingPosition,
     FloatingSide,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
     
     
     
@@ -89,13 +55,6 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 import {
-    // styles:
-    usesPopupLayout,
-    usesPopupVariants,
-    usesPopupStates,
-    
-    
-    
     // react components:
     PopupProps,
     Popup,
@@ -107,6 +66,13 @@ import {
     arrow as arrowMiddleware,
 }                           from '@floating-ui/dom'             // a popup utility
 
+// internals:
+import {
+    // features:
+    CalculateArrowSize,
+    calculateArrowSize as defaultCalculateArrowSize,
+}                           from './features/arrow.js'
+
 
 
 // defaults:
@@ -115,167 +81,10 @@ const _defaultArrowClasses    : Optional<string>[] = ['arrow']
 
 
 
-// configs:
-export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
-    const basics = {
-        // sizes:
-        arrowInlineSize       : '0.8rem'                                                                    as CssKnownProps['inlineSize'],
-        arrowBlockSize        : '0.8rem'                                                                    as CssKnownProps['blockSize' ],
-        
-     // arrowClipPath         : 'polygon(100% 0, 100% 100%, 0 100%)'                                        as CssKnownProps['clipPath'  ],
-        arrowClipPath         : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                as CssKnownProps['clipPath'  ], // compensates for boxShadow
-        
-        arrowTransform        : 'none'                                                                      as CssKnownProps['transform' ],
-        arrowTransformTop     : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) *  1))', 'rotate(45deg)' ]] as CssKnownProps['transform' ],
-        arrowTransformRight   : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) * -1))', 'rotate(135deg)']] as CssKnownProps['transform' ],
-        arrowTransformBottom  : [['scaleX(0.7)', 'translateY(calc((50% - 0.8px) * -1))', 'rotate(225deg)']] as CssKnownProps['transform' ],
-        arrowTransformLeft    : [['scaleY(0.7)', 'translateX(calc((50% - 0.8px) *  1))', 'rotate(315deg)']] as CssKnownProps['transform' ],
-        
-        
-        
-        // borders:
-        boxShadow             : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]                                         as CssKnownProps['boxShadow'],
-        
-        
-        
-        // typos:
-        whiteSpace            : 'normal'                                                                    as CssKnownProps['whiteSpace'],
-        fontSize              : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]               as CssKnownProps['fontSize'  ],
-        fontSizeSm            : typos.fontSizeSm                                                            as CssKnownProps['fontSize'  ],
-        fontSizeLg            : typos.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // sizes:
-        arrowInlineSizeSm     : [['calc((', basics.arrowInlineSize, ')*0.75)']]                             as CssKnownProps['inlineSize'],
-        arrowBlockSizeSm      : [['calc((', basics.arrowBlockSize , ')*0.75)']]                             as CssKnownProps['blockSize' ],
-        arrowInlineSizeLg     : [['calc((', basics.arrowInlineSize, ')*1.50)']]                             as CssKnownProps['inlineSize'],
-        arrowBlockSizeLg      : [['calc((', basics.arrowBlockSize , ')*1.50)']]                             as CssKnownProps['blockSize' ],
-        
-        
-        
-        // animations:
-        transformOrigin       : 'center'                                                                    as CssKnownProps['transformOrigin'],
-        transformOriginTop    : 'bottom'                                                                    as CssKnownProps['transformOrigin'],
-        transformOriginRight  : 'left'                                                                      as CssKnownProps['transformOrigin'],
-        transformOriginBottom : 'top'                                                                       as CssKnownProps['transformOrigin'],
-        transformOriginLeft   : 'right'                                                                     as CssKnownProps['transformOrigin'],
-    };
-}, { prefix: 'ttip' });
-
-
-
 // styles:
-export const arrowElm = '.arrow' // one degree specificity to overwrite <Arrow> component
-
-
-
-export const usesTooltipLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesPopupLayout(),
-        ]),
-        ...style({
-            // layouts:
-            display : 'inline-block', // use inline block, so it takes the width & height as needed
-            
-            
-            
-            // sizes:
-            justifySelf   : 'center',         // protect from stretching by flex/grid
-            alignSelf     : 'center',         // protect from stretching by flex/grid
-            flex          : [[0, 0, 'auto']], // protect from stretching by flex
-            
-            
-            
-            // children:
-            ...children(arrowElm, {
-                // layouts:
-                content     : '""',
-                display     : 'inline-block', // use inline block, so it takes the width & height as needed
-                ...rule([':not(.overlay)&', '.nude&'], {
-                    display : 'none', // the arrow is not supported when [not overlayed] or [nude=true]
-                }),
-                
-                
-                
-                // positions:
-                position    : 'absolute', // absolute position, so we can move the location easily
-                
-                
-                
-                // backgrounds:
-                backg       : 'inherit', // copy the background color. for background image, it may look strange
-                
-                
-                
-                // borders:
-                border      : 'inherit', // copy border style|width|color
-                boxShadow   : 'inherit', // copy shadow
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(tooltips, 'arrow')), // apply config's cssProps starting with arrow***
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(tooltips), // apply config's cssProps
-            ...rules([
-                ...['top', 'bottom', 'left', 'right']
-                .map((tooltipPos) =>
-                    rule([
-                        `.${tooltipPos}&`,
-                        `.${tooltipPos}-start&`,
-                        `.${tooltipPos}-end&`,
-                    ], {
-                        // overwrites propName = propName{tooltipPos}:
-                        ...overwriteProps(tooltips, usesSuffixedProps(tooltips, tooltipPos)),
-                    }),
-                ),
-            ]),
-        }),
-    });
-};
-export const usesTooltipVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(tooltips);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesPopupVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesTooltipStates = usesPopupStates;
-
-export const useTooltipStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesTooltipLayout(),
-        
-        // variants:
-        usesTooltipVariants(),
-        
-        // states:
-        usesTooltipStates(),
-    ]),
-}), { id: '3h41koviqh' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useTooltipStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: '3h41koviqh' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
@@ -287,78 +96,6 @@ const isTargetEnabled = (target: Element|null|undefined): boolean => {
     
     
     return !target.matches(':disabled, [aria-disabled]:not([aria-disabled="false"])')
-};
-
-
-
-export interface ArrowProps {
-    arrow     : Element
-    placement : FloatingPlacement
-}
-export type ArrowSize           = readonly [number, number]
-export type CalculateArrowSize  = (props: ArrowProps) => Promise<ArrowSize>
-
-const isSizeClassName = (className: string) => className.startsWith('sz') && (className.at(2) === className.at(2)?.toUpperCase());
-const arrowSizeCache = new WeakMap<Element, readonly [string, string, ArrowSize]>();
-const defaultCalculateArrowSize : CalculateArrowSize = async ({ arrow, placement }) => {
-    const cached = arrowSizeCache.get(arrow);
-    if (!cached) {
-        const arrowPosition = getComputedStyle(arrow).position;
-        if (arrowPosition === 'static') return [0, 0]; // cssfn is not fully loaded => ignore calculation
-    } // if
-    
-    
-    
-    const basePlacement = placement.split('-')[0];
-    const tooltip       = arrow.parentElement;
-    const sizeName      = (tooltip ? Array.from(tooltip.classList).find(isSizeClassName) : undefined) ?? 'szMd';
-    
-    
-    
-    if (cached) {
-        const [cachedSizeName, cachedPlacement, cachedArrowSize] = cached;
-        if ((cachedSizeName === sizeName) && (cachedPlacement === basePlacement)) return cachedArrowSize;
-    } // if
-    
-    
-    
-    // const size
-    const tooltipStyle = tooltip?.style;
-    const {
-        display,
-        visibility,
-        transition,
-        animation,
-    } = tooltipStyle ?? {};
-    try {
-        // temporary modify:
-        if (tooltipStyle) {
-            tooltipStyle.display    = 'inline-block';
-            tooltipStyle.visibility = 'hidden';
-            tooltipStyle.transition = 'none';
-            tooltipStyle.animation  = 'none';
-        } // if
-        
-        
-        
-        // perform main calculations:
-        const { width, height, }   = arrow.getBoundingClientRect();
-        const arrowSize : ArrowSize = [
-            (width  / 2) - 1,
-            (height / 2) - 1,
-        ];
-        arrowSizeCache.set(arrow, [sizeName, basePlacement, arrowSize]);
-        return arrowSize;
-    }
-    finally {
-        // restore:
-        if (tooltipStyle) {
-            tooltipStyle.display    = display    ?? '';
-            tooltipStyle.visibility = visibility ?? '';
-            tooltipStyle.transition = transition ?? '';
-            tooltipStyle.animation  = animation  ?? '';
-        } // if
-    } // try
 };
 
 
