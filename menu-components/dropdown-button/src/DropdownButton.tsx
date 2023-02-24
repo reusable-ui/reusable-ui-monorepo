@@ -22,7 +22,6 @@ import {
     
     
     // a capability of UI to rotate its layout:
-    defaultBlockEndOrientationableWithDirectionOptions,
     OrientationName,
     OrientationableWithDirectionProps,
     useOrientationableWithDirection,
@@ -41,15 +40,20 @@ import {
 
 // reusable-ui components:
 import type {
-    // styles:
+    // semantics:
+    ButtonType,
+    
+    
+    
+    // variants:
     ButtonStyle,
     ButtonVariant,
-    ButtonType,
     
     
     
     // react components:
     ButtonProps,
+    
     ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a button component for initiating an action
 import {
@@ -75,10 +79,11 @@ import {
     DropdownComponentProps,
 }                           from '@reusable-ui/dropdown'        // overlays contextual element such as lists, menus, and more
 
-
-
-// defaults:
-export const defaultOrientationableWithDirectionOptions = defaultBlockEndOrientationableWithDirectionOptions;
+// internals:
+import {
+    // defaults:
+    defaultOrientationableWithDirectionOptions,
+}                           from './defaults.js'
 
 
 
@@ -454,4 +459,4 @@ export {
 
 export type { DropdownActionType, DropdownExpandedChangeEvent }
 
-export type { ButtonStyle, ButtonVariant, ButtonType }
+export type { ButtonType, ButtonStyle, ButtonVariant }
