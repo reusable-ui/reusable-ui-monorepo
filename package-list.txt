@@ -104,7 +104,7 @@
 [slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip
 
 // menu-components:
-[optimized  ] [documented  ] [          atomic] @reusable-ui/collapse
+[modularized] [documented  ] [          atomic] @reusable-ui/collapse
 [optimized  ] [documented  ] [partial compound] @reusable-ui/dropdown
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list

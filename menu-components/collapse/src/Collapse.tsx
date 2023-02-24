@@ -6,28 +6,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    
-    
-    
-    // writes css in javascript:
-    states,
-    keyframes,
-    fallbacks,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -47,23 +25,13 @@ import {
     
     
     
-    // animation stuff of UI:
-    usesAnimation,
-    
-    
-    
     // a capability of UI to rotate its layout:
-    OrientationableOptions,
-    defaultBlockOrientationableOptions,
-    usesOrientationable,
     OrientationableProps,
     useOrientationable,
     
     
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
-    ifCollapsed,
-    usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
@@ -76,202 +44,18 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 
-
-
-// defaults:
-export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
-
-
-
-// configs:
-export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
-    //#region keyframes
-    const frameCollapsed    = style({
-        overflowY     : 'clip',
-        ...fallbacks({
-            overflowY     : 'hidden',
-        }),
-        maxBlockSize  : 0,
-    });
-    const frameIntermediate = style({
-        overflowY     : 'clip',
-        ...fallbacks({
-            overflowY     : 'hidden',
-        }),
-        maxBlockSize  : '100vh',
-    });
-    const frameExpanded     = style({
-        overflowY     : 'unset',
-        maxBlockSize  : 'unset',
-    });
-    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
-        from  : frameCollapsed,
-        '99%' : frameIntermediate,
-        to    : frameExpanded,
-    });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
-    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
-        from  : frameExpanded,
-        '1%'  : frameIntermediate,
-        to    : frameCollapsed,
-    });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
-    
-    
-    
-    const frameCollapsedInline    = style({
-        overflowX     : 'clip',
-        ...fallbacks({
-            overflowX     : 'hidden',
-        }),
-        maxInlineSize : 0,
-    });
-    const frameIntermediateInline = style({
-        overflowX     : 'clip',
-        ...fallbacks({
-            overflowX     : 'hidden',
-        }),
-        maxInlineSize : '100vw',
-    });
-    const frameExpandedInline     = style({
-        overflowX     : 'unset',
-        maxInlineSize : 'unset',
-    });
-    const [keyframesExpandInlineRule  , keyframesExpandInline  ] = keyframes({
-        from  : frameCollapsedInline,
-        '99%' : frameIntermediateInline,
-        to    : frameExpandedInline,
-    });
-    keyframesExpandInline.value   = 'expandInline';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
-    const [keyframesCollapseInlineRule, keyframesCollapseInline] = keyframes({
-        from  : frameExpandedInline,
-        '1%'  : frameIntermediateInline,
-        to    : frameCollapsedInline,
-    });
-    keyframesCollapseInline.value = 'collapseInline'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // animations:
-        ...keyframesExpandRule,
-        ...keyframesCollapseRule,
-        animExpand         : [
-            ['300ms', 'ease-in' , 'both', keyframesExpand  ],
-        ]                                                       as CssKnownProps['animation'],
-        animCollapse       : [
-            ['500ms', 'ease-out', 'both', keyframesCollapse],
-        ]                                                       as CssKnownProps['animation'],
-        
-        
-        
-        ...keyframesExpandInlineRule,
-        ...keyframesCollapseInlineRule,
-        animExpandInline   : [
-            ['300ms', 'ease-in' , 'both', keyframesExpandInline  ],
-        ]                                                       as CssKnownProps['animation'],
-        animCollapseInline : [
-            ['500ms', 'ease-out', 'both', keyframesCollapseInline],
-        ]                                                       as CssKnownProps['animation'],
-    };
-}, { prefix: 'clps' });
+// internals:
+import {
+    // defaults:
+    defaultOrientationableOptions,
+}                           from './defaults.js'
 
 
 
 // styles:
-let collapseLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesCollapseLayout = (options?: OrientationableOptions) => {
-    const cached = collapseLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
-    
-    
-    
-    // dependencies:
-    
-    // features:
-    const {animationRule, animationVars} = usesAnimation();
-    
-    
-    
-    const result = style({
-        ...imports([
-            // features:
-            animationRule,
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(collapses), // apply config's cssProps
-            ...ifOrientationInline({ // inline
-                // overwrites propName = propName{Inline}:
-                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'inline')),
-            }),
-            ...ifOrientationBlock({  // block
-                // overwrites propName = propName{Block}:
-                ...overwriteProps(collapses, usesSuffixedProps(collapses, 'block')),
-            }),
-            
-            
-            
-            // animations:
-            anim : animationVars.anim,
-        }),
-    });
-    collapseLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let collapseStatesCache : WeakRef<CssRule>|undefined = undefined;
-export const usesCollapseStates = () => {
-    const cached = collapseStatesCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // states:
-    const {collapsibleRule} = usesCollapsible(collapses);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // states:
-            collapsibleRule,
-        ]),
-        ...states([
-            ifCollapsed({
-                // appearances:
-                display: 'none', // hide the <Collapse>
-            }),
-        ]),
-    });
-    collapseStatesCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-cssCollapseConfig.onChange.subscribe(() => {
-    // clear caches:
-    collapseLayoutCache = undefined;
-    collapseStatesCache = undefined;
-});
-
-export const useCollapseStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesCollapseLayout(),
-        
-        // states:
-        usesCollapseStates(),
-    ]),
-}), { id: 'gh2oi6zjs0' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useCollapseStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'gh2oi6zjs0' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
