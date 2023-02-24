@@ -44,7 +44,7 @@ import {
 
 // hooks:
 
-// features:
+// capabilities:
 
 //#region floatable
 export interface FloatableProps

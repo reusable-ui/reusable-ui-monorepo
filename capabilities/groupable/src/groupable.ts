@@ -54,7 +54,7 @@ export const defaultOrientationableOptions = defaultBlockOrientationableOptions;
 
 // hooks:
 
-// features:
+// capabilities:
 
 //#region groupable
 export interface GroupableVars {
