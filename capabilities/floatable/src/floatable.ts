@@ -227,7 +227,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // watch scrolling of <target>'s <parent> up to <offsetParent>:
         const offsetAncestors : Element[] = [];
         if (typeof(window) !== 'undefined') { // client_side only
-            const offsetParent = (target as HTMLElement).offsetParent;
+            const offsetParent = (target as HTMLElement).offsetParent; // TODO: fix the force-reflow by executing inside requestAnimationFrame()
             if (offsetParent) {
                 for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
                     offsetAncestors.push(parent); // collect the ancestor(s)
