@@ -13,11 +13,6 @@ import {
     
     
     
-    // a semantic management system for react web components:
-    Role,
-    
-    
-    
     // focusing functions:
     setFocusFirst,
     setFocusLast,
@@ -42,12 +37,7 @@ import {
     DropdownComponentProps,
 }                           from '@reusable-ui/dropdown'        // a base component
 import {
-    // defaults:
-    defaultOrientationableOptions as listDefaultOrientationableOptions,
-    
-    
-    
-    // styles:
+    // variants:
     ListStyle,
     ListVariant,
     
@@ -68,35 +58,22 @@ import {
     ListItemComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 
+// internals:
+import {
+    // defaults:
+    listDefaultOrientationableOptions,
+}                           from './defaults.js'
+import {
+    // utilities:
+    calculateSemanticRole,
+}                           from './utilities.js'
+
 
 
 // defaults:
 const _defaultTabIndex   : number            = -1   // makes the <List> programatically focusable
 const _defaultActionCtrl : boolean|undefined = true // the default for <ListItem>(s) is clickable
 const _defaultListStyle  : ListStyle         = 'joined'
-
-
-
-// utilities:
-export const calculateSemanticRole = <TElement extends Element = HTMLElement>(props: ListProps<TElement>, defaultActionCtrl: boolean|undefined): Role|null => {
-    if (props.role) return null; // pre defined role => no need to determine the role automatically
-    
-    
-    
-    const listItems         = props.children;
-    if (React.Children.toArray(listItems).some((listItem) => {
-        if (!React.isValidElement<ListItemProps<Element>>(listItem)) {
-            return !(defaultActionCtrl ?? false);                              // if the default is not an actionCtrl => not a menu item => role='dialog'
-        }
-        else {
-            return !(listItem.props.actionCtrl ?? defaultActionCtrl ?? false); // if <ListItem>  is not an actionCtrl => not a menu item => role='dialog'
-        } // if
-    })) return 'dialog'; // one/some <ListItem>s are [actionCtrl=false] => role='dialog'
-    
-    
-    
-    return 'menu'; // all <ListItem>s are [actionCtrl=true] => role='menu'
-};
 
 
 
