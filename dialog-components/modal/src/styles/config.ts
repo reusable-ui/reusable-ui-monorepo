@@ -86,7 +86,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         
         
         // borders:
-        // modalUiBoxShadow    : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]   as CssKnownProps['boxShadow' ],
+     // modalUiBoxShadow    : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]   as CssKnownProps['boxShadow' ],
         modalUiFilter: [
             ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
         ]                                                           as CssKnownProps['filter'],

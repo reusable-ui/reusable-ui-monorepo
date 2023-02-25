@@ -1,5 +1,5 @@
 // defaults:
-const _defaultBackdropStyle : BackdropStyle  = 'regular'
+const _defaultBackdropStyle : BackdropStyle = 'regular'
 
 
 

@@ -1,5 +1,5 @@
 // react:
-import {
+import type {
     // react:
     default as React,
 }                           from 'react'
@@ -25,7 +25,7 @@ export const getViewportOrDefault = (modalViewport: React.RefObject<Element>|Ele
         (
             modalViewport
             ?
-            ((modalViewport.constructor === Object) ? (modalViewport as React.RefObject<Element>)?.current : (modalViewport as Element))
+            ((Object.getPrototypeOf(modalViewport) === Object.prototype) ? (modalViewport as React.RefObject<Element>)?.current : (modalViewport as Element))
             :
             null
         )
