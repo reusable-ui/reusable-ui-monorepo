@@ -16,31 +16,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    CssStyleCollection,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    variants,
-    states,
-    keyframes,
-    children,
-    style,
-    vars,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -49,11 +24,6 @@ import {
 import {
     // a set of React node utility functions:
     isReusableUiComponent,
-    
-    
-    
-    // removes browser's default stylesheet:
-    stripoutFocusableElement,
     
     
     
@@ -77,24 +47,7 @@ import {
     
     
     
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
-    // animation stuff of UI:
-    usesAnimation,
-    
-    
-    
-    // groups a list of UIs into a single UI:
-    usesGroupable,
-    
-    
-    
     // a capability of UI to expand/reduce its size or toggle the visibility:
-    ifCollapsed,
-    usesCollapsible,
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
@@ -103,7 +56,6 @@ import {
     
     
     // a capability of UI to highlight itself to attract user's attention:
-    usesExcitable,
     ExcitedChangeEvent,
     useToggleExcitable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -115,381 +67,27 @@ import {
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
 
-
-
-// defaults:
-const _defaultBackdropStyle : BackdropStyle  = 'regular'
-
-
-
-// utilities:
-const getViewportOrDefault = (modalViewport: React.RefObject<Element>|Element|null|undefined): Element => {
-    return (
-        // custom viewport (if was set):
-        (
-            modalViewport
-            ?
-            ((modalViewport.constructor === Object) ? (modalViewport as React.RefObject<Element>)?.current : (modalViewport as Element))
-            :
-            null
-        )
-        ??
-        // the default viewport is <body>:
-        document.body
-    );
-};
-
-
-
-// rules:
-export const ifGlobalModal = (styles: CssStyleCollection): CssRule => rule('body>*>&', styles);
-
-
-
-// configs:
-export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
-    // dependencies:
-    
-    const {animationRegistry : {filters}              } = usesAnimation();
-    const {excitableVars     : {filter: filterExcited}} = usesExcitable();
-    
-    
-    
-    //#region keyframes
-    const frameCollapsed    = style({
-        filter : [[
-            'opacity(0)',
-        ]]
-    });
-    const frameExpanded     = style({
-        filter : [[
-            'opacity(1)',
-        ]]
-    });
-    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
-        from  : frameCollapsed,
-        to    : frameExpanded,
-    });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
-    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
-        from  : frameExpanded,
-        to    : frameCollapsed,
-    });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
-    
-    
-    
-    const [keyframesExciteRule, keyframesExcite] = keyframes({
-        from  : {
-            filter : [[
-                ...filters.filter((f) => (f !== filterExcited)), // the rest filter(s)
-            ]],
-        },
-        to    : {
-            filter : [[
-                ...filters.filter((f) => (f !== filterExcited)), // the rest filter(s)
-                filterExcited, // the interpolating filter
-            ]],
-        },
-    });
-    keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
-    //#endregion keyframes
-    
-    
-    
-    return {
-        // backgrounds:
-        backg               : 'rgba(0,0,0, 0.5)'                    as CssKnownProps['background'],
-        
-        
-        
-        // borders:
-        // modalUiBoxShadow    : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]   as CssKnownProps['boxShadow' ],
-        modalUiFilter: [
-            ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ]                                                           as CssKnownProps['filter'],
-        
-        
-        
-        // animations:
-        ...keyframesExpandRule,
-        ...keyframesCollapseRule,
-        animExpand          : [
-            ['300ms', 'ease-out', 'both', keyframesExpand  ],
-        ]                                                           as CssKnownProps['animation'],
-        animCollapse        : [
-            ['500ms', 'ease-in' , 'both', keyframesCollapse],
-        ]                                                           as CssKnownProps['animation'],
-        
-        modalUiFilterExcite : [[
-            'invert(80%)',
-        ]]                                                          as CssKnownProps['filter'   ],
-        
-        ...keyframesExciteRule,
-        modalUiAnimExcite   : [
-            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcite],
-        ]                                                           as CssKnownProps['animation'],
-    };
-}, { prefix: 'mdl' });
+// internals:
+import {
+    // variants:
+    BackdropVariant,
+    useBackdropVariant,
+}                           from './variants/BackdropVariant.js'
+import {
+    // utilities:
+    getViewportOrDefault,
+}                           from './utilities.js'
 
 
 
 // styles:
-export type BackdropStyle = 'regular'|'hidden'|'interactive'|'static' // might be added more styles in the future
-export interface BackdropVariant {
-    backdropStyle ?: BackdropStyle
-}
-export const useBackdropVariant = ({backdropStyle = _defaultBackdropStyle}: BackdropVariant) => {
-    return {
-        class: (backdropStyle === 'regular') ? null : backdropStyle,
-    };
-};
+export const useModalUiStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/modalUiStyles.js')
+, { specificityWeight: 0, id: 'u4teynvq1y' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
-
-
-export const usesModalUiLayout = () => {
-    // dependencies:
-    
-    // features:
-    const {animationRule, animationVars} = usesAnimation();
-    
-    
-    
-    return style({
-        ...imports([
-            // resets:
-            stripoutFocusableElement(), // clear browser's default styles
-            
-            // features:
-            animationRule,
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(usesPrefixedProps(modals, 'modalUi')), // apply config's cssProps starting with modalUi***
-            
-            
-            
-            // animations:
-            anim : animationVars.anim,
-        }),
-    });
-};
-export const usesModalUiStates = () => {
-    // dependencies:
-    
-    // states:
-    const {excitableRule} = usesExcitable(
-        usesPrefixedProps(modals, 'modalUi') as any, // fetch config's cssProps starting with modalUi***
-    );
-    
-    
-    
-    return style({
-        ...imports([
-            // states:
-            excitableRule,
-        ]),
-    });
-};
-
-export const useModalUiStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesModalUiLayout(),
-        
-        // states:
-        usesModalUiStates(),
-    ]),
-}), { specificityWeight: 0, id: 'u4teynvq1y' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-let backdropLayoutCache : WeakRef<CssRule>|undefined = undefined;
-export const usesBackdropLayout = () => {
-    const cached = backdropLayoutCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // features:
-    const {borderRule    , borderVars   } = usesBorder({
-        borderWidth  : 'inherit',
-        borderRadius : 'inherit',
-    });
-    const {animationRule , animationVars} = usesAnimation();
-    
-    // capabilities:
-    const {                groupableVars} = usesGroupable();
-    
-    
-    
-    const result = style({
-        ...imports([
-            // features:
-            borderRule,
-            animationRule,
-        ]),
-        ...style({
-            // layouts:
-            display      : 'grid',
-            
-            // child default sizes:
-            justifyItems : 'center', // center horizontally
-            alignItems   : 'center', // center vertically
-            
-            
-            
-            // positions:
-            position     : 'absolute', // local <Modal>: absolute position
-            ...ifGlobalModal({
-                position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
-            }),
-            inset        : 0,          // span the <Modal> to the edges of <container>
-            zIndex       : 1040,
-            
-            
-            
-            // sizes:
-            // global <Modal>: fills the entire screen height:
-            ...ifGlobalModal({
-                boxSizing    : 'border-box', // the final size is including borders & paddings
-                minBlockSize : '100vh',
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(modals), // apply config's cssProps
-            
-            
-            
-            // animations:
-            anim         : animationVars.anim,
-        }),
-        
-        
-        
-        ...vars({
-            // borders:
-            // makes the backdrop as a <group> by calculating <parent>'s border & borderRadius:
-            
-            [groupableVars.borderWidth           ] : '0px',
-            
-            [groupableVars.borderStartStartRadius] : `calc(${borderVars.borderStartStartRadius} - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
-            [groupableVars.borderStartEndRadius  ] : `calc(${borderVars.borderStartEndRadius  } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
-            [groupableVars.borderEndStartRadius  ] : `calc(${borderVars.borderEndStartRadius  } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
-            [groupableVars.borderEndEndRadius    ] : `calc(${borderVars.borderEndEndRadius    } - ${borderVars.borderWidth} - min(${borderVars.borderWidth}, 0.5px))`,
-            
-            
-            
-            // spacings:
-            [groupableVars.paddingInline         ] : '0px',
-            [groupableVars.paddingBlock          ] : '0px',
-        }),
-        ...style({
-            // borders:
-            // fit the backdrop borderRadius to <container>'s borderRadius:
-            
-            borderWidth            : groupableVars.borderWidth,
-            
-            borderStartStartRadius : groupableVars.borderStartStartRadius,
-            borderStartEndRadius   : groupableVars.borderStartEndRadius,
-            borderEndStartRadius   : groupableVars.borderEndStartRadius,
-            borderEndEndRadius     : groupableVars.borderEndEndRadius,
-            
-            
-            
-            // spacings:
-            paddingInline          : groupableVars.paddingInline,
-            paddingBlock           : groupableVars.paddingBlock,
-        }),
-    });
-    backdropLayoutCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let backdropVariantsCache : WeakRef<CssRule>|undefined = undefined;
-export const usesBackdropVariants = () => {
-    const cached = backdropVariantsCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
-        ...variants([
-            rule('.hidden', {
-                // backgrounds:
-                background    : 'none',
-            }),
-            rule(['.hidden', '.interactive'], {
-                // accessibilities:
-                pointerEvents : 'none', // a ghost layer
-                
-                
-                
-                // children:
-                ...children('*', { // <ModalUi>
-                    // accessibilities:
-                    pointerEvents : 'initial', // cancel out ghost layer
-                }),
-            }),
-        ]),
-    });
-    backdropVariantsCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-let backdropStatesCache : WeakRef<CssRule>|undefined = undefined;
-export const usesBackdropStates = () => {
-    const cached = backdropStatesCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    // dependencies:
-    
-    // states:
-    const {collapsibleRule} = usesCollapsible(modals);
-    
-    
-    
-    const result = style({
-        ...imports([
-            // states:
-            collapsibleRule,
-        ]),
-        ...states([
-            ifCollapsed({
-                // appearances:
-                display: 'none', // hide the <Modal>
-            }),
-        ]),
-    });
-    backdropStatesCache = new WeakRef<CssRule>(result);
-    return result;
-};
-
-cssModalConfig.onChange.subscribe(() => {
-    // clear caches:
-    backdropLayoutCache   = undefined;
-    backdropVariantsCache = undefined;
-    backdropStatesCache   = undefined;
-});
-
-export const useBackdropStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesBackdropLayout(),
-        
-        // variants:
-        usesBackdropVariants(),
-        
-        // states:
-        usesBackdropStates(),
-    ]),
-}), { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useBackdropStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/backdropStyles.js')
+, { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

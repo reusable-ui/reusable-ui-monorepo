@@ -24,8 +24,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/Modal.js",
-  "types": "dist/Modal.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {

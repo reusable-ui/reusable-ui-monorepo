@@ -111,7 +111,7 @@
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
 
 // dialog-components:
-[optimized  ] [documented  ] [          atomic] @reusable-ui/modal
+[modularized] [documented  ] [          atomic] @reusable-ui/modal
 [optimized  ] [documented  ] [full    compound] @reusable-ui/modal-card
 [optimized  ] [documented  ] [full    compound] @reusable-ui/modal-side
 
