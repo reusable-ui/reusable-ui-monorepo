@@ -7,7 +7,6 @@ import {
     children,
     style,
     vars,
-    imports,
     
     
     
@@ -75,11 +74,13 @@ export const usesBackdropLayout = memoizeStyle(() => {
     
     
     return style({
-        ...imports([
-            // features:
-            borderRule,
-            animationRule,
-        ]),
+        // features:
+        ...borderRule(),
+        ...animationRule(),
+        
+        
+        
+        // layouts:
         ...style({
             // layouts:
             display      : 'grid',
@@ -189,10 +190,8 @@ export const usesBackdropStates = memoizeStyle(() => {
     
     
     return style({
-        ...imports([
-            // states:
-            collapsibleRule,
-        ]),
+        // states:
+        ...collapsibleRule(),
         ...states([
             ifCollapsed({
                 // appearances:
