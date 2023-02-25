@@ -2,47 +2,9 @@
 import {
     // react:
     default as React,
-    
-    
-    
-    // hooks:
-    useMemo,
 }                           from 'react'
 
 // cssfn:
-import {
-    // cssfn general types:
-    Factory,
-    
-    
-    
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    variants,
-    children,
-    style,
-    vars,
-    imports,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
-    cssVars,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
     dynamicStyleSheet,
@@ -50,11 +12,6 @@ import {
 
 // reusable-ui core:
 import {
-    // a spacer (gap) management system:
-    spacers,
-    
-    
-    
     // react helper hooks:
     useMergeEvents,
     useMergeRefs,
@@ -69,18 +26,6 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesBackdropLayout,
-    usesBackdropVariants,
-    usesBackdropStates,
-    
-    
-    
-    // configs:
-    modals,
-    
-    
-    
     // react components:
     ModalExpandedChangeEvent,
     
@@ -90,10 +35,6 @@ import {
     ModalComponentProps,
 }                           from '@reusable-ui/modal'           // a base component
 import {
-    // styles:
-    usesResponsiveContainerGridLayout,
-}                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
-import {
     // react components:
     PopupProps,
     Popup,
@@ -101,11 +42,7 @@ import {
     PopupComponentProps,
 }                           from '@reusable-ui/popup'           // a base component
 import {
-    // styles:
-    headerElm,
-    footerElm,
-    bodyElm,
-    
+    // variants:
     CardStyle,
     CardVariant,
     
@@ -118,307 +55,28 @@ import {
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 
+// internals:
+import {
+    // variants:
+    ModalCardVariant,
+    useModalCardVariant,
+}                           from './variants/ModalCardVariant.js'
+
 
 
 // defaults:
-const _defaultModalCardStyle : ModalCardStyle = 'regular'
-const _defaultTabIndex       : number         = -1   // makes the <Card> programatically focusable
-
-
-
-// hooks:
-
-// features:
-
-//#region modalCard
-export interface ModalCardVars {
-    /**
-     * The horizontal alignment of the <Card>.
-     */
-    horzAlign : any
-    /**
-     * The vertical alignment of the <Card>.
-     */
-    vertAlign : any
-}
-const [modalCardVars] = cssVars<ModalCardVars>({ prefix: 'modalCard', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-export interface ModalCardStuff { modalCardRule: Factory<CssRule>, modalCardVars: CssVars<ModalCardVars> }
-export interface ModalCardConfig {
-    horzAlign ?: CssKnownProps['justifyItems']
-    vertAlign ?: CssKnownProps['alignItems'  ]
-}
-/**
- * Uses modalCard variables.
- * @param config  A configuration of `modalCardRule`.
- * @returns A `ModalCardStuff` represents the modalCard rules.
- */
-export const usesModalCard = (config?: ModalCardConfig): ModalCardStuff => {
-    return {
-        modalCardRule: () => style({
-            ...vars({
-                // positions:
-                [modalCardVars.horzAlign] : config?.horzAlign,
-                [modalCardVars.vertAlign] : config?.vertAlign,
-            }),
-        }),
-        modalCardVars,
-    };
-};
-//#endregion modalCard
-
-
-
-// configs:
-export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
-    return {
-        // positions:
-        horzAlign : 'center'                as CssKnownProps['justifyItems'],
-        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
-        
-        
-        
-        // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
-    };
-}, { prefix: 'mdlcrd' });
+const _defaultTabIndex : number = -1   // makes the <Card> programatically focusable
 
 
 
 // styles:
-export type ModalCardStyle = 'regular'|'scrollable' // might be added more styles in the future
-export interface ModalCardVariant {
-    modalCardStyle ?: ModalCardStyle
-    
-    horzAlign      ?: CssKnownProps['justifyItems']
-    vertAlign      ?: CssKnownProps['alignItems'  ]
-}
-export const useModalCardVariant = ({ modalCardStyle = _defaultModalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
-    // dependencies:
-    
-    // features:
-    const {modalCardVars} = usesModalCard();
-    
-    
-    
-    return {
-        class: (modalCardStyle === 'regular') ? null : modalCardStyle,
-        
-        style : useMemo(() => ({
-            [
-                modalCardVars.horzAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : horzAlign,
-            
-            [
-                modalCardVars.vertAlign
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ] : vertAlign,
-        }), [horzAlign, vertAlign]),
-    };
-};
+export const useModalCardStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/modalCardStyles.js')
+, { specificityWeight: 2, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
-
-
-export const usesModalCardLayout = () => {
-    return style({
-        ...style({
-            // layouts:
-            display        : 'flex',
-            flexDirection  : 'column',
-            justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'center',  // center <Popup> horizontally
-            flexWrap       : 'nowrap',  // no wrapping
-            
-            
-            
-            // animations:
-            // a fix to overwrite <Popup>'s filter:
-            filter         : modals.modalUiFilter,
-            
-            
-            
-            // children:
-            ...children('*', { // <Card>
-                // children:
-                ...children([headerElm, footerElm, bodyElm], {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardItem')), // apply config's cssProps starting with cardItem***
-                }),
-                ...children([headerElm, footerElm], {
-                    // layouts:
-                    display        : 'flex',
-                    flexDirection  : 'row',
-                    flexWrap       : 'nowrap',  // no wrapping
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardCaption')), // apply config's cssProps starting with cardCaption***
-                }),
-                ...children(headerElm, {
-                    justifyContent : 'space-between', // separates between items as far as possible
-                    alignItems     : 'center',        // center <Control> vertically
-                    
-                    
-                    
-                    // children:
-                    ...children(['button', '[role="button"]'], {
-                        ...rule(':first-child:last-child', {
-                            // spacings:
-                            marginInlineStart : 'auto', // align to right
-                        }),
-                    }),
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardHeader')), // apply config's cssProps starting with cardHeader***
-                }),
-                ...children(footerElm, {
-                    justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                    alignItems     : 'center',  // center <Control> vertically
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardFooter')), // apply config's cssProps starting with cardFooter***
-                }),
-                ...children(bodyElm, {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
-                }),
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(modalCards, 'popup')), // apply config's cssProps starting with popup***
-        }),
-    });
-};
-export const usesModalCardVariants = () => {
-    return style({
-        ...variants([
-            rule(':not(.scrollable)>&', {
-                // sizes:
-                flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                
-                boxSizing     : 'content-box',    // the final size is excluding borders & paddings
-                inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
-                blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
-            }),
-            rule('.scrollable>&', {
-                // children:
-                ...children(['&', '*'], { // <Popup> & <Card>
-                    // sizes:
-                    boxSizing     : 'border-box',     // the final size is including borders & paddings
-                    inlineSize    : 'auto',           // follows the content's width, but
-                    maxInlineSize : '100%',           // up to the maximum available parent's width
-                    blockSize     : 'auto',           // follows the content's height, but
-                    maxBlockSize  : '100%',           // up to the maximum available parent's height
-                    overflow      : 'hidden',         // force the <Card> to scroll
-                }),
-            }),
-        ]),
-    });
-};
-
-export const useModalCardStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesModalCardLayout(),
-        
-        // variants:
-        usesModalCardVariants(),
-    ]),
-}), { specificityWeight: 2, id: 'ifh5e9blw5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export const usesBackdropCardLayout = () => {
-    // dependencies:
-    
-    // features:
-    const {modalCardRule, modalCardVars} = usesModalCard(modalCards);
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesBackdropLayout(),
-            
-            // features:
-            modalCardRule,
-        ]),
-        ...style({
-            // layouts:
-         // display         : 'grid', // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
-            
-            
-            
-            // positions:
-            justifyItems : modalCardVars.horzAlign,
-            alignItems   : modalCardVars.vertAlign,
-            
-            
-            
-            // children:
-            ...children('*', { // <CardDialog>
-                // layouts:
-                gridArea    : 'content',
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(modalCards), // apply config's cssProps
-        }),
-        ...imports([
-            // layouts:
-            usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
-        ]),
-    });
-};
-export const usesBackdropCardVariants = () => {
-    return style({
-        ...imports([
-            // variants:
-            usesBackdropVariants(),
-        ]),
-        
-        /* write more specific backdropStyle: */
-        ...variants([
-            rule(':not(.scrollable)', {
-                // scrolls:
-                // scroller at <ModalCard>'s layer
-                overflow : 'auto', // enable horz & vert scrolling on <ModalBackdrop>
-            }),
-        ]),
-    });
-};
-export const usesBackdropCardStates = usesBackdropStates;
-
-export const useBackdropCardStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesBackdropCardLayout(),
-        
-        // variants:
-        usesBackdropCardVariants(),
-        
-        // states:
-        usesBackdropCardStates(),
-    ]),
-}), { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useBackdropCardStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/backdropCardStyles.js')
+, { id: 'j3ol5k9hzm' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

@@ -6,57 +6,16 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    variants,
-    children,
-    style,
-    vars,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
 import {
-    // a spacer (gap) management system:
-    spacers,
-    
-    
-    
     // react helper hooks:
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    
-    
-    
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
-    // groups a list of UIs into a single UI:
-    usesGroupable,
-    
-    
-    
-    // a capability of UI to rotate its layout:
-    usesOrientationable,
     
     
     
@@ -66,13 +25,6 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesBackdropLayout,
-    usesBackdropVariants,
-    usesBackdropStates,
-    
-    
-    
     // react components:
     ModalExpandedChangeEvent,
     
@@ -89,16 +41,7 @@ import {
     CollapseComponentProps,
 }                           from '@reusable-ui/collapse'        // a base component
 import {
-    // defaults:
-    defaultOrientationableOptions as cardDefaultOrientationableOptions,
-    
-    
-    
-    // styles:
-    headerElm,
-    footerElm,
-    bodyElm,
-    
+    // variants:
     CardStyle,
     CardVariant,
     
@@ -111,310 +54,28 @@ import {
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 
+// internals:
+import {
+    // variants:
+    ModalSideVariant,
+    useModalSideVariant,
+}                           from './variants/ModalSideVariant.js'
+
 
 
 // defaults:
-const _defaultTabIndex   : number  = -1   // makes the <Card> programatically focusable
-
-
-
-// configs:
-export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
-    return {
-        // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
-    };
-}, { prefix: 'mdlsde' });
+const _defaultTabIndex : number = -1   // makes the <Card> programatically focusable
 
 
 
 // styles:
-export type ModalSideStyle = 'inlineStart'|'inlineEnd'|'blockStart'|'blockEnd' // might be added more styles in the future
-export interface ModalSideVariant {
-    modalSideStyle : ModalSideStyle // required prop
-}
-export const useModalSideVariant = ({ modalSideStyle }: ModalSideVariant) => {
-    return {
-        class : modalSideStyle,
-    };
-};
+export const useModalSideStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/modalSideStyles.js')
+, { specificityWeight: 2, id: 'qvp7n6e4ck' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
-
-
-export const usesModalSideLayout = () => {
-    const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
-    
-    
-    
-    return style({
-        ...style({
-            // layouts:
-            display        : 'flex',
-            flexDirection  : 'column',
-            justifyContent : 'start',   // if <Collapse> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'stretch', // stretch <Collapse> horizontally
-            flexWrap       : 'nowrap',  // no wrapping
-            
-            
-            
-            // children:
-            ...children(['&', '*'], { // <Collapse> & <Card>
-                // sizes:
-                boxSizing     : 'border-box',     // the final size is including borders & paddings
-                inlineSize    : 'auto',           // follows the content's width, but
-                maxInlineSize : '100%',           // up to the maximum available parent's width
-                blockSize     : 'auto',           // follows the content's height, but
-                maxBlockSize  : '100%',           // up to the maximum available parent's height
-                overflow      : 'hidden',         // force the <Card> to scroll
-            }),
-            ...children('*', { // <Card>
-                // layouts:
-                // a fix for collapsing vertically, so the <CardBody> appears sliding:
-                ...rule(':is(.inlineStart, .blockStart)>&', {
-                    justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                }),
-                ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
-                ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
-                
-                
-                
-                // sizes:
-                // maximum height of <Card> when side-left & side-right:
-                flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
-                
-                
-                
-                // children:
-                ...children([headerElm, footerElm, bodyElm], {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardItem')), // apply config's cssProps starting with cardItem***
-                }),
-                ...children([headerElm, footerElm], {
-                    // layouts:
-                    display        : 'flex',
-                    flexDirection  : 'row',
-                    flexWrap       : 'nowrap',  // no wrapping
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardCaption')), // apply config's cssProps starting with cardCaption***
-                }),
-                ...children(headerElm, {
-                    justifyContent : 'space-between', // separates between items as far as possible
-                    alignItems     : 'center',        // center <Control> vertically
-                    
-                    
-                    
-                    // children:
-                    ...children(['button', '[role="button"]'], {
-                        ...rule(':first-child:last-child', {
-                            // spacings:
-                            marginInlineStart : 'auto', // align to right
-                        }),
-                    }),
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardHeader')), // apply config's cssProps starting with cardHeader***
-                }),
-                ...children(footerElm, {
-                    justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                    alignItems     : 'center',  // center <Control> vertically
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardFooter')), // apply config's cssProps starting with cardFooter***
-                }),
-                ...children(bodyElm, {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardBody')), // apply config's cssProps starting with cardBody***
-                }),
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalSides, 'card')), // apply config's cssProps starting with card***
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(modalSides, 'collapse')), // apply config's cssProps starting with collapse***
-        }),
-    });
-};
-export const usesModalSideVariants = () => {
-    // dependencies:
-    
-    // features:
-    const {borderVars   } = usesBorder();
-    
-    // capabilities:
-    const {groupableVars} = usesGroupable();
-    
-    
-    
-    return style({
-        ...variants([
-            rule('.inlineStart>&', { // <Collapse>
-                // children:
-                ...children('*', { // <Card>
-                    ...vars({
-                        // borders:
-                        // fit rounded corners on left to <backdrop>:
-                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                        [borderVars.borderStartStartRadius   ] : groupableVars.borderStartStartRadius,
-                        [borderVars.borderEndStartRadius     ] : groupableVars.borderEndStartRadius,
-                    }),
-                }),
-            }),
-            rule('.inlineEnd>&', {
-                // children:
-                ...children('*', { // <Card>
-                    ...vars({
-                        // borders:
-                        // fit rounded corners on right to <backdrop>:
-                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                        [borderVars.borderStartEndRadius     ] : groupableVars.borderStartEndRadius,
-                        [borderVars.borderEndEndRadius       ] : groupableVars.borderEndEndRadius,
-                    }),
-                }),
-            }),
-            rule('.blockStart>&', {
-                // children:
-                ...children('*', { // <Card>
-                    ...vars({
-                        // borders:
-                        // fit rounded corners on top to <backdrop>:
-                        [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                        [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                        [borderVars.borderStartStartRadius   ] : groupableVars.borderStartStartRadius,
-                        [borderVars.borderStartEndRadius     ] : groupableVars.borderStartEndRadius,
-                    }),
-                }),
-            }),
-            rule('.blockEnd>&', {
-                // children:
-                ...children('*', { // <Card>
-                    ...vars({
-                        // borders:
-                        // fit rounded corners on bottom to <backdrop>:
-                        [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                        [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
-                        [borderVars.borderEndStartRadius     ] : groupableVars.borderEndStartRadius,
-                        [borderVars.borderEndEndRadius       ] : groupableVars.borderEndEndRadius,
-                    }),
-                }),
-            }),
-        ]),
-    });
-};
-
-export const useModalSideStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesModalSideLayout(),
-        
-        // variants:
-        usesModalSideVariants(),
-    ]),
-}), { specificityWeight: 2, id: 'qvp7n6e4ck' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-export const usesBackdropSideLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesBackdropLayout(),
-        ]),
-        ...style({
-            // layouts:
-            display         : 'grid', // use a grid for the layout, so we can align the <Card> both horizontally & vertically
-            
-            
-            
-            // positions:
-         // justifyItems : 'start',   // align left horizontally // already defined in variant `.(inline|block)(Start|End)`
-         // alignItems   : 'stretch', // stretch    vertically   // already defined in variant `.(inline|block)(Start|End)`
-            
-            
-            
-            // customize:
-            ...usesCssProps(modalSides), // apply config's cssProps
-        }),
-    });
-};
-export const usesBackdropSideVariants = () => {
-    return style({
-        ...imports([
-            // variants:
-            usesBackdropVariants(),
-        ]),
-        
-        /* write more specific backdropStyle: */
-        ...variants([
-            rule('.blockStart', {
-                // layouts:
-                
-                // child default sizes:
-                justifyItems : 'stretch', // stretch   horizontally
-                alignItems   : 'start',   // align top vertically
-            }),
-            rule('.blockEnd', {
-                // layouts:
-                
-                // child default sizes:
-                justifyItems : 'stretch', // stretch   horizontally
-                alignItems   : 'end',     // align top vertically
-            }),
-            rule('.inlineStart', {
-                // layouts:
-                
-                // child default sizes:
-                justifyItems : 'start',   // align left horizontally
-                alignItems   : 'stretch', // stretch    vertically
-            }),
-            rule('.inlineEnd', {
-                // layouts:
-                
-                // child default sizes:
-                justifyItems : 'end',     // align left horizontally
-                alignItems   : 'stretch', // stretch    vertically
-            }),
-        ]),
-    });
-};
-export const usesBackdropSideStates = usesBackdropStates;
-
-export const useBackdropSideStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesBackdropSideLayout(),
-        
-        // variants:
-        usesBackdropSideVariants(),
-        
-        // states:
-        usesBackdropSideStates(),
-    ]),
-}), { id: 'g93sfdvlhc' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useBackdropSideStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/backdropSideStyles.js')
+, { id: 'g93sfdvlhc' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
