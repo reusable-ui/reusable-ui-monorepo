@@ -4,6 +4,7 @@ import {
     rule,
     variants,
     states,
+    fallbacks,
     children,
     style,
     vars,
@@ -61,15 +62,15 @@ export const onBackdropStylesChange = watchChanges(cssModalConfig.onChange);
 export const usesBackdropLayout = memoizeStyle(() => {
     // dependencies:
     
+    // capabilities:
+    const {                groupableVars} = usesGroupable();
+    
     // features:
     const {borderRule    , borderVars   } = usesBorder({
         borderWidth  : 'inherit',
         borderRadius : 'inherit',
     });
     const {animationRule , animationVars} = usesAnimation();
-    
-    // capabilities:
-    const {                groupableVars} = usesGroupable();
     
     
     
@@ -105,7 +106,13 @@ export const usesBackdropLayout = memoizeStyle(() => {
             // global <Modal>: fills the entire screen height:
             ...ifGlobalModal({
                 boxSizing    : 'border-box', // the final size is including borders & paddings
-                minBlockSize : '100vh',
+                minBlockSize : '100svh',     // for modern browsers
+                ...fallbacks({
+                    minBlockSize : '100dvh', // for semi-modern browsers
+                }),
+                ...fallbacks({
+                    minBlockSize : '100vh',  // for old browsers
+                }),
             }),
             
             
@@ -121,6 +128,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
         
         
         
+        // configs:
         ...vars({
             // borders:
             // makes the backdrop as a <group> by calculating <parent>'s border & borderRadius:
@@ -160,6 +168,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
 
 export const usesBackdropVariants = memoizeStyle(() => {
     return style({
+        // variants:
         ...variants([
             rule('.hidden', {
                 // backgrounds:
