@@ -21,7 +21,7 @@ import type {
     DropdownProps,
 }                           from '@reusable-ui/dropdown'        // overlays contextual element such as lists, menus, and more
 import {
-    // styles:
+    // variants:
     ListStyle,
     ListVariant,
     
@@ -35,22 +35,21 @@ import {
     DropdownList,
 }                           from '@reusable-ui/dropdown-list'   // overlays a list element (menu)
 import {
-    // defaults:
-    defaultOrientationableWithDirectionOptions,
+    // semantics:
+    ButtonType,
     
     
     
-    // styles:
+    // variants:
     ButtonStyle,
     ButtonVariant,
-    ButtonType,
     
     
     
     // react components:
     DropdownButtonProps,
     DropdownButton,
-}                           from '@reusable-ui/dropdown-button' // a button component with a dropdown UI.
+}                           from '@reusable-ui/dropdown-button' // a button component with a dropdown UI
 import {
     // react components:
     ListItemProps,
@@ -64,6 +63,12 @@ import {
     
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
+
+// internals:
+import {
+    // defaults:
+    defaultOrientationableWithDirectionOptions,
+}                           from './defaults.js'
 
 
 
@@ -201,6 +206,6 @@ export {
 
 export type { DropdownListActionType, DropdownListExpandedChangeEvent }
 
-export type { ButtonStyle, ButtonVariant, ButtonType }
+export type { ButtonType, ButtonStyle, ButtonVariant }
 
 export type { ListStyle, ListVariant }
