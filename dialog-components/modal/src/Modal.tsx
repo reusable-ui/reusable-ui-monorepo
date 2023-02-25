@@ -121,7 +121,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
             |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
         
-        // behaviors:
+        // variants:
         BackdropVariant,
         
         // components:
@@ -155,21 +155,25 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
+        // variants:
+        backdropStyle = 'regular',
+        
+        
+        
         // accessibilities:
         setFocus      = true,
         restoreFocus  = true,
         
         
         
+        // behaviors:
+        lazy          = false,
+        
+        
+        
         // states:
         expanded      : _expanded, // remove
         onExpandedChange,
-        
-        
-        
-        // behaviors:
-        backdropStyle = 'regular',
-        lazy          = false,
         
         
         
