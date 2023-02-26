@@ -34,61 +34,61 @@ function App() {
                     </button>
                 </article>
                 <Progress theme='primary'>
-                    <ProgressBar value='30'>30%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress theme='success'>
-                    <ProgressBar value='30'>30%</ProgressBar>
-                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
+                    <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress theme='danger'>
-                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
                 </Progress>
                 
                 <hr />
                 
                 <Progress gradient={true} theme='primary'>
-                    <ProgressBar value='30'>30%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress gradient={true} theme='success'>
-                    <ProgressBar value='30'>30%</ProgressBar>
-                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
+                    <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress gradient={true} theme='danger'>
-                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
                 </Progress>
                 
                 <hr />
                 
                 <Progress outlined={true} theme='primary'>
-                    <ProgressBar value='30'>30%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress outlined={true} theme='success'>
-                    <ProgressBar value='30'>30%</ProgressBar>
-                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
+                    <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress outlined={true} theme='danger'>
-                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
                 </Progress>
                 
                 <hr />
                 
                 <Progress mild={true} theme='primary'>
-                    <ProgressBar value='30'>30%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress mild={true} theme='success'>
-                    <ProgressBar value='30'>30%</ProgressBar>
-                    <ProgressBar value='40' theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    <ProgressBar value={30}>30%</ProgressBar>
+                    <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
                 </Progress>
                 <br />
                 <Progress mild={true} theme='danger'>
-                    <ProgressBar value='70' progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
                 </Progress>
             </div>
         </>
