@@ -117,7 +117,7 @@
 
 // composite-components:
 [slimmodular] [documented  ] [          atomic] @reusable-ui/progress
-[not needopt] [documented  ] [          atomic] @reusable-ui/group
+[slimmodular] [documented  ] [          atomic] @reusable-ui/group
 [not needopt] [documented  ] [full    compound] @reusable-ui/nav
 [not needopt] [documented  ] [full    compound] @reusable-ui/navscroll
 [not needopt] [documented  ] [full    compound] @reusable-ui/pagination

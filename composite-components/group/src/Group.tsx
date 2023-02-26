@@ -6,17 +6,6 @@ import {
 
 // cssfn:
 import {
-    // writes css in javascript:
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -30,18 +19,6 @@ import {
     
     // react helper hooks:
     useMergeClasses,
-    
-    
-    
-    // a capability of UI to rotate its layout:
-    OrientationableOptions,
-    defaultInlineOrientationableOptions,
-    usesOrientationable,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -54,9 +31,7 @@ import type {
     BasicProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // styles:
-    usesListItemBaseLayout,
-    
+    // variants:
     ListBasicStyle,
     ListVariant,
     
@@ -69,75 +44,10 @@ import {
 
 
 
-// defaults:
-export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
-
-
-
-// configs:
-export const [groups, groupValues, cssGroupConfig] = cssConfig(() => {
-    return {
-        /* no config props yet */
-    };
-}, { prefix: 'grp' });
-
-
-
 // styles:
-export const usesGroupItemLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    options = orientationableStuff;
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesListItemBaseLayout(options),
-        ]),
-        ...style({
-            // no layout modification needed.
-            // the layout is belong to the <Button>/<Radio>/<Check> itself.
-            
-            
-            
-            // sizes:
-            // just a few tweak:
-            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
-            
-            
-            
-            // customize:
-            ...usesCssProps(groups), // apply config's cssProps
-        }),
-    });
-};
-export const usesGroupItemVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(groups);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            resizableRule,
-        ]),
-    });
-};
-
-export const useGroupItemStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesGroupItemLayout(),
-        
-        // variants:
-        usesGroupItemVariants(),
-    ]),
-}), { specificityWeight: 2, id: 'd2scsx4yqe' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useGroupItemStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { specificityWeight: 2, id: 'd2scsx4yqe' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
