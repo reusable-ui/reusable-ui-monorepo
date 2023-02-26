@@ -64,7 +64,7 @@ import {
 
 
 // defaults:
-const _defaultTabIndex : number = -1   // makes the <Card> programatically focusable
+const _defaultTabIndex : number = -1 // makes the <Card> programatically focusable
 
 
 
@@ -148,14 +148,14 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         
+        // behaviors:
+        lazy,
+        
+        
+        
         // states:
         expanded,         // take, to be handled by <Modal>
         onExpandedChange, // take, to be handled by <Modal>
-        
-        
-        
-        // behaviors:
-        lazy,
         
         
         
@@ -283,14 +283,14 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             
+            // behaviors:
+            lazy             : modalComponent.props.lazy ?? lazy,
+            
+            
+            
             // states:
             expanded         : modalComponent.props.expanded ?? expanded,
             onExpandedChange : handleExpandedChange,
-            
-            
-            
-            // behaviors:
-            lazy             : modalComponent.props.lazy ?? lazy,
             
             
             
