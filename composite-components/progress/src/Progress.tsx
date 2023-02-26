@@ -19,7 +19,6 @@ import {
 import {
     // react helper hooks:
     useMergeClasses,
-    useMergeStyles,
     
     
     
@@ -52,17 +51,20 @@ import {
     // variants:
     ProgressVariant,
     useProgressVariant,
-}                           from './variants/ProgressVariant'
+}                           from './variants/ProgressVariant.js'
 import {
-    // variants:
-    ProgressBarVariant,
-    useProgressBarVariant,
-}                           from './variants/ProgressBarVariant'
+    // utilities:
+    calculateValues,
+}                           from './utilities.js'
 import {
-    // states:
-    RunnableProps,
-    useRunnable,
-}                           from './states/runnable.js'
+    // styles:
+    useProgressBarStyleSheet,
+    
+    
+    
+    // react components:
+    ProgressBarProps,
+}                           from './ProgressBar.js'
 
 
 
@@ -70,32 +72,6 @@ import {
 export const useProgressStyleSheet = dynamicStyleSheet(
     () => import(/* webpackPrefetch: true */ './styles/progressStyles.js')
 , { id: 'vcm24axqvn' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-export const useProgressBarStyleSheet = dynamicStyleSheet(
-    () => import(/* webpackPrefetch: true */ './styles/progressBarStyles.js')
-, { specificityWeight: 2, id: 'ymt3ybn64g' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
-// utilities:
-const calculateValues = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>) => {
-    // fn props:
-    const valueFn    : number  = props.value ?? 0;
-    const minFn      : number  = props.min   ?? 0;
-    const maxFn      : number  = props.max   ?? 100;
-    const negativeFn : boolean = (maxFn < minFn);
-    const valueRatio : number  = (valueFn - minFn) / (maxFn - minFn);
-    
-    
-    
-    return {
-        valueFn,
-        minFn,
-        maxFn,
-        negativeFn,
-        valueRatio,
-    };
-};
 
 
 
@@ -231,150 +207,3 @@ export {
     Progress,
     Progress as default,
 }
-
-
-
-export interface ProgressBarProps<TElement extends Element = HTMLElement>
-    extends
-        // bases:
-        BasicProps<TElement>,
-        
-        // states:
-        RunnableProps,
-        
-        // variants:
-        ProgressBarVariant
-{
-    // values:
-    value ?: number
-    min   ?: number
-    max   ?: number
-}
-export const ProgressBar = <TElement extends Element = HTMLElement>(props: ProgressBarProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet         = useProgressBarStyleSheet();
-    
-    
-    
-    // variants:
-    const progressBarVariant = useProgressBarVariant(props);
-    
-    
-    
-    // states:
-    const runnableState      = useRunnable(props);
-    
-    
-    
-    // rest props:
-    const {
-        // variants:
-        progressBarStyle : _progressBarStyle, // remove
-        
-        
-        
-        // states:
-        running          : _running,          // remove
-        
-        
-        
-        // values:
-        value : _value, // remove
-        min   : _min,   // remove
-        max   : _max,   // remove
-    ...restBasicProps} = props;
-    
-    
-    
-    // classes:
-    const variantClasses = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
-        
-        
-        
-        // variants:
-        progressBarVariant.class,
-    );
-    const stateClasses   = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
-        
-        
-        
-        // states:
-        runnableState.class,
-    );
-    
-    
-    
-    // fn props:
-    const {
-        valueFn,
-        minFn,
-        maxFn,
-        negativeFn,
-        valueRatio,
-    } = calculateValues<TElement>(props);
-    
-    
-    
-    // features:
-    const {progressBarVars} = usesProgressBar();
-    
-    
-    
-    // styles:
-    const valueRatioStyle = useMemo<React.CSSProperties>(() => ({
-        // values:
-        [
-            progressBarVars.valueRatio
-            .slice(4, -1) // fix: var(--customProp) => --customProp
-        ] : valueRatio,
-    }), [valueRatio]);
-    const mergedStyle     = useMergeStyles(
-        // values:
-        valueRatioStyle,
-        
-        
-        
-        // preserves the original `style` (can overwrite the `valueRatioStyle`):
-        props.style,
-    );
-    
-    
-    
-    // jsx:
-    return (
-        <Generic<TElement>
-            // semantics:
-            semanticRole={props.semanticRole ?? 'progressbar'}
-            
-            aria-valuenow={props['aria-valuenow'] ?? valueFn}
-            aria-valuemin={props['aria-valuemin'] ?? (negativeFn ? maxFn : minFn)}
-            aria-valuemax={props['aria-valuemax'] ?? (negativeFn ? minFn : maxFn)}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
-            stateClasses={stateClasses}
-            
-            
-            
-            // styles:
-            style={mergedStyle}
-        >
-            <Basic<TElement>
-                // other props:
-                {...restBasicProps}
-                
-                
-                
-                // variants:
-                mild={props.mild ?? 'inherit'}
-            />
-        </Generic>
-    );
-};
