@@ -49,7 +49,6 @@ import {
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 
 // internals:
-
 import {
     // configs:
     modalSides,
@@ -68,124 +67,122 @@ export const usesModalSideLayout = () => {
     
     
     return style({
-        ...style({
+        // layouts:
+        display        : 'flex',
+        flexDirection  : 'column',
+        justifyContent : 'start',   // if <Collapse> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+        alignItems     : 'stretch', // stretch <Collapse> horizontally
+        flexWrap       : 'nowrap',  // no wrapping
+        
+        
+        
+        // children:
+        ...children(['&', '*'], { // <Collapse> & <Card>
+            // sizes:
+            boxSizing     : 'border-box',     // the final size is including borders & paddings
+            inlineSize    : 'auto',           // follows the content's width, but
+            maxInlineSize : '100%',           // up to the maximum available parent's width
+            blockSize     : 'auto',           // follows the content's height, but
+            maxBlockSize  : '100%',           // up to the maximum available parent's height
+            overflow      : 'hidden',         // force the <Card> to scroll
+        }),
+        ...children('*', { // <Card>
             // layouts:
-            display        : 'flex',
-            flexDirection  : 'column',
-            justifyContent : 'start',   // if <Collapse> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'stretch', // stretch <Collapse> horizontally
-            flexWrap       : 'nowrap',  // no wrapping
+            // a fix for collapsing vertically, so the <CardBody> appears sliding:
+            ...rule(':is(.inlineStart, .blockStart)>&', {
+                justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+            }),
+            ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
+                ...children(bodyElm, {
+                    // sizes:
+                    flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                }),
+            })}),
+            ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
+                ...children(bodyElm, {
+                    // sizes:
+                    flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                }),
+            })}),
+            
+            
+            
+            // sizes:
+            // maximum height of <Card> when side-left & side-right:
+            flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
             
             
             
             // children:
-            ...children(['&', '*'], { // <Collapse> & <Card>
-                // sizes:
-                boxSizing     : 'border-box',     // the final size is including borders & paddings
-                inlineSize    : 'auto',           // follows the content's width, but
-                maxInlineSize : '100%',           // up to the maximum available parent's width
-                blockSize     : 'auto',           // follows the content's height, but
-                maxBlockSize  : '100%',           // up to the maximum available parent's height
-                overflow      : 'hidden',         // force the <Card> to scroll
+            ...children([headerElm, footerElm, bodyElm], {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(modalSides, 'cardItem')), // apply config's cssProps starting with cardItem***
             }),
-            ...children('*', { // <Card>
+            ...children([headerElm, footerElm], {
                 // layouts:
-                // a fix for collapsing vertically, so the <CardBody> appears sliding:
-                ...rule(':is(.inlineStart, .blockStart)>&', {
-                    justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                }),
-                ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
-                ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
+                display        : 'flex',
+                flexDirection  : 'row',
+                flexWrap       : 'nowrap',  // no wrapping
                 
                 
                 
-                // sizes:
-                // maximum height of <Card> when side-left & side-right:
-                flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
+                // customize:
+                ...usesCssProps(usesPrefixedProps(modalSides, 'cardCaption')), // apply config's cssProps starting with cardCaption***
+            }),
+            ...children(headerElm, {
+                justifyContent : 'space-between', // separates between items as far as possible
+                alignItems     : 'center',        // center <Control> vertically
                 
                 
                 
                 // children:
-                ...children([headerElm, footerElm, bodyElm], {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardItem')), // apply config's cssProps starting with cardItem***
-                }),
-                ...children([headerElm, footerElm], {
-                    // layouts:
-                    display        : 'flex',
-                    flexDirection  : 'row',
-                    flexWrap       : 'nowrap',  // no wrapping
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardCaption')), // apply config's cssProps starting with cardCaption***
-                }),
-                ...children(headerElm, {
-                    justifyContent : 'space-between', // separates between items as far as possible
-                    alignItems     : 'center',        // center <Control> vertically
-                    
-                    
-                    
-                    // children:
-                    ...children(['button', '[role="button"]'], {
-                        ...rule(':first-child:last-child', {
-                            // spacings:
-                            marginInlineStart : 'auto', // align to right
-                        }),
+                ...children(['button', '[role="button"]'], {
+                    ...rule(':first-child:last-child', {
+                        // spacings:
+                        marginInlineStart : 'auto', // align to right
                     }),
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardHeader')), // apply config's cssProps starting with cardHeader***
-                }),
-                ...children(footerElm, {
-                    justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                    alignItems     : 'center',  // center <Control> vertically
-                    
-                    
-                    
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardFooter')), // apply config's cssProps starting with cardFooter***
-                }),
-                ...children(bodyElm, {
-                    // customize:
-                    ...usesCssProps(usesPrefixedProps(modalSides, 'cardBody')), // apply config's cssProps starting with cardBody***
                 }),
                 
                 
                 
                 // customize:
-                ...usesCssProps(usesPrefixedProps(modalSides, 'card')), // apply config's cssProps starting with card***
+                ...usesCssProps(usesPrefixedProps(modalSides, 'cardHeader')), // apply config's cssProps starting with cardHeader***
+            }),
+            ...children(footerElm, {
+                justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+                alignItems     : 'center',  // center <Control> vertically
+                
+                
+                
+                // customize:
+                ...usesCssProps(usesPrefixedProps(modalSides, 'cardFooter')), // apply config's cssProps starting with cardFooter***
+            }),
+            ...children(bodyElm, {
+                // customize:
+                ...usesCssProps(usesPrefixedProps(modalSides, 'cardBody')), // apply config's cssProps starting with cardBody***
             }),
             
             
             
             // customize:
-            ...usesCssProps(usesPrefixedProps(modalSides, 'collapse')), // apply config's cssProps starting with collapse***
+            ...usesCssProps(usesPrefixedProps(modalSides, 'card')), // apply config's cssProps starting with card***
         }),
+        
+        
+        
+        // customize:
+        ...usesCssProps(usesPrefixedProps(modalSides, 'collapse')), // apply config's cssProps starting with collapse***
     });
 };
 
 export const usesModalSideVariants = () => {
     // dependencies:
     
-    // features:
-    const {borderVars   } = usesBorder();
-    
     // capabilities:
     const {groupableVars} = usesGroupable();
+    
+    // features:
+    const {borderVars   } = usesBorder();
     
     
     
