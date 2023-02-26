@@ -18,7 +18,6 @@ import {
     fallbacks,
     style,
     vars,
-    imports,
     
     
     
@@ -72,10 +71,8 @@ export const usesRunnable = (config?: RunnableConfig): RunnableStuff => {
     
     return {
         runnableRule: () => style({
-            ...imports([
-                // features:
-                animationRule,
-            ]),
+            // features:
+            ...animationRule(),
             
             
             
