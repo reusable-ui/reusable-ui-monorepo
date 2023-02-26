@@ -18,12 +18,7 @@ import {
 
 // reusable-ui components:
 import {
-    // defaults:
-    defaultOrientationableOptions,
-    
-    
-    
-    // styles:
+    // variants:
     ListStyle,
     ListVariant,
     
@@ -46,11 +41,6 @@ import {
     // react components:
     Icon,
 }                           from '@reusable-ui/icon'            // an icon component
-
-
-
-// defaults:
-export { defaultOrientationableOptions };
 
 
 
