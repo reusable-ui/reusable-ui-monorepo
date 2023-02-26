@@ -68,11 +68,11 @@ export interface ProgressBarProps<TElement extends Element = HTMLElement>
         // bases:
         BasicProps<TElement>,
         
-        // states:
-        RunnableProps,
-        
         // variants:
-        ProgressBarVariant
+        ProgressBarVariant,
+        
+        // states:
+        RunnableProps
 {
     // values:
     value ?: number
