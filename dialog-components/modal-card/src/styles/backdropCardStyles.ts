@@ -20,6 +20,7 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    onBackdropStylesChange,
     usesBackdropLayout,
     usesBackdropVariants,
     usesBackdropStates,
@@ -43,7 +44,7 @@ import {
 
 
 // styles:
-export const onBackdropCardStylesChange = watchChanges(cssModalCardConfig.onChange);
+export const onBackdropCardStylesChange = watchChanges(onBackdropStylesChange, cssModalCardConfig.onChange);
 
 export const usesBackdropCardLayout = () => {
     // dependencies:
@@ -61,6 +62,7 @@ export const usesBackdropCardLayout = () => {
         
         // layouts:
         ...usesBackdropLayout(),
+        ...usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
         ...style({
             // layouts:
          // display         : 'grid', // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
@@ -68,8 +70,8 @@ export const usesBackdropCardLayout = () => {
             
             
             // positions:
-            justifyItems : modalCardVars.horzAlign,
-            alignItems   : modalCardVars.vertAlign,
+            justifyItems    : modalCardVars.horzAlign,
+            alignItems      : modalCardVars.vertAlign,
             
             
             
@@ -84,7 +86,6 @@ export const usesBackdropCardLayout = () => {
             // customize:
             ...usesCssProps(modalCards), // apply config's cssProps
         }),
-        ...usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
     });
 };
 

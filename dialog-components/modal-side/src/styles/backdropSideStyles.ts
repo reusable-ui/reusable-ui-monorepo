@@ -19,13 +19,13 @@ import {
 // reusable-ui components:
 import {
     // styles:
+    onBackdropStylesChange,
     usesBackdropLayout,
     usesBackdropVariants,
     usesBackdropStates,
 }                           from '@reusable-ui/modal'           // a base component
 
 // internals:
-
 import {
     // configs:
     modalSides,
@@ -35,7 +35,7 @@ import {
 
 
 // styles:
-export const onBackdropSideStylesChange = watchChanges(cssModalSideConfig.onChange);
+export const onBackdropSideStylesChange = watchChanges(onBackdropStylesChange, cssModalSideConfig.onChange);
 
 export const usesBackdropSideLayout = () => {
     return style({
@@ -48,8 +48,8 @@ export const usesBackdropSideLayout = () => {
             
             
             // positions:
-         // justifyItems : 'start',   // align left horizontally // already defined in variant `.(inline|block)(Start|End)`
-         // alignItems   : 'stretch', // stretch    vertically   // already defined in variant `.(inline|block)(Start|End)`
+         // justifyItems    : 'start',   // align left horizontally // already defined in variant `.(inline|block)(Start|End)`
+         // alignItems      : 'stretch', // stretch    vertically   // already defined in variant `.(inline|block)(Start|End)`
             
             
             
