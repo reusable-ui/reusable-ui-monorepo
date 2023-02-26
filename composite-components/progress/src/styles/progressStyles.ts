@@ -2,12 +2,6 @@
 import {
     // writes css in javascript:
     style,
-    vars,
-    
-    
-    
-    // strongly typed of css variables:
-    switchOf,
     
     
     
@@ -24,18 +18,6 @@ import {
 
 // reusable-ui core:
 import {
-    // a color management system:
-    colors,
-    
-    
-    
-    // background stuff of UI:
-    BackgroundStuff,
-    BackgroundConfig,
-    usesBackground,
-    
-    
-    
     // foreground (text color) stuff of UI:
     usesForeground,
     
@@ -54,16 +36,6 @@ import {
     
     // gradient variant of UI:
     usesGradientable,
-    
-    
-    
-    // outlined (background-less) variant of UI:
-    usesOutlineable,
-    
-    
-    
-    // mild (soft color) variant of UI:
-    usesMildable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -85,9 +57,9 @@ import {
     defaultOrientationableOptions,
 }                           from '../defaults.js'
 import {
-    // variables:
-    progressBackgroundVars,
-}                           from './variables.js'
+    // features:
+    usesProgressBackground,
+}                           from '../features/progressBackground.js'
 import {
     // configs:
     progresses,
@@ -98,50 +70,6 @@ import {
 
 // styles:
 export const onProgressStylesChange = watchChanges(onBasicStylesChange, onListStylesChange, cssProgressConfig.onChange);
-
-const usesProgressBackground = (config?: BackgroundConfig): BackgroundStuff => {
-    // dependencies:
-    
-    // features:
-    const {backgroundRule, backgroundVars} = usesBackground(config);
-    
-    // variants:
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
-    
-    
-    
-    return {
-        backgroundRule: () => style({
-            // features:
-            ...backgroundRule(),
-            
-            
-            
-            // color functions:
-            ...vars({
-                // final color functions:
-                [backgroundVars.altBackgColor  ] : switchOf(
-                    outlineableVars.altBackgTg,            // toggle outlined (if `usesOutlineable()` applied)
-                    progressBackgroundVars.mildAltBackgTg, // toggle <Progress>'s mild
-                    
-                    backgroundVars.altBackgColorFn,        // default => uses our `altBackgColorFn`
-                ),
-            }),
-            
-            
-            
-            // toggling functions:
-            ...vars({
-                [progressBackgroundVars.mildAltBackgTg] : [[
-                    mildableVars.mildSw,  // the mild switching function
-                    colors.backg,         // the remaining area should lighter than the <ProgressBar>
-                ]],
-            }),
-        }),
-        backgroundVars,
-    }
-};
 
 export const usesProgressLayout = (options?: OrientationableOptions) => {
     // options:
