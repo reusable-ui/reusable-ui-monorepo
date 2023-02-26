@@ -116,7 +116,7 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side
 
 // composite-components:
-[not needopt] [documented  ] [          atomic] @reusable-ui/progress
+[slimmodular] [documented  ] [          atomic] @reusable-ui/progress
 [not needopt] [documented  ] [          atomic] @reusable-ui/group
 [not needopt] [documented  ] [full    compound] @reusable-ui/nav
 [not needopt] [documented  ] [full    compound] @reusable-ui/navscroll
