@@ -11,7 +11,7 @@ import {
 }                           from 'react'
 
 // cssfn:
-import {
+import type {
     // cssfn general types:
     Optional,
 }                           from '@cssfn/core'                  // writes css in javascript
@@ -141,8 +141,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // variants:
-    const carouselVariant   = useCarouselVariant(props);
-    const infiniteLoop      = carouselVariant.infiniteLoop;
+    const {infiniteLoop}    = useCarouselVariant(props);
     
     
     
