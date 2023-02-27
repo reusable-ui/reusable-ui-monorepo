@@ -43,13 +43,12 @@ import {
     
     
     
-    // hooks:
+    // states:
     ExclusiveAccordionStateProps,
     ExclusiveAccordionState,
     useExclusiveAccordionState,
-    
-    
-    
+}                           from './states/exclusiveAccordionState.js'
+import {
     // react components:
     AccordionItemWithExclusivity,
 }                           from './AccordionItemWithExclusivity.js'
