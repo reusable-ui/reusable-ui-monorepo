@@ -88,12 +88,6 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        // features:
-        ...backgroundRule(),
-        ...foregroundRule(),
-        
-        
-        
         // layouts:
         ...usesListLayout(options),
         ...style({
@@ -129,6 +123,12 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
                 ...overwriteProps(progresses, usesSuffixedProps(progresses, 'block')),
             }),
         }),
+        
+        
+        
+        // features:
+        ...backgroundRule(), // must be placed at the last
+        ...foregroundRule(), // must be placed at the last
     });
 };
 
