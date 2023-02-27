@@ -151,11 +151,6 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     
     
     return style({
-        // features:
-        ...rangeRule(),
-        
-        
-        
         // layouts:
         ...usesEditableControlLayout(),
         ...style({
@@ -426,6 +421,11 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
                 ...overwriteProps(ranges, usesSuffixedProps(ranges, 'block')),
             }),
         }),
+        
+        
+        
+        // features:
+        ...rangeRule(), // must be placed at the last
     });
 };
 
