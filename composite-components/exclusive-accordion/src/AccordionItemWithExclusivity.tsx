@@ -27,7 +27,7 @@ import {
 
 // internals:
 import type {
-    // types:
+    // states:
     ExclusiveExpandedChangeEvent,
 }                           from './states/exclusiveAccordionState.js'
 

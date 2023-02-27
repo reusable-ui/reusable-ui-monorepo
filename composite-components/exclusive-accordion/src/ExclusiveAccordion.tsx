@@ -38,12 +38,8 @@ import {
 
 // internals:
 import {
-    // types:
-    ExclusiveExpandedChangeEvent,
-    
-    
-    
     // states:
+    ExclusiveExpandedChangeEvent,
     ExclusiveAccordionStateProps,
     ExclusiveAccordionState,
     useExclusiveAccordionState,
