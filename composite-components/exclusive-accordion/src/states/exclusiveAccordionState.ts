@@ -30,13 +30,14 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-// hooks:
 export interface ExclusiveAccordionStateProps
 {
+    // states:
     defaultExpandedListIndex ?: number
 }
 export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
+    // states:
     expandedListIndex    : number,
     handleExpandedChange : EventHandler<TExclusiveExpandedChangeEvent>
 }
