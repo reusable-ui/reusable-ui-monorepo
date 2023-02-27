@@ -5,21 +5,13 @@ import {
 }                           from 'react'
 
 // reusable-ui core:
-import {
+import type {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
-    // variants:
-    ListBasicStyle,
-    ListSpecificStyle,
-    ListCompositeStyle,
-    ListVariant,
-    
-    
-    
     // react components:
     ListProps,
     List,
@@ -29,15 +21,17 @@ import {
 
 // internals:
 import type {
+    // variants:
+    ListVariantLimited,
+}                           from './variants/ListVariantLimited.js'
+import type {
     // react components:
     AccordionItemProps,
 }                           from './AccordionItem.js'
 
 
 
-// styles:
-export type ListSpecificStyleLimited = Exclude<ListSpecificStyle, 'tab'|'bullet'> // 'tab' and 'bullet' are not supported in <Accordion>
-export type ListStyleLimited = ListCompositeStyle<ListBasicStyle, ListSpecificStyleLimited>
+// react components:
 export interface AccordionProps<TElement extends Element = HTMLElement>
     extends
         // bases:
@@ -45,6 +39,9 @@ export interface AccordionProps<TElement extends Element = HTMLElement>
             // variants:
             |'listStyle' // we downgraded the [listStyle] options
         >,
+        
+        // variants:
+        ListVariantLimited,
         
         // components:
         Omit<ListComponentProps<TElement>,
@@ -59,18 +56,13 @@ export interface AccordionProps<TElement extends Element = HTMLElement>
             |'listItems' // we redefined `children` prop as <ListItem>(s)
         >
 {
-    // variants:
-    listStyle ?: ListStyleLimited
-    
-    
-    
     // accessibilities:
-    label     ?: string
+    label ?: string
     
     
     
     // behaviors:
-    lazy      ?: boolean
+    lazy  ?: boolean
 }
 const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps<TElement>): JSX.Element|null => {
     // rest props:
@@ -135,8 +127,6 @@ export {
     Accordion,
     Accordion as default,
 }
-
-export type { ListVariant }
 
 
 
