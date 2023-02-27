@@ -14,27 +14,6 @@ import {
 import {
     // cssfn general types:
     Optional,
-    
-    
-    
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    fallbacks,
-    children,
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
 }                           from '@cssfn/core'                  // writes css in javascript
 import {
     // style sheets:
@@ -43,28 +22,11 @@ import {
 
 // reusable-ui core:
 import {
-    // removes browser's default stylesheet:
-    stripoutList,
-    stripoutScrollbar,
-    stripoutImage,
-    
-    
-    
     // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
-    
-    
-    
-    // padding (inner spacing) stuff of UI:
-    usesPadding,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
     
     
     
@@ -84,19 +46,6 @@ import {
     BasicComponentProps,
 }                           from '@reusable-ui/basic'           // a base component
 import {
-    // styles:
-    ContentChildrenMediaOptions,
-    usesContentChildrenMediaOptions,
-    usesContentLayout,
-    usesContentVariants,
-    
-    
-    
-    // configs:
-    contents,
-    
-    
-    
     // react components:
     Content,
 }                           from '@reusable-ui/content'         // a base component
@@ -127,6 +76,13 @@ import {
     ListItem,
 }                           from '@reusable-ui/list'            // represents a series of content
 
+// internals:
+import {
+    // variants:
+    CarouselVariant,
+    useCarouselVariant,
+}                           from './variants/CarouselVariant.js'
+
 
 
 // defaults:
@@ -136,356 +92,12 @@ const _defaultPrevButtonClasses   : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses   : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
 
-const _defaultInfiniteLoop        : boolean = false
-
-
-
-// configs:
-export const [carousels, carouselValues, cssCarouselConfig] = cssConfig(() => {
-    return {
-        // borders:
-        navBtnBorderWidth   : '0px'                     as CssKnownProps['borderWidth' ],
-        navBtnBorderRadius  : '0px'                     as CssKnownProps['borderRadius'],
-        
-        
-        
-        // spacings:
-        paddingInline       : '0px'                     as CssKnownProps['paddingInline'],
-        paddingBlock        : '0px'                     as CssKnownProps['paddingBlock' ],
-        
-        navMarginBlockEnd   : contents.paddingBlock     as CssKnownProps['marginBlockEnd'],
-        navMarginBlockEndSm : contents.paddingBlockSm   as CssKnownProps['marginBlockEnd'],
-        navMarginBlockEndLg : contents.paddingBlockLg   as CssKnownProps['marginBlockEnd'],
-    };
-}, { prefix: 'crsl' });
-
 
 
 // styles:
-export interface CarouselVariant {
-    infiniteLoop ?: boolean
-}
-export const useCarouselVariant = ({infiniteLoop = _defaultInfiniteLoop}: CarouselVariant) => {
-    return {
-        infiniteLoop,
-    };
-};
-
-
-
-// .carousel > .list > .item > .media
-const listElm      = ':where(.list)' // zero degree specificity to be easily overwritten
-const dummyListElm = '.dummy'        // any degree specificity, not intended to be overwritten
-const itemElm      = '*'             // zero degree specificity to be easily overwritten
-const prevBtnElm   = '.prevBtn'      // one degree specificity to overwrite <Button>    component
-const nextBtnElm   = '.nextBtn'      // one degree specificity to overwrite <Button>    component
-const navElm       = '.nav'          // one degree specificity to overwrite <Navscroll> component
-
-
-
-export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) => {
-    // dependencies:
-    
-    // features:
-    const {paddingVars} = usesPadding(carousels);
-    
-    
-    
-    return style({
-        ...imports([
-            // resets:
-            stripoutList(),      // clear browser's default styles
-            stripoutScrollbar(), // hide browser's scrollbar
-        ]),
-        ...style({
-            // layouts:
-            gridArea       : '1 / 1 / -1 / -1', // fills the entire grid areas, from the first row/column to the last row/column
-            display        : 'flex',            // use block flexbox, so it takes the entire parent's width
-            flexDirection  : 'row',             // items are stacked horizontally
-            justifyContent : 'start',           // items are placed starting from the left, so the first item is initially visible
-            alignItems     : 'stretch',         // items height are follow the tallest one
-            flexWrap       : 'nowrap',          // no wrapping, so the sliding works
-            
-            
-            
-            // positions:
-            position       : 'relative', // (optional) makes calculating slide's offsetLeft/offsetTop faster
-            
-            
-            
-            // spacings:
-            // cancel-out parent's padding with negative margin:
-            marginInline   : `calc(0px - ${paddingVars.paddingInline})`,
-            marginBlock    : `calc(0px - ${paddingVars.paddingBlock})`,
-            
-            
-            
-            // scrolls:
-            overflowX      : 'scroll',                  // enable horizontal scrolling
-            scrollSnapType : [['inline', 'mandatory']], // enable horizontal scroll snap
-            scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
-            WebkitOverflowScrolling : 'touch',          // supports for iOS Safari
-            
-            
-            
-            // children:
-            ...children(itemElm, {
-                ...imports([
-                    usesCarouselItemLayout(options),
-                ]),
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(carousels, 'list')), // apply config's cssProps starting with list***
-        }),
-    });
-};
-export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}) => {
-    // options:
-    const {
-        mediaSelectorWithExcept,
-    } = usesContentChildrenMediaOptions(options);
-    
-    
-    
-    return style({
-        // layouts:
-        display         : 'flex',   // use block flexbox, so it takes the entire parent's width
-        flexDirection   : 'column', // the flex direction to vert
-        justifyContent  : 'center', // center items vertically
-        alignItems      : 'center', // center items horizontally
-        flexWrap        : 'nowrap', // no wrapping
-        
-        
-        
-        // sizes:
-        flex            : [[0, 0, '100%']], // ungrowable, unshrinkable, initial 100% parent's width
-        // (important) force the media follow the <li> width, so it doesn't break the flex width:
-        boxSizing       : 'border-box',     // the final size is including borders & paddings
-        inlineSize      : '100%',           // fills the entire parent's width
-        
-        
-        
-        // scrolls:
-        scrollSnapAlign : 'center', // put a magnet at the center
-        scrollSnapStop  : 'normal', // scrolls one by one or multiple at once
-        
-        
-        
-        // children:
-        ...children(mediaSelectorWithExcept, {
-            ...imports([
-                usesCarouselMediaLayout(),
-            ]),
-        }),
-        
-        
-        
-        // customize:
-        ...usesCssProps(usesPrefixedProps(carousels, 'item')), // apply config's cssProps starting with item***
-    });
-};
-export const usesCarouselMediaLayout = () => {
-    return style({
-        ...imports([
-            stripoutImage(), // removes browser's default styling on image
-        ]),
-        ...style({
-            // layouts:
-            ...rule(':where(:first-child:last-child)', { // only one child
-                display : 'block', // fills the entire parent's width
-                
-                
-                
-                // sizes:
-                // span to maximum width/height while keeps aspect-ratio:
-                boxSizing         : 'border-box', // the final size is including borders & paddings
-                maxInlineSize     : 'fill-available',
-                maxBlockSize      : 'fill-available',
-                ...fallbacks({
-                    maxInlineSize : '100%',
-                    maxBlockSize  : '100%',
-                }),
-                inlineSize        : 'auto',
-                blockSize         : 'auto',
-            }),
-            
-            
-            
-            // sizes:
-            flex                  : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(carousels, 'media')), // apply config's cssProps starting with media***
-        }),
-    });
-};
-
-export const usesNavBtnLayout = () => {
-    return style({
-        // customize:
-        ...usesCssProps(usesPrefixedProps(carousels, 'navBtn')), // apply config's cssProps starting with navBtn***
-    });
-};
-export const usesPrevBtnLayout = () => {
-    return style({
-        // layouts:
-        gridArea : 'prevBtn',
-        
-        
-        
-        // customize:
-        ...usesCssProps(usesPrefixedProps(carousels, 'prevBtn')), // apply config's cssProps starting with prevBtn***
-    });
-};
-export const usesNextBtnLayout = () => {
-    return style({
-        // layouts:
-        gridArea : 'nextBtn',
-        
-        
-        
-        // customize:
-        ...usesCssProps(usesPrefixedProps(carousels, 'nextBtn')), // apply config's cssProps starting with nextBtn***
-    });
-};
-
-export const usesNavLayout = () => {
-    return style({
-        // layouts:
-        gridArea    : 'nav',
-        
-        
-        
-        // sizes:
-        justifySelf : 'center', // do not stretch the nav, just place it at the center horizontally
-        
-        
-        
-        // customize:
-        ...usesCssProps(usesPrefixedProps(carousels, 'nav')), // apply config's cssProps starting with nav***
-    });
-};
-
-export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
-    // dependencies:
-    
-    // features:
-    const {paddingRule, paddingVars} = usesPadding(carousels);
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesContentLayout(),
-            
-            // features:
-            paddingRule,
-        ]),
-        ...style({
-            // layouts:
-            display      : 'grid', // use css grid for layouting, so we can customize the desired area later.
-            
-            // explicit areas:
-            gridTemplate : [[
-                '"prevBtn main nextBtn" 1fr',
-                '"prevBtn nav  nextBtn" min-content',
-                '/',
-                '   15%   1fr    15%'
-            ]],
-            
-            // child default sizes:
-            justifyItems : 'stretch', // each section fills the entire area's width
-            alignItems   : 'stretch', // each section fills the entire area's height
-            
-            
-            
-            // borders:
-            overflow     : 'hidden', // clip the children at the rounded corners
-            
-            
-            
-            // children:
-            ...children(listElm, {
-                ...imports([
-                    usesCarouselListLayout(options),
-                ]),
-            }),
-            ...children(dummyListElm, {
-                // appearances:
-             // visibility : 'hidden', // causing onScroll doesn't work in Firefox
-                opacity    : 0,
-                position   : 'relative',
-                zIndex     : -1,
-            }),
-            
-            ...children([prevBtnElm, nextBtnElm], {
-                ...imports([
-                    usesNavBtnLayout(),
-                ]),
-            }),
-            ...children(prevBtnElm, {
-                ...imports([
-                    usesPrevBtnLayout(),
-                ]),
-            }),
-            ...children(nextBtnElm, {
-                ...imports([
-                    usesNextBtnLayout(),
-                ]),
-            }),
-            
-            ...children(navElm, {
-                ...imports([
-                    usesNavLayout(),
-                ]),
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(carousels), // apply config's cssProps
-            
-            
-            
-            // spacings:
-         // padding       : paddingVars.padding,
-            paddingInline : paddingVars.paddingInline,
-            paddingBlock  : paddingVars.paddingBlock,
-        }),
-    });
-};
-export const usesCarouselVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(carousels);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesContentVariants(),
-            resizableRule,
-        ]),
-    });
-};
-
-export const useCarouselStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesCarouselLayout(),
-        
-        // variants:
-        usesCarouselVariants(),
-    ]),
-}), { id: 'v35mas3qt6' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useCarouselStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'v35mas3qt6' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

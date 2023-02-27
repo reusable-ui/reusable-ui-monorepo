@@ -123,7 +123,7 @@
 [not needopt] [documented  ] [full    compound] @reusable-ui/pagination
 [slimmodular] [documented  ] [full    compound] @reusable-ui/accordion
 [not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
-[not needopt] [documented  ] [full    compound] @reusable-ui/carousel
+[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel
 [not needopt] [documented  ] [          atomic] @reusable-ui/navbar
 [optimized  ] [undocumented] [full    compound] @reusable-ui/details
 
