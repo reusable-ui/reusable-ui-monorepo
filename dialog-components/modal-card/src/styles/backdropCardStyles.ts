@@ -55,11 +55,6 @@ export const usesBackdropCardLayout = () => {
     
     
     return style({
-        // features:
-        ...modalCardRule(),
-        
-        
-        
         // layouts:
         ...usesBackdropLayout(),
         ...usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
@@ -86,6 +81,11 @@ export const usesBackdropCardLayout = () => {
             // customize:
             ...usesCssProps(modalCards), // apply config's cssProps
         }),
+        
+        
+        
+        // features:
+        ...modalCardRule(), // must be placed at the last
     });
 };
 
