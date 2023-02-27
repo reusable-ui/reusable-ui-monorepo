@@ -11,19 +11,6 @@ import {
 
 // cssfn:
 import {
-    // writes css in javascript:
-    style,
-    imports,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -34,17 +21,6 @@ import {
     useEvent,
     useMergeEvents,
     useMergeClasses,
-    
-    
-    
-    // a capability of UI to rotate its layout:
-    OrientationableOptions,
-    usesOrientationable,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
     
     
     
@@ -62,15 +38,7 @@ import {
 
 // reusable-ui components:
 import {
-    // defaults:
-    defaultOrientationableOptions,
-    
-    
-    
-    // styles:
-    usesListItemLayout,
-    usesListItemVariants,
-    usesListItemStates,
+    // variants:
     ListBasicStyle,
     ListSpecificStyle,
     ListCompositeStyle,
@@ -91,123 +59,18 @@ import {
     ListItemComponentProps,
     ListComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
-import {
-    // styles:
-    usesCollapseLayout,
-    usesCollapseStates,
-}                           from '@reusable-ui/collapse'        // a base component
 
 
 
 // defaults:
-export { defaultOrientationableOptions };
 const _defaultItemActionCtrl : boolean = true
 
 
 
-// configs:
-export const [accordions, accordionValues, cssAccordionConfig] = cssConfig(() => {
-    return {
-        /* no config props yet */
-    };
-}, { prefix: 'accr' });
-
-
-
 // styles:
-
-/*
-    <AccordionItem> is a composite component made of
-    <ListItem>
-    and
-    *modified* <Collapse>
-*/
-
-export const usesAccordionItemLayout = (options?: OrientationableOptions) => {
-    // options:
-    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
-    const {orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
-    /*
-        a hack with :not(_)
-        the total selector combined with parent is something like this: `:not(.inline)>*>.listItem:not(_)`, the specificity weight = 2.1
-        the specificity of 2.1 is a bit higher than:
-        * `.list.content`               , the specificity weight = 2
-        * `.someComponent.toggleButton` , the specificity weight = 2
-        but can be easily overriden by specificity weight >= 3, like:
-        * `.list.button.button`         , the specificity weight = 3
-        * `.someComponent.boo.foo`      , the specificity weight = 3
-    */
-    const parentOrientationInlineSelector = `${orientationInlineSelector}>*>&:not(_)`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }>*>&:not(_)`;
-    options = orientationableStuff;
-    
-    const orientationableStuff2 = usesOrientationable({
-        orientationInlineSelector : parentOrientationInlineSelector,
-        orientationBlockSelector  : parentOrientationBlockSelector,
-    });
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff2;
-    const options2 = orientationableStuff2;
-    
-    
-    
-    return style({
-        ...imports([
-            // layouts:
-            usesCollapseLayout(options2), // `usesCollapseLayout` first then `usesListItemLayout`, so any conflict the `usesListItemLayout` wins
-            usesListItemLayout(options), // the options are already handled internally by `usesListItemBaseLayout`
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(accordions), // apply config's cssProps
-            ...ifOrientationInline({ // inline
-                // overwrites propName = propName{Inline}:
-                ...overwriteProps(accordions, usesSuffixedProps(accordions, 'inline')),
-            }),
-            ...ifOrientationBlock({  // block
-                // overwrites propName = propName{Block}:
-                ...overwriteProps(accordions, usesSuffixedProps(accordions, 'block')),
-            }),
-        }),
-    });
-};
-export const usesAccordionItemVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(accordions);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesListItemVariants(),
-            resizableRule,
-        ]),
-    });
-};
-export const usesAccordionItemStates = () => {
-    return style({
-        ...imports([
-            // states:
-            usesListItemStates(),
-            usesCollapseStates(),
-        ]),
-    });
-};
-
-export const useAccordionItemStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesAccordionItemLayout(),
-        
-        // variants:
-        usesAccordionItemVariants(),
-        
-        // states:
-        usesAccordionItemStates(),
-    ]),
-}), { id: '3mq5z5qt4v' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useAccordionItemStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: '3mq5z5qt4v' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
