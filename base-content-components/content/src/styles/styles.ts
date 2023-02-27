@@ -440,11 +440,6 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
         
         // finally: styling top_level <figure> & top_level <media> as separator:
         ...children(mediaSelectorWithExcept, {
-            // features:
-            ...borderRule(),
-            
-            
-            
             // layouts:
             ...style({
                 // borders:
@@ -455,6 +450,11 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
                 borderEndStartRadius   : borderVars.borderEndStartRadius,
                 borderEndEndRadius     : borderVars.borderEndEndRadius,
             }),
+            
+            
+            
+            // features:
+            ...borderRule(), // must be placed at the last
             
             
             
@@ -586,12 +586,6 @@ export const usesContentBasicLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...borderRule(),
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...style({
             // customize:
@@ -614,6 +608,12 @@ export const usesContentBasicLayout = memoizeStyle(() => {
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
         }),
+        
+        
+        
+        // features:
+        ...borderRule(),  // must be placed at the last
+        ...paddingRule(), // must be placed at the last
     });
 }, cssContentConfig.onChange);
 export const usesContentLayout = memoizeStyle(() => {
