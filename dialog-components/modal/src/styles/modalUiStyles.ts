@@ -57,11 +57,6 @@ export const usesModalUiLayout = () => {
         
         
         
-        // features:
-        ...animationRule(),
-        
-        
-        
         // layouts:
         ...style({
             // customize:
@@ -72,6 +67,11 @@ export const usesModalUiLayout = () => {
             // animations:
             anim : animationVars.anim,
         }),
+        
+        
+        
+        // features:
+        ...animationRule(), // must be placed at the last
     });
 };
 
