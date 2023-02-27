@@ -101,11 +101,6 @@ export const usesInputLayout = memoizeStyle(() => {
                 
                 
                 
-                // features:
-                ...borderRule(),
-                
-                
-                
                 // layouts:
                 ...style({
                     // layouts:
@@ -161,6 +156,11 @@ export const usesInputLayout = memoizeStyle(() => {
                         ...usesCssProps(usesPrefixedProps(inputs, 'placeholder')), // apply config's cssProps starting with placeholder***
                     }),
                 }),
+                
+                
+                
+                // features:
+                ...borderRule(), // must be placed at the last
             }),
             
             
