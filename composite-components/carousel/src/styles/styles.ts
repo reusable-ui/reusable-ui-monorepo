@@ -343,15 +343,15 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
             
             
             
-            // customize:
-            ...usesCssProps(carousels), // apply config's cssProps
-            
-            
-            
             // spacings:
          // padding       : paddingVars.padding,
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
+            
+            
+            
+            // customize:
+            ...usesCssProps(carousels), // apply config's cssProps
         }),
     });
 };
