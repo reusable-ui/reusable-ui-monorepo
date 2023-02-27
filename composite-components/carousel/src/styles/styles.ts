@@ -280,11 +280,6 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
     
     
     return style({
-        // features:
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...usesContentLayout(),
         ...style({
@@ -343,16 +338,21 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
             
             
             
+            // customize:
+            ...usesCssProps(carousels), // apply config's cssProps
+            
+            
+            
             // spacings:
          // padding       : paddingVars.padding,
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
-            
-            
-            
-            // customize:
-            ...usesCssProps(carousels), // apply config's cssProps
         }),
+        
+        
+        
+        // features:
+        ...paddingRule(), // must be placed at the last
     });
 };
 
