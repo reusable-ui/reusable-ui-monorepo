@@ -103,16 +103,6 @@ export const usesBasicLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...backgroundRule(),
-        ...foregroundRule(),
-        ...borderRule(),
-        ...ringRule(),
-        ...animationRule(),
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -170,6 +160,16 @@ export const usesBasicLayout = memoizeStyle(() => {
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
         }),
+        
+        
+        
+        // features:
+        ...backgroundRule(), // must be placed at the last
+        ...foregroundRule(), // must be placed at the last
+        ...borderRule(),     // must be placed at the last
+        ...ringRule(),       // must be placed at the last
+        ...animationRule(),  // must be placed at the last
+        ...paddingRule(),    // must be placed at the last
     });
 }, onBasicStylesChange);
 
