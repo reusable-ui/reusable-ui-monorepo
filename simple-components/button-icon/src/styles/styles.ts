@@ -100,12 +100,6 @@ export const usesButtonIconLayout = memoizeStyle((options?: OrientationableOptio
     
     
     return style({
-        // features:
-        ...borderRule(),
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...usesButtonLayout(options),
         ...style({
@@ -154,6 +148,12 @@ export const usesButtonIconLayout = memoizeStyle((options?: OrientationableOptio
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
         }),
+        
+        
+        
+        // features:
+        ...borderRule(),  // must be placed at the last
+        ...paddingRule(), // must be placed at the last
     });
 }, onButtonIconStylesChange);
 
