@@ -171,11 +171,6 @@ export const usesListLayout = (options?: OrientationableOptions) => {
         
         
         
-        // features:
-        // borderRule(),    // moved out to dedicated border stroke for each list & wrapper
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -202,7 +197,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
             // borders:
             ...children(['&', wrapperElm], {
                 // features:
-                ...borderRule(), // dedicated border stroke for each <List> & <wrapper>(s)
+                ...borderRule(), // must be placed at the last // dedicated border stroke for each <List> & <wrapper>(s)
             }),
             
             
@@ -317,6 +312,11 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                 }),
             }),
         }),
+        
+        
+        
+        // features:
+        // borderRule(),    // moved out to dedicated border stroke for each list & wrapper
     });
 };
 
@@ -515,11 +515,6 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     
                     // children:
                     ...children(listItemElm, {
-                        // features:
-                        ...borderRule(), // restore border stripped out by `inheritBorderFromParent`
-                        
-                        
-                        
                         // layouts:
                         ...style({
                             // borders:
@@ -635,6 +630,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                 }),
                             }),
                         ]),
+                        
+                        
+                        
+                        // features:
+                        ...borderRule(), // must be placed at the last // restore border stripped out by `inheritBorderFromParent`
                     }),
                 }),
             }),
@@ -708,11 +708,6 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     
                     // children:
                     ...children(listItemElm, {
-                        // features:
-                        ...borderRule(), // restore border stripped out by `inheritBorderFromParent`
-                        
-                        
-                        
                         // layouts:
                         ...style({
                             // layouts:
@@ -754,6 +749,11 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             borderEndStartRadius   : borderVars.borderEndStartRadius,
                             borderEndEndRadius     : borderVars.borderEndEndRadius,
                         }),
+                        
+                        
+                        
+                        // features:
+                        ...borderRule(), // must be placed at the last // restore border stripped out by `inheritBorderFromParent`
                     }),
                 }),
             }),
