@@ -75,12 +75,6 @@ export const usesBackdropLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...borderRule(),
-        ...animationRule(),
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -125,6 +119,12 @@ export const usesBackdropLayout = memoizeStyle(() => {
             // animations:
             anim         : animationVars.anim,
         }),
+        
+        
+        
+        // features:
+        ...borderRule(),    // must be placed at the last
+        ...animationRule(), // must be placed at the last
         
         
         
