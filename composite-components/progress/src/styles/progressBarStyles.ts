@@ -78,11 +78,6 @@ export const usesProgressBarLayout = () => {
         
         // children:
         ...children(listItemElm, {
-            // features:
-            ...progressBarRule(),
-            
-            
-            
             // layouts:
             ...usesBasicLayout(),
             ...style({
@@ -114,6 +109,11 @@ export const usesProgressBarLayout = () => {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(progresses, 'bar')), // apply config's cssProps starting with bar***
             }),
+            
+            
+            
+            // features:
+            ...progressBarRule(), // must be placed at the last
         }),
     });
 };
