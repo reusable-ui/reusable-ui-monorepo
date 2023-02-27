@@ -90,11 +90,6 @@ export const usesIconLayout      = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...iconRule(),
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -132,6 +127,11 @@ export const usesIconLayout      = memoizeStyle(() => {
             ...usesCssProps(icons), // apply config's cssProps
             color : null, // delete color prop from config, we use color prop in special way
         }),
+        
+        
+        
+        // features:
+        ...iconRule(), // must be placed at the last
     });
 }, onIconStylesChange);
 
@@ -285,13 +285,13 @@ export const usesIconImage       = (config: IconImageConfig) => {
     
     
     return style({
-        // features:
-        ...iconRule(),
-        
-        
-        
         // layouts:
         ...usesIconImageLayout(),
+        
+        
+        
+        // features:
+        ...iconRule(), // must be placed at the last
     });
 };
 
