@@ -4,15 +4,9 @@ import {
     default as React,
 }                           from 'react'
 
-// reusable-ui core:
-import {
-    // a capability of UI to rotate its layout:
-    defaultInlineOrientationableOptions,
-}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
-
 // reusable-ui components:
 import {
-    // styles:
+    // variants:
     ListStyle,
     ListVariant,
     
@@ -33,11 +27,6 @@ import {
     
     NavComponentProps,
 }                           from '@reusable-ui/nav'             // a navigation component to navigate between pages
-
-
-
-// defaults:
-export const defaultOrientationableOptions = defaultInlineOrientationableOptions;
 
 
 
