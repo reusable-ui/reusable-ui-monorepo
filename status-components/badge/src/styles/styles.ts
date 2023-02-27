@@ -82,11 +82,6 @@ export const usesBadgeLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...usesPopupLayout(),
         ...style({
@@ -149,6 +144,11 @@ export const usesBadgeLayout = memoizeStyle(() => {
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
         }),
+        
+        
+        
+        // features:
+        ...paddingRule(), // must be placed at the last
     });
 }, onBadgeStylesChange);
 
