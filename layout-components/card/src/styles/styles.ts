@@ -259,12 +259,6 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         
         
         
-        // features:
-        // borderRule(),    // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
-        ...animationRule(),
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -291,7 +285,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             // borders:
             ...children(['&', headerElm, footerElm, bodyElm], {
                 // features:
-                ...borderRule(), // dedicated border stroke for each <Card> & <CardItem>(s), so each borderRule can be turn on/off indepenently, eg: `cardStyle='flush'`
+                ...borderRule(), // must be placed at the last // dedicated border stroke for each <Card> & <CardItem>(s), so each borderRule can be turn on/off indepenently, eg: `cardStyle='flush'`
             }),
             
             
@@ -345,6 +339,12 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
             borderEndStartRadius   : borderVars.borderEndStartRadius,
             borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
+        
+        
+        
+        // features:
+        // borderRule(),    // moved out to dedicated border stroke for each <Card> & <CardItem>(s)
+        ...animationRule(), // must be placed at the last
     });
 };
 export const usesCardVariants = () => {
