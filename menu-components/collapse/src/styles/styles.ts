@@ -67,11 +67,6 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
     
     
     return style({
-        // features:
-        ...animationRule(),
-        
-        
-        
         // layouts:
         ...style({
             // customize:
@@ -90,6 +85,11 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
             // animations:
             anim : animationVars.anim,
         }),
+        
+        
+        
+        // features:
+        ...animationRule(), // must be placed at the last
     });
 }, onCollapseStylesChange);
 
