@@ -73,12 +73,6 @@ export const usesResponsiveContainerLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...borderRule(),
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...style({
             // borders:
@@ -96,6 +90,12 @@ export const usesResponsiveContainerLayout = memoizeStyle(() => {
             paddingInline : paddingVars.paddingInline,
             paddingBlock  : paddingVars.paddingBlock,
         }),
+        
+        
+        
+        // features:
+        ...borderRule(),  // must be placed at the last
+        ...paddingRule(), // must be placed at the last
     });
 }, cssContainerConfig.onChange);
 
@@ -113,12 +113,6 @@ export const usesResponsiveContainerGridLayout = memoizeStyle(() => {
     
     
     return style({
-        // features:
-        ...borderRule(),
-        ...paddingRule(),
-        
-        
-        
         // layouts:
         ...style({
             // layouts:
@@ -142,6 +136,12 @@ export const usesResponsiveContainerGridLayout = memoizeStyle(() => {
             borderEndStartRadius   : borderVars.borderEndStartRadius,
             borderEndEndRadius     : borderVars.borderEndEndRadius,
         }),
+        
+        
+        
+        // features:
+        ...borderRule(),  // must be placed at the last
+        ...paddingRule(), // must be placed at the last
     });
 }, cssContainerConfig.onChange);
 
@@ -193,11 +193,6 @@ export const usesContainerChildrenFill = memoizeStyle((options?: ContainerChildr
             // children:
             ...rule(':where(&)', { // set at lowest specificity to the parent selector
                 ...children(fillSelectorAndSelf, {
-                    // features:
-                    ...borderRule(),
-                    
-                    
-                    
                     // layouts:
                     ...style({
                         // borders:
@@ -207,6 +202,11 @@ export const usesContainerChildrenFill = memoizeStyle((options?: ContainerChildr
                         borderEndStartRadius   : borderVars.borderEndStartRadius,
                         borderEndEndRadius     : borderVars.borderEndEndRadius,
                     }),
+                    
+                    
+                    
+                    // features:
+                    ...borderRule(), // must be placed at the last
                 }, { specificityWeight: 0 }), // set at lowest specificity to the section selectors
             }, { performGrouping: false }), // do not transform/simplify
             ...children(fillSelectorAndSelf, {
