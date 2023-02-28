@@ -223,34 +223,53 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         
         // setups:
-        
-        // watch scrolling of <target>'s <parent> up to <offsetParent>:
-        const offsetAncestors : Element[] = [];
-        if (typeof(window) !== 'undefined') { // client_side only
-            const offsetParent = (target as HTMLElement).offsetParent; // TODO: fix the force-reflow by executing inside requestAnimationFrame()
-            if (offsetParent) {
-                for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
-                    offsetAncestors.push(parent); // collect the ancestor(s)
-                    if (parent === offsetParent) break; // stop iterating on nearest offsetParent
-                } // for
+        let cleanups : (() => void)|undefined = undefined;
+        const cancelRequest = requestAnimationFrame(() => { // avoids *force-reflow* of calling `(target as HTMLElement).offsetParent` by delaying the execution
+            // watch scrolling of <target>'s <parent> up to <offsetParent>:
+            const offsetAncestors : Element[] = [];
+            if (typeof(window) !== 'undefined') { // client_side only
+                const offsetParent = (target as HTMLElement).offsetParent;
+                if (offsetParent) {
+                    for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
+                        offsetAncestors.push(parent); // collect the ancestor(s)
+                        if (parent === offsetParent) break; // stop iterating on nearest offsetParent
+                    } // for
+                } // if
             } // if
-        } // if
-        for (const offsetAncestor of offsetAncestors) {
-            offsetAncestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
-        } // for
-        if (typeof(document) !== 'undefined') {
-            document.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
-        } // if
-        
-        
-        
-        // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
-        const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
-        elmResizeObserver.observe(target, { box: 'border-box' });
-        for (const offsetAncestor of offsetAncestors) {
-            elmResizeObserver.observe(offsetAncestor, { box: 'content-box' });
-        } // for
-        elmResizeObserver.observe(floatingUi, { box: 'border-box' });
+            for (const offsetAncestor of offsetAncestors) {
+                offsetAncestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
+            } // for
+            if (typeof(document) !== 'undefined') {
+                document.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
+            } // if
+            
+            
+            
+            // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
+            const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
+            elmResizeObserver.observe(target, { box: 'border-box' });
+            for (const offsetAncestor of offsetAncestors) {
+                elmResizeObserver.observe(offsetAncestor, { box: 'content-box' });
+            } // for
+            elmResizeObserver.observe(floatingUi, { box: 'border-box' });
+            
+            
+            
+            cleanups = () => {
+                // un-watch scrolling of <target>'s <parent> up to <offsetParent>:
+                for (const offsetAncestor of offsetAncestors) {
+                    offsetAncestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
+                } // for
+                if (typeof(document) !== 'undefined') {
+                    document.removeEventListener('scroll', handleOffsetAncestorsScroll);
+                } // if
+                
+                
+                
+                // un-watch size changes of the <target>, <ancestor>s, & <floatingUi>:
+                elmResizeObserver.disconnect();
+            };
+        });
         
         
         
@@ -261,18 +280,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             
             
             
-            // un-watch scrolling of <target>'s <parent> up to <offsetParent>:
-            for (const offsetAncestor of offsetAncestors) {
-                offsetAncestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
-            } // for
-            if (typeof(document) !== 'undefined') {
-                document.removeEventListener('scroll', handleOffsetAncestorsScroll);
-            } // if
-            
-            
-            
-            // un-watch size changes of the <target>, <ancestor>s, & <floatingUi>:
-            elmResizeObserver.disconnect();
+            cancelAnimationFrame(cancelRequest);
+            cleanups?.();
         };
     }, [
         // conditions:
