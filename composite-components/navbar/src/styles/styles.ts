@@ -103,7 +103,7 @@ export const usesNavbarLayout = () => {
             
             
             // borders:
-            border        : borderVars.border,
+            border                 : borderVars.border,
          // borderRadius           : borderVars.borderRadius,
             borderStartStartRadius : borderVars.borderStartStartRadius,
             borderStartEndRadius   : borderVars.borderStartEndRadius,
