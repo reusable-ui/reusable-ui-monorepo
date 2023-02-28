@@ -60,11 +60,6 @@ import {
     Container,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 import {
-    // hooks:
-    WindowResizeCallback,
-    useWindowResizeObserver,
-}                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements.
-import {
     // react components:
     Fallbacks,
     ResponsiveProvider,
@@ -75,6 +70,10 @@ import {
     // elements:
     menuElm,
 }                           from './styles/elements.js'
+import {
+    // react components:
+    WindowResponsive,
+}                           from './WindowResponsive.js'
 
 
 
@@ -170,43 +169,6 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
         <ResponsiveProvider fallbacks={_defaultResponsiveFallbacks}>{(fallback) => (
             <NavbarInternal {...props} expanded={fallback} />
         )}</ResponsiveProvider>
-    );
-};
-
-interface WindowResponsiveProps {
-    // behaviors:
-    mediaMinWidth : number
-    
-    
-    
-    // children:
-    children      : React.ReactNode | ((expanded: boolean) => React.ReactNode);
-}
-const WindowResponsive = ({mediaMinWidth, children: childrenFn}: WindowResponsiveProps): JSX.Element|null => {
-    // states:
-    const [expanded, setExpanded] = useState<boolean>(mediaMinWidth === 0); // initially expanded if (mediaMinWidth === 0); otherwise initially collapsed
-    
-    
-    
-    // dom effects:
-    const handleWindowResize = useEvent<WindowResizeCallback>(({inlineSize: mediaCurrentWidth}) => {
-        const newExpanded = (mediaCurrentWidth >= mediaMinWidth);
-        if (expanded === newExpanded) return;
-        setExpanded(newExpanded);
-    });
-    useWindowResizeObserver(handleWindowResize);
-    
-    
-    
-    // jsx:
-    return (
-        <>{
-            (typeof(childrenFn) !== 'function')
-            ?
-            childrenFn
-            :
-            childrenFn(expanded)
-        }</>
     );
 };
 
