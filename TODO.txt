@@ -1,7 +1,6 @@
 [hi prior ] : replace WeakRef, WeakMap with memoizeStyle()
 [hi prior ] : move // defaults: to dedicated defaults.ts
 [hi prior ] : disable lazyCsr for :has(...)
-[hi prior ] : replace defaultOrientationableOptions with as, in defaults.ts
 [hi prior ] : // TODO: floatable: fix the force-reflow by executing inside requestAnimationFrame()
 
 
