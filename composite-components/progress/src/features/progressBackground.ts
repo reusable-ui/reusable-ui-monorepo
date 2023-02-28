@@ -44,7 +44,7 @@ import {
 export interface ProgressBackgroundVars {
     mildAltBackgTg : any
 }
-const [progressBackgroundVars] = cssVars<ProgressBackgroundVars>();
+const [progressBackgroundVars] = cssVars<ProgressBackgroundVars>(); // no need to have SSR support because the variables are not shared externally
 
 
 
