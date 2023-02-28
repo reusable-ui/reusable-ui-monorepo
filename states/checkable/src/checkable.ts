@@ -16,7 +16,6 @@ import {
     fallbacks,
     style,
     vars,
-    imports,
     
     
     
@@ -101,10 +100,8 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
     
     return {
         checkableRule: () => style({
-            ...imports([
-                // features:
-                animationRule,
-            ]),
+            // features:
+            ...animationRule(),
             
             
             
