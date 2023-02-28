@@ -11,28 +11,6 @@ import {
 
 // cssfn:
 import {
-    // cssfn css specific types:
-    CssKnownProps,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    variants,
-    children,
-    style,
-    imports,
-    scopeOf,
-    mainScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    cssConfig,
-    usesCssProps,
-    usesPrefixedProps,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheets,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -51,21 +29,6 @@ import {
     // a semantic management system for react web components:
     SemanticTag,
     SemanticRole,
-    
-    
-    
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
-    // groups a list of UIs into a single UI:
-    usesGroupable,
-    
-    
-    
-    // size options of UI:
-    usesResizable,
     
     
     
@@ -88,26 +51,10 @@ import {
 
 // reusable-ui components:
 import {
-    // styles:
-    usesBasicVariants,
-    
-    
-    
-    // configs:
-    basics,
-    
-    
-    
     // react components:
     BasicProps,
     Basic,
 }                           from '@reusable-ui/basic'           // a base component
-import {
-    // styles:
-    usesContentBasicLayout,
-    usesContentBasicVariants,
-    usesContentChildren,
-}                           from '@reusable-ui/content'         // a neighbor component
 import {
     // react components:
     ButtonProps,
@@ -121,11 +68,13 @@ import {
     
     ToggleButtonComponentProps,
 }                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
+
+// internals:
 import {
-    // styles:
-    usesCollapseLayout,
-    usesCollapseStates,
-}                           from '@reusable-ui/collapse'        // a base component
+    // variants:
+    DetailsVariant,
+    useDetailsVariant,
+}                           from './variants/DetailsVariant.js'
 
 
 
@@ -136,233 +85,12 @@ const _defaultSemanticRole        : SemanticRole = 'group' // uses [role="group"
 const _defaultTogglerSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // no corresponding semantic tag => defaults to <div>, fallbacks to <button>, <a>
 const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
 
-const _defaultDetailsStyle        : DetailsStyle = 'regular'
-
-
-
-// configs:
-export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
-    return {
-        // layouts:
-        togglerDisplay   : 'block'                  as CssKnownProps['display'  ],
-        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'],
-        
-        
-        
-        // borders:
-        borderStyle      : basics.borderStyle       as CssKnownProps['borderStyle' ],
-        borderWidth      : basics.borderWidth       as CssKnownProps['borderWidth' ],
-        borderColor      : basics.borderColor       as CssKnownProps['borderColor' ],
-        
-        borderRadius     : basics.borderRadius      as CssKnownProps['borderRadius'],
-        borderRadiusSm   : basics.borderRadiusSm    as CssKnownProps['borderRadius'],
-        borderRadiusLg   : basics.borderRadiusLg    as CssKnownProps['borderRadius'],
-    };
-}, { prefix: 'dtl' });
-
 
 
 // styles:
-export type DetailsStyle = 'regular'|'content' // might be added more styles in the future
-export interface DetailsVariant {
-    detailsStyle ?: DetailsStyle
-}
-export const useDetailsVariant = ({detailsStyle = _defaultDetailsStyle}: DetailsVariant) => {
-    return {
-        class: (detailsStyle === 'regular') ? null : detailsStyle,
-    };
-};
-
-
-
-export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsContent> component
-
-
-
-export const usesDetailsLayout = () => {
-    // dependencies:
-    
-    // features:
-    const {borderRule   , borderVars   } = usesBorder(details);
-    const {groupableRule, separatorRule} = usesGroupable({
-        orientationInlineSelector : null, // never  => the <ToggleButton> & <DetailsContent> are never  stacked in horizontal
-        orientationBlockSelector  : '&',  // always => the <ToggleButton> & <DetailsContent> are always stacked in vertical
-        itemsSelector             : ':nth-child(n)', // select <ToggleButton> & <DetailsContent>
-    });
-    
-    
-    
-    return style({
-        ...imports([
-            // features:
-            borderRule,
-            groupableRule, // make a nicely rounded corners
-        ]),
-        ...style({
-            // layouts:
-            display        : 'flex',    // use block flexbox, so it takes the entire parent's width
-            flexDirection  : 'column',  // items are stacked vertically
-            justifyContent : 'start',   // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems     : 'stretch', // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
-            flexWrap       : 'nowrap',  // no wrapping
-            
-            
-            
-            // sizes:
-            // See https://github.com/twbs/bootstrap/pull/22740#issuecomment-305868106
-            minInlineSize  : 0,
-            
-            
-            
-            // children:
-            ...children(itemElm, {
-                ...imports([
-                    // borders:
-                    separatorRule, // turns the current border as separator between <ToggleButton> & <DetailsContent>
-                ]),
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(details), // apply config's cssProps
-            
-            
-            
-            // borders:
-            border            : borderVars.border,
-         // borderRadius           : borderVars.borderRadius,
-            borderStartStartRadius : borderVars.borderStartStartRadius,
-            borderStartEndRadius   : borderVars.borderStartEndRadius,
-            borderEndStartRadius   : borderVars.borderEndStartRadius,
-            borderEndEndRadius     : borderVars.borderEndEndRadius,
-        }),
-    });
-};
-export const usesDetailsVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(details);
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            usesBasicVariants(),
-            resizableRule,
-        ]),
-    });
-};
-
-export const usesTogglerLayout = () => {
-    return style({
-        // customize:
-        ...usesCssProps(usesPrefixedProps(details, 'toggler')), // apply config's cssProps starting with toggler***
-    });
-};
-export const usesTogglerVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'toggler'));
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            resizableRule,
-        ]),
-    });
-};
-
-export const usesContentLayout = () => {
-    return style({
-        ...imports([
-            // layouts:
-            usesCollapseLayout(),
-        ]),
-        ...style({
-            // customize:
-            ...usesCssProps(usesPrefixedProps(details, 'content')), // apply config's cssProps starting with content***
-        }),
-    });
-};
-export const usesContentVariants = () => {
-    // dependencies:
-    
-    // variants:
-    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'content'));
-    
-    
-    
-    return style({
-        ...imports([
-            // variants:
-            resizableRule,
-        ]),
-        ...variants([
-            /*
-                a hack with :not(_)
-                the total selector combined with parent is something like this: `.content>:where(.detailsContent):not(_)`, the specificity weight = 1.1
-                the specificity of 1.1 is a bit higher than:
-                * `.basic`          , the specificity weight = 1
-                * `.custom`         , the specificity weight = 1
-                * but can be easily overriden by specificity weight >= 2, like:
-                * `.basic.awesome`  , the specificity weight = 2
-                * `.custom.awesome` , the specificity weight = 2
-            */
-            rule('.content>:where(&):not(_)', { // content
-                ...imports([
-                    // layouts:
-                    usesContentBasicLayout(),
-                    
-                    // variants:
-                    usesContentBasicVariants(),
-                    
-                    // children:
-                    usesContentChildren(),
-                ]),
-            }),
-        ]),
-    });
-};
-export const usesContentStates = usesCollapseStates;
-
-export const useDetailsStyleSheet = dynamicStyleSheets(() => ([
-    mainScope({
-        ...imports([
-            // layouts:
-            usesDetailsLayout(),
-            
-            // variants:
-            usesDetailsVariants(),
-        ]),
-    }),
-    scopeOf('toggler', {
-        ...imports([
-            // layouts:
-            usesTogglerLayout(),
-            
-            // variants:
-            usesTogglerVariants(),
-        ]),
-    }, { specificityWeight: 2 }), // increase the specificity weight to overcome .toggleButton's specificity weight
-    scopeOf('content', {
-        ...imports([
-            // layouts:
-            usesContentLayout(),
-            
-            // variants:
-            usesContentVariants(),
-            
-            // states:
-            usesContentStates(),
-        ]),
-    }, { specificityWeight: 2 }), // increase the specificity weight to overcome .basic's specificity weight
-]), { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useDetailsStyleSheet = dynamicStyleSheets(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: '8sv7el5gq9' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

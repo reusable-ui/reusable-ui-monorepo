@@ -125,7 +125,7 @@
 [not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
 [slimmodular] [documented  ] [full    compound] @reusable-ui/carousel
 [slimmodular] [documented  ] [          atomic] @reusable-ui/navbar
-[optimized  ] [undocumented] [full    compound] @reusable-ui/details
+[slimmodular] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
 [not needopt] [documented  ] [          atomic] @reusable-ui/visually-hidden
