@@ -94,7 +94,7 @@ export interface ColorableVars {
      */
     color      : any
 }
-const [colorableVars] = cssVars<ColorableVars>();
+const [colorableVars] = cssVars<ColorableVars>(); // no need to have SSR support because the variables are not shared externally (outside <TheCorrespondingComponent>)
 
 
 
