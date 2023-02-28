@@ -246,7 +246,7 @@ const createAnimationFunctionsRule = (config?: AnimationConfig): CssRule => {
         }),
     });
 };
-const getDefaultAnimationFunctionsRule = memoizeStyle(() => createAnimationFunctionsRule());
+const getDefaultAnimationFunctionsRule = memoizeStyle(() => createAnimationFunctionsRule(), onAnimationRegistryChange);
 /**
  * Uses Animation.
  * @param config  A configuration of `animationRule`.
