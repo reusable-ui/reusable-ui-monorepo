@@ -28,7 +28,6 @@ import {
     states,
     style,
     vars,
-    imports,
     
     
     
@@ -197,10 +196,9 @@ export const markActive = (options?: MarkActiveOptions): CssRule => {
     
     
     return style({
-        ...imports([
-            setOutlined(outlined), // kill outlined variant
-            setMild(mild),         // kill mild     variant
-        ]),
+        // variants:
+        ...setOutlined(outlined), // kill outlined variant
+        ...setMild(mild),         // kill mild     variant
     });
 };
 
