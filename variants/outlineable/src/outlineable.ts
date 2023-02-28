@@ -17,7 +17,6 @@ import {
     variants,
     style,
     vars,
-    imports,
     
     
     
@@ -134,11 +133,9 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
     
     
     return style({
-        ...imports([
-            // makes   `usesOutlineable()` implicitly `usesThemable()`
-            // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-            themableRule,
-        ]),
+        // makes   `usesOutlineable()` implicitly `usesThemable()`
+        // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+        ...themableRule(),
         
         
         
