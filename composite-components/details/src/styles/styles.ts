@@ -156,7 +156,6 @@ export const usesDetailsVariants = () => {
 
 
 
-
 export const usesTogglerLayout = () => {
     return style({
         // customize:
@@ -177,7 +176,6 @@ export const usesTogglerVariants = () => {
         ...resizableRule(),
     });
 };
-
 
 
 
