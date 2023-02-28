@@ -11,6 +11,7 @@ import {
     
     
     // strongly typed of css variables:
+    cssVars,
     switchOf,
     
     
@@ -104,14 +105,18 @@ import {
     defaultOrientationableOptions,
 }                           from '../defaults.js'
 import {
-    // variables:
-    condBorderVars,
-}                           from './variables.js'
-import {
     // configs:
     buttons,
     cssButtonConfig,
 }                           from './config.js'
+
+
+
+// variables:
+interface CondBorderVars {
+    condBorderWidthTg : any
+}
+const [condBorderVars] = cssVars<CondBorderVars>(); // no need to have SSR support because the variables are not shared externally (outside <ProgressBar>)
 
 
 
