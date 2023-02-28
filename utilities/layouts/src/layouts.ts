@@ -1,7 +1,6 @@
 import {
     // writes css in javascript:
     style,
-    imports,
 }                           from '@cssfn/core'          // writes css in javascript
 
 
@@ -32,9 +31,8 @@ export const fillTextLineHeightLayout = () => style({
  * The dummy is also used for calibrating the flex's vertical position.
  */
 export const fillTextLineWidthLayout = () => style({
-    ...imports([
-        fillTextLineHeightLayout(),
-    ]),
+    // layouts:
+    ...fillTextLineHeightLayout(),
     ...style({
         // layouts:
         writingMode : 'vertical-lr', // rotate the element 90°
