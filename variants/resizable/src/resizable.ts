@@ -97,10 +97,10 @@ const createResizableRule = <TSizeName extends string = SizeName, TConfigProps e
     return style({
         ...variants([
             options.map((sizeName) =>
-                ifSize(sizeName, {
+                ifSize(sizeName,
                     // overwrites propName = propName{SizeName}:
-                    ...overwriteProps(config, usesSuffixedProps(config, sizeName)),
-                })
+                    overwriteProps(config, usesSuffixedProps(config, sizeName)),
+                )
             ),
         ]),
     });
