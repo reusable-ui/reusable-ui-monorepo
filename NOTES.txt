@@ -64,6 +64,29 @@ packages                        VAR     CFG
 
 
 
+depends on :has() :
+
+ifFocusing
+ifBlurred
+ifFocus
+ifBlur
+ifFocusBlurring
+
+ifArriving
+ifLeaved
+ifArrive
+ifLeave
+ifArriveLeaving
+
+
+(ifFocusing|ifBlurred|ifFocus|ifBlur|ifFocusBlurring|ifArriving|ifLeaved|ifArrive|ifLeave|ifArriveLeaving)
+
+
+
+=========================================================================================
+
+
+
 ifGradient|ifNotGradient|ifInheritGradient|ifOutlined|ifNotOutlined|ifInheritOutlined|ifMild|ifNotMild|ifInheritMild
 
 
