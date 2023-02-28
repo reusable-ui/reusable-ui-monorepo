@@ -25,6 +25,11 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui features:
@@ -76,15 +81,6 @@ const [groupableVars] = cssVars<GroupableVars>({ prefix: 'gr', minify: false });
 
 
 
-//#region caches
-let defaultSeparatorRuleInlineCache               : WeakRef<CssRule> | undefined = undefined;
-let defaultSeparatorRuleBlockCache                : WeakRef<CssRule> | undefined = undefined;
-let groupableChildrenRuleOfOrientationInlineCache : WeakRef<CssRule> | undefined = undefined;
-let groupableChildrenRuleOfOrientationBlockCache  : WeakRef<CssRule> | undefined = undefined;
-//#endregion caches
-
-
-
 // rules:
 // :where(...) => zero specificity => easy to overwrite further:
 export const ifVisibleChild          = (styles: CssStyleCollection): CssRule => rule(':not(:where(.overlay, .foreign))'                                           , styles);
@@ -104,12 +100,7 @@ export interface GroupableOptions extends OrientationableOptions {
     itemsSelector ?: CssSelectorCollection
     swapFirstItem ?: boolean
 }
-const groupableChildrenRuleOfOrientationInline = (): CssRule => {
-    const cached = groupableChildrenRuleOfOrientationInlineCache?.deref();
-    if (cached) return cached;
-    
-    
-    
+const groupableChildrenRuleOfOrientationInline = memoizeStyle((): CssRule => {
     // dependencies:
     
     // features:
@@ -117,7 +108,7 @@ const groupableChildrenRuleOfOrientationInline = (): CssRule => {
     
     
     
-    const result = style({
+    return style({
         ...ifFirstVisibleChild({
             ...vars({
                 /*
@@ -165,15 +156,8 @@ const groupableChildrenRuleOfOrientationInline = (): CssRule => {
             }),
         }),
     });
-    groupableChildrenRuleOfOrientationInlineCache = new WeakRef<CssRule>(result);
-    return result;
-};
-const groupableChildrenRuleOfOrientationBlock  = (): CssRule => {
-    const cached = groupableChildrenRuleOfOrientationBlockCache?.deref();
-    if (cached) return cached;
-    
-    
-    
+});
+const groupableChildrenRuleOfOrientationBlock  = memoizeStyle((): CssRule => {
     // dependencies:
     
     // features:
@@ -181,7 +165,7 @@ const groupableChildrenRuleOfOrientationBlock  = (): CssRule => {
     
     
     
-    const result = style({
+    return style({
         ...ifFirstVisibleChild({
             ...vars({
                 /*
@@ -229,9 +213,7 @@ const groupableChildrenRuleOfOrientationBlock  = (): CssRule => {
             }),
         }),
     });
-    groupableChildrenRuleOfOrientationBlockCache = new WeakRef<CssRule>(result);
-    return result;
-};
+});
 /**
  * Groups a list of UIs into a single UI.
  * @param options  Options of `groupableRule`.
@@ -439,24 +421,6 @@ const createSeparatorRuleOf = (block: boolean, options?: GroupableOptions): CssR
 };
 const createSeparatorRuleInline = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(false, options);
 const createSeparatorRuleBlock  = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(true , options);
-const getDefaultSeparatorRuleInline = (): CssRule => {
-    const cached = defaultSeparatorRuleInlineCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultSeparatorRuleInline = createSeparatorRuleInline();
-    defaultSeparatorRuleInlineCache = new WeakRef<CssRule>(defaultSeparatorRuleInline);
-    return defaultSeparatorRuleInline;
-};
-const getDefaultSeparatorRuleBlock = (): CssRule => {
-    const cached = defaultSeparatorRuleBlockCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultSeparatorRuleBlock = createSeparatorRuleBlock();
-    defaultSeparatorRuleBlockCache = new WeakRef<CssRule>(defaultSeparatorRuleBlock);
-    return defaultSeparatorRuleBlock;
-};
+const getDefaultSeparatorRuleInline = memoizeStyle((): CssRule => createSeparatorRuleInline());
+const getDefaultSeparatorRuleBlock  = memoizeStyle((): CssRule => createSeparatorRuleBlock());
 //#endregion groupable
