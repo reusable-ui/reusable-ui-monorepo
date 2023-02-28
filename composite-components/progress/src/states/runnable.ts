@@ -43,7 +43,7 @@ export interface RunnableVars {
      */
     anim : any
 }
-const [runnableVars] = cssVars<RunnableVars>();
+const [runnableVars] = cssVars<RunnableVars>(); // no need to have SSR support because the variables are not shared externally (outside <ProgressBar>)
 
 
 
