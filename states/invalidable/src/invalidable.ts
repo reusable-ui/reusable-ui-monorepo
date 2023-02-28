@@ -24,7 +24,6 @@ import {
     states,
     style,
     vars,
-    imports,
     
     
     
@@ -192,9 +191,8 @@ export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff =>
 };
 
 export const markValid   = (): CssRule => style({
-    ...imports([
-        usesThemeValid(),   // switch to valid theme
-    ]),
+    // variants:
+    ...usesThemeValid(),   // switch to valid theme
 });
 /**
  * Creates a conditional theme color rules at valid state.
@@ -204,9 +202,8 @@ export const markValid   = (): CssRule => style({
 export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeConditional(themeName);
 
 export const markInvalid = (): CssRule => style({
-    ...imports([
-        usesThemeInvalid(), // switch to invalid theme
-    ]),
+    // variants:
+    ...usesThemeInvalid(), // switch to invalid theme
 });
 /**
  * Creates a conditional theme color rules at invalid state.
