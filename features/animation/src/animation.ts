@@ -22,7 +22,17 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
+
+// other libs:
+import {
+    Subject,
+}                           from 'rxjs'
 
 
 
@@ -78,19 +88,12 @@ const [animationVars] = cssVars<AnimationVars>({ prefix: 'an', minify: false });
 
 
 
-//#region caches
-let constantsAnimationRuleCache        : WeakRef<CssRule>|undefined = undefined;
-let resetAnimationRuleCache            : WeakRef<CssRule>|undefined = undefined;
-let defaultAnimationFunctionsRuleCache : WeakRef<CssRule>|undefined = undefined;
-//#endregion caches
-
-
-
-const setsBoxShadow     = new Set<CssCustomSimpleRef>();
-const setsFilter        = new Set<CssCustomSimpleRef>();
-const setsTransform     = new Set<CssCustomSimpleRef>();
-const setsAnim          = new Set<CssCustomSimpleRef>();
-const animationRegistry = {
+const setsBoxShadow           = new Set<CssCustomSimpleRef>();
+const setsFilter              = new Set<CssCustomSimpleRef>();
+const setsTransform           = new Set<CssCustomSimpleRef>();
+const setsAnim                = new Set<CssCustomSimpleRef>();
+let onAnimationRegistryChange = new Subject<void>();
+const animationRegistry       = {
     get boxShadows      ():    CssCustomSimpleRef[]      {
         return [
             // front-to-back order, the first is placed on top, the last is placed on bottom
@@ -101,8 +104,8 @@ const animationRegistry = {
             animationVars.boxShadowNone, // the boxShadow collection must contain at least 1 of *none* boxShadow, so when rendered it produces a valid css value of boxShadow property
         ];
     },
-    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    ; resetAnimationRuleCache = undefined },
-    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) ; resetAnimationRuleCache = undefined },
+    registerBoxShadow   (item: CssCustomSimpleRef): void { setsBoxShadow.add(item)    ; onAnimationRegistryChange.next() },
+    unregisterBoxShadow (item: CssCustomSimpleRef): void { setsBoxShadow.delete(item) ; onAnimationRegistryChange.next() },
     
     
     
@@ -116,8 +119,8 @@ const animationRegistry = {
             animationVars.filterNone, // the filter collection must contain at least 1 of *none* filter, so when rendered it produces a valid css value of filter property
         ];
     },
-    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       ; resetAnimationRuleCache = undefined },
-    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    ; resetAnimationRuleCache = undefined },
+    registerFilter      (item: CssCustomSimpleRef): void { setsFilter.add(item)       ; onAnimationRegistryChange.next() },
+    unregisterFilter    (item: CssCustomSimpleRef): void { setsFilter.delete(item)    ; onAnimationRegistryChange.next() },
     
     
     
@@ -131,8 +134,8 @@ const animationRegistry = {
             ...Array.from(setsTransform).reverse(), // reverse the order
         ];
     },
-    registerTransform   (item: CssCustomSimpleRef): void { setsTransform.add(item)    ; resetAnimationRuleCache = undefined },
-    unregisterTransform (item: CssCustomSimpleRef): void { setsTransform.delete(item) ; resetAnimationRuleCache = undefined },
+    registerTransform   (item: CssCustomSimpleRef): void { setsTransform.add(item)    ; onAnimationRegistryChange.next() },
+    unregisterTransform (item: CssCustomSimpleRef): void { setsTransform.delete(item) ; onAnimationRegistryChange.next() },
     
     
     
@@ -146,8 +149,8 @@ const animationRegistry = {
             animationVars.animNone, // the animation collection must contain at least 1 of *none* animation, so when rendered it produces a valid css value of animation property
         ];
     },
-    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         ; resetAnimationRuleCache = undefined },
-    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      ; resetAnimationRuleCache = undefined },
+    registerAnim        (item: CssCustomSimpleRef): void { setsAnim.add(item)         ; onAnimationRegistryChange.next() },
+    unregisterAnim      (item: CssCustomSimpleRef): void { setsAnim.delete(item)      ; onAnimationRegistryChange.next() },
 };
 export type AnimationRegistry = typeof animationRegistry
 
@@ -160,13 +163,8 @@ export interface AnimationConfig {
     transform ?: CssKnownProps['transform'] & Array<any>
     anim      ?: CssKnownProps['animation'] & Array<any>
 }
-const constantsAnimationRule = (): CssRule => {
-    const cached = constantsAnimationRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
+const constantsAnimationRule = memoizeStyle((): CssRule => {
+    return style({
         ...vars({
             [animationVars.boxShadowNone] : [[0, 0, 'transparent']],
             [animationVars.filterNone   ] : 'brightness(100%)',
@@ -174,16 +172,9 @@ const constantsAnimationRule = (): CssRule => {
             [animationVars.animNone     ] : 'none',
         }),
     });
-    constantsAnimationRuleCache = new WeakRef<CssRule>(result);
-    return result;
-};
-const resetAnimationRule = (): CssRule => {
-    const cached = resetAnimationRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const result = style({
+});
+const resetAnimationRule = memoizeStyle((): CssRule => {
+    return style({
         // constants:
         ...constantsAnimationRule(),
         
@@ -200,9 +191,7 @@ const resetAnimationRule = (): CssRule => {
             ])),
         }),
     });
-    resetAnimationRuleCache = new WeakRef<CssRule>(result);
-    return result;
-};
+}, onAnimationRegistryChange);
 const createAnimationFunctionsRule = (config?: AnimationConfig): CssRule => {
     return style({
         // animation functions:
@@ -257,16 +246,7 @@ const createAnimationFunctionsRule = (config?: AnimationConfig): CssRule => {
         }),
     });
 };
-const getDefaultAnimationFunctionsRule = () => {
-    const cached = defaultAnimationFunctionsRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultAnimationFunctionsRule = createAnimationFunctionsRule();
-    defaultAnimationFunctionsRuleCache = new WeakRef<CssRule>(defaultAnimationFunctionsRule);
-    return defaultAnimationFunctionsRule;
-};
+const getDefaultAnimationFunctionsRule = memoizeStyle(() => createAnimationFunctionsRule());
 /**
  * Uses Animation.
  * @param config  A configuration of `animationRule`.
