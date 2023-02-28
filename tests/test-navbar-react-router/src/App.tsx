@@ -32,12 +32,12 @@ function App() {
                 <Navbar theme='primary' expanded={undefined}>{({
                     basicVariantProps,
                     navbarExpanded,
-                    menuExpanded,
-                    handleClickAsToggleMenu,
+                    listExpanded,
+                    handleClickToToggleList,
                 }) => <>
                     <img className='logo' src='/images/test-logo.png' alt='logo' style={{maxInlineSize: '4rem'}} />
-                    {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={menuExpanded}>
+                    {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={listExpanded} onClick={handleClickToToggleList} />}
+                    <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={listExpanded}>
                         <Nav tag='ul' role='' {...basicVariantProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                             <NavItem>
                                 <Link to='/'>Home</Link>
