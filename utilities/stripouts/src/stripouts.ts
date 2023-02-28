@@ -11,7 +11,6 @@ import {
     ifActive,
     children,
     style,
-    imports,
 }                           from '@cssfn/core'          // writes css in javascript
 
 
@@ -36,9 +35,12 @@ export const stripoutFocusableElement = () => style({
  * Removes browser's default style on control (`<input>`, `<textarea>`, `<button>`, etc).
  */
 export const stripoutControl = () => style({
-    ...imports([
-        stripoutFocusableElement(),
-    ]),
+    // resets:
+    ...stripoutFocusableElement(),
+    
+    
+    
+    // layouts:
     ...style({
         // layouts:
         appearance      : none,
@@ -93,9 +95,12 @@ export const stripoutControl = () => style({
  * Removes browser's default style on hyperlink (`<a>`).
  */
 export const stripoutLink = () => style({
-    ...imports([
-        stripoutFocusableElement(),
-    ]),
+    // resets:
+    ...stripoutFocusableElement(),
+    
+    
+    
+    // layouts:
     ...style({
         // accessibilities:
         cursor         : unset, // removes hand pointer
@@ -125,9 +130,12 @@ export const stripoutLink = () => style({
  * `*textLike*` = `text`|`search`|`password`|`email`|`tel`|`url`|`number`|`time`|`week`|`date`|`datetime-local`|`month`
  */
 export const stripoutTextbox = () => style({
-    ...imports([
-        stripoutControl(),
-    ]),
+    // resets:
+    ...stripoutControl(),
+    
+    
+    
+    // layouts:
     ...style({
         // layouts:
         MozAppearance  : 'textfield',
@@ -157,15 +165,17 @@ export const rangeThumbElm : CssSelectorCollection = ['::-webkit-slider-thumb'  
  * Removes browser's default style on `<input type="range">`.
  */
 export const stripoutRange = () => style({
-    ...imports([
-        stripoutControl(),
-    ]),
+    // resets:
+    ...stripoutControl(),
+    
+    
+    
+    // layouts:
     ...style({
         // children:
         ...children([rangeTrackElm, rangeThumbElm], {
-            ...imports([
-                stripoutControl(),
-            ]),
+            // resets:
+            ...stripoutControl(),
         }, { performGrouping: false }), // any invalid selector does not cause the whole selectors to fail
     }),
 });
