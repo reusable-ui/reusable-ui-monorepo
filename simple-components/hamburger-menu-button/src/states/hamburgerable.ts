@@ -82,7 +82,7 @@ export interface HamburgerableVars {
      */
     btmAnim         : any
 }
-const [hamburgerableVars] = cssVars<HamburgerableVars>();
+const [hamburgerableVars] = cssVars<HamburgerableVars>(); // no need to have SSR support because the variables are not shared externally (outside <HamburgerMenuButton>)
 
 
 
