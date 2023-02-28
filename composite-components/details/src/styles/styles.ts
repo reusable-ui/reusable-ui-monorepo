@@ -181,7 +181,7 @@ export const usesTogglerVariants = () => {
 
 
 
-export const usesContentLayout = () => {
+export const usesCollapsibleContentLayout = () => {
     return style({
         // layouts:
         ...usesCollapseLayout(),
@@ -192,7 +192,7 @@ export const usesContentLayout = () => {
     });
 };
 
-export const usesContentVariants = () => {
+export const usesCollapsibleContentVariants = () => {
     // dependencies:
     
     // variants:
@@ -228,7 +228,7 @@ export const usesContentVariants = () => {
     });
 };
 
-export const usesContentStates = usesCollapseStates;
+export const usesCollapsibleContentStates = usesCollapseStates;
 
 
 
@@ -249,12 +249,12 @@ export default () => [
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .toggleButton's specificity weight
     scopeOf('content', {
         // layouts:
-        ...usesContentLayout(),
+        ...usesCollapsibleContentLayout(),
         
         // variants:
-        ...usesContentVariants(),
+        ...usesCollapsibleContentVariants(),
         
         // states:
-        ...usesContentStates(),
+        ...usesCollapsibleContentStates(),
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .basic's specificity weight
 ];
