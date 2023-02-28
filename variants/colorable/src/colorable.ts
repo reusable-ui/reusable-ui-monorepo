@@ -16,7 +16,6 @@ import {
     variants,
     style,
     vars,
-    imports,
     
     
     
@@ -129,10 +128,8 @@ const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null
     
     
     return style({
-        ...imports([
-            // features:
-            backgroundRule, // overrides the default `backg` => `altColor` and `altBackg` => `color`
-        ]),
+        // features:
+        ...backgroundRule(), // overrides the default `backg` => `altColor` and `altBackg` => `color`
         
         
         
@@ -167,11 +164,9 @@ const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null
         // toggling conditions:
         ...variants([
             ifHasTheme({
-                ...imports([
-                    // variants:
-                    outlineableRule, // the theme has been modified => need to re-define the outlined version of color, otherwise it still using the <parent>'s theme
-                    mildableRule,    // the theme has been modified => need to re-define the mild     version of color, otherwise it still using the <parent>'s theme
-                ]),
+                // variants:
+                ...outlineableRule(), // the theme has been modified => need to re-define the outlined version of color, otherwise it still using the <parent>'s theme
+                ...mildableRule(),    // the theme has been modified => need to re-define the mild     version of color, otherwise it still using the <parent>'s theme
             }),
             
             
