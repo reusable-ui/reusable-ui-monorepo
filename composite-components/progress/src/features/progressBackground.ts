@@ -41,7 +41,7 @@ import {
 // features:
 
 //#region progressBackground
-export interface ProgressBackgroundVars {
+interface ProgressBackgroundVars {
     mildAltBackgTg : any
 }
 const [progressBackgroundVars] = cssVars<ProgressBackgroundVars>(); // no need to have SSR support because the variables are not shared externally
