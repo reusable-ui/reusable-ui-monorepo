@@ -421,6 +421,6 @@ const createSeparatorRuleOf = (block: boolean, options?: GroupableOptions): CssR
 };
 const createSeparatorRuleInline = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(false, options);
 const createSeparatorRuleBlock  = (options?: GroupableOptions): CssRule => createSeparatorRuleOf(true , options);
-const getDefaultSeparatorRuleInline = memoizeStyle((): CssRule => createSeparatorRuleInline());
-const getDefaultSeparatorRuleBlock  = memoizeStyle((): CssRule => createSeparatorRuleBlock());
+const getDefaultSeparatorRuleInline = memoizeStyle(() => createSeparatorRuleInline());
+const getDefaultSeparatorRuleBlock  = memoizeStyle(() => createSeparatorRuleBlock());
 //#endregion groupable
