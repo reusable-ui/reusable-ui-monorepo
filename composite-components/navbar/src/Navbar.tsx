@@ -171,7 +171,6 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
         )}</ResponsiveProvider>
     );
 };
-
 const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet        = useNavbarStyleSheet();
@@ -358,7 +357,6 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         })),
     );
 };
-
 export {
     Navbar,
     Navbar as default,
