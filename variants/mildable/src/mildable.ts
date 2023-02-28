@@ -17,7 +17,6 @@ import {
     variants,
     style,
     vars,
-    imports,
     
     
     
@@ -130,11 +129,9 @@ const createMildableRule = (config?: MildableConfig, mildDefinition : null|((tog
     
     
     return style({
-        ...imports([
-            // makes   `usesMildable()` implicitly `usesThemable()`
-            // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-            themableRule,
-        ]),
+        // makes   `usesMildable()` implicitly `usesThemable()`
+        // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+        ...themableRule(),
         
         
         
