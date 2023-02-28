@@ -6,11 +6,6 @@ import {
 
 // cssfn:
 import {
-    // writes css in javascript:
-    style,
-    imports,
-}                           from '@cssfn/core'                  // writes css in javascript
-import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -25,48 +20,9 @@ import {
 
 
 // styles:
-export const usesVisuallyHiddenLayout = () => {
-    return style({
-        // layouts:
-        display    : ['inline-block',  '!important'], // use inline block, so it takes the width & height as we set
-        
-        
-        
-        // positions:
-        position   : ['absolute',      '!important'],
-        
-        
-        
-        // sizes:
-        width      : ['1px',           '!important'],
-        height     : ['1px',           '!important'],
-        overflow   : ['hidden',        '!important'],
-        clip       : ['rect(0,0,0,0)', '!important'],
-        
-        
-        
-        // borders:
-        border     : ['none',          '!important'],
-        
-        
-        
-        // spacings:
-        margin     : ['-1px',          '!important'], // fix for https://github.com/twbs/bootstrap/issues/25686
-        padding    : [0,               '!important'],
-        
-        
-        
-        // typos:
-        whiteSpace : ['nowrap',        '!important'],
-    });
-};
-
-export const useVisuallyHiddenStyleSheet = dynamicStyleSheet(() => ({
-    ...imports([
-        // layouts:
-        usesVisuallyHiddenLayout(),
-    ]),
-}), { id: 'zxyty1yae5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+export const useVisuallyHiddenStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'zxyty1yae5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
@@ -79,7 +35,7 @@ export interface VisuallyHiddenProps<TElement extends Element = HTMLElement>
 }
 const VisuallyHidden = <TElement extends Element = HTMLElement>(props: VisuallyHiddenProps<TElement>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useVisuallyHiddenStyleSheet();
+    const styleSheet = useVisuallyHiddenStyleSheet();
     
     
     

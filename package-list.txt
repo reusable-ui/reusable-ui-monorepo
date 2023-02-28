@@ -128,7 +128,7 @@
 [slimmodular] [undocumented] [full    compound] @reusable-ui/details
 
 // utility-components:
-[not needopt] [documented  ] [          atomic] @reusable-ui/visually-hidden
+[slimmodular] [documented  ] [          atomic] @reusable-ui/visually-hidden
 [not needopt] [undocumented] @reusable-ui/dimensions
 [not needopt] [undocumented] @reusable-ui/responsives
 
