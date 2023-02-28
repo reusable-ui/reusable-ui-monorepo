@@ -16,7 +16,6 @@ import {
     fallbacks,
     style,
     vars,
-    imports,
     
     
     
@@ -185,9 +184,8 @@ const resetAnimationRule = (): CssRule => {
     
     
     const result = style({
-        ...imports([
-            constantsAnimationRule,
-        ]),
+        // constants:
+        ...constantsAnimationRule(),
         
         
         
@@ -276,17 +274,21 @@ const getDefaultAnimationFunctionsRule = () => {
  */
 export const usesAnimation = (config?: AnimationConfig): AnimationStuff => {
     return {
-        animationRule: () => imports([
-            resetAnimationRule,
+        animationRule: () => style({
+            // reset functions:
+            ...resetAnimationRule(),
             
-            (
+            
+            
+            // animation functions:
+            ...(
                 (config === undefined)
                 ?
-                getDefaultAnimationFunctionsRule
+                getDefaultAnimationFunctionsRule()
                 :
-                () => createAnimationFunctionsRule(config)
+                createAnimationFunctionsRule(config)
             ),
-        ]),
+        }),
         animationVars,
         animationRegistry,
     };
