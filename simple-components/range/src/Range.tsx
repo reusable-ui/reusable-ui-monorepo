@@ -19,6 +19,10 @@ import type {
     Optional,
 }                           from '@cssfn/core'                          // writes css in javascript
 import {
+    // checks if a certain css feature is supported by the running browser:
+    supportsHasPseudoClass,
+}                           from '@cssfn/core'                          // writes css in javascript
+import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'                   // writes css in react hook
@@ -97,7 +101,10 @@ import {
 // styles:
 export const useRangeStyleSheet = dynamicStyleSheet(
     () => import(/* webpackPrefetch: true */ './styles/styles.js')
-, { id: 'jue5zxlqsc' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+, {
+    id      : 'jue5zxlqsc',             // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+    lazyCsr : supportsHasPseudoClass(), // dealing with browsers that don't support the :has() selector
+});
 
 
 

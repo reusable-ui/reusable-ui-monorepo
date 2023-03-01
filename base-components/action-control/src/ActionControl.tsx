@@ -6,6 +6,10 @@ import {
 
 // cssfn:
 import {
+    // checks if a certain css feature is supported by the running browser:
+    supportsHasPseudoClass,
+}                           from '@cssfn/core'                  // writes css in javascript
+import {
     // style sheets:
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
@@ -66,7 +70,10 @@ const _defaultClickableOptions : ClickableOptions = {
 // styles:
 export const useActionControlStyleSheet = dynamicStyleSheet(
     () => import(/* webpackPrefetch: true */ './styles/styles.js')
-, { id: '5u3j6wjzxd' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+, {
+    id      : '5u3j6wjzxd',             // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+    lazyCsr : supportsHasPseudoClass(), // dealing with browsers that don't support the :has() selector
+});
 
 
 
