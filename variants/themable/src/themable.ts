@@ -196,8 +196,8 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
-let hasThemeSelectorsCache       : CssSelector[]    | undefined = undefined;
-let noThemeSelectorsCache        : CssSelector      | undefined = undefined;
+let hasThemeSelectorsCache       : CssSelector[] | undefined = undefined;
+let noThemeSelectorsCache        : CssSelector   | undefined = undefined;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
