@@ -48,6 +48,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     watchChanges,
+    memoizeResult,
     memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
@@ -142,15 +143,7 @@ export interface ContentChildrenMediaOptionsResult {
     mediaSelector               : PureSelectorGroup|null
     notNotMediaSelector         : PseudoClassSelector|null
 }
-let defaultContentChildrenMediaOptionsResultCache : WeakRef<ContentChildrenMediaOptionsResult>|undefined = undefined;
-export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOptions): ContentChildrenMediaOptionsResult => {
-    if (options === undefined) {
-        const cached = defaultContentChildrenMediaOptionsResultCache?.deref();
-        if (cached) return cached;
-    } // if
-    
-    
-    
+export const usesContentChildrenMediaOptions = memoizeResult((options?: ContentChildrenMediaOptions): ContentChildrenMediaOptionsResult => {
     // options:
     const {
         mediaSelector    : mediaSelectorStr,
@@ -187,16 +180,14 @@ export const usesContentChildrenMediaOptions = (options?: ContentChildrenMediaOp
         )
     );
     
-    const result : ContentChildrenMediaOptionsResult = {
+    return {
         mediaSelectorWithExcept     : toSelectors(adjustChildSpecificity(mediaSelectorWithExceptZero)),
         mediaSelectorWithExceptZero : toSelectors(mediaSelectorWithExceptZero),
         
         mediaSelector: mediaSelector && selectPureSelectorGroupFromSelectorGroup(mediaSelector),
         notNotMediaSelector,
     };
-    if (options === undefined) defaultContentChildrenMediaOptionsResultCache = new WeakRef<ContentChildrenMediaOptionsResult>(result);
-    return result;
-};
+});
 export const usesContentChildrenFill         = memoizeStyle((options?: ContentChildrenMediaOptions) => {
     // options:
     const {
@@ -475,15 +466,7 @@ export interface ContentChildrenLinksOptionsResult {
     linksSelector               : PureSelectorGroup|null
     notNotLinksSelector         : PseudoClassSelector|null
 }
-let defaultContentChildrenLinksOptionsResultCache : WeakRef<ContentChildrenLinksOptionsResult>|undefined = undefined;
-export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOptions): ContentChildrenLinksOptionsResult => {
-    if (options === undefined) {
-        const cached = defaultContentChildrenLinksOptionsResultCache?.deref();
-        if (cached) return cached;
-    } // if
-    
-    
-    
+export const usesContentChildrenLinksOptions = memoizeResult((options?: ContentChildrenLinksOptions): ContentChildrenLinksOptionsResult => {
     // options:
     const {
         linksSelector    : linksSelectorStr,
@@ -520,16 +503,14 @@ export const usesContentChildrenLinksOptions = (options?: ContentChildrenLinksOp
         )
     );
     
-    const result : ContentChildrenLinksOptionsResult = {
+    return {
         linksSelectorWithExcept     : toSelectors(adjustChildSpecificity(linksSelectorWithExceptZero)),
         linksSelectorWithExceptZero : toSelectors(linksSelectorWithExceptZero),
         
         linksSelector : linksSelector && selectPureSelectorGroupFromSelectorGroup(linksSelector),
         notNotLinksSelector,
     };
-    if (options === undefined) defaultContentChildrenLinksOptionsResultCache = new WeakRef<ContentChildrenLinksOptionsResult>(result);
-    return result;
-};
+});
 export const usesContentChildrenLinks        = memoizeStyle((options?: ContentChildrenLinksOptions) => {
     // options:
     const {
