@@ -31,6 +31,7 @@ import {
     
     
     // writes complex stylesheets in simpler way:
+    memoizeResult,
     memoizeStyle,
     memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
@@ -198,14 +199,11 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
 let hasThemeSelectorsCache       : CssSelector[]    | undefined = undefined;
 let noThemeSelectorsCache        : CssSelector      | undefined = undefined;
 
-let themeOptionsCache            : ThemeName[]      | undefined = undefined;
-
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
     hasThemeSelectorsCache = undefined;
     noThemeSelectorsCache  = undefined;
-    themeOptionsCache      = undefined;
 });
 //#endregion caches
 
@@ -301,7 +299,9 @@ export const defineThemeRule = memoizeStyleWithVariants((themeName: ThemeName): 
  * Gets all available theme color options.
  * @returns A `ThemeName[]` represents all available theme color options.
  */
-export const themeOptions = (): ThemeName[] => themeOptionsCache ?? (themeOptionsCache = Object.keys(themes) as ThemeName[]);
+export const themeOptions = memoizeResult((): ThemeName[] => {
+    return (Object.keys(themes) as ThemeName[]);
+}, cssColorConfig.onChange);
 
 
 
