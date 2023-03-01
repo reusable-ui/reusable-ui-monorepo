@@ -23,6 +23,11 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 
@@ -60,12 +65,6 @@ export interface GradientableVars {
     backgGradTg : any
 }
 const [gradientableVars] = cssVars<GradientableVars>({ prefix: 'gd', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-//#region caches
-const gradientDefinitionsCache   = new Map<ToggleGradient, CssRule>();
-//#endregion caches
 
 
 
@@ -134,13 +133,8 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `defineGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
  */
-export const defineGradient = (toggle: ToggleGradient): CssRule => {
-    const cached = gradientDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const gradientDef = style({
+export const defineGradient = memoizeStyleWithVariants((toggle: ToggleGradient): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off/inherit* the `**Tg` prop.
@@ -153,9 +147,7 @@ export const defineGradient = (toggle: ToggleGradient): CssRule => {
             [gradientableVars.gradientPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    gradientDefinitionsCache.set(toggle, gradientDef);
-    return gradientDef;
-};
+});
 /**
  * Sets the current gradient state by the given `toggle` state.
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `setGradient`.
