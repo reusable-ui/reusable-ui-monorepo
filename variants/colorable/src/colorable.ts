@@ -28,6 +28,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     memoizeStyle,
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui features:
@@ -100,13 +101,6 @@ export interface ColorableVars {
     color      : any
 }
 const [colorableVars] = cssVars<ColorableVars>(); // no need to have SSR support because the variables are not shared externally (outside <TheCorrespondingComponent>)
-
-
-
-//#region caches
-const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
-const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
-//#endregion caches
 
 
 
@@ -213,13 +207,8 @@ export const usesColorable = (config?: ColorableConfig, outlinedDefinition : nul
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineSelfOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-const defineSelfOutlined = (toggle: ToggleColor): CssRule => {
-    const cached = selfOutlinedDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const selfOutlinedDef = style({
+const defineSelfOutlined = memoizeStyleWithVariants((toggle: ToggleColor): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off/inherit* the `**Tg` prop.
@@ -232,22 +221,15 @@ const defineSelfOutlined = (toggle: ToggleColor): CssRule => {
             [colorableVars.outlinedSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    selfOutlinedDefinitionsCache.set(toggle, selfOutlinedDef);
-    return selfOutlinedDef;
-};
+});
 
 /**
  * Defines a mildification preference rules for the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineSelfMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-const defineSelfMild = (toggle: ToggleColor): CssRule => {
-    const cached = selfMildDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const selfMildDef = style({
+const defineSelfMild = memoizeStyleWithVariants((toggle: ToggleColor): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off/inherit* the `**Tg` prop.
@@ -260,7 +242,5 @@ const defineSelfMild = (toggle: ToggleColor): CssRule => {
             [colorableVars.mildSw] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    selfMildDefinitionsCache.set(toggle, selfMildDef);
-    return selfMildDef;
-};
+});
 //#endregion colorable
