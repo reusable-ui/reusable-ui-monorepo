@@ -22,6 +22,11 @@ import {
     CssVars,
     cssVars,
     switchOf,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
@@ -84,12 +89,6 @@ export interface ActiveAsClickVars {
     altAnimPassiveAsClickTg : any
 }
 const [activeAsClickVars] = cssVars<ActiveAsClickVars>({ prefix: 'ak', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-//#region caches
-let defaultActiveAsClickRuleCache : WeakRef<CssRule> | undefined = undefined;
-//#endregion caches
 
 
 
@@ -346,16 +345,7 @@ const createActiveAsClickRule = () => {
         ]),
     });
 };
-const getDefaultActiveAsClickRule = (): CssRule => {
-    const cached = defaultActiveAsClickRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultActiveAsClickRule = createActiveAsClickRule();
-    defaultActiveAsClickRuleCache = new WeakRef<CssRule>(defaultActiveAsClickRule);
-    return defaultActiveAsClickRule;
-};
+const getDefaultActiveAsClickRule = memoizeStyle(() => createActiveAsClickRule());
 /**
  * Shows the UI as clicked when activated.
  * @returns A `ActiveAsClickStuff` represents an active-as-click state.
