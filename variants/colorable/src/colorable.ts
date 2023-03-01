@@ -23,6 +23,11 @@ import {
     CssVars,
     cssVars,
     switchOf,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui features:
@@ -101,7 +106,6 @@ const [colorableVars] = cssVars<ColorableVars>(); // no need to have SSR support
 //#region caches
 const selfOutlinedDefinitionsCache = new Map<ToggleColor, CssRule>();
 const selfMildDefinitionsCache     = new Map<ToggleColor, CssRule>();
-let defaultColorableRuleCache      : WeakRef<CssRule> | undefined = undefined;
 //#endregion caches
 
 
@@ -183,16 +187,7 @@ const createColorableRule = (config?: ColorableConfig, outlinedDefinition : null
         ]),
     });
 };
-const getDefaultColorableRule = (): CssRule => {
-    const cached = defaultColorableRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultColorableRule = createColorableRule();
-    defaultColorableRuleCache = new WeakRef<CssRule>(defaultColorableRule);
-    return defaultColorableRule;
-};
+const getDefaultColorableRule = memoizeStyle(() => createColorableRule());
 /**
  * Uses color.
  * @param config  A configuration of `colorableRule`.
