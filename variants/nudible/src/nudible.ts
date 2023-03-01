@@ -27,6 +27,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     memoizeStyle,
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui features:
@@ -63,12 +64,6 @@ export interface NudibleVars {
     nudeSw : any
 }
 const [nudibleVars] = cssVars<NudibleVars>({ prefix: 'nu', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-//#region caches
-const nudeDefinitionsCache = new Map<ToggleNude, CssRule>();
-//#endregion caches
 
 
 
@@ -169,13 +164,8 @@ export const usesNudible = (nudeDefinition : null|((toggle: ToggleNude) => CssSt
  * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `defineNude`.
  * @returns A `CssRule` represents a nudeification rules for the given `toggle` state.
  */
-export const defineNude = (toggle: ToggleNude): CssRule => {
-    const cached = nudeDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const nudeDef = style({
+export const defineNude = memoizeStyleWithVariants((toggle: ToggleNude): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off* the `**Tg` prop.
@@ -187,9 +177,7 @@ export const defineNude = (toggle: ToggleNude): CssRule => {
             [nudibleVars.nudePr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    nudeDefinitionsCache.set(toggle, nudeDef);
-    return nudeDef;
-};
+});
 /**
  * Sets the current nudeification state by the given `toggle` state.
  * @param toggle `true` to activate the nudeification -or- `false` to deactivate -or- `null` to remove previously declared `setNude`.
