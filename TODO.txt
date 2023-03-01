@@ -1,4 +1,3 @@
-[hi prior ] : replace WeakRef, WeakMap with memoizeStyle()
 [hi prior ] : disable lazyCsr for :has(...)
 
 
