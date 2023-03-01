@@ -29,6 +29,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     memoizeStyle,
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
@@ -106,12 +107,6 @@ export interface OutlineableVars {
     altForegTg : any
 }
 const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-//#region caches
-const outlinedDefinitionsCache = new Map<ToggleOutlined, CssRule>();
-//#endregion caches
 
 
 
@@ -262,13 +257,8 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
  */
-export const defineOutlined = (toggle: ToggleOutlined): CssRule => {
-    const cached = outlinedDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const outlinedDef = style({
+export const defineOutlined = memoizeStyleWithVariants((toggle: ToggleOutlined): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off/inherit* the `**Tg` prop.
@@ -281,9 +271,7 @@ export const defineOutlined = (toggle: ToggleOutlined): CssRule => {
             [outlineableVars.outlinedPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    outlinedDefinitionsCache.set(toggle, outlinedDef);
-    return outlinedDef;
-};
+});
 /**
  * Sets the current outlining state by the given `toggle` state.
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `setOutlined`.
