@@ -27,6 +27,11 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui configs:
@@ -165,8 +170,8 @@ const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false }); /
 
 
 //#region caches
-const themeClassesCache = new Map<ThemeName, CssClassName>();
-export const createThemeClass = (themeName: ThemeName): CssClassName => {
+const themeClassesCache          = new Map<ThemeName, CssClassName>();
+export const createThemeClass    = (themeName: ThemeName): CssClassName => {
     const cached = themeClassesCache.get(themeName);
     if (cached) return cached;
     
@@ -177,7 +182,7 @@ export const createThemeClass = (themeName: ThemeName): CssClassName => {
     return themeClass;
 };
 
-const themeSelectorsCache = new Map<ThemeName, CssSelector>();
+const themeSelectorsCache        = new Map<ThemeName, CssSelector>();
 export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     const cached = themeSelectorsCache.get(themeName);
     if (cached) return cached;
@@ -189,22 +194,20 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
     return themeRule;
 };
 
-let hasThemeSelectorsCache   : CssSelector[]    | undefined = undefined;
-let noThemeSelectorsCache    : CssSelector      | undefined = undefined;
+let hasThemeSelectorsCache       : CssSelector[]    | undefined = undefined;
+let noThemeSelectorsCache        : CssSelector      | undefined = undefined;
 
-const themeDefinitionsCache  = new Map<ThemeName, CssRule>();
+const themeDefinitionsCache      = new Map<ThemeName, CssRule>();
 
-let themeOptionsCache        : ThemeName[]      | undefined = undefined;
-let defaultThemableRuleCache : WeakRef<CssRule> | undefined = undefined;
+let themeOptionsCache            : ThemeName[]      | undefined = undefined;
 
 cssColorConfig.onChange.subscribe(() => {
     themeClassesCache.clear();
     themeSelectorsCache.clear();
-    hasThemeSelectorsCache   = undefined;
-    noThemeSelectorsCache    = undefined;
+    hasThemeSelectorsCache = undefined;
+    noThemeSelectorsCache  = undefined;
     themeDefinitionsCache.clear();
-    themeOptionsCache        = undefined;
-    defaultThemableRuleCache = undefined;
+    themeOptionsCache      = undefined;
 });
 //#endregion caches
 
@@ -247,16 +250,7 @@ const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyl
         ]),
     });
 };
-const getDefaultThemableRule = (): CssRule => {
-    const cached = defaultThemableRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultThemableRule = createThemableRule();
-    defaultThemableRuleCache = new WeakRef<CssRule>(defaultThemableRule);
-    return defaultThemableRule;
-};
+const getDefaultThemableRule = memoizeStyle(() => createThemableRule(), cssColorConfig.onChange);
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
