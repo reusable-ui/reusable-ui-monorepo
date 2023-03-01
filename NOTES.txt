@@ -79,7 +79,25 @@ ifLeave
 ifArriveLeaving
 
 
+
 (ifFocusing|ifBlurred|ifFocus|ifBlur|ifFocusBlurring|ifArriving|ifLeaved|ifArrive|ifLeave|ifArriveLeaving)
+
+
+// reusable-ui states:
+    usesFocusable
+    usesInteractable
+
+// base-components:
+    usesControlStates
+    usesEditableTextControlStates
+
+// simple-components:
+    usesButtonGhostVariant
+        usesButtonVariants
+    usesHamburgerMenuButtonStates
+
+// layout-components:
+    usesListActionItemStates
 
 
 
