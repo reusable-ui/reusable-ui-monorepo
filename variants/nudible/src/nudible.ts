@@ -22,6 +22,11 @@ import {
     // strongly typed of css variables:
     CssVars,
     cssVars,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui features:
@@ -62,8 +67,7 @@ const [nudibleVars] = cssVars<NudibleVars>({ prefix: 'nu', minify: false }); // 
 
 
 //#region caches
-const nudeDefinitionsCache  = new Map<ToggleNude, CssRule>();
-let defaultNudibleRuleCache : WeakRef<CssRule> | undefined = undefined;
+const nudeDefinitionsCache = new Map<ToggleNude, CssRule>();
 //#endregion caches
 
 
@@ -141,16 +145,7 @@ const createNudibleRule = (nudeDefinition : null|((toggle: ToggleNude) => CssSty
         ]),
     });
 };
-const getDefaultNudibleRule = (): CssRule => {
-    const cached = defaultNudibleRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultNudibleRule = createNudibleRule();
-    defaultNudibleRuleCache = new WeakRef<CssRule>(defaultNudibleRule);
-    return defaultNudibleRule;
-};
+const getDefaultNudibleRule = memoizeStyle(() => createNudibleRule());
 /**
  * Uses a toggleable nudeification (removes background, border & padding).
  * @param nudeDefinition A callback to create a nudeification rules for each toggle state.
