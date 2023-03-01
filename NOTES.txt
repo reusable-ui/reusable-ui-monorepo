@@ -83,6 +83,9 @@ ifArriveLeaving
 (ifFocusing|ifBlurred|ifFocus|ifBlur|ifFocusBlurring|ifArriving|ifLeaved|ifArrive|ifLeave|ifArriveLeaving)
 
 
+
+# = already referenced
+
 // reusable-ui states:
     usesFocusable
         usesControlStates
@@ -137,6 +140,23 @@ ifArriveLeaving
 // layout-components:
     usesListActionItemStates
         <ListActionItem>
+
+
+
+// list of components that depens on :has() :
+<Control>
+    <ActionControl>
+        <Button>
+            <ButtonIcon>
+            <HamburgerMenuButton>
+        <ListActionItem>
+    <EditableControl>
+        <Range>
+        <EditableActionControl>
+            <Check>
+                <Radio>
+    <EditableTextControl>
+        <Input>
 
 
 
