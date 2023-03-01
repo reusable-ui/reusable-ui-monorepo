@@ -85,19 +85,50 @@ ifArriveLeaving
 
 // reusable-ui states:
     usesFocusable
+        usesControlStates
     usesInteractable
+        usesControlStates
 
 // base-components:
     usesControlStates
+        <Control>
+        usesActionControlStates
+            <ActionControl>
+            usesEditableActionControlStates
+                <EditableActionControl>
+                usesCheckStates
+                    <Check>
+            usesButtonStates
+                <Button>
+                usesHamburgerMenuButtonStates
+                    #
+            usesListActionItemStates
+                <ListActionItem>
+        usesEditableControlStates
+            <EditableControl>
+            usesEditableActionControlStates
+                <EditableActionControl>
+                usesCheckStates
+                    <Check>
+            usesEditableTextControlStates
+                #
     usesEditableTextControlStates
+        <EditableTextControl>
 
 // simple-components:
     usesButtonGhostVariant
         usesButtonVariants
+            <Button>
+            usesButtonIconVariants
+                <ButtonIcon>
+            usesHamburgerMenuButtonVariants
+                <HamburgerMenuButton>
     usesHamburgerMenuButtonStates
+        <HamburgerMenuButton>
 
 // layout-components:
     usesListActionItemStates
+        <ListActionItem>
 
 
 
