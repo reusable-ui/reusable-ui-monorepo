@@ -32,6 +32,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     memoizeStyle,
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui configs:
@@ -197,8 +198,6 @@ export const createThemeSelector = (themeName: ThemeName): CssSelector => {
 let hasThemeSelectorsCache       : CssSelector[]    | undefined = undefined;
 let noThemeSelectorsCache        : CssSelector      | undefined = undefined;
 
-const themeDefinitionsCache      = new Map<ThemeName, CssRule>();
-
 let themeOptionsCache            : ThemeName[]      | undefined = undefined;
 
 cssColorConfig.onChange.subscribe(() => {
@@ -206,7 +205,6 @@ cssColorConfig.onChange.subscribe(() => {
     themeSelectorsCache.clear();
     hasThemeSelectorsCache = undefined;
     noThemeSelectorsCache  = undefined;
-    themeDefinitionsCache.clear();
     themeOptionsCache      = undefined;
 });
 //#endregion caches
@@ -276,13 +274,8 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
  * @param themeName The theme name.
  * @returns A `CssRule` represents a theme rules for the given `themeName`.
  */
-export const defineThemeRule = (themeName: ThemeName): CssRule => {
-    const cached = themeDefinitionsCache.get(themeName);
-    if (cached) return cached;
-    
-    
-    
-    const themeDef = style({
+export const defineThemeRule = memoizeStyleWithVariants((themeName: ThemeName): CssRule => {
+    return style({
         ...vars({
             [themableVars.backg               ] : colors[   themeName       as keyof typeof colors], // base color
             [themableVars.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
@@ -302,9 +295,7 @@ export const defineThemeRule = (themeName: ThemeName): CssRule => {
             [themableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
         }),
     });
-    themeDefinitionsCache.set(themeName, themeDef);
-    return themeDef;
-};
+}, cssColorConfig.onChange);
 
 /**
  * Gets all available theme color options.
