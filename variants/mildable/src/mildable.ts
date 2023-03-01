@@ -29,6 +29,7 @@ import {
     
     // writes complex stylesheets in simpler way:
     memoizeStyle,
+    memoizeStyleWithVariants,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
@@ -102,12 +103,6 @@ export interface MildableVars {
     altForegTg : any
 }
 const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
-
-
-
-//#region caches
-const mildDefinitionsCache = new Map<ToggleMild, CssRule>();
-//#endregion caches
 
 
 
@@ -245,13 +240,8 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
  */
-export const defineMild = (toggle: ToggleMild): CssRule => {
-    const cached = mildDefinitionsCache.get(toggle);
-    if (cached) return cached;
-    
-    
-    
-    const mildDef = style({
+export const defineMild = memoizeStyleWithVariants((toggle: ToggleMild): CssRule => {
+    return style({
         ...vars({
             /*
                 *switch on/off/inherit* the `**Tg` prop.
@@ -264,9 +254,7 @@ export const defineMild = (toggle: ToggleMild): CssRule => {
             [mildableVars.mildPr] : (typeof(toggle) === 'boolean') ? (toggle ? '' : 'initial') : toggle,
         }),
     });
-    mildDefinitionsCache.set(toggle, mildDef);
-    return mildDef;
-};
+});
 /**
  * Sets the current mildification state by the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `setMild`.
