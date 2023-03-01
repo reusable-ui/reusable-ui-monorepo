@@ -24,6 +24,11 @@ import {
     CssVars,
     cssVars,
     switchOf,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
@@ -101,8 +106,7 @@ const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false }); /
 
 
 //#region caches
-const mildDefinitionsCache   = new Map<ToggleMild, CssRule>();
-let defaultmildableRuleCache : WeakRef<CssRule> | undefined = undefined;
+const mildDefinitionsCache = new Map<ToggleMild, CssRule>();
 //#endregion caches
 
 
@@ -216,16 +220,7 @@ const createMildableRule = (config?: MildableConfig, mildDefinition : null|((tog
         ]),
     });
 };
-const getDefaultMildableRule = (): CssRule => {
-    const cached = defaultmildableRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultMildableRule = createMildableRule();
-    defaultmildableRuleCache = new WeakRef<CssRule>(defaultMildableRule);
-    return defaultMildableRule;
-};
+const getDefaultMildableRule = memoizeStyle(() => createMildableRule());
 /**
  * Uses a toggleable mildification.  
  * @param config  A configuration of `mildableRule`.
