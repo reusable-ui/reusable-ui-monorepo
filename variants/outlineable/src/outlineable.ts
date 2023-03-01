@@ -24,6 +24,11 @@ import {
     CssVars,
     cssVars,
     switchOf,
+    
+    
+    
+    // writes complex stylesheets in simpler way:
+    memoizeStyle,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 // reusable-ui variants:
@@ -105,8 +110,7 @@ const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false
 
 
 //#region caches
-const outlinedDefinitionsCache  = new Map<ToggleOutlined, CssRule>();
-let defaultOutlineableRuleCache : WeakRef<CssRule> | undefined = undefined;
+const outlinedDefinitionsCache = new Map<ToggleOutlined, CssRule>();
 //#endregion caches
 
 
@@ -233,16 +237,7 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
         ]),
     });
 };
-const getDefaultOutlineableRule = (): CssRule => {
-    const cached = defaultOutlineableRuleCache?.deref();
-    if (cached) return cached;
-    
-    
-    
-    const defaultOutlineableRule = createOutlineableRule();
-    defaultOutlineableRuleCache = new WeakRef<CssRule>(defaultOutlineableRule);
-    return defaultOutlineableRule;
-};
+const getDefaultOutlineableRule = memoizeStyle(() => createOutlineableRule());
 /**
  * Uses a toggleable outlining.  
  * @param config  A configuration of `outlineableRule`.
