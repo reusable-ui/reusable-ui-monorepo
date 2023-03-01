@@ -36,7 +36,7 @@
     "@cssfn/core": "^2.5.0"
   },
   "peerDependencies": {
-    "@reusable-ui/outlineable": "^5.1.0",
-    "@reusable-ui/themable": "^5.1.0"
+    "@reusable-ui/outlineable": "^5.2.0",
+    "@reusable-ui/themable": "^5.2.0"
   }
 }

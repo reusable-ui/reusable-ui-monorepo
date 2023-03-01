@@ -36,7 +36,7 @@
     "@reusable-ui/semantics": "^5.2.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^5.1.0",
-    "@reusable-ui/animation": "^5.1.0"
+    "@reusable-ui/accessibilities": "^5.2.0",
+    "@reusable-ui/animation": "^5.2.0"
   }
 }
