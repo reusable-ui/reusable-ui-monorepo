@@ -1,9 +1,9 @@
 {
   "name": "test-button-icon",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "private": true,
   "dependencies": {
-    "@reusable-ui/button-icon": "^5.1.0",
+    "@reusable-ui/button-icon": "^5.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

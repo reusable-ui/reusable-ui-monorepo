@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-list",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Overlays a list element (menu).",
   "keywords": [
     "dropdown",
@@ -37,9 +37,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.1.0",
-    "@reusable-ui/dropdown": "^5.1.0",
-    "@reusable-ui/list": "^5.1.0",
+    "@reusable-ui/core": "^5.2.0",
+    "@reusable-ui/dropdown": "^5.2.0",
+    "@reusable-ui/list": "^5.2.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {

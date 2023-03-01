@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/editable-control",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "A base editable UI (with validation indicator) of Reusable-UI components.",
   "keywords": [
     "control",
@@ -37,8 +37,8 @@
   "dependencies": {
     "@cssfn/core": "^2.5.0",
     "@cssfn/cssfn-react": "^2.5.0",
-    "@reusable-ui/control": "^5.1.0",
-    "@reusable-ui/core": "^5.1.0",
+    "@reusable-ui/control": "^5.2.0",
+    "@reusable-ui/core": "^5.2.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {

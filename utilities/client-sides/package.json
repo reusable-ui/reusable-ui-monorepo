@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/client-sides",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "A set of client-side functions.",
   "keywords": [
     "client-sides",
@@ -29,7 +29,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/nodes": "^5.1.0",
+    "@reusable-ui/nodes": "^5.2.0",
     "@types/react": "^18.0.27",
     "history": "^5.3.0",
     "is-in-browser": "^2.0.0"
