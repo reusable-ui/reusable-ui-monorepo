@@ -205,7 +205,7 @@ const allocateLiveStyleSheet = (): Subject<CssStyle|null> => {
     
     // create a new liveStyleSheet:
     const newLiveStyleSheet = new Subject<CssStyle|null>();
-    styleSheet(newLiveStyleSheet); // TODO: add options: { ssr: false }
+    styleSheet(newLiveStyleSheet, { ssr: false });
     reusableLiveStyleSheets.push([
         true,             // mark as in_use
         newLiveStyleSheet // the new liveStyleSheet
