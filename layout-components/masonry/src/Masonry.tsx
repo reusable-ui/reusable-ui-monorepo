@@ -60,19 +60,16 @@ export const useMasonryStyleSheet = dynamicStyleSheet(
 // utilities:
 const isPartiallyResized = (oldSize: ResizeObserverSize|undefined, newSize: ResizeObserverSize, compareOrientationBlock: boolean): boolean => {
     if (!oldSize) {
-        oldSize   = newSize;
         return true;
     }
     else {
         if (compareOrientationBlock) {
             if (oldSize.inlineSize !== newSize.inlineSize) { // [orientation="block"] => watch for inlineSize changes
-                oldSize   = newSize;
                 return true;
             } // if
         }
         else {
             if (oldSize.blockSize  !== newSize.blockSize ) { // [orientation="inline"] => watch for blockSize changes
-                oldSize   = newSize;
                 return true;
             } // if
         } // if
