@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/content",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A generic element for displaying contents such as paragraphs, images, videos, etc.",
   "keywords": [
     "content",

@@ -40,7 +40,7 @@ import {
     createPureSelectorGroup,
     isNotEmptySelectors,
     selectPureSelectorGroupFromSelectorGroup,
-    selectorsToString,
+    selectorToString,
     groupSelectors,
     groupSelector,
     
@@ -99,7 +99,11 @@ import {
 
 
 // utilities:
-const toSelectors            = (selectorGroup: PureSelectorGroup|null): CssSelectorCollection => selectorGroup && selectorsToString(selectorGroup);
+const toSelectors            = (selectorGroup: PureSelectorGroup|null): CssSelectorCollection => {
+    if (!selectorGroup || !selectorGroup.length) return null;
+    if (selectorGroup.length === 1) return selectorToString(selectorGroup[0]);
+    return selectorGroup.map(selectorToString);
+};
 const childSelector          = createSelector( // the specificity weight including parent = 2.1 , is enough to overcome specificity `.FooMedia.FooVariant`
     // specificity weight = 1
     createPseudoClassSelector('nth-child', 'n'), // :nth-child(n)
