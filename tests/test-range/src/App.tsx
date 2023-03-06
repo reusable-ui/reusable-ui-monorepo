@@ -25,6 +25,7 @@ function App() {
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    const [rangeValue, setRangeValue] = useState(30);
     
     
     return (
@@ -44,6 +45,8 @@ function App() {
                     <Range theme='primary' nude={true} onChange={handleChange} />
                     <Range theme='primary' nude={false} onChange={handleChange} outlined={true} />
                     <Range theme='primary' nude={true} onChange={handleChange} outlined={true} />
+                    <p>controllable range:</p>
+                    <Range theme='primary' nude={false} value={rangeValue} onChange={(event) => setRangeValue(event.target.valueAsNumber)} />
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum repudiandae veniam dolorem ex, aliquam aspernatur earum veritatis adipisci aperiam dolore voluptatem reprehenderit repellendus quos eaque a in dicta eveniet. Ex!</p>

@@ -479,7 +479,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const prevValueDn = useRef<number>(valueDn);
     useEffect(() => {
         // conditions:
-        if (valueFn !== null)                return; // only for uncontrollable <Range> => ignore
+        if (valueNow === valueDn)            return; // only trigger event of dynamically changes by user interaction, not programatically by controllable [value]
         
         if (prevValueDn.current === valueDn) return; // no change detected => ignore
         prevValueDn.current = valueDn;
