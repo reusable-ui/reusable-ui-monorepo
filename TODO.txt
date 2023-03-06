@@ -1,3 +1,6 @@
+[high prior] fix semanticRole for ul ol of <Group>
+[high prior] add excited for <Badge>
+
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
