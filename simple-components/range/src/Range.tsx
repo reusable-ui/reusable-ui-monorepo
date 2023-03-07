@@ -8,7 +8,6 @@ import {
     // hooks:
     useCallback,
     useRef,
-    useReducer,
     useEffect,
     useMemo,
 }                           from 'react'
@@ -30,6 +29,7 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -313,52 +313,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
     const mild           = props.mild  ?? false;
     const mildAlternate  = !mild;
     
-    const minFn          : number      = min ?? 0;
-    const maxFn          : number      = max ?? 100;
-    const stepFn         : number      = (step === 'any') ? 0 : Math.abs(step ?? 1);
-    const negativeFn     : boolean     = (maxFn < minFn);
-    
-    
-    
-    // utilities:
-    const trimValue = useCallback((value: number): number => {
-        // make sure the requested value is between the min value & max value:
-        value     = Math.min(Math.max(
-            value
-        , (negativeFn ? maxFn : minFn)), (negativeFn ? minFn : maxFn));
-        
-        // if step was specified => stepping the value starting from min value:
-        if (stepFn > 0) {
-            let steps    = Math.round((value - minFn) / stepFn); // get the_nearest_stepped_value
-            
-            // make sure the_nearest_stepped_value is not exceeded the max value:
-            let maxSteps = (maxFn - minFn) / stepFn;
-            maxSteps     = negativeFn ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
-            
-            // re-align the steps:
-            steps        = negativeFn ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
-            
-            // calculate the new value:
-            value        = minFn + (steps * stepFn);
-        } // if
-        
-        return value;
-    }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
-    const trimValueOpt = (value: number|undefined): number|null => {
-        // conditions:
-        if (value === undefined) return null;
-        
-        
-        
-        return trimValue(value);
-    };
-    
-    
-    
-    // fn props:
-    const valueFn        : number|null = trimValueOpt(value);
-    const defaultValueFn : number|null = trimValueOpt(defaultValue);
-    
     
     
     // refs:
@@ -430,83 +384,104 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     
-    // states:
-    interface ValueReducerAction {
-        type    : 'setValue'|'setValueRatio'|'decrease'|'increase'
-        payload : number
-    }
+    // utilities:
+    const minFn      : number  = min ?? 0;
+    const maxFn      : number  = max ?? 100;
+    const stepFn     : number  = (step === 'any') ? 0 : Math.abs(step ?? 1);
+    const negativeFn : boolean = (maxFn < minFn);
     
-    const valueDnReducer = useCallback((value: number, action: ValueReducerAction): number => {
-        switch (action.type) {
+    const trimValue = useCallback((value: number): number => {
+        // make sure the requested value is between the min value & max value:
+        value     = Math.min(Math.max(
+            value
+        , (negativeFn ? maxFn : minFn)), (negativeFn ? minFn : maxFn));
+        
+        // if step was specified => stepping the value starting from min value:
+        if (stepFn > 0) {
+            let steps    = Math.round((value - minFn) / stepFn); // get the_nearest_stepped_value
+            
+            // make sure the_nearest_stepped_value is not exceeded the max value:
+            let maxSteps = (maxFn - minFn) / stepFn;
+            maxSteps     = negativeFn ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
+            
+            // re-align the steps:
+            steps        = negativeFn ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
+            
+            // calculate the new value:
+            value        = minFn + (steps * stepFn);
+        } // if
+        
+        return value;
+    }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
+    const trimValueOpt = (value: number|undefined): number|undefined => {
+        // conditions:
+        if (value === undefined) return undefined;
+        
+        
+        
+        return trimValue(value);
+    };
+    
+    
+    
+    // fn props:
+    const valueFn        : number|undefined = trimValueOpt(value);
+    const defaultValueFn : number|undefined = trimValueOpt(defaultValue);
+    
+    
+    
+    // source of truth:
+    const valueRef         = useRef<number>(/*initialState: */valueFn ?? defaultValueFn ?? (minFn + ((maxFn - minFn) * 0.5)));
+    if (valueFn !== undefined) valueRef.current = valueFn;  //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
+    const [triggerRender]  = useTriggerRender();            // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+    const valueRatio       : number = (valueRef.current - minFn) / (maxFn - minFn);
+    
+    type ChangeValueAction = 'setValue'|'setValueRatio'|'decrease'|'increase'
+    const changeValue     = useCallback((action: ChangeValueAction, amount: number): void => {
+        let value = valueRef.current;
+        switch (action) {
             case 'setValue': {
-                return trimValue(action.payload);
-            }
+                value = trimValue(amount);
+            } break;
             case 'setValueRatio': {
-                let valueRatio = action.payload;
+                let valueRatio = amount;
                 
                 // make sure the valueRatio is between 0 & 1:
                 valueRatio     = Math.min(Math.max(
                     valueRatio
                 , 0), 1);
                 
-                return trimValue(minFn + ((maxFn - minFn) * valueRatio));
-            }
+                value = trimValue(minFn + ((maxFn - minFn) * valueRatio));
+            } break;
             
             case 'decrease' : {
-                return trimValue(value - ((stepFn || 1) * (negativeFn ? -1 : 1) * (action.payload)));
-            }
+                value = trimValue(value - ((stepFn || 1) * (negativeFn ? -1 : 1) * amount));
+            } break;
             case 'increase' : {
-                return trimValue(value + ((stepFn || 1) * (negativeFn ? -1 : 1) * (action.payload)));
-            }
-            
-            default:
-                return value; // no change
+                value = trimValue(value + ((stepFn || 1) * (negativeFn ? -1 : 1) * amount));
+            } break;
         } // switch
-    }, [minFn, maxFn, stepFn, negativeFn, trimValue]); // (re)create the reducer function on every time the constraints changes
-    
-    const [valueDn, setValueDn] = useReducer(valueDnReducer, /*initialState: */valueFn ?? defaultValueFn ?? (minFn + ((maxFn - minFn) / 2)));
-    
-    
-    
-    // fn props:
-    const valueNow   : number = valueFn /*controllable*/ ?? valueDn /*uncontrollable*/;
-    const valueRatio : number = (valueNow - minFn) / (maxFn - minFn);
-    
-    
-    
-    // dom effects:
-    // watchdog for slider change by user:
-    const prevValueDn = useRef<number>(valueDn);
-    useEffect(() => {
-        // conditions:
-        if (prevValueDn.current === valueDn) return; // no change detected => ignore
-        prevValueDn.current = valueDn;
-        
-        if (valueNow === valueDn)            return; // only trigger event of dynamically changes by user interaction, not programatically by controllable [value]
-        
-        const inputElm = inputRefInternal.current;
-        if (!inputElm)                       return; // the <input> element was not initialized => ignore
         
         
         
-        // *hack*: trigger `onChange` event:
-        setTimeout(() => {
-            inputElm.valueAsNumber = valueDn; // *hack* set_value before firing input event
+        // trigger `onChange` if the value changed:
+        if (valueRef.current !== value) {
+            valueRef.current = value; // update
+            triggerRender();          // sync the UI to `valueRef.current`
             
-            inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
-        }, 0); // runs the 'input' event *next after* current event completed
-    }, [valueNow, valueDn]);
-    
-    // sync the last (dynamic) changes to (current) `valueNow`:
-    useEffect(() => {
-        // conditions:
-        if (valueNow === valueDn)            return; // only trigger event of dynamically changes by user interaction, not programatically by controllable [value]
-        
-        
-        
-        // re-sync -- can be changed by controllable [value] --or-- can be reverted to previous value if the controllable refuses to apply the changed:
-        setValueDn({ type: 'setValue', payload: valueNow }); // causes to re-render and re-run this effect, but will be blocked by the first condition, so *an infinity re-render* is impossible.
-    }, [valueNow, valueDn]);
+            
+            
+            const inputElm = inputRefInternal.current;
+            if (inputElm) {
+                // *hack*: trigger `onChange` event:
+                setTimeout(() => {
+                    inputElm.valueAsNumber = value; // *hack* set_value before firing input event
+                    
+                    inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
+                }, 0); // runs the 'input' event *next after* current event completed
+            } // if
+        } // if
+    }, [minFn, maxFn, stepFn, negativeFn, trimValue]); // (re)create the reducer function on every time the constraints changes
     
     
     
@@ -807,7 +782,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         let valueRatio     = cursorStart / trackSize;
         if (isOrientationBlock || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
         
-        setValueDn({ type: 'setValueRatio', payload: valueRatio });
+        changeValue('setValueRatio', valueRatio);
         
         
         // indicates the <Range> is currently being pressed/touched
@@ -851,20 +826,20 @@ const Range = (props: RangeProps): JSX.Element|null => {
             
             
             
-                 if (                                 (keyCode === 'pagedown'  )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (                                 (keyCode === 'pageup'    )) setValueDn({ type: 'increase', payload: 1     });
+                 if (                                 (keyCode === 'pagedown'  )) changeValue('decrease', 1    );
+            else if (                                 (keyCode === 'pageup'    )) changeValue('increase', 1    );
             
-            else if (                                 (keyCode === 'home'      )) setValueDn({ type: 'setValue', payload: minFn });
-            else if (                                 (keyCode === 'end'       )) setValueDn({ type: 'setValue', payload: maxFn });
+            else if (                                 (keyCode === 'home'      )) changeValue('setValue', minFn);
+            else if (                                 (keyCode === 'end'       )) changeValue('setValue', maxFn);
             
-            else if ( isOrientationBlock &&           (keyCode === 'arrowdown' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if ( isOrientationBlock &&           (keyCode === 'arrowup'   )) setValueDn({ type: 'increase', payload: 1     });
+            else if ( isOrientationBlock &&           (keyCode === 'arrowdown' )) changeValue('decrease', 1    );
+            else if ( isOrientationBlock &&           (keyCode === 'arrowup'   )) changeValue('increase', 1    );
             
-            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowright')) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) changeValue('decrease', 1    );
+            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowright')) changeValue('increase', 1    );
             
-            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowright')) setValueDn({ type: 'decrease', payload: 1     });
-            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) setValueDn({ type: 'increase', payload: 1     });
+            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowright')) changeValue('decrease', 1    );
+            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) changeValue('increase', 1    );
             else return false; // not handled
             
             
@@ -1100,7 +1075,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             role={props.role ?? 'slider'}
             
             aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
-            aria-valuenow   ={props['aria-valuenow'   ] ?? valueNow}
+            aria-valuenow   ={props['aria-valuenow'   ] ?? valueRef.current}
             aria-valuemin   ={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
             aria-valuemax   ={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
             
@@ -1178,9 +1153,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 
                 // values:
                 {...{
-                    // defaultValue : defaultValueFn,                     // fully controllable, no defaultValue
-                    value    : (valueFn !== null) ? valueNow : undefined, // fully controllable -or- *hack*ed controllable
-                    onChange : handleChange,
+                 // defaultValue : defaultValueFn,   // fully controllable, no defaultValue
+                    value        : valueRef.current, // fully controllable
+                    onChange     : handleChange,
                 }}
                 
                 
