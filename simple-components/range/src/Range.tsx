@@ -466,8 +466,13 @@ const Range = (props: RangeProps): JSX.Element|null => {
         
         // trigger `onChange` if the value changed:
         if (valueRef.current !== value) {
-            valueRef.current = value; // update
-            triggerRender();          // sync the UI to `valueRef.current`
+            if (valueFn === undefined) { // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+                valueRef.current = value; // update
+                triggerRender();          // sync the UI to `valueRef.current`
+            }
+            // else {
+            //     // for controllable component mode: the update of [value] prop and the source_of_truth are decided by <Parent> component (on every_re_render).
+            // }
             
             
             
