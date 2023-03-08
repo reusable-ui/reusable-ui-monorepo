@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/collapsible",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A capability of UI to expand/reduce its size or toggle the visibility.",
   "keywords": [
     "expandable",

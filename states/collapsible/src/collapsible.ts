@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useState,
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -175,7 +176,7 @@ const collapsibleCtrls = [
 ];
 export const useCollapsible = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleProps<TExpandedChangeEvent> & SemanticProps) => {
     // fn props:
-    const isExpanded  = props.expanded ?? false;
+    const propExpanded = props.expanded ?? false;
     const { tag } = useSemantic(props);
     
     
@@ -185,7 +186,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
      * state is expand/collapse based on [controllable expanded]
      * [uncontrollable expanded] is not supported
      */
-    const expandedFn : boolean = isExpanded /*controllable*/;
+    const expandedFn : boolean = propExpanded /*controllable*/;
     
     
     
@@ -198,8 +199,31 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     
     
     // update state:
+    const expandingTokenRef = useRef<number>(0);
     if (expanded !== expandedFn) { // change detected => apply the change & start animating
-        setExpanded(expandedFn);   // remember the last change
+        const expandingTokenLocal = (expandingTokenRef.current === Number.MAX_SAFE_INTEGER) ? 0 : (++expandingTokenRef.current);
+        expandingTokenRef.current = expandingTokenLocal;
+        
+        
+        
+        if (expandedFn) {
+            // expanding:
+            /*
+                Make a delay time in order to React to completing the rendering <ChildComponent> (if `lazy=true` applied)
+            */
+            Promise.resolve().then(() => {
+                if (expandingTokenRef.current === expandingTokenLocal) { // if token changed => abort to `setExpanded`
+                    setExpanded(expandedFn);   // remember the last change
+                } // if
+            });
+        }
+        else {
+            // collapsing:
+            /*
+                No need to make a delay time.
+            */
+            setExpanded(expandedFn);   // remember the last change
+        } // if
     } // if
     
     
@@ -207,7 +231,13 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     // interfaces:
     return {
         expanded  : expanded,
-        isVisible : expanded || (animation !== undefined),
+        isVisible : (
+            propExpanded // sooner   : The <ChildComponent> need to be rendered first BEFORE the expading animation OCCURED
+            // ||
+            // expanded  // too late : The expading animation is running BEFORE the <ChildComponent> already rendered
+            ||
+            (animation !== undefined) // being collapsing but not fully collapsed
+        ),
         
         class     : ((): string|null => {
             // expanding:
