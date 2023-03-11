@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -13,6 +18,7 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -30,6 +36,11 @@ import {
     
     // a capability of UI to rotate its layout:
     useOrientationable,
+    
+    
+    
+    // a capability of UI to expand/reduce its size or toggle the visibility:
+    useCollapsible,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -77,17 +88,17 @@ import {
 
 
 
-// styles:
-export const useDropdownListStyleSheet = dynamicStyleSheet(
-    () => import(/* webpackPrefetch: true */ './styles/styles.js')
-, { id: 'jkrdb7z3wo' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-
-
-
 // defaults:
 const _defaultTabIndex   : number            = -1   // makes the <List> programatically focusable
 const _defaultActionCtrl : boolean|undefined = true // the default for <ListItem>(s) is clickable
 const _defaultListStyle  : ListStyle         = 'flat'
+
+
+
+// styles:
+export const useDropdownListStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'jkrdb7z3wo' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
@@ -139,6 +150,8 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
         >,
         DropdownComponentProps<Element, TDropdownListExpandedChangeEvent>
 {
+    // behaviors:
+    scrollToActiveItem ?: boolean
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -155,6 +168,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         // behaviors:
+        scrollToActiveItem = true,
         lazy,
         
         
@@ -196,6 +210,12 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     
     
+    // states:
+    const collapsibleState = useCollapsible<TElement, TDropdownListExpandedChangeEvent>(props);
+    const isFullyExpanded  = (collapsibleState.class === 'expanded');
+    
+    
+    
     // variants:
     const listOrientationableVariant = useOrientationable(props, listDefaultOrientationableOptions);
     const listIsOrientationBlock     = listOrientationableVariant.isOrientationBlock;
@@ -216,6 +236,16 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     
     // refs:
+    const listRefInternal   = useRef<TElement|null>(null);
+    const mergedListRef     = useMergeRefs(
+        // preserves the original `ref` from `listComponent`:
+        listComponent.props.elmRef,
+        
+        
+        
+        listRefInternal,
+    );
+    
     const mergedDropdownRef = useMergeRefs(
         // preserves the original `outerRef` from `dropdownComponent`:
         dropdownComponent.props.outerRef,
@@ -297,7 +327,49 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         // actions:
         onFloatingUpdate,
     );
+    const handleDropdownAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart` from `dropdownComponent`:
+        dropdownComponent.props.onAnimationStart,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationStart,
+    );
+    const handleDropdownAnimationEnd   = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `dropdownComponent`:
+        dropdownComponent.props.onAnimationEnd,
+        
+        
+        
+        // states:
+        collapsibleState.handleAnimationEnd,
+    );
     
+    
+    
+    // dom effects:
+    /*
+        scrolls the first active <ListItem> when the <Dropdown> is expading or fully expanded
+    */
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isFullyExpanded)    return; // only if fully_expanded
+        if (!scrollToActiveItem) return; // only if the `scrollToActiveItem` feature is enabled
+        const listElm = listRefInternal.current;
+        if (!listElm)            return; // only if the corresponding <ListItem> has mounted to DOM
+        
+        
+        
+        // setups:
+        const activeItem = listElm.querySelector(':is(:scope>*, :scope>*>*):is(.activating, .activated, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(.passivating)');
+        if (!activeItem) return; // no active item found => abort
+        activeItem.scrollIntoView({
+            behavior : 'smooth',
+            inline   : 'nearest',
+            block    : 'nearest',
+        });
+    }, [isFullyExpanded, scrollToActiveItem]);
     
     
     // jsx:
@@ -334,6 +406,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             // states:
             expanded         : dropdownComponent.props.expanded     ?? expanded,
             onExpandedChange : handleDropdownExpandedChange,
+            onAnimationStart : handleDropdownAnimationStart,
+            onAnimationEnd   : handleDropdownAnimationEnd,
             
             
             
@@ -361,6 +435,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 // other props:
                 ...restListProps,
                 ...listComponent.props, // overwrites restListProps (if any conflics)
+                
+                
+                
+                // refs:
+                elmRef      : mergedListRef,
                 
                 
                 
