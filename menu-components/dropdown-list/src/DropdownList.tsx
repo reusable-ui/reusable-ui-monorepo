@@ -4,12 +4,19 @@ import {
     default as React,
 }                           from 'react'
 
+// cssfn:
+import {
+    // style sheets:
+    dynamicStyleSheet,
+}                           from '@cssfn/cssfn-react'           // writes css in react hook
+
 // reusable-ui core:
 import {
     // react helper hooks:
     useEvent,
     useMergeEvents,
     useMergeRefs,
+    useMergeClasses,
     
     
     
@@ -70,10 +77,17 @@ import {
 
 
 
+// styles:
+export const useDropdownListStyleSheet = dynamicStyleSheet(
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'jkrdb7z3wo' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
+
+
 // defaults:
 const _defaultTabIndex   : number            = -1   // makes the <List> programatically focusable
 const _defaultActionCtrl : boolean|undefined = true // the default for <ListItem>(s) is clickable
-const _defaultListStyle  : ListStyle         = 'joined'
+const _defaultListStyle  : ListStyle         = 'flat'
 
 
 
@@ -127,6 +141,11 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
 {
 }
 const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+    // styles:
+    const styleSheet = useDropdownListStyleSheet();
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -180,6 +199,19 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     // variants:
     const listOrientationableVariant = useOrientationable(props, listDefaultOrientationableOptions);
     const listIsOrientationBlock     = listOrientationableVariant.isOrientationBlock;
+    
+    
+    
+    // classes:
+    const mergedListClasses = useMergeClasses(
+        // preserves the original `classes` from `listComponent`:
+        listComponent.props.classes,
+        
+        
+        
+        // classes:
+        styleSheet.main,
+    );
     
     
     
@@ -334,6 +366,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 // variants:
                 listStyle   : listComponent.props.listStyle  ?? props.listStyle ?? _defaultListStyle,
+                
+                
+                
+                // classes:
+                classes     : mergedListClasses,
                 
                 
                 
