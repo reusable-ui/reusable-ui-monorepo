@@ -1,6 +1,7 @@
 // cssfn:
 import {
     // writes css in javascript:
+    rule,
     style,
     
     
@@ -51,6 +52,13 @@ export const usesDropdownLayout = (options?: OrientationableOptions) => {
             justifyContent : 'center', // center items (text, icon, etc) horizontally
             alignItems     : 'center', // center items (text, icon, etc) vertically
             flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            
+            
+            
+            // positions:
+            ...rule('.overlay', {
+                zIndex: 1000,
+            }),
             
             
             
