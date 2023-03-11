@@ -9,6 +9,9 @@ import {
     useRef,
     useEffect,
 }                           from 'react'
+import {
+    createPortal,
+}                           from 'react-dom'
 
 // cssfn:
 import {
@@ -29,10 +32,16 @@ import {
     
     
     // react helper hooks:
+    useTriggerRender,
     useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    
+    
+    
+    // a set of client-side functions:
+    isClientSide,
     
     
     
@@ -178,6 +187,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         dropdownUiRefInternal,
     );
+    const portalRefInternal     = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -370,10 +380,37 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         };
     }, [isExpanded, props.floatingOn, handleExpandedChange]);
     
+    // delays the rendering of portal until the page is fully hydrated
+    const [triggerRender] = useTriggerRender();
+    useEffect(() => {
+        // conditions:
+        if (!isClientSide) return; // client side only, server side => ignore
+        
+        
+        
+        // setups:
+        const viewportElm = document.body;
+        const portalElm = document.createElement('div');
+        viewportElm.appendChild(portalElm);
+        portalRefInternal.current = portalElm;
+        
+        triggerRender(); // re-render with hydrated version
+        
+        
+        
+        // cleanups:
+        return () => {
+            viewportElm.removeChild(portalElm);
+            portalRefInternal.current = null;
+        };
+    }, []);
+    
     
     
     // jsx:
-    return (
+    const portalElm = portalRefInternal.current;
+    if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
+    return createPortal( // workaround for zIndex stacking context
         <Collapse<TElement, TDropdownExpandedChangeEvent>
             // other props:
             {...restCollapseProps}
@@ -425,7 +462,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                 },
             )}
         </Collapse>
-    );
+    , portalElm);
 };
 export {
     Dropdown,

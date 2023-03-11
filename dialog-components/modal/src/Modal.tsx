@@ -575,7 +575,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // jsx:
     const portalElm = portalRefInternal.current;
     if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
-    return createPortal(
+    return createPortal( // workaround for zIndex stacking context
         <Generic<TElement>
             // other props:
             {...restGenericProps}
