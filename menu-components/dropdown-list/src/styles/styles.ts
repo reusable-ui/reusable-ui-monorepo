@@ -1,6 +1,7 @@
 // cssfn:
 import {
     // writes css in javascript:
+    rule,
     style,
     
     
@@ -48,7 +49,10 @@ export const usesDropdownListLayout = (options?: OrientationableOptions) => {
     
     return style({
         // scrolls:
-        overflow : 'auto',
+        overflow: 'hidden',
+        ...rule('.expanded>&', {
+            overflow : 'auto',
+        }),
         
         
         
