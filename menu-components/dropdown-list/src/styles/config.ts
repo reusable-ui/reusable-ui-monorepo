@@ -23,4 +23,4 @@ export const [dropdownLists, dropdownListValues, cssDropdownListConfig] = cssCon
         maxInlineSizeBlock  : 'unset'       as CssKnownProps['maxInlineSize'],
         maxBlockSizeBlock   : '20rem'       as CssKnownProps['maxBlockSize' ],
     };
-}, { prefix: 'dtl' });
+}, { prefix: 'ddl' });
