@@ -1,7 +1,13 @@
 // cssfn:
 import {
+    // cssfn css specific types:
+    CssSelectorCollection,
+    
+    
+    
     // writes css in javascript:
     rule,
+    fallbacks,
     fontFace,
     children,
     style,
@@ -135,7 +141,10 @@ export const usesIconLayout      = memoizeStyle(() => {
     });
 }, onIconStylesChange);
 
-export const usesIconFontLayout  = () => {
+export interface IconFontLayoutOptions {
+    iconFontElement ?: CssSelectorCollection
+}
+export const usesIconFontLayout  = (options?: IconFontLayoutOptions) => {
     // dependencies:
     
     // features:
@@ -162,7 +171,7 @@ export const usesIconFontLayout  = () => {
         
         
         // children:
-        ...children('::after', {
+        ...children(options?.iconFontElement ?? '&', {
             // fonts:
             // use the loaded custom_font:
             ...iconConfig.font.style, // apply the defined font's properties
@@ -173,7 +182,9 @@ export const usesIconFontLayout  = () => {
             ...style({
                 // layouts:
                 content       : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
-                display       : 'inline',       // use inline, so it takes the width & height automatically
+                ...fallbacks({
+                    display   : 'inline',       // use inline, so it takes the width & height automatically
+                }),
                 
                 
                 
@@ -300,7 +311,7 @@ export default memoizeStyle(() => style({
     ...usesIconLayout(),
     ...rule('.font', {
         // layouts:
-        ...usesIconFontLayout(),
+        ...usesIconFontLayout({ iconFontElement: '::after' }),
     }),
     ...rule('.image', {
         // layouts:
