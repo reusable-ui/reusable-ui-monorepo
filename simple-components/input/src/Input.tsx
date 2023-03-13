@@ -71,7 +71,8 @@ export interface InputProps
             
             // values:
             |'defaultValue'|'value'  // supports numeric and string value
-        >
+        >,
+        Pick<React.HTMLAttributes<HTMLInputElement>, 'inputMode'>
 {
     // validations:
     min          ?: number|string
@@ -138,6 +139,7 @@ const Input = (props: InputProps): JSX.Element|null => {
         placeholder,
         autoComplete,
         list,
+        inputMode,
     ...restEditableTextControlProps}  = props;
     
     
@@ -225,6 +227,7 @@ const Input = (props: InputProps): JSX.Element|null => {
                     placeholder,
                     autoComplete,
                     list,
+                    inputMode,
                 }}
             />
         </EditableTextControl>
