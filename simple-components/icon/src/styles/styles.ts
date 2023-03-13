@@ -181,49 +181,53 @@ export const usesIconFontLayout  = (options?: IconFontLayoutOptions) => {
             // layouts:
             ...style({
                 // layouts:
-                content       : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
                 ...fallbacks({
-                    display   : 'inline',       // use inline, so it takes the width & height automatically
+                    content     : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
+                    display     : 'inline',       // use inline, so it takes the width & height automatically
                 }),
                 
                 
                 
                 // sizes:
-                fontSize      : iconVars.size,  // set icon's size
-             // overflowY     : 'hidden',       // a hack: hides the pseudo-inherited underline
-                overflow      : 'hidden',       // we need to squash the text both vertically and horizontally when the custom_font is not yet loaded
-                blockSize     : 'inherit',      // follows <parent>'s height
-                aspectRatio   : 'inherit',      // follows <parent>'s aspect_ratio
+                fontSize        : iconVars.size,  // set icon's size
+             // overflowY       : 'hidden',       // a hack: hides the pseudo-inherited underline
+                overflow        : 'hidden',       // we need to squash the text both vertically and horizontally when the custom_font is not yet loaded
+                ...fallbacks({
+                    blockSize   : 'inherit',      // follows <parent>'s height
+                    aspectRatio : 'inherit',      // follows <parent>'s aspect_ratio
+                }),
                 
                 
                 
                 // accessibilities:
-                userSelect    : 'none',         // disable selecting icon's text
+                userSelect      : 'none',         // disable selecting icon's text
                 
                 
                 
                 // backgrounds:
-                backg         : 'transparent',  // set background as transparent
+                backg           : 'transparent',  // set background as transparent
                 
                 
                 
                 // foregrounds:
-                foreg         : iconVars.color, // set icon's color
+                foreg           : iconVars.color, // set icon's color
                 
                 
                 
                 // animations:
-                transition    : 'inherit',      // inherit transition for smooth sizing changes
+                ...fallbacks({
+                    transition  : 'inherit',      // inherit transition for smooth sizing changes
+                }),
                 
                 
                 
                 // typos:
-                lineHeight    : 1,
-                textTransform : 'none',
-                letterSpacing : 'normal',
-                overflowWrap  : 'normal',
-                whiteSpace    : 'nowrap',
-                direction     : 'ltr',
+                lineHeight      : 1,
+                textTransform   : 'none',
+                letterSpacing   : 'normal',
+                overflowWrap    : 'normal',
+                whiteSpace      : 'nowrap',
+                direction       : 'ltr',
                 
                 //#region turn on available browser features
                 WebkitFontSmoothing : 'antialiased',        // support for all WebKit browsers
