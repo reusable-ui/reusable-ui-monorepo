@@ -88,6 +88,35 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         actionCtrl = _defaultItemActionCtrl,
     ...restActionControlProps} = props;
     
+    const {
+        //#region <ActionControl> props
+        // states:
+        pressed      : _pressed,        // remove
+        
+        
+        
+        // behaviors:
+        actionMouses  : _actionMouses,  // remove
+        actionTouches : _actionTouches, // remove
+        actionKeys    : _actionKeys,    // remove
+        releaseDelay  : _releaseDelay,  // remove
+        
+        
+        
+        // handlers:
+        onClick      : _onClick,        // remove
+        //#endregion <ActionControl> props
+        
+        
+        
+        //#region <Control> props
+        // states:
+        focused            : _focused,            // remove
+        assertiveFocusable : _assertiveFocusable, // remove
+        arrived            : _arrived,            // remove
+        //#endregion <Control> props
+    ...restIndicatorProps} = restActionControlProps;
+    
     
     
     // fn props:
@@ -165,7 +194,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         :
         <Indicator<TElement>
             // other props:
-            {...restActionControlProps}
+            {...restIndicatorProps}
             
             
             

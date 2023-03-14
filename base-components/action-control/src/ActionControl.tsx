@@ -106,7 +106,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     // rest props:
     const {
         // states:
-        pressed      : _pressed,      // remove
+        pressed      : _pressed,        // remove
         
         
         
@@ -119,7 +119,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         
         // handlers:
-        onClick      : _onClick,      // remove
+        onClick      : _onClick,        // remove
     ...restControlProps} = props;
     
     
