@@ -158,6 +158,12 @@ export const usesModalSideLayout = () => {
                 ...usesCssProps(usesPrefixedProps(modalSides, 'cardFooter')), // apply config's cssProps starting with cardFooter***
             }),
             ...children(bodyElm, {
+                // scrolls:
+                // prevents scrolling the content behind the <Backdrop>
+                overscrollBehavior: 'contain',
+                
+                
+                
                 // customize:
                 ...usesCssProps(usesPrefixedProps(modalSides, 'cardBody')), // apply config's cssProps starting with cardBody***
             }),
