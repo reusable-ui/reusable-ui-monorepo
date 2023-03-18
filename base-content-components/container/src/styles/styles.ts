@@ -118,12 +118,22 @@ export const usesResponsiveContainerGridLayout = memoizeStyle(() => {
             // layouts:
             display      : 'grid', // use css grid for layouting
             // define our logical paddings:
+            
+            // gridTemplate : [[
+            //     `"........... blockStart ........." ${paddingVars.paddingBlock}`,
+            //     `"inlineStart  content   inlineEnd" auto`,
+            //     `"...........  blockEnd  ........." ${paddingVars.paddingBlock}`,
+            //     '/',
+            //     `${paddingVars.paddingInline} auto ${paddingVars.paddingInline}`
+            // ]],
+            
+            // fix overflow on some mobiles:
             gridTemplate : [[
                 `"........... blockStart ........." ${paddingVars.paddingBlock}`,
-                `"inlineStart  content   inlineEnd" auto`,
+                `"inlineStart  content   inlineEnd" calc(100% - (2 * ${paddingVars.paddingBlock}))`,
                 `"...........  blockEnd  ........." ${paddingVars.paddingBlock}`,
                 '/',
-                `${paddingVars.paddingInline} auto ${paddingVars.paddingInline}`
+                `${paddingVars.paddingInline} calc(100% - (2 * ${paddingVars.paddingInline})) ${paddingVars.paddingInline}`
             ]],
             
             
