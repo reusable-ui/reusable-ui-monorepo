@@ -74,6 +74,17 @@ export const usesBackdropCardLayout = () => {
             ...children('*', { // <CardDialog>
                 // layouts:
                 gridArea    : 'content',
+                
+                
+                
+                // sizes:
+                /*
+                    A (partial) fix on some mobile:
+                    The dialog may overflow the <Backdrop>'s padding.
+                    To fix this, limits the maxInlineSize & maxBlockSize
+                */
+                maxInlineSize : '100%', // works!
+                maxBlockSize  : '100%', // doesn't work, TODO: to be fixed soon
             }),
             
             
