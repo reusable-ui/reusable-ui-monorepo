@@ -486,7 +486,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 }, 0); // runs the 'input' event *next after* current event completed
             } // if
         } // if
-    }, [minFn, maxFn, stepFn, negativeFn, trimValue]); // (re)create the reducer function on every time the constraints changes
+    }, [minFn, maxFn, stepFn, negativeFn, trimValue, valueFn]); // (re)create the reducer function on every time the constraints changes
     
     
     
