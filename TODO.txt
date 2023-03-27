@@ -1,5 +1,4 @@
 [high prior] add bird view z-Index stack
-[high piror] fix z-index problem for tooltip
 [high prior] fix semanticRole for ul ol of <Group>
 [high prior] add excited for <Badge>
 

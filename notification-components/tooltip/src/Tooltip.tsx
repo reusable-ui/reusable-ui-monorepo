@@ -11,6 +11,9 @@ import {
     useCallback,
     useEffect,
 }                           from 'react'
+import {
+    createPortal,
+}                           from 'react-dom'
 
 // cssfn:
 import type {
@@ -25,10 +28,16 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
     useMergeRefs,
+    
+    
+    
+    // a set of client-side functions:
+    isClientSide,
     
     
     
@@ -169,8 +178,8 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // refs:
-    const arrowRefInternal = useRef<Element|null>(null);
-    const mergedArrowRef   = useMergeRefs(
+    const arrowRefInternal  = useRef<Element|null>(null);
+    const mergedArrowRef    = useMergeRefs(
         // preserves the original `elmRef` from `arrowComponent`:
         arrowComponent.props.elmRef,
         
@@ -183,6 +192,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         arrowRefInternal,
     );
+    const portalRefInternal = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -445,10 +455,37 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         };
     }, [isControllableExpanded, props.floatingOn, expandDelay, collapseDelay]);
     
+    // delays the rendering of portal until the page is fully hydrated
+    const [triggerRender] = useTriggerRender();
+    useEffect(() => {
+        // conditions:
+        if (!isClientSide) return; // client side only, server side => ignore
+        
+        
+        
+        // setups:
+        const viewportElm = document.body;
+        const portalElm = document.createElement('div');
+        viewportElm.appendChild(portalElm);
+        portalRefInternal.current = portalElm;
+        
+        triggerRender(); // re-render with hydrated version
+        
+        
+        
+        // cleanups:
+        return () => {
+            viewportElm.removeChild(portalElm);
+            portalRefInternal.current = null;
+        };
+    }, []);
+    
     
     
     // jsx:
-    return (
+    const portalElm = portalRefInternal.current;
+    if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
+    return createPortal( // workaround for zIndex stacking context
         <Popup<TElement, TExpandedChangeEvent>
             // other props:
             {...restPopupProps}
@@ -508,7 +545,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 },
             )}
         </Popup>
-    );
+    , portalElm);
 };
 export {
     Tooltip,
