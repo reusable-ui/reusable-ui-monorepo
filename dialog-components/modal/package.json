@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Overlays a dialog to the entire site's page.",
   "keywords": [
     "modal",

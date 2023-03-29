@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal-card",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Overlays a card dialog to the entire site's page.",
   "keywords": [
     "modal",

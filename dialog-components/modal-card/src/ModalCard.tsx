@@ -172,6 +172,16 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         backdropStyle,
         modalViewport,
         modalComponent   = (<Modal<Element, TModalExpandedChangeEvent> >{cardComponent}</Modal> as React.ReactComponentElement<any, ModalProps<Element, TModalExpandedChangeEvent>>),
+        
+        
+        
+        // handlers:
+        // @ts-ignore
+        onFullyOpened,
+        // @ts-ignore
+        onFullyClosed,
+        onFullyExpanded  = onFullyOpened,
+        onFullyCollapsed = onFullyClosed,
     ...restCardProps} = props;
     
     
@@ -328,6 +338,9 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             // handlers:
             onAnimationStart : handleAnimationStart,
             onAnimationEnd   : handleAnimationEnd,
+            
+            onFullyExpanded  : onFullyExpanded,
+            onFullyCollapsed : onFullyCollapsed,
         },
         
         

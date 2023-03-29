@@ -143,7 +143,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     
     
     
-    // events:
+    // handlers:
     onFullyExpanded  ?: () => void
     onFullyCollapsed ?: () => void
     /**
@@ -196,19 +196,19 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         
-        // events:
+        // components:
+        tabIndex,
+        children      : modalUiComponent,
+        
+        
+        
+        // handlers:
         // @ts-ignore
         onFullyOpened,
         // @ts-ignore
         onFullyClosed,
         onFullyExpanded  = onFullyOpened,
         onFullyCollapsed = onFullyClosed,
-        
-        
-        
-        // components:
-        tabIndex,
-        children      : modalUiComponent,
     ...restGenericProps} = props;
     
     
