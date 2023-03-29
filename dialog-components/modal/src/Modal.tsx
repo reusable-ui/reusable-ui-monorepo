@@ -128,24 +128,32 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         ModalUiComponentProps<Element>
 {
     // accessibilities:
-    setFocus      ?: boolean
-    restoreFocus  ?: boolean
+    setFocus         ?: boolean
+    restoreFocus     ?: boolean
     
     
     
     // behaviors:
-    lazy          ?: boolean
+    lazy             ?: boolean
     
     
     
     // modals:
-    modalViewport ?: React.RefObject<Element>|Element|null // getter ref
+    modalViewport    ?: React.RefObject<Element>|Element|null // getter ref
     
     
     
     // events:
-    onFullyOpened ?: () => void
-    onFullyClosed ?: () => void
+    onFullyExpanded  ?: () => void
+    onFullyCollapsed ?: () => void
+    /**
+     * @deprecated renamed to `onFullyExpanded`
+     */
+    onFullyOpened    ?: () => void
+    /**
+     * @deprecated renamed to `onFullyCollapsed`
+     */
+    onFullyClosed    ?: () => void
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -189,8 +197,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // events:
+        // @ts-ignore
         onFullyOpened,
+        // @ts-ignore
         onFullyClosed,
+        onFullyExpanded  = onFullyOpened,
+        onFullyCollapsed = onFullyClosed,
         
         
         
@@ -582,27 +594,27 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         };
     }, [isExpanded, handleExpandedChange]);
     
-    const isFullyOpened : boolean|null = (
+    const isFullyExpanded : boolean|null = (
         isExpanded
         ? (( collapsibleState.class === 'expanded') ? true  : null) // fully expanded
         : ((!collapsibleState.class               ) ? false : null) // fully collapsed
     );
-    const wasFullyOpened = useRef<boolean|null>(isFullyOpened);
+    const wasFullyExpanded = useRef<boolean|null>(isFullyExpanded);
     useEffect(() => {
         // conditions:
-        if (wasFullyOpened.current === isFullyOpened) return; // no change => ignore
-        wasFullyOpened.current = isFullyOpened; // sync the last change
+        if (wasFullyExpanded.current === isFullyExpanded) return; // no change => ignore
+        wasFullyExpanded.current = isFullyExpanded; // sync the last change
         
         
         
         // actions:
-        if (isFullyOpened === true) {
-            if (onFullyOpened) setTimeout(() => onFullyOpened(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+        if (isFullyExpanded === true) {
+            if (onFullyExpanded)  setTimeout(() => onFullyExpanded(), 0);  // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
         }
-        else if (isFullyOpened === false) {
-            if (onFullyClosed) setTimeout(() => onFullyClosed(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+        else if (isFullyExpanded === false) {
+            if (onFullyCollapsed) setTimeout(() => onFullyCollapsed(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
         } // if
-    }, [isFullyOpened, onFullyOpened, onFullyClosed]);
+    }, [isFullyExpanded, onFullyExpanded, onFullyCollapsed]);
     
     
     
