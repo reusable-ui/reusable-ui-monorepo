@@ -140,6 +140,12 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     
     // modals:
     modalViewport ?: React.RefObject<Element>|Element|null // getter ref
+    
+    
+    
+    // events:
+    onFullyOpened ?: () => void
+    onFullyClosed ?: () => void
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -179,6 +185,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         // modals:
         modalViewport,
+        
+        
+        
+        // events:
+        onFullyOpened,
+        onFullyClosed,
         
         
         
@@ -569,6 +581,28 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [isExpanded, handleExpandedChange]);
+    
+    const isFullyOpened : boolean|null = (
+        isExpanded
+        ? (( collapsibleState.class === 'expanded') ? true  : null) // fully expanded
+        : ((!collapsibleState.class               ) ? false : null) // fully collapsed
+    );
+    const wasFullyOpened = useRef<boolean|null>(isFullyOpened);
+    useEffect(() => {
+        // conditions:
+        if (wasFullyOpened.current === isFullyOpened) return; // no change => ignore
+        wasFullyOpened.current = isFullyOpened; // sync the last change
+        
+        
+        
+        // actions:
+        if (isFullyOpened === true) {
+            if (onFullyOpened) setTimeout(() => onFullyOpened(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+        }
+        else if (isFullyOpened === false) {
+            if (onFullyClosed) setTimeout(() => onFullyClosed(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+        } // if
+    }, [isFullyOpened, onFullyOpened, onFullyClosed]);
     
     
     
