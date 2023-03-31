@@ -114,7 +114,6 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             scrollSnapType : [['inline', 'mandatory']], // enable horizontal scroll snap
             scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
             WebkitOverflowScrolling : 'touch',          // supports for iOS Safari
-            overscrollBehavior      : 'none',           // do not forward scroll action to the parent element
             
             
             
