@@ -23,7 +23,7 @@ import {
     // removes browser's default stylesheet:
     stripoutList,
     stripoutScrollbar,
-    stripoutImage,
+    stripoutMedia,
     
     
     
@@ -179,7 +179,7 @@ export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}
 export const usesCarouselMediaLayout = () => {
     return style({
         // resets:
-        ...stripoutImage(), // removes browser's default styling on image
+        ...stripoutMedia(), // removes browser's default styling on image
         
         
         
@@ -187,15 +187,19 @@ export const usesCarouselMediaLayout = () => {
         ...style({
             // layouts:
             ...rule(':where(:first-child:last-child)', { // only one child
-                display : 'block', // fills the entire parent's width
-                
-                
-                
                 // sizes:
                 // span to maximum width/height while keeps aspect-ratio:
                 boxSizing         : 'border-box', // the final size is including borders & paddings
                 maxInlineSize     : 'fill-available',
                 maxBlockSize      : 'fill-available',
+                ...fallbacks({
+                    maxInlineSize : '-webkit-fill-available',
+                    maxBlockSize  : '-webkit-fill-available',
+                }),
+                ...fallbacks({
+                    maxInlineSize : '-moz-available',
+                    maxBlockSize  : '-moz-available',
+                }),
                 ...fallbacks({
                     maxInlineSize : '100%',
                     maxBlockSize  : '100%',
