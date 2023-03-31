@@ -71,6 +71,9 @@ export const useCheckStyleSheet = dynamicStyleSheet(
 
 
 // handlers:
+const handleChangeDummy                     : React.ChangeEventHandler<HTMLInputElement> = (_event) => {
+    /* nothing to do */
+};
 export const handleInputClickTriggersChange : React.MouseEventHandler<Element> = (event) => {
     event.stopPropagation(); // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
 };
@@ -78,13 +81,20 @@ export const handleInputClickTriggersChange : React.MouseEventHandler<Element> =
 
 
 // react components:
-export interface CheckProps
+export interface CheckProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        EditableActionControlProps<HTMLInputElement>,
+        Omit<EditableActionControlProps<TElement>,
+            // refs:
+            |'elmRef'                // moved to <input>
+        >,
+        Pick<EditableActionControlProps<HTMLInputElement>,
+            // refs:
+            |'elmRef'                // moved here
+        >,
         
         // input[type="checkbox"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>,
+        Omit<InputHTMLAttributes<TElement>,
             // semantics:
             |'role'                  // we redefined [role] in <Generic>
             
@@ -133,7 +143,7 @@ export interface CheckProps
     // children:
     children       ?: React.ReactNode
 }
-const Check = (props: CheckProps): JSX.Element|null => {
+const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet   = useCheckStyleSheet();
     
@@ -256,7 +266,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -276,7 +286,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         handleClickInternal,
     );
     
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -297,7 +307,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
         handleKeyDownInternal,
     );
     
-    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -319,24 +329,11 @@ const Check = (props: CheckProps): JSX.Element|null => {
         handleKeyUpInternal,
     );
     
-    const handleChangeDummy     = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
-        /* nothing to do */
-    });
-    const handleChange          = useMergeEvents(
-        // preserves the original `onChange`:
-        onChange,
-        
-        
-        
-        // dummy:
-        handleChangeDummy, // just for satisfying React of controllable <input>
-    );
-    
     
     
     // jsx:
     return (
-        <EditableActionControl<HTMLInputElement>
+        <EditableActionControl<TElement>
             // other props:
             {...restEditableActionControlProps}
             
@@ -378,6 +375,7 @@ const Check = (props: CheckProps): JSX.Element|null => {
             onClick   = {handleClick}
             onKeyDown = {handleKeyDown}
             onKeyUp   = {handleKeyUp}
+            onChange  = {onChange} // bubbles from `input[type]`
             
             
             
@@ -419,9 +417,9 @@ const Check = (props: CheckProps): JSX.Element|null => {
                     defaultValue,
                     value,
                     
-                    // defaultChecked,   // fully controllable, no defaultChecked
-                    checked  : isActive, // fully controllable
-                    onChange : handleChange,
+                    // defaultChecked,            // fully controllable, no defaultChecked
+                    checked  : isActive,          // fully controllable
+                    onChange : handleChangeDummy, // just for satisfying React of controllable <input>
                 }}
                 
                 
