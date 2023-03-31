@@ -208,19 +208,6 @@ export const stripoutList = () => style({
 });
 
 /**
- * Removes browser's default style on `<figure>`.
- */
-export const stripoutFigure = () => style({
-    // layouts:
-    display : unset,
-    
-    
-    
-    // spacings:
-    margin  : unset,
-});
-
-/**
  * Hides browser's default scrollbar.
  */
 export const stripoutScrollbar = () => style({
@@ -247,12 +234,72 @@ export const stripoutImage = () => style({
     
     
     // sizes:
-    // fix the <img>'s abnormal `display=block` sizing:
+    // fix the abnormal `display=block` sizing:
     // span to maximum width:
-    boxSizing      : 'border-box', // the final size is including borders & paddings
-    inlineSize     : 'fill-available',
+    boxSizing : 'border-box', // the final size is including borders & paddings
+    width     : 'fill-available',
     ...fallbacks({
-        inlineSize : '100%',
+        width : '-webkit-fill-available',
+    }),
+    ...fallbacks({
+        width : '-moz-available',
+    }),
+    ...fallbacks({
+        width : '100%',
+    }),
+    
+    
+    
+    // spacings:
+    overflow           : unset,
+    overflowClipMargin : unset,
+});
+
+/**
+ * Removes browser's default style on `<figure>`.
+ */
+export const stripoutFigure = () => style({
+    // spacings:
+    margin  : unset,
+});
+
+/**
+ * Removes browser's default style on `<figure>`, `<img>`, `<svg>`, `<video>`, `<picture>`, `<embed>`, and `<object>`.
+ */
+export const stripoutMedia = () => style({
+    // layouts:
+    ...rule(':where(img, svg, video, picture, object)', {
+        display: 'block', // fills the entire parent's width
+    }),
+    
+    
+    
+    // sizes:
+    ...rule(':where(img, svg, video, object)', {
+        // fix the abnormal `display=block` sizing:
+        // span to maximum width:
+        boxSizing : 'border-box', // the final size is including borders & paddings
+        width     : 'fill-available',
+        ...fallbacks({
+            width : '-webkit-fill-available',
+        }),
+        ...fallbacks({
+            width : '-moz-available',
+        }),
+        ...fallbacks({
+            width : '100%',
+        }),
+    }),
+    
+    
+    
+    // spacings:
+    ...rule(':where(figure)', {
+        margin : unset,
+    }),
+    ...rule(':where(img, svg:not(:root), video)', {
+        overflow           : unset,
+        overflowClipMargin : unset,
     }),
 });
 
