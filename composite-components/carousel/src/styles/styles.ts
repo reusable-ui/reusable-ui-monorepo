@@ -115,6 +115,9 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
             WebkitOverflowScrolling : 'touch',          // supports for iOS Safari
             
+            // DON'T: causes the user cannot scroll the whole page on the top of <Carousel>
+            // overscrollBehavior      : 'none',        // do not forward scroll action to the parent element
+            
             
             
             // children:
