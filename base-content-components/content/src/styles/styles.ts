@@ -56,7 +56,7 @@ import {
 import {
     // removes browser's default stylesheet:
     stripoutFigure,
-    stripoutImage,
+    stripoutMedia,
     
     
     
@@ -401,15 +401,7 @@ export const usesContentChildrenMedia        = memoizeStyle((options?: ContentCh
             // layouts:
             ...rule(':where(:not(.media))', { // styling all <media> except __custom__ .media
                 // resets:
-                ...stripoutImage(), // clear browser's default styling on `<img>`
-                
-                
-                
-                // layouts:
-                ...style({
-                    // layouts:
-                    display : 'block', // fills the entire parent's width
-                }),
+                ...stripoutMedia(), // clear browser's default styling on `<img>`
             }),
             
             
