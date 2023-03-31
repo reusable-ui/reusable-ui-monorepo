@@ -6,7 +6,6 @@ import {
     
     
     // hooks:
-    useCallback,
     useRef,
     useEffect,
     useMemo,
@@ -408,7 +407,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const stepFn     : number  = (step === 'any') ? 0 : Math.abs(step ?? 1);
     const negativeFn : boolean = (maxFn < minFn);
     
-    const trimValue = useCallback((value: number): number => {
+    const trimValue    = useEvent((value: number): number => {
         // make sure the requested value is between the min value & max value:
         value     = Math.min(Math.max(
             value
@@ -430,7 +429,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         } // if
         
         return value;
-    }, [minFn, maxFn, stepFn, negativeFn]); // (re)create the function on every time the constraints changes
+    });
     const trimValueOpt = (value: number|undefined): number|undefined => {
         // conditions:
         if (value === undefined) return undefined;
@@ -455,7 +454,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const valueRatio       : number = (valueRef.current - minFn) / (maxFn - minFn);
     
     type ChangeValueAction = 'setValue'|'setValueRatio'|'decrease'|'increase'
-    const changeValue     = useCallback((action: ChangeValueAction, amount: number): void => {
+    const changeValue      = useEvent((action: ChangeValueAction, amount: number): void => {
         let value = valueRef.current;
         switch (action) {
             case 'setValue': {
@@ -505,7 +504,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                 }, 0); // runs the 'input' event *next after* current event completed
             } // if
         } // if
-    }, [minFn, maxFn, stepFn, negativeFn, trimValue, valueFn]); // (re)create the reducer function on every time the constraints changes
+    });
     
     
     
