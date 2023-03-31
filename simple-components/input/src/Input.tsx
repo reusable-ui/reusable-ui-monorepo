@@ -75,18 +75,19 @@ export interface InputProps
         Pick<React.HTMLAttributes<HTMLInputElement>, 'inputMode'>
 {
     // validations:
-    min          ?: number|string
-    max          ?: number|string
-    step         ?: number|string
-    pattern      ?: string
+    min            ?: number|string
+    max            ?: number|string
+    step           ?: number|string
+    pattern        ?: string
     
     
     
     // formats:
-    type         ?: InputType
-    placeholder  ?: string
-    autoComplete ?: string
-    list         ?: string
+    type           ?: InputType
+    placeholder    ?: string
+    autoComplete   ?: string
+    autoCapitalize ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {})
+    list           ?: string
 }
 const Input = (props: InputProps): JSX.Element|null => {
     // styles:
@@ -138,6 +139,7 @@ const Input = (props: InputProps): JSX.Element|null => {
         type,
         placeholder,
         autoComplete,
+        autoCapitalize,
         list,
         inputMode,
     ...restEditableTextControlProps}  = props;
@@ -226,6 +228,7 @@ const Input = (props: InputProps): JSX.Element|null => {
                     type,
                     placeholder,
                     autoComplete,
+                    autoCapitalize,
                     list,
                     inputMode,
                 }}
