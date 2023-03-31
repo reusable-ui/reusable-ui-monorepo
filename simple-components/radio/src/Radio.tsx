@@ -59,13 +59,13 @@ export const useRadioStyleSheet = dynamicStyleSheet(
 
 
 // react components:
-export interface RadioProps
+export interface RadioProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        CheckProps
+        CheckProps<TElement>
 {
 }
-const Radio = (props: RadioProps): JSX.Element|null => {
+const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet   = useRadioStyleSheet();
     
@@ -123,7 +123,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     
     // handlers:
-    const handleClickInternal   = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -143,7 +143,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         handleClickInternal,
     );
     
-    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -165,11 +165,11 @@ const Radio = (props: RadioProps): JSX.Element|null => {
         handleKeyUpInternal,
     );
     
-    const handleChangeInternal  = useEvent<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+    const handleChangeInternal  = useEvent<React.ChangeEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        const currentRadio = event.target;
+        const currentRadio = event.target as (EventTarget & Element) as (EventTarget & HTMLInputElement);
         const name = currentRadio.name;
         if (!name)                  return; // the <Radio> must have a name
         
@@ -253,7 +253,7 @@ const Radio = (props: RadioProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <Check
+        <Check<TElement>
             // other props:
             {...restCheckProps}
             

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/radio",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A UI for the user to select single option.",
   "keywords": [
     "radio",
