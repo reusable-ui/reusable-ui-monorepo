@@ -40,6 +40,13 @@ export const useInputStyleSheet = dynamicStyleSheet(
 
 
 
+// handlers:
+const handleChangeDummy : React.ChangeEventHandler<HTMLInputElement> = (_event) => {
+    /* nothing to do */
+};
+
+
+
 // react components:
 
 export type InputTextLike                 = 'text'|'search'|'password'|'email'|'tel'|'url'|'number'|'time'|'week'|'date'|'datetime-local'|'month'
@@ -50,16 +57,23 @@ export type InputType                     = InputTextLike | 'color'|'file'|'rang
  */
 export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElement>, 'size'|'src'|'alt'|'width'|'height'|'crossOrigin'|'checked'|'multiple'|'accept'|'capture'|'formAction'|'formEncType'|'formMethod'|'formNoValidate'|'formTarget'|keyof React.HTMLAttributes<TElement>>
 
-export interface InputProps
+export interface InputProps<TElement extends Element = HTMLSpanElement>
     extends
         // bases:
-        Omit<EditableTextControlProps<HTMLInputElement>,
+        Omit<EditableTextControlProps<TElement>,
+            // refs:
+            |'elmRef'                // moved to <input>
+            
             // children:
             |'children'              // no nested children
         >,
+        Pick<EditableTextControlProps<HTMLInputElement>,
+            // refs:
+            |'elmRef'                // moved here
+        >,
         
         // input[type="***"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>,
+        Omit<InputHTMLAttributes<TElement>,
             // semantics:
             |'role'                  // we redefined [role] in <Generic>
             
@@ -72,7 +86,7 @@ export interface InputProps
             // values:
             |'defaultValue'|'value'  // supports numeric and string value
         >,
-        Pick<React.HTMLAttributes<HTMLInputElement>, 'inputMode'>
+        Pick<React.HTMLAttributes<TElement>, 'inputMode'>
 {
     // validations:
     min            ?: number|string
@@ -89,7 +103,7 @@ export interface InputProps
     autoCapitalize ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {})
     list           ?: string
 }
-const Input = (props: InputProps): JSX.Element|null => {
+const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet = useInputStyleSheet();
     
@@ -118,7 +132,7 @@ const Input = (props: InputProps): JSX.Element|null => {
         // values:
         defaultValue,
         value,
-        onChange, // forwards to `input[type]`
+        onChange, // bubbles from `input[type]`
         
         
         
@@ -154,7 +168,7 @@ const Input = (props: InputProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <EditableTextControl<HTMLInputElement>
+        <EditableTextControl<TElement>
             // other props:
             {...restEditableTextControlProps}
             
@@ -172,6 +186,11 @@ const Input = (props: InputProps): JSX.Element|null => {
             
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-visible-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+            
+            
+            
+            // handlers:
+            onChange={onChange} // bubbles from `input[type]`
         >
             <input
                 // refs:
@@ -203,7 +222,7 @@ const Input = (props: InputProps): JSX.Element|null => {
                 {...{
                     defaultValue,
                     value,
-                    onChange,
+                    onChange: handleChangeDummy, // just for satisfying React of controllable <input>
                 }}
                 
                 
