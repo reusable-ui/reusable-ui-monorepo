@@ -108,6 +108,13 @@ export const useRangeStyleSheet = dynamicStyleSheet(
 
 
 
+// handlers:
+const handleChangeDummy : React.ChangeEventHandler<HTMLInputElement> = (_event) => {
+    /* nothing to do */
+};
+
+
+
 // react components:
 export interface RangeSubComponentProps
 {
@@ -142,19 +149,30 @@ export interface RangeSubComponentProps
     thumbStyle        ?: React.CSSProperties
 }
 
-export interface RangeProps
+export interface RangeProps<TElement extends Element = HTMLDivElement>
     extends
         // bases:
-        Omit<EditableActionControlProps<HTMLInputElement>,
+        Omit<EditableActionControlProps<TElement>,
+            // refs:
+            |'elmRef'                // moved to <input>
+            
             // values:
             |'defaultValue'|'value'  // only supports numeric value
+            |'onChange'              // moved to <input>
             
             // children:
             |'children'              // no nested children
         >,
+        Pick<EditableActionControlProps<HTMLInputElement>,
+            // refs:
+            |'elmRef'                // moved here
+            
+            // values:
+            |'onChange'              // moved here
+        >,
         
         // input[type="range"]:
-        Omit<InputHTMLAttributes<HTMLInputElement>,
+        Omit<InputHTMLAttributes<TElement>,
             // semantics:
             |'role'                  // we redefined [role] in <Generic>
             
@@ -195,7 +213,7 @@ export interface RangeProps
     defaultValue      ?: number
     value             ?: number
 }
-const Range = (props: RangeProps): JSX.Element|null => {
+const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet             = useRangeStyleSheet();
     
@@ -208,9 +226,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // states:
-    const focusableState         = useFocusable<HTMLInputElement>(props);
-    const interactableState      = useInteractable<HTMLInputElement>(props, focusableState);
-    const clickableState         = useClickable<HTMLInputElement>({
+    const focusableState         = useFocusable<TElement>(props);
+    const interactableState      = useInteractable<TElement>(props, focusableState);
+    const clickableState         = useClickable<TElement>({
         enabled           : props.enabled,
         inheritEnabled    : props.inheritEnabled,
         
@@ -316,7 +334,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     
     
     // refs:
-    const rangeRefInternal    = useRef<HTMLInputElement|null>(null);
+    const rangeRefInternal    = useRef<TElement|null>(null);
     const inputRefInternal    = useRef<HTMLInputElement|null>(null);
     const trackRefInternal    = useRef<HTMLElement|null>(null);
     const thumbRefInternal    = useRef<HTMLElement|null>(null);
@@ -705,7 +723,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
             (event.buttons === 1)  // only left button pressed, ignore multi button pressed
         );
     });
-    const handleMouseActive    = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handleMouseActive    = useEvent<React.MouseEventHandler<TElement>>((event) => {
         handleMouseNative(event.nativeEvent);
     });
     
@@ -720,7 +738,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         // actions:
         isTouchActive.current = (event.touches.length === 1); // only single touch
     });
-    const handleTouchActive    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+    const handleTouchActive    = useEvent<React.TouchEventHandler<TElement>>((event) => {
         handleTouchNative(event.nativeEvent);
     });
     
@@ -757,7 +775,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
         isTouchActive.current = false; // unmark as touched
     }, [propEnabled, propReadOnly]);
     
-    const handlePointerSlide  = useEvent<React.MouseEventHandler<HTMLInputElement>>((event) => {
+    const handlePointerSlide  = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         // one of the mouse or touch is active but not both are active:
         if (
@@ -796,11 +814,11 @@ const Range = (props: RangeProps): JSX.Element|null => {
                 clickableState.handleMouseDown(event);
                 break;
             case 'touchstart':
-                clickableState.handleTouchStart(event as unknown as React.TouchEvent<HTMLInputElement>);
+                clickableState.handleTouchStart(event as unknown as React.TouchEvent<TElement>);
                 break;
         } // switch
     });
-    const handleTouchSlide    = useEvent<React.TouchEventHandler<HTMLInputElement>>((event) => {
+    const handleTouchSlide    = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
         if (event.touches.length !== 1) return; // only single touch
         
@@ -811,9 +829,9 @@ const Range = (props: RangeProps): JSX.Element|null => {
             ...event,
             clientX : event.touches[0].clientX,
             clientY : event.touches[0].clientY,
-        } as unknown as React.MouseEvent<HTMLInputElement, MouseEvent>);
+        } as unknown as React.MouseEvent<TElement, MouseEvent>);
     });
-    const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<HTMLInputElement>>((event) => {
+    const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (!propEnabled)           return; // control is disabled => no response required
         if (propReadOnly)           return; // control is readOnly => no response required
@@ -911,9 +929,6 @@ const Range = (props: RangeProps): JSX.Element|null => {
         focusableState.handleKeyDown,
     );
     
-    const handleChangeDummy   = useEvent<React.ChangeEventHandler<HTMLInputElement>>((_event) => {
-        /* nothing to do */
-    });
     const handleChange        = useMergeEvents(
         // preserves the original `onChange`:
         onChange,
@@ -1064,7 +1079,7 @@ const Range = (props: RangeProps): JSX.Element|null => {
     );
     
     return (
-        <EditableControl<HTMLInputElement>
+        <EditableControl<TElement>
             // other props:
             {...restEditableControlProps}
             
