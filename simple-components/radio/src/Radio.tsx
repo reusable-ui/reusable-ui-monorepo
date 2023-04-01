@@ -165,7 +165,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         handleKeyUpInternal,
     );
     
-    const handleChangeInternal  = useEvent<React.ChangeEventHandler<TElement>>((event) => {
+    const handleChangeInternal  = useEvent<React.ChangeEventHandler<HTMLInputElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
