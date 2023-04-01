@@ -87,10 +87,16 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
         Omit<EditableActionControlProps<TElement>,
             // refs:
             |'elmRef'                // moved to <input>
+            
+            // values:
+            |'onChange'              // moved to <input>
         >,
         Pick<EditableActionControlProps<HTMLInputElement>,
             // refs:
             |'elmRef'                // moved here
+            
+            // values:
+            |'onChange'              // moved here
         >,
         
         // input[type="checkbox"]:
@@ -329,6 +335,16 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         handleKeyUpInternal,
     );
     
+    const handleChange          = useMergeEvents(
+        // preserves the original `onChange`:
+        onChange,
+        
+        
+        
+        // dummy:
+        handleChangeDummy, // just for satisfying React of controllable <input>
+    );
+    
     
     
     // jsx:
@@ -375,7 +391,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             onClick   = {handleClick}
             onKeyDown = {handleKeyDown}
             onKeyUp   = {handleKeyUp}
-            onChange  = {onChange} // bubbles from `input[type]`
             
             
             
@@ -417,9 +432,9 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
                     defaultValue,
                     value,
                     
-                    // defaultChecked,            // fully controllable, no defaultChecked
-                    checked  : isActive,          // fully controllable
-                    onChange : handleChangeDummy, // just for satisfying React of controllable <input>
+                    // defaultChecked,       // fully controllable, no defaultChecked
+                    checked  : isActive,     // fully controllable
+                    onChange : handleChange,
                 }}
                 
                 
