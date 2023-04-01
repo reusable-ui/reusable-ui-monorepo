@@ -6,7 +6,6 @@ import {
     
     
     // hooks:
-    useCallback,
     useEffect,
     useMemo,
 }                           from 'react'
@@ -33,6 +32,7 @@ import {
 import {
     // react helper hooks:
     useIsomorphicLayoutEffect,
+    useEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // other libs:
@@ -166,14 +166,14 @@ export const useWindowResizeObserver = (windowResizeCallback: WindowResizeCallba
 
 
 
-const useResizeCallback = (liveStyleSheet: Subject<CssStyle|null>, options: CssSizeOptions) => {
+const useResizeHandler = (liveStyleSheet: Subject<CssStyle|null>, options: CssSizeOptions) => {
     // dom effects:
     const {
         selector = ':root',
         varInlineSize,
         varBlockSize,
     } = options;
-    return useCallback((size: ResizeObserverSize) => {
+    return useEvent((size: ResizeObserverSize) => {
         // update the `liveStyleSheet`:
         liveStyleSheet.next({
             ...atGlobal({
@@ -187,7 +187,7 @@ const useResizeCallback = (liveStyleSheet: Subject<CssStyle|null>, options: CssS
                 }),
             }),
         });
-    }, [selector, varInlineSize, varBlockSize]); // regenerates the callback if `varInlineSize` and/or `varBlockSize` changed
+    });
 };
 
 
@@ -234,8 +234,8 @@ export const useElementCssSize = <TElement extends Element = HTMLElement>(elemen
     
     
     // dom effects:
-    const elementResizeCallback = useResizeCallback(liveStyleSheet, options);
-    useElementResizeObserver(elementRef, elementResizeCallback);
+    const handleElementResize = useResizeHandler(liveStyleSheet, options);
+    useElementResizeObserver(elementRef, handleElementResize);
     
     
     
@@ -254,8 +254,8 @@ export const useWindowCssSize  = (options: CssSizeOptions) => {
     
     
     // dom effects:
-    const windowResizeCallback = useResizeCallback(liveStyleSheet, options);
-    useWindowResizeObserver(windowResizeCallback);
+    const handleWindowResize = useResizeHandler(liveStyleSheet, options);
+    useWindowResizeObserver(handleWindowResize);
     
     
     
