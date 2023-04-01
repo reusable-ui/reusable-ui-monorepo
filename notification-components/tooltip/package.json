@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/tooltip",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Represents advisory information related to the element it belongs.",
   "keywords": [
     "tooltip",

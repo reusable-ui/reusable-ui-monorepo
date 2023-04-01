@@ -8,7 +8,6 @@ import {
     // hooks:
     useState,
     useRef,
-    useCallback,
     useEffect,
 }                           from 'react'
 import {
@@ -206,7 +205,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     /**
      * Calculates the required offset (space) for the <arrow>.
      */
-    const arrowOffsetMiddleware    = useCallback((arrow: Element): FloatingMiddleware => {
+    const arrowOffsetMiddleware    = useEvent((arrow: Element): FloatingMiddleware => {
         return {
             name: 'arrowOffset',
             async fn({ placement, x, y }) {
@@ -225,12 +224,12 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 };
             },
         };
-    }, [calculateArrowSize]);
+    });
     
     /**
      * Attaches an arrow element to the <Tooltip>.
      */
-    const middlewareWithArrow      = useCallback(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
+    const middlewareWithArrow      = useEvent(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
         const arrow = arrowRefInternal.current;
         if (!arrow) return defaultMiddleware;
         
@@ -267,8 +266,8 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 padding : maxBorderRadius ?? 0,
             }),
         ];
-    }, [arrowOffsetMiddleware]);
-    const mergedFloatingMiddleware = useCallback(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
+    });
+    const mergedFloatingMiddleware = useEvent(async (defaultMiddleware: FloatingMiddleware[]): Promise<FloatingMiddleware[]> => {
         if (Array.isArray(floatingMiddleware)) return floatingMiddleware;
         
         
@@ -279,7 +278,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // preserves the original `floatingMiddleware`:
         return floatingMiddleware ? await floatingMiddleware(defaultMiddleware2) : defaultMiddleware2;
-    }, [floatingMiddleware, middlewareWithArrow]);
+    });
     
     
     
