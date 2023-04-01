@@ -339,7 +339,7 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
     const triggerActiveChange  = useEvent<React.Dispatch<boolean>>((active) => {
         // fire change native event:
         const element = changeEventTarget?.current;
-        let handleTriggerClick : (() => void)|undefined = undefined;
+        let doTriggerClick = false;
         if (element) {
             // *hack*: trigger `onChange` event:
             // side effect: toggles the [checked] prop:
@@ -347,12 +347,7 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
             if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
                 if (active) {
                     // register to fire `click` native event to trigger `onChange` synthetic event:
-                    handleTriggerClick = () => {
-                        // if (element.checked) element.checked = false;   // OLD: *hack* flip before firing click event
-                        (element as any)?._valueTracker?.stopTracking?.(); // react *hack*
-                        
-                        element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                    };
+                    doTriggerClick = true;
                 }
                 // else {
                 //     // do nothing if (active === false)
@@ -361,17 +356,17 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
             }
             else {
                 // register to fire `click` native event to trigger `onChange` synthetic event:
-                handleTriggerClick = () => {
-                    (element as any)?._valueTracker?.stopTracking?.(); // react *hack*
-                    
-                    element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                };
+                doTriggerClick = true;
             } // if
         } // if
         
         setTimeout(() => {
             // fire `click` native event to trigger `onChange` synthetic event:
-            handleTriggerClick?.();
+            if (element && doTriggerClick) {
+                (element as any)?._valueTracker?.stopTracking?.(); // react *hack*
+                
+                element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
+            } // if
             
             
             
