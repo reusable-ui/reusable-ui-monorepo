@@ -171,6 +171,13 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
     
     
     
+    // fn props:
+    const propEnabled  = usePropEnabled(props);
+    const propReadOnly = usePropReadOnly(props);
+    
+    
+    
+    // handlers:
     const handleChange = useMergeEvents(
         // preserves the original `onChange`:
         onChange,
@@ -180,12 +187,6 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
         // dummy:
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
-    
-    
-    
-    // fn props:
-    const propEnabled  = usePropEnabled(props);
-    const propReadOnly = usePropReadOnly(props);
     
     
     
