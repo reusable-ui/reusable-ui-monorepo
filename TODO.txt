@@ -1,3 +1,4 @@
+[high prior] add autoCapitalize implementation
 [high prior] add tooltipViewport
 [high prior] add dropdownViewport
 [high prior] add bird view z-Index stack
