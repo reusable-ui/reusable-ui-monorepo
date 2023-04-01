@@ -16,6 +16,11 @@ import {
 
 // reusable-ui core:
 import {
+    // react helper hooks:
+    useMergeEvents,
+    
+    
+    
     // an accessibility management system:
     usePropEnabled,
     usePropReadOnly,
@@ -64,12 +69,18 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
             // refs:
             |'elmRef'                // moved to <input>
             
+            // values:
+            |'onChange'              // moved to <input>
+            
             // children:
             |'children'              // no nested children
         >,
         Pick<EditableTextControlProps<HTMLInputElement>,
             // refs:
             |'elmRef'                // moved here
+            
+            // values:
+            |'onChange'              // moved here
         >,
         
         // input[type="***"]:
@@ -132,7 +143,7 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
         // values:
         defaultValue,
         value,
-        onChange, // bubbles from `input[type]`
+        onChange, // forwards to `input[type]`
         
         
         
@@ -157,6 +168,18 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
         list,
         inputMode,
     ...restEditableTextControlProps}  = props;
+    
+    
+    
+    const handleChange = useMergeEvents(
+        // preserves the original `onChange`:
+        onChange,
+        
+        
+        
+        // dummy:
+        handleChangeDummy, // just for satisfying React of controllable <input>
+    );
     
     
     
@@ -186,11 +209,6 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
             
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-visible-within` (pseudo) => the wrapper is also `.focus` (synthetic)
-            
-            
-            
-            // handlers:
-            onChange={onChange} // bubbles from `input[type]`
         >
             <input
                 // refs:
@@ -222,7 +240,7 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
                 {...{
                     defaultValue,
                     value,
-                    onChange: handleChangeDummy, // just for satisfying React of controllable <input>
+                    onChange : handleChange,
                 }}
                 
                 
