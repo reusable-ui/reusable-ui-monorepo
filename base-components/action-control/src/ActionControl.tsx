@@ -227,56 +227,17 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     );
     
     // inspect if <ActionControl>'s children contain one/more <Link>:
-    const children       = React.Children.toArray(props.children); // convert the children to array
-    const clientSideLink = children.find(isClientSideLink);        // take the first <Link> (if any)
-    if (!clientSideLink) return actionControl;                     // if no contain <Link> => normal <ActionControl>
+    const children       = (Array.isArray(props.children) ? props.children : React.Children.toArray(props.children)); // convert the children to array (if necessary)
+    const clientSideLink = children.find(isClientSideLink); // take the first <Link> (if any)
+    if (!clientSideLink) return actionControl;              // if no contain <Link> => normal <ActionControl>
     
     return (
-        /*
-            swaps between <Control> and <Link> while maintaining their's children, so:
-            declaration:
-            <Control>
-                <c1>
-                <c2>
-                <Link>
-                    <c3>
-                    <c4>
-                </Link>
-                <c5>
-                <c6>
-            </Control>
-            rendered to:
-            <Link>
-                <Control>
-                    <c1>
-                    <c2>
-                    <c3>
-                    <c4>
-                    <c5>
-                    <c6>
-                </Control>
-            </Link>
-        */
         <WithLinkAndElement<TElement>
             // components:
             linkComponent    = {clientSideLink}
             elementComponent = {actionControl}
         >
-            {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
-                // current <ActionControl>'s children:
-                if (child !== clientSideLink) return [child];
-                
-                
-                
-                // merge with <Link>'s children:
-                return (
-                    React.Children.toArray(clientSideLink.props.children) // unwrap the <Link>
-                    .map((grandChild) => { // fix the grandChild's key
-                        if (!React.isValidElement(grandChild)) return grandChild;
-                        return React.cloneElement(grandChild, { key: `${child.key}-${grandChild.key}` });
-                    })
-                );
-            })}
+            {children}
         </WithLinkAndElement>
     );
 };
@@ -312,6 +273,52 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
     
     
     
+    /*
+        swaps between <Element> and <Link> while maintaining their's children, so:
+        declaration:
+        <Element>
+            <c1>
+            <c2>
+            <Link>
+                <c3>
+                <c4>
+            </Link>
+            <c5>
+            <c6>
+        </Element>
+        rendered to:
+        <Link>
+            <Element>
+                <c1>
+                <c2>
+                <c3>
+                <c4>
+                <c5>
+                <c6>
+            </Element>
+        </Link>
+    */
+    const mergedChildren = (
+        (Array.isArray(children) ? children : React.Children.toArray(children)) // convert the children to array (if necessary)
+        .flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
+            // current <ActionControl>'s children:
+            if (child !== linkComponent) return [child];
+            
+            
+            
+            // merge with <Link>'s children:
+            return (
+                React.Children.toArray(linkComponent.props.children) // unwrap the <Link>
+                .map((grandChild) => { // fix the grandChild's key
+                    if (!React.isValidElement(grandChild)) return grandChild;
+                    return React.cloneElement(grandChild, { key: `${child.key}-${grandChild.key}` });
+                })
+            );
+        })
+    );
+    
+    
+    
     // fn props:
     const propEnabled                     = usePropEnabled(elementComponent.props);
     const {isSemanticTag: isSemanticLink} = useTestSemantic(elementComponent.props, { semanticTag: 'a', semanticRole: 'link' });
@@ -326,7 +333,7 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
         
         
         // children:
-        children, // replace the children
+        mergedChildren, // replace the children
     );
     
     const isNextJsLink = !!linkComponent.props.href;
@@ -350,13 +357,13 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
         (
             !isNextJsLink
             ?
-            children
+            mergedChildren
             :
             <WithForwardRef
                 // components:
                 elementComponent={elementComponent}
             >
-                {children}
+                {mergedChildren}
             </WithForwardRef>
         )
     );
