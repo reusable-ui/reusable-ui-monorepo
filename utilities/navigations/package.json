@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navigations",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A set of navigation functions.",
   "keywords": [
     "navigations",
@@ -14,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/navigations.js",
-  "types": "dist/navigations.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
