@@ -36,7 +36,6 @@ import {
     
     
     // a set of client-side functions:
-    JsxClientSideLink,
     isClientSideLink,
     
     
@@ -124,6 +123,11 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         // handlers:
         onClick      : _onClick,        // remove
+        
+        
+        
+        // children:
+        children,
     ...restControlProps} = props;
     
     
@@ -226,16 +230,10 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         />
     );
     
-    // inspect if <ActionControl>'s children contain one/more <Link>:
-    const children       = (Array.isArray(props.children) ? (props.children as React.ReactNode[]) : React.Children.toArray(props.children)); // convert the children to array (if necessary)
-    const clientSideLink = children.find(isClientSideLink); // take the first <Link> (if any)
-    if (!clientSideLink) return actionControl;              // if no contain <Link> => normal <ActionControl>
-    
     return (
         <WithLinkAndElement<TElement>
             // components:
-            linkComponent    = {clientSideLink}
-            elementComponent = {actionControl}
+            elementComponent={actionControl}
         >
             {children}
         </WithLinkAndElement>
@@ -250,7 +248,6 @@ export {
 
 interface WithLinkAndElementProps<TElement extends Element = HTMLElement> {
     // components:
-    linkComponent     : JsxClientSideLink
     elementComponent  : React.ReactComponentElement<any, GenericProps<TElement>>
     
     
@@ -262,7 +259,6 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
     // rest props:
     const {
         // components:
-        linkComponent,
         elementComponent,
         
         
@@ -270,6 +266,24 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
         // children:
         children,
     ...restProps} = props;
+    
+    
+    
+    const childrenArray = (Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children)); // convert the children to array (if necessary)
+    
+    // inspect if <Element>'s children contain one/more <Link>:
+    const linkComponent = childrenArray.find(isClientSideLink); // take the first <Link> (if any)
+    
+    // if no contain <Link> => normal <Element>:
+    if (!linkComponent) return React.cloneElement(elementComponent,
+        // props:
+        undefined, // keeps the original <Element>'s props
+        
+        
+        
+        // children:
+        elementComponent.props.children ?? childrenArray, // replace the children
+    );
     
     
     
@@ -299,9 +313,9 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
         </Link>
     */
     const mergedChildren = (
-        (Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children)) // convert the children to array (if necessary)
-        .flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
-            // current <ActionControl>'s children:
+        childrenArray
+        .flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <Element>'s children:
+            // current <Element>'s children:
             if (child !== linkComponent) return [child];
             
             
@@ -326,9 +340,9 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
     
     
     // jsx:
-    if (!propEnabled) return React.cloneElement(elementComponent, // if <ActionControl> is disabled => no need to wrap with <Link>
+    if (!propEnabled) return React.cloneElement(elementComponent, // if <Element> is disabled => no need to wrap with <Link>
         // props:
-        undefined, // keeps the original <ActionControl>'s props
+        undefined, // keeps the original <Element>'s props
         
         
         
