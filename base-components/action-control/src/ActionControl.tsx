@@ -18,7 +18,6 @@ import {
 import {
     // react helper hooks:
     useMergeEvents,
-    useMergeRefs,
     useMergeClasses,
     
     
@@ -26,7 +25,6 @@ import {
     // a semantic management system for react web components:
     SemanticTag,
     SemanticRole,
-    useTestSemantic,
     
     
     
@@ -36,7 +34,7 @@ import {
     
     
     // a set of client-side functions:
-    isClientSideLink,
+    WithLinkAndElement,
     
     
     
@@ -47,10 +45,6 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
-import type {
-    // react components:
-    GenericProps,
-}                           from '@reusable-ui/generic'         // a generic component
 import {
     // react components:
     ControlProps,
@@ -231,7 +225,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     );
     
     return (
-        <WithLinkAndElement<TElement>
+        <WithLinkAndElement
             // components:
             elementComponent={actionControl}
         >
@@ -243,202 +237,3 @@ export {
     ActionControl,
     ActionControl as default,
 }
-
-
-
-interface WithLinkAndElementProps<TElement extends Element = HTMLElement> {
-    // components:
-    elementComponent  : React.ReactComponentElement<any, GenericProps<TElement>>
-    
-    
-    
-    // children:
-    children         ?: React.ReactNode
-}
-const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithLinkAndElementProps<TElement>): JSX.Element|null => {
-    // rest props:
-    const {
-        // components:
-        elementComponent,
-        
-        
-        
-        // children:
-        children,
-    ...restProps} = props;
-    
-    
-    
-    const childrenArray = (Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children)); // convert the children to array (if necessary)
-    
-    // inspect if <Element>'s children contain one/more <Link>:
-    const linkComponent = childrenArray.find(isClientSideLink); // take the first <Link> (if any)
-    
-    // if no contain <Link> => normal <Element>:
-    if (!linkComponent) return React.cloneElement(elementComponent,
-        // props:
-        undefined, // keeps the original <Element>'s props
-        
-        
-        
-        // children:
-        elementComponent.props.children ?? childrenArray, // replace the children
-    );
-    
-    
-    
-    /*
-        swaps between <Element> and <Link> while maintaining their's children, so:
-        declaration:
-        <Element>
-            <c1>
-            <c2>
-            <Link>
-                <c3>
-                <c4>
-            </Link>
-            <c5>
-            <c6>
-        </Element>
-        rendered to:
-        <Link>
-            <Element>
-                <c1>
-                <c2>
-                <c3>
-                <c4>
-                <c5>
-                <c6>
-            </Element>
-        </Link>
-    */
-    const mergedChildren = (
-        childrenArray
-        .flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <Element>'s children:
-            // current <Element>'s children:
-            if (child !== linkComponent) return [child];
-            
-            
-            
-            // merge with <Link>'s children:
-            return (
-                React.Children.toArray(linkComponent.props.children) // unwrap the <Link>
-                .map((grandChild) => { // fix the grandChild's key
-                    if (!React.isValidElement(grandChild)) return grandChild;
-                    return React.cloneElement(grandChild, { key: `${child.key}-${grandChild.key}` });
-                })
-            );
-        })
-    );
-    
-    
-    
-    // fn props:
-    const propEnabled                     = usePropEnabled(elementComponent.props);
-    const {isSemanticTag: isSemanticLink} = useTestSemantic(elementComponent.props, { semanticTag: 'a', semanticRole: 'link' });
-    
-    
-    
-    // jsx:
-    if (!propEnabled) return React.cloneElement(elementComponent, // if <Element> is disabled => no need to wrap with <Link>
-        // props:
-        undefined, // keeps the original <Element>'s props
-        
-        
-        
-        // children:
-        mergedChildren, // replace the children
-    );
-    
-    const isNextJsLink = !!linkComponent.props.href;
-    return React.cloneElement(linkComponent,
-        // props:
-        {
-            // other props:
-            ...restProps,
-            
-            
-            
-            // link props:
-            ...( isNextJsLink  ? { legacyBehavior : true             } : undefined), // NextJs's <Link>
-            ...(!isNextJsLink  ? { linkComponent  : elementComponent } : undefined), // ReactRouterCompat's <Link>
-            ...(isSemanticLink ? { passHref       : true             } : undefined),
-        },
-        
-        
-        
-        // children:
-        (
-            !isNextJsLink
-            ?
-            mergedChildren
-            :
-            <WithForwardRef
-                // components:
-                elementComponent={elementComponent}
-            >
-                {mergedChildren}
-            </WithForwardRef>
-        )
-    );
-};
-
-interface WithForwardRefProps<TElement extends Element = HTMLElement>
-    extends
-        // forwards <Ui>:
-        GenericProps<TElement>
-{
-    // components:
-    elementComponent  : React.ReactComponentElement<any, GenericProps<TElement>>
-    
-    
-    
-    // children:
-    children         ?: React.ReactNode
-}
-const WithForwardRef = React.forwardRef(<TElement extends Element = HTMLElement>(props: WithForwardRefProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
-    // rest props:
-    const {
-        // components:
-        elementComponent,
-        
-        
-        
-        // children:
-        children,
-    ...restActionControlProps} = props;
-    
-    
-    
-    // refs:
-    const mergedOuterRef = useMergeRefs(
-        // preserves the original `outerRef`:
-        props.outerRef,
-        
-        
-        
-        // forwards:
-        ref,
-    );
-    
-    
-    
-    // jsx:
-    return React.cloneElement(elementComponent,
-        // props:
-        {
-            // other props:
-            ...restActionControlProps,
-            
-            
-            
-            // refs:
-            outerRef : mergedOuterRef,
-        },
-        
-        
-        
-        // children:
-        children,
-    );
-});
