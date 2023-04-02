@@ -48,6 +48,10 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
+import type {
+    // react components:
+    GenericProps,
+}                           from '@reusable-ui/generic'         // a generic component
 import {
     // react components:
     ControlProps,
@@ -286,7 +290,7 @@ export {
 interface WithLinkAndUiProps<TElement extends Element = HTMLElement> {
     // components:
     linkComponent  : JsxClientSideLink
-    uiComponent    : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    uiComponent    : React.ReactComponentElement<any, GenericProps<TElement>>
     
     
     
@@ -360,11 +364,11 @@ const WithLinkAndUi = <TElement extends Element = HTMLElement>(props: WithLinkAn
 
 interface WithForwardRefProps<TElement extends Element = HTMLElement>
     extends
-        // forwards <ActionControl>:
-        ActionControlProps<TElement>
+        // forwards <Ui>:
+        GenericProps<TElement>
 {
     // components:
-    uiComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    uiComponent  : React.ReactComponentElement<any, GenericProps<TElement>>
     
     
     

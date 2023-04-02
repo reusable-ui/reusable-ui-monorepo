@@ -41,6 +41,7 @@
     "@cssfn/cssfn-react": "^2.5.0",
     "@reusable-ui/control": "^5.2.0",
     "@reusable-ui/core": "^5.2.0",
+    "@reusable-ui/generic": "^5.2.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {
