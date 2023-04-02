@@ -253,10 +253,10 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                 </Control>
             </Link>
         */
-        <ClientSideLinkSwapper<TElement>
+        <WithLinkAndAction<TElement>
             // components:
-            linkComponent={clientSideLink}
-            actionComponent={actionControl}
+            linkComponent   = {clientSideLink}
+            actionComponent = {actionControl}
         >
             {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
                 // current <ActionControl>'s children:
@@ -273,7 +273,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                     })
                 );
             })}
-        </ClientSideLinkSwapper>
+        </WithLinkAndAction>
     );
 };
 export {
@@ -283,7 +283,7 @@ export {
 
 
 
-interface ClientSideLinkSwapperProps<TElement extends Element = HTMLElement> {
+interface WithLinkAndActionProps<TElement extends Element = HTMLElement> {
     // components:
     linkComponent    : JsxClientSideLink
     actionComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
@@ -293,7 +293,7 @@ interface ClientSideLinkSwapperProps<TElement extends Element = HTMLElement> {
     // children:
     children        ?: React.ReactNode
 }
-const ClientSideLinkSwapper = <TElement extends Element = HTMLElement>(props: ClientSideLinkSwapperProps<TElement>): JSX.Element|null => {
+const WithLinkAndAction = <TElement extends Element = HTMLElement>(props: WithLinkAndActionProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // components:
@@ -348,17 +348,17 @@ const ClientSideLinkSwapper = <TElement extends Element = HTMLElement>(props: Cl
             ?
             children
             :
-            <ForwardRefWrapper
+            <WithForwardRef
                 // components:
                 actionComponent={actionComponent}
             >
                 {children}
-            </ForwardRefWrapper>
+            </WithForwardRef>
         )
     );
 };
 
-interface ForwardRefWrapperProps<TElement extends Element = HTMLElement>
+interface WithForwardRefProps<TElement extends Element = HTMLElement>
     extends
         // forwards <ActionControl>:
         ActionControlProps<TElement>
@@ -371,7 +371,7 @@ interface ForwardRefWrapperProps<TElement extends Element = HTMLElement>
     // children:
     children        ?: React.ReactNode
 }
-const ForwardRefWrapper = React.forwardRef(<TElement extends Element = HTMLElement>(props: ForwardRefWrapperProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
+const WithForwardRef = React.forwardRef(<TElement extends Element = HTMLElement>(props: WithForwardRefProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // components:

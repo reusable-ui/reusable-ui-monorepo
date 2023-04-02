@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/action-control",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A base clickable (button) UI of Reusable-UI components.",
   "keywords": [
     "control",
