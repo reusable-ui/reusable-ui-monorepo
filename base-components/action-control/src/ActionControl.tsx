@@ -227,7 +227,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     );
     
     // inspect if <ActionControl>'s children contain one/more <Link>:
-    const children       = (Array.isArray(props.children) ? props.children : React.Children.toArray(props.children)); // convert the children to array (if necessary)
+    const children       = (Array.isArray(props.children) ? (props.children as React.ReactNode[]) : React.Children.toArray(props.children)); // convert the children to array (if necessary)
     const clientSideLink = children.find(isClientSideLink); // take the first <Link> (if any)
     if (!clientSideLink) return actionControl;              // if no contain <Link> => normal <ActionControl>
     
@@ -299,7 +299,7 @@ const WithLinkAndElement = <TElement extends Element = HTMLElement>(props: WithL
         </Link>
     */
     const mergedChildren = (
-        (Array.isArray(children) ? children : React.Children.toArray(children)) // convert the children to array (if necessary)
+        (Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children)) // convert the children to array (if necessary)
         .flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
             // current <ActionControl>'s children:
             if (child !== linkComponent) return [child];
