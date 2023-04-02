@@ -253,10 +253,10 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                 </Control>
             </Link>
         */
-        <WithLinkAndAction<TElement>
+        <WithLinkAndUi<TElement>
             // components:
-            linkComponent   = {clientSideLink}
-            actionComponent = {actionControl}
+            linkComponent = {clientSideLink}
+            uiComponent   = {actionControl}
         >
             {children.flatMap((child): React.ReactNode[] => { // merge <Link>'s children and <ActionControl>'s children:
                 // current <ActionControl>'s children:
@@ -273,7 +273,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                     })
                 );
             })}
-        </WithLinkAndAction>
+        </WithLinkAndUi>
     );
 };
 export {
@@ -283,22 +283,22 @@ export {
 
 
 
-interface WithLinkAndActionProps<TElement extends Element = HTMLElement> {
+interface WithLinkAndUiProps<TElement extends Element = HTMLElement> {
     // components:
-    linkComponent    : JsxClientSideLink
-    actionComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    linkComponent  : JsxClientSideLink
+    uiComponent    : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
     
     
     
     // children:
-    children        ?: React.ReactNode
+    children      ?: React.ReactNode
 }
-const WithLinkAndAction = <TElement extends Element = HTMLElement>(props: WithLinkAndActionProps<TElement>): JSX.Element|null => {
+const WithLinkAndUi = <TElement extends Element = HTMLElement>(props: WithLinkAndUiProps<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // components:
         linkComponent,
-        actionComponent,
+        uiComponent,
         
         
         
@@ -309,13 +309,13 @@ const WithLinkAndAction = <TElement extends Element = HTMLElement>(props: WithLi
     
     
     // fn props:
-    const propEnabled                     = usePropEnabled(actionComponent.props);
-    const {isSemanticTag: isSemanticLink} = useTestSemantic(actionComponent.props, { semanticTag: 'a', semanticRole: 'link' });
+    const propEnabled                     = usePropEnabled(uiComponent.props);
+    const {isSemanticTag: isSemanticLink} = useTestSemantic(uiComponent.props, { semanticTag: 'a', semanticRole: 'link' });
     
     
     
     // jsx:
-    if (!propEnabled) return React.cloneElement(actionComponent, // if <ActionControl> is disabled => no need to wrap with <Link>
+    if (!propEnabled) return React.cloneElement(uiComponent, // if <ActionControl> is disabled => no need to wrap with <Link>
         // props:
         undefined, // keeps the original <ActionControl>'s props
         
@@ -335,9 +335,9 @@ const WithLinkAndAction = <TElement extends Element = HTMLElement>(props: WithLi
             
             
             // link props:
-            ...( isNextJsLink  ? { legacyBehavior : true            } : undefined), // NextJs's <Link>
-            ...(!isNextJsLink  ? { linkComponent  : actionComponent } : undefined), // ReactRouterCompat's <Link>
-            ...(isSemanticLink ? { passHref       : true            } : undefined),
+            ...( isNextJsLink  ? { legacyBehavior : true        } : undefined), // NextJs's <Link>
+            ...(!isNextJsLink  ? { linkComponent  : uiComponent } : undefined), // ReactRouterCompat's <Link>
+            ...(isSemanticLink ? { passHref       : true        } : undefined),
         },
         
         
@@ -350,7 +350,7 @@ const WithLinkAndAction = <TElement extends Element = HTMLElement>(props: WithLi
             :
             <WithForwardRef
                 // components:
-                actionComponent={actionComponent}
+                uiComponent={uiComponent}
             >
                 {children}
             </WithForwardRef>
@@ -364,18 +364,18 @@ interface WithForwardRefProps<TElement extends Element = HTMLElement>
         ActionControlProps<TElement>
 {
     // components:
-    actionComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
+    uiComponent  : React.ReactComponentElement<typeof ActionControl, ActionControlProps<TElement>>
     
     
     
     // children:
-    children        ?: React.ReactNode
+    children    ?: React.ReactNode
 }
 const WithForwardRef = React.forwardRef(<TElement extends Element = HTMLElement>(props: WithForwardRefProps<TElement>, ref: React.ForwardedRef<TElement>): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        actionComponent,
+        uiComponent,
         
         
         
@@ -399,7 +399,7 @@ const WithForwardRef = React.forwardRef(<TElement extends Element = HTMLElement>
     
     
     // jsx:
-    return React.cloneElement(actionComponent,
+    return React.cloneElement(uiComponent,
         // props:
         {
             // other props:
