@@ -120,7 +120,7 @@ let reactRouterModule : PartialReactRouterModule|null|undefined = undefined;
 })();
 
 export interface DetermineCurrentPageProps {
-    // nav matches:
+    // navigations:
     caseSensitive ?: boolean
     end           ?: boolean
     
@@ -179,7 +179,7 @@ export const useDetermineCurrentPage = (props: DetermineCurrentPageProps): boole
     
     
     const {
-        // nav matches:
+        // navigations:
         caseSensitive = false,
         end           = (targetPathname === '/'), // the default for home page is always exact match, otherwise sub match
     } = props;

@@ -25,7 +25,7 @@ import {
 // react components:
 export interface WithAutoActiveProps
     extends
-        Required<Omit<DetermineCurrentPageProps, 'children'>>
+        DetermineCurrentPageProps
 {
     // components:
     /**
@@ -55,7 +55,7 @@ export interface WithAutoActiveProps
 const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     // rest props:
     const {
-        // nav matches:
+        // navigations:
         caseSensitive,
         end,
         
@@ -83,7 +83,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
                     
                     
                     
-                    // nav matches:
+                    // navigations:
                     caseSensitive={caseSensitive}
                     end={end}
                     

@@ -22,7 +22,7 @@ import {
 // react components:
 export interface WithAutoActiveImplProps
     extends
-        Required<Omit<DetermineCurrentPageProps, 'children'>>
+        DetermineCurrentPageProps
 {
     // components:
     /**
@@ -50,7 +50,7 @@ export interface WithAutoActiveImplProps
 const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null => {
     // rest props:
     const {
-        // nav matches:
+        // navigations:
         caseSensitive,
         end,
         
@@ -69,7 +69,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
     
     // fn props:
     const activeDn = useDetermineCurrentPage({
-        // nav matches:
+        // navigations:
         caseSensitive,
         end,
         
