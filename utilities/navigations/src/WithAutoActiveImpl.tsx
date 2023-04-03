@@ -68,7 +68,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
     
     
     // fn props:
-    const activeFn = useDetermineCurrentPage({
+    const activeDn = useDetermineCurrentPage({
         // nav matches:
         caseSensitive,
         end,
@@ -78,6 +78,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
         // children:
         children,
     }) ?? false /* fallback to `false` => server-side or <Link> was not defined */;
+    const activeFn = elementComponent.props.active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
     
     
