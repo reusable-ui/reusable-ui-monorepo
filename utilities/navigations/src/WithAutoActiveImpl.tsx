@@ -28,7 +28,7 @@ export interface WithAutoActiveImplProps
     /**
      * Required.  
      *   
-     * The underlying `<Element>` to be manipulated of [active] & [aria-current] props, based on the current page url.
+     * The underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url.
      */
     elementComponent  : React.ReactComponentElement<any, AccessibilityProps & Pick<React.AriaAttributes, 'aria-current'>>
     
@@ -39,7 +39,7 @@ export interface WithAutoActiveImplProps
      * Optional.
      *   
      * The `children` of `<Element>` that *may* contain `<Link>`.  
-     * If the `<Link>` exists, its [to]/[href] prop will be used for determining the current page.  
+     * If the `<Link>` exists, its `[to]`/`[href]` prop will be used for determining the current page.  
      * If the `<Link>` doesn't exist, the active state will never occur.  
      *   
      * If not supplied, defaults to `<Element>`'s `children`.  
