@@ -25,7 +25,7 @@ import {
 // react components:
 export interface WithAutoActiveProps
     extends
-        DetermineCurrentPageProps
+        Required<Omit<DetermineCurrentPageProps, 'children'>>
 {
     // components:
     /**
