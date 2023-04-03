@@ -11,11 +11,17 @@ import {
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
+    SemanticProps,
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // hooks:
     usePropEnabled,
+    
+    
+    
+    // react components:
+    AccessibilityProps,
 }                           from '@reusable-ui/accessibilities' // an accessibility management system
 
 // internals:
@@ -34,7 +40,7 @@ export interface WithLinkAndElementProps {
      *   
      * The underlying `<Element>` to be `<Link>`-ed.
      */
-    elementComponent  : React.ReactComponentElement<any, { children ?: React.ReactNode }>
+    elementComponent  : React.ReactComponentElement<any, { outerRef?: React.Ref<Element> } & AccessibilityProps & SemanticProps>
     
     
     
