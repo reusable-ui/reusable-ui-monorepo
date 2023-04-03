@@ -18,7 +18,7 @@ import {
     
     // a set of navigation functions:
     DetermineCurrentPageProps,
-    useDetermineCurrentPage,
+    WithAutoActive,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -66,8 +66,8 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
     // rest props:
     const {
         // navigations:
-        caseSensitive : _caseSensitive, // remove
-        end           : _end,           // remove
+        caseSensitive,
+        end,
         
         
         
@@ -91,15 +91,15 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
     
     
     // fn props:
-    const propActive = usePropActive(props, null);
-    const activeDn   = useDetermineCurrentPage(props) ?? false /* server-side or <Link> was not defined */;
-    const activeFn   = (buttonComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const propActive           = usePropActive(props, null);
+    const activeSt             = (buttonComponent.props.active ?? propActive) /*controllable*/;
+    const isControllableActive = activeSt !== null;
     
     
     
     // jsx:
     /* <Button> */
-    return React.cloneElement<ButtonProps>(buttonComponent,
+    const navButton = React.cloneElement<ButtonProps>(buttonComponent,
         // props:
         {
             // other props:
@@ -114,18 +114,32 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             
             
             // semantics:
-            'aria-current' : (activeFn || undefined) && (buttonComponent.props['aria-current'] ?? props['aria-current'] ?? 'page'),
-            
-            
-            
-            // states:
-            active         : activeFn,
+            'aria-current' : buttonComponent.props['aria-current'] ?? props['aria-current'] ?? 'page',
         },
         
         
         
         // children:
         buttonComponent.props.children ?? props.children,
+    );
+    if (isControllableActive) return React.cloneElement<ButtonProps>(navButton,
+        // props:
+        {
+            // states:
+            active         : activeSt,
+        },
+    );
+    return (
+        <WithAutoActive
+            // navigations:
+            caseSensitive={caseSensitive}
+            end={end}
+            
+            
+            
+            // components:
+            elementComponent={navButton}
+        />
     );
 };
 export {
