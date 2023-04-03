@@ -22,7 +22,7 @@ import {
 // react components:
 export interface WithAutoActiveImplProps
     extends
-        DetermineCurrentPageProps
+        Required<Omit<DetermineCurrentPageProps, 'children'>>
 {
     // components:
     /**
