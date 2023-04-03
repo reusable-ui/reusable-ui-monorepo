@@ -13,7 +13,7 @@ import {
     
     // a set of navigation functions:
     DetermineCurrentPageProps,
-    useDetermineCurrentPage,
+    WithAutoActive,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -54,8 +54,8 @@ export const NavItem       = <TElement extends Element = HTMLElement>(props: Nav
         
         
         // navigations:
-        caseSensitive : _caseSensitive, // remove
-        end           : _end,           // remove
+        caseSensitive,
+        end,
         
         
         
@@ -66,15 +66,15 @@ export const NavItem       = <TElement extends Element = HTMLElement>(props: Nav
     
     
     // fn props:
-    const propActive = usePropActive(props, null);
-    const activeDn   = useDetermineCurrentPage(props) ?? false /* server-side or <Link> was not defined */;
-    const activeFn   = (listItemComponent.props.active ?? propActive) /*controllable*/ ?? activeDn /*uncontrollable*/;
+    const propActive           = usePropActive(props, null);
+    const activeSt             = (listItemComponent.props.active ?? propActive) /*controllable*/;
+    const isControllableActive = activeSt !== null;
     
     
     
     // jsx:
     /* <ListItem> */
-    return React.cloneElement<ListItemProps<TElement>>(listItemComponent,
+    const navItem = React.cloneElement<ListItemProps<TElement>>(listItemComponent,
         // props:
         {
             // other props:
@@ -84,19 +84,33 @@ export const NavItem       = <TElement extends Element = HTMLElement>(props: Nav
             
             
             // semantics:
-            'aria-current' : (activeFn || undefined) && (listItemComponent.props['aria-current'] ?? props['aria-current'] ?? 'page'),
+            'aria-current' : listItemComponent.props['aria-current'] ?? props['aria-current'] ?? 'page',
             'aria-label'   : listItemComponent.props['aria-label'] ?? label,
-            
-            
-            
-            // states:
-            active         : activeFn,
         },
         
         
         
         // children:
         listItemComponent.props.children ?? props.children,
+    );
+    if (isControllableActive) return React.cloneElement<ListItemProps<TElement>>(navItem,
+        // props:
+        {
+            // states:
+            active         : activeSt,
+        },
+    );
+    return (
+        <WithAutoActive
+            // navigations:
+            caseSensitive={caseSensitive}
+            end={end}
+            
+            
+            
+            // components:
+            elementComponent={navItem}
+        />
     );
 };
 

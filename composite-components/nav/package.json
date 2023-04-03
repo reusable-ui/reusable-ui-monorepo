@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/nav",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A navigation component to navigate between pages.",
   "keywords": [
     "navigation",
