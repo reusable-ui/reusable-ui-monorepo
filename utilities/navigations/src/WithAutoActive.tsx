@@ -28,11 +28,28 @@ export interface WithAutoActiveProps
         DetermineCurrentPageProps
 {
     // components:
+    /**
+     * Required.  
+     *   
+     * The underlying `<Element>` to be `<Link>`-ed and manipulated of `[active]` & `[aria-current]` props, based on the current page url.
+     */
     elementComponent  : React.ReactComponentElement<any, any>
     
     
     
     // children:
+    /**
+     * Optional.
+     *   
+     * The `children` of `<Element>` that *may* contain `<Link>`.  
+     * If the `<Link>` exists, its `[to]`/`[href]` prop will be used for determining the current page.  
+     * If the `<Link>` exists, it will wrap the `<Element>`.  
+     * If the `<Link>` doesn't exist, the active state will never occur.  
+     * The rest `children` will be inside the `<Element>`.  
+     *   
+     * If not supplied, defaults to `<Element>`'s `children`.  
+     * If supplied, it will overwrite `<Element>`'s `children`.
+     */
     children         ?: React.ReactNode
 }
 const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
@@ -50,8 +67,8 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
         
         
         // children:
-        children,
-    } = props;
+        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
+    ...restElementProps} = props;
     
     
     
@@ -61,6 +78,11 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
             // components:
             elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
                 <WithAutoActiveImpl
+                    // other props:
+                    {...restElementProps}
+                    
+                    
+                    
                     // nav matches:
                     caseSensitive={caseSensitive}
                     end={end}
@@ -68,7 +90,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
                     
                     
                     // components:
-                    elementComponent={elementComponent} // the underlying `<Element>` to be manipulated of [active] & [aria-current] props, based on the current page url
+                    elementComponent={elementComponent} // the underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url
                 >
                     {/* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */}
                     {children}
