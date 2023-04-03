@@ -229,7 +229,16 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
                     // children:
                     mergedChildren, // overwrite the children
                 );
-            })({ children: mergedChildren })
+            })({
+                // other props:
+                ...restElementProps,
+                ...elementComponent.props, // overwrites restElementProps (if any conflics)
+                
+                
+                
+                // children:
+                children: mergedChildren,
+            })
         )
     );
 };
