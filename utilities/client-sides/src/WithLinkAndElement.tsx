@@ -7,6 +7,10 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
+    useMergeRefs,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+import {
+    // hooks:
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
@@ -19,10 +23,6 @@ import {
     // utilities:
     isClientSideLink,
 }                           from './client-sides.js'
-import {
-    // react components:
-    WithForwardRef,
-}                           from './WithForwardRef.js'
 
 
 
@@ -155,12 +155,52 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
             ?
             mergedChildren
             :
-            <WithForwardRef
-                // components:
-                elementComponent={elementComponent}
-            >
-                {mergedChildren}
-            </WithForwardRef>
+            React.forwardRef<Element, { outerRef?: React.Ref<Element>, children?: React.ReactNode }>((props, ref): JSX.Element|null => {
+                // rest props:
+                const {
+                    // refs:
+                    outerRef,
+                    
+                    
+                    
+                    // children:
+                    children,
+                ...restElementProps} = props;
+                
+                
+                
+                // refs:
+                const mergedOuterRef = useMergeRefs(
+                    // preserves the original `outerRef`:
+                    outerRef,
+                    
+                    
+                    
+                    // forwards:
+                    ref,
+                );
+                
+                
+                
+                // jsx:
+                return React.cloneElement(elementComponent,
+                    // props:
+                    {
+                        // other props:
+                        ...restElementProps,
+                        
+                        
+                        
+                        // refs:
+                        outerRef : mergedOuterRef,
+                    },
+                    
+                    
+                    
+                    // children:
+                    children,
+                );
+            })({ children: mergedChildren })
         )
     );
 };
