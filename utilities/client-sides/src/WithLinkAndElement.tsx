@@ -29,11 +29,26 @@ import {
 // react components:
 export interface WithLinkAndElementProps {
     // components:
-    elementComponent  : React.ReactComponentElement<any, any>
+    /**
+     * Required.  
+     *   
+     * The underlying `<Element>` to be `<Link>`-ed.
+     */
+    elementComponent  : React.ReactComponentElement<any, { children ?: React.ReactNode }>
     
     
     
     // children:
+    /**
+     * Optional.
+     *   
+     * The `children` of `<Element>` that *may* contain `<Link>`.  
+     * It the `<Link>` exists, it will wrap the `<Element>`.  
+     * The rest `children` will be inside the `<Element>`.  
+     *   
+     * If not supplied, defaults to `<Element>`'s `children`.  
+     * If supplied, it will overwrite `<Element>`'s `children`.
+     */
     children         ?: React.ReactNode
 }
 const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null => {
@@ -45,7 +60,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
         
         
         // children:
-        children,
+        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
     ...restLinkProps} = props;
     
     
@@ -64,7 +79,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
         
         
         // children:
-        elementComponent.props.children ?? childrenArray, // replace the children (if needed)
+        childrenArray, // overwrite the children
     );
     
     
@@ -129,7 +144,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
         
         
         // children:
-        elementComponent.props.children ?? mergedChildren, // replace the children (if needed)
+        mergedChildren, // overwrite the children
     );
     
     const isNextJsLink = !!linkComponent.props.href;
@@ -164,7 +179,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
                     
                     
                     // children:
-                    children,
+                    children : mergedChildren,
                 ...restElementProps} = props;
                 
                 
@@ -198,7 +213,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
                     
                     
                     // children:
-                    children,
+                    mergedChildren, // overwrite the children
                 );
             })({ children: mergedChildren })
         )
