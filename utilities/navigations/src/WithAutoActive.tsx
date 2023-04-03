@@ -59,7 +59,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     return (
         <WithLinkAndElement
             // components:
-            elementComponent={
+            elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
                 <WithAutoActiveImpl
                     // nav matches:
                     caseSensitive={caseSensitive}
@@ -68,14 +68,14 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
                     
                     
                     // components:
-                    elementComponent={elementComponent} // the elementComponent to be manipulated of [active] & [aria-current] props
+                    elementComponent={elementComponent} // the <Element active={auto} aria-current={auto}> to be manipulated
                 >
                     {/* detect for <Link> component from the `children` to inspect the [href]/[to] prop */}
                     {children}
                 </WithAutoActiveImpl>
             }
         >
-            {/* detect for <Link> component to be a <WrapperLink> and wraps the rest children */}
+            {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
             {children}
         </WithLinkAndElement>
     );
