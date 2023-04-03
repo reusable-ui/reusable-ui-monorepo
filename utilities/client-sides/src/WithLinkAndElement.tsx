@@ -89,7 +89,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
         
         
         // children:
-        childrenArray, // overwrite the children
+        ...childrenArray, // overwrite the children
     );
     
     
@@ -157,7 +157,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
         
         
         // children:
-        mergedChildren, // overwrite the children
+        ...mergedChildren, // overwrite the children
     );
     
     
@@ -196,7 +196,7 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
                     
                     
                     // children:
-                    mergedChildren, // overwrite the children
+                    ...mergedChildren, // overwrite the children
                 )}
             </WithForwardRef>
         )
