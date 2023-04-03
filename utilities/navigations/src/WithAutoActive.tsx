@@ -68,9 +68,9 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
                     
                     
                     // components:
-                    elementComponent={elementComponent} // the <Element active={auto} aria-current={auto}> to be manipulated
+                    elementComponent={elementComponent} // the underlying `<Element>` to be manipulated of [active] & [aria-current] props, based on the current page url
                 >
-                    {/* detect for <Link> component from the `children` to inspect the [href]/[to] prop */}
+                    {/* detect for `<Link>` component for [to]/[href] prop, for determining the current page */}
                     {children}
                 </WithAutoActiveImpl>
             }

@@ -4,6 +4,12 @@ import {
     default as React,
 }                           from 'react'
 
+// reusable-ui utilities:
+import type {
+    // react components:
+    AccessibilityProps,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+
 // internals:
 import {
     // utilities:
@@ -19,7 +25,27 @@ export interface WithAutoActiveImplProps
         DetermineCurrentPageProps
 {
     // components:
-    elementComponent  : React.ReactComponentElement<any, any>
+    /**
+     * Required.  
+     *   
+     * The underlying `<Element>` to be manipulated of [active] & [aria-current] props, based on the current page url.
+     */
+    elementComponent  : React.ReactComponentElement<any, AccessibilityProps & Pick<React.AriaAttributes, 'aria-current'>>
+    
+    
+    
+    // children:
+    /**
+     * Optional.
+     *   
+     * The `children` of `<Element>` that *may* contain `<Link>`.  
+     * If the `<Link>` exists, its [to]/[href] prop will be used for determining the current page.  
+     * If the `<Link>` doesn't exist, the active state will never occur.  
+     *   
+     * If not supplied, defaults to `<Element>`'s `children`.  
+     * If supplied, it will overwrite `<Element>`'s `children`.
+     */
+    children         ?: React.ReactNode
 }
 const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null => {
     // rest props:
@@ -36,8 +62,8 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
         
         
         // children:
-        children,
-    } = props;
+        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
+    ...restElementProps} = props;
     
     
     
@@ -56,9 +82,15 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
     
     
     // jsx:
-    return React.cloneElement<any>(elementComponent,
+    return React.cloneElement(elementComponent,
         // props:
         {
+            // other props:
+            ...restElementProps,
+            ...elementComponent.props, // overwrites restElementProps (if any conflics)
+            
+            
+            
             // semantics:
             'aria-current' : (activeFn || undefined) && elementComponent.props['aria-current'],
             
@@ -71,7 +103,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
         
         
         // children:
-        elementComponent.props.children ?? children,
+        children, // overwrite the children
     );
 };
 export {
