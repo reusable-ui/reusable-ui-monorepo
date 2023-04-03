@@ -7,10 +7,6 @@ import {
 // reusable-ui utilities:
 import {
     // hooks:
-    useMergeRefs,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-import {
-    // hooks:
     SemanticProps,
     useTestSemantic,
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
@@ -29,6 +25,10 @@ import {
     // utilities:
     isClientSideLink,
 }                           from './client-sides.js'
+import {
+    // react components:
+    WithForwardRef,
+}                           from './WithForwardRef.js'
 
 
 
@@ -184,61 +184,21 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
             mergedChildren
             :
             // for NextJs's <Link> => wraps the children with <Element>:
-            React.forwardRef<Element, { outerRef?: React.Ref<Element>, children?: React.ReactNode }>((props, ref): JSX.Element|null => {
-                // rest props:
-                const {
-                    // refs:
-                    outerRef,
-                    
-                    
-                    
-                    // children:
-                    children : mergedChildren,
-                ...restElementProps} = props;
-                
-                
-                
-                // refs:
-                const mergedOuterRef = useMergeRefs(
-                    // preserves the original `outerRef`:
-                    outerRef,
-                    
-                    
-                    
-                    // forwards:
-                    ref,
-                );
-                
-                
-                
-                // jsx:
-                return React.cloneElement(elementComponent,
+            <WithForwardRef>
+                {React.cloneElement(elementComponent,
                     // props:
                     {
                         // other props:
                         ...restElementProps,
-                        
-                        
-                        
-                        // refs:
-                        outerRef : mergedOuterRef,
+                        ...elementComponent.props, // overwrites restElementProps (if any conflics)
                     },
                     
                     
                     
                     // children:
                     mergedChildren, // overwrite the children
-                );
-            })({
-                // other props:
-                ...restElementProps,
-                ...elementComponent.props, // overwrites restElementProps (if any conflics)
-                
-                
-                
-                // children:
-                children: mergedChildren,
-            })
+                )}
+            </WithForwardRef>
         )
     );
 };
