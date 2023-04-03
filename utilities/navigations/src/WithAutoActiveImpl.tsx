@@ -36,11 +36,16 @@ export interface WithAutoActiveImplProps
     
     // children:
     /**
-     * Optional.
+     * Required.
      *   
      * The `children` of `<Element>` that *may* contain `<Link>`.  
      * If the `<Link>` exists, its `[to]`/`[href]` prop will be used for determining the current page.  
      * If the `<Link>` doesn't exist, the active state will never occur.  
+     */
+    childrenOrigin    : React.ReactNode
+    
+    /**
+     * Optional.
      *   
      * If not supplied, defaults to `<Element>`'s `children`.  
      * If supplied, it will overwrite `<Element>`'s `children`.
@@ -62,7 +67,8 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
         
         
         // children:
-        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
+        childrenOrigin,
+        children        = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
     ...restElementProps} = props;
     
     
@@ -76,7 +82,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
         
         
         // children:
-        children,
+        children : childrenOrigin,
     }) ?? false /* fallback to `false` => server-side or <Link> was not defined */;
     const activeFn = elementComponent.props.active /*controllable*/ ?? activeDn /*uncontrollable*/;
     
