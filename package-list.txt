@@ -59,6 +59,7 @@
 
 // supports:
 [published  ] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
+[published  ] [undocumented] [full    compound] @reusable-ui/next-compat-link
 
 // base-components:
 [no css     ] [documented  ] [          atomic] @reusable-ui/generic
