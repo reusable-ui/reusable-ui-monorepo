@@ -9,7 +9,6 @@ import {
     
     // hooks:
     useState,
-    useEffect,
     useMemo,
 }                           from 'react'
 
@@ -22,6 +21,12 @@ import {
     // hooks:
     usePathname,
 }                           from 'next/navigation'
+
+// reusable-ui core:
+import {
+    // react helper hooks:
+    useIsomorphicLayoutEffect,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
 
@@ -39,7 +44,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
     
     
     // dom effects:
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         // conditions:
         if (latePathName === newPathName) return; // already the same => ignore
         
