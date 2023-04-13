@@ -250,13 +250,42 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                 (keyCode === 'arrowdown' ) ||
                 (keyCode === 'arrowup'   ) ||
                 (keyCode === 'arrowleft' ) ||
-                (keyCode === 'arrowright') ||
-                
-                // special keys:
-                (keyCode === 'space'     )
+                (keyCode === 'arrowright')
             )
             {
-                if ((event.target as any)?.value !== undefined) return false; // do not handle [key] if the event coming from <input>
+                if (
+                    ((event.target as any)?.tagName === 'TEXTAREA')
+                    ||
+                    (
+                        ((event.target as any)?.tagName === 'INPUT')
+                        &&
+                        !['color', 'file'].includes((event.target as any)?.type ?? '')
+                    )
+                ) {
+                    return false; // do not handle [navigation] keys if the event coming from <TextEditor>|<Range>
+                } // if
+                
+                
+                
+                // do nothing
+                // do not scroll the page
+            }
+            else if (
+                // special keys:
+                (keyCode === 'space')
+            )
+            {
+                if (
+                    ((event.target as any)?.tagName === 'TEXTAREA')
+                    ||
+                    (
+                        ((event.target as any)?.tagName === 'INPUT')
+                        &&
+                        !['color', 'file', 'range'].includes((event.target as any)?.type ?? '')
+                    )
+                ) {
+                    return false; // do not handle [navigation] keys if the event coming from <TextEditor>
+                } // if
                 
                 
                 
