@@ -229,20 +229,37 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             }
             else if ((keyCode === 'tab'))
             {
+                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [key] if [alt][ctrl][shift][win] key is also pressed
+                
+                
+                
                 setFocusNext(event.currentTarget);
             }
             else if (
                 (keyCode === 'pagedown'  ) ||
-                (keyCode === 'pageup'    ) ||
+                (keyCode === 'pageup'    )
+            )
+            {
+                // do nothing
+                // do not scroll the page
+            }
+            else if (
+                // navigation keys:
                 (keyCode === 'home'      ) ||
                 (keyCode === 'end'       ) ||
                 (keyCode === 'arrowdown' ) ||
                 (keyCode === 'arrowup'   ) ||
                 (keyCode === 'arrowleft' ) ||
                 (keyCode === 'arrowright') ||
+                
+                // special keys:
                 (keyCode === 'space'     )
             )
             {
+                if ((event.target as any)?.value !== undefined) return false; // do not handle [key] if the event coming from <input>
+                
+                
+                
                 // do nothing
                 // do not scroll the page
             }

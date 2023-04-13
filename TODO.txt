@@ -1,4 +1,3 @@
-[high prior] <Modal>/<Dropdown> do not intercept [space ] key when the target is <input> or ('value' in target)
 [high prior] add autoCapitalize implementation
 [high prior] add tooltipViewport
 [high prior] add dropdownViewport

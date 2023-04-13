@@ -315,20 +315,37 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             }
             else if (isModal && (keyCode === 'tab'))
             {
+                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [key] if [alt][ctrl][shift][win] key is also pressed
+                
+                
+                
                 setFocusNext(event.currentTarget);
             }
             else if (
                 (keyCode === 'pagedown'  ) ||
-                (keyCode === 'pageup'    ) ||
+                (keyCode === 'pageup'    )
+            )
+            {
+                // do nothing
+                // do not scroll the page
+            }
+            else if (
+                // navigation keys:
                 (keyCode === 'home'      ) ||
                 (keyCode === 'end'       ) ||
                 (keyCode === 'arrowdown' ) ||
                 (keyCode === 'arrowup'   ) ||
                 (keyCode === 'arrowleft' ) ||
                 (keyCode === 'arrowright') ||
+                
+                // special keys:
                 (keyCode === 'space'     )
             )
             {
+                if ((event.target as any)?.value !== undefined) return false; // do not handle [key] if the event coming from <input>
+                
+                
+                
                 // do nothing
                 // do not scroll the page
             }
@@ -568,6 +585,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // handlers:
         const handleKeyDown = (event: KeyboardEvent) => {
             // conditions:
+            if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+            
             /* note: the `code` may `undefined` on autoComplete */
             const keyCode = (event.code as string|undefined)?.toLowerCase();
             if (!keyCode) return; // ignores [unidentified] key
