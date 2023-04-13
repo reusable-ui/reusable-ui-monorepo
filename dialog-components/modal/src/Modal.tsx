@@ -315,7 +315,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             }
             else if (isModal && (keyCode === 'tab'))
             {
-                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [key] if [alt][ctrl][shift][win] key is also pressed
+                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [tab] key if [alt][ctrl][shift][win] keys are also pressed
                 
                 
                 
@@ -370,7 +370,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
                         !['color', 'file', 'range'].includes((event.target as any)?.type ?? '')
                     )
                 ) {
-                    return false; // do not handle [navigation] keys if the event coming from <TextEditor>
+                    return false; // do not handle [space] key if the event coming from <TextEditor>
                 } // if
                 
                 

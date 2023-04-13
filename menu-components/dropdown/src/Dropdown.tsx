@@ -229,7 +229,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             }
             else if ((keyCode === 'tab'))
             {
-                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [key] if [alt][ctrl][shift][win] key is also pressed
+                if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) return false; // do not handle [tab] key if [alt][ctrl][shift][win] keys are also pressed
                 
                 
                 
@@ -284,7 +284,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
                         !['color', 'file', 'range'].includes((event.target as any)?.type ?? '')
                     )
                 ) {
-                    return false; // do not handle [navigation] keys if the event coming from <TextEditor>
+                    return false; // do not handle [space] key if the event coming from <TextEditor>
                 } // if
                 
                 
