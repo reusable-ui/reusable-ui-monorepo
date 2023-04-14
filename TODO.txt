@@ -1,3 +1,4 @@
+[high prior] add 'inherit' for size & theme. Use 'md' as default for size to protect from <parent> inheritance
 [high prior] add autoCapitalize implementation
 [high prior] add tooltipViewport
 [high prior] add dropdownViewport
