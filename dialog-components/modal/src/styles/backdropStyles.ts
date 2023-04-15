@@ -161,22 +161,24 @@ export const usesBackdropLayout = memoizeStyle(() => {
                 // children:
                 ...children(noParentScrollDummyChildElm, {
                     // layouts:
-                    display       : 'block',    // fills the entire <NoParentScroll>'s width
-                    content       : '""',       // activate the pseudo_element
+                    display        : 'inline-block', // use inline-block, so it takes the width & height as we set
+                    content        : '""',       // activate the pseudo_element
                     
                     
                     
                     // positions:
-                    gridArea      : 'content',
-                    position      : 'relative', // supports for adjusting the `insetBlockEnd`
-                    insetBlockEnd : '-1px',     // triggers the vertical_scrollbar of the <NoParentScroll>
+                    gridArea       : 'content',
+                    position       : 'relative', // supports for adjusting the `insetBlockEnd`
+                    insetInlineEnd : '-1px',     // triggers the horz_scrollbar of the <NoParentScroll>
+                    insetBlockEnd  : '-1px',     // triggers the vert_scrollbar of the <NoParentScroll>
                     
                     
                     
                     // sizes:
-                    justifySelf   : 'stretch',  // span the <DummyChild> to the width  of <NoParentScroll>
-                    alignSelf     : 'end',      // put the  <DummyChild> to the bottom of <NoParentScroll>
-                    blockSize     : '1px',      // triggers the vertical_scrollbar of the <NoParentScroll>
+                    justifySelf    : 'end',      // put the <DummyChild> to the right  of <NoParentScroll>
+                    alignSelf      : 'end',      // put the <DummyChild> to the bottom of <NoParentScroll>
+                    inlineSize     : '1px',      // triggers the horz_scrollbar of the <NoParentScroll>
+                    blockSize      : '1px',      // triggers the vert_scrollbar of the <NoParentScroll>
                 }),
             }),
             
