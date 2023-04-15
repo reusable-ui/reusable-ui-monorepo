@@ -698,6 +698,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             onAnimationStart = {handleAnimationStart}
             onAnimationEnd   = {handleAnimationEnd  }
         >
+            {/* *hack*: <NoParentScroll> */}
+            <div className='noParentScroll'></div>
+            
             {/* <ModalUi> */}
             {(!lazy || isVisible) && React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,
                 // props:
