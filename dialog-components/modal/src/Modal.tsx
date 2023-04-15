@@ -235,8 +235,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // refs:
-    const modalUiRefInternal = useRef<Element|null>(null);
-    const mergedModalUiRef   = useMergeRefs(
+    const modalUiRefInternal        = useRef<Element|null>(null);
+    const mergedModalUiRef          = useMergeRefs(
         // preserves the original `ref` from `modalUiComponent`:
         (
             isReusableUiModalComponent
@@ -250,8 +250,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         modalUiRefInternal,
     );
-    const portalRefInternal  = useRef<HTMLDivElement|null>(null);
-    const prevFocusRef       = useRef<Element|null>(null);
+    const portalRefInternal         = useRef<HTMLDivElement|null>(null);
+    const prevFocusRef              = useRef<Element|null>(null);
+    const noParentScrollRefInternal = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -398,8 +399,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     );
     const handleMouseDownInternal     = useEvent<React.MouseEventHandler<TElement> & React.TouchEventHandler<TElement>>((event) => {
         // conditions:
-        if (event.defaultPrevented)               return; // the event was already handled by user => nothing to do
-        if (event.target !== event.currentTarget) return; // ignore bubbling from <ModalUi>
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (
+            // the event is NOT coming from <Backdrop> itself:
+            (event.target !== event.currentTarget)
+            &&
+            // the event is NOT coming from <NoParentScroll>:
+            (noParentScrollRefInternal.current && (event.target !== noParentScrollRefInternal.current))
+            
+            // assumes the elements other than <Backdrop>|<NoParentScroll> are <ModalUi>(s)
+        ) return; // ignore bubbling from <ModalUi>
         
         
         
@@ -551,7 +560,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         const currentScrollLeft   = scrollableElm.scrollLeft;
         
         const handlePreventScroll = (event: Event) => {
-            if (event.target === scrollableEvent) { // only handle click on the viewport, ignores click bubbling from the children
+            if (event.target === scrollableEvent) { // only handle scroll on the viewport, ignores scroll bubbling from the children
                 scrollableElm.scrollTop  = currentScrollTop;  // prevent from scrolling by keeping the initial scroll position
                 scrollableElm.scrollLeft = currentScrollLeft; // prevent from scrolling by keeping the initial scroll position
             } // if
@@ -699,7 +708,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             onAnimationEnd   = {handleAnimationEnd  }
         >
             {/* *hack*: <NoParentScroll> */}
-            {isModal /* only modal (blocking) mode */ && <div aria-hidden={true} className='noParentScroll'></div>}
+            {isModal /* only modal (blocking) mode */ && <div ref={noParentScrollRefInternal} aria-hidden={true} className='noParentScroll'></div>}
             
             {/* <ModalUi> */}
             {(!lazy || isVisible) && React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,

@@ -180,7 +180,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
                     inlineSize     : '1px',          // triggers the horz_scrollbar of the <NoParentScroll>
                     blockSize      : '1px',          // triggers the vert_scrollbar of the <NoParentScroll>
                 }),
-            }),
+            }, { specificityWeight : 2 }), // ensures not overwritten by `* as <CardDialog>`
             
             
             
