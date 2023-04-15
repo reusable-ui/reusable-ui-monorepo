@@ -8,6 +8,7 @@
 [high prior] remove borderEnd when <ProgressBar value={100}
 [high prior] clip <Progress> of <ProgressBar> (in case of value={100})
 
+[med prior ] moved \const \w+Elm\s*=\s*'\ to `elements.ts`
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
