@@ -401,14 +401,21 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         if (
-            // the event is NOT coming from <Backdrop> itself:
+            // ignore bubbling from <Backdrop>:
             (event.target !== event.currentTarget)
-            &&
-            // the event is NOT coming from <NoParentScroll>:
-            (noParentScrollRefInternal.current && (event.target !== noParentScrollRefInternal.current))
             
-            // assumes the elements other than <Backdrop>|<NoParentScroll> are <ModalUi>(s)
-        ) return; // ignore bubbling from <ModalUi>
+            &&
+            
+            // ignore bubbling from <NoParentScroll> (if PRESENT):
+            (
+                // <NoParentScroll> is NOT PRESENT (NO modal (blocking) mode) => nothing to ignore:
+                !noParentScrollRefInternal.current
+                ||
+                // <NoParentScroll> is PRESENT and MATCH to target event => ignore bubbling from <NoParentScroll>
+                (event.target !== noParentScrollRefInternal.current)
+            )
+            
+        ) return; // ignore bubbling from <ModalUi> and <NoParentScroll>, assumes the elements other than <Backdrop>|<NoParentScroll> are <ModalUi>(s)
         
         
         
@@ -554,8 +561,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // setups:
         const viewportElm         = getViewportOrDefault(modalViewport);
         
-        const scrollableElm       = (viewportElm === document.body) ? document.documentElement : viewportElm;
-        const scrollableEvent     = (viewportElm === document.body) ? document                 : viewportElm;
+        const scrollableElm       = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
+        const scrollableEvent     = (viewportElm === document.body) ? document                                   : viewportElm;
         const currentScrollTop    = scrollableElm.scrollTop;
         const currentScrollLeft   = scrollableElm.scrollLeft;
         
