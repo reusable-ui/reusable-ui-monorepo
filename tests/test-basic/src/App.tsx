@@ -33,8 +33,10 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Basic>
-                    test &lt;Basic&gt;
+                <Basic theme='danger' size='lg'>
+                    <Basic theme='success' size='md'>
+                        test &lt;Basic&gt;
+                    </Basic>
                 </Basic>
             </div>
         </>

@@ -1,4 +1,3 @@
-[high prior] add 'inherit' for size & theme. Use 'md' as default for size to protect from <parent> inheritance
 [high prior] add autoCapitalize implementation
 [high prior] add tooltipViewport
 [high prior] add dropdownViewport
@@ -7,6 +6,7 @@
 [high prior] add excited for <Badge>
 [high prior] remove borderEnd when <ProgressBar value={100}
 [high prior] clip <Progress> of <ProgressBar> (in case of value={100})
+[high prior] protect size='md' from <parent size='sm|lg'>
 
 [med prior ] moved \const \w+Elm\s*=\s*'\ to `elements.ts`
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
