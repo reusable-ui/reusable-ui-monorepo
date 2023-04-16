@@ -46,6 +46,11 @@ import {
 
 
 
+// defaults:
+const _defaultTheme : Required<ThemableProps>['theme'] = 'inherit'
+
+
+
 // hooks:
 
 // variants:
@@ -172,10 +177,17 @@ const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false }); /
 
 
 //#region caches
-const themeClassesCache          = new Map<ThemeName, CssClassName>();
-export const createThemeClass    = (themeName: ThemeName): CssClassName => {
+const themeClassesCache          = new Map<ThemeName, CssClassName|null>();
+export const createThemeClass    = (themeName: ThemeName): CssClassName|null => {
     const cached = themeClassesCache.get(themeName);
-    if (cached) return cached;
+    if (cached !== undefined) return cached; // null is allowed
+    
+    
+    
+    if (themeName === 'inherit') {
+        themeClassesCache.set(themeName, null);
+        return null;
+    } // if
     
     
     
@@ -184,14 +196,19 @@ export const createThemeClass    = (themeName: ThemeName): CssClassName => {
     return themeClass;
 };
 
-const themeSelectorsCache        = new Map<ThemeName, CssSelector>();
-export const createThemeSelector = (themeName: ThemeName): CssSelector => {
+const themeSelectorsCache        = new Map<ThemeName, CssSelector|'&'>();
+export const createThemeSelector = (themeName: ThemeName): CssSelector|'&' => {
     const cached = themeSelectorsCache.get(themeName);
     if (cached) return cached;
     
     
     
-    const themeRule : CssSelector = `.${createThemeClass(themeName)}`;
+    const themeClass = createThemeClass(themeName);
+    if (themeClass === null) return '&';
+    
+    
+    
+    const themeRule : CssSelector = `.${themeClass}`;
     themeSelectorsCache.set(themeName, themeRule);
     return themeRule;
 };
@@ -335,9 +352,9 @@ export const usesThemeConditional = (themeName: ThemeName|null): CssRule => styl
 
 export interface ThemableProps {
     // variants:
-    theme ?: ThemeName
+    theme ?: ThemeName|'inherit'
 }
-export const useThemable = ({theme}: ThemableProps) => ({
-    class: theme ? createThemeClass(theme) : null,
+export const useThemable = ({theme = _defaultTheme}: ThemableProps) => ({
+    class: (theme === 'inherit') ? null : createThemeClass(theme),
 });
 //#endregion themable
