@@ -196,15 +196,15 @@ export const createThemeClass    = (themeName: ThemeName): CssClassName|null => 
     return themeClass;
 };
 
-const themeSelectorsCache        = new Map<ThemeName, CssSelector|'&'>();
-export const createThemeSelector = (themeName: ThemeName): CssSelector|'&' => {
+const themeSelectorsCache        = new Map<ThemeName, CssSelector|null>();
+export const createThemeSelector = (themeName: ThemeName): CssSelector|null => {
     const cached = themeSelectorsCache.get(themeName);
     if (cached) return cached;
     
     
     
     const themeClass = createThemeClass(themeName);
-    if (themeClass === null) return '&';
+    if (themeClass === null) return null;
     
     
     
@@ -232,6 +232,7 @@ export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
         hasThemeSelectorsCache ?? (hasThemeSelectorsCache = (
             Object.keys(themes)
             .map((themeName) => createThemeSelector(themeName))
+            .filter((selector): selector is CssSelector => (selector !== null))
         ))
         ,
         styles
@@ -242,6 +243,7 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
         noThemeSelectorsCache ?? (noThemeSelectorsCache = (`:not(:is(${
             Object.keys(themes)
             .map((themeName) => createThemeSelector(themeName))
+            .filter((selector): selector is CssSelector => (selector !== null))
             .join(', ')
         }))`))
         ,
