@@ -18,7 +18,6 @@ import {
     // writes css in javascript:
     rule,
     variants,
-    alwaysRule,
     style,
     startsCapitalized,
     
@@ -30,6 +29,11 @@ import {
     usesSuffixedProps,
     overwriteProps,
 }                           from '@cssfn/core'                  // writes css in javascript
+
+
+
+// defaults:
+const _defaultSize : Required<ResizableProps>['size'] = 'inherit'
 
 
 
@@ -50,7 +54,7 @@ export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: T
     
     
     
-    if (sizeName === 'md') {
+    if (sizeName === 'inherit') {
         sizeClassesCache.set(sizeName, null);
         return null;
     } // if
@@ -84,11 +88,7 @@ let sizeOptionsCache : SizeName[] | undefined = undefined;
 
 
 
-export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => {
-    const sizeSelector = createSizeSelector(sizeName);
-    if (sizeSelector === '&') return alwaysRule(styles);
-    return rule(sizeSelector, styles);
-};
+export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => rule(createSizeSelector(sizeName), styles);
 
 
 
@@ -128,9 +128,9 @@ export const sizeOptions = (): SizeName[] => sizeOptionsCache ?? (sizeOptionsCac
 
 export interface ResizableProps<TSizeName extends string = SizeName> {
     // variants:
-    size ?: TSizeName
+    size ?: TSizeName|'inherit'
 }
-export const useResizable = <TSizeName extends string = SizeName>({size}: ResizableProps<TSizeName>) => ({
-    class: size ? createSizeClass(size) : null,
+export const useResizable = <TSizeName extends string = SizeName>({size = _defaultSize}: ResizableProps<TSizeName>) => ({
+    class: (size === 'inherit') ? null : createSizeClass(size),
 });
 //#endregion resizable
