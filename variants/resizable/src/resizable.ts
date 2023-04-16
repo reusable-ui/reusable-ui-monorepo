@@ -66,15 +66,15 @@ export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: T
     return sizeClass;
 };
 
-const sizeSelectorsCache = new Map<string, CssSelector|'&'>();
-export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector|'&' => {
+const sizeSelectorsCache = new Map<string, CssSelector|null>();
+export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector|null => {
     const cached = sizeSelectorsCache.get(sizeName);
     if (cached) return cached;
     
     
     
     const sizeClass = createSizeClass(sizeName);
-    if (sizeClass === null) return '&';
+    if (sizeClass === null) return null;
     
     
     
