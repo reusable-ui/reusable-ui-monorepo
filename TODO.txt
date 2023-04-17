@@ -13,7 +13,7 @@
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
-
+[med prior ] fix <List listStyle='tab' outlined={true}> the unselected ones should appear outlined & the whole <Tab> should have underline
 
 
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
