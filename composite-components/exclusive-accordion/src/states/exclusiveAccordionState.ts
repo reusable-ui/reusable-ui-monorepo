@@ -9,6 +9,7 @@ import {
     // react helper hooks:
     useEvent,
     EventHandler,
+    useMergeEvents,
     
     
     
@@ -23,6 +24,11 @@ import {
 // states:
 
 //#region exclusiveAccordionState
+// defaults:
+const _defaultExpandedListIndex = -1;
+
+
+
 export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
     // positions:
     listIndex : number
@@ -34,6 +40,7 @@ export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent exte
 {
     // states:
     defaultExpandedListIndex ?: number
+    expandedListIndex        ?: number
     onExpandedChange         ?: EventHandler<TExclusiveExpandedChangeEvent>
 }
 export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
@@ -42,24 +49,45 @@ export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends E
     expandedListIndex         : number,
     handleExpandedChange      : EventHandler<TExclusiveExpandedChangeEvent>
 }
-export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props?: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
+export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
+    // rest props:
+    const {
+        // states:
+        defaultExpandedListIndex,
+        expandedListIndex,
+        onExpandedChange,
+    } = props;
+    
+    
+    
     // states:
-    const [expandedListIndex, setExpandedListIndex] = useState<number>(props?.defaultExpandedListIndex ?? -1);
+    const isControllableExpanded = (expandedListIndex !== undefined);
+    const [expandedListIndexDn, setExpandedListIndexDn] = useState<number>(defaultExpandedListIndex ?? _defaultExpandedListIndex);
+    const expandedListIndexFn : number = (expandedListIndex /*controllable*/ ?? expandedListIndexDn /*uncontrollable*/);
     
     
     
     // handlers:
-    const handleExpandedChange = useEvent<EventHandler<TExclusiveExpandedChangeEvent>>((event) => {
-        // actions:
-        setExpandedListIndex(event.expanded ? event.listIndex : -1);
+    const handleExpandedChangeInternal = useEvent<EventHandler<TExclusiveExpandedChangeEvent>>(({expanded, listIndex}) => {
+        // update state:
+        if (!isControllableExpanded) setExpandedListIndexDn(expanded ? listIndex : _defaultExpandedListIndex);
     });
+    const handleExpandedChange         = useMergeEvents(
+        // preserves the original `onExpandedChange` from `props`:
+        onExpandedChange,
+        
+        
+        
+        // actions:
+        handleExpandedChangeInternal,
+    ) ?? handleExpandedChangeInternal;
     
     
     
     return {
         // states:
-        expandedListIndex,
-        handleExpandedChange,
+        expandedListIndex    : expandedListIndexFn,
+        handleExpandedChange : handleExpandedChange,
     };
 };
 //#endregion exclusiveAccordionState

@@ -6,11 +6,6 @@ import {
 
 // reusable-ui core:
 import {
-    // react helper hooks:
-    useMergeEvents,
-    
-    
-    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -81,8 +76,8 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     const {
         // states:
         defaultExpandedListIndex,
-        expandedListIndex, // controllable to internal (uncontrollable) state
-        onExpandedChange,  // intercepts   to internal (uncontrollable) state
+        expandedListIndex,
+        onExpandedChange,
         
         
         
@@ -99,30 +94,11 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     // states:
     const exclusiveAccordionState = useExclusiveAccordionState<TExclusiveExpandedChangeEvent>({
-        defaultExpandedListIndex,
-    });
-    
-    
-    
-    // fn props:
-    const expandedListIndexFn : number = (
-        expandedListIndex                         /*controllable*/
-        ??
-        exclusiveAccordionState.expandedListIndex /*uncontrollable*/
-    );
-    
-    
-    
-    // handlers:
-    const handleExpandedChange = useMergeEvents(
-        // preserves the original `onExpandedChange`:
-        onExpandedChange,
-        
-        
-        
         // states:
-        exclusiveAccordionState.handleExpandedChange,
-    ) ?? exclusiveAccordionState.handleExpandedChange;
+        defaultExpandedListIndex,
+        expandedListIndex,
+        onExpandedChange,
+    });
     
     
     
@@ -166,8 +142,8 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     
                     
                     // states:
-                    expanded={accordionItem.props.expanded ?? (expandedListIndexFn === listIndex)}
-                    onExpandedChange={handleExpandedChange}
+                    expanded={accordionItem.props.expanded ?? (exclusiveAccordionState.expandedListIndex === listIndex)}
+                    onExpandedChange={exclusiveAccordionState.handleExpandedChange}
                     
                     
                     
