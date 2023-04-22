@@ -514,21 +514,12 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     );
     const childrenWithRefs = React.Children.map<React.ReactNode, React.ReactNode>(childrenOrigin, (child, childIndex) => {
         // conditions:
-        if (!React.isValidElement(child)) return child;
+        if (!React.isValidElement<{}>(child)) return child; // not an <Element> => ignore
         
         
         
-        // rest props:
-        const {
-            // refs:
-            childId   : childChildId,   // sanitize the child's [childId  ] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [childId  ] prop
-            childRefs : childChildRefs, // sanitize the child's [childRefs] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [childRefs] prop
-            
-            
-            
-            // components:
-            component : childComponent, // sanitize the child's [component] prop (if exist), so it wouldn't collide with <ChildWithRef>'s [component] prop
-        ...restChildProps} = child.props;
+        // props:
+        const childProps = child.props;
         
         
         
@@ -538,7 +529,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
         return (
             <ChildWithRef
                 // other props:
-                {...restChildProps} // steals (almost) all child's props, so the <Owner> can recognize the <ChildWithRef> as <Child>
+                {...childProps} // steals all child's props, so the <Owner> can recognize the <ChildWithRef> as <TheirChild>
                 
                 
                 
@@ -557,17 +548,13 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                         
                         
                         
-                        // refs:
-                        // restore the sanitized child's [childId  ] prop (if exist):
-                        {...(('childId'   in child.props) ? { childId  : childChildId   } : null)}
-                        // restore the sanitized child's [childRefs] prop (if exist):
-                        {...(('childRefs' in child.props) ? { childRefs: childChildRefs } : null)}
-                        
-                        
-                        
-                        // components:
-                        // restore the sanitized child's [component] prop (if exist):
-                        {...(('component' in child.props) ? { component: childComponent } : null)}
+                        //#region restore conflicting props
+                        {...{
+                            ...(('childId'   in childProps) ? { childId   : childProps.childId   } : undefined),
+                            ...(('childRefs' in childProps) ? { childRefs : childProps.childRefs } : undefined),
+                            ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                        }}
+                        //#endregion restore conflicting props
                     />
                 }
             />
