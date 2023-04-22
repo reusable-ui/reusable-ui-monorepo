@@ -128,7 +128,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     return (
                         <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
                             // other props:
-                            {...accordionItemProps} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithState> as <ListItem>
+                            {...accordionItemProps} // steals all accordionItem's props, so the <Owner> can recognize the <AccordionItemWithState> as <TheirChild>
                             
                             
                             
