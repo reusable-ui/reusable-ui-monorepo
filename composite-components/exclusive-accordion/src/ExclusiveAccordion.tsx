@@ -119,8 +119,12 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     
                     
                     
-                    // jsx:
+                    // props:
                     const accordionItemProps = accordionItem.props;
+                    
+                    
+                    
+                    // jsx:
                     return (
                         <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
                             // other props:
