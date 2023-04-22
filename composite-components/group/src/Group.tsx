@@ -114,7 +114,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                 return (
                     <GroupItem
                         // other props:
-                        {...childProps} // steals all child's props, so the <List> can recognize the <GroupItem> as <ListItem>
+                        {...childProps} // steals all child's props, so the <Owner> can recognize the <GroupItem> as <TheirChild>
                         
                         
                         
