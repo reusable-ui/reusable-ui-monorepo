@@ -35,7 +35,7 @@ import {
 
 
 // react components:
-export interface AccordionItemWithExclusivityProps<TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
+export interface AccordionItemWithStateProps<TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
     extends
         // bases:
         AccordionItemProps<TElement, TExclusiveExpandedChangeEvent>,
@@ -47,7 +47,7 @@ export interface AccordionItemWithExclusivityProps<TElement extends Element = HT
         Required<AccordionItemComponentProps<TElement, ExpandedChangeEvent>>
 {
 }
-export const AccordionItemWithExclusivity = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: AccordionItemWithExclusivityProps<TElement, TExclusiveExpandedChangeEvent>): JSX.Element|null => {
+export const AccordionItemWithState = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: AccordionItemWithStateProps<TElement, TExclusiveExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // positions:

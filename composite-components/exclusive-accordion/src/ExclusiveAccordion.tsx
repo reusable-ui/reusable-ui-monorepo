@@ -44,8 +44,8 @@ import {
 }                           from './states/exclusiveAccordionState.js'
 import {
     // react components:
-    AccordionItemWithExclusivity,
-}                           from './AccordionItemWithExclusivity.js'
+    AccordionItemWithState,
+}                           from './AccordionItemWithState.js'
 
 
 
@@ -121,9 +121,9 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     
                     // jsx:
                     return (
-                        <AccordionItemWithExclusivity<Element, TExclusiveExpandedChangeEvent>
+                        <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
                             // other props:
-                            {...accordionItem.props} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithExclusivity> as <ListItem>
+                            {...accordionItem.props} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithState> as <ListItem>
                             
                             
                             
