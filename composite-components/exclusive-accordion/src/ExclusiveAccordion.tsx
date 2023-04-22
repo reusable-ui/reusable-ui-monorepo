@@ -135,7 +135,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                             
                             // components:
                             accordionItemComponent={
-                                // clone accordionItem element with blank props:
+                                // clone accordionItem element with (almost) blank props:
                                 <accordionItem.type
                                     // identifiers:
                                     key={accordionItem.key}
