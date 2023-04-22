@@ -120,10 +120,11 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     
                     
                     // jsx:
+                    const accordionItemProps = accordionItem.props;
                     return (
                         <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
                             // other props:
-                            {...accordionItem.props} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithState> as <ListItem>
+                            {...accordionItemProps} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithState> as <ListItem>
                             
                             
                             
@@ -138,6 +139,15 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                                 <accordionItem.type
                                     // identifiers:
                                     key={accordionItem.key}
+                                    
+                                    
+                                    
+                                    //#region restore conflicting props
+                                    {...{
+                                        ...(('listIndex'              in accordionItemProps) ? { listIndex              : accordionItemProps.listIndex              } : undefined),
+                                        ...(('accordionItemComponent' in accordionItemProps) ? { accordionItemComponent : accordionItemProps.accordionItemComponent } : undefined),
+                                    }}
+                                    //#endregion restore conflicting props
                                 />
                             }
                         />
