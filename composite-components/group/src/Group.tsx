@@ -93,11 +93,11 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
         >
             {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
                 // conditions:
-                if (!React.isValidElement<BasicProps & { component: React.ReactElement }>(child)) return child;
+                if (!React.isValidElement<BasicProps>(child)) return child; // not an <Element> => ignore
                 
                 
                 
-                // rest props:
+                // props:
                 const childProps = {
                     // other props:
                     ...child.props,
@@ -107,10 +107,6 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                     // variants:
                     size : child.props.size ?? size,
                 };
-                const {
-                    // components:
-                    component : childComponent, // sanitize the child's [component] prop (if exist), so it wouldn't collide with <GroupItem>'s [component] prop
-                ...restChildProps} = childProps;
                 
                 
                 
@@ -118,7 +114,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                 return (
                     <GroupItem
                         // other props:
-                        {...restChildProps} // steals (almost) all child's props, so the <List> can recognize the <GroupItem> as <ListItem>
+                        {...childProps} // steals all child's props, so the <List> can recognize the <GroupItem> as <ListItem>
                         
                         
                         
@@ -131,9 +127,11 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                                 
                                 
                                 
-                                // components:
-                                // restore the sanitized child's [component] prop (if exist):
-                                {...(('component' in child.props) ? { component: childComponent } : null)}
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                                }}
+                                //#endregion restore conflicting props
                             />
                         }
                     />

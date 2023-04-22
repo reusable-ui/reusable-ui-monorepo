@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/group",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "Groups a list of components as a single component.",
   "keywords": [
     "group",
