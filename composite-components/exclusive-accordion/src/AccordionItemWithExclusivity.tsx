@@ -26,9 +26,10 @@ import {
 }                           from '@reusable-ui/accordion'       // represents a series of toggleable collapsing content
 
 // internals:
-import type {
+import {
     // states:
     ExclusiveExpandedChangeEvent,
+    useExclusiveAccordionState,
 }                           from './states/exclusiveAccordionState.js'
 
 
@@ -37,19 +38,10 @@ import type {
 export interface AccordionItemWithExclusivityProps<TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
     extends
         // bases:
-        Omit<AccordionItemProps<TElement, TExclusiveExpandedChangeEvent>,
-            |'expanded'          // change expanded prop as required
-            |'onExpandedChange'  // change onExpandedChange prop as required
-        >,
+        AccordionItemProps<TElement, TExclusiveExpandedChangeEvent>,
         
         // positions:
         Pick<TExclusiveExpandedChangeEvent, 'listIndex'>,
-        
-        // states:
-        Required<Pick<AccordionItemProps<TElement, TExclusiveExpandedChangeEvent>,
-            |'expanded'          // change expanded prop as required
-            |'onExpandedChange'  // change onExpandedChange prop as required
-        >>,
         
         // components:
         Required<AccordionItemComponentProps<TElement, ExpandedChangeEvent>>
@@ -63,31 +55,33 @@ export const AccordionItemWithExclusivity = <TElement extends Element = HTMLElem
         
         
         
-        // states:
-        expanded,
-        onExpandedChange,
-        
-        
-        
         // components:
         accordionItemComponent,
     ...restAccordionItemProps} = props;
     
     
     
+    // states:
+    const {
+        // states:
+        expandedListIndex,
+        triggerExpandedChange,
+    } = useExclusiveAccordionState();
+    
+    
+    
     // handlers:
-    const handleExpandedChangeByAccordionItem = useEvent<EventHandler<ExpandedChangeEvent>>((event) => {
-        // <AccordionItem> expanded/collapsed => request to show/hide the <ExclusiveAccordionItem> with `listIndex`:
-        onExpandedChange?.({ ...event, listIndex } as TExclusiveExpandedChangeEvent);
+    const handleExpandedChangeInternal = useEvent<EventHandler<ExpandedChangeEvent>>(({expanded}) => {
+        triggerExpandedChange(expanded, listIndex);
     });
-    const handleExpandedChange                = useMergeEvents(
+    const handleExpandedChange         = useMergeEvents(
         // preserves the original `onExpandedChange` from `accordionItemComponent`:
         accordionItemComponent.props.onExpandedChange,
         
         
         
-        // forwards the original `onExpandedChange` from `props`:
-        handleExpandedChangeByAccordionItem,
+        // actions:
+        handleExpandedChangeInternal,
     );
     
     
@@ -104,7 +98,7 @@ export const AccordionItemWithExclusivity = <TElement extends Element = HTMLElem
             
             
             // states:
-            expanded         : accordionItemComponent.props.expanded ?? expanded,
+            expanded         : accordionItemComponent.props.expanded ?? (expandedListIndex === listIndex),
             
             
             

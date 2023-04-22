@@ -35,9 +35,12 @@ import {
 import {
     // states:
     ExclusiveExpandedChangeEvent,
+    
+    
+    
+    // react components:
     ExclusiveAccordionStateProps,
-    ExclusiveAccordionState,
-    useExclusiveAccordionState,
+    ExclusiveAccordionStateProvider,
 }                           from './states/exclusiveAccordionState.js'
 import {
     // react components:
@@ -65,7 +68,6 @@ export interface ExclusiveAccordionProps<TElement extends Element = HTMLElement,
         
         // states:
         ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>,
-        Partial<Pick<ExclusiveAccordionState<TExclusiveExpandedChangeEvent>, 'expandedListIndex'>>,    // controllable to internal (uncontrollable) state
         
         // components:
         AccordionComponentProps<TElement>
@@ -92,78 +94,57 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     
     
-    // states:
-    const exclusiveAccordionState = useExclusiveAccordionState<TExclusiveExpandedChangeEvent>({
-        // states:
-        defaultExpandedListIndex,
-        expandedListIndex,
-        onExpandedChange,
-    });
-    
-    
-    
     // jsx:
-    /* <Accordion> */
-    return React.cloneElement<AccordionProps<TElement>>(accordionComponent,
-        // props:
-        {
-            // other props:
-            ...restAccordionProps,
-        },
-        
-        
-        
-        // children:
-        React.Children.map(children, (accordionItem, listIndex) => {
-            // conditions:
-            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => ignore
-            
-            
-            
-            // rest props:
-            const {
-                // states:
-                onExpandedChange : accordionItemOnExpandedChange, // sanitize the accordionItem's [onExpandedChange] prop (if exist), so it wouldn't collide with <AccordionItemWithExclusivity>'s [onExpandedChange] prop
-            ...restAccordionItemProps} = accordionItem.props;
-            
-            
-            
-            // jsx:
-            return (
-                <AccordionItemWithExclusivity<Element, TExclusiveExpandedChangeEvent>
+    return (
+        <ExclusiveAccordionStateProvider<TExclusiveExpandedChangeEvent>
+            // states:
+            defaultExpandedListIndex={defaultExpandedListIndex}
+            expandedListIndex={expandedListIndex}
+            onExpandedChange={onExpandedChange}
+        >
+            {/* <Accordion> */}
+            {React.cloneElement<AccordionProps<TElement>>(accordionComponent,
+                // props:
+                {
                     // other props:
-                    {...restAccordionItemProps} // steals (almost) all accordionItem's props, so the <List> can recognize the <AccordionItemWithExclusivity> as <ListItem>
+                    ...restAccordionProps,
+                },
+                
+                
+                
+                // children:
+                React.Children.map(children, (accordionItem, listIndex) => {
+                    // conditions:
+                    if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => ignore
                     
                     
                     
-                    // positions:
-                    listIndex={listIndex}
-                    
-                    
-                    
-                    // states:
-                    expanded={accordionItem.props.expanded ?? (exclusiveAccordionState.expandedListIndex === listIndex)}
-                    onExpandedChange={exclusiveAccordionState.handleExpandedChange}
-                    
-                    
-                    
-                    // components:
-                    accordionItemComponent={
-                        // clone accordionItem element with (almost) blank props:
-                        <accordionItem.type
-                            // identifiers:
-                            key={accordionItem.key}
+                    // jsx:
+                    return (
+                        <AccordionItemWithExclusivity<Element, TExclusiveExpandedChangeEvent>
+                            // other props:
+                            {...accordionItem.props} // steals all accordionItem's props, so the <List> can recognize the <AccordionItemWithExclusivity> as <ListItem>
                             
                             
                             
-                            // states:
-                            // restore the sanitized accordionItem's [onExpandedChange] prop (if exist):
-                            {...(('onExpandedChange' in accordionItem.props) ? { onExpandedChange: accordionItemOnExpandedChange } : null)}
+                            // positions:
+                            listIndex={listIndex}
+                            
+                            
+                            
+                            // components:
+                            accordionItemComponent={
+                                // clone accordionItem element with blank props:
+                                <accordionItem.type
+                                    // identifiers:
+                                    key={accordionItem.key}
+                                />
+                            }
                         />
-                    }
-                />
-            );
-        }),
+                    );
+                }),
+            )}
+        </ExclusiveAccordionStateProvider>
     );
 };
 export {

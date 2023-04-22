@@ -1,6 +1,17 @@
 // react:
 import {
+    // react:
+    default as React,
+    
+    
+    
+    // contexts:
+    createContext,
+    
+    
+    
     // hooks:
+    useContext,
     useState,
 }                           from 'react'
 
@@ -36,26 +47,50 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
+export interface ExclusiveAccordionState
+{
+    // states:
+    expandedListIndex         : number,
+    triggerExpandedChange     : (expanded: boolean, listIndex: number) => void
+}
+
+const ExclusiveAccordionStateContext = createContext<ExclusiveAccordionState>({
+    // states:
+    expandedListIndex         : _defaultExpandedListIndex,
+    triggerExpandedChange     : () => { throw Error('not inside <ExclusiveAccordionStateProvider>'); },
+});
+ExclusiveAccordionStateContext.displayName  = 'ExclusiveAccordionState';
+
+export const useExclusiveAccordionState = (): ExclusiveAccordionState => {
+    return useContext(ExclusiveAccordionStateContext);
+}
+
+
+
 export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
     // states:
     defaultExpandedListIndex ?: number
     expandedListIndex        ?: number
     onExpandedChange         ?: EventHandler<TExclusiveExpandedChangeEvent>
+    
+    
+    
+    // children:
+    children                 ?: React.ReactNode
 }
-export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
-{
-    // states:
-    expandedListIndex         : number,
-    handleExpandedChange      : EventHandler<TExclusiveExpandedChangeEvent>
-}
-export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
+const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // states:
         defaultExpandedListIndex,
         expandedListIndex,
         onExpandedChange,
+        
+        
+        
+        // children:
+        children,
     } = props;
     
     
@@ -80,14 +115,26 @@ export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends
         
         // actions:
         handleExpandedChangeInternal,
-    ) ?? handleExpandedChangeInternal;
+    );
+    const triggerExpandedChange        = useEvent((expanded: boolean, listIndex: number): void => {
+        handleExpandedChange?.({ expanded, listIndex } as TExclusiveExpandedChangeEvent);
+    });
     
     
     
-    return {
-        // states:
-        expandedListIndex    : expandedListIndexFn,
-        handleExpandedChange : handleExpandedChange,
-    };
+    // jsx:
+    return (
+        <ExclusiveAccordionStateContext.Provider value={{
+            // states:
+            expandedListIndex     : expandedListIndexFn,
+            triggerExpandedChange : triggerExpandedChange,
+        }}>
+            {children}
+        </ExclusiveAccordionStateContext.Provider>
+    );
 };
+export {
+    ExclusiveAccordionStateProvider,
+    ExclusiveAccordionStateProvider as default,
+}
 //#endregion exclusiveAccordionState
