@@ -30,18 +30,19 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-export interface ExclusiveAccordionStateProps
+export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
     // states:
     defaultExpandedListIndex ?: number
+    onExpandedChange         ?: EventHandler<TExclusiveExpandedChangeEvent>
 }
 export interface ExclusiveAccordionState<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
     // states:
-    expandedListIndex    : number,
-    handleExpandedChange : EventHandler<TExclusiveExpandedChangeEvent>
+    expandedListIndex         : number,
+    handleExpandedChange      : EventHandler<TExclusiveExpandedChangeEvent>
 }
-export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props?: ExclusiveAccordionStateProps): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
+export const useExclusiveAccordionState = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props?: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): ExclusiveAccordionState<TExclusiveExpandedChangeEvent> => {
     // states:
     const [expandedListIndex, setExpandedListIndex] = useState<number>(props?.defaultExpandedListIndex ?? -1);
     

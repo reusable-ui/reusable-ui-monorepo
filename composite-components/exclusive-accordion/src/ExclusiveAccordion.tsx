@@ -69,14 +69,12 @@ export interface ExclusiveAccordionProps<TElement extends Element = HTMLElement,
         AccordionProps<TElement>,
         
         // states:
-        ExclusiveAccordionStateProps,
+        ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>,
         Partial<Pick<ExclusiveAccordionState<TExclusiveExpandedChangeEvent>, 'expandedListIndex'>>,    // controllable to internal (uncontrollable) state
         
         // components:
         AccordionComponentProps<TElement>
 {
-    // states:
-    onExpandedChange ?: ExclusiveAccordionState<TExclusiveExpandedChangeEvent>['handleExpandedChange'] // intercepts   to internal (uncontrollable) state
 }
 const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionProps<TElement>): JSX.Element|null => {
     // rest props:
