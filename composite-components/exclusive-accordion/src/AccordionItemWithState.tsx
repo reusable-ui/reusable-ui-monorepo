@@ -18,7 +18,7 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
-import {
+import type {
     // react components:
     AccordionItemProps,
     
@@ -67,6 +67,7 @@ export const AccordionItemWithState = <TElement extends Element = HTMLElement, T
         expandedListIndex,
         triggerExpandedChange,
     } = useExclusiveAccordionState();
+    const isActive = (expandedListIndex === listIndex);
     
     
     
@@ -98,7 +99,7 @@ export const AccordionItemWithState = <TElement extends Element = HTMLElement, T
             
             
             // states:
-            expanded         : accordionItemComponent.props.expanded ?? (expandedListIndex === listIndex),
+            expanded         : accordionItemComponent.props.expanded ?? isActive,
             
             
             
