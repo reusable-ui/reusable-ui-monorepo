@@ -479,8 +479,13 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             
             
             
+            // props:
+            const listItemProps = listItem.props;
+            
+            
+            
             // defaults:
-            const actionCtrl = listItem.props.actionCtrl ?? props.actionCtrl ?? true;
+            const actionCtrl = listItemProps.actionCtrl ?? props.actionCtrl ?? true;
             
             
             
@@ -488,7 +493,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             return (
                 <ListItemWithNavigation<Element>
                     // other props:
-                    {...listItem.props} // steals all listItem's props, so the <List> can recognize the <ListItemWithNavigation> as <ListItem>
+                    {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithNavigation> as <TheirChild>
                     
                     
                     
@@ -503,7 +508,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     
                     // states:
-                    active={listItem.props.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
+                    active={listItemProps.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
                     
                     
                     
@@ -514,14 +519,26 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     
                     // components:
                     listItemComponent={
-                        // clone listItem element with blank props:
+                        // clone listItem element with (almost) blank props:
                         <listItem.type
                             // identifiers:
                             key={listItem.key}
+                            
+                            
+                            
+                            //#region restore conflicting props
+                            {...{
+                                ...(('deepLevels'        in listItemProps) ? { deepLevels        : listItemProps.deepLevels        } : undefined),
+                                ...(('actionCtrl'        in listItemProps) ? { actionCtrl        : listItemProps.actionCtrl        } : undefined),
+                                ...(('active'            in listItemProps) ? { active            : listItemProps.active            } : undefined),
+                                ...(('handleNavigate'    in listItemProps) ? { handleNavigate    : listItemProps.handleNavigate    } : undefined),
+                                ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
+                            }}
+                            //#endregion restore conflicting props
                         />
                     }
                 >
-                    {React.Children.map(listItem.props.children, (grandChild, grandIndex) => (
+                    {React.Children.map(listItemProps.children, (grandChild, grandIndex) => (
                         (
                             React.isValidElement<NavscrollProps>(grandChild)
                             &&
