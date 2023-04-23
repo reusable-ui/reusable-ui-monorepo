@@ -481,11 +481,16 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 
                 
                 
+                // props:
+                const listItemProps = listItem.props;
+                
+                
+                
                 // jsx:
                 return (
                     <ListItemWithExpandedHandler<Element, TDropdownListExpandedChangeEvent>
                         // other props:
-                        {...listItem.props} // steals all listItem's props, so the <List> can recognize the <ListItemWithExpandedHandler> as <ListItem>
+                        {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithExpandedHandler> as <TheirChild>
                         
                         
                         
@@ -501,10 +506,20 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                         
                         // components:
                         listItemComponent={
-                            // clone listItem element with blank props:
+                            // clone listItem element with (almost) blank props:
                             <listItem.type
                                 // identifiers:
                                 key={listItem.key}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('listIndex'         in listItemProps) ? { listIndex         : listItemProps.listIndex         } : undefined),
+                                    ...(('onExpandedChange'  in listItemProps) ? { onExpandedChange  : listItemProps.onExpandedChange  } : undefined),
+                                    ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
                             />
                         }
                     />
