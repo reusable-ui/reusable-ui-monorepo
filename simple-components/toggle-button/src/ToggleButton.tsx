@@ -79,6 +79,11 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     
     
     
+    // identifiers:
+    const controllableId = buttonComponent.props['aria-controls'] ?? props['aria-controls'];
+    
+    
+    
     // refs:
     const mergedButtonRef   = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
@@ -142,7 +147,8 @@ const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
             
             
             // semantics:
-            'aria-expanded' : (activeFn || undefined) && (buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (activeFn === false) and the default value of [aria-expanded] is true
+            'aria-controls' : controllableId,
+            'aria-expanded' : buttonComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? (!!controllableId ? activeFn : undefined),
             
             
             

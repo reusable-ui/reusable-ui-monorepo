@@ -152,8 +152,9 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // identifiers:
-    const defaultId     = useId();
-    const collapsibleId = contentComponent.props.id ?? defaultId;
+    const defaultId      = useId();
+    const collapsibleId  = contentComponent.props.id ?? defaultId;
+    const controllableId = listItemComponent.props['aria-controls'] ?? props['aria-controls'] ?? collapsibleId;
     
     
     
@@ -258,8 +259,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // semantics:
-                    'aria-expanded' : (isExpanded || undefined) && (listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? true), // ignore [aria-expanded] when (isExpanded === false) and the default value of [aria-expanded] is true
-                    'aria-controls' : listItemComponent.props['aria-controls'] ?? collapsibleId,
+                    'aria-controls' : controllableId,
+                    'aria-expanded' : listItemComponent.props['aria-expanded'] ?? props['aria-expanded'] ?? (!!controllableId ? isExpanded : undefined),
                     
                     
                     
