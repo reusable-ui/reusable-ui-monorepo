@@ -85,7 +85,11 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
     
     
     // components:
+    /**
+     * @deprecated renamed to `bodyComponent`
+     */
     contentComponent ?: ListItemComponentProps<TElement>['listItemComponent']
+    bodyComponent    ?: ListItemComponentProps<TElement>['listItemComponent']
     
     
     
@@ -136,7 +140,12 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
-        contentComponent  = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        // @ts-ignore
+        contentComponent,
+        bodyComponent     = // @ts-ignore
+                            contentComponent
+                            ??
+                            (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
         
         
         
@@ -148,12 +157,14 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         // children:
         children,
     ...restListItemProps} = props;
+    type T1 = typeof restListItemProps
+    type T2 = Omit<T1, keyof ListItemProps>
     
     
     
     // identifiers:
     const defaultId      = useId();
-    const collapsibleId  = contentComponent.props.id ?? defaultId;
+    const collapsibleId  = bodyComponent.props.id ?? defaultId;
     const controllableId = listItemComponent.props['aria-controls'] ?? props['aria-controls'] ?? collapsibleId;
     
     
@@ -186,8 +197,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         ((!isExpanded || null) && 'last-visible-child'),
     );
     const contentStateClasses = useMergeClasses(
-        // preserves the original `stateClasses` from `contentComponent`:
-        contentComponent.props.stateClasses,
+        // preserves the original `stateClasses` from `bodyComponent`:
+        bodyComponent.props.stateClasses,
         
         
         
@@ -225,8 +236,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     );
     
     const handleContentAnimationStart = useMergeEvents(
-        // preserves the original `onAnimationStart` from `contentComponent`:
-        contentComponent.props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `bodyComponent`:
+        bodyComponent.props.onAnimationStart,
         
         
         
@@ -234,8 +245,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         collapsibleState.handleAnimationStart,
     );
     const handleContentAnimationEnd   = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `contentComponent`:
-        contentComponent.props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `bodyComponent`:
+        bodyComponent.props.onAnimationEnd,
         
         
         
@@ -292,7 +303,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             
             
             {/* collapsible <ListItem> */}
-            {React.cloneElement<ListItemProps<TElement>>(contentComponent,
+            {React.cloneElement<ListItemProps<TElement>>(bodyComponent,
                 // props:
                 {
                     // basic variant props:
@@ -301,7 +312,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // other props:
-                    ...contentComponent.props,
+                    ...bodyComponent.props,
                     
                     
                     
@@ -311,17 +322,17 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // accessibility props:
-                    enabled          : contentComponent.props.enabled         ?? enabled,
-                    inheritEnabled   : contentComponent.props.inheritEnabled  ?? inheritEnabled,
-                    readOnly         : contentComponent.props.readOnly        ?? readOnly,
-                    inheritReadOnly  : contentComponent.props.inheritReadOnly ?? inheritReadOnly,
-                    active           : contentComponent.props.active          ?? active,
-                    inheritActive    : contentComponent.props.inheritActive   ?? inheritActive,
+                    enabled          : bodyComponent.props.enabled         ?? enabled,
+                    inheritEnabled   : bodyComponent.props.inheritEnabled  ?? inheritEnabled,
+                    readOnly         : bodyComponent.props.readOnly        ?? readOnly,
+                    inheritReadOnly  : bodyComponent.props.inheritReadOnly ?? inheritReadOnly,
+                    active           : bodyComponent.props.active          ?? active,
+                    inheritActive    : bodyComponent.props.inheritActive   ?? inheritActive,
                     
                     
                     
                     // classes:
-                    mainClass        : contentComponent.props.mainClass       ?? styleSheet.main,
+                    mainClass        : bodyComponent.props.mainClass       ?? styleSheet.main,
                     stateClasses     : contentStateClasses,
                     
                     
@@ -334,7 +345,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                 
                 
                 // children:
-                contentComponent.props.children ?? ((!lazy || isVisible) && children),
+                bodyComponent.props.children ?? ((!lazy || isVisible) && children),
             )}
         </>
     );
