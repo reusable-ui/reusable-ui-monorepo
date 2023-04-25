@@ -157,8 +157,6 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         // children:
         children,
     ...restListItemProps} = props;
-    type T1 = typeof restListItemProps
-    type T2 = Omit<T1, keyof ListItemProps>
     
     
     
