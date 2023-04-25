@@ -121,7 +121,11 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
     
     
     // components:
+    /**
+     * @deprecated renamed to `bodyComponent`
+     */
     contentComponent ?: React.ReactComponentElement<any, BasicProps<Element>>
+    bodyComponent    ?: React.ReactComponentElement<any, BasicProps<Element>>
     
     
     
@@ -183,7 +187,12 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         toggleButtonComponent = (<ToggleButton   /> as React.ReactComponentElement<any, ToggleButtonProps>),
         
-        contentComponent      = (<Basic<Element> /> as React.ReactComponentElement<any, BasicProps<Element>>),
+        // @ts-ignore
+        contentComponent,
+        bodyComponent         = // @ts-ignore
+                                contentComponent
+                                ??
+                                (<Basic<Element> /> as React.ReactComponentElement<any, BasicProps<Element>>),
         
         
         
@@ -195,7 +204,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // identifiers:
     const defaultId     = useId();
-    const collapsibleId = contentComponent.props.id ?? defaultId;
+    const collapsibleId = bodyComponent.props.id ?? defaultId;
     
     
     
@@ -251,8 +260,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     );
     
     const contentStateClasses = useMergeClasses(
-        // preserves the original `stateClasses` from `contentComponent`:
-        contentComponent.props.stateClasses,
+        // preserves the original `stateClasses` from `bodyComponent`:
+        bodyComponent.props.stateClasses,
         
         
         
@@ -260,8 +269,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         collapsibleState.class,
     );
     const contentClasses      = useMergeClasses(
-        // preserves the original `classes` from `contentComponent`:
-        contentComponent.props.classes,
+        // preserves the original `classes` from `bodyComponent`:
+        bodyComponent.props.classes,
         
         
         
@@ -300,8 +309,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     );
     
     const handleContentAnimationStart        = useMergeEvents(
-        // preserves the original `onAnimationStart` from `contentComponent`:
-        contentComponent.props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `bodyComponent`:
+        bodyComponent.props.onAnimationStart,
         
         
         
@@ -309,8 +318,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         collapsibleState.handleAnimationStart,
     );
     const handleContentAnimationEnd          = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `contentComponent`:
-        contentComponent.props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `bodyComponent`:
+        bodyComponent.props.onAnimationEnd,
         
         
         
@@ -400,7 +409,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             {/* collapsible <Basic> */}
-            {React.cloneElement<BasicProps<Element>>(contentComponent,
+            {React.cloneElement<BasicProps<Element>>(bodyComponent,
                 // props:
                 {
                     // basic variant props:
@@ -409,7 +418,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     // other props:
-                    ...contentComponent.props,
+                    ...bodyComponent.props,
                     
                     
                     
@@ -432,7 +441,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                 
                 
                 // children:
-                contentComponent.props.children ?? ((!lazy || isVisible) && children),
+                bodyComponent.props.children ?? ((!lazy || isVisible) && children),
             )}
         </Basic>
     );
