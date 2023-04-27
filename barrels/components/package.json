@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -82,6 +82,7 @@
     "@reusable-ui/radio": "^5.2.0",
     "@reusable-ui/range": "^5.2.0",
     "@reusable-ui/responsives": "^5.2.0",
+    "@reusable-ui/tab": "^5.2.1",
     "@reusable-ui/toggle-button": "^5.2.0",
     "@reusable-ui/tooltip": "^5.2.0",
     "@reusable-ui/visually-hidden": "^5.2.0"
