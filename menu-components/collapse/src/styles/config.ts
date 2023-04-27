@@ -22,22 +22,23 @@ import {
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     //#region keyframes
     const frameCollapsed    = style({
+        maxBlockSize  : 0,
+        
         overflowY     : 'clip',
         ...fallbacks({
-            overflowY     : 'hidden',
+            overflowY : 'hidden',
         }),
-        maxBlockSize  : 0,
     });
     const frameIntermediate = style({
         overflowY     : 'clip',
         ...fallbacks({
-            overflowY     : 'hidden',
+            overflowY : 'hidden',
         }),
-        maxBlockSize  : '100vh',
     });
     const frameExpanded     = style({
+        maxBlockSize  : '100vh',
+        
         overflowY     : 'unset',
-        maxBlockSize  : 'unset',
     });
     const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
         from  : frameCollapsed,
@@ -55,22 +56,23 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     
     const frameCollapsedInline    = style({
+        maxInlineSize : 0,
+        
         overflowX     : 'clip',
         ...fallbacks({
-            overflowX     : 'hidden',
+            overflowX : 'hidden',
         }),
-        maxInlineSize : 0,
     });
     const frameIntermediateInline = style({
         overflowX     : 'clip',
         ...fallbacks({
-            overflowX     : 'hidden',
+            overflowX : 'hidden',
         }),
-        maxInlineSize : '100vw',
     });
     const frameExpandedInline     = style({
+        maxInlineSize : '100vw',
+        
         overflowX     : 'unset',
-        maxInlineSize : 'unset',
     });
     const [keyframesExpandInlineRule  , keyframesExpandInline  ] = keyframes({
         from  : frameCollapsedInline,
