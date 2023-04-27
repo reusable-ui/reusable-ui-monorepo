@@ -1,0 +1,54 @@
+{
+  "name": "@reusable-ui/tab",
+  "version": "5.2.0",
+  "description": "Represents a series of tabbed collapsing contents.",
+  "keywords": [
+    "list",
+    "group",
+    "series",
+    "layout",
+    "container",
+    "toggle",
+    "collapse",
+    "content",
+    "tab",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/core": "^2.5.0",
+    "@cssfn/cssfn-react": "^2.5.0",
+    "@reusable-ui/basic": "^5.2.0",
+    "@reusable-ui/content": "^5.2.0",
+    "@reusable-ui/core": "^5.2.0",
+    "@reusable-ui/generic": "^5.2.0",
+    "@reusable-ui/list": "^5.2.0",
+    "@types/react": "^18.0.27"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}
