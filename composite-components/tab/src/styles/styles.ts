@@ -50,6 +50,11 @@ import {
     usesTab,
 }                           from '../features/tab.js'
 import {
+    // elements:
+    tabBodyElm,
+    tabPanelElm,
+}                           from './elements.js'
+import {
     // configs:
     tabs,
 }                           from './config.js'
@@ -154,7 +159,7 @@ export const usesTabBodyLayout = () => {
         
         
         // children:
-        ...children('.tabPanel', usesTabPanelLayout()),
+        ...children(tabPanelElm, usesTabPanelLayout()),
         
         
         
@@ -168,14 +173,14 @@ export const usesTabBodyVariants = () => {
         ...variants([
             rule('.maxContent', {
                 // children:
-                ...children('.tabPanel', {
+                ...children(tabPanelElm, {
                     // states:
                     ...usesCollapsible(usesSuffixedProps(usesPrefixedProps(tabs, 'panel'), 'maxContent')).collapsibleRule(), // overwrites {panel}PropName = {panel}PropName{MaxContent}
                 }),
             }),
             rule('.fitContent', {
                 // children:
-                ...children('.tabPanel', {
+                ...children(tabPanelElm, {
                     // states:
                     ...usesCollapsible(usesSuffixedProps(usesPrefixedProps(tabs, 'panel'), 'fitContent')).collapsibleRule(), // overwrites {panel}PropName = {panel}PropName{FitContent}
                     ...states([
@@ -217,7 +222,7 @@ export const usesTabLayout = () => {
         // layouts:
         ...style({
             // children:
-            ...children('.tabBody', style({
+            ...children(tabBodyElm, style({
                 // layouts:
                 ...usesTabBodyLayout(),
                 

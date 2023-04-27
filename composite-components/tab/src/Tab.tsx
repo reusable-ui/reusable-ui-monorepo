@@ -57,8 +57,8 @@ import {
 
 // styles:
 export const useTabStyleSheet = dynamicStyleSheet(
-    () => import(/* webpackPrefetch: true */ './styles/styles')
-, { id: 'qjlmg10jy4' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+    () => import(/* webpackPrefetch: true */ './styles/styles.js')
+, { id: 'g7mp3ol8df' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 

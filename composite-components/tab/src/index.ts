@@ -2,6 +2,7 @@ export *            from './features/tab.js'
 export *            from './variants/TabPanelVariant.js'
 export *            from './states/tabState.js'
 
+export *            from './styles/elements.js'
 export *            from './styles/config.js'
 export *            from './styles/styles.js'
 export *            from './Tab.js'
