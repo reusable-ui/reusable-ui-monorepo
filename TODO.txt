@@ -8,6 +8,8 @@
 [high prior] clip <Progress> of <ProgressBar> (in case of value={100})
 [high prior] protect size='md' from <parent size='sm|lg'>
 
+[med prior ] rename onFullyExpanded and onFullyCollapsed to onExpanded(Start|End) and onCollapsed(Start|End)
+[med prior ] memorize `style={{`
 [med prior ] moved \const \w+Elm\s*=\s*'\ to `elements.ts`
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
@@ -77,6 +79,8 @@ group sequences:
 // typos:
 
 // states:
+
+// components:
 
 // children:
 
