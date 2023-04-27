@@ -33,6 +33,12 @@ import {
     
     
     
+    // outlined (background-less) variant of UI
+    ifOutlined,
+    usesOutlineable,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ifCollapsed,
     usesCollapsible,
@@ -43,6 +49,11 @@ import {
     // configs:
     basics,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // elements:
+    wrapperElm,
+    listItemElm,
+}                           from '@reusable-ui/list'            // represents a series of content
 
 // internals:
 import {
@@ -51,6 +62,7 @@ import {
 }                           from '../features/tab.js'
 import {
     // elements:
+    tabHeaderElm,
     tabBodyElm,
     tabPanelElm,
 }                           from './elements.js'
@@ -60,6 +72,37 @@ import {
 }                           from './config.js'
 
 
+
+export const usesTabHeaderVariants = () => {
+    // dependencies:
+    
+    // features:
+    const {borderVars     } = usesBorder();
+    
+    // variants:
+    const {outlineableVars} = usesOutlineable();
+    
+    
+    
+    return style({
+        // variants:
+        ...variants([
+            ifOutlined({
+                // children:
+                ...children(wrapperElm, {
+                    // children:
+                    ...children(listItemElm, {
+                        ...rule(':nth-child(n)', { // increase the specificity to override <ListItem>
+                            // borders:
+                            // when outlined: a small color tweak: match <TabHeader>'s borderColor to <TabBody>'s borderColor
+                            [borderVars.borderColor] : outlineableVars.foregFn,
+                        }),
+                    }),
+                }),
+            }),
+        ]),
+    });
+};
 
 export const usesTabPanelLayout = () => {
     // dependencies:
@@ -222,6 +265,7 @@ export const usesTabLayout = () => {
         // layouts:
         ...style({
             // children:
+            ...children(tabHeaderElm, usesTabHeaderVariants()),
             ...children(tabBodyElm, style({
                 // layouts:
                 ...usesTabBodyLayout(),
