@@ -2,6 +2,7 @@
 import {
     // cssfn css specific types:
     CssStyleCollection,
+    CssSelectorOptions,
     
     
     
@@ -63,8 +64,8 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
     const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
     const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
     const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
-    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
+    const ifParentOrientationInline       = (styles: CssStyleCollection, options: CssSelectorOptions = { specificityWeight: 0 }) => rule(parentOrientationInlineSelector, styles, options);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection, options: CssSelectorOptions = { specificityWeight: 0 }) => rule(parentOrientationBlockSelector , styles, options);
     
     
     
@@ -125,7 +126,7 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
                         */
                         marginBlockStart  : masonries.gapBlock,
                     }),
-                }),
+                }, { specificityWeight: 0 }),
             }),
             
             
@@ -135,9 +136,11 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
                 // sizes:
                 ...ifParentOrientationInline({ // inline
                     gridRowEnd    : ['unset', '!important'], // clear from residual effect from <Masonry orientation="block"> (if was)
+                    blockSize     : 'unset',                 // we need to manage the <img>'s height
                 }),
                 ...ifParentOrientationBlock({  // block
                     gridColumnEnd : ['unset', '!important'], // clear from residual effect from <Masonry orientation="inline"> (if was)
+                    inlineSize    : 'unset',                 // we need to manage the <img>'s width
                 }),
             }),
             
