@@ -82,7 +82,7 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
                 // item default sizes:
                 alignItems          : 'stretch',     // each item fills the entire Masonry's column height
              // justifyItems        : 'stretch',     // distorting the item's width a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
-                justifyItems        : 'start',       // let's the item to resize so the esizeObserver will work
+                justifyItems        : 'start',       // let's the item to resize so the ResizeObserver will work
             }),
             ...ifOrientationBlock({  // block
                 display             : 'grid',        // use css block grid for layouting, the core of our Masonry layout
@@ -93,7 +93,7 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
                 // item default sizes:
                 justifyItems        : 'stretch',     // each item fills the entire Masonry's column width
              // alignItems          : 'stretch',     // distorting the item's height a bit for consistent multiplies of `itemRaiseRowHeight` // causing the ResizeObserver doesn't work
-                alignItems          : 'start',       // let's the item to resize so the esizeObserver will work
+                alignItems          : 'start',       // let's the item to resize so the ResizeObserver will work
             }),
             
             
