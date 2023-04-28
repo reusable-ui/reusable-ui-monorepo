@@ -2,7 +2,6 @@
 import {
     // cssfn css specific types:
     CssStyleCollection,
-    CssSelectorOptions,
     
     
     
@@ -62,10 +61,10 @@ export const usesMasonryLayout = (options?: OrientationableOptions) => {
     // options:
     const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
     const {ifOrientationInline, ifOrientationBlock, orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
-    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
-    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
-    const ifParentOrientationInline       = (styles: CssStyleCollection, options: CssSelectorOptions = { specificityWeight: 0 }) => rule(parentOrientationInlineSelector, styles, options);
-    const ifParentOrientationBlock        = (styles: CssStyleCollection, options: CssSelectorOptions = { specificityWeight: 0 }) => rule(parentOrientationBlockSelector , styles, options);
+    const parentOrientationInlineSelector = `:where(${orientationInlineSelector})&`;
+    const parentOrientationBlockSelector  = `:where(${orientationBlockSelector })&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
     
     
     
