@@ -17,3 +17,14 @@ export const parseNumber = (expression: number|string|ReadonlyArray<string>|null
     if (isNaN(result)) return null;
     return result;
 };
+
+export const decimalize = <TNumber extends number|null|undefined>(number: TNumber) : TNumber => {
+    // conditions:
+    if (typeof(number) !== 'number') return number;
+    if (!Number.isFinite(number))    return number;
+    
+    
+    
+    const roundedNumber = Math.round(number * 1000000000000000) / 1000000000000000;
+    return Number.parseFloat(roundedNumber.toFixed(11)) as TNumber;
+};
