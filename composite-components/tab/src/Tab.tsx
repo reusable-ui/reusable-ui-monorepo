@@ -137,11 +137,11 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         
         
         // variants:
-        size     : _size,     // remove
-        theme    : _theme,    // remove
-        gradient : _gradient, // remove
-        outlined : _outlined, // remove
-        mild     : _mild,     // remove
+        size     : _size,               // remove
+        theme    : _theme,              // remove
+        gradient : _gradient,           // remove
+        outlined : _outlined,           // remove
+        mild     : _mild,               // remove
         
         orientation,
         listStyle,
@@ -220,6 +220,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                 // data:
                 tabPanels={tabPanels}
                 tabId={id}
+                tabPanelStyle={tabPanelStyle}
             >
                 {/* the *main* component of <List<Element> > */}
                 <TabHeader<Element>
@@ -265,7 +266,6 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                 <TabBody<Element>
                     // variants:
                     {...basicVariantProps}
-                    tabPanelStyle={tabPanelStyle}
                     
                     
                     

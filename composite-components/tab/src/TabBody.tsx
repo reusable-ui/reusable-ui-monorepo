@@ -33,11 +33,6 @@ import {
     usesTab,
 }                           from './features/tab.js'
 import {
-    // variants:
-    TabPanelVariant,
-    useTabPanelVariant,
-}                           from './variants/TabPanelVariant.js'
-import {
     // states:
     TabExpandedChangeEvent,
     useTabState,
@@ -66,30 +61,32 @@ export interface TabBodyProps<TElement extends Element = HTMLElement>
             // children:
             |'children'                // replaced `children` with `tabPanels`
             |'dangerouslySetInnerHTML' // not supported
-        >,
-        
-        // variants:
-        TabPanelVariant
+        >
 {
     // components:
     bodyComponent ?: React.ReactComponentElement<any, BasicProps<TElement>>
 }
 const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TElement>): JSX.Element|null => {
-    // variants:
-    const tabPanelVariant = useTabPanelVariant(props);
-    
-    
-    
     // rest props:
     const {
-        // variants:
-        tabPanelStyle : _tabPanelStyle, // remove
-        
-        
-        
         // components:
         bodyComponent = (<Content<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
     ...restBasicProps} = props;
+    
+    
+    
+    // states:
+    const {
+        // states:
+        expandedTabIndex,
+        
+        
+        
+        // data:
+        tabPanels,
+        tabId,
+        tabPanelStyle,
+    } = useTabState();
     
     
     
@@ -120,22 +117,8 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
         
         
         // variants:
-        tabPanelVariant.class,
+        tabPanelStyle,
     );
-    
-    
-    
-    // states:
-    const {
-        // states:
-        expandedTabIndex,
-        
-        
-        
-        // data:
-        tabPanels,
-        tabId,
-    } = useTabState();
     
     
     

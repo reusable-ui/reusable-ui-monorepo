@@ -49,19 +49,19 @@ function App() {
                 
                 <br />
                 
-                <Tab theme='primary'>
-                    <TabPanel label='first'>
+                <Tab theme='primary' tabPanelStyle='fitContent'>
+                    <TabPanel label='first' lazy={true}>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
-                    <TabPanel label='second'>
+                    <TabPanel label='second' lazy={true}>
                         <p>The detail of second item.</p>
                         <ParagraphLorem />
-                        <ParagraphLorem />
                     </TabPanel>
-                    <TabPanel label='third'>
+                    <TabPanel label='third' lazy={true}>
                         <p>The detail of third item.</p>
+                        <ParagraphLorem />
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
@@ -76,10 +76,10 @@ function App() {
                     <TabPanel label='second'>
                         <p>The detail of second item.</p>
                         <ParagraphLorem />
-                        <ParagraphLorem />
                     </TabPanel>
                     <TabPanel label='third'>
                         <p>The detail of third item.</p>
+                        <ParagraphLorem />
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
@@ -94,10 +94,10 @@ function App() {
                     <TabPanel label='second'>
                         <p>The detail of second item.</p>
                         <ParagraphLorem />
-                        <ParagraphLorem />
                     </TabPanel>
                     <TabPanel label='third'>
                         <p>The detail of third item.</p>
+                        <ParagraphLorem />
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>

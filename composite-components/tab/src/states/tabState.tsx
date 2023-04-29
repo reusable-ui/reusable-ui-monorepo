@@ -28,6 +28,15 @@ import {
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
+// internals:
+
+import {
+    // variants:
+    TabPanelStyle,
+    TabPanelVariant,
+    useTabPanelVariant,
+}                           from '../variants/TabPanelVariant.js'
+
 
 
 // hooks:
@@ -58,6 +67,7 @@ export interface TabState
     // data:
     tabPanels                : React.ReactNode // required
     tabId                    : string
+    tabPanelStyle            : TabPanelStyle
 }
 
 const TabStateContext = createContext<TabState>({
@@ -70,6 +80,7 @@ const TabStateContext = createContext<TabState>({
     // data:
     tabPanels                : undefined,
     tabId                    : '',
+    tabPanelStyle            : 'maxContent'
 });
 TabStateContext.displayName  = 'TabState';
 
@@ -81,6 +92,9 @@ export const useTabState = (): TabState => {
 
 // react components:
 export interface TabStateProps<TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>
+    extends
+        // variants:
+        TabPanelVariant
 {
     // states:
     defaultExpandedTabIndex ?: number
@@ -117,6 +131,11 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
         // children:
         children,
     } = props;
+    
+    
+    
+    // variants:
+    const {class: tabPanelStyle} = useTabPanelVariant(props);
     
     
     
@@ -159,6 +178,7 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
             // data:
             tabPanels             : tabPanels,
             tabId                 : tabId,
+            tabPanelStyle         : tabPanelStyle,
         }}>
             {children}
         </TabStateContext.Provider>

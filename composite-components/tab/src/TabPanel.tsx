@@ -25,9 +25,10 @@ import {
 }                           from '@reusable-ui/generic'         // a base component
 
 // internals:
-import type {
+import {
     // states:
     TabExpandedChangeEvent,
+    useTabState,
 }                           from './states/tabState.js'
 
 
@@ -67,6 +68,11 @@ export interface TabPanelProps<TElement extends Element = HTMLElement, TTabExpan
 const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>(props: TabPanelProps<TElement, TTabExpandedChangeEvent>): JSX.Element|null => {
     // states:
     const collapsibleState = useCollapsible<TElement, TTabExpandedChangeEvent>(props);
+    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const {
+        // data:
+        tabPanelStyle,
+    } = useTabState();
     
     
     
@@ -193,7 +199,7 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
         
         
         // children:
-        panelComponent.props.children ?? children,
+        panelComponent.props.children ?? ((!lazy || isVisible || (tabPanelStyle === 'maxContent')) && children),
     );
 };
 export {
