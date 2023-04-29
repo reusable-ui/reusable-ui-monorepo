@@ -49,17 +49,17 @@ function App() {
                 
                 <br />
                 
-                <Tab theme='primary' tabPanelStyle='fitContent'>
-                    <TabPanel label='first' lazy={true}>
+                <Tab theme='primary' tabPanelStyle='fitContent' lazy>
+                    <TabPanel label='first'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
-                    <TabPanel label='second' lazy={true}>
+                    <TabPanel label='second'>
                         <p>The detail of second item.</p>
                         <ParagraphLorem />
                     </TabPanel>
-                    <TabPanel label='third' lazy={true}>
+                    <TabPanel label='third'>
                         <p>The detail of third item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />
