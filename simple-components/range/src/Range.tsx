@@ -27,6 +27,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of numeric utility functions:
+    decimalize,
+    
+    
+    
     // react helper hooks:
     useTriggerRender,
     useEvent,
@@ -428,7 +433,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             value        = minFn + (steps * stepFn);
         } // if
         
-        return value;
+        return decimalize(value);
     });
     const trimValueOpt = (value: number|undefined): number|undefined => {
         // conditions:
