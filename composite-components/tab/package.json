@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/tab",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Represents a series of tabbed collapsing contents.",
   "keywords": [
     "list",

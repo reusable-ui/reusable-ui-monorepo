@@ -73,6 +73,12 @@ import {
 
 
 
+export const usesTabHeaderLayout = () => {
+    return style({
+        // sizes:
+        flex         : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+    });
+}
 export const usesTabHeaderVariants = () => {
     // dependencies:
     
@@ -189,6 +195,11 @@ export const usesTabBodyLayout = () => {
         
         
         
+        // sizes:
+        flex         : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
+        
+        
+        
         // scrolls:
         overflow     : 'hidden', // force <TabPanel> to activate the `overflow: 'auto'`
         
@@ -264,8 +275,23 @@ export const usesTabLayout = () => {
         
         // layouts:
         ...style({
+            // layouts:
+            display        : 'flex',
+            flexDirection  : 'column',
+            justifyContent : 'stretch',
+            alignItems     : 'stretch',
+            flexWrap       : 'nowrap',
+            
+            
+            
             // children:
-            ...children(tabHeaderElm, usesTabHeaderVariants()),
+            ...children(tabHeaderElm, style({
+                // layouts:
+                ...usesTabHeaderLayout(),
+                
+                // variants:
+                ...usesTabHeaderVariants()
+            })),
             ...children(tabBodyElm, style({
                 // layouts:
                 ...usesTabBodyLayout(),
