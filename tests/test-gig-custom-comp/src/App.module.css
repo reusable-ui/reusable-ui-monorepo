@@ -1,0 +1,24 @@
+
+:global(#root) {
+  height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+.page.page {
+  display: grid;
+  box-sizing: border-box;
+  width: 1280px;
+  height: 769px;
+  padding-inline: 164px;
+  padding-block: 28px;
+  margin: auto;
+  border-radius: 0;
+  border-width: 0;
+  background-image: url('/public/soft-rainbow.svg');
+}
+
+.accordionItem {
+  padding-inline: 2rem;
+  padding-block: 1.25rem;
+}
