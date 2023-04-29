@@ -29,7 +29,6 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // internals:
-
 import {
     // variants:
     TabPanelStyle,
@@ -58,6 +57,11 @@ export interface TabExpandedChangeEvent extends ExpandedChangeEvent {
 
 export interface TabState
 {
+    // behaviors:
+    defaultLazy             ?: boolean
+    
+    
+    
     // states:
     expandedTabIndex         : number
     triggerExpandedChange    : (tabIndex: number) => void
@@ -71,6 +75,11 @@ export interface TabState
 }
 
 const TabStateContext = createContext<TabState>({
+    // behaviors:
+    defaultLazy              : undefined,
+    
+    
+    
     // states:
     expandedTabIndex         : _defaultExpandedTabIndex,
     triggerExpandedChange    : () => { throw Error('not inside <TabStateProvider>'); },
@@ -96,6 +105,11 @@ export interface TabStateProps<TTabExpandedChangeEvent extends TabExpandedChange
         // variants:
         TabPanelVariant
 {
+    // behaviors:
+    lazy                    ?: boolean
+    
+    
+    
     // states:
     defaultExpandedTabIndex ?: number
     expandedTabIndex        ?: number
@@ -115,6 +129,11 @@ export interface TabStateProps<TTabExpandedChangeEvent extends TabExpandedChange
 const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>(props: TabStateProps<TTabExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
+        // behaviors:
+        lazy,
+        
+        
+        
         // states:
         defaultExpandedTabIndex,
         expandedTabIndex,
@@ -169,6 +188,11 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
     // jsx:
     return (
         <TabStateContext.Provider value={{
+            // behaviors:
+            defaultLazy           : lazy,
+            
+            
+            
             // states:
             expandedTabIndex      : expandedTabIndexFn,
             triggerExpandedChange : triggerExpandedChange,

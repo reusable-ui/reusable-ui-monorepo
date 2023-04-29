@@ -155,6 +155,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         
         
         // behaviors:
+        lazy,
         actionCtrl,
         
         
@@ -210,6 +211,11 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
             mainClass={props.mainClass ?? styles.main}
         >
             <TabStateProvider<TTabExpandedChangeEvent>
+                // behaviors:
+                lazy={lazy}
+                
+                
+                
                 // states:
                 defaultExpandedTabIndex={defaultExpandedTabIndex}
                 expandedTabIndex={expandedTabIndex}

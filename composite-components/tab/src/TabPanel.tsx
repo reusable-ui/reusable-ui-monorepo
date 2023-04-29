@@ -70,6 +70,11 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
     const collapsibleState = useCollapsible<TElement, TTabExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const {
+        // behaviors:
+        defaultLazy,
+        
+        
+        
         // data:
         tabPanelStyle,
     } = useTabState();
@@ -84,7 +89,7 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
         
         
         // behaviors:
-        lazy     = false,
+        lazy     = defaultLazy ?? false,
         
         
         
