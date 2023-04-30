@@ -2,6 +2,14 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
+    useEffect,
+    useState,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -13,9 +21,11 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
     
     
     
@@ -43,12 +53,21 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a generic component
+import {
+    // hooks:
+    ElementResizeCallback,
+    useElementResizeObserver,
+}                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements
 
 // internals:
 import {
     // defaults:
     defaultOrientationableOptions,
 }                           from './defaults.js'
+import {
+    // features:
+    usesCollapse,
+}                           from './features/collapse.js'
 
 
 
@@ -96,6 +115,10 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     // states:
     const collapsibleState       = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible              = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const isFullyExpanded        = collapsibleState.class === 'expanded';
+    
+    const lastKnownSize          = useRef<ResizeObserverSize|undefined>(undefined);
+    const [lastKnownExpandedSize, setLastKnownExpandedSize] = useState<ResizeObserverSize|undefined>(undefined);
     
     
     
@@ -143,6 +166,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // refs:
+    const collapseRefInternal = useRef<TElement|null>(null);
     const mergedOuterRef = useMergeRefs(
         // preserves the original `outerRef`:
         props.outerRef,
@@ -150,6 +174,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         
         floatable.outerRef,
+        collapseRefInternal,
     );
     
     
@@ -185,6 +210,36 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     
+    // features:
+    const {collapseVars} = usesCollapse();
+    
+    
+    
+    // styles:
+    const collapseSizeStyle = useMemo<React.CSSProperties>(() => ({
+        // values:
+        [
+            collapseVars.lastKnownInlineSize
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : (lastKnownExpandedSize?.inlineSize !== undefined) ? `${lastKnownExpandedSize.inlineSize}px` : undefined,
+        
+        [
+            collapseVars.lastKnownBlockSize
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : (lastKnownExpandedSize?.blockSize  !== undefined) ? `${lastKnownExpandedSize.blockSize}px`  : undefined,
+    }), [collapseVars.lastKnownInlineSize, collapseVars.lastKnownBlockSize, lastKnownExpandedSize]);
+    const mergedStyle       = useMergeStyles(
+        // styles:
+        collapseSizeStyle,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `collapseSizeStyle`):
+        props.style,
+    );
+    
+    
+    
     // handlers:
     const handleAnimationStart = useMergeEvents(
         // preserves the original `onAnimationStart`:
@@ -204,6 +259,29 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         // states:
         collapsibleState.handleAnimationEnd,
     );
+    const handleCollapseResize = useEvent<ElementResizeCallback>((size) => {
+        // conditions:
+        if (lastKnownSize.current && (lastKnownSize.current.inlineSize === size.inlineSize) && (lastKnownSize.current.blockSize === size.blockSize)) return; // already the same => ignore
+        
+        
+        
+        // update:
+        lastKnownSize.current = size;
+    });
+    
+    
+    
+    // dom effects:
+    useElementResizeObserver(collapseRefInternal as React.MutableRefObject<HTMLElement|null>, handleCollapseResize); // assumes the size of <Collapse> uses `border-box`
+    useEffect(() => {
+        // conditions:
+        if (!isFullyExpanded) return; // ignores if NOT *fully expanded*
+        
+        
+        
+        // update:
+        setLastKnownExpandedSize(lastKnownSize.current);
+    }, [isFullyExpanded])
     
     
     
@@ -231,6 +309,11 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
             variantClasses={variantClasses}
             stateClasses={stateClasses}
             classes={classes}
+            
+            
+            
+            // styles:
+            style={mergedStyle}
             
             
             

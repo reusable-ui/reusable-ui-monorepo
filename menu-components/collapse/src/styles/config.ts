@@ -12,14 +12,30 @@ import {
     
     
     
+    // strongly typed of css variables:
+    switchOf,
+    
+    
+    
     // reads/writes css variables configuration:
     cssConfig,
 }                           from '@cssfn/core'                  // writes css in javascript
+
+// internals:
+import {
+    // features:
+    usesCollapse,
+}                           from '../features/collapse.js'
 
 
 
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
+    // features:
+    const {collapseVars} = usesCollapse();
+    
+    
+    
     //#region keyframes
     const frameCollapsed    = style({
         maxBlockSize  : 0,
@@ -36,7 +52,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         }),
     });
     const frameExpanded     = style({
-        maxBlockSize  : '100vh',
+        maxBlockSize  : switchOf(
+            collapseVars.lastKnownBlockSize,
+            '100vh',
+        ),
         
         overflowY     : 'unset',
     });
@@ -70,7 +89,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         }),
     });
     const frameExpandedInline     = style({
-        maxInlineSize : '100vw',
+        maxInlineSize : switchOf(
+            collapseVars.lastKnownInlineSize,
+            '100vw',
+        ),
         
         overflowX     : 'unset',
     });
@@ -95,10 +117,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesExpandRule,
         ...keyframesCollapseRule,
         animExpand         : [
-            ['300ms', 'ease-in' , 'both', keyframesExpand  ],
+            ['300ms', 'ease-out', 'both', keyframesExpand  ],
         ]                                                       as CssKnownProps['animation'],
         animCollapse       : [
-            ['500ms', 'ease-out', 'both', keyframesCollapse],
+            ['300ms', 'ease-out', 'both', keyframesCollapse],
         ]                                                       as CssKnownProps['animation'],
         
         
@@ -106,10 +128,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesExpandInlineRule,
         ...keyframesCollapseInlineRule,
         animExpandInline   : [
-            ['300ms', 'ease-in' , 'both', keyframesExpandInline  ],
+            ['300ms', 'ease-out', 'both', keyframesExpandInline  ],
         ]                                                       as CssKnownProps['animation'],
         animCollapseInline : [
-            ['500ms', 'ease-out', 'both', keyframesCollapseInline],
+            ['300ms', 'ease-out', 'both', keyframesCollapseInline],
         ]                                                       as CssKnownProps['animation'],
     };
-}, { prefix: 'clps' });
+}, { prefix: 'clp' });
