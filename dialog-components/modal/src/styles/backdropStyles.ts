@@ -277,7 +277,8 @@ export const usesBackdropStates = memoizeStyle(() => {
         ...states([
             ifCollapsed({
                 // appearances:
-                display: 'none', // hide the <Modal>
+             // display    : 'none',   // hide the <Modal> -- causes the <Children>'s animation interrupted prematurely
+                visibility : 'hidden', // hide the <Modal> without causing the <Children>'s animation interrupted prematurely
             }),
         ]),
     });
