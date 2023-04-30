@@ -23,6 +23,7 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
     
     
     
@@ -40,6 +41,7 @@ import {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
     useCollapsible,
+    useLastKnownExpandedSize,
     ToggleCollapsibleProps,
     useToggleCollapsible,
     
@@ -215,13 +217,14 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
     });
     
-    const collapsibleState = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
-    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const collapsibleState      = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
+    const isVisible             = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const lastKnownExpandedSize = useLastKnownExpandedSize<Element>(collapsibleState);
     
     
     
     // refs:
-    const mergedButtonRef = useMergeRefs(
+    const mergedButtonRef    = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
         buttonComponent.props.elmRef,
         
@@ -229,6 +232,14 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // preserves the original `buttonRef` from `props`:
         buttonRef,
+    );
+    const mergedBodyOuterRef = useMergeRefs<Element>(
+        // preserves the original `outerRef` from `bodyComponent`:
+        bodyComponent.props.outerRef,
+        
+        
+        
+        lastKnownExpandedSize.setRef,
     );
     
     
@@ -259,7 +270,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         ((!isExpanded || null) && 'last-visible-child'),
     );
     
-    const contentStateClasses = useMergeClasses(
+    const bodyStateClasses    = useMergeClasses(
         // preserves the original `stateClasses` from `bodyComponent`:
         bodyComponent.props.stateClasses,
         
@@ -268,14 +279,27 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // states:
         collapsibleState.class,
     );
-    const contentClasses      = useMergeClasses(
+    const bodyClasses         = useMergeClasses(
         // preserves the original `classes` from `bodyComponent`:
         bodyComponent.props.classes,
         
         
         
         // classes:
-        styleSheet.content,
+        styleSheet.body,
+    );
+    
+    
+    
+    // styles:
+    const mergedBodyStyle    = useMergeStyles(
+        // styles:
+        lastKnownExpandedSize.style,
+        
+        
+        
+        // preserves the original `style` from `bodyComponent` (can overwrite the `lastKnownExpandedSize.style`):
+        bodyComponent.props.style,
     );
     
     
@@ -290,7 +314,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // <ToggleButton> expanded/collapsed => request to show/hide the <DetailsContent>:
+        // <ToggleButton> expanded/collapsed => request to show/hide the <DetailsBody>:
         onExpandedChange?.(expandedChangeEvent); // request to change the [expanded] to <Parent>
         
         
@@ -308,7 +332,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         handleExpandedChangeByToggleButton,
     );
     
-    const handleContentAnimationStart        = useMergeEvents(
+    const handleBodyAnimationStart           = useMergeEvents(
         // preserves the original `onAnimationStart` from `bodyComponent`:
         bodyComponent.props.onAnimationStart,
         
@@ -317,7 +341,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // states:
         collapsibleState.handleAnimationStart,
     );
-    const handleContentAnimationEnd          = useMergeEvents(
+    const handleBodyAnimationEnd             = useMergeEvents(
         // preserves the original `onAnimationEnd` from `bodyComponent`:
         bodyComponent.props.onAnimationEnd,
         
@@ -422,20 +446,30 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     
                     
                     
+                    // refs:
+                    outerRef         : mergedBodyOuterRef,
+                    
+                    
+                    
                     // identifiers:
                     id               : collapsibleId,
                     
                     
                     
                     // classes:
-                    stateClasses     : contentStateClasses,
-                    classes          : contentClasses,
+                    stateClasses     : bodyStateClasses,
+                    classes          : bodyClasses,
+                    
+                    
+                    
+                    // styles:
+                    style            : mergedBodyStyle,
                     
                     
                     
                     // handlers:
-                    onAnimationStart : handleContentAnimationStart,
-                    onAnimationEnd   : handleContentAnimationEnd,
+                    onAnimationStart : handleBodyAnimationStart,
+                    onAnimationEnd   : handleBodyAnimationEnd,
                 },
                 
                 

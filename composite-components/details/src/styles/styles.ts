@@ -66,7 +66,7 @@ import {
 
 
 // styles:
-export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsContent> component
+export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsBody> component
 
 
 
@@ -80,9 +80,9 @@ export const usesDetailsLayout = () => {
     // features:
     const {borderRule   , borderVars   } = usesBorder(details);
     const {groupableRule, separatorRule} = usesGroupable({
-        orientationInlineSelector : null, // never  => the <ToggleButton> & <DetailsContent> are never  stacked in horizontal
-        orientationBlockSelector  : '&',  // always => the <ToggleButton> & <DetailsContent> are always stacked in vertical
-        itemsSelector             : ':nth-child(n)', // select <ToggleButton> & <DetailsContent>
+        orientationInlineSelector : null, // never  => the <ToggleButton> & <DetailsBody> are never  stacked in horizontal
+        orientationBlockSelector  : '&',  // always => the <ToggleButton> & <DetailsBody> are always stacked in vertical
+        itemsSelector             : ':nth-child(n)', // select <ToggleButton> & <DetailsBody>
     });
     
     
@@ -113,7 +113,7 @@ export const usesDetailsLayout = () => {
             // children:
             ...children(itemElm, {
                 // borders:
-                ...separatorRule(), // turns the current border as separator between <ToggleButton> & <DetailsContent>
+                ...separatorRule(), // turns the current border as separator between <ToggleButton> & <DetailsBody>
             }),
             
             
@@ -179,22 +179,22 @@ export const usesTogglerVariants = () => {
 
 
 
-export const usesCollapsibleContentLayout = () => {
+export const usesCollapsibleBodyLayout = () => {
     return style({
         // layouts:
         ...usesCollapseLayout(),
         ...style({
             // customize:
-            ...usesCssProps(usesPrefixedProps(details, 'content')), // apply config's cssProps starting with content***
+            ...usesCssProps(usesPrefixedProps(details, 'body')), // apply config's cssProps starting with body***
         }),
     });
 };
 
-export const usesCollapsibleContentVariants = () => {
+export const usesCollapsibleBodyVariants = () => {
     // dependencies:
     
     // variants:
-    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'content'));
+    const {resizableRule} = usesResizable(usesPrefixedProps(details, 'body'));
     
     
     
@@ -204,7 +204,7 @@ export const usesCollapsibleContentVariants = () => {
         ...variants([
             /*
                 a hack with :not(_)
-                the total selector combined with parent is something like this: `.content>:where(.detailsContent):not(_)`, the specificity weight = 1.1
+                the total selector combined with parent is something like this: `.content>:where(.detailsBody):not(_)`, the specificity weight = 1.1
                 the specificity of 1.1 is a bit higher than:
                 * `.basic`          , the specificity weight = 1
                 * `.custom`         , the specificity weight = 1
@@ -212,7 +212,7 @@ export const usesCollapsibleContentVariants = () => {
                 * `.basic.awesome`  , the specificity weight = 2
                 * `.custom.awesome` , the specificity weight = 2
             */
-            rule('.content>:where(&):not(_)', { // content
+            rule('.content>:where(&):not(_)', { // <DetailsBody>
                 // layouts:
                 ...usesContentBasicLayout(),
                 
@@ -226,7 +226,7 @@ export const usesCollapsibleContentVariants = () => {
     });
 };
 
-export const usesCollapsibleContentStates = usesCollapseStates;
+export const usesCollapsibleBodyStates = usesCollapseStates;
 
 
 
@@ -245,14 +245,14 @@ export default () => [
         // variants:
         ...usesTogglerVariants(),
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .toggleButton's specificity weight
-    scopeOf('content', {
+    scopeOf('body', {
         // layouts:
-        ...usesCollapsibleContentLayout(),
+        ...usesCollapsibleBodyLayout(),
         
         // variants:
-        ...usesCollapsibleContentVariants(),
+        ...usesCollapsibleBodyVariants(),
         
         // states:
-        ...usesCollapsibleContentStates(),
+        ...usesCollapsibleBodyStates(),
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .basic's specificity weight
 ];
