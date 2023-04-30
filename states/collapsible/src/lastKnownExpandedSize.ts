@@ -67,20 +67,20 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
     
     
     // refs:
-    const [collapseRef, setCollapseRef] = useState<TElement|null>(null);
+    const [ref, setRef] = useState<TElement|null>(null);
     
     
     
     // dom effects:
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!collapseRef) return; // the collapseRef is not set => ignore
+        if (!ref) return; // the ref is not set => ignore
         
         
         
         // setups:
         const observer = new ResizeObserver(handleCollapseResize);
-        observer.observe(collapseRef, { box: 'border-box'  });
+        observer.observe(ref, { box: 'border-box'  });
         
         
         
@@ -88,7 +88,7 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         return () => {
             observer.disconnect();
         };
-    }, [collapseRef]);
+    }, [ref]);
     
     useEffect(() => {
         // conditions:
@@ -121,7 +121,7 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
     
     
     return {
-        setCollapseRef,
+        setRef,
         style,
     };
 };
