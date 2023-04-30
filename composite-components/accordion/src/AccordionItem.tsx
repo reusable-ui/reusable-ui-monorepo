@@ -20,7 +20,9 @@ import {
     // react helper hooks:
     useEvent,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
     
     
     
@@ -32,6 +34,7 @@ import {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
     useCollapsible,
+    useLastKnownExpandedSize,
     ToggleCollapsibleProps,
     useToggleCollapsible,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -174,13 +177,26 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         onExpandedChange,
     });
     
-    const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
-    const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const collapsibleState      = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
+    const isVisible             = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const lastKnownExpandedSize = useLastKnownExpandedSize<TElement>(collapsibleState);
+    
+    
+    
+    // refs:
+    const bodyMergedOuterRef = useMergeRefs<TElement>(
+        // preserves the original `outerRef` from `bodyComponent`:
+        bodyComponent.props.outerRef,
+        
+        
+        
+        lastKnownExpandedSize.setRef,
+    );
     
     
     
     // classes:
-    const listItemClasses     = useMergeClasses(
+    const listItemClasses    = useMergeClasses(
         // preserves the original `classes` from `listItemComponent`:
         listItemComponent.props.classes,
         
@@ -194,7 +210,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         // hacks:
         ((!isExpanded || null) && 'last-visible-child'),
     );
-    const contentStateClasses = useMergeClasses(
+    const bodyStateClasses   = useMergeClasses(
         // preserves the original `stateClasses` from `bodyComponent`:
         bodyComponent.props.stateClasses,
         
@@ -202,6 +218,19 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         // states:
         collapsibleState.class,
+    );
+    
+    
+    
+    // styles:
+    const bodyMergedStyle    = useMergeStyles(
+        // styles:
+        lastKnownExpandedSize.style,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `lastKnownExpandedSize.style`):
+        props.style,
     );
     
     
@@ -233,7 +262,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         handleListItemClickInternal,
     );
     
-    const handleContentAnimationStart = useMergeEvents(
+    const handleBodyAnimationStart    = useMergeEvents(
         // preserves the original `onAnimationStart` from `bodyComponent`:
         bodyComponent.props.onAnimationStart,
         
@@ -242,7 +271,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         // states:
         collapsibleState.handleAnimationStart,
     );
-    const handleContentAnimationEnd   = useMergeEvents(
+    const handleBodyAnimationEnd      = useMergeEvents(
         // preserves the original `onAnimationEnd` from `bodyComponent`:
         bodyComponent.props.onAnimationEnd,
         
@@ -314,6 +343,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     
+                    // refs:
+                    outerRef         : bodyMergedOuterRef,
+                    
+                    
+                    
                     // identifiers:
                     id               : collapsibleId,
                     
@@ -331,13 +365,18 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     // classes:
                     mainClass        : bodyComponent.props.mainClass       ?? styleSheet.main,
-                    stateClasses     : contentStateClasses,
+                    stateClasses     : bodyStateClasses,
+                    
+                    
+                    
+                    // styles:
+                    style            : bodyMergedStyle,
                     
                     
                     
                     // handlers:
-                    onAnimationStart : handleContentAnimationStart,
-                    onAnimationEnd   : handleContentAnimationEnd,
+                    onAnimationStart : handleBodyAnimationStart,
+                    onAnimationEnd   : handleBodyAnimationEnd,
                 },
                 
                 
