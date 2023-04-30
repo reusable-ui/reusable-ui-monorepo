@@ -190,7 +190,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // styles:
-    const mergedStyle       = useMergeStyles(
+    const mergedStyle    = useMergeStyles(
         // styles:
         lastKnownExpandedSize.style,
         
