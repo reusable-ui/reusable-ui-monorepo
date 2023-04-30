@@ -229,8 +229,8 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         
-        // preserves the original `style` (can overwrite the `lastKnownExpandedSize.style`):
-        props.style,
+        // preserves the original `style` from `bodyComponent` (can overwrite the `lastKnownExpandedSize.style`):
+        bodyComponent.props.style,
     );
     
     
