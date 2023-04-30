@@ -223,7 +223,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // styles:
-    const bodyMergedStyle    = useMergeStyles(
+    const mergedBodyStyle    = useMergeStyles(
         // styles:
         lastKnownExpandedSize.style,
         
@@ -370,7 +370,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // styles:
-                    style            : bodyMergedStyle,
+                    style            : mergedBodyStyle,
                     
                     
                     
