@@ -116,6 +116,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     const collapsibleState       = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible              = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isFullyExpanded        = collapsibleState.class === 'expanded';
+    const isFullyCollapsed       = !collapsibleState.class;
     
     const lastKnownSize          = useRef<ResizeObserverSize|undefined>(undefined);
     const [lastKnownExpandedSize, setLastKnownExpandedSize] = useState<ResizeObserverSize|undefined>(undefined);
@@ -166,15 +167,15 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // refs:
-    const collapseRefInternal = useRef<TElement|null>(null);
-    const mergedOuterRef = useMergeRefs(
+    const [collapseRefInternal, setCollapseRefInternal] = useState<TElement|null>(null);
+    const mergedOuterRef = useMergeRefs<TElement>(
         // preserves the original `outerRef`:
         props.outerRef,
         
         
         
         floatable.outerRef,
-        collapseRefInternal,
+        setCollapseRefInternal,
     );
     
     
@@ -261,27 +262,37 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     );
     const handleCollapseResize = useEvent<ElementResizeCallback>((size) => {
         // conditions:
+        if ((size.inlineSize) === 0 && (size.blockSize === 0)) return; // <Collapse> is *fully collapsed* => ignore
         if (lastKnownSize.current && (lastKnownSize.current.inlineSize === size.inlineSize) && (lastKnownSize.current.blockSize === size.blockSize)) return; // already the same => ignore
         
         
         
         // update:
         lastKnownSize.current = size;
+        
+        // re-render (if necessary):
+        if (isFullyExpanded || isFullyCollapsed) { // not being animating => update the final known size
+            setLastKnownExpandedSize(lastKnownSize.current);
+            console.log('size: ', {isFullyExpanded, isFullyCollapsed, width: size.inlineSize, height: size.blockSize});
+        } // if
     });
     
     
     
     // dom effects:
-    useElementResizeObserver(collapseRefInternal as React.MutableRefObject<HTMLElement|null>, handleCollapseResize); // assumes the size of <Collapse> uses `border-box`
+    useElementResizeObserver(collapseRefInternal as HTMLElement|null, handleCollapseResize); // assumes the size of <Collapse> uses `border-box`
     useEffect(() => {
         // conditions:
-        if (!isFullyExpanded) return; // ignores if NOT *fully expanded*
+        if (!isFullyExpanded)       return; // <Collapse> is NOT *fully expanded* => ignore
+        if (!lastKnownSize.current) return; // not already calculated => ignore
+        if (lastKnownExpandedSize && (lastKnownExpandedSize.inlineSize === lastKnownSize.current.inlineSize) && (lastKnownExpandedSize.blockSize === lastKnownSize.current.blockSize)) return; // already the same => ignore
         
         
         
-        // update:
+        // sync:
         setLastKnownExpandedSize(lastKnownSize.current);
-    }, [isFullyExpanded])
+        console.log('SYNC SYNC: ', {isFullyExpanded, isFullyCollapsed, width: lastKnownSize.current?.inlineSize, height: lastKnownSize.current?.blockSize});
+    }, [lastKnownExpandedSize, isFullyExpanded])
     
     
     
