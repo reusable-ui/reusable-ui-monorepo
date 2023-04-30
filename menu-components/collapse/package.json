@@ -39,7 +39,6 @@
     "@cssfn/core": "^2.5.0",
     "@cssfn/cssfn-react": "^2.5.0",
     "@reusable-ui/core": "^5.2.0",
-    "@reusable-ui/dimensions": "^5.2.1",
     "@reusable-ui/generic": "^5.2.0",
     "@types/react": "^18.0.27"
   },

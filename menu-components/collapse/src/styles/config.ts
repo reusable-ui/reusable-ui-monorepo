@@ -21,18 +21,18 @@ import {
     cssConfig,
 }                           from '@cssfn/core'                  // writes css in javascript
 
-// internals:
+// reusable-ui core:
 import {
-    // features:
-    usesCollapse,
-}                           from '../features/collapse.js'
+    // a capability of UI to expand/reduce its size or toggle the visibility:
+    usesLastKnownExpandedSize,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
 
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     // features:
-    const {collapseVars} = usesCollapse();
+    const {lastKnownExpandedSizeVars} = usesLastKnownExpandedSize();
     
     
     
@@ -53,7 +53,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     });
     const frameExpanded     = style({
         maxBlockSize  : switchOf(
-            collapseVars.lastKnownBlockSize,
+            lastKnownExpandedSizeVars.blockSize,
             '100vh',
         ),
         
@@ -90,7 +90,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     });
     const frameExpandedInline     = style({
         maxInlineSize : switchOf(
-            collapseVars.lastKnownInlineSize,
+            lastKnownExpandedSizeVars.inlineSize,
             '100vw',
         ),
         
