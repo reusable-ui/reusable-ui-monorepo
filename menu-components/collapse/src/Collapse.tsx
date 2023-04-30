@@ -153,7 +153,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         
         floatable.outerRef,
-        lastKnownExpandedSize.setCollapseRef,
+        lastKnownExpandedSize.setRef,
     );
     
     
