@@ -184,7 +184,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // refs:
-    const bodyMergedOuterRef = useMergeRefs<TElement>(
+    const mergedBodyOuterRef = useMergeRefs<TElement>(
         // preserves the original `outerRef` from `bodyComponent`:
         bodyComponent.props.outerRef,
         
@@ -344,7 +344,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
                     
                     
                     // refs:
-                    outerRef         : bodyMergedOuterRef,
+                    outerRef         : mergedBodyOuterRef,
                     
                     
                     
