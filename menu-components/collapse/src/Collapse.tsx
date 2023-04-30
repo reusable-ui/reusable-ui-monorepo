@@ -273,7 +273,6 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         // re-render (if necessary):
         if (isFullyExpanded || isFullyCollapsed) { // not being animating => update the final known size
             setLastKnownExpandedSize(lastKnownSize.current);
-            console.log('size: ', {isFullyExpanded, isFullyCollapsed, width: size.inlineSize, height: size.blockSize});
         } // if
     });
     
@@ -291,7 +290,6 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         // sync:
         setLastKnownExpandedSize(lastKnownSize.current);
-        console.log('SYNC SYNC: ', {isFullyExpanded, isFullyCollapsed, width: lastKnownSize.current?.inlineSize, height: lastKnownSize.current?.blockSize});
     }, [lastKnownExpandedSize, isFullyExpanded])
     
     
