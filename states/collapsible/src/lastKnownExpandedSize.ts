@@ -50,7 +50,7 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
     const handleCollapseResize = useEvent<ResizeObserverCallback>((entries) => {
         // conditions:
         const size = entries[0].borderBoxSize[0];
-        if ((size.inlineSize) === 0 && (size.blockSize === 0)) return; // <Collapse> is *fully collapsed* => ignore
+        if ((size.inlineSize === 0) && (size.blockSize === 0)) return; // <Collapse> is *fully collapsed* => ignore
         if (lastKnownSize.current && (lastKnownSize.current.inlineSize === size.inlineSize) && (lastKnownSize.current.blockSize === size.blockSize)) return; // already the same => ignore
         
         
