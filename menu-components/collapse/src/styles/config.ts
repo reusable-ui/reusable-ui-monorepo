@@ -23,6 +23,11 @@ import {
 
 // reusable-ui core:
 import {
+    // padding (inner spacing) stuff of UI:
+    usesPadding,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     usesLastKnownExpandedSize,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -32,6 +37,7 @@ import {
 // configs:
 export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     // features:
+    const {paddingVars              } = usesPadding();
     const {lastKnownExpandedSizeVars} = usesLastKnownExpandedSize();
     
     
@@ -39,6 +45,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     //#region keyframes
     const frameCollapsed    = style({
         maxBlockSize  : 0,
+        paddingBlock  : 0,
         
         overflowY     : 'clip',
         ...fallbacks({
@@ -56,6 +63,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
             lastKnownExpandedSizeVars.blockSize,
             '100vh',
         ),
+        paddingBlock  : paddingVars.paddingBlock,
         
         overflowY     : 'unset',
     });
@@ -76,6 +84,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     const frameCollapsedInline    = style({
         maxInlineSize : 0,
+        paddingInline : 0,
         
         overflowX     : 'clip',
         ...fallbacks({
@@ -93,6 +102,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
             lastKnownExpandedSizeVars.inlineSize,
             '100vw',
         ),
+        paddingInline : paddingVars.paddingInline,
         
         overflowX     : 'unset',
     });
