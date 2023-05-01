@@ -102,6 +102,38 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         setLastKnownExpandedSize(lastKnownSize.current);
     }, [lastKnownExpandedSize, isFullyExpanded]);
     
+    const isTweakedRef = useRef<boolean>(false);
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isFullyCollapsed)    return; // not initially *fully collapsed* => no need to tweak
+        if (!ref)                 return; // the ref is not set => ignore
+        if (isTweakedRef.current) return; // already tweaked => ignore
+        isTweakedRef.current = true;      // mark as already tweaked
+        
+        
+        
+        // tweak:
+        if (!lastKnownSize.current) {
+            try {
+                ref.classList.add('expanded');
+                
+                const style = getComputedStyle(ref);
+                if (style.display !== 'none') {
+                    const size  : ResizeObserverSize = {
+                        inlineSize : Number.parseFloat(style.inlineSize),
+                        blockSize  : Number.parseFloat(style.blockSize),
+                    };
+                    if ((size.inlineSize) !== 0 || (size.blockSize !== 0)) { // check the <Collapse> is alive (has width and/or height)
+                        lastKnownSize.current = size;
+                        setLastKnownExpandedSize(lastKnownSize.current);
+                    } // if
+                } // if
+            }
+            finally {
+                ref.classList.remove('expanded');
+            } // try
+        } // if
+    }, [isFullyCollapsed, ref]);
     
     
     // styles:
