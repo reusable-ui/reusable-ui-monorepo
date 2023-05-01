@@ -69,6 +69,11 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
     return style({
         // layouts:
         ...style({
+            // sizes:
+            boxSizing : 'border-box', // supports for `lastKnownExpandedSize`
+            
+            
+            
             // customize:
             ...usesCssProps(collapses), // apply config's cssProps
             ...ifOrientationInline({ // inline
