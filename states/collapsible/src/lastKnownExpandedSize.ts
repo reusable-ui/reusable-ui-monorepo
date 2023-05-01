@@ -102,11 +102,11 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         setLastKnownExpandedSize(lastKnownSize.current);
     }, [lastKnownExpandedSize, isFullyExpanded]);
     
-    const isTweakedRef = useRef<boolean>(false);
+    const hasTweakedRef = useRef<boolean>(false);
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (isTweakedRef.current) return; // already been tweaked     => ignore permanently
-        if (!ref)                 return; // the ref is not ready yet => ignore temporarily => watch for future changes
+        if (hasTweakedRef.current) return; // already been tweaked     => ignore permanently
+        if (!ref)                  return; // the ref is not ready yet => ignore temporarily => watch for future changes
         
         
         
@@ -120,14 +120,14 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
                 ref.classList.add('expanded');
                 
                 const style = getComputedStyle(ref);
-                if (style.display !== 'none') {
-                    const size  : ResizeObserverSize = {
+                if (style.display !== 'none') { // the <Collapse> is rendered
+                    const size : ResizeObserverSize = {
                         inlineSize : Number.parseFloat(style.inlineSize),
                         blockSize  : Number.parseFloat(style.blockSize),
                     };
-                    if ((size.inlineSize) !== 0 || (size.blockSize !== 0)) { // check the <Collapse> is alive (has width and/or height)
-                        lastKnownSize.current = size;
-                        setLastKnownExpandedSize(lastKnownSize.current);
+                    if ((size.inlineSize !== 0) || (size.blockSize !== 0)) { // check if the <Collapse> is alive (has width and/or height)
+                        lastKnownSize.current = size;                    // update
+                        setLastKnownExpandedSize(lastKnownSize.current); // trigger to re-render with the update
                     } // if
                 } // if
             }
@@ -139,7 +139,7 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         
         
         // finalize:
-        isTweakedRef.current = true; // prevents to tweak multiple times
+        hasTweakedRef.current = true; // prevents to tweak multiple times
     }, [ref, isFullyCollapsed]);
     
     
