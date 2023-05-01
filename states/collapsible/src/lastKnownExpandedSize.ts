@@ -105,15 +105,17 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
     const isTweakedRef = useRef<boolean>(false);
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!isFullyCollapsed)    return; // not initially *fully collapsed* => no need to tweak
-        if (!ref)                 return; // the ref is not set => ignore
-        if (isTweakedRef.current) return; // already tweaked => ignore
-        isTweakedRef.current = true;      // mark as already tweaked
+        if (isTweakedRef.current) return; // already been tweaked     => ignore permanently
+        if (!ref)                 return; // the ref is not ready yet => ignore temporarily => watch for future changes
         
         
         
         // tweak:
-        if (!lastKnownSize.current) {
+        if (
+            !lastKnownSize.current // the <Collapse>'s size has never been calculated
+            &&
+            isFullyCollapsed       // the <Collapse> is *fully collapsed* (hidden)
+        ) {
             try {
                 ref.classList.add('expanded');
                 
@@ -133,7 +135,12 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
                 ref.classList.remove('expanded');
             } // try
         } // if
-    }, [isFullyCollapsed, ref]);
+        
+        
+        
+        // finalize:
+        isTweakedRef.current = true; // prevents to tweak multiple times
+    }, [ref, isFullyCollapsed]);
     
     
     // styles:
