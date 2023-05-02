@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/collapsible",
-  "version": "5.2.2",
+  "version": "5.3.0",
   "description": "A capability of UI to expand/reduce its size or toggle the visibility.",
   "keywords": [
     "expandable",
@@ -32,7 +32,7 @@
   "dependencies": {
     "@cssfn/core": "^2.5.0",
     "@reusable-ui/animating-state": "^5.2.0",
-    "@reusable-ui/hooks": "^5.2.0",
+    "@reusable-ui/hooks": "^5.3.0",
     "@reusable-ui/semantics": "^5.2.0",
     "@types/react": "^18.0.27"
   },

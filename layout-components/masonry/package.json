@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/masonry",
-  "version": "5.2.1",
+  "version": "5.3.0",
   "description": "A container in which the items are laid out one after the other in the inline (or block) direction.",
   "keywords": [
     "masonry",
@@ -36,8 +36,8 @@
   "dependencies": {
     "@cssfn/core": "^2.5.0",
     "@cssfn/cssfn-react": "^2.5.0",
-    "@reusable-ui/content": "^5.2.0",
-    "@reusable-ui/core": "^5.2.0",
+    "@reusable-ui/content": "^5.3.0",
+    "@reusable-ui/core": "^5.3.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {

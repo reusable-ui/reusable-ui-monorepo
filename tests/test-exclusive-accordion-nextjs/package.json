@@ -1,6 +1,6 @@
 {
   "name": "test-exclusive-accordion-nextjs",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cssfn/cssfn-dom": "^2.5.2",
+    "@reusable-ui/exclusive-accordion": "^5.3.0",
     "@types/node": "^18.16.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
@@ -17,8 +19,6 @@
     "next": "^13.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.4",
-    "@reusable-ui/exclusive-accordion": "^5.2.3",
-    "@cssfn/cssfn-dom": "^2.5.2"
+    "typescript": "^5.0.4"
   }
 }

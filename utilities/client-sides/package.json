@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/client-sides",
-  "version": "5.2.1",
+  "version": "5.3.0",
   "description": "A set of client-side functions.",
   "keywords": [
     "client-sides",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@reusable-ui/accessibilities": "^5.2.0",
-    "@reusable-ui/hooks": "^5.2.0",
+    "@reusable-ui/hooks": "^5.3.0",
     "@reusable-ui/nodes": "^5.2.0",
     "@reusable-ui/semantics": "^5.2.0",
     "@types/react": "^18.0.27",

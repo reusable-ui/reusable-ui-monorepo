@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/groupable",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Groups a list of UIs into a single UI.",
   "keywords": [
     "groupable",

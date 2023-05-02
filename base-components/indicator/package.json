@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/indicator",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "A base indicator control of Reusable-UI components.",
   "keywords": [
     "indicator",
@@ -36,8 +36,8 @@
   "dependencies": {
     "@cssfn/core": "^2.5.0",
     "@cssfn/cssfn-react": "^2.5.0",
-    "@reusable-ui/basic": "^5.2.0",
-    "@reusable-ui/core": "^5.2.0",
+    "@reusable-ui/basic": "^5.3.0",
+    "@reusable-ui/core": "^5.3.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {
