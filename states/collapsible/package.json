@@ -31,13 +31,13 @@
   },
   "dependencies": {
     "@cssfn/core": "^2.5.0",
-    "@reusable-ui/animating-state": "^5.2.0",
+    "@reusable-ui/animating-state": "^5.3.0",
     "@reusable-ui/hooks": "^5.3.0",
-    "@reusable-ui/semantics": "^5.2.0",
+    "@reusable-ui/semantics": "^5.3.0",
     "@types/react": "^18.0.27"
   },
   "peerDependencies": {
-    "@reusable-ui/animation": "^5.2.0",
+    "@reusable-ui/animation": "^5.3.0",
     "react": "^18.0.0"
   }
 }
