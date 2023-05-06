@@ -5,7 +5,7 @@ import {
     variants,
     children,
     style,
-    scopeOf,
+    scope,
     mainScope,
     
     
@@ -238,14 +238,14 @@ export default () => [
         // variants:
         ...usesDetailsVariants(),
     }),
-    scopeOf('toggler', {
+    scope('toggler', {
         // layouts:
         ...usesTogglerLayout(),
         
         // variants:
         ...usesTogglerVariants(),
     }, { specificityWeight: 2 }), // increase the specificity weight to overcome .toggleButton's specificity weight
-    scopeOf('body', {
+    scope('body', {
         // layouts:
         ...usesCollapsibleBodyLayout(),
         
