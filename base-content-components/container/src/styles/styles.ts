@@ -7,7 +7,7 @@ import {
     
     // writes css in javascript:
     rule,
-    fallbacks,
+    fallback,
     children,
     style,
     
@@ -224,7 +224,7 @@ export const usesContainerChildrenFill = memoizeStyle((options?: ContainerChildr
                 // span to maximum width including parent's paddings:
                 boxSizing      : 'border-box', // the final size is including borders & paddings
                 inlineSize     : 'fill-available',
-                ...fallbacks({
+                ...fallback({
                     inlineSize : `calc(100% + (${positivePaddingInline} * 2))`,
                 }),
                 

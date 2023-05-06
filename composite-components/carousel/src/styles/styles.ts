@@ -2,7 +2,7 @@
 import {
     // writes css in javascript:
     rule,
-    fallbacks,
+    fallback,
     children,
     style,
     
@@ -195,15 +195,15 @@ export const usesCarouselMediaLayout = () => {
                 boxSizing         : 'border-box', // the final size is including borders & paddings
                 maxInlineSize     : 'fill-available',
                 maxBlockSize      : 'fill-available',
-                ...fallbacks({
+                ...fallback({
                     maxInlineSize : '-webkit-fill-available',
                     maxBlockSize  : '-webkit-fill-available',
                 }),
-                ...fallbacks({
+                ...fallback({
                     maxInlineSize : '-moz-available',
                     maxBlockSize  : '-moz-available',
                 }),
-                ...fallbacks({
+                ...fallback({
                     maxInlineSize : '100%',
                     maxBlockSize  : '100%',
                 }),

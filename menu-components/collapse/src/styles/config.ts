@@ -7,7 +7,7 @@ import {
     
     // writes css in javascript:
     keyframes,
-    fallbacks,
+    fallback,
     style,
     
     
@@ -48,13 +48,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         paddingBlock  : 0,
         
         overflowY     : 'clip',
-        ...fallbacks({
+        ...fallback({
             overflowY : 'hidden',
         }),
     });
     const frameIntermediate = style({
         overflowY     : 'clip',
-        ...fallbacks({
+        ...fallback({
             overflowY : 'hidden',
         }),
     });
@@ -87,13 +87,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         paddingInline : 0,
         
         overflowX     : 'clip',
-        ...fallbacks({
+        ...fallback({
             overflowX : 'hidden',
         }),
     });
     const frameIntermediateInline = style({
         overflowX     : 'clip',
-        ...fallbacks({
+        ...fallback({
             overflowX : 'hidden',
         }),
     });

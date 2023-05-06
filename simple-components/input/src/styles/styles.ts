@@ -1,7 +1,7 @@
 // cssfn:
 import {
     // writes css in javascript:
-    fallbacks,
+    fallback,
     children,
     style,
     
@@ -113,7 +113,7 @@ export const usesInputLayout = memoizeStyle(() => {
                     // span to maximum width including parent's paddings:
                     boxSizing      : 'border-box', // the final size is including borders & paddings
                     inlineSize     : 'fill-available',
-                    ...fallbacks({
+                    ...fallback({
                         inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
                     }),
                     

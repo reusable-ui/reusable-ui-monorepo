@@ -13,7 +13,7 @@ import {
     
     // writes css in javascript:
     states,
-    fallbacks,
+    fallback,
     style,
     vars,
     
@@ -107,7 +107,7 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
             
             // reset functions:
             // declare default values at lowest specificity:
-            ...fallbacks({
+            ...fallback({
                 ...vars({
                     [checkableVars.filterIn    ] : animationVars.filterNone,
                     [checkableVars.filterOut   ] : animationVars.filterNone,

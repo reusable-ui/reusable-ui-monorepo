@@ -13,7 +13,7 @@ import {
     
     // writes css in javascript:
     states,
-    fallbacks,
+    fallback,
     style,
     vars,
     
@@ -63,7 +63,7 @@ export const usesValidationIcon = (config?: ValidationIconConfig): ValidationIco
         validationIconRule: () => style({
             // reset functions:
             // declare default values at lowest specificity:
-            ...fallbacks({
+            ...fallback({
                 ...vars({
                     [validationIconVars.iconImage] : 'none',
                 }),

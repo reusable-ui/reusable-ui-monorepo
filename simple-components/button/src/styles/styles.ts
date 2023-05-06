@@ -4,7 +4,7 @@ import {
     rule,
     variants,
     states,
-    fallbacks,
+    fallback,
     style,
     vars,
     
@@ -195,7 +195,7 @@ const usesButtonLinkVariant  = () => {
         ...style({
             // accessibilities:
             userSelect     : 'contain', // a link should be selectable
-            ...fallbacks({
+            ...fallback({
                 userSelect : 'text',    // a link should be selectable
             }),
             

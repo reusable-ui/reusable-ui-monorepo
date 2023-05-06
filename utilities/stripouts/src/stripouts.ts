@@ -7,7 +7,7 @@ import {
     
     // writes css in javascript:
     rule,
-    fallbacks,
+    fallback,
     ifActive,
     children,
     style,
@@ -238,13 +238,13 @@ export const stripoutImage = () => style({
     // span to maximum width:
     boxSizing : 'border-box', // the final size is including borders & paddings
     width     : 'fill-available',
-    ...fallbacks({
+    ...fallback({
         width : '-webkit-fill-available',
     }),
-    ...fallbacks({
+    ...fallback({
         width : '-moz-available',
     }),
-    ...fallbacks({
+    ...fallback({
         width : '100%',
     }),
     
@@ -280,13 +280,13 @@ export const stripoutMedia = () => style({
         // span to maximum width:
         boxSizing : 'border-box', // the final size is including borders & paddings
         width     : 'fill-available',
-        ...fallbacks({
+        ...fallback({
             width : '-webkit-fill-available',
         }),
-        ...fallbacks({
+        ...fallback({
             width : '-moz-available',
         }),
-        ...fallbacks({
+        ...fallback({
             width : '100%',
         }),
     }),

@@ -13,7 +13,7 @@ import {
     
     
     // writes css in javascript:
-    fallbacks,
+    fallback,
     style,
     vars,
     
@@ -182,7 +182,7 @@ const resetAnimationRule = memoizeStyle((): CssRule => {
         
         // reset functions:
         // declare default values at lowest specificity (except for **None):
-        ...fallbacks({
+        ...fallback({
             ...vars(Object.fromEntries([
                 ...animationRegistry.boxShadows.filter((ref) => (ref !== animationVars.boxShadowNone)).map((ref) => [ ref, animationVars.boxShadowNone ]),
                 ...animationRegistry.filters   .filter((ref) => (ref !== animationVars.filterNone   )).map((ref) => [ ref, animationVars.filterNone    ]),

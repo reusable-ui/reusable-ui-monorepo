@@ -4,7 +4,7 @@ import {
     rule,
     variants,
     states,
-    fallbacks,
+    fallback,
     children,
     style,
     vars,
@@ -106,10 +106,10 @@ export const usesBackdropLayout = memoizeStyle(() => {
             ...ifGlobalModal({
                 boxSizing    : 'border-box', // the final size is including borders & paddings
                 minBlockSize : '100svh',     // for modern browsers
-                ...fallbacks({
+                ...fallback({
                     minBlockSize : '100dvh', // for semi-modern browsers
                 }),
-                ...fallbacks({
+                ...fallback({
                     minBlockSize : '100vh',  // for old browsers
                 }),
             }),

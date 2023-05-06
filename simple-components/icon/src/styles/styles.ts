@@ -7,7 +7,7 @@ import {
     
     // writes css in javascript:
     rule,
-    fallbacks,
+    fallback,
     fontFace,
     children,
     style,
@@ -181,7 +181,7 @@ export const usesIconFontLayout  = (options?: IconFontLayoutOptions) => {
             // layouts:
             ...style({
                 // layouts:
-                ...fallbacks({
+                ...fallback({
                     content     : iconVars.image, // put the icon's name here, the custom_font will replace the name to the actual image
                     display     : 'inline',       // use inline, so it takes the width & height automatically
                 }),
@@ -192,7 +192,7 @@ export const usesIconFontLayout  = (options?: IconFontLayoutOptions) => {
                 fontSize        : iconVars.size,  // set icon's size
              // overflowY       : 'hidden',       // a hack: hides the pseudo-inherited underline
                 overflow        : 'hidden',       // we need to squash the text both vertically and horizontally when the custom_font is not yet loaded
-                ...fallbacks({
+                ...fallback({
                     blockSize   : 'inherit',      // follows <parent>'s height
                     aspectRatio : 'inherit',      // follows <parent>'s aspect_ratio
                 }),
@@ -215,7 +215,7 @@ export const usesIconFontLayout  = (options?: IconFontLayoutOptions) => {
                 
                 
                 // animations:
-                ...fallbacks({
+                ...fallback({
                     transition  : 'inherit',      // inherit transition for smooth sizing changes
                 }),
                 

@@ -15,7 +15,7 @@ import {
     // writes css in javascript:
     rule,
     states,
-    fallbacks,
+    fallback,
     style,
     vars,
     
@@ -78,7 +78,7 @@ export const usesRunnable = (config?: RunnableConfig): RunnableStuff => {
             
             // reset functions:
             // declare default values at lowest specificity:
-            ...fallbacks({
+            ...fallback({
                 ...vars({
                     [runnableVars.anim] : animationVars.animNone,
                 }),
