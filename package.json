@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.18",
+    "cross-env": "^7.0.3",
     "jest": "^29.4.1",
     "lerna": "^6.4.1",
     "ts-jest": "^29.0.5",
@@ -20,15 +21,12 @@
   "workspaces": [
     "configs/*",
     "utilities/*",
-    
     "features/*",
     "capabilities/*",
     "variants/*",
     "states/*",
-    
     "base-components/*",
     "base-content-components/*",
-    
     "simple-components/*",
     "layout-components/*",
     "status-components/*",
@@ -36,11 +34,8 @@
     "menu-components/*",
     "dialog-components/*",
     "composite-components/*",
-    
     "utility-components/*",
-    
     "barrels/*",
-    
     "tests/*"
   ],
   "version": "0.0.1"
