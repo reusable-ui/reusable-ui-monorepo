@@ -186,7 +186,7 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
             
             // semantics:
             semanticTag       : panelComponent.props.semanticTag  ?? props.semanticTag  ?? '',         // no corresponding semantic tag => defaults to <div>
-            semanticRole      : panelComponent.props.semanticRole ?? props.semanticRole ?? 'tabpanel', // uses [role="tabpanel"] as the default semantic
+            semanticRole      : panelComponent.props.semanticRole ?? props.semanticRole ?? 'tabpanel', // uses [role="tabpanel"] as the default semantic role
             
             
             

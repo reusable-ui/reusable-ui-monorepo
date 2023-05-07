@@ -83,7 +83,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             
             // semantics:
             semanticTag  = {props.semanticTag   ?? ''     } // no corresponding semantic tag => defaults to <div>
-            semanticRole = {props.semanticRole  ?? 'group'} // uses [role="group"] as the default semantic
+            semanticRole = {props.semanticRole  ?? 'group'} // uses [role="group"] as the default semantic role
             aria-label   = {props['aria-label'] ?? label  }
             
             

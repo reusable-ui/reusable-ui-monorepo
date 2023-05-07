@@ -185,7 +185,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             // semantics:
             semanticTag  = {props.semanticTag  ?? ''     } // no corresponding semantic tag => defaults to <div>
-            semanticRole = {props.semanticRole ?? 'alert'} // uses [role="alert"] as the default semantic
+            semanticRole = {props.semanticRole ?? 'alert'} // uses [role="alert"] as the default semantic role
             
             
             

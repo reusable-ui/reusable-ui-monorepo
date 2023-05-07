@@ -188,7 +188,7 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
             
             // semantics:
             semanticTag  = {props.semanticTag  ?? ''     } // no corresponding semantic tag => defaults to <div>
-            semanticRole = {props.semanticRole ?? 'group'} // uses [role="group"] as the default semantic
+            semanticRole = {props.semanticRole ?? 'group'} // uses [role="group"] as the default semantic role
             
             aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
             

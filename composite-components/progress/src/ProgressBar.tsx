@@ -178,7 +178,7 @@ export const ProgressBar = <TElement extends Element = HTMLElement>(props: Progr
         <Generic<TElement>
             // semantics:
             semanticTag  = {props.semanticTag  ?? ''           } // no corresponding semantic tag => defaults to <div>
-            semanticRole = {props.semanticRole ?? 'progressbar'} // uses [role="progressbar"] as the default semantic
+            semanticRole = {props.semanticRole ?? 'progressbar'} // uses [role="progressbar"] as the default semantic role
             
             aria-valuenow={props['aria-valuenow'] ?? valueFn}
             aria-valuemin={props['aria-valuemin'] ?? (negativeFn ? maxFn : minFn)}
