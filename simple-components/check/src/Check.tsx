@@ -357,8 +357,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             
             // semantics:
             tag          = {props.tag           ??   'span'  }
-            semanticTag  = {props.semanticTag   ??     ''    }
-            semanticRole = {props.semanticRole  ?? 'checkbox'}
+            semanticTag  = {props.semanticTag   ??     ''    } // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
+            semanticRole = {props.semanticRole  ?? 'checkbox'} // uses [role="checkbox"] as the default semantic role
             
             aria-label   = {props['aria-label'] ?? label}
             
