@@ -130,8 +130,8 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
             
             
             // semantics:
-            semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag   ?? '',
-            semanticRole : listComponent.props.semanticRole  ?? props.semanticRole  ?? 'tablist',
+            semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag   ?? '',        // no corresponding semantic tag => defaults to <div>
+            semanticRole : listComponent.props.semanticRole  ?? props.semanticRole  ?? 'tablist', // uses [role="tablist"] as the default semantic
             'aria-label' : listComponent.props['aria-label'] ?? props['aria-label'] ?? label,
             
             
@@ -180,8 +180,8 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
                 
                 
                 // semantics:
-                semanticTag     : listItemComponent.props.semanticTag      ?? '',
-                semanticRole    : listItemComponent.props.semanticRole     ?? 'tab',
+                semanticTag     : listItemComponent.props.semanticTag      ?? '',    // no corresponding semantic tag => defaults to <div>
+                semanticRole    : listItemComponent.props.semanticRole     ?? 'tab', // uses [role="tab"] as the default semantic
                 'aria-controls' : listItemComponent.props['aria-controls'] ?? tabPanelId,
                 
                 
