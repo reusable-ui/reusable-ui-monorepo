@@ -151,18 +151,18 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet      = useBackdropStyleSheet();
-    const uiStyleSheet    = useModalUiStyleSheet();
+    const styleSheet               = useBackdropStyleSheet();
+    const uiStyleSheet             = useModalUiStyleSheet();
+    
+    
+    
+    // variants:
+    const backdropVariant          = useBackdropVariant(props);
     
     
     
     // capabilities:
     const {viewportElm, portalElm} = useStackable(props);
-    
-    
-    
-    // variants:
-    const backdropVariant = useBackdropVariant(props);
     
     
     
