@@ -38,7 +38,7 @@ export interface StackableProps
     // stackable:
     viewport ?: React.RefObject<Element>|Element|null // getter ref
 }
-export const useStackable = <TElement extends Element = HTMLElement>(props: StackableProps) => {
+export const useStackable = (props: StackableProps) => {
     // rest props:
     const {
         // stackable:
