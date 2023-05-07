@@ -663,7 +663,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'dialog'}
+            semanticTag  = {props.semanticTag  ?? ''      } // no corresponding semantic tag => defaults to <div> // NOTE: we don't use <dialog> as the default tag because our <Modal> is similar to <dialog>::backdrop, not the <dialog> itself
+            semanticRole = {props.semanticRole ?? 'dialog'} // uses [role="dialog"] as the default semantic
             
             aria-modal={props['aria-modal'] ?? (isModal || undefined)}
             
