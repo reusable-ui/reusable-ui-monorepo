@@ -33,7 +33,6 @@ import {
     
     
     // react helper hooks:
-    useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -42,8 +41,9 @@ import {
     
     
     
-    // a set of client-side functions:
-    isClientSide,
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    StackableProps,
+    useStackable,
     
     
     
@@ -73,10 +73,6 @@ import {
     BackdropVariant,
     useBackdropVariant,
 }                           from './variants/BackdropVariant.js'
-import {
-    // utilities:
-    getViewportOrDefault,
-}                           from './utilities.js'
 
 
 
@@ -115,6 +111,9 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
             |'children' // we redefined `children` prop as a <ModalUi> component
         >,
         
+        // capabilities:
+        StackableProps,
+        
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
         Pick<ToggleCollapsibleProps<TModalExpandedChangeEvent>,
@@ -138,11 +137,6 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     
     
     
-    // modals:
-    modalViewport    ?: React.RefObject<Element>|Element|null // getter ref
-    
-    
-    
     // handlers:
     onFullyExpanded  ?: () => void
     onFullyCollapsed ?: () => void
@@ -162,6 +156,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     
+    // capabilities:
+    const {viewportElm, portalElm} = useStackable(props);
+    
+    
+    
     // variants:
     const backdropVariant = useBackdropVariant(props);
     
@@ -169,6 +168,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
+        // capabilities:
+        viewport      : _viewport, // remove
+        
+        
+        
         // variants:
         backdropStyle = 'regular',
         
@@ -188,11 +192,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // states:
         expanded      : _expanded, // remove
         onExpandedChange,
-        
-        
-        
-        // modals:
-        modalViewport,
         
         
         
@@ -250,7 +249,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         modalUiRefInternal,
     );
-    const portalRefInternal         = useRef<HTMLDivElement|null>(null);
     const prevFocusRef              = useRef<Element|null>(null);
     const noParentScrollRefInternal = useRef<HTMLDivElement|null>(null);
     
@@ -559,8 +557,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // setups:
-        const viewportElm         = getViewportOrDefault(modalViewport);
-        
         const scrollableElm       = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
         const scrollableEvent     = (viewportElm === document.body) ? document                                   : viewportElm;
         const currentScrollTop    = scrollableElm.scrollTop;
@@ -581,32 +577,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         return () => {
             scrollableEvent.removeEventListener('scroll', handlePreventScroll);
         };
-    }, [isModal, modalViewport]);
-    
-    // delays the rendering of portal until the page is fully hydrated
-    const [triggerRender] = useTriggerRender();
-    useEffect(() => {
-        // conditions:
-        if (!isClientSide) return; // client side only, server side => ignore
-        
-        
-        
-        // setups:
-        const viewportElm = getViewportOrDefault(modalViewport);
-        const portalElm = document.createElement('div');
-        viewportElm.appendChild(portalElm);
-        portalRefInternal.current = portalElm;
-        
-        triggerRender(); // re-render with hydrated version
-        
-        
-        
-        // cleanups:
-        return () => {
-            viewportElm.removeChild(portalElm);
-            portalRefInternal.current = null;
-        };
-    }, [modalViewport]);
+    }, [isModal, viewportElm]);
     
     // stops the excited state when modal is closed:
     useEffect(() => {
@@ -683,7 +654,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // jsx:
-    const portalElm = portalRefInternal.current;
     if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
     return createPortal( // workaround for zIndex stacking context
         <Generic<TElement>
@@ -772,8 +742,8 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     
-    // modals:
-    modalViewport  ?: ModalProps<TElement, TModalExpandedChangeEvent>['modalViewport']
+    // stackable:
+    viewport       ?: ModalProps<TElement, TModalExpandedChangeEvent>['viewport']
     
     
     
