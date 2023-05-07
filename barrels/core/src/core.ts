@@ -29,6 +29,7 @@ export * from '@reusable-ui/animating-state'                // a hook for creati
 
 // reusable-ui capabilities:
 export * from '@reusable-ui/floatable'                      // a capability of UI to float/overlay on the top/beside the another UI
+export * from '@reusable-ui/stackable'                      // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context
 /*peer*/ export * from '@reusable-ui/groupable'             // groups a list of UIs into a single UI
 
 // reusable-ui variants:
