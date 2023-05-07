@@ -265,8 +265,9 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
             
             
             // semantics:
-            semanticTag  = {props.semanticTag   ??   ''   }
-            semanticRole = {props.semanticRole  ?? 'radio'}
+            tag          = {props.tag           ?? 'span' }
+            semanticTag  = {props.semanticTag   ??   ''   } // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
+            semanticRole = {props.semanticRole  ?? 'radio'} // uses [role="radio"] as the default semantic role
             
             
             
