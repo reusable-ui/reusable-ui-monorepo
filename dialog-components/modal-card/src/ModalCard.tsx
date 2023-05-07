@@ -170,7 +170,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         modalRef,
         backdropStyle,
-        modalViewport,
+        viewport,
         modalComponent   = (<Modal<Element, TModalExpandedChangeEvent> >{cardComponent}</Modal> as React.ReactComponentElement<any, ModalProps<Element, TModalExpandedChangeEvent>>),
         
         
@@ -330,8 +330,8 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             
-            // modals:
-            modalViewport    : modalComponent.props.modalViewport ?? modalViewport,
+            // stackable:
+            viewport         : modalComponent.props.viewport ?? viewport,
             
             
             
