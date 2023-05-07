@@ -109,13 +109,13 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     // rest props:
     const {
-        // behaviors:
-        lazy               = false,
-        
-        
-        
         // variants:
         orientation        : _orientation,        // remove
+        
+        
+        
+        // behaviors:
+        lazy               = false,
         
         
         
