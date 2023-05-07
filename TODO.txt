@@ -1,6 +1,5 @@
 [high prior] add autoCapitalize implementation
 [high prior] add bird view z-Index stack
-[high prior] fix semanticRole for ul ol of <Group>
 [high prior] add excited for <Badge>
 [high prior] remove borderEnd when <ProgressBar value={100}
 [high prior] clip <Progress> of <ProgressBar> (in case of value={100})
