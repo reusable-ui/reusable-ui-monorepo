@@ -168,11 +168,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
-        // capabilities:
-        viewport      : _viewport, // remove
-        
-        
-        
         // variants:
         backdropStyle = 'regular',
         
@@ -192,6 +187,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // states:
         expanded      : _expanded, // remove
         onExpandedChange,
+        
+        
+        
+        // stackable:
+        viewport      : _viewport, // remove
         
         
         
