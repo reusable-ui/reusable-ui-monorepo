@@ -325,7 +325,8 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             // props:
             {
                 // semantics:
-                semanticRole : collapseComponent.props.semanticRole ?? '',
+                semanticTag  : collapseComponent.props.semanticTag  ?? '', // no corresponding semantic tag  => defaults to <div>
+                semanticRole : collapseComponent.props.semanticRole ?? '', // no corresponding semantic role => defaults to presentation/none
                 
                 
                 

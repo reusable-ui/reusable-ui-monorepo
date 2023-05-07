@@ -351,7 +351,8 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             // props:
             {
                 // semantics:
-                semanticRole : popupComponent.props.semanticRole ?? '',
+                semanticTag  : popupComponent.props.semanticTag  ?? '', // no corresponding semantic tag  => defaults to <div>
+                semanticRole : popupComponent.props.semanticRole ?? '', // no corresponding semantic role => defaults to presentation/none
                 
                 
                 
