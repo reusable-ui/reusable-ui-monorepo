@@ -26,13 +26,7 @@ import {
     
     
     
-    // focusing functions:
-    setFocusNext,
-    
-    
-    
     // react helper hooks:
-    useTriggerRender,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -40,8 +34,14 @@ import {
     
     
     
-    // a set of client-side functions:
-    isClientSide,
+    // focusing functions:
+    setFocusNext,
+    
+    
+    
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    StackableProps,
+    useStackable,
     
     
     
@@ -110,6 +110,9 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
             |'children' // we redefined `children` prop as a <DropdownUi> component
         >,
         
+        // capabilities:
+        StackableProps,
+        
         // states:
         Pick<ToggleCollapsibleProps<TDropdownExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
@@ -144,6 +147,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     
+    // capabilities:
+    const {portalElm}            = useStackable(props);
+    
+    
+    
     // rest props:
     const {
         // accessibilities:
@@ -154,6 +162,12 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         // states:
         onExpandedChange,
+        floatingMiddleware,
+        
+        
+        
+        // stackable:
+        viewport     : _viewport, // remove
         
         
         
@@ -187,7 +201,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         dropdownUiRefInternal,
     );
-    const portalRefInternal     = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -426,35 +439,9 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         };
     }, [isExpanded, props.floatingOn, handleExpandedChange]);
     
-    // delays the rendering of portal until the page is fully hydrated
-    const [triggerRender] = useTriggerRender();
-    useEffect(() => {
-        // conditions:
-        if (!isClientSide) return; // client side only, server side => ignore
-        
-        
-        
-        // setups:
-        const viewportElm = document.body;
-        const portalElm = document.createElement('div');
-        viewportElm.appendChild(portalElm);
-        portalRefInternal.current = portalElm;
-        
-        triggerRender(); // re-render with hydrated version
-        
-        
-        
-        // cleanups:
-        return () => {
-            viewportElm.removeChild(portalElm);
-            portalRefInternal.current = null;
-        };
-    }, []);
-    
     
     
     // jsx:
-    const portalElm = portalRefInternal.current;
     if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
     return createPortal( // workaround for zIndex stacking context
         <Collapse<TElement, TDropdownExpandedChangeEvent>
