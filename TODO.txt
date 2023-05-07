@@ -80,6 +80,9 @@ group sequences:
 
 // states:
 
+// floatable:
+// stackable:
+
 // components:
 
 // children:
