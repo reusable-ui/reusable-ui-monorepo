@@ -1,6 +1,4 @@
 [high prior] add autoCapitalize implementation
-[high prior] add tooltipViewport
-[high prior] add dropdownViewport
 [high prior] add bird view z-Index stack
 [high prior] fix semanticRole for ul ol of <Group>
 [high prior] add excited for <Badge>
