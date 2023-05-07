@@ -451,7 +451,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'dialog'}
+            semanticTag  = {props.semanticTag  ?? ''      } // no corresponding semantic tag => defaults to <div> // NOTE: we don't use <dialog> as the default tag because our <Dropdown> is similar to <dialog>::backdrop, not the <dialog> itself
+            semanticRole = {props.semanticRole ?? 'dialog'} // uses [role="dialog"] as the default semantic
             
             
             
