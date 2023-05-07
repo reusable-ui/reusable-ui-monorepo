@@ -320,7 +320,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
             
             
             // semantics:
-            semanticTag  : basicComponent.props.semanticTag  ?? props.semanticTag  ?? 'nav',        // uses <nav>               as the default tag
+            semanticTag  : basicComponent.props.semanticTag  ?? props.semanticTag  ?? 'nav',        // uses <nav>               as the default semantic tag
             semanticRole : basicComponent.props.semanticRole ?? props.semanticRole ?? 'navigation', // uses [role="navigation"] as the default semantic role
             
             
