@@ -70,7 +70,7 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary' modalViewport={inContainer ? containerRef : null}>
+                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary' viewport={inContainer ? containerRef : null}>
                     <CardHeader>
                         Test Modal Card
                         <CloseButton onClick={handleClose} size='xs' />
