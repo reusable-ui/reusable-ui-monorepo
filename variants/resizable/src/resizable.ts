@@ -33,7 +33,7 @@ import {
 
 
 // defaults:
-const _defaultSize : Required<ResizableProps>['size'] = 'inherit'
+const _defaultSize : Required<ResizableProps>['size'] = 'md'
 
 
 
@@ -47,17 +47,10 @@ export type SizeName = 'sm'|'md'|'lg'
 
 
 //#region caches
-const sizeClassesCache = new Map<string, CssClassName|null>();
-export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssClassName|null => {
+const sizeClassesCache = new Map<string, CssClassName>();
+export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssClassName => {
     const cached = sizeClassesCache.get(sizeName);
-    if (cached !== undefined) return cached; // null is allowed
-    
-    
-    
-    if (sizeName === 'inherit') {
-        sizeClassesCache.set(sizeName, null);
-        return null;
-    } // if
+    if (cached !== undefined) return cached;
     
     
     
@@ -66,15 +59,14 @@ export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: T
     return sizeClass;
 };
 
-const sizeSelectorsCache = new Map<string, CssSelector|null>();
-export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector|null => {
+const sizeSelectorsCache = new Map<string, CssSelector>();
+export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector => {
     const cached = sizeSelectorsCache.get(sizeName);
     if (cached) return cached;
     
     
     
     const sizeClass = createSizeClass(sizeName);
-    if (sizeClass === null) return null;
     
     
     
@@ -128,9 +120,9 @@ export const sizeOptions = (): SizeName[] => sizeOptionsCache ?? (sizeOptionsCac
 
 export interface ResizableProps<TSizeName extends string = SizeName> {
     // variants:
-    size ?: TSizeName|'inherit'
+    size ?: TSizeName|'md'
 }
 export const useResizable = <TSizeName extends string = SizeName>({size = _defaultSize}: ResizableProps<TSizeName>) => ({
-    class: (size === 'inherit') ? null : createSizeClass(size),
+    class: createSizeClass(size),
 });
 //#endregion resizable
