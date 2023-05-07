@@ -65,7 +65,7 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag  : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic, fallbacks to <ol>
+const _defaultSemanticTag  : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic tag, fallbacks to <ol>
 const _defaultSemanticRole : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic role
 
 const _defaultActionCtrl   : boolean|undefined  = undefined
