@@ -27,11 +27,11 @@ import type {
 
 
 // defaults:
-const _defaultSemanticTag      : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic, fallbacks to <a>
-const _defaultSemanticRole     : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic, fallbacks to [role="link"]
+const _defaultSemanticTag      : SemanticTag  = ['button', 'a'   ] // uses <button>        as the default semantic tag , fallbacks to <a>
+const _defaultSemanticRole     : SemanticRole = ['button', 'link'] // uses [role="button"] as the default semantic role, fallbacks to [role="link"]
 
-const _defaultLinkSemanticTag  : SemanticTag  = ['a'   , 'button'] // uses <a>             as the default semantic, fallbacks to <button>
-const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role="link"]   as the default semantic, fallbacks to [role="button"]
+const _defaultLinkSemanticTag  : SemanticTag  = ['a'   , 'button'] // uses <a>             as the default semantic tag , fallbacks to <button>
+const _defaultLinkSemanticRole : SemanticRole = ['link', 'button'] // uses [role="link"]   as the default semantic role, fallbacks to [role="button"]
 
 
 
