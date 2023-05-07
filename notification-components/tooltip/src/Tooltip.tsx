@@ -27,7 +27,6 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
-    useTriggerRender,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -35,15 +34,16 @@ import {
     
     
     
-    // a set of client-side functions:
-    isClientSide,
-    
-    
-    
     // a capability of UI to float/overlay on the top/beside the another UI:
     FloatingMiddleware,
     FloatingPosition,
     FloatingSide,
+    
+    
+    
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    StackableProps,
+    useStackable,
     
     
     
@@ -127,6 +127,9 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
         // bases:
         PopupProps<TElement, TExpandedChangeEvent>,
         
+        // capabilities:
+        StackableProps,
+        
         // components:
         ArrowComponentProps<Element>
 {
@@ -150,6 +153,11 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     
+    // capabilities:
+    const {portalElm}                 = useStackable(props);
+    
+    
+    
     // rest props:
     const {
         // states:
@@ -163,9 +171,14 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
+        // stackable:
+        viewport       : _viewport,             // remove
+        
+        
+        
         // debounces:
-        expandDelay    = _defaultExpandDelay,
-        collapseDelay  = _defaultCollapseDelay,
+        expandDelay    = _defaultExpandDelay,   // remove
+        collapseDelay  = _defaultCollapseDelay, // remove
         
         
         
@@ -191,7 +204,6 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         arrowRefInternal,
     );
-    const portalRefInternal = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -454,35 +466,9 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         };
     }, [isControllableExpanded, props.floatingOn, expandDelay, collapseDelay]);
     
-    // delays the rendering of portal until the page is fully hydrated
-    const [triggerRender] = useTriggerRender();
-    useEffect(() => {
-        // conditions:
-        if (!isClientSide) return; // client side only, server side => ignore
-        
-        
-        
-        // setups:
-        const viewportElm = document.body;
-        const portalElm = document.createElement('div');
-        viewportElm.appendChild(portalElm);
-        portalRefInternal.current = portalElm;
-        
-        triggerRender(); // re-render with hydrated version
-        
-        
-        
-        // cleanups:
-        return () => {
-            viewportElm.removeChild(portalElm);
-            portalRefInternal.current = null;
-        };
-    }, []);
-    
     
     
     // jsx:
-    const portalElm = portalRefInternal.current;
     if (!portalElm) return null; // server side -or- client side but not already hydrated => nothing to render
     return createPortal( // workaround for zIndex stacking context
         <Popup<TElement, TExpandedChangeEvent>
