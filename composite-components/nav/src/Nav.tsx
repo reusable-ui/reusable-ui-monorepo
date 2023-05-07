@@ -69,7 +69,7 @@ const Nav = <TElement extends Element = HTMLElement>(props: NavProps<TElement>):
             
             
             // semantics:
-            semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag  ?? 'nav',        // uses <nav>               as the default tag
+            semanticTag  : listComponent.props.semanticTag   ?? props.semanticTag  ?? 'nav',        // uses <nav>               as the default semantic tag
             semanticRole : listComponent.props.semanticRole  ?? props.semanticRole ?? 'navigation', // uses [role="navigation"] as the default semantic role
             'aria-label' : listComponent.props['aria-label'] ?? label,
             
