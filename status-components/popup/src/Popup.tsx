@@ -187,7 +187,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             // semantics:
-            semanticRole={props.semanticRole ?? 'status'}
+            semanticTag  = {props.semanticTag  ?? ''      } // no corresponding semantic tag => defaults to <div>
+            semanticRole = {props.semanticRole ?? 'status'} // uses [role="status"] as the default semantic role
             
             
             
