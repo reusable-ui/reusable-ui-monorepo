@@ -478,8 +478,8 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             
             
             // semantics:
-            semanticTag  = {props.semanticTag  ?? ''     } // no corresponding semantic tag => defaults to <div>
-            semanticRole={props.semanticRole ?? 'tooltip'} // uses [role="tooltip"] as the default semantic role
+            semanticTag  = {props.semanticTag  ?? ''       } // no corresponding semantic tag => defaults to <div>
+            semanticRole = {props.semanticRole ?? 'tooltip'} // uses [role="tooltip"] as the default semantic role
             
             
             
