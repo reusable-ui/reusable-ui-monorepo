@@ -6,15 +6,11 @@ import {
     
     
     // hooks:
-    useRef,
     useEffect,
+    useState,
 }                           from 'react'
 
 // reusable-ui utilities:
-import {
-    // hooks:
-    useTriggerRender,
-}                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // utilities:
     isClientSide,
@@ -52,11 +48,13 @@ export const useStackable = (props: StackableProps) => {
     
     
     
-    // dom effects:
-    const portalElmRef = useRef<HTMLDivElement|null>(null);
+    // states:
+    const [portalElm, setPortalElm] = useState<HTMLDivElement|null>(null);
     
+    
+    
+    // dom effects:
     // delays the rendering of portal until the page is fully hydrated
-    const [triggerRender] = useTriggerRender();
     useEffect(() => {
         // conditions:
         if (!isClientSide) return; // client side only, server side => ignore
@@ -64,18 +62,15 @@ export const useStackable = (props: StackableProps) => {
         
         
         // setups:
-        const portalElm = document.createElement('div');
-        viewportElm.appendChild(portalElm); // add side effect
-        portalElmRef.current = portalElm;
-        
-        triggerRender(); // re-render with hydrated version
+        const newPortalElm = document.createElement('div');
+        viewportElm.appendChild(newPortalElm); // add side effect
+        setPortalElm(newPortalElm);
         
         
         
         // cleanups:
         return () => {
-            viewportElm.removeChild(portalElm); // remove side effect
-            portalElmRef.current = null;
+            viewportElm.removeChild(newPortalElm); // remove side effect
         };
     }, [viewportElm]);
     
@@ -84,7 +79,7 @@ export const useStackable = (props: StackableProps) => {
     // return the implementations:
     return {
         viewportElm,
-        portalElm : portalElmRef.current,
+        portalElm,
     };
 };
 //#endregion stackable
