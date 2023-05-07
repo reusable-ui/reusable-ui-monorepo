@@ -55,17 +55,17 @@ import {
 
 
 // defaults:
-const _defaultSemanticTag        : SemanticTag  = 'article' // uses <article>        as the default semantic
-const _defaultSemanticRole       : SemanticRole = 'article' // uses [role="article"] as the default semantic
+const _defaultSemanticTag        : SemanticTag  = 'article' // uses <article>        as the default semantic tag
+const _defaultSemanticRole       : SemanticRole = 'article' // uses [role="article"] as the default semantic role
 
-const _defaultHeaderSemanticTag  : SemanticTag  = 'header'  // uses <header>         as the default semantic
-const _defaultHeaderSemanticRole : SemanticRole = ''        // no corresponding role
+const _defaultHeaderSemanticTag  : SemanticTag  = 'header'  // uses <header>         as the default semantic tag
+const _defaultHeaderSemanticRole : SemanticRole = 'header'  // uses [role="header"]  as the default semantic
 
-const _defaultFooterSemanticTag  : SemanticTag  = 'footer'  // uses <footer>         as the default semantic
-const _defaultFooterSemanticRole : SemanticRole = ''        // no corresponding role
+const _defaultFooterSemanticTag  : SemanticTag  = 'footer'  // uses <footer>         as the default semantic tag
+const _defaultFooterSemanticRole : SemanticRole = 'footer'  // uses [role="footer"]  as the default semantic
 
 const _defaultBodySemanticTag    : SemanticTag  = ''        // no corresponding semantic tag => defaults to <div>
-const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding role
+const _defaultBodySemanticRole   : SemanticRole = ''        // no corresponding semantic role => defaults to presentation/none
 
 
 
