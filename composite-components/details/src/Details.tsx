@@ -85,7 +85,7 @@ const _defaultSemanticTag         : SemanticTag  = ''      // no corresponding s
 const _defaultSemanticRole        : SemanticRole = 'group' // uses [role="group"] as the default semantic role
 
 const _defaultTogglerSemanticTag  : SemanticTag  = [null, 'button', 'a'   ] // no corresponding semantic tag => defaults to <div>, fallbacks to <button>, <a>
-const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
+const _defaultTogglerSemanticRole : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic role , fallbacks to [role="link"]
 
 
 
