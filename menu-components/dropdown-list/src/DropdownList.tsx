@@ -383,6 +383,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // semantics:
+            semanticTag      : dropdownComponent.props.semanticTag  ?? props.semanticTag  ?? '', // no corresponding semantic tag => defaults to <div> // NOTE: we don't use <dialog> as the default tag because our <Dropdown> is similar to <dialog>::backdrop, not the <dialog> itself
             semanticRole     : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props, defaultActionCtrl),
             
             
