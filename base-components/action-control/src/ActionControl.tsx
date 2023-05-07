@@ -55,7 +55,7 @@ import {
 
 // defaults:
 const _defaultSemanticTag      : SemanticTag  = [null, 'button', 'a'   ] // no corresponding semantic tag => defaults to <div>, fallbacks to <button>, <a>
-const _defaultSemanticRole     : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic      , fallbacks to [role="link"]
+const _defaultSemanticRole     : SemanticRole = [      'button', 'link'] // uses [role="button"] as the default semantic role , fallbacks to [role="link"]
 
 const _defaultClickableOptions : ClickableOptions = {
     handleActionCtrlEvents : true, // needs to handle [space] key as onClick
