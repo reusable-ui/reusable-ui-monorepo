@@ -53,7 +53,7 @@ import {
     useCollapsible,
     CollapsibleEventProps,
     useCollapsibleEvent,
-    ToggleCollapsibleProps,
+    ControllableCollapsibleProps,
     
     
     
@@ -119,9 +119,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
         CollapsibleEventProps,
-        Pick<ToggleCollapsibleProps<TModalExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
-        >,
+        ControllableCollapsibleProps<TModalExpandedChangeEvent>,
         
         // variants:
         BackdropVariant,
