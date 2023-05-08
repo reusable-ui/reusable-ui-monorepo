@@ -370,7 +370,7 @@ export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEven
             
             
             
-            // fire change synthetic event:
+            // fire `onActiveChange` react event:
             props.onActiveChange?.({ active } as TActiveChangeEvent);
         }, 0); // runs the 'click' & 'onActiveChange' events *next after* current event completed
     });
