@@ -320,7 +320,7 @@ export interface CollapsibleEventProps
     onCollapseStart ?: EventHandler<void>
     onCollapseEnd   ?: EventHandler<void>
 }
-export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleEventProps, state: CollapsibleState): void => {
+export const useCollapsibleEvent = (props: CollapsibleEventProps, state: CollapsibleState): void => {
     // states:
     const isMounted = useRef<boolean>(false); // initially marked as unmounted
     useEffect(() => {
