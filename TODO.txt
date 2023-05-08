@@ -1,4 +1,3 @@
-[high prior] add excited for <Badge>
 [high prior] protect size='md' from <parent size='sm|lg'>
 
 [med prior ] add autoCapitalize implementation
