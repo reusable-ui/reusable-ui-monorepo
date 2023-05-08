@@ -312,10 +312,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
 
 
 
-export interface CollapsibleEventProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
-    extends
-        // states:
-        CollapsibleProps<TExpandedChangeEvent>
+export interface CollapsibleEventProps
 {
     // handlers:
     onExpandStart   ?: EventHandler<void>
@@ -323,7 +320,7 @@ export interface CollapsibleEventProps<TExpandedChangeEvent extends ExpandedChan
     onCollapseStart ?: EventHandler<void>
     onCollapseEnd   ?: EventHandler<void>
 }
-export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleEventProps<TExpandedChangeEvent>, state: CollapsibleState): void => {
+export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleEventProps, state: CollapsibleState): void => {
     // states:
     const isMounted = useRef<boolean>(false); // initially marked as unmounted
     useEffect(() => {
