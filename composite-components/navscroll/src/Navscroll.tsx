@@ -214,7 +214,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         };
         
         let isScheduledUpdateSections = false;
-        let loaded = true;
+        let isMounted = true; // mark as mounted
         const scheduleUpdateSections = () => {
             // conditions:
             if (isScheduledUpdateSections) return; // already scheduled => ignore
@@ -228,7 +228,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 
                 
                 isScheduledUpdateSections = false; // mark as already done
-                if (loaded) updateSections(); // update the sections if the <Navscroll> is still alive
+                if (isMounted) updateSections(); // update the sections if the <Navscroll> is still alive
             });
         };
         
@@ -249,7 +249,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         const descendantsResizeObserver = new ResizeObserver(() => {
             // conditions:
-            if (!loaded) return;
+            if (!isMounted) return;
             
             
             
@@ -260,7 +260,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         const descendantsMutationObserver = new MutationObserver((entries) => {
             // conditions:
-            if (!loaded) return;
+            if (!isMounted) return;
             
             
             
@@ -321,7 +321,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         // cleanups:
         return () => {
-            loaded = false;
+            isMounted = false; // mark as unmounted
             scrollingElm.removeEventListener('scroll', handleScroll, { capture: true });
             descendantsMutationObserver.disconnect();
             descendantsResizeObserver.disconnect();
