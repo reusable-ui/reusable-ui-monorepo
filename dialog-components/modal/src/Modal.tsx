@@ -140,14 +140,6 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     // handlers:
     onFullyExpanded  ?: () => void
     onFullyCollapsed ?: () => void
-    /**
-     * @deprecated renamed to `onFullyExpanded`
-     */
-    onFullyOpened    ?: () => void
-    /**
-     * @deprecated renamed to `onFullyCollapsed`
-     */
-    onFullyClosed    ?: () => void
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -202,12 +194,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // handlers:
-        // @ts-ignore
-        onFullyOpened,
-        // @ts-ignore
-        onFullyClosed,
-        onFullyExpanded  = onFullyOpened,
-        onFullyCollapsed = onFullyClosed,
+        onFullyExpanded,
+        onFullyCollapsed,
     ...restGenericProps} = props;
     
     

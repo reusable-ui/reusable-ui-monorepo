@@ -173,12 +173,8 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         // handlers:
-        // @ts-ignore
-        onFullyOpened,
-        // @ts-ignore
-        onFullyClosed,
-        onFullyExpanded  = onFullyOpened,
-        onFullyCollapsed = onFullyClosed,
+        onFullyExpanded,
+        onFullyCollapsed,
     ...restCardProps} = props;
     
     
