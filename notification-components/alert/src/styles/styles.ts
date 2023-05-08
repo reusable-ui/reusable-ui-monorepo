@@ -39,6 +39,12 @@ import {
 
 // internals:
 import {
+    // elements:
+    iconElm,
+    bodyElm,
+    controlElm,
+}                           from './elements.js'
+import {
     // configs:
     alerts,
     cssAlertConfig,
@@ -47,10 +53,6 @@ import {
 
 
 // styles:
-const iconElm    = '.icon'         // one degree specificity to overwrite <Icon> component
-const bodyElm    = ':where(.body)' // zero degree specificity to be easily overwritten
-const controlElm = '.control'      // one degree specificity to overwrite <Control> component
-
 export const onAlertStylesChange = watchChanges(onContentStylesChange, onPopupStylesChange, cssAlertConfig.onChange);
 
 export const usesAlertLayout = () => {
