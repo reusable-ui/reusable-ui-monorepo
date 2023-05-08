@@ -42,8 +42,8 @@ import {
     ExpandedChangeEvent,
     useCollapsible,
     useLastKnownExpandedSize,
-    ToggleCollapsibleProps,
-    useToggleCollapsible,
+    UncontrollableCollapsibleProps,
+    useUncontrollableCollapsible,
     
     
     
@@ -103,7 +103,7 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         BasicProps<TElement>,
         
         // states:
-        ToggleCollapsibleProps<TExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
+        UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
         ButtonComponentProps,
@@ -202,15 +202,15 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // states:
-    const [isExpanded, setExpanded] = useToggleCollapsible<TExpandedChangeEvent>({
+    const [isExpanded, setExpanded] = useUncontrollableCollapsible<TExpandedChangeEvent>({
         defaultExpanded,
         expanded,
         // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
     });
     
-    const collapsibleState      = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
-    const isVisible             = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const lastKnownExpandedSize = useLastKnownExpandedSize<Element>(collapsibleState);
+    const collapsibleState          = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
+    const isVisible                 = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const lastKnownExpandedSize     = useLastKnownExpandedSize<Element>(collapsibleState);
     
     
     
