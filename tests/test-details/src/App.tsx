@@ -67,7 +67,7 @@ function App() {
                 
                 <br />
                 
-                <Details theme='primary' label='An awesome thing' contentComponent={<Content />}>
+                <Details theme='primary' label='An awesome thing' bodyComponent={<Content />}>
                     <ParagraphLorem />
                     <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
                     <ParagraphLorem />
@@ -75,7 +75,7 @@ function App() {
                 
                 <br />
                 
-                <Details theme='primary' label='An awesome thing' contentComponent={<Content />} detailsStyle='content'>
+                <Details theme='primary' label='An awesome thing' bodyComponent={<Content />} detailsStyle='content'>
                     <ParagraphLorem />
                     <img alt='lorem image' src='/images/lorem-image-1.svg' style={{ height: '150px' }} />
                     <ParagraphLorem />

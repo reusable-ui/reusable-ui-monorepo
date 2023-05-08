@@ -113,26 +113,22 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         DetailsVariant
 {
     // accessibilities:
-    label            ?: React.ReactNode
+    label         ?: React.ReactNode
     
     
     
     // behaviors:
-    lazy             ?: boolean
+    lazy          ?: boolean
     
     
     
     // components:
-    /**
-     * @deprecated renamed to `bodyComponent`
-     */
-    contentComponent ?: React.ReactComponentElement<any, BasicProps<Element>>
-    bodyComponent    ?: React.ReactComponentElement<any, BasicProps<Element>>
+    bodyComponent ?: React.ReactComponentElement<any, BasicProps<Element>>
     
     
     
     // children:
-    children         ?: React.ReactNode
+    children      ?: React.ReactNode
 }
 const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: DetailsProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -189,12 +185,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         toggleButtonComponent = (<ToggleButton   /> as React.ReactComponentElement<any, ToggleButtonProps>),
         
-        // @ts-ignore
-        contentComponent,
-        bodyComponent         = // @ts-ignore
-                                contentComponent
-                                ??
-                                (<Basic<Element> /> as React.ReactComponentElement<any, BasicProps<Element>>),
+        bodyComponent         = (<Basic<Element> /> as React.ReactComponentElement<any, BasicProps<Element>>),
         
         
         
