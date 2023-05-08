@@ -1,8 +1,8 @@
-[high prior] add autoCapitalize implementation
-[high prior] add bird view z-Index stack
 [high prior] add excited for <Badge>
 [high prior] protect size='md' from <parent size='sm|lg'>
 
+[med prior ] add autoCapitalize implementation
+[med prior ] add bird view z-Index stack
 [med prior ] rename onFullyExpanded and onFullyCollapsed to onExpanded(Start|End) and onCollapsed(Start|End)
 [med prior ] memorize `style={{`
 [med prior ] moved \const \w+Elm\s*=\s*'\ to `elements.ts`
