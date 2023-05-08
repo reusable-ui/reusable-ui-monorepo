@@ -24,7 +24,7 @@ import {
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
-    ToggleCollapsibleProps,
+    ControllableCollapsibleProps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -110,9 +110,7 @@ export interface AlertProps<TElement extends Element = HTMLElement, TExpandedCha
         PopupProps<TElement, TExpandedChangeEvent>,
         
         // states:
-        Pick<ToggleCollapsibleProps<TExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
-        >,
+        ControllableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
         IconComponentProps<Element>,
