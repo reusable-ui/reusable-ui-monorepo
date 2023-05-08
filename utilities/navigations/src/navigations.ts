@@ -133,10 +133,10 @@ export const useDetermineCurrentPage = (props: DetermineCurrentPageProps): boole
     /* server side rendering support */
     /* always return `undefined` on the first render */
     /* so the DOM is __always_the_same__ at the server side & client side */
-    const [loaded, setLoaded] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
     useIsomorphicLayoutEffect(() => {
         // setups:
-        setLoaded(true); // trigger to re-render
+        setIsMounted(true); // trigger to re-render
     }, []); // runs once on startup
     
     
@@ -174,7 +174,7 @@ export const useDetermineCurrentPage = (props: DetermineCurrentPageProps): boole
     
     
     /* conditionally return AFTER hooks - it's safe */
-    if (!loaded) return undefined; // always return `undefined` on the first render
+    if (!isMounted) return undefined; // always return `undefined` on the first render
     
     
     
