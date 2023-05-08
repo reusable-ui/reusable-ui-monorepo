@@ -53,7 +53,7 @@ import {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
     useCollapsible,
-    ToggleCollapsibleProps,
+    ControllableCollapsibleProps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -114,9 +114,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         StackableProps,
         
         // states:
-        Pick<ToggleCollapsibleProps<TDropdownExpandedChangeEvent>,
-            |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
-        >,
+        ControllableCollapsibleProps<TDropdownExpandedChangeEvent>,
         
         // components:
         DropdownUiComponentProps<Element>
