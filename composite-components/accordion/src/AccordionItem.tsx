@@ -78,26 +78,22 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemComponentProps<TElement>
 {
     // accessibilities:
-    label            ?: React.ReactNode
+    label         ?: React.ReactNode
     
     
     
     // behaviors:
-    lazy             ?: boolean
+    lazy          ?: boolean
     
     
     
     // components:
-    /**
-     * @deprecated renamed to `bodyComponent`
-     */
-    contentComponent ?: ListItemComponentProps<TElement>['listItemComponent']
-    bodyComponent    ?: ListItemComponentProps<TElement>['listItemComponent']
+    bodyComponent ?: ListItemComponentProps<TElement>['listItemComponent']
     
     
     
     // children:
-    children         ?: React.ReactNode
+    children      ?: React.ReactNode
 }
 export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -143,12 +139,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
-        // @ts-ignore
-        contentComponent,
-        bodyComponent     = // @ts-ignore
-                            contentComponent
-                            ??
-                            (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        bodyComponent     = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
         
         
         
