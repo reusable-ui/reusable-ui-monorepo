@@ -417,16 +417,23 @@ export const useCollapsibleEvent = (props: CollapsibleEventProps, state: Collaps
 
 
 
-export interface ToggleCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+export interface ControllableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
         CollapsibleProps<TExpandedChangeEvent>
 {
     // states:
-    defaultExpanded  ?: boolean
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
-export const useToggleCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: ToggleCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+    extends
+        // states:
+        ControllableCollapsibleProps<TExpandedChangeEvent>
+{
+    // states:
+    defaultExpanded  ?: boolean
+}
+export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // states:
     const [expandedTg, setExpandedTg] = useState<boolean>(props.defaultExpanded ?? false);
     
