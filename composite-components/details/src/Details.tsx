@@ -170,9 +170,9 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // states:
-        defaultExpanded,  // take, to be handled by `useToggleCollapsible`
-        expanded,         // take, to be handled by `useToggleCollapsible`
-        onExpandedChange, // take, to be handled by `useToggleCollapsible`
+        defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
+        expanded,         // take, to be handled by `useUncontrollableCollapsible`
+        onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
         
         
