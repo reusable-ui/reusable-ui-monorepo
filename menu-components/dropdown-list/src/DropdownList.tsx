@@ -194,6 +194,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         
+        // stackable:
+        viewport,
+        
+        
+        
         // components:
         listComponent         = (<List<TElement> /> as React.ReactComponentElement<any, ListProps<TElement>>),
         children              : listItems,
@@ -424,6 +429,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             floatingShift,
             
             onFloatingUpdate : handleDropdownFloatingUpdate,
+            
+            
+            
+            // stackable:
+            viewport,
         },
         
         
