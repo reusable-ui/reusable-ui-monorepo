@@ -168,9 +168,9 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         onExpandedChange,
     });
     
-    const collapsibleState      = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
-    const isVisible             = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const lastKnownExpandedSize = useLastKnownExpandedSize<TElement>(collapsibleState);
+    const collapsibleState               = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
+    const isVisible                      = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    const lastKnownExpandedSize          = useLastKnownExpandedSize<TElement>(collapsibleState);
     
     
     
