@@ -170,10 +170,10 @@ export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEve
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
     // handlers:
-    onExpandStart   : EventHandler<void>
-    onExpandEnd     : EventHandler<void>
-    onCollapseStart : EventHandler<void>
-    onCollapseEnd   : EventHandler<void>
+    onExpandStart   ?: EventHandler<void>
+    onExpandEnd     ?: EventHandler<void>
+    onCollapseStart ?: EventHandler<void>
+    onCollapseEnd   ?: EventHandler<void>
 }
 
 export const enum CollapsibleState {
