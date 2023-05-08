@@ -29,8 +29,8 @@ import {
     
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
-    ToggleCollapsibleProps,
-    useToggleCollapsible,
+    UncontrollableCollapsibleProps,
+    useUncontrollableCollapsible,
     
     
     
@@ -115,7 +115,7 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         OrientationableWithDirectionProps,
         
         // states:
-        ToggleCollapsibleProps<TDropdownExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
+        UncontrollableCollapsibleProps<TDropdownExpandedChangeEvent>,
         
         // components:
         Omit<ButtonComponentProps,
@@ -190,9 +190,9 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         // states:
-        defaultExpanded,  // take, to be handled by `useToggleCollapsible`
-        expanded,         // take, to be handled by `useToggleCollapsible`
-        onExpandedChange, // take, to be handled by `useToggleCollapsible`
+        defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
+        expanded,         // take, to be handled by `useUncontrollableCollapsible`
+        onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
         
         
@@ -208,6 +208,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         floatingShift,
         
         onFloatingUpdate,
+        
+        
+        
+        // stackable:
+        viewport,
         
         
         
@@ -236,7 +241,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // states:
-    const [isExpanded, setExpanded] = useToggleCollapsible<TDropdownExpandedChangeEvent>({
+    const [isExpanded, setExpanded] = useUncontrollableCollapsible<TDropdownExpandedChangeEvent>({
         defaultExpanded,
         expanded,
         // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
@@ -409,23 +414,23 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     // variants:
-                    orientation        : dropdownComponent.props.orientation  ?? dropdownOrientation,
+                    orientation        : dropdownComponent.props.orientation        ?? dropdownOrientation,
                     
                     
                     
                     // accessibilities:
-                    setFocus           : dropdownComponent.props.setFocus     ?? setFocus,
-                    restoreFocus       : dropdownComponent.props.restoreFocus ?? restoreFocus,
+                    setFocus           : dropdownComponent.props.setFocus           ?? setFocus,
+                    restoreFocus       : dropdownComponent.props.restoreFocus       ?? restoreFocus,
                     
                     
                     
                     // behaviors:
-                    lazy               : dropdownComponent.props.lazy         ?? lazy,
+                    lazy               : dropdownComponent.props.lazy               ?? lazy,
                     
                     
                     
                     // states:
-                    expanded           : dropdownComponent.props.expanded     ?? isExpanded,
+                    expanded           : dropdownComponent.props.expanded           ?? isExpanded,
                     onExpandedChange   : handleDropdownExpandedChange,
                     
                     
@@ -442,6 +447,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     floatingShift      : dropdownComponent.props.floatingShift      ?? floatingShift,
                     
                     onFloatingUpdate   : handleDropdownFloatingUpdate,
+                    
+                    
+                    
+                    // stackable:
+                    viewport           : dropdownComponent.props.viewport           ?? viewport,
                 },
                 
                 
