@@ -12,6 +12,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
+import { ExcitedChangeEvent, EventHandler, useEvent } from '@reusable-ui/core'
 
 
 
@@ -23,7 +24,13 @@ function App() {
     
     const btnRef = useRef<HTMLButtonElement>(null);
     
-
+    const [excited, setExcited] = useState(false);
+    const handleExcitedChange = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
+        setExcited(event.excited);
+    });
+    
+    
+    
     return (
         <>
             <HeadPortal>
@@ -36,10 +43,22 @@ function App() {
                     </button>
                 </article>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <button ref={btnRef}>
+                <button ref={btnRef} onClick={() => setExcited(true)}>
                     I'm here
                 </button>
-                <Badge floatingOn={btnRef} theme='danger' expanded={true} floatingPlacement='right-start' floatingOffset={-10} floatingShift={-10}>
+                <Badge
+                    theme='danger'
+                    
+                    expanded={true}
+                    
+                    floatingOn={btnRef}
+                    floatingPlacement='right-start'
+                    floatingOffset={-10}
+                    floatingShift={-10}
+                    
+                    excited={excited}
+                    onExcitedChange={handleExcitedChange}
+                >
                     new!
                 </Badge>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

@@ -13,12 +13,19 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useMergeEvents,
     useMergeClasses,
     
     
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
+    
+    
+    
+    // a capability of UI to highlight itself to attract user's attention:
+    ToggleExcitableProps,
+    useToggleExcitable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -51,26 +58,34 @@ export interface BadgeProps<TElement extends Element = HTMLElement, TExpandedCha
         PopupProps<TElement, TExpandedChangeEvent>,
         
         // variants:
-        BadgeVariant
+        BadgeVariant,
+        
+        // states:
+        ToggleExcitableProps
 {
     // accessibilities:
     label ?: string
 }
 const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: BadgeProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet   = useBadgeStyleSheet();
+    const styleSheet     = useBadgeStyleSheet();
     
     
     
     // variants:
-    const badgeVariant = useBadgeVariant(props);
+    const badgeVariant   = useBadgeVariant(props);
+    
+    
+    
+    // states:
+    const excitableState = useToggleExcitable<TElement>(props);
     
     
     
     // rest props:
     const {
         // variants:
-        badgeStyle : _badgeStyle, // remove
+        badgeStyle      : _badgeStyle,      // remove
         
         
         
@@ -81,6 +96,8 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         // states:
         expanded,
+        excited         : _excited,         // remove
+        onExcitedChange : _onExcitedChange, // remove
         
         
         
@@ -109,6 +126,37 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         // variants:
         badgeVariant.class,
     );
+    const stateClasses   = useMergeClasses(
+        // preserves the original `stateClasses`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        excitableState.class,
+    );
+    
+    
+    
+    // handlers:
+    const handleAnimationStart = useMergeEvents<React.AnimationEvent<TElement>>(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        excitableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents<React.AnimationEvent<TElement>>(
+        // preserves the original `onAnimationEnd`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        excitableState.handleAnimationEnd,
+    );
     
     
     
@@ -130,11 +178,18 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
+            stateClasses={stateClasses}
             
             
             
             // states:
             expanded={expandedFn}
+            
+            
+            
+            // handlers:
+            onAnimationStart = {handleAnimationStart}
+            onAnimationEnd   = {handleAnimationEnd  }
         >
             { children }
         </Popup>

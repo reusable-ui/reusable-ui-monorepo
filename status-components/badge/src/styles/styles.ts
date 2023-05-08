@@ -50,6 +50,11 @@ import {
     
     // nude variant of UI:
     ifNotNude,
+    
+    
+    
+    // a capability of UI to highlight itself to attract user's attention:
+    usesExcitable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -205,7 +210,20 @@ export const usesBadgeVariants = memoizeStyle(() => {
     });
 }, onBadgeStylesChange);
 
-export const usesBadgeStates = usesPopupStates;
+export const usesBadgeStates = memoizeStyle(() => {
+    // dependencies:
+    
+    // states:
+    const {excitableRule} = usesExcitable(badges);
+    
+    
+    
+    return style({
+        // states:
+        ...usesPopupStates(),
+        ...excitableRule(),
+    });
+}, onBadgeStylesChange);
 
 export default memoizeStyle(() => style({
     // layouts:

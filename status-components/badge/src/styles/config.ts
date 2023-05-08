@@ -5,6 +5,11 @@ import {
     
     
     
+    // writes css in javascript:
+    keyframes,
+    
+    
+    
     // reads/writes css variables configuration:
     cssConfig,
 }                           from '@cssfn/core'                  // writes css in javascript
@@ -19,6 +24,20 @@ import {
 
 // configs:
 export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
+    //#region keyframes
+    const [keyframesExciteRule, keyframesExcite] = keyframes({
+        from  : {
+            scale : '100%',
+        },
+        to    : {
+            scale : '200%',
+        },
+    });
+    keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
+    //#endregion keyframes
+    
+    
+    
     const basics = {
         // spacings:
         paddingInline   : '0.65em'                                          as CssKnownProps['paddingInline'],
@@ -27,15 +46,23 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
         
         
         // typos:
-        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'    ],
-        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'      ],
-        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'    ],
+        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'   ],
+        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'     ],
+        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'   ],
     };
     
     
     
     return {
         ...basics,
+        
+        
+        
+        // animations:
+        ...keyframesExciteRule,
+        animExcite      : [
+            ['300ms', 'linear', 'both', 'alternate', 2, keyframesExcite],
+        ]                                                                   as CssKnownProps['animation'    ],
         
         
         
@@ -48,7 +75,7 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'      ],
-        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'      ],
+        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'     ],
+        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'     ],
     };
 }, { prefix: 'bge' });
