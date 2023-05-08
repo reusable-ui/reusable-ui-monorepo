@@ -37,6 +37,10 @@ import {
 
 // internals:
 import {
+    // elements:
+    arrowElm,
+}                           from './elements.js'
+import {
     // configs:
     tooltips,
     cssTooltipConfig,
@@ -45,8 +49,6 @@ import {
 
 
 // styles:
-export const arrowElm = '.arrow' // one degree specificity to overwrite <Arrow> component
-
 export const onTooltipStylesChange = watchChanges(onPopupStylesChange, cssTooltipConfig.onChange);
 
 export const usesTooltipLayout = () => {
