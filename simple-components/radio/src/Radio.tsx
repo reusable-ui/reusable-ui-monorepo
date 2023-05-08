@@ -227,7 +227,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     useEffect(() => {
         // conditions:
         const currentRadio = inputRefInternal.current;
-        if (!currentRadio) return; // radio was unloaded => nothing to do
+        if (!currentRadio) return; // radio was unmounted => nothing to do
         
         
         
