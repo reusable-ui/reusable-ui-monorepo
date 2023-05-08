@@ -63,7 +63,12 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalCard expanded={showModal} onExpandedChange={handleExpandedChange} modalCardStyle={(scrollable || undefined) && 'scrollable'} backdropStyle={(isStatic || undefined) && 'static'} theme='primary'>
+                <ModalCard expanded={showModal} onExpandedChange={handleExpandedChange} modalCardStyle={(scrollable || undefined) && 'scrollable'} backdropStyle={(isStatic || undefined) && 'static'} theme='primary'
+                    onCollapseEnd={() => console.log('collapsed')}
+                    onCollapseStart={() => console.log('collapsing')}
+                    onExpandStart={() => console.log('expanding')}
+                    onExpandEnd={() => console.log('expanded')}
+                >
                     <CardHeader>
                         Test Modal Card
                         <CloseButton onClick={handleClose} size='xs' />
