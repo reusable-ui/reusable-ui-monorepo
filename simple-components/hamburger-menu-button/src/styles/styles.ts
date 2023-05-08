@@ -75,6 +75,10 @@ import {
     usesHamburgerable,
 }                           from '../states/hamburgerable.js'
 import {
+    // elements:
+    svgElm,
+}                           from './elements.js'
+import {
     // configs:
     hamburgerMenuButtons,
     cssHamburgerMenuButtonConfig,
@@ -88,8 +92,6 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 // styles:
-export const svgElm = ':where(svg)' // zero degree specificity to be easily overwritten
-
 export const onHamburgerMenuButtonStylesChange = watchChanges(cssBasicConfig.onChange, onButtonStylesChange, cssHamburgerMenuButtonConfig.onChange);
 
 export const usesHamburgerLayout = () => {
