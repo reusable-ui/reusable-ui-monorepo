@@ -143,7 +143,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     const calculateItemsRaiseSize = (): number|null => {
         // conditions:
         const masonry = masonryRefInternal.current;
-        if (!masonry) return null; // masonry was unloaded => nothing to do
+        if (!masonry) return null; // masonry was unmounted => nothing to do
         
         
         
@@ -173,7 +173,7 @@ const Masonry = <TElement extends Element = HTMLElement>(props: MasonryProps<TEl
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const masonry = masonryRefInternal.current;
-        if (!masonry) return; // masonry was unloaded => nothing to do
+        if (!masonry) return; // masonry was unmounted => nothing to do
         
         
         
