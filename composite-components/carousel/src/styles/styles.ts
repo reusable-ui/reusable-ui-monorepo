@@ -48,6 +48,15 @@ import {
 
 // internals:
 import {
+    // elements:
+    listElm,
+    dummyListElm,
+    itemElm,
+    prevBtnElm,
+    nextBtnElm,
+    navElm,
+}                           from './elements.js'
+import {
     // configs:
     carousels,
     cssCarouselConfig,
@@ -56,16 +65,6 @@ import {
 
 
 // styles:
-// .carousel > .list > .item > .media
-const listElm      = ':where(.list)' // zero degree specificity to be easily overwritten
-const dummyListElm = '.dummy'        // any degree specificity, not intended to be overwritten
-const itemElm      = '*'             // zero degree specificity to be easily overwritten
-const prevBtnElm   = '.prevBtn'      // one degree specificity to overwrite <Button>    component
-const nextBtnElm   = '.nextBtn'      // one degree specificity to overwrite <Button>    component
-const navElm       = '.nav'          // one degree specificity to overwrite <Navscroll> component
-
-
-
 export const onCarouselStylesChange = watchChanges(onContentStylesChange, cssCarouselConfig.onChange);
 
 
