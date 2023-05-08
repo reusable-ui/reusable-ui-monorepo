@@ -112,6 +112,11 @@ export const usesProgressLayout = (options?: OrientationableOptions) => {
             
             
             
+            // borders:
+            overflow       : 'hidden', // workaround for <ProgressBar value={100}>
+            
+            
+            
             // customize:
             ...usesCssProps(progresses), // apply config's cssProps
             ...ifOrientationInline({ // inline

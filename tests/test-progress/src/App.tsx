@@ -43,7 +43,7 @@ function App() {
                 </Progress>
                 <br />
                 <Progress theme='danger'>
-                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={70} progressBarStyle='striped'>70%</ProgressBar>
                 </Progress>
                 
                 <hr />
@@ -58,7 +58,11 @@ function App() {
                 </Progress>
                 <br />
                 <Progress gradient={true} theme='danger'>
-                    <ProgressBar value={70} progressBarStyle='striped'>30%</ProgressBar>
+                    <ProgressBar value={0} progressBarStyle='striped'>0%</ProgressBar>
+                </Progress>
+                <br />
+                <Progress gradient={true} theme='danger'>
+                    <ProgressBar value={100} progressBarStyle='striped'>100%</ProgressBar>
                 </Progress>
                 
                 <hr />

@@ -1,5 +1,10 @@
 // cssfn:
 import {
+    // cssfn css specific types:
+    CssStyleCollection,
+    
+    
+    
     // writes css in javascript:
     rule,
     variants,
@@ -27,6 +32,12 @@ import {
     
     // border (stroke) stuff of UI:
     usesBorder,
+    
+    
+    
+    // a capability of UI to rotate its layout:
+    OrientationableOptions,
+    usesOrientationable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -41,6 +52,10 @@ import {
 }                           from '@reusable-ui/list'            // represents a series of content
 
 // internals:
+import {
+    // defaults:
+    defaultOrientationableOptions,
+}                           from '../defaults.js'
 import {
     // features:
     usesProgressBar,
@@ -60,12 +75,25 @@ import {
 // styles:
 export const onProgressBarStylesChange = watchChanges(onBasicStylesChange, cssProgressConfig.onChange);
 
-export const usesProgressBarLayout = () => {
+export const usesProgressBarLayout = (options?: OrientationableOptions) => {
+    // options:
+    const orientationableStuff = usesOrientationable(options, defaultOrientationableOptions);
+    const {orientationInlineSelector, orientationBlockSelector} = orientationableStuff;
+    const parentOrientationInlineSelector = `${orientationInlineSelector}&`;
+    const parentOrientationBlockSelector  = `${orientationBlockSelector }&`;
+    const ifParentOrientationInline       = (styles: CssStyleCollection) => rule(parentOrientationInlineSelector, styles);
+    const ifParentOrientationBlock        = (styles: CssStyleCollection) => rule(parentOrientationBlockSelector , styles);
+    
+    
+    
     // dependencies:
     
     // features:
     const {                 borderVars     } = usesBorder();
     const {progressBarRule, progressBarVars} = usesProgressBar();
+    
+    // borders:
+    const negativeBorderWidth = `calc(0px - ${borderVars.borderWidth})`;
     
     
     
@@ -73,6 +101,26 @@ export const usesProgressBarLayout = () => {
         // sizes:
         flex     : [[progressBarVars.valueRatio, progressBarVars.valueRatio, 0]], // growable, shrinkable, initial from 0 width; using `valueRatio` for the grow/shrink ratio
         overflow : 'hidden',
+        
+        
+        
+        // borders:
+        ...ifParentOrientationInline({ // inline
+            ...rule(':first-child', {
+                marginInlineStart : negativeBorderWidth,
+            }),
+            ...rule(':last-child', {
+                marginInlineEnd   : negativeBorderWidth,
+            }),
+        }),
+        ...ifParentOrientationBlock({  // block
+            ...rule(':first-child', {
+                marginBlockStart  : negativeBorderWidth,
+            }),
+            ...rule(':last-child', {
+                marginBlockEnd    : negativeBorderWidth,
+            }),
+        }),
         
         
         
