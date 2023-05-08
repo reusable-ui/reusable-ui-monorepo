@@ -51,6 +51,8 @@ import {
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
     ToggleCollapsibleProps,
     
     
@@ -116,6 +118,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
+        CollapsibleEventProps,
         Pick<ToggleCollapsibleProps<TModalExpandedChangeEvent>,
             |'onExpandedChange' // implements `onExpandedChange` (implements controllable only, uncontrollable is not implemented)
         >,
@@ -197,6 +200,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     const isExpanded       = collapsibleState.expanded;
     const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle);
+    
+    useCollapsibleEvent(props, collapsibleState.state);
     
     const [excitedDn, setExcitedDn] = useState(false);
     const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
