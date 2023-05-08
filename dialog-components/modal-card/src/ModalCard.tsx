@@ -176,8 +176,10 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         // handlers:
-        onFullyExpanded,
-        onFullyCollapsed,
+        onExpandStart,
+        onCollapseStart,
+        onExpandEnd,
+        onCollapseEnd,
     ...restCardProps} = props;
     
     
@@ -335,8 +337,10 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             onAnimationStart : handleAnimationStart,
             onAnimationEnd   : handleAnimationEnd,
             
-            onFullyExpanded  : onFullyExpanded,
-            onFullyCollapsed : onFullyCollapsed,
+            onExpandStart    : onExpandStart,
+            onCollapseStart  : onCollapseStart,
+            onExpandEnd      : onExpandEnd,
+            onCollapseEnd    : onCollapseEnd,
         },
         
         

@@ -127,19 +127,13 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         ModalUiComponentProps<Element>
 {
     // accessibilities:
-    setFocus         ?: boolean
-    restoreFocus     ?: boolean
+    setFocus     ?: boolean
+    restoreFocus ?: boolean
     
     
     
     // behaviors:
-    lazy             ?: boolean
-    
-    
-    
-    // handlers:
-    onFullyExpanded  ?: () => void
-    onFullyCollapsed ?: () => void
+    lazy         ?: boolean
 }
 const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -161,41 +155,39 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // rest props:
     const {
         // variants:
-        backdropStyle = 'regular',
+        backdropStyle   = 'regular',
         
         
         
         // accessibilities:
-        setFocus      = true,
-        restoreFocus  = true,
+        setFocus        = true,
+        restoreFocus    = true,
         
         
         
         // behaviors:
-        lazy          = false,
+        lazy            = false,
         
         
         
         // states:
-        expanded      : _expanded, // remove
+        expanded        : _expanded,        // remove
+        onExpandStart   : _onExpandStart,   // remove
+        onCollapseStart : _onCollapseStart, // remove
+        onExpandEnd     : _onExpandEnd,     // remove
+        onCollapseEnd   : _onCollapseEnd,   // remove
         onExpandedChange,
         
         
         
         // stackable:
-        viewport      : _viewport, // remove
+        viewport        : _viewport,        // remove
         
         
         
         // components:
         tabIndex,
-        children      : modalUiComponent,
-        
-        
-        
-        // handlers:
-        onFullyExpanded,
-        onFullyCollapsed,
+        children        : modalUiComponent,
     ...restGenericProps} = props;
     
     
@@ -616,28 +608,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [isExpanded, handleExpandedChange]);
-    
-    const isFullyExpanded : boolean|null = (
-        isExpanded
-        ? (( collapsibleState.class === 'expanded') ? true  : null) // fully expanded
-        : ((!collapsibleState.class               ) ? false : null) // fully collapsed
-    );
-    const wasFullyExpanded = useRef<boolean|null>(isFullyExpanded);
-    useEffect(() => {
-        // conditions:
-        if (wasFullyExpanded.current === isFullyExpanded) return; // no change => ignore
-        wasFullyExpanded.current = isFullyExpanded; // sync the last change
-        
-        
-        
-        // actions:
-        if (isFullyExpanded === true) {
-            if (onFullyExpanded)  setTimeout(() => onFullyExpanded(), 0);  // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
-        }
-        else if (isFullyExpanded === false) {
-            if (onFullyCollapsed) setTimeout(() => onFullyCollapsed(), 0); // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
-        } // if
-    }, [isFullyExpanded, onFullyExpanded, onFullyCollapsed]);
     
     
     
