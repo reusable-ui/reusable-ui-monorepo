@@ -149,16 +149,16 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     
     
     // states:
-    const isUnloaded = useRef<boolean>(false);
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
     useEffect(() => {
         // setups:
-        isUnloaded.current = false;
+        isMounted.current = true; // mark as mounted
         
         
         
         // cleanups:
         return () => {
-            isUnloaded.current = true;
+            isMounted.current = false; // mark as unmounted
         };
     }, []);
     
@@ -191,7 +191,7 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         // need to *briefly* apply the *un-animated* before continue to *re-animated*:
         const cancelRequest = requestAnimationFrame(() => {
             // conditions:
-            if (isUnloaded.current) return;
+            if (!isMounted.current) return;
             
             
             
