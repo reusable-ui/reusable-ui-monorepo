@@ -35,8 +35,8 @@ import {
     ExpandedChangeEvent,
     useCollapsible,
     useLastKnownExpandedSize,
-    ToggleCollapsibleProps,
-    useToggleCollapsible,
+    UncontrollableCollapsibleProps,
+    useUncontrollableCollapsible,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -72,7 +72,7 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemProps<TElement>,
         
         // states:
-        ToggleCollapsibleProps<TExpandedChangeEvent>, // implements `onExpandedChange` & `defaultExpanded` (implements controllable & uncontrollable)
+        UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
         ListItemComponentProps<TElement>
@@ -131,9 +131,9 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         
         
         // states:
-        defaultExpanded,  // take, to be handled by `useToggleCollapsible`
-        expanded,         // take, to be handled by `useToggleCollapsible`
-        onExpandedChange, // take, to be handled by `useToggleCollapsible`
+        defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
+        expanded,         // take, to be handled by `useUncontrollableCollapsible`
+        onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
         
         
@@ -162,7 +162,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     
     // states:
-    const [isExpanded, , toggleExpanded] = useToggleCollapsible<TExpandedChangeEvent>({
+    const [isExpanded, , toggleExpanded] = useUncontrollableCollapsible<TExpandedChangeEvent>({
         defaultExpanded,
         expanded,
         onExpandedChange,
