@@ -324,6 +324,22 @@ export interface CollapsibleEventProps<TExpandedChangeEvent extends ExpandedChan
     onCollapseEnd   ?: EventHandler<void>
 }
 export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleEventProps<TExpandedChangeEvent>, state: CollapsibleState) => {
+    // states:
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
+    useEffect(() => {
+        // setups:
+        isMounted.current = true; // mark as mounted
+        
+        
+        
+        // cleanups:
+        return () => {
+            isMounted.current = false; // mark as unmounted
+        };
+    }, []);
+    
+    
+    
     // dom effects:
     const {
         onExpandStart,
@@ -340,43 +356,59 @@ export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeE
         
         
         // actions:
-        let cancelTriggerEvent : ReturnType<typeof setTimeout>|undefined = undefined;
         switch (state) {
             // expanding:
             case CollapsibleState.Expanding:
-                if (onExpandStart) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onExpandStart) setTimeout(() => {
+                    // conditions:
+                    if (!isMounted.current) return;
+                    
+                    
+                    
+                    // fire `onExpandStart` react event:
                     onExpandStart();
-                }, 0);
+                }, 0); // runs the 'onExpandStart' event *next after* current event completed
                 break;
             
             // collapsing:
             case CollapsibleState.Collapsing:
-                if (onCollapseStart) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onCollapseStart) setTimeout(() => {
+                    // conditions:
+                    if (!isMounted.current) return;
+                    
+                    
+                    
+                    // fire `onCollapseStart` react event:
                     onCollapseStart();
-                }, 0);
+                }, 0); // runs the 'onCollapseStart' event *next after* current event completed
                 break;
             
             // fully expanded:
             case CollapsibleState.Expanded:
-                if (onExpandEnd) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onExpandEnd) setTimeout(() => {
+                    // conditions:
+                    if (!isMounted.current) return;
+                    
+                    
+                    
+                    // fire `onExpandEnd` react event:
                     onExpandEnd();
-                }, 0);
+                }, 0); // runs the 'onExpandEnd' event *next after* current event completed
                 break;
             
             // fully collapsed:
             case CollapsibleState.Collapsed:
-                if (onCollapseEnd) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onCollapseEnd) setTimeout(() => {
+                    // conditions:
+                    if (!isMounted.current) return;
+                    
+                    
+                    
+                    // fire `onCollapseEnd` react event:
                     onCollapseEnd();
-                }, 0);
+                }, 0); // runs the 'onCollapseEnd' event *next after* current event completed
                 break;
         } // switch
-        
-        
-        
-        // cleanups:
-        return () => {
-            if (cancelTriggerEvent) clearTimeout(cancelTriggerEvent);
-        }
     }, [
         state,
         onExpandStart,
@@ -410,16 +442,37 @@ export const useToggleCollapsible = <TExpandedChangeEvent extends ExpandedChange
     
     
     
+    // states:
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
+    useEffect(() => {
+        // setups:
+        isMounted.current = true; // mark as mounted
+        
+        
+        
+        // cleanups:
+        return () => {
+            isMounted.current = false; // mark as unmounted
+        };
+    }, []);
+    
+    
+    
     // callbacks:
     /*
           controllable : setExpanded(new) => update state(old => old) => trigger Event(new)
         uncontrollable : setExpanded(new) => update state(old => new) => trigger Event(new)
     */
     const triggerExpandedChange = useEvent<React.Dispatch<boolean>>((expanded) => {
-        Promise.resolve().then(() => { // trigger the event after the <Collapsible> has finished rendering (for controllable <Collapsible>)
-            // fire expandedChange synthetic event:
+        setTimeout(() => {
+            // conditions:
+            if (!isMounted.current) return;
+            
+            
+            
+            // fire `onExpandedChange` react event:
             props.onExpandedChange?.({ expanded } as TExpandedChangeEvent);
-        });
+        }, 0); // runs the 'onExpandedChange' event *next after* current event completed
     });
     const setExpanded           = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((expanded) => {
         // conditions:
