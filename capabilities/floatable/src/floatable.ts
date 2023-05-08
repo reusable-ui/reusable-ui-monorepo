@@ -146,7 +146,19 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     // dom effects:
-    const isLoaded = useRef<boolean>(true);
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
+    useIsomorphicLayoutEffect(() => {
+        // setups:
+        isMounted.current = true; // mark as mounted
+        
+        
+        
+        // cleanups:
+        return () => {
+            isMounted.current = false; // mark as unmounted
+        };
+    }, []);
+    
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!isVisible)  return; // <floatingUi> is fully hidden => no need to update
@@ -156,11 +168,6 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         const floatingUi = outerRef.current;
         if (!floatingUi) return; // <floatingUi> was unloaded => nothing to do
-        
-        
-        
-        // marks:
-        isLoaded.current = true;
         
         
         
@@ -198,7 +205,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             
             
             
-            if (!isLoaded.current) return;
+            if (!isMounted.current) return;
             
             
             
@@ -275,11 +282,6 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         // cleanups:
         return () => {
-            // marks:
-            isLoaded.current = false;
-            
-            
-            
             cancelAnimationFrame(cancelRequest);
             cleanups?.();
         };
