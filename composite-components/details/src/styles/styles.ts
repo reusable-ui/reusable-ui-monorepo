@@ -58,6 +58,10 @@ import {
 
 // internals:
 import {
+    // elements:
+    itemElm,
+}                           from './elements.js'
+import {
     // configs:
     details,
     cssDetailsConfig,
@@ -66,10 +70,6 @@ import {
 
 
 // styles:
-export const itemElm  = ':nth-child(n)' // one degree specificity to overwrite <ToggleButton> & <DetailsBody> component
-
-
-
 export const onDetailsStylesChange = watchChanges(onBasicStylesChange, onContentStylesChange, onCollapseStylesChange, cssDetailsConfig.onChange);
 
 
