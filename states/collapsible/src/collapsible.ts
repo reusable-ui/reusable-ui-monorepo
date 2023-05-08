@@ -8,6 +8,7 @@ import {
     // hooks:
     useState,
     useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -168,6 +169,18 @@ export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEve
         // states:
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
+    // handlers:
+    onExpandStart   : EventHandler<void>
+    onExpandEnd     : EventHandler<void>
+    onCollapseStart : EventHandler<void>
+    onCollapseEnd   : EventHandler<void>
+}
+
+export const enum CollapsibleState {
+    Collapsed  = 0,
+    Collapsing = 1,
+    Expanding  = 2,
+    Expanded   = 3,
 }
 
 const collapsibleCtrls = [
@@ -228,6 +241,89 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     
     
     
+    // fn props:
+    const state = ((): CollapsibleState => {
+        // expanding:
+        if (animation === true ) return CollapsibleState.Expanding;
+        
+        // collapsing:
+        if (animation === false) return CollapsibleState.Collapsing;
+        
+        // fully expanded:
+        if (expanded) return CollapsibleState.Expanded;
+        
+        // fully collapsed:
+        return CollapsibleState.Collapsed;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
+            // expanding:
+            case CollapsibleState.Expanding: {
+                // not [expanded] but *still* animating of expanding => force to keep expanding using class .expanding
+                if (!expanded) return 'expanding';
+                
+                if (tag && collapsibleCtrls.includes(tag)) return null; // uses [open]
+                return 'expanding';
+            };
+            
+            // collapsing:
+            case CollapsibleState.Collapsing: {
+                return 'collapsing';
+            };
+            
+            // fully expanded:
+            case CollapsibleState.Expanded: {
+                return 'expanded';
+            };
+            
+            // fully collapsed:
+            case CollapsibleState.Collapsed: {
+                return null;
+            };
+        } // switch
+    })();
+    
+    
+    
+    // dom effects:
+    const prevState = useRef<CollapsibleState>(state);
+    useEffect(() => {
+        // conditions:
+        if (prevState.current === state) return;
+        
+        
+        
+        // sync:
+        prevState.current = state;
+        
+        
+        
+        // actions:
+        switch (state) {
+            // expanding:
+            case CollapsibleState.Expanding:
+                props.onExpandStart?.();
+                break;
+            
+            // collapsing:
+            case CollapsibleState.Collapsing:
+                props.onCollapseStart?.();
+                break;
+            
+            // fully expanded:
+            case CollapsibleState.Expanded:
+                props.onExpandEnd?.();
+                break;
+            
+            // fully collapsed:
+            case CollapsibleState.Collapsed:
+                props.onCollapseEnd?.();
+                break;
+        } // switch
+    }, [state]);
+    
+    
+    
     // interfaces:
     return {
         expanded  : expanded,
@@ -239,25 +335,8 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
             (animation !== undefined) // being collapsing but not fully collapsed
         ),
         
-        class     : ((): string|null => {
-            // expanding:
-            if (animation === true) {
-                // not [expanded] but *still* animating of expanding => force to keep expanding using class .expanding
-                if (!expanded) return 'expanding';
-                
-                if (tag && collapsibleCtrls.includes(tag)) return null; // uses [open]
-                return 'expanding';
-            } // if
-            
-            // collapsing:
-            if (animation === false) return 'collapsing';
-            
-            // fully expanded:
-            if (expanded) return 'expanded';
-            
-            // fully collapsed:
-            return null;
-        })(),
+        state     : state,
+        class     : stateClass,
         
         props     : (() => {
             if (!expanded) return null;
