@@ -61,7 +61,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
     
     
     
-    const [keyframesExciteRule, keyframesExcite] = keyframes({
+    const [modalUiKeyframesExciteRule, modalUiKeyframesExcite] = keyframes({
         from  : {
             filter : [[
                 ...filters.filter((f) => (f !== filterExcited)), // the rest filter(s)
@@ -74,7 +74,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
             ]],
         },
     });
-    keyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
+    modalUiKeyframesExcite.value = 'excite'; // the @keyframes name should contain 'excite' in order to be recognized by `useToggleExcitable`
     //#endregion keyframes
     
     
@@ -107,9 +107,9 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
             'invert(80%)',
         ]]                                                          as CssKnownProps['filter'   ],
         
-        ...keyframesExciteRule,
+        ...modalUiKeyframesExciteRule,
         modalUiAnimExcite   : [
-            ['150ms', 'ease', 'both', 'alternate-reverse', 5, keyframesExcite],
+            ['150ms', 'ease', 'both', 'alternate-reverse', 5, modalUiKeyframesExcite],
         ]                                                           as CssKnownProps['animation'],
     };
 }, { prefix: 'mdl' });
