@@ -169,11 +169,6 @@ export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEve
         // states:
         Partial<Pick<TExpandedChangeEvent, 'expanded'>>
 {
-    // handlers:
-    onExpandStart   ?: EventHandler<void>
-    onExpandEnd     ?: EventHandler<void>
-    onCollapseStart ?: EventHandler<void>
-    onCollapseEnd   ?: EventHandler<void>
 }
 
 export const enum CollapsibleState {
@@ -285,6 +280,50 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     
     
     
+    // interfaces:
+    return {
+        expanded  : expanded,
+        isVisible : (
+            propExpanded // sooner   : The <ChildComponent> need to be rendered first BEFORE the expading animation OCCURED
+            // ||
+            // expanded  // too late : The expading animation is running BEFORE the <ChildComponent> already rendered
+            ||
+            (animation !== undefined) // being collapsing but not fully collapsed
+        ),
+        
+        state     : state,
+        class     : stateClass,
+        
+        props     : (() => {
+            if (!expanded) return null;
+            
+            // use [open] if <dialog> or <details>:
+            if (tag && collapsibleCtrls.includes(tag)) return { open: true };
+            
+            // else, use .expanding or .expanded which already defined in `class`:
+            return null;
+        })(),
+        
+        handleAnimationStart,
+        handleAnimationEnd,
+        handleAnimationCancel,
+    };
+};
+
+
+
+export interface CollapsibleEventProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
+    extends
+        // states:
+        CollapsibleProps<TExpandedChangeEvent>
+{
+    // handlers:
+    onExpandStart   ?: EventHandler<void>
+    onExpandEnd     ?: EventHandler<void>
+    onCollapseStart ?: EventHandler<void>
+    onCollapseEnd   ?: EventHandler<void>
+}
+export const useCollapsibleEvent = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleEventProps<TExpandedChangeEvent>, state: CollapsibleState) => {
     // dom effects:
     const {
         onExpandStart,
@@ -345,37 +384,6 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
         onExpandEnd,
         onCollapseEnd,
     ]);
-    
-    
-    
-    // interfaces:
-    return {
-        expanded  : expanded,
-        isVisible : (
-            propExpanded // sooner   : The <ChildComponent> need to be rendered first BEFORE the expading animation OCCURED
-            // ||
-            // expanded  // too late : The expading animation is running BEFORE the <ChildComponent> already rendered
-            ||
-            (animation !== undefined) // being collapsing but not fully collapsed
-        ),
-        
-        state     : state,
-        class     : stateClass,
-        
-        props     : (() => {
-            if (!expanded) return null;
-            
-            // use [open] if <dialog> or <details>:
-            if (tag && collapsibleCtrls.includes(tag)) return { open: true };
-            
-            // else, use .expanding or .expanded which already defined in `class`:
-            return null;
-        })(),
-        
-        handleAnimationStart,
-        handleAnimationEnd,
-        handleAnimationCancel,
-    };
 };
 
 
