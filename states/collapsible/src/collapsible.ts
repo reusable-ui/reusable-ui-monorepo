@@ -305,32 +305,32 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
         
         
         // actions:
-        let cancelTimeout : ReturnType<typeof setTimeout>|undefined = undefined;
+        let cancelTriggerEvent : ReturnType<typeof setTimeout>|undefined = undefined;
         switch (state) {
             // expanding:
             case CollapsibleState.Expanding:
-                if (onExpandStart) cancelTimeout = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onExpandStart) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
                     onExpandStart();
                 }, 0);
                 break;
             
             // collapsing:
             case CollapsibleState.Collapsing:
-                if (onCollapseStart) cancelTimeout = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onCollapseStart) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
                     onCollapseStart();
                 }, 0);
                 break;
             
             // fully expanded:
             case CollapsibleState.Expanded:
-                if (onExpandEnd) cancelTimeout = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onExpandEnd) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
                     onExpandEnd();
                 }, 0);
                 break;
             
             // fully collapsed:
             case CollapsibleState.Collapsed:
-                if (onCollapseEnd) cancelTimeout = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
+                if (onCollapseEnd) cancelTriggerEvent = setTimeout(() => { // trigger event at the next macroTask -- wrapped with arrowFunc to avoid `this` context problem
                     onCollapseEnd();
                 }, 0);
                 break;
@@ -340,7 +340,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
         
         // cleanups:
         return () => {
-            if (cancelTimeout) clearTimeout(cancelTimeout);
+            if (cancelTriggerEvent) clearTimeout(cancelTriggerEvent);
         }
     }, [
         state,
