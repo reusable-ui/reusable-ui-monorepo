@@ -168,7 +168,7 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
                 
                 
                 // styles:
-                style={{
+                style={{ // the inline style is implicitly memorized because the whole <Generic> is inside `useMemo()`
                     // values:
                     [
                         progressBarVars.valueRatio
