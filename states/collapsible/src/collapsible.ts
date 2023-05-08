@@ -296,11 +296,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     useEffect(() => {
         // conditions:
         if (prevState.current === state) return; // no change detected => ignore
-        
-        
-        
-        // sync:
-        prevState.current = state;
+        prevState.current = state; // sync the last change
         
         
         
