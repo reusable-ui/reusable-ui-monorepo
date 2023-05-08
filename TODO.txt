@@ -1,8 +1,6 @@
 [high prior] add autoCapitalize implementation
 [high prior] add bird view z-Index stack
 [high prior] add excited for <Badge>
-[high prior] remove borderEnd when <ProgressBar value={100}
-[high prior] clip <Progress> of <ProgressBar> (in case of value={100})
 [high prior] protect size='md' from <parent size='sm|lg'>
 
 [med prior ] rename onFullyExpanded and onFullyCollapsed to onExpanded(Start|End) and onCollapsed(Start|End)
@@ -13,12 +11,11 @@
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
 [med prior ] fix <List listStyle='tab' outlined={true}> the unselected ones should appear outlined & the whole <Tab> should have underline
-
+[med prior ] rename themable to themeable
 
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
-[low prior ] rename themable to themeable
-
+[low prior ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 
 
 [deferred  ] fixed minor animation_abort_effect in active-as-click
