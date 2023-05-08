@@ -76,6 +76,10 @@ import {
 
 // internals:
 import {
+    // elements:
+    iconElm,
+}                           from './elements.js'
+import {
     // configs:
     editableTextControls,
     cssEditableTextControlConfig,
@@ -89,8 +93,6 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { mild: null };
 
 
 // styles:
-export const iconElm = '::after'
-
 export const onEditableTextControlStylesChange = watchChanges(onEditableControlStylesChange, cssEditableTextControlConfig.onChange);
 
 export const usesEditableTextControlLayout = memoizeStyle(() => {
