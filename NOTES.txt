@@ -314,10 +314,10 @@ not need (inherit)?Enabled:
 
 
 // controllable & uncontrollable: // has *built_in interactive* button // useToggleCollapsible
-1. Accordion		    base: <ListItem>
 2. Details			    base: <Basic>
 
 // controllable only: // no *built_in interactive* button
+
 
 verified:
 11. Navbar			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---
@@ -333,9 +333,10 @@ x. Tooltip              desc: ---no_desc---                                 Coll
 3.  DropdownButton	    desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*		UncontrollableCollapsibleProps
     DropdownListButton	desc: ---no_desc---					                CollapsibleProps***     CollapsibleEventProps***	ControllableCollapsibleProps**      UncontrollableCollapsibleProps*
 
-55. Modal			    base: <Generic>						                CollapsibleProps	    CollapsibleEventProps       ControllableCollapsibleProps
-
+55. Modal			    desc: <ModalCard><ModalSide>					    CollapsibleProps	    CollapsibleEventProps       ControllableCollapsibleProps
+    ModalCard           desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
+    ModalSide           desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
 
 verifying:
-
+1. Accordion		    base: <ListItem>
 
