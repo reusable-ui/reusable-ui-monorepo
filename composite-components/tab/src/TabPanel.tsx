@@ -73,7 +73,7 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
     const collapsibleState = useCollapsible<TElement, TTabExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
-    useCollapsibleEvent(props, collapsibleState.state);
+    useCollapsibleEvent<TElement>(props, collapsibleState);
     
     const {
         // behaviors:
