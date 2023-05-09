@@ -36,6 +36,8 @@ import {
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
     useLastKnownExpandedSize,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
@@ -74,7 +76,8 @@ export interface CollapseProps<TElement extends Element = HTMLElement, TExpanded
         OrientationableProps,
         
         // states:
-        CollapsibleProps<TExpandedChangeEvent>
+        CollapsibleProps<TExpandedChangeEvent>,
+        CollapsibleEventProps
 {
     // behaviors:
     lazy     ?: boolean
@@ -98,6 +101,9 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     // states:
     const collapsibleState       = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible              = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    useCollapsibleEvent(props, collapsibleState.state);
+    
     const lastKnownExpandedSize  = useLastKnownExpandedSize<TElement>(collapsibleState);
     
     
@@ -121,6 +127,10 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         // states:
         expanded           : _expanded,           // remove
+        onExpandStart      : _onExpandStart,      // remove
+        onCollapseStart    : _onCollapseStart,    // remove
+        onExpandEnd        : _onExpandEnd,        // remove
+        onCollapseEnd      : _onCollapseEnd,      // remove
         
         
         
