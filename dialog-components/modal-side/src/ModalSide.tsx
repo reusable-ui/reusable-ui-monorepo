@@ -104,7 +104,7 @@ export interface ModalSideProps<TElement extends Element = HTMLElement, TModalEx
         
         // components:
         Omit<CardComponentProps<Element>,
-            // we don't need these extra properties because the <ModalCard> is sub <Card>
+            // we don't need these extra properties because the <ModalSide> is sub <Card>
             |'cardRef'
             |'cardOrientation'
             |'cardStyle'
