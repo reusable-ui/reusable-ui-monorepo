@@ -27,13 +27,13 @@ import {
 import {
     // states:
     CollapsibleState,
-    useCollapsible,
+    CollapsibleApi,
 }                           from './collapsible.js'
 
 
 
 // hooks:
-export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>({state}: ReturnType<typeof useCollapsible>) => {
+export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>({state}: CollapsibleApi<TElement>) => {
     // states:
     const isFullyExpanded        = (state === CollapsibleState.Expanded);
     const isFullyCollapsed       = (state === CollapsibleState.Collapsed);

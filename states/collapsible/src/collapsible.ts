@@ -178,11 +178,25 @@ export const enum CollapsibleState {
     Expanded   = 3,
 }
 
+export interface CollapsibleApi<TElement extends Element = HTMLElement> {
+    expanded              : boolean
+    isVisible             : boolean
+    
+    state                 : CollapsibleState
+    class                 : string|null
+    
+    props                 : { open: boolean }|null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
 const collapsibleCtrls = [
     'dialog',
     'details',
 ];
-export const useCollapsible = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleProps<TExpandedChangeEvent> & SemanticProps) => {
+export const useCollapsible = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleProps<TExpandedChangeEvent> & SemanticProps): CollapsibleApi<TElement> => {
     // fn props:
     const propExpanded = props.expanded ?? false;
     const { tag } = useSemantic(props);
@@ -320,7 +334,7 @@ export interface CollapsibleEventProps
     onCollapseStart ?: EventHandler<void>
     onCollapseEnd   ?: EventHandler<void>
 }
-export const useCollapsibleEvent = (props: CollapsibleEventProps, state: CollapsibleState): void => {
+export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, {state}: CollapsibleApi<TElement>): void => {
     // states:
     const isMounted = useRef<boolean>(false); // initially marked as unmounted
     useEffect(() => {
