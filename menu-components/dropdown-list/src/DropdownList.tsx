@@ -40,6 +40,7 @@ import {
     
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
+    CollapsibleState,
     useCollapsible,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
@@ -217,7 +218,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     // states:
     const collapsibleState = useCollapsible<TElement, TDropdownListExpandedChangeEvent>(props);
-    const isFullyExpanded  = (collapsibleState.class === 'expanded');
+    const isFullyExpanded  = (collapsibleState.state === CollapsibleState.Expanded);
     
     
     
