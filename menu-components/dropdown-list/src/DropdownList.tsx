@@ -176,6 +176,10 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         // states:
         expanded,         // take, to be handled by <Dropdown>
+        onExpandStart,    // take, to be handled by <Dropdown>
+        onCollapseStart,  // take, to be handled by <Dropdown>
+        onExpandEnd,      // take, to be handled by <Dropdown>
+        onCollapseEnd,    // take, to be handled by <Dropdown>
         onExpandedChange, // take, to be handled by <Dropdown>
         
         
@@ -389,29 +393,33 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // semantics:
-            semanticTag      : dropdownComponent.props.semanticTag  ?? props.semanticTag  ?? '',                                              // no corresponding semantic tag => defaults to <div> // NOTE: we don't use <dialog> as the default semantic tag because our <DropdownList> is similar to <dialog>::backdrop, not the <dialog> itself
-            semanticRole     : dropdownComponent.props.semanticRole ?? props.semanticRole ?? calculateSemanticRole(props, defaultActionCtrl), // calculates the default semantic
+            semanticTag      : dropdownComponent.props.semanticTag     ?? props.semanticTag  ?? '',                                              // no corresponding semantic tag => defaults to <div> // NOTE: we don't use <dialog> as the default semantic tag because our <DropdownList> is similar to <dialog>::backdrop, not the <dialog> itself
+            semanticRole     : dropdownComponent.props.semanticRole    ?? props.semanticRole ?? calculateSemanticRole(props, defaultActionCtrl), // calculates the default semantic
             
             
             
             // variants:
-            orientation      : dropdownComponent.props.orientation  ?? dropdownOrientation,
+            orientation      : dropdownComponent.props.orientation     ?? dropdownOrientation,
             
             
             
             // accessibilities:
-            setFocus         : dropdownComponent.props.setFocus     ?? setFocus,
-            restoreFocus     : dropdownComponent.props.restoreFocus ?? restoreFocus,
+            setFocus         : dropdownComponent.props.setFocus        ?? setFocus,
+            restoreFocus     : dropdownComponent.props.restoreFocus    ?? restoreFocus,
             
             
             
             // behaviors:
-            lazy             : dropdownComponent.props.lazy         ?? lazy,
+            lazy             : dropdownComponent.props.lazy            ?? lazy,
             
             
             
             // states:
-            expanded         : dropdownComponent.props.expanded     ?? expanded,
+            expanded         : dropdownComponent.props.expanded        ?? expanded,
+            onExpandStart    : dropdownComponent.props.onExpandStart   ?? onExpandStart,
+            onCollapseStart  : dropdownComponent.props.onCollapseStart ?? onCollapseStart,
+            onExpandEnd      : dropdownComponent.props.onExpandEnd     ?? onExpandEnd,
+            onCollapseEnd    : dropdownComponent.props.onCollapseEnd   ?? onCollapseEnd,
             onExpandedChange : handleDropdownExpandedChange,
             onAnimationStart : handleDropdownAnimationStart,
             onAnimationEnd   : handleDropdownAnimationEnd,
