@@ -315,7 +315,7 @@ not need (inherit)?Enabled:
 features:                                                                      [expanded]     [on(Expand|Collapse)(Start|End)]       [onExpandedChange]                    [defaultExpanded]
 
 <Navbar>			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---       -------not_implemented------        --------not_implemented-------
-<Tab>			        desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps
+<TabPanel>			    desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps       -------not_implemented------        --------not_implemented-------
 <Popup>			        desc: <Badge><Busy><Alert><Tooltip><ModalCard>	    CollapsibleProps		CollapsibleEventProps
 <Collapse>		        desc: <ModalSide><Dropdown>				            CollapsibleProps		CollapsibleEventProps
 
