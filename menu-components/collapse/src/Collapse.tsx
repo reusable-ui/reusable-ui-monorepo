@@ -102,7 +102,7 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     const collapsibleState       = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible              = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
-    useCollapsibleEvent(props, collapsibleState.state);
+    useCollapsibleEvent<TElement>(props, collapsibleState);
     
     const lastKnownExpandedSize  = useLastKnownExpandedSize<TElement>(collapsibleState);
     
