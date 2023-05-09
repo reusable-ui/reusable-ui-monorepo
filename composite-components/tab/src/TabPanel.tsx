@@ -15,6 +15,8 @@ import {
     // a capability of UI to expand/reduce its size or toggle the visibility:
     CollapsibleProps,
     useCollapsible,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -40,7 +42,8 @@ export interface TabPanelProps<TElement extends Element = HTMLElement, TTabExpan
         GenericProps<TElement>,
         
         // states:
-        CollapsibleProps<TTabExpandedChangeEvent>
+        CollapsibleProps<TTabExpandedChangeEvent>,
+        CollapsibleEventProps
 {
     // accessibilities:
     label          ?: React.ReactNode
@@ -69,6 +72,9 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
     // states:
     const collapsibleState = useCollapsible<TElement, TTabExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    useCollapsibleEvent(props, collapsibleState.state);
+    
     const {
         // behaviors:
         defaultLazy,
@@ -84,22 +90,26 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
     // rest props:
     const {
         // accessibilities:
-        label : _label, // not used here, used by <TabHeader>|<TabBody>
+        label           : _label, // not used here, used by <TabHeader>|<TabBody>
         
         
         
         // behaviors:
-        lazy     = defaultLazy ?? false,
+        lazy            = defaultLazy ?? false,
         
         
         
         // states:
-        expanded : _expanded, // remove
+        expanded        : _expanded,        // remove
+        onExpandStart   : _onExpandStart,   // remove
+        onCollapseStart : _onCollapseStart, // remove
+        onExpandEnd     : _onExpandEnd,     // remove
+        onCollapseEnd   : _onCollapseEnd,   // remove
         
         
         
         // components:
-        panelComponent = (<Generic<TElement> /> as React.ReactComponentElement<any, GenericProps<TElement>>),
+        panelComponent  = (<Generic<TElement> /> as React.ReactComponentElement<any, GenericProps<TElement>>),
         
         
         
