@@ -40,10 +40,14 @@ import {
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
+    CollapsibleProps,
     useCollapsible,
-    useLastKnownExpandedSize,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
+    ControllableCollapsibleProps,
     UncontrollableCollapsibleProps,
     useUncontrollableCollapsible,
+    useLastKnownExpandedSize,
     
     
     
@@ -103,6 +107,9 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         BasicProps<TElement>,
         
         // states:
+        CollapsibleProps<TExpandedChangeEvent>,
+        CollapsibleEventProps,
+        ControllableCollapsibleProps<TExpandedChangeEvent>,
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
@@ -174,6 +181,11 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
         onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
+        onExpandStart   : _onExpandStart,   // remove
+        onCollapseStart : _onCollapseStart, // remove
+        onExpandEnd     : _onExpandEnd,     // remove
+        onCollapseEnd   : _onCollapseEnd,   // remove
+        
         
         
         // components:
@@ -210,6 +222,9 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     const collapsibleState          = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
     const isVisible                 = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
+    
+    useCollapsibleEvent(props, collapsibleState.state);
+    
     const lastKnownExpandedSize     = useLastKnownExpandedSize<Element>(collapsibleState);
     
     
