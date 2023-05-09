@@ -312,24 +312,24 @@ not need (inherit)?Enabled:
 
 // list of <Component>s that directly/indirectly implements collapsible
 
-features:                                                                      [expanded]     [on(Expand|Collapse)(Start|End)]       [onExpandedChange]                    [defaultExpanded]
+features:                                                                      [expanded]     [on(Expand|Collapse)(Start|End)]   callback [onExpandedChange]       internal state [defaultExpanded]
 
 <Navbar>			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---       -------not_implemented------        --------not_implemented-------
 <TabPanel>			    desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps       -------not_implemented------        --------not_implemented-------
-<Popup>			        desc: <Badge><Busy><Alert><Tooltip><ModalCard>	    CollapsibleProps		CollapsibleEventProps
-<Collapse>		        desc: <ModalSide><Dropdown>				            CollapsibleProps		CollapsibleEventProps
+<Popup>			        desc: <Badge><Busy><Alert><Tooltip><ModalCard>	    CollapsibleProps		CollapsibleEventProps       -------not_implemented------        --------not_implemented-------
+<Collapse>		        desc: <ModalSide><Dropdown>				            CollapsibleProps		CollapsibleEventProps       -------not_implemented------        --------not_implemented-------
 
-<Alert>			        desc: ---no_desc---                                 CollapsibleProps*		CollapsibleEventProps*      ControllableCollapsibleProps
-<Tooltip>               desc: ---no_desc---                                 CollapsibleProps*		CollapsibleEventProps*
+<Alert>			        desc: ---no_desc---                                 CollapsibleProps*		CollapsibleEventProps*      ControllableCollapsibleProps        --------not_implemented-------
+<Tooltip>               desc: ---no_desc---                                 CollapsibleProps*		CollapsibleEventProps*      -------not_implemented------        --------not_implemented-------
 
-<Dropdown>		        desc: <DropdownList><DropdownButton><DDLB>	        CollapsibleProps*		CollapsibleEventProps*		ControllableCollapsibleProps
-<DropdownList>		    desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*
+<Dropdown>		        desc: <DropdownList><DropdownButton><DDLB>	        CollapsibleProps*		CollapsibleEventProps*		ControllableCollapsibleProps        --------not_implemented-------
+<DropdownList>		    desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*       --------not_implemented-------
 <DropdownButton>	    desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*		UncontrollableCollapsibleProps
 <DropdownListButton>    desc: ---no_desc---					                CollapsibleProps***     CollapsibleEventProps***	ControllableCollapsibleProps**      UncontrollableCollapsibleProps*
 
-<Modal>			        desc: <ModalCard><ModalSide>					    CollapsibleProps	    CollapsibleEventProps       ControllableCollapsibleProps
-<ModalCard>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
-<ModalSide>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
+<Modal>			        desc: <ModalCard><ModalSide>					    CollapsibleProps	    CollapsibleEventProps       ControllableCollapsibleProps        --------not_implemented-------
+<ModalCard>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*       --------not_implemented-------
+<ModalSide>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*       --------not_implemented-------
 
 <AccordionItem>	        base: <ListItem>                                    CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
 <Details>			    base: <Basic>                                       CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
