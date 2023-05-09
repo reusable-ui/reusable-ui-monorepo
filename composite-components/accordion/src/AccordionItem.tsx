@@ -33,10 +33,14 @@ import {
     
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
+    CollapsibleProps,
     useCollapsible,
-    useLastKnownExpandedSize,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
+    ControllableCollapsibleProps,
     UncontrollableCollapsibleProps,
     useUncontrollableCollapsible,
+    useLastKnownExpandedSize,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -72,6 +76,9 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemProps<TElement>,
         
         // states:
+        CollapsibleProps<TExpandedChangeEvent>,
+        CollapsibleEventProps,
+        ControllableCollapsibleProps<TExpandedChangeEvent>,
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
@@ -88,7 +95,7 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
     
     
     // components:
-    bodyComponent ?: ListItemComponentProps<TElement>['listItemComponent']
+    bodyComponent ?: ListItemComponentProps<Element>['listItemComponent']
     
     
     
@@ -135,11 +142,16 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
         onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
+        onExpandStart   : _onExpandStart,   // remove
+        onCollapseStart : _onCollapseStart, // remove
+        onExpandEnd     : _onExpandEnd,     // remove
+        onCollapseEnd   : _onCollapseEnd,   // remove
+        
         
         
         // components:
         listItemComponent = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
-        bodyComponent     = (<ListItem<TElement> /> as React.ReactComponentElement<any, ListItemProps<TElement>>),
+        bodyComponent     = (<ListItem<Element>  /> as React.ReactComponentElement<any, ListItemProps<Element>> ),
         
         
         
@@ -168,14 +180,17 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         onExpandedChange,
     });
     
-    const collapsibleState               = useCollapsible<TElement, TExpandedChangeEvent>({ expanded: isExpanded });
+    const collapsibleState               = useCollapsible<Element, TExpandedChangeEvent>({ expanded: isExpanded });
     const isVisible                      = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
-    const lastKnownExpandedSize          = useLastKnownExpandedSize<TElement>(collapsibleState);
+    
+    useCollapsibleEvent(props, collapsibleState.state);
+    
+    const lastKnownExpandedSize          = useLastKnownExpandedSize<Element>(collapsibleState);
     
     
     
     // refs:
-    const mergedBodyOuterRef = useMergeRefs<TElement>(
+    const mergedBodyOuterRef = useMergeRefs<Element>(
         // preserves the original `outerRef` from `bodyComponent`:
         bodyComponent.props.outerRef,
         
@@ -321,7 +336,7 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
             
             
             {/* collapsible <ListItem> */}
-            {React.cloneElement<ListItemProps<TElement>>(bodyComponent,
+            {React.cloneElement<ListItemProps<Element>>(bodyComponent,
                 // props:
                 {
                     // basic variant props:
