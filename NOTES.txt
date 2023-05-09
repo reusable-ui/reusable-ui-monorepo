@@ -314,25 +314,25 @@ not need (inherit)?Enabled:
 
 
 // controllable & uncontrollable: // has *built_in interactive* button // useToggleCollapsible
-1. Accordion		base: <ListItem>
-2. Details			base: <Basic>
+1. Accordion		    base: <ListItem>
+2. Details			    base: <Basic>
 
 // controllable only: // no *built_in interactive* button
-55. Modal			base: <Generic>						CollapsibleProps		CollapsibleEventProps
+55. Modal			    base: <Generic>						                CollapsibleProps	    CollapsibleEventProps
 
-3. Alert			base: <Popup> => <Basic>
+3. Alert			    base: <Popup> => <Basic>
 
 
 verified:
-11. Navbar			desc:	---no_desc---					CollapsibleProps		---not_implemented---
-22. Tab			desc:	---no_desc---					CollapsibleProps		CollapsibleEventProps
-33. Popup			desc:	<Badge><Busy><Alert><Tooltip><ModalCard>	CollapsibleProps		CollapsibleEventProps
-44. Collapse		desc: <ModalSide><Dropdown>				CollapsibleProps		CollapsibleEventProps
+11. Navbar			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---
+22. Tab			        desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps
+33. Popup			    desc: <Badge><Busy><Alert><Tooltip><ModalCard>	    CollapsibleProps		CollapsibleEventProps
+44. Collapse		    desc: <ModalSide><Dropdown>				            CollapsibleProps		CollapsibleEventProps
 
-2.  Dropdown		desc: <DropdownList><DropdownButton><DDLB>	CollapsibleProps*		CollapsibleEventProps*		ControllableCollapsibleProps
-    DropdownList		desc: <DropdownListButton>				CollapsibleProps**	CollapsibleEventProps**		ControllableCollapsibleProps*
-3.  DropdownButton	desc: <DropdownListButton>				CollapsibleProps**	CollapsibleEventProps**		ControllableCollapsibleProps*		UncontrollableCollapsibleProps
-    DropdownListButton	desc: ---no_desc---					CollapsibleProps***	CollapsibleEventProps***	ControllableCollapsibleProps**	UncontrollableCollapsibleProps*
+2.  Dropdown		    desc: <DropdownList><DropdownButton><DDLB>	        CollapsibleProps*		CollapsibleEventProps*		ControllableCollapsibleProps
+    DropdownList		desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*
+3.  DropdownButton	    desc: <DropdownListButton>				            CollapsibleProps**	    CollapsibleEventProps**		ControllableCollapsibleProps*		UncontrollableCollapsibleProps
+    DropdownListButton	desc: ---no_desc---					                CollapsibleProps***     CollapsibleEventProps***	ControllableCollapsibleProps**      UncontrollableCollapsibleProps*
 
 
 verifying:
