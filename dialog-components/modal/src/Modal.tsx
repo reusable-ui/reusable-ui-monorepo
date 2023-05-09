@@ -199,7 +199,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const isExpanded       = collapsibleState.expanded;
     const isModal          = isVisible && !['hidden', 'interactive'].includes(backdropStyle);
     
-    useCollapsibleEvent(props, collapsibleState.state);
+    useCollapsibleEvent<TElement>(props, collapsibleState);
     
     const [excitedDn, setExcitedDn] = useState(false);
     const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
