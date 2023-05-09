@@ -80,7 +80,7 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
-    useCollapsibleEvent(props, collapsibleState.state);
+    useCollapsibleEvent<TElement>(props, collapsibleState);
     
     
     
