@@ -312,13 +312,6 @@ not need (inherit)?Enabled:
 
 // list of <Component>s that directly/indirectly implements collapsible
 
-
-// controllable & uncontrollable: // has *built_in interactive* button // useToggleCollapsible
-2. Details			    base: <Basic>
-
-// controllable only: // no *built_in interactive* button
-
-
 verified:
 11. Navbar			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---
 22. Tab			        desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps
@@ -337,6 +330,7 @@ x. Tooltip              desc: ---no_desc---                                 Coll
     ModalCard           desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
     ModalSide           desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
 
-verifying:
-1. Accordion		    base: <ListItem>
+1. AccordionItem	    base: <ListItem>                                                                                        ControllableCollapsibleProps        UncontrollableCollapsibleProps
 
+verifying:
+2. Details			    base: <Basic>
