@@ -35,7 +35,6 @@ import {
     ExpandedChangeEvent,
     useCollapsible,
     useLastKnownExpandedSize,
-    ControllableCollapsibleProps,
     UncontrollableCollapsibleProps,
     useUncontrollableCollapsible,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -73,7 +72,6 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
         ListItemProps<TElement>,
         
         // states:
-        ControllableCollapsibleProps<TExpandedChangeEvent>,
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
