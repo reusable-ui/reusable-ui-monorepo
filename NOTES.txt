@@ -330,5 +330,5 @@ verified:
 <ModalCard>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
 <ModalSide>             desc: ---no_desc---					                CollapsibleProps*	    CollapsibleEventProps*      ControllableCollapsibleProps*
 
-<AccordionItem>	        base: <ListItem>                                                                                                                            UncontrollableCollapsibleProps
-<Details>			    base: <Basic>                                                                                                                               UncontrollableCollapsibleProps
+<AccordionItem>	        base: <ListItem>                                    CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
+<Details>			    base: <Basic>                                       CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
