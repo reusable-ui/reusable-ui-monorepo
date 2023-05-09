@@ -29,6 +29,8 @@ import {
     ExpandedChangeEvent,
     CollapsibleProps,
     useCollapsible,
+    CollapsibleEventProps,
+    useCollapsibleEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -57,7 +59,8 @@ export interface PopupProps<TElement extends Element = HTMLElement, TExpandedCha
         FloatableProps,
         
         // states:
-        CollapsibleProps<TExpandedChangeEvent>
+        CollapsibleProps<TExpandedChangeEvent>,
+        CollapsibleEventProps
 {
     // behaviors:
     lazy     ?: boolean
@@ -77,6 +80,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     const collapsibleState = useCollapsible<TElement, TExpandedChangeEvent>(props);
     const isVisible        = collapsibleState.isVisible; // visible = showing, shown, hidding ; !visible = hidden
     
+    useCollapsibleEvent(props, collapsibleState.state);
+    
     
     
     // capabilities:
@@ -93,6 +98,10 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         // states:
         expanded           : _expanded,           // remove
+        onExpandStart      : _onExpandStart,      // remove
+        onCollapseStart    : _onCollapseStart,    // remove
+        onExpandEnd        : _onExpandEnd,        // remove
+        onCollapseEnd      : _onCollapseEnd,      // remove
         
         
         
