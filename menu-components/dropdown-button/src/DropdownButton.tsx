@@ -194,6 +194,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
         onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
         
+        onExpandStart,    // take, to be handled by <Dropdown>
+        onCollapseStart,  // take, to be handled by <Dropdown>
+        onExpandEnd,      // take, to be handled by <Dropdown>
+        onCollapseEnd,    // take, to be handled by <Dropdown>
+        
         
         
         // floatable:
@@ -432,6 +437,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     // states:
                     expanded           : dropdownComponent.props.expanded           ?? isExpanded,
                     onExpandedChange   : handleDropdownExpandedChange,
+                    
+                    onExpandStart      : dropdownComponent.props.onExpandStart      ?? onExpandStart,
+                    onCollapseStart    : dropdownComponent.props.onCollapseStart    ?? onCollapseStart,
+                    onExpandEnd        : dropdownComponent.props.onExpandEnd        ?? onExpandEnd,
+                    onCollapseEnd      : dropdownComponent.props.onCollapseEnd      ?? onCollapseEnd,
                     
                     
                     
