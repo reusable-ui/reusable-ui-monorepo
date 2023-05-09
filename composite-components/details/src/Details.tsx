@@ -42,6 +42,7 @@ import {
     ExpandedChangeEvent,
     useCollapsible,
     useLastKnownExpandedSize,
+    ControllableCollapsibleProps,
     UncontrollableCollapsibleProps,
     useUncontrollableCollapsible,
     
@@ -103,6 +104,7 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         BasicProps<TElement>,
         
         // states:
+        ControllableCollapsibleProps<TExpandedChangeEvent>,
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
