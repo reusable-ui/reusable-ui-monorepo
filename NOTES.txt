@@ -312,8 +312,9 @@ not need (inherit)?Enabled:
 
 // list of <Component>s that directly/indirectly implements collapsible
 
-verified:
-<Navbar>			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---
+features:                                                                      [expanded]     [on(Expand|Collapse)(Start|End)]       [onExpandedChange]                    [defaultExpanded]
+
+<Navbar>			    desc: ---no_desc---					                CollapsibleProps		---not_implemented---       -------not_implemented------        --------not_implemented-------
 <Tab>			        desc: ---no_desc---					                CollapsibleProps		CollapsibleEventProps
 <Popup>			        desc: <Badge><Busy><Alert><Tooltip><ModalCard>	    CollapsibleProps		CollapsibleEventProps
 <Collapse>		        desc: <ModalSide><Dropdown>				            CollapsibleProps		CollapsibleEventProps
