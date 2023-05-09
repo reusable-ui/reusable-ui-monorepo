@@ -463,19 +463,22 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
     
     
     // callbacks:
+    const {
+        onExpandedChange,
+    } = props;
     /*
           controllable : setExpanded(new) => update state(old => old) => trigger Event(new)
         uncontrollable : setExpanded(new) => update state(old => new) => trigger Event(new)
     */
     const triggerExpandedChange = useEvent<React.Dispatch<boolean>>((expanded) => {
-        setTimeout(() => {
+        if (onExpandedChange) setTimeout(() => {
             // conditions:
             if (!isMounted.current) return;
             
             
             
             // fire `onExpandedChange` react event:
-            props.onExpandedChange?.({ expanded } as TExpandedChangeEvent);
+            onExpandedChange({ expanded } as TExpandedChangeEvent);
         }, 0); // runs the 'onExpandedChange' event *next after* current event completed
     });
     const setExpanded           = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((expanded) => {
