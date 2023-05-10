@@ -1,5 +1,6 @@
 [high prior] add [enabled] property to <Details>
 [high prior] protect size='md' from <parent size='sm|lg'>
+[high prior] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [med prior ] rename themable to themeable
 [med prior ] rename onFullyExpanded and onFullyCollapsed to onExpanded(Start|End) and onCollapsed(Start|End)
