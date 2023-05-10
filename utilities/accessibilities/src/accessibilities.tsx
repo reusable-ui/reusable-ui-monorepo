@@ -189,7 +189,7 @@ export const usePropActive = <TDefaultActive extends unknown = boolean>(props: A
 
 // react components:
 
-export interface AccessibilityProps extends React.PropsWithChildren<Partial<Accessibility>>
+export interface AccessibilityProps extends Partial<Accessibility>
 {
     /**
      * `undefined` : same as `true`.  
@@ -237,7 +237,7 @@ export interface AccessibilityProps extends React.PropsWithChildren<Partial<Acce
      */
     inheritActive   ?: boolean
 }
-const AccessibilityProvider = (props: AccessibilityProps): JSX.Element|null => {
+const AccessibilityProvider = (props: React.PropsWithChildren<AccessibilityProps>): JSX.Element|null => {
     // fn props:
     const propAccess = usePropAccessibility(props);
     
