@@ -30,7 +30,7 @@ export interface WithAutoActiveImplProps
      *   
      * The underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url.
      */
-    elementComponent  : React.ReactComponentElement<any, AccessibilityProps & Pick<React.AriaAttributes, 'aria-current'>>
+    elementComponent  : React.ReactComponentElement<any, React.PropsWithChildren<AccessibilityProps & Pick<React.AriaAttributes, 'aria-current'>>>
     
     
     
