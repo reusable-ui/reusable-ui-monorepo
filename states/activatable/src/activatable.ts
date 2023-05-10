@@ -376,8 +376,9 @@ export interface UncontrollableActivatableProps<TActiveChangeEvent extends Activ
     defaultActive  ?: boolean
 }
 export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
-    // fn props:
+    // accessibilities:
     const {enabled, readOnly, active} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
+    const isDisabledOrReadOnly = (!enabled || readOnly);
     
     
     
@@ -394,9 +395,6 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     
     
     // callbacks:
-    
-    const isDisabledOrReadOnly = (!enabled || readOnly);
-    
     /*
           controllable : setActive(new) => update state(old => old) => trigger Event(new)
         uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
