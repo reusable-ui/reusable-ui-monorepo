@@ -40,7 +40,7 @@ export interface WithLinkAndElementProps {
      *   
      * The underlying `<Element>` to be `<Link>`-ed.
      */
-    elementComponent  : React.ReactComponentElement<any, { outerRef?: React.Ref<Element> } & AccessibilityProps & SemanticProps>
+    elementComponent  : React.ReactComponentElement<any, React.PropsWithChildren<{ outerRef?: React.Ref<Element> } & AccessibilityProps & SemanticProps>>
     
     
     
