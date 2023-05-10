@@ -59,7 +59,8 @@ import {
     
     // a capability of UI to highlight itself to attract user's attention:
     ExcitedChangeEvent,
-    useToggleExcitable,
+    useExcitable,
+    useControllableExcitable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -205,7 +206,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const handleExcitedChange       = useEvent<EventHandler<ExcitedChangeEvent>>((event) => {
         setExcitedDn(event.excited);
     });
-    const excitableState            = useToggleExcitable<HTMLElement|SVGElement>({ excited: excitedDn, onExcitedChange: handleExcitedChange });
+    const excitableState            = useExcitable<HTMLElement|SVGElement, ExcitedChangeEvent>({ excited: excitedDn });
+    useControllableExcitable<HTMLElement|SVGElement, ExcitedChangeEvent>({ onExcitedChange: handleExcitedChange }, excitableState);
     
     
     
