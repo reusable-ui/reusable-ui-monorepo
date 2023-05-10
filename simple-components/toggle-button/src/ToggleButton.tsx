@@ -14,8 +14,9 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
-    ToggleActivatableProps,
-    useToggleActivatable,
+    ControllableActivatableProps,
+    UncontrollableActivatableProps,
+    useUncontrollableActivatable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -47,7 +48,8 @@ export interface ToggleButtonProps
         ButtonProps,
         
         // states:
-        ToggleActivatableProps,
+        ControllableActivatableProps,
+        UncontrollableActivatableProps,
         
         // components:
         Omit<ButtonComponentProps,
@@ -61,15 +63,15 @@ export interface ToggleButtonProps
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     // states:
-    const [isActive, , toggleActive] = useToggleActivatable(props);
+    const [isActive, , toggleActive] = useUncontrollableActivatable(props);
     
     
     
     // rest props:
     const {
         // states:
-        defaultActive  : _defaultActive,  // take, already handled by `useToggleActivatable`
-        onActiveChange : _onActiveChange, // take, already handled by `useToggleActivatable`
+        defaultActive  : _defaultActive,  // take, already handled by `useUncontrollableActivatable`
+        onActiveChange : _onActiveChange, // take, already handled by `useUncontrollableActivatable`
         
         
         
