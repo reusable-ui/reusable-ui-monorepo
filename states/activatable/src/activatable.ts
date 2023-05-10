@@ -222,11 +222,36 @@ export interface ActivatableProps
 {
 }
 
+export const enum ActivatableState {
+    Passivated  = 0,
+    Passivating = 1,
+    Activating  = 2,
+    Activated   = 3,
+}
+
+export interface ActivatableApi<TElement extends Element = HTMLElement> {
+    active                : boolean
+    
+    state                 : ActivatableState
+    class                 : string|null
+    
+    props                 :
+        | { checked         : true }
+        | { 'aria-checked'  : true }
+        | { 'aria-pressed'  : true }
+        | { 'aria-selected' : true }
+        | null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
 const checkableCtrls = [
     'checkbox',
     'radio',
 ];
-export const useActivatable = <TElement extends Element = HTMLElement>(props: ActivatableProps & SemanticProps) => {
+export const useActivatable = <TElement extends Element = HTMLElement>(props: ActivatableProps & SemanticProps): ActivatableApi<TElement> => {
     // fn props:
     const propActive  = usePropActive(props);
     const {tag, role} = useSemantic(props);
@@ -257,29 +282,55 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     
-    // interfaces:
-    return {
-        active    : activated,
-        isVisible : activated || (animation !== undefined),
+    // fn props:
+    const state = ((): ActivatableState => {
+        // activating:
+        if (animation === true ) return ActivatableState.Activating;
         
-        class     : ((): string|null => {
+        // passivating:
+        if (animation === false) return ActivatableState.Passivating;
+        
+        // fully activated:
+        if (activated) return ActivatableState.Activated;
+        
+        // fully passivated:
+        return ActivatableState.Passivated;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
             // activating:
-            if (animation === true) {
+            case ActivatableState.Activating: {
                 // not [activated] but *still* animating of activating => force to keep activating using class .activating
                 if (!activated) return 'activating';
                 
                 return null; // uses :checked or [aria-checked] or [aria-pressed] or [aria-selected]
-            } // if
+            };
             
             // passivating:
-            if (animation === false) return 'passivating';
+            case ActivatableState.Passivating: {
+                return 'passivating';
+            };
             
             // fully activated:
-            if (activated) return 'activated';
+            case ActivatableState.Activated: {
+                return 'activated';
+            };
             
             // fully passivated:
-            return null;
-        })(),
+            case ActivatableState.Passivated: {
+                return null;
+            };
+        } // switch
+    })();
+    
+    
+    
+    // interfaces:
+    return {
+        active    : activated,
+        
+        state     : state,
+        class     : stateClass,
         
         props     : (() => {
             if (!activated) return null;
