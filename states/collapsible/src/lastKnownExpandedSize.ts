@@ -33,8 +33,9 @@ import {
 
 
 // hooks:
-export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>({state}: CollapsibleApi<TElement>) => {
+export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>(collapsibleApi: CollapsibleApi<TElement>) => {
     // states:
+    const {state}                = collapsibleApi;
     const isFullyExpanded        = (state === CollapsibleState.Expanded);
     const isFullyCollapsed       = (state === CollapsibleState.Collapsed);
     const lastKnownSize          = useRef<ResizeObserverSize|undefined>(undefined);

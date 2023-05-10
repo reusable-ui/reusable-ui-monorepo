@@ -334,8 +334,9 @@ export interface CollapsibleEventProps
     onCollapseStart ?: EventHandler<void>
     onCollapseEnd   ?: EventHandler<void>
 }
-export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, {state}: CollapsibleApi<TElement>): void => {
+export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // states:
+    const {state}   = collapsibleApi;
     const isMounted = useRef<boolean>(false); // initially marked as unmounted
     useEffect(() => {
         // setups:
