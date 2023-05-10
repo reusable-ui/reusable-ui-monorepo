@@ -19,6 +19,7 @@ import {
     EventHandler,
     useMergeEvents,
     useMergeClasses,
+    useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // other libs:
@@ -146,18 +147,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     // dom effects:
-    const isMounted = useRef<boolean>(false); // initially marked as unmounted
-    useIsomorphicLayoutEffect(() => {
-        // setups:
-        isMounted.current = true; // mark as mounted
-        
-        
-        
-        // cleanups:
-        return () => {
-            isMounted.current = false; // mark as unmounted
-        };
-    }, []);
+    const isMounted = useMountedFlag();
     
     useIsomorphicLayoutEffect(() => {
         // conditions:
