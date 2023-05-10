@@ -121,30 +121,35 @@ export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent =
 {
 }
 
-
-
-export interface ToggleExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
-    extends
-        // states:
-        ExcitableProps<TExcitedChangeEvent>
-{
-    // states:
-    onExcitedChange ?: EventHandler<TExcitedChangeEvent>
+export const enum ExcitableState {
+    Unexcited = 0,
+    Continue  = 1,
+    Excited   = 2,
 }
-export const useToggleExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ToggleExcitableProps<TExcitedChangeEvent>) => {
-    // props:
-    const {
-        // states:
-        excited,
-        onExcitedChange,
-    } = props;
+
+export interface ExcitableApi<TElement extends Element = HTMLElement> {
+    excited               : boolean
+    
+    state                 : ExcitableState
+    class                 : string|null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
+export const useExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ExcitableProps<TExcitedChangeEvent>): ExcitableApi<TElement> => {
+    // fn props:
+    const propExcited = props.excited ?? false;
     
     
     
+    // fn states:
     /*
-     * the state is excited/normal based on [controllable excited]
+     * state is excited/unexcited based on [controllable excited]
+     * [uncontrollable excited] is not supported
      */
-    const excitedFn : boolean = (excited /*controllable*/ ?? false);
+    const excitedFn : ExcitableState = propExcited /*controllable*/ ? ExcitableState.Excited : ExcitableState.Unexcited;
     
     
     
@@ -168,14 +173,19 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
      * `false` => has normal
      * `null`  => need to restart
      */
-    const isExcited = useRef<boolean|null>(excitedFn);
+    const stateRef = useRef<ExcitableState>(excitedFn);
     
     // manually controls the (re)render event:
     const [triggerRender] = useTriggerRender();
     
-    if ((isExcited.current !== null) && (isExcited.current !== excitedFn)) { // change detected => apply the change & start animating
-        isExcited.current = excitedFn; // remember the last change
-        triggerRender(); // need to apply the animation
+    
+    
+    // update state:
+    if (stateRef.current !== ExcitableState.Continue) {
+        if (stateRef.current !== excitedFn) { // change detected => apply the change & start animating
+            stateRef.current = excitedFn; // remember the last change
+            triggerRender(); // need to apply the animation
+        } // if
     } // if
     
     
@@ -183,29 +193,22 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
     // dom effects:
     useEffect(() => {
         // conditions:
-        if (isExcited.current !== null) return; // only process `null` (need to restart)
+        if (stateRef.current !== ExcitableState.Continue) return; // only process `Continue` (need to restart the animation)
         
         
         
         // setups:
         // need to *briefly* apply the *un-animated* before continue to *re-animated*:
-        const cancelRequest = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
             // conditions:
             if (!isMounted.current) return;
             
             
             
             // actions:
-            isExcited.current = true; // restart
+            stateRef.current = ExcitableState.Excited; // restart
             triggerRender(); // need to restart the animation
         });
-        
-        
-        
-        // cleanups:
-        return () => {
-            cancelAnimationFrame(cancelRequest);
-        };
     }); // no dependency-list, runs every re-render
     
     
@@ -218,8 +221,8 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         
         
         
-        // mark the animation has started:
-        isExcited.current = true;
+        // mark the animation has (re)started -- if was marked as `ExcitableState.Continue`:
+        stateRef.current = ExcitableState.Excited;
     });
     const handleAnimationEnd    = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
@@ -229,33 +232,75 @@ export const useToggleExcitable = <TElement extends Element = HTMLElement, TExci
         
         
         // mark the animation has stopped:
-        if (!excitedFn) {
-            isExcited.current = false; // mark the animation has stopped
+        if (!propExcited) {
+            stateRef.current = ExcitableState.Unexcited; // mark the animation has stopped
         }
         else {
-            isExcited.current = null;  // mark the animation has stopped but need to restart
+            stateRef.current = ExcitableState.Continue;  // mark the animation has stopped but need to restart
             triggerRender(); // need to restart the animation
         } // if
-        
-        
-        
-        // request to stop:
-        setTimeout(() => {
-            onExcitedChange?.({ excited: false} as TExcitedChangeEvent);
-        }, 0); // runs the 'onExcitedChange' event *next after* current event completed
     });
     const handleAnimationCancel = handleAnimationEnd;
     
     
     
+    // api:
     return {
-        excited : excitedFn,
+        excited : propExcited,
         
-        class   : isExcited.current ? 'excited' : null,
+        state   : stateRef.current,
+        class   : (stateRef.current === ExcitableState.Excited) ? 'excited' : null, // `null` for `ExcitableState.Unexcited` and `ExcitableState.Continue`
         
-        handleAnimationStart,  // animation-start  handler
-        handleAnimationEnd,    // animation-end    handler
-        handleAnimationCancel, // animation-cancel handler
+        handleAnimationStart,
+        handleAnimationEnd,
+        handleAnimationCancel,
     };
+};
+
+
+
+export interface ControllableExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
+    extends
+        // states:
+        ExcitableProps<TExcitedChangeEvent>
+{
+    // states:
+    onExcitedChange ?: EventHandler<TExcitedChangeEvent>
+}
+export const useControllableExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ControllableExcitableProps<TExcitedChangeEvent>, excitableApi: ExcitableApi<TElement>): void => {
+    // states:
+    const {state}   = excitableApi;
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
+    useEffect(() => {
+        // setups:
+        isMounted.current = true; // mark as mounted
+        
+        
+        
+        // cleanups:
+        return () => {
+            isMounted.current = false; // mark as unmounted
+        };
+    }, []);
+    
+    
+    
+    // callbacks:
+    if (state === ExcitableState.Continue) {
+        const {
+            onExcitedChange,
+        } = props;
+        
+        // request to stop:
+        if (onExcitedChange) setTimeout(() => {
+            // conditions:
+            if (!isMounted.current) return;
+            
+            
+            
+            // fire `onExcitedChange` react event:
+            onExcitedChange?.({ excited: false} as TExcitedChangeEvent);
+        }, 0); // runs the 'onExcitedChange' event *next after* current event completed
+    } // if
 };
 //#endregion excitable
