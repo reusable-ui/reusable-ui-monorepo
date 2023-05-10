@@ -188,7 +188,9 @@ export interface CollapsibleApi<TElement extends Element = HTMLElement> {
     state                 : CollapsibleState
     class                 : string|null
     
-    props                 : { open: boolean }|null
+    props                 :
+        | { open: true }
+        | null
     
     handleAnimationStart  : React.AnimationEventHandler<TElement>
     handleAnimationEnd    : React.AnimationEventHandler<TElement>
