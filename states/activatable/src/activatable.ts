@@ -370,10 +370,7 @@ export interface UncontrollableActivatableProps<TActiveChangeEvent extends Activ
         ControllableActivatableProps<TActiveChangeEvent>,
         
         // accessibilities:
-        Omit<AccessibilityProps, // the uncontrollable's accessibility of: enabled, readOnly, active
-            // children:
-            'children'           // not to alter [children] prop
-        >
+        AccessibilityProps // the uncontrollable's accessibility of: enabled, readOnly, active
 {
     // states:
     defaultActive  ?: boolean
