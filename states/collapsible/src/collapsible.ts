@@ -450,7 +450,10 @@ export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends Exp
         ControllableCollapsibleProps<TExpandedChangeEvent>,
         
         // accessibilities:
-        AccessibilityProps // the uncontrollable's accessibility of: enabled, readOnly, active
+        Omit<AccessibilityProps, // the uncontrollable's accessibility of: enabled, readOnly, active
+            // children:
+            'children'           // not to alter [children] prop
+        >
 {
     // states:
     defaultExpanded  ?: boolean
