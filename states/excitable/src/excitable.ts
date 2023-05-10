@@ -118,7 +118,9 @@ export interface ExcitedChangeEvent {
 export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
     extends
         // states:
-        Partial<Pick<TExcitedChangeEvent, 'excited'>>
+        Partial<Pick<TExcitedChangeEvent,
+            |'excited'
+        >>
 {
 }
 
