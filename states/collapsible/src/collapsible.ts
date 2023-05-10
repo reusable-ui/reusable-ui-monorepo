@@ -457,9 +457,9 @@ export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends Exp
 }
 export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // accessibilities:
-    const enabled              = usePropEnabled(props);
-    const readOnly             = usePropReadOnly(props);
-    const isDisabledOrReadOnly = (!enabled || readOnly);
+    const propEnabled          = usePropEnabled(props);
+    const propReadOnly         = usePropReadOnly(props);
+    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
     
     
     
