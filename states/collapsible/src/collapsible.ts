@@ -52,6 +52,7 @@ import {
     // hooks:
     useEvent,
     EventHandler,
+    useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -337,18 +338,7 @@ export interface CollapsibleEventProps
 export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // states:
     const {state}   = collapsibleApi;
-    const isMounted = useRef<boolean>(false); // initially marked as unmounted
-    useEffect(() => {
-        // setups:
-        isMounted.current = true; // mark as mounted
-        
-        
-        
-        // cleanups:
-        return () => {
-            isMounted.current = false; // mark as unmounted
-        };
-    }, []);
+    const isMounted = useMountedFlag();
     
     
     
@@ -451,6 +441,7 @@ export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends Exp
 export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // states:
     const [expandedTg, setExpandedTg] = useState<boolean>(props.defaultExpanded ?? false);
+    const isMounted                   = useMountedFlag();
     
     
     
@@ -458,22 +449,6 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
      * state is expanded/collapsed based on [controllable expanded] (if set) and fallback to [uncontrollable expanded]
      */
     const expandedFn : boolean = props.expanded /*controllable*/ ?? expandedTg /*uncontrollable*/;
-    
-    
-    
-    // states:
-    const isMounted = useRef<boolean>(false); // initially marked as unmounted
-    useEffect(() => {
-        // setups:
-        isMounted.current = true; // mark as mounted
-        
-        
-        
-        // cleanups:
-        return () => {
-            isMounted.current = false; // mark as unmounted
-        };
-    }, []);
     
     
     
