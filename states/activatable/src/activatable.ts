@@ -204,10 +204,21 @@ export const markActive = (options?: MarkActiveOptions): CssRule => {
 
 
 
+export interface ActiveChangeEvent
+    extends
+        // states:
+        Required<Pick<AccessibilityProps,
+            |'active'
+        >>
+{
+}
 export interface ActivatableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'active'|'inheritActive'>>
+        Partial<Pick<AccessibilityProps,
+            |'active'
+            |'inheritActive'
+        >>
 {
 }
 
@@ -294,10 +305,6 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
 
 
 
-export interface ActiveChangeEvent {
-    // states:
-    active : boolean
-}
 export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
         // states:
