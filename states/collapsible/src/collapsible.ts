@@ -240,7 +240,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
             */
             Promise.resolve().then(() => {
                 if (expandingTokenRef.current === expandingTokenLocal) { // if token changed => abort to `setExpanded`
-                    setExpanded(expandedFn);   // remember the last change
+                    setExpanded(expandedFn); // remember the last change
                 } // if
             });
         }
@@ -249,7 +249,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
             /*
                 No need to make a delay time.
             */
-            setExpanded(expandedFn);   // remember the last change
+            setExpanded(expandedFn); // remember the last change
         } // if
     } // if
     
