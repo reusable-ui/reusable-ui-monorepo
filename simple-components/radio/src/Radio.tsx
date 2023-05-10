@@ -30,7 +30,7 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
-    useToggleActivatable,
+    useUncontrollableActivatable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -79,10 +79,10 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         
         
         // states:
-        defaultActive,  // take, to be handled by `useToggleActivatable`
-        active,         // take, to be handled by `useToggleActivatable`
-        inheritActive,  // take, to be handled by `useToggleActivatable`
-        onActiveChange, // take, to be handled by `useToggleActivatable`
+        defaultActive,  // take, to be handled by `useUncontrollableActivatable`
+        active,         // take, to be handled by `useUncontrollableActivatable`
+        inheritActive,  // take, to be handled by `useUncontrollableActivatable`
+        onActiveChange, // take, to be handled by `useUncontrollableActivatable`
         
         
         
@@ -107,7 +107,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     
     
     // states:
-    const [isActive, setActive] = useToggleActivatable({
+    const [isActive, setActive] = useUncontrollableActivatable({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
