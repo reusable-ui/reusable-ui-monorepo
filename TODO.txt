@@ -1,3 +1,4 @@
+[high prior] add [enabled] property to <Details>
 [high prior] protect size='md' from <parent size='sm|lg'>
 
 [med prior ] rename themable to themeable
