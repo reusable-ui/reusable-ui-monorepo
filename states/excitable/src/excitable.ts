@@ -43,6 +43,7 @@ import {
     useTriggerRender,
     useEvent,
     EventHandler,
+    useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
@@ -154,18 +155,7 @@ export const useExcitable = <TElement extends Element = HTMLElement, TExcitedCha
     
     
     // states:
-    const isMounted = useRef<boolean>(false); // initially marked as unmounted
-    useEffect(() => {
-        // setups:
-        isMounted.current = true; // mark as mounted
-        
-        
-        
-        // cleanups:
-        return () => {
-            isMounted.current = false; // mark as unmounted
-        };
-    }, []);
+    const isMounted = useMountedFlag();
     
     // local storages without causing to (re)render, we need to manual control the (re)render event:
     /**
@@ -270,18 +260,7 @@ export interface ControllableExcitableProps<TExcitedChangeEvent extends ExcitedC
 export const useControllableExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ControllableExcitableProps<TExcitedChangeEvent>, excitableApi: ExcitableApi<TElement>): void => {
     // states:
     const {state}   = excitableApi;
-    const isMounted = useRef<boolean>(false); // initially marked as unmounted
-    useEffect(() => {
-        // setups:
-        isMounted.current = true; // mark as mounted
-        
-        
-        
-        // cleanups:
-        return () => {
-            isMounted.current = false; // mark as unmounted
-        };
-    }, []);
+    const isMounted = useMountedFlag();
     
     
     
