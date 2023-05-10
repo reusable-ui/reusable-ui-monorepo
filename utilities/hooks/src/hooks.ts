@@ -160,3 +160,24 @@ export const useMergeStyles = (...styles: Optional<React.CSSProperties>[]): Reac
         return mergedStyles;
     }, [...styles]);
 };
+
+
+
+export const useMountedFlag = () => {
+    const isMounted = useRef<boolean>(false); // initially marked as unmounted
+    useIsomorphicLayoutEffect(() => {
+        // setups:
+        isMounted.current = true; // mark as mounted
+        
+        
+        
+        // cleanups:
+        return () => {
+            isMounted.current = false; // mark as unmounted
+        };
+    }, []);
+    
+    
+    
+    return isMounted;
+};
