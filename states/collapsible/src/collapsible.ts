@@ -168,7 +168,9 @@ export interface ExpandedChangeEvent {
 export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
-        Partial<Pick<TExpandedChangeEvent, 'expanded'>>
+        Partial<Pick<TExpandedChangeEvent,
+            |'expanded'
+        >>
 {
 }
 
