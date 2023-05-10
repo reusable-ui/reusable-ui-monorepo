@@ -61,6 +61,16 @@ import {
 }                           from '@reusable-ui/semantics'       // a semantic management system for react web components
 import {
     // hooks:
+    usePropEnabled,
+    usePropReadOnly,
+    
+    
+    
+    // react components:
+    AccessibilityProps,
+}                           from '@reusable-ui/accessibilities' // an accessibility management system
+import {
+    // hooks:
     useAnimatingState,
 }                           from '@reusable-ui/animating-state' // a hook for creating animating state
 
@@ -437,12 +447,22 @@ export interface ControllableCollapsibleProps<TExpandedChangeEvent extends Expan
 export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
-        ControllableCollapsibleProps<TExpandedChangeEvent>
+        ControllableCollapsibleProps<TExpandedChangeEvent>,
+        
+        // accessibilities:
+        AccessibilityProps // the uncontrollable's accessibility of: enabled, readOnly, active
 {
     // states:
     defaultExpanded  ?: boolean
 }
 export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+    // accessibilities:
+    const enabled              = usePropEnabled(props);
+    const readOnly             = usePropReadOnly(props);
+    const isDisabledOrReadOnly = (!enabled || readOnly);
+    
+    
+    
     // states:
     const [expandedTg, setExpandedTg] = useState<boolean>(props.defaultExpanded ?? false);
     const isMounted                   = useMountedFlag();
@@ -477,6 +497,8 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
     });
     const setExpanded           = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((expanded) => {
         // conditions:
+        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        
         const newExpanded = (typeof(expanded) === 'function') ? expanded(expandedFn) : expanded;
         if (newExpanded === expandedFn) return; // still the same => nothing to update
         
@@ -487,6 +509,11 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
         triggerExpandedChange(newExpanded);
     }); // a stable callback, the `setExpanded` guaranteed to never change
     const toggleExpanded        = useEvent<React.Dispatch<void>>(() => {
+        // conditions:
+        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        
+        
+        
         const newExpanded = !expandedFn;
         
         
