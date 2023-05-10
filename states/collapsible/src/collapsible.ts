@@ -294,7 +294,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     
     
     
-    // interfaces:
+    // api:
     return {
         expanded  : expanded,
         isVisible : (
