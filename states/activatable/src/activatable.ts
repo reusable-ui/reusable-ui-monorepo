@@ -356,19 +356,26 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
 
 
 
-export interface ToggleActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
+export interface ControllableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
         // states:
-        ActivatableProps,
+        ActivatableProps
+{
+    // states:
+    onActiveChange ?: EventHandler<TActiveChangeEvent>
+}
+export interface UncontrollableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
+    extends
+        // states:
+        ControllableActivatableProps<TActiveChangeEvent>,
         
         // accessibilities:
         AccessibilityProps
 {
     // states:
     defaultActive  ?: boolean
-    onActiveChange ?: EventHandler<TActiveChangeEvent>
 }
-export const useToggleActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: ToggleActivatableProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // fn props:
     const {enabled, readOnly, active} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
     
