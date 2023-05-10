@@ -24,8 +24,11 @@ import {
     
     
     // a capability of UI to highlight itself to attract user's attention:
-    ToggleExcitableProps,
-    useToggleExcitable,
+    ExcitedChangeEvent,
+    ExcitableProps,
+    useExcitable,
+    ControllableExcitableProps,
+    useControllableExcitable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -61,7 +64,8 @@ export interface BadgeProps<TElement extends Element = HTMLElement, TExpandedCha
         BadgeVariant,
         
         // states:
-        ToggleExcitableProps
+        ExcitableProps<ExcitedChangeEvent>,
+        ControllableExcitableProps<ExcitedChangeEvent>
 {
     // accessibilities:
     label ?: string
@@ -78,7 +82,8 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     // states:
-    const excitableState = useToggleExcitable<TElement>(props);
+    const excitableState = useExcitable<TElement, ExcitedChangeEvent>(props);
+    useControllableExcitable<TElement, ExcitedChangeEvent>(props, excitableState);
     
     
     
