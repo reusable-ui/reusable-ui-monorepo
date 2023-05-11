@@ -326,7 +326,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     
     
     
-    // interfaces:
+    // api:
     return {
         active    : activated,
         
