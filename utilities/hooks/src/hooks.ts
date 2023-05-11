@@ -181,3 +181,25 @@ export const useMountedFlag = () => {
     
     return isMounted;
 };
+
+
+
+export type ScheduledTriggerEventCallback = () => void
+export type ScheduleTriggerEventFunction  = (scheduledTriggerEventCallback: ScheduledTriggerEventCallback) => void
+export const useScheduleTriggerEvent = (): ScheduleTriggerEventFunction => {
+    const isMounted = useMountedFlag();
+    
+    
+    
+    return (scheduledTriggerEventCallback) => {
+        setTimeout(() => {
+            // conditions:
+            if (!isMounted.current) return;
+            
+            
+            
+            // fire the event_delegator_callback:
+            scheduledTriggerEventCallback();
+        }, 0); // runs the event_delegator_callback *next after* current macroTask completed
+    };
+};
