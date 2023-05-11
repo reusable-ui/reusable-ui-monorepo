@@ -503,7 +503,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             if (inputElm) {
                 // *hack*: trigger `onChange` event:
                 setTimeout(() => {
-                    (inputElm as any)?._valueTracker?.stopTracking?.(); // react *hack*
+                    (inputElm as any)._valueTracker?.stopTracking?.(); // react *hack*
                     inputElm.valueAsNumber = value; // *hack* set_value before firing input event
                     
                     inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
