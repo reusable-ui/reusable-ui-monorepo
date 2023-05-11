@@ -44,10 +44,10 @@
 [published  ] @reusable-ui/basic-variants
 
 // reusable-ui states:
-[published  ] @reusable-ui/excitable
-[published  ] @reusable-ui/collapsible
+[published  ] @reusable-ui/excitable        [updated api]
+[published  ] @reusable-ui/collapsible      [updated api]
 [published  ] @reusable-ui/disableable
-[published  ] @reusable-ui/activatable
+[published  ] @reusable-ui/activatable      [updated api]
 [published  ] @reusable-ui/focusable
 [published  ] @reusable-ui/interactable
 [published  ] @reusable-ui/clickable
