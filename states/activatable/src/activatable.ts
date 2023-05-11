@@ -409,9 +409,6 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
         const element = changeEventTarget?.current;
         let doTriggerClick = false;
         if (element) {
-            // *hack*: trigger `onChange` event:
-            // side effect: toggles the [checked] prop:
-            
             if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
                 if (active) {
                     // register to fire `click` native event to trigger `onChange` synthetic event:
@@ -434,10 +431,12 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             
             
-            // fire `click` native event to trigger `onChange` synthetic event:
+            // *hack*: trigger `onChange` event:
+            // side effect: toggles the [checked] prop:
             if (element && doTriggerClick) {
                 (element as any)._valueTracker?.stopTracking?.(); // react *hack*
                 
+                // fire `click` native event to trigger `onChange` synthetic event:
                 element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
             
