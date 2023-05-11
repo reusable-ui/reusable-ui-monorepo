@@ -266,7 +266,7 @@ export const useControllableExcitable = <TElement extends Element = HTMLElement,
     
     
     
-    // callbacks:
+    // events:
     const scheduleTriggerEvent = useScheduleTriggerEvent();
     if (state === ExcitableState.Continue) {
         const {
