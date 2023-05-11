@@ -407,12 +407,12 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     const triggerActiveChange  = useEvent<React.Dispatch<boolean>>((active) => {
         // fire change native event:
         const element = changeEventTarget?.current;
-        let doTriggerClick = false;
+        let doTriggerOnChange = false;
         if (element) {
             if ((element.tagName === 'INPUT') && (element.type === 'radio')) {
                 if (active) {
-                    // register to fire `click` native event to trigger `onChange` synthetic event:
-                    doTriggerClick = true;
+                    // register to fire `onChange` synthetic event:
+                    doTriggerOnChange = true;
                 }
                 // else {
                 //     // do nothing if (active === false)
@@ -420,12 +420,12 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
                 // } // if
             }
             else {
-                // register to fire `click` native event to trigger `onChange` synthetic event:
-                doTriggerClick = true;
+                // register to fire `onChange` synthetic event:
+                doTriggerOnChange = true;
             } // if
         } // if
         
-        if (onActiveChange) setTimeout(() => {
+        if ((element && doTriggerOnChange) || onActiveChange) setTimeout(() => {
             // conditions:
             if (!isMounted.current) return;
             
@@ -433,7 +433,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             // *hack*: trigger `onChange` event:
             // side effect: toggles the [checked] prop:
-            if (element && doTriggerClick) {
+            if (element && doTriggerOnChange) {
                 (element as any)._valueTracker?.stopTracking?.(); // react *hack*
                 
                 // fire `click` native event to trigger `onChange` synthetic event:
@@ -443,7 +443,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             
             // fire `onActiveChange` react event:
-            onActiveChange({ active } as TActiveChangeEvent);
+            onActiveChange?.({ active } as TActiveChangeEvent);
         }, 0); // runs the `click` & `onActiveChange` events *next after* current event completed
     });
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
