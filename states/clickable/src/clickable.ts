@@ -441,7 +441,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                     setTimeout(() => {
                         // fire `click` native event to trigger `onClick` synthetic event:
                         event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                    }, 0); // runs the 'click' event *next after* current event completed
+                    }, 0); // runs the `click` event *next after* current event completed
                     
                     
                     
@@ -559,7 +559,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 setTimeout(() => {
                     // fire `click` native event to trigger `onClick` synthetic event:
                     event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                }, 0); // runs the 'click' event *next after* current event completed
+                }, 0); // runs the `click` event *next after* current event completed
             } // if
         } // if
         

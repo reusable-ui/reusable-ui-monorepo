@@ -383,7 +383,7 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
                     
                     // fire `onExpandStart` react event:
                     onExpandStart();
-                }, 0); // runs the 'onExpandStart' event *next after* current event completed
+                }, 0); // runs the `onExpandStart` event *next after* current event completed
                 break;
             
             // collapsing:
@@ -396,7 +396,7 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
                     
                     // fire `onCollapseStart` react event:
                     onCollapseStart();
-                }, 0); // runs the 'onCollapseStart' event *next after* current event completed
+                }, 0); // runs the `onCollapseStart` event *next after* current event completed
                 break;
             
             // fully expanded:
@@ -409,7 +409,7 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
                     
                     // fire `onExpandEnd` react event:
                     onExpandEnd();
-                }, 0); // runs the 'onExpandEnd' event *next after* current event completed
+                }, 0); // runs the `onExpandEnd` event *next after* current event completed
                 break;
             
             // fully collapsed:
@@ -422,7 +422,7 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
                     
                     // fire `onCollapseEnd` react event:
                     onCollapseEnd();
-                }, 0); // runs the 'onCollapseEnd' event *next after* current event completed
+                }, 0); // runs the `onCollapseEnd` event *next after* current event completed
                 break;
         } // switch
     }, [
@@ -493,7 +493,7 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
             
             // fire `onExpandedChange` react event:
             onExpandedChange({ expanded } as TExpandedChangeEvent);
-        }, 0); // runs the 'onExpandedChange' event *next after* current event completed
+        }, 0); // runs the `onExpandedChange` event *next after* current event completed
     });
     const setExpanded           = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((expanded) => {
         // conditions:

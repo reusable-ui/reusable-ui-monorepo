@@ -281,7 +281,7 @@ export const useControllableExcitable = <TElement extends Element = HTMLElement,
             
             // fire `onExcitedChange` react event:
             onExcitedChange?.({ excited: false} as TExcitedChangeEvent);
-        }, 0); // runs the 'onExcitedChange' event *next after* current event completed
+        }, 0); // runs the `onExcitedChange` event *next after* current event completed
     } // if
 };
 //#endregion excitable

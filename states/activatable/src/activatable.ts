@@ -444,7 +444,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             // fire `onActiveChange` react event:
             onActiveChange({ active } as TActiveChangeEvent);
-        }, 0); // runs the 'click' & 'onActiveChange' events *next after* current event completed
+        }, 0); // runs the `click` & `onActiveChange` events *next after* current event completed
     });
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
         // conditions:
