@@ -329,6 +329,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     // fn props:
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
+    const propEditable   = propEnabled && !propReadOnly;
     
     const nude           = props.nude  ?? true;
     const theme          = props.theme ?? 'primary';
@@ -716,8 +717,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const isMouseActive        = useRef<boolean>(false);
     const handleMouseNative    = useEvent<EventHandler<MouseEvent>>((event) => {
         // conditions:
-        if (!propEnabled) return; // control is disabled => no response required
-        if (propReadOnly) return; // control is readOnly => no response required
+        if (!propEditable) return; // control is disabled or readOnly => no response required
         
         
         
@@ -735,8 +735,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const isTouchActive        = useRef<boolean>(false);
     const handleTouchNative    = useEvent<EventHandler<TouchEvent>>((event) => {
         // conditions:
-        if (!propEnabled) return; // control is disabled => no response required
-        if (propReadOnly) return; // control is readOnly => no response required
+        if (!propEditable) return; // control is disabled or readOnly => no response required
         
         
         
@@ -749,8 +748,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     useEffect(() => {
         // conditions:
-        if (!propEnabled) return; // control is disabled => no response required
-        if (propReadOnly) return; // control is readOnly => no response required
+        if (!propEditable) return; // control is disabled or readOnly => no response required
         
         
         
@@ -767,18 +765,18 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             window.removeEventListener('touchend'   , handleTouchNative);
             window.removeEventListener('touchcancel', handleTouchNative);
         };
-    }, [propEnabled, propReadOnly]);
+    }, [propEditable]);
     
     useEffect(() => {
         // conditions:
-        if (propEnabled && !propReadOnly) return; // control is enabled and mutable => no reset required
+        if (propEditable) return; // control is enabled and mutable => no reset required
         
         
         
         // resets:
         isMouseActive.current = false; // unmark as pressed
         isTouchActive.current = false; // unmark as touched
-    }, [propEnabled, propReadOnly]);
+    }, [propEditable]);
     
     const handlePointerSlide  = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
@@ -838,8 +836,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     });
     const handleKeyboardSlide = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
-        if (!propEnabled)           return; // control is disabled => no response required
-        if (propReadOnly)           return; // control is readOnly => no response required
+        if (!propEditable)          return; // control is disabled or readOnly => no response required
         
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
