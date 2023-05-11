@@ -200,10 +200,17 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
 export interface ClickableProps<TElement extends Element = HTMLElement>
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>>,
+        Partial<Pick<AccessibilityProps,
+            |'enabled'
+            |'inheritEnabled'
+            |'readOnly'
+            |'inheritReadOnly'
+        >>,
         
         // handlers:
-        Pick<React.DOMAttributes<TElement>, 'onClick'>
+        Partial<Pick<React.DOMAttributes<TElement>,
+            |'onClick'
+        >>
 {
     // states:
     pressed       ?: boolean
@@ -217,11 +224,35 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     
     releaseDelay  ?: number
 }
+
+export const enum ClickableState {
+    Released  = 0,
+    Releasing = 1,
+    Pressing  = 2,
+    Pressed   = 3,
+}
+
+export interface ClickableApi<TElement extends Element = HTMLElement> {
+    pressed               : boolean
+    
+    state                 : ClickableState
+    class                 : string|null
+    
+    handleMouseDown       : React.MouseEventHandler<TElement>
+    handleTouchStart      : React.TouchEventHandler<TElement>
+    handleKeyDown         : React.KeyboardEventHandler<TElement>
+    handleClick           : React.MouseEventHandler<TElement>
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
 export interface ClickableOptions {
     handleActionCtrlEvents ?: boolean
     handleKeyEnterEvents   ?: boolean
 }
-export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, options : ClickableOptions = _defaultClickableOptions) => {
+export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, options : ClickableOptions = _defaultClickableOptions): ClickableApi<TElement> => {
     // options:
     const {
         handleActionCtrlEvents = _defaultClickableOptions.handleActionCtrlEvents,
@@ -597,12 +628,24 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     
-    return {
-        pressed,
+    // fn props:
+    const state = ((): ClickableState => {
+        // pressing:
+        if (animation === true ) return ClickableState.Pressing;
         
-        class : ((): string|null => {
+        // releasing:
+        if (animation === false) return ClickableState.Releasing;
+        
+        // fully pressed:
+        if (pressed) return ClickableState.Pressed;
+        
+        // fully released:
+        return ClickableState.Released;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
             // pressing:
-            if (animation === true) {
+            case ClickableState.Pressing: {
                 // // pressing by controllable prop => use class .pressing
                 // if (isControllablePressed) return 'pressing';
                 //
@@ -610,23 +653,39 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 // return null;
                 // support for pressing by [space key] that not triggering :active
                 return 'pressing';
-            } // if
+            };
             
             // releasing:
-            if (animation === false) return 'releasing';
+            case ClickableState.Releasing: {
+                return 'releasing';
+            };
             
             // fully pressed:
-            if (pressed) return 'pressed';
+            case ClickableState.Pressed: {
+                return 'pressed';
+            };
             
-            // // // fully released:
-            // // // if (isControllablePressed) {
-            // // //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
-            // // // }
-            // // // else {
-            // // //     return null; // discard all classes above
-            // // // } // if
-            return null; // discard all classes above
-        })(),
+            // fully released:
+            case ClickableState.Released: {
+                // // // if (isControllablePressed) {
+                // // //     return 'released'; // releasing by controllable prop => use class .released to kill pseudo :active
+                // // // }
+                // // // else {
+                // // //     return null; // discard all classes above
+                // // // } // if
+                return null; // discard all classes above
+            };
+        } // switch
+    })();
+    
+    
+    
+    // api:
+    return {
+        pressed,
+        
+        state : state,
+        class : stateClass,
         
         handleMouseDown,
         handleTouchStart,
