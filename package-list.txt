@@ -29,6 +29,7 @@
 
 // reusable-ui capabilities:
 [published  ] @reusable-ui/floatable
+[published  ] @reusable-ui/stackable
 [published  ] @reusable-ui/groupable
 
 // reusable-ui variants:
