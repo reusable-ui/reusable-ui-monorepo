@@ -41,7 +41,7 @@ import {
     // hooks:
     useEvent,
     EventHandler,
-    useMountedFlag,
+    useScheduleTriggerEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -385,7 +385,6 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     
     // states:
     const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
-    const isMounted               = useMountedFlag();
     
     
     
@@ -396,7 +395,8 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     
     
     
-    // callbacks:
+    // events:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
     const {
         onActiveChange,
     } = props;
@@ -425,12 +425,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             } // if
         } // if
         
-        if ((element && doTriggerOnChange) || onActiveChange) setTimeout(() => {
-            // conditions:
-            if (!isMounted.current) return;
-            
-            
-            
+        if ((element && doTriggerOnChange) || onActiveChange) scheduleTriggerEvent(() => { // runs the `click` & `onActiveChange` events *next after* current macroTask completed
             // *hack*: trigger `onChange` event:
             // side effect: toggles the [checked] prop:
             if (element && doTriggerOnChange) {
@@ -444,8 +439,12 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             // fire `onActiveChange` react event:
             onActiveChange?.({ active } as TActiveChangeEvent);
-        }, 0); // runs the `click` & `onActiveChange` events *next after* current event completed
+        });
     });
+    
+    
+    
+    // callbacks:
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
         // conditions:
         if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
