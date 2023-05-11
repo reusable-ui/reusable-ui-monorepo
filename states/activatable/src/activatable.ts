@@ -377,8 +377,8 @@ export interface UncontrollableActivatableProps<TActiveChangeEvent extends Activ
 }
 export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // accessibilities:
-    const {enabled, readOnly, active} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
-    const isDisabledOrReadOnly = (!enabled || readOnly);
+    const {enabled: propEnabled, readOnly: propReadOnly, active: propActive} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
+    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
     
     
     
@@ -390,7 +390,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     /*
      * state is active/passive based on [controllable active] (if set) and fallback to [uncontrollable active]
      */
-    const activeFn : boolean = active /*controllable*/ ?? activeTg /*uncontrollable*/;
+    const activeFn : boolean = propActive /*controllable*/ ?? activeTg /*uncontrollable*/;
     
     
     
