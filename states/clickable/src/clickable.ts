@@ -43,6 +43,7 @@ import {
     // hooks:
     useEvent,
     EventHandler,
+    useScheduleTriggerEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -357,6 +358,11 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     
+    // events:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
+    
+    
+    
     // dom effects:
     
     //#region aborts async handles when the control is unmounted
@@ -438,10 +444,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
                 if (performKeyUpActions) {
                     // actions:
                     // trigger the onClick event by <kbd>actionKeys</kbd> key:
-                    setTimeout(() => {
+                    scheduleTriggerEvent(() => { // runs the `click` event *next after* current macroTask completed
                         // fire `click` native event to trigger `onClick` synthetic event:
                         event.target?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                    }, 0); // runs the `click` event *next after* current event completed
+                    });
                     
                     
                     
@@ -556,10 +562,10 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             if (handleKeyEnterEvents) {
                 // actions:
                 // trigger the onClick event by <kbd>enter</kbd> key:
-                setTimeout(() => {
+                scheduleTriggerEvent(() => { // runs the `click` event *next after* current macroTask completed
                     // fire `click` native event to trigger `onClick` synthetic event:
                     event.target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true }));
-                }, 0); // runs the `click` event *next after* current event completed
+                });
             } // if
         } // if
         
