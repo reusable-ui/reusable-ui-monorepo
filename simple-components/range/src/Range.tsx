@@ -40,6 +40,7 @@ import {
     useMergeRefs,
     useMergeClasses,
     useMergeStyles,
+    useScheduleTriggerEvent,
     
     
     
@@ -453,6 +454,11 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     
+    // events:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
+    
+    
+    
     // source of truth:
     const valueRef         = useRef<number>(/*initialState: */valueFn ?? defaultValueFn ?? (minFn + ((maxFn - minFn) * 0.5)));
     if (valueFn !== undefined) valueRef.current = valueFn;  //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
@@ -502,13 +508,13 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             const inputElm = inputRefInternal.current;
             if (inputElm) {
                 // *hack*: trigger `onChange` event:
-                setTimeout(() => {
+                scheduleTriggerEvent(() => { // runs the `input` event *next after* current macroTask completed
                     (inputElm as any)._valueTracker?.stopTracking?.(); // react *hack*
                     inputElm.valueAsNumber = value; // *hack* set_value before firing input event
                     
                     // fire `input` native event to trigger `onChange` synthetic event:
                     inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
-                }, 0); // runs the `input` event *next after* current event completed
+                });
             } // if
         } // if
     });
