@@ -175,8 +175,8 @@ export const enum InteractableState {
     /**
      * Note: We use `Leaved` instead of `Left` to distinguish between `Left|Right|Top|Bottom` vs verb-3 of `Leave` => `Left`.
      */
-    Leaved  = 0,
-    Leaving = 1,
+    Leaved   = 0,
+    Leaving  = 1,
     Arriving = 2,
     Arrived  = 3,
 }
