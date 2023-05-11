@@ -14,6 +14,7 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
+    ActiveChangeEvent,
     ControllableActivatableProps,
     UncontrollableActivatableProps,
     useUncontrollableActivatable,
@@ -63,7 +64,7 @@ export interface ToggleButtonProps
 }
 const ToggleButton = (props: ToggleButtonProps): JSX.Element|null => {
     // states:
-    const [isActive, , toggleActive] = useUncontrollableActivatable(props);
+    const [isActive, , toggleActive] = useUncontrollableActivatable<ActiveChangeEvent>(props);
     
     
     

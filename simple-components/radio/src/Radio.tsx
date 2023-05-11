@@ -30,6 +30,7 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
+    ActiveChangeEvent,
     useUncontrollableActivatable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
@@ -107,7 +108,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     
     
     // states:
-    const [isActive, setActive] = useUncontrollableActivatable({
+    const [isActive, setActive] = useUncontrollableActivatable<ActiveChangeEvent>({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         

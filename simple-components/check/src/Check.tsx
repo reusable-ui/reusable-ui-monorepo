@@ -36,6 +36,7 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
+    ActiveChangeEvent,
     ControllableActivatableProps,
     UncontrollableActivatableProps,
     useUncontrollableActivatable,
@@ -239,7 +240,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     
     
     // states:
-    const [isActive, , toggleActive] = useUncontrollableActivatable({
+    const [isActive, , toggleActive] = useUncontrollableActivatable<ActiveChangeEvent>({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
         
