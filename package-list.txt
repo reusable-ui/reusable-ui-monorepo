@@ -48,7 +48,7 @@
 [published  ] @reusable-ui/collapsible      [updated api]
 [published  ] @reusable-ui/disableable      [updated api]
 [published  ] @reusable-ui/activatable      [updated api]
-[published  ] @reusable-ui/focusable
+[published  ] @reusable-ui/focusable        [updated api]
 [published  ] @reusable-ui/interactable
 [published  ] @reusable-ui/clickable
 [published  ] @reusable-ui/active-as-click

@@ -202,16 +202,48 @@ export const usesFocusable = (config?: FocusableConfig): FocusableStuff => {
 export interface FocusableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>,
+        Partial<Pick<AccessibilityProps,
+            |'enabled'
+            |'inheritEnabled'
+        >>,
         
         // accessibilities:
-        Pick<React.ButtonHTMLAttributes<Element>, 'tabIndex'>
+        Partial<Pick<React.HTMLAttributes<Element>,
+            |'tabIndex'
+        >>
 {
     // states:
     focused            ?: boolean
     assertiveFocusable ?: boolean
 }
-export const useFocusable = <TElement extends Element = HTMLElement>(props: FocusableProps) => {
+
+export const enum FocusableState {
+    Blurred  = 0,
+    Blurring = 1,
+    Focusing = 2,
+    Focused  = 3,
+}
+
+export interface FocusableApi<TElement extends Element = HTMLElement> {
+    focused               : boolean
+    
+    state                 : FocusableState
+    class                 : string|null
+    
+    attributes            :
+        | { 'data-assertive-focusable' : true }
+        | null
+    
+    handleFocus           : React.FocusEventHandler<TElement>
+    handleBlur            : React.FocusEventHandler<TElement>
+    handleKeyDown         : React.KeyboardEventHandler<TElement>
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
+export const useFocusable = <TElement extends Element = HTMLElement>(props: FocusableProps): FocusableApi<TElement> => {
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableFocused = (props.focused !== undefined);
@@ -291,13 +323,24 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     
     
     
-    // interfaces:
-    return {
-        focused,
+    // fn props:
+    const state = ((): FocusableState => {
+        // focusing:
+        if (animation === true ) return FocusableState.Focusing;
         
-        class : ((): string|null => {
+        // blurring:
+        if (animation === false) return FocusableState.Blurring;
+        
+        // fully focused:
+        if (focused) return FocusableState.Focused;
+        
+        // fully blurred:
+        return FocusableState.Blurred;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
             // focusing:
-            if (animation === true) {
+            case FocusableState.Focusing: {
                 // focusing by controllable prop => use class .focusing
                 if (isControllableFocused) return 'focusing';
                 
@@ -309,24 +352,40 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
                 
                 // otherwise use pseudo :focus-visible-within
                 return null;
-            } // if
+            };
             
             // blurring:
-            if (animation === false) return 'blurring';
+            case FocusableState.Blurring: {
+                return 'blurring';
+            };
             
             // fully focused:
-            if (focused) return 'focused';
+            case FocusableState.Focused: {
+                return 'focused';
+            };
             
             // fully blurred:
-            if (isControllableFocused) {
-                return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-visible-within
-            }
-            else {
-                return null; // discard all classes above
-            } // if
-        })(),
+            case FocusableState.Blurred: {
+                if (isControllableFocused) {
+                    return 'blurred'; // blurring by controllable prop => use class .blurred to kill pseudo :focus-visible-within
+                }
+                else {
+                    return null; // discard all classes above
+                } // if
+            };
+        } // switch
+    })();
+    
+    
+    
+    // api:
+    return {
+        focused,
         
-        attributes : { 'data-assertive-focusable': props.assertiveFocusable || null },
+        state      : state,
+        class      : stateClass,
+        
+        attributes : props.assertiveFocusable ? { 'data-assertive-focusable': true } : null,
         
         handleFocus,
         handleBlur,
