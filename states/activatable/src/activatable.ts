@@ -41,6 +41,7 @@ import {
     // hooks:
     useEvent,
     EventHandler,
+    useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -384,6 +385,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     
     // states:
     const [activeTg, setActiveTg] = useState<boolean>(props.defaultActive ?? false);
+    const isMounted               = useMountedFlag();
     
     
     
@@ -395,6 +397,9 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     
     
     // callbacks:
+    const {
+        onActiveChange,
+    } = props;
     /*
           controllable : setActive(new) => update state(old => old) => trigger Event(new)
         uncontrollable : setActive(new) => update state(old => new) => trigger Event(new)
@@ -423,10 +428,15 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             } // if
         } // if
         
-        setTimeout(() => {
+        if (onActiveChange) setTimeout(() => {
+            // conditions:
+            if (!isMounted.current) return;
+            
+            
+            
             // fire `click` native event to trigger `onChange` synthetic event:
             if (element && doTriggerClick) {
-                (element as any)?._valueTracker?.stopTracking?.(); // react *hack*
+                (element as any)._valueTracker?.stopTracking?.(); // react *hack*
                 
                 element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
             } // if
@@ -434,7 +444,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             
             
             // fire `onActiveChange` react event:
-            props.onActiveChange?.({ active } as TActiveChangeEvent);
+            onActiveChange({ active } as TActiveChangeEvent);
         }, 0); // runs the 'click' & 'onActiveChange' events *next after* current event completed
     });
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
