@@ -44,6 +44,7 @@ import {
     useEvent,
     EventHandler,
     useMountedFlag,
+    useScheduleTriggerEvent,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 
 // reusable-ui features:
@@ -261,27 +262,22 @@ export interface ControllableExcitableProps<TExcitedChangeEvent extends ExcitedC
 }
 export const useControllableExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ControllableExcitableProps<TExcitedChangeEvent>, excitableApi: ExcitableApi<TElement>): void => {
     // states:
-    const {state}   = excitableApi;
-    const isMounted = useMountedFlag();
+    const {state} = excitableApi;
     
     
     
     // callbacks:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
     if (state === ExcitableState.Continue) {
         const {
             onExcitedChange,
         } = props;
         
         // request to stop:
-        if (onExcitedChange) setTimeout(() => {
-            // conditions:
-            if (!isMounted.current) return;
-            
-            
-            
+        if (onExcitedChange) scheduleTriggerEvent(() => { // runs the `onExcitedChange` event *next after* current macroTask completed
             // fire `onExcitedChange` react event:
             onExcitedChange?.({ excited: false} as TExcitedChangeEvent);
-        }, 0); // runs the `onExcitedChange` event *next after* current event completed
+        });
     } // if
 };
 //#endregion excitable
