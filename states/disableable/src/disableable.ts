@@ -138,8 +138,35 @@ export const usesDisableable = (config?: DisableableConfig): DisableableStuff =>
 export interface DisableableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>
+        Partial<Pick<AccessibilityProps,
+            |'enabled'
+            |'inheritEnabled'
+        >>
 {
+}
+
+export const enum DisableableState {
+    Disabled  = 0,
+    Disabling = 1,
+    Enabling  = 2,
+    Enabled   = 3,
+}
+
+export interface DisableableApi<TElement extends Element = HTMLElement> {
+    enabled               : boolean
+    disabled              : boolean
+    
+    state                 : DisableableState
+    class                 : string|null
+    
+    props                 :
+        | { disabled        : true }
+        | { 'aria-disabled' : true }
+        | null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
 const htmlCtrls = [
@@ -151,7 +178,7 @@ const htmlCtrls = [
     'option',
     'textarea',
 ];
-export const useDisableable = <TElement extends Element = HTMLElement>(props: DisableableProps & SemanticProps) => {
+export const useDisableable = <TElement extends Element = HTMLElement>(props: DisableableProps & SemanticProps): DisableableApi<TElement> => {
     // fn props:
     const propEnabled = usePropEnabled(props);
     const {tag}       = useSemantic(props);
@@ -182,29 +209,56 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     
     
     
-    // interfaces:
-    return {
-        enabled  : enabled,
-        disabled : !enabled,
+    // fn props:
+    const state = ((): DisableableState => {
+        // enabling:
+        if (animation === true ) return DisableableState.Enabling;
         
-        class    : ((): string|null => {
+        // disabling:
+        if (animation === false) return DisableableState.Disabling;
+        
+        // fully disabled:
+        if (!enabled) return DisableableState.Disabled;
+        
+        // fully enabled:
+        return DisableableState.Enabled;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
             // enabling:
-            if (animation === true)  return 'enabling';
+            case DisableableState.Enabling: {
+                return 'enabling';
+            };
             
             // disabling:
-            if (animation === false) {
+            case DisableableState.Disabling: {
                 // [enabled] but *still* animating of disabling => force to keep disabling using class .disabling
                 if (enabled) return 'disabling';
                 
                 return null; // uses :disabled or [aria-disabled]
-            } // if
+            };
             
             // fully disabled:
-            if (!enabled) return 'disabled';
+            case DisableableState.Disabled: {
+                return 'disabled';
+            };
             
             // fully enabled:
-            return null;
-        })(),
+            case DisableableState.Enabled: {
+                return null;
+            };
+        } // switch
+    })();
+    
+    
+    
+    // api:
+    return {
+        enabled  : enabled,
+        disabled : !enabled,
+        
+        state    : state,
+        class    : stateClass,
         
         props    : (() => {
             if (enabled) return null;
