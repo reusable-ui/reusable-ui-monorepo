@@ -191,8 +191,7 @@ export const useExcitable = <TElement extends Element = HTMLElement, TExcitedCha
         
         
         // setups:
-        // need to *briefly* apply the *un-animated* before continue to *re-animated*:
-        requestAnimationFrame(() => {
+        requestAnimationFrame(() => { // need to *briefly* apply the *un-animated* before continue to *re-animated*
             // conditions:
             if (!isMounted.current) return;
             
