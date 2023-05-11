@@ -49,7 +49,7 @@
 [published  ] @reusable-ui/disableable      [updated api]
 [published  ] @reusable-ui/activatable      [updated api]
 [published  ] @reusable-ui/focusable        [updated api]
-[published  ] @reusable-ui/interactable
+[published  ] @reusable-ui/interactable     [updated api]
 [published  ] @reusable-ui/clickable
 [published  ] @reusable-ui/active-as-click
 [published  ] @reusable-ui/invalidable

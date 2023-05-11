@@ -65,7 +65,7 @@ import {
 import {
     // hooks:
     selectorFocusVisibleWithin,
-    useFocusable,
+    FocusableApi,
 }                           from '@reusable-ui/focusable'       // a capability of UI to be focused
 
 
@@ -162,12 +162,45 @@ export const usesInteractable = (config?: InteractableConfig): InteractableStuff
 export interface InteractableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps, 'enabled'|'inheritEnabled'>>
+        Partial<Pick<AccessibilityProps,
+            |'enabled'
+            |'inheritEnabled'
+        >>
 {
     // states:
     arrived ?: boolean
 }
-export const useInteractable = <TElement extends Element = HTMLElement>(props: InteractableProps, focusableState: Pick<ReturnType<typeof useFocusable<TElement>>, 'focused'>) => {
+
+export const enum InteractableState {
+    /**
+     * Note: We use `Leaved` instead of `Left` to distinguish between `Left|Right|Top|Bottom` vs verb-3 of `Leave` => `Left`.
+     */
+    Leaved  = 0,
+    Leaving = 1,
+    Arriving = 2,
+    Arrived  = 3,
+}
+
+export interface InteractableApi<TElement extends Element = HTMLElement> {
+    arrived               : boolean
+    
+    state                 : InteractableState
+    class                 : string|null
+    
+    handleMouseEnter      : React.MouseEventHandler<TElement>
+    handleMouseLeave      : React.MouseEventHandler<TElement>
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
+export const useInteractable = <TElement extends Element = HTMLElement>(props: InteractableProps, focusableApi: FocusableApi<TElement>): InteractableApi<TElement> => {
+    // states:
+    const {focused} = focusableApi;
+    
+    
+    
     // fn props:
     const propEnabled           = usePropEnabled(props);
     const isControllableArrived = (props.arrived !== undefined);
@@ -180,7 +213,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
      * state is always left if disabled
      * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
      */
-    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn.current /*uncontrollable*/ || focusableState.focused /*uncontrollable*/));
+    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn.current /*uncontrollable*/ || focused /*uncontrollable*/));
     
     
     
@@ -213,18 +246,29 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         hoverDn.current = false;
         
         // update state:
-        if (!isControllableArrived) setArrived(propEnabled && focusableState.focused);
+        if (!isControllableArrived) setArrived(propEnabled && focused);
     });
     
     
     
-    // interfaces:
-    return {
-        arrived,
+    // fn props:
+    const state = ((): InteractableState => {
+        // arriving:
+        if (animation === true ) return InteractableState.Arriving;
         
-        class : ((): string|null => {
+        // leaving:
+        if (animation === false) return InteractableState.Leaving;
+        
+        // fully arrived:
+        if (arrived) return InteractableState.Arrived;
+        
+        // fully left (leaved):
+        return InteractableState.Leaved;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
             // arriving:
-            if (animation === true) {
+            case InteractableState.Arriving: {
                 /*
                 // arriving by controllable prop => use class .arriving
                 if (isControllableArrived) return 'arriving';
@@ -238,22 +282,38 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
                 
                 // blinky free when not [arrived] but *still* animating of arriving:
                 return 'arriving';
-            } // if
+            };
             
             // leaving:
-            if (animation === false) return 'leaving';
+            case InteractableState.Leaving: {
+                return 'leaving';
+            };
             
             // fully arrived:
-            if (arrived) return 'arrived';
+            case InteractableState.Arrived: {
+                return 'arrived';
+            };
             
             // fully left (leaved):
-            if (isControllableArrived) {
-                return 'leaved'; // arriving by controllable prop => use class .leaved to kill [:hover || (.focused || .focusing || :focus-visible-within)]
-            }
-            else {
-                return null; // discard all classes above
-            } // if
-        })(),
+            case InteractableState.Leaved: {
+                if (isControllableArrived) {
+                    return 'leaved'; // arriving by controllable prop => use class .leaved to kill [:hover || (.focused || .focusing || :focus-visible-within)]
+                }
+                else {
+                    return null; // discard all classes above
+                } // if
+            };
+        } // switch
+    })();
+    
+    
+    
+    // api:
+    return {
+        arrived,
+        
+        state : state,
+        class : stateClass,
         
         handleMouseEnter,
         handleMouseLeave,
