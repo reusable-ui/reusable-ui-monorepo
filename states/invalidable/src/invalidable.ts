@@ -225,7 +225,10 @@ export interface ValidityChangeEvent
 export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
     extends
         // validations:
-        Partial<ValidationProps>
+        Partial<ValidationProps>,
+        
+        // accessibilities:
+        AccessibilityProps // the controllable/uncontrollable's accessibility of: enabled, readOnly, active
 {
     // validations:
     onValidation ?: EventHandler<TValidityChangeEvent>
@@ -243,7 +246,19 @@ export const enum InvalidableState {
     Invalidated    = -3,
 }
 
-export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & AccessibilityProps) => {
+export interface InvalidableApi<TElement extends Element = HTMLElement> {
+    isValid               : ValResult
+    isNoValidation        : boolean
+    
+    state                 : InvalidableState
+    class                 : string|null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
+export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent>): InvalidableApi<TElement> => {
     // fn props:
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
@@ -334,7 +349,27 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
-    // interfaces:
+    // fn props:
+    const state = ((): InvalidableState => {
+        // validating:
+        if (animation === true)       return InvalidableState.Validating;
+        // unvalidating:
+        if (Object.is(animation, +0)) return InvalidableState.Unvalidating;
+        
+        // invalidating:
+        if (animation === false)      return InvalidableState.Invalidating;
+        // uninvalidating:
+        if (Object.is(animation, -0)) return InvalidableState.Uninvalidating;
+        
+        
+        
+        // fully validated:
+        if (isValid === true)         return InvalidableState.Validated;
+        // fully invalidated:
+        if (isValid === false)        return InvalidableState.Invalidated;
+        // fully neutralized:
+        return InvalidableState.Neutralized;
+    })();
     const isNoValidation = ( // things makes `isValidFn` *always 0*
         !propEditable           // the <control> is not editable      => no validation
         ||
@@ -342,15 +377,20 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         ||
         !onValidation           // no validation callback provided    => no validation
     );
+    
+    
+    
+    // api:
     return {
         /**
          * `true`  : validating/validated
          * `false` : invalidating/invalidated
          * `null`  : uncheck/unvalidating/uninvalidating
         */
-        isValid : ((typeof(isValid) === 'boolean') ? isValid : null) as ValResult,
+        isValid : ((typeof(isValid) === 'boolean') ? isValid : null),
         isNoValidation,
         
+        state   : state,
         class   : [
             // valid classes:
             ((): string|null => {
