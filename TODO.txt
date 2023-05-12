@@ -1,6 +1,5 @@
 [high prior] add [enabled] property to <Details>
 [high prior] protect size='md' from <parent size='sm|lg'>
-[high prior] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
@@ -24,6 +23,8 @@
 [deferred  ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
 
 [deferred  ] fix <Tooltip outlined={true}> <Arrow>
+
+[unresolved] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 
 
