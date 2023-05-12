@@ -52,7 +52,7 @@
 [published  ] @reusable-ui/interactable     [updated api]
 [published  ] @reusable-ui/clickable        [updated api]
 [published  ] @reusable-ui/active-as-click  [no      api]
-[published  ] @reusable-ui/invalidable
+[published  ] @reusable-ui/invalidable      [updated api]
 [published  ] @reusable-ui/checkable
 [published  ] @reusable-ui/validation-icon
 
