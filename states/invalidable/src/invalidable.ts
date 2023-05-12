@@ -377,6 +377,40 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         ||
         !onValidation           // no validation callback provided    => no validation
     );
+    const stateClass = ((): string|null => {
+        switch (state) {
+            // validating:
+            case InvalidableState.Validating:
+                return 'validating';
+            // unvalidating:
+            case InvalidableState.Unvalidating:
+                return 'unvalidating';
+            
+            // invalidating:
+            case InvalidableState.Invalidating:
+                return 'invalidating';
+            // uninvalidating:
+            case InvalidableState.Uninvalidating:
+                return 'uninvalidating';
+            
+            
+            
+            // fully validated:
+            case InvalidableState.Validated:
+                return 'validated';
+            // fully invalidated:
+            case InvalidableState.Invalidated:
+                return 'invalidated';
+            // fully neutralized:
+            default:
+                if (isNoValidation) {
+                    return 'noval';
+                }
+                else {
+                    return null; // discard all classes above
+                } // if
+        } // switch
+    })();
     
     
     
@@ -391,41 +425,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         isNoValidation,
         
         state   : state,
-        class   : [
-            // valid classes:
-            ((): string|null => {
-                if (animation === true)       return 'validating';
-                if (Object.is(animation, +0)) return 'unvalidating';
-                
-                if (isValid === true)         return 'validated';
-                
-                return null;
-            })(),
-            
-            
-            
-            // invalid classes:
-            ((): string|null => {
-                if (animation === false)      return 'invalidating';
-                if (Object.is(animation, -0)) return 'uninvalidating';
-                
-                if (isValid === false)        return 'invalidated';
-                
-                return null;
-            })(),
-            
-            
-            
-            // neutral classes:
-            ((): string|null => {
-                if (isNoValidation) {
-                    return 'noval';
-                }
-                else {
-                    return null; // discard all classes above
-                } // if
-            })(),
-        ].filter((c) => !!c).join(' ') || null,
+        class   : stateClass,
         
         handleAnimationStart,
         handleAnimationEnd,
