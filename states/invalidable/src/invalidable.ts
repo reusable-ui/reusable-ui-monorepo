@@ -1,5 +1,6 @@
 // react:
 import {
+    useEffect,
     // hooks:
     useRef,
     useState,
@@ -101,7 +102,7 @@ const [invalidableVars] = cssVars<InvalidableVars>({ prefix: 'iv', minify: false
 const selectorIfValidated      = '.validated'
 // .validating = styled valid, :valid = native valid:
 // the .validated, .unvalidating, .noval are used to overwrite native :valid
-const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .noval, .invalidated, .invalidating)))'
+const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .noval, .invalidated, .invalidating, .uninvalidating)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
 const selectorIfUnvalidating   = '.unvalidating'
 // if all above are not set => unvalidated:
@@ -112,7 +113,7 @@ const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, 
 const selectorIfInvalidated    = '.invalidated'
 // .invalidating = styled invalid, :invalid = native invalid:
 // the .invalidated, .uninvalidating, .noval are used to overwrite native :invalid
-const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .noval, .validated, .validating)))'
+const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .noval, .validated, .validating, .unvalidating)))'
 // .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
 const selectorIfUninvalidating = '.uninvalidating'
 // if all above are not set => uninvalidated:
@@ -370,6 +371,21 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         // fully neutralized:
         return InvalidableState.Neutralized;
     })();
+    useEffect(() => {
+        const stateStr = 
+        {
+            '3' : 'Validated     ',
+            '2' : 'Validating    ',
+            '1' : 'Unvalidating  ',
+            
+            '0' : 'Neutralized   ',
+            
+            '-1' : 'Uninvalidating',
+            '-2' : 'Invalidating  ',
+            '-3' : 'Invalidated   ',
+        }[`${state}`];
+        console.log(stateStr);
+    }, [state]);
     const isNoValidation = ( // things makes `isValidFn` *always 0*
         !propEditable           // the <control> is not editable      => no validation
         ||
