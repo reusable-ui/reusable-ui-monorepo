@@ -1,6 +1,10 @@
 // react:
 import {
-    useEffect,
+    // react:
+    default as React,
+    
+    
+    
     // hooks:
     useRef,
     useState,
@@ -371,21 +375,6 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         // fully neutralized:
         return InvalidableState.Neutralized;
     })();
-    useEffect(() => {
-        const stateStr = 
-        {
-            '3' : 'Validated     ',
-            '2' : 'Validating    ',
-            '1' : 'Unvalidating  ',
-            
-            '0' : 'Neutralized   ',
-            
-            '-1' : 'Uninvalidating',
-            '-2' : 'Invalidating  ',
-            '-3' : 'Invalidated   ',
-        }[`${state}`];
-        console.log(stateStr);
-    }, [state]);
     const isNoValidation = ( // things makes `isValidFn` *always 0*
         !propEditable           // the <control> is not editable      => no validation
         ||
