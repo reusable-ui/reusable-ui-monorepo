@@ -79,7 +79,7 @@ import {
     // hooks:
     ThemeName,
     usesThemeConditional,
-}                           from '@reusable-ui/themable'        // color options of UI
+}                           from '@reusable-ui/themeable'       // color options of UI
 
 
 

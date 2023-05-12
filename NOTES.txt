@@ -36,7 +36,7 @@ packages                        VAR     CFG
 // reusable-ui variants:
 @reusable-ui/orientationable    -       -
 @reusable-ui/resizable          -       -
-@reusable-ui/themable           th      -   // UPDATED
+@reusable-ui/themeable          th      -   // UPDATED
 @reusable-ui/gradientable       gd      -   // UPDATED
 @reusable-ui/outlineable        ol      -   // UPDATED
 @reusable-ui/mildable           mi      -   // UPDATED

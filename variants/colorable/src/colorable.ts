@@ -41,7 +41,7 @@ import {
 import {
     // hooks:
     ifHasTheme,
-}                           from '@reusable-ui/themable'        // color options of UI
+}                           from '@reusable-ui/themeable'       // color options of UI
 import {
     // hooks:
     ifOutlined,

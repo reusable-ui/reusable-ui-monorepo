@@ -35,8 +35,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 
 
 
@@ -127,14 +127,14 @@ export interface OutlineableConfig {
 }
 const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): CssRule => {
     // dependencies:
-    const {themableRule, themableVars} = usesThemable();
+    const {themeableRule, themeableVars} = usesThemeable();
     
     
     
     return style({
-        // makes   `usesOutlineable()` implicitly `usesThemable()`
-        // because `usesOutlineable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-        ...themableRule(),
+        // makes   `usesOutlineable()` implicitly `usesThemeable()`
+        // because `usesOutlineable()` requires   `usesThemeable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+        ...themeableRule(),
         
         
         
@@ -164,33 +164,33 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
                 just not be included to background layers.
             */
             [outlineableVars.backgFn   ] : switchOf(
-                themableVars.backgMildCond,        // first  priority
-                themableVars.backgMild,            // second priority
+                themeableVars.backgMildCond,        // first  priority
+                themeableVars.backgMild,            // second priority
                 
-                config?.backg,                     // default => uses config's background
+                config?.backg,                      // default => uses config's background
             ),
             
             [outlineableVars.foregFn   ] : switchOf(
-                themableVars.foregOutlinedCond,    // first  priority
-                themableVars.foregOutlined,        // second priority
+                themeableVars.foregOutlinedCond,    // first  priority
+                themeableVars.foregOutlined,        // second priority
                 
-                config?.foreg,                     // default => uses config's foreground
+                config?.foreg,                      // default => uses config's foreground
             ),
             
             
             
             [outlineableVars.altBackgFn] : switchOf(
-                themableVars.altBackgOutlinedCond, // first  priority
-                themableVars.altBackgOutlined,     // second priority
+                themeableVars.altBackgOutlinedCond, // first  priority
+                themeableVars.altBackgOutlined,     // second priority
                 
-                config?.altBackg,                  // default => uses config's alternate background
+                config?.altBackg,                   // default => uses config's alternate background
             ),
             
             [outlineableVars.altForegFn] : switchOf(
-                themableVars.altForegOutlinedCond, // first  priority
-                themableVars.altForegOutlined,     // second priority
+                themeableVars.altForegOutlinedCond, // first  priority
+                themeableVars.altForegOutlined,     // second priority
                 
-                config?.altForeg,                  // default => uses config's alternate foreground
+                config?.altForeg,                   // default => uses config's alternate foreground
             ),
         }),
         

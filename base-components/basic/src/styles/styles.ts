@@ -54,7 +54,7 @@ import {
     
     
     // color options of UI:
-    usesThemable,
+    usesThemeable,
     
     
     
@@ -178,7 +178,7 @@ export const usesBasicVariants = memoizeStyle(() => {
     
     // variants:
     const {resizableRule   } = usesResizable(basics);
-    const {themableRule    } = usesThemable();
+    const {themeableRule   } = usesThemeable();
     const {gradientableRule} = usesGradientable(basics);
     const {outlineableRule } = usesOutlineable(basics);
     const {mildableRule    } = usesMildable(basics);
@@ -189,7 +189,7 @@ export const usesBasicVariants = memoizeStyle(() => {
     return style({
         // variants:
         ...resizableRule(),
-        ...themableRule(),
+        ...themeableRule(),
         ...gradientableRule(),
         ...outlineableRule(),
         ...mildableRule(),

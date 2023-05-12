@@ -1,9 +1,9 @@
 {
-  "name": "@reusable-ui/themable",
+  "name": "@reusable-ui/themeable",
   "version": "5.3.0",
   "description": "Color options of UI.",
   "keywords": [
-    "themable",
+    "themeable",
     "theme",
     "colors",
     "options",
@@ -17,8 +17,8 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/themable.js",
-  "types": "dist/themable.d.ts",
+  "main": "dist/themeable.js",
+  "types": "dist/themeable.d.ts",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {

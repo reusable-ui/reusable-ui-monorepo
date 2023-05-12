@@ -27,8 +27,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 import {
     // hooks:
     usesGradientable,
@@ -103,7 +103,7 @@ export interface BackgroundConfig {
  */
 export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
     // dependencies:
-    const {themableVars    } = usesThemable();
+    const {themeableVars   } = usesThemeable();
     const {gradientableVars} = usesGradientable();
     const {outlineableVars } = usesOutlineable();
     const {mildableVars    } = usesMildable();
@@ -123,14 +123,14 @@ export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
             ...vars({
                 // adaptive color functions:
                 [backgroundVars.backgColorFn   ] : switchOf(
-                    themableVars.backgCond,     // first  priority
-                    themableVars.backg,         // second priority
+                    themeableVars.backgCond,    // first  priority
+                    themeableVars.backg,        // second priority
                     
                     config?.backg,              // default => uses config's background
                 ),
                 [backgroundVars.altBackgColorFn] : switchOf(
-                    themableVars.altBackgCond,  // first  priority
-                    themableVars.altBackg,      // second priority
+                    themeableVars.altBackgCond, // first  priority
+                    themeableVars.altBackg,     // second priority
                     
                     config?.altBackg,           // default => uses config's alternate background
                 ),

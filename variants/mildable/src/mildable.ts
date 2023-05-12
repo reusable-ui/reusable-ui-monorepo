@@ -35,8 +35,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 
 // internals:
 import                           './effects/styles.js'          // side effect
@@ -123,14 +123,14 @@ export interface MildableConfig {
 }
 const createMildableRule = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): CssRule => {
     // dependencies:
-    const {themableRule, themableVars} = usesThemable();
+    const {themeableRule, themeableVars} = usesThemeable();
     
     
     
     return style({
-        // makes   `usesMildable()` implicitly `usesThemable()`
-        // because `usesMildable()` requires   `usesThemable()` to work correctly, otherwise it uses the parent themes (that's not intented)
-        ...themableRule(),
+        // makes   `usesMildable()` implicitly `usesThemeable()`
+        // because `usesMildable()` requires   `usesThemeable()` to work correctly, otherwise it uses the parent themes (that's not intented)
+        ...themeableRule(),
         
         
         
@@ -152,33 +152,33 @@ const createMildableRule = (config?: MildableConfig, mildDefinition : null|((tog
             // adaptive color functions:
             
             [mildableVars.backgFn   ] : switchOf(
-                themableVars.backgMildCond,    // first  priority
-                themableVars.backgMild,        // second priority
+                themeableVars.backgMildCond,    // first  priority
+                themeableVars.backgMild,        // second priority
                 
-                config?.backg,                 // default => uses config's background
+                config?.backg,                  // default => uses config's background
             ),
             
             [mildableVars.foregFn   ] : switchOf(
-                themableVars.foregMildCond,    // first  priority
-                themableVars.foregMild,        // second priority
+                themeableVars.foregMildCond,    // first  priority
+                themeableVars.foregMild,        // second priority
                 
-                config?.foreg,                 // default => uses config's foreground
+                config?.foreg,                  // default => uses config's foreground
             ),
             
             
             
             [mildableVars.altBackgFn] : switchOf(
-                themableVars.altBackgMildCond, // first  priority
-                themableVars.altBackgMild,     // second priority
+                themeableVars.altBackgMildCond, // first  priority
+                themeableVars.altBackgMild,     // second priority
                 
-                config?.altBackg,              // default => uses config's alternate background
+                config?.altBackg,               // default => uses config's alternate background
             ),
             
             [mildableVars.altForegFn] : switchOf(
-                themableVars.altForegMildCond, // first  priority
-                themableVars.altForegMild,     // second priority
+                themeableVars.altForegMildCond, // first  priority
+                themeableVars.altForegMild,     // second priority
                 
-                config?.altForeg,              // default => uses config's alternate foreground
+                config?.altForeg,               // default => uses config's alternate foreground
             ),
         }),
         

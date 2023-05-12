@@ -11,8 +11,8 @@ import {
 }                           from '@reusable-ui/resizable'       // size options of UI
 import {
     // hooks:
-    ThemableProps,
-}                           from '@reusable-ui/themable'        // color options of UI
+    ThemeableProps,
+}                           from '@reusable-ui/themeable'       // color options of UI
 import {
     // hooks:
     GradientableProps,
@@ -66,7 +66,7 @@ export interface BasicVariantProps
     extends
         // bases:
         ResizableProps,
-        ThemableProps,
+        ThemeableProps,
         GradientableProps,
         OutlineableProps,
         MildableProps

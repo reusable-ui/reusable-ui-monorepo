@@ -25,8 +25,8 @@ import {
     
     
     // color options of UI:
-    ThemableProps,
-    useThemable,
+    ThemeableProps,
+    useThemeable,
     
     
     
@@ -105,7 +105,7 @@ export interface IconProps<TElement extends Element = HTMLSpanElement>
         
         // variants:
         ResizableProps<SizeName>,
-        ThemableProps,
+        ThemeableProps,
         MildableProps
 {
     // appearances:
@@ -124,7 +124,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
     
     // variants:
     const resizableVariant = useResizable<SizeName>(props);
-    const themableVariant  = useThemable(props);
+    const themeableVariant = useThemeable(props);
     const mildableVariant  = useMildable(props);
     
     
@@ -153,7 +153,7 @@ const Icon = <TElement extends Element = HTMLSpanElement>(props: IconProps<TElem
         
         // variants:
         resizableVariant.class,
-        themableVariant.class,
+        themeableVariant.class,
         mildableVariant.class,
     );
     const classes        = useMergeClasses(

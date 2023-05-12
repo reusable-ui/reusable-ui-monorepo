@@ -47,7 +47,7 @@ import {
 
 
 // defaults:
-const _defaultTheme : Required<ThemableProps>['theme'] = 'inherit'
+const _defaultTheme : Required<ThemeableProps>['theme'] = 'inherit'
 
 
 
@@ -55,9 +55,9 @@ const _defaultTheme : Required<ThemableProps>['theme'] = 'inherit'
 
 // variants:
 
-//#region themable
+//#region themeable
 export type ThemeName = (keyof typeof themes) | (string & {})
-export interface ThemableVars {
+export interface ThemeableVars {
     /**
      * themed background color.
      */
@@ -172,7 +172,7 @@ export interface ThemableVars {
      */
     ringCond             : any
 }
-const [themableVars] = cssVars<ThemableVars>({ prefix: 'th', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
+const [themeableVars] = cssVars<ThemeableVars>({ prefix: 'th', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
@@ -253,8 +253,8 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
 
 
 
-export interface ThemableStuff { themableRule: Factory<CssRule>, themableVars: CssVars<ThemableVars> }
-const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): CssRule => {
+export interface ThemeableStuff { themeableRule: Factory<CssRule>, themeableVars: CssVars<ThemeableVars> }
+const createThemeableRule = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): CssRule => {
     return style({
         ...variants([
             options.map((themeName) =>
@@ -265,24 +265,24 @@ const createThemableRule = (themeDefinition : ((themeName: ThemeName) => CssStyl
         ]),
     });
 };
-const getDefaultThemableRule = memoizeStyle(() => createThemableRule(), cssColorConfig.onChange);
+const getDefaultThemeableRule = memoizeStyle(() => createThemeableRule(), cssColorConfig.onChange);
 /**
  * Uses theme (color) options.  
  * For example: `primary`, `success`, `danger`.
  * @param themeDefinition A callback to create a theme rules for each theme color in `options`.
  * @param options Defines all available theme color options.
- * @returns A `ThemableStuff` represents the theme rules for each theme color in `options`.
+ * @returns A `ThemeableStuff` represents the theme rules for each theme color in `options`.
  */
-export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): ThemableStuff => {
+export const usesThemeable = (themeDefinition : ((themeName: ThemeName) => CssStyleCollection) = defineThemeRule, options : ThemeName[] = themeOptions()): ThemeableStuff => {
     return {
-        themableRule: (
+        themeableRule: (
             ((themeDefinition === defineThemeRule) && (options === themeOptions()))
             ?
-            getDefaultThemableRule
+            getDefaultThemeableRule
             :
-            () => createThemableRule(themeDefinition, options)
+            () => createThemeableRule(themeDefinition, options)
         ),
-        themableVars,
+        themeableVars,
     };
 };
 
@@ -294,22 +294,22 @@ export const usesThemable = (themeDefinition : ((themeName: ThemeName) => CssSty
 export const defineThemeRule = memoizeStyleWithVariants((themeName: ThemeName): CssRule => {
     return style({
         ...vars({
-            [themableVars.backg               ] : colors[   themeName       as keyof typeof colors], // base color
-            [themableVars.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-            [themableVars.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-            [themableVars.altBackg            ] : themableVars.backgMild,
-            [themableVars.altForeg            ] : themableVars.foregMild,
+            [themeableVars.backg               ] : colors[   themeName       as keyof typeof colors], // base color
+            [themeableVars.foreg               ] : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+            [themeableVars.border              ] : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+            [themeableVars.altBackg            ] : themeableVars.backgMild,
+            [themeableVars.altForeg            ] : themeableVars.foregMild,
             
-            [themableVars.foregOutlined       ] : themableVars.backg,
-            [themableVars.altBackgOutlined    ] : themableVars.backg,
-            [themableVars.altForegOutlined    ] : themableVars.foreg,
+            [themeableVars.foregOutlined       ] : themeableVars.backg,
+            [themeableVars.altBackgOutlined    ] : themeableVars.backg,
+            [themeableVars.altForegOutlined    ] : themeableVars.foreg,
             
-            [themableVars.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-            [themableVars.foregMild           ] : themableVars.border,
-            [themableVars.altBackgMild        ] : themableVars.backg,
-            [themableVars.altForegMild        ] : themableVars.foreg,
+            [themeableVars.backgMild           ] : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+            [themeableVars.foregMild           ] : themeableVars.border,
+            [themeableVars.altBackgMild        ] : themeableVars.backg,
+            [themeableVars.altForegMild        ] : themeableVars.foreg,
             
-            [themableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+            [themeableVars.ring                ] : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
         }),
     });
 }, cssColorConfig.onChange);
@@ -331,32 +331,32 @@ export const themeOptions = memoizeResult((): ThemeName[] => {
  */
 export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
     ...vars({
-        [themableVars.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
-        [themableVars.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
-        [themableVars.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
-        [themableVars.altBackgCond        ] : themableVars.backgMildCond,
-        [themableVars.altForegCond        ] : themableVars.foregMildCond,
+        [themeableVars.backgCond           ] : !themeName ? null : colors[   themeName       as keyof typeof colors], // base color
+        [themeableVars.foregCond           ] : !themeName ? null : colors[`${themeName}Text` as keyof typeof colors], // light on dark base color | dark on light base color
+        [themeableVars.borderCond          ] : !themeName ? null : colors[`${themeName}Bold` as keyof typeof colors], // 20% base color + 80% page's foreground
+        [themeableVars.altBackgCond        ] : themeableVars.backgMildCond,
+        [themeableVars.altForegCond        ] : themeableVars.foregMildCond,
         
-        [themableVars.foregOutlinedCond   ] : !themeName ? null : themableVars.backgCond,
-        [themableVars.altBackgOutlinedCond] : themableVars.backgCond,
-        [themableVars.altForegOutlinedCond] : themableVars.foregCond,
+        [themeableVars.foregOutlinedCond   ] : !themeName ? null : themeableVars.backgCond,
+        [themeableVars.altBackgOutlinedCond] : themeableVars.backgCond,
+        [themeableVars.altForegOutlinedCond] : themeableVars.foregCond,
         
-        [themableVars.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
-        [themableVars.foregMildCond       ] : !themeName ? null : themableVars.borderCond,
-        [themableVars.altBackgMildCond    ] : themableVars.backgCond,
-        [themableVars.altForegMildCond    ] : themableVars.foregCond,
+        [themeableVars.backgMildCond       ] : !themeName ? null : colors[`${themeName}Mild` as keyof typeof colors], // 20% base color + 80% page's background
+        [themeableVars.foregMildCond       ] : !themeName ? null : themeableVars.borderCond,
+        [themeableVars.altBackgMildCond    ] : themeableVars.backgCond,
+        [themeableVars.altForegMildCond    ] : themeableVars.foregCond,
         
-        [themableVars.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
+        [themeableVars.ringCond            ] : !themeName ? null : colors[`${themeName}Thin` as keyof typeof colors], // 50% transparency of base color
     }),
 });
 
 
 
-export interface ThemableProps {
+export interface ThemeableProps {
     // variants:
     theme ?: ThemeName|'inherit'
 }
-export const useThemable = ({theme = _defaultTheme}: ThemableProps) => ({
+export const useThemeable = ({theme = _defaultTheme}: ThemeableProps) => ({
     class: (theme === 'inherit') ? null : createThemeClass(theme),
 });
-//#endregion themable
+//#endregion themeable

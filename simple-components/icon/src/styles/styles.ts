@@ -42,7 +42,7 @@ import {
     
     
     // color options of UI:
-    usesThemable,
+    usesThemeable,
     
     
     
@@ -272,7 +272,7 @@ export const usesIconVariants    = memoizeStyle(() => {
     
     // variants:
     const {resizableRule} = usesResizable<SizeName>(icons, sizeOptions());
-    const {themableRule } = usesThemable();
+    const {themeableRule} = usesThemeable();
     const {colorableRule} = usesColorable(icons, /* outlinedDefinition = not_supported */null, /* mildDefinition = is_supported */undefined);
     
     
@@ -280,7 +280,7 @@ export const usesIconVariants    = memoizeStyle(() => {
     return style({
         // variants:
         ...resizableRule(),
-        ...themableRule(),
+        ...themeableRule(),
         ...colorableRule(),
     });
 }, onIconStylesChange);

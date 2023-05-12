@@ -38,6 +38,6 @@
     "@cssfn/core": "^3.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/themable": "^5.3.0"
+    "@reusable-ui/themeable": "^5.3.0"
   }
 }

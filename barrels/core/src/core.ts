@@ -35,7 +35,7 @@ export * from '@reusable-ui/stackable'                      // a capability of U
 // reusable-ui variants:
 /*peer*/ export * from '@reusable-ui/orientationable'       // a capability of UI to rotate its layout
 /*peer*/ export * from '@reusable-ui/resizable'             // size options of UI
-/*peer*/ export * from '@reusable-ui/themable'              // color options of UI
+/*peer*/ export * from '@reusable-ui/themeable'             // color options of UI
 /*peer*/ export * from '@reusable-ui/gradientable'          // gradient variant of UI
 /*peer*/ export * from '@reusable-ui/outlineable'           // outlined (background-less) variant of UI
 /*peer*/ export * from '@reusable-ui/mildable'              // mild (soft color) variant of UI

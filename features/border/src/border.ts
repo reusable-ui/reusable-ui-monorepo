@@ -26,8 +26,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 import {
     // hooks:
     usesOutlineable,
@@ -113,7 +113,7 @@ export interface BorderConfig {
  */
 export const usesBorder = (config?: BorderConfig): BorderStuff => {
     // dependencies:
-    const {themableVars   } = usesThemable();
+    const {themeableVars  } = usesThemeable();
     const {outlineableVars} = usesOutlineable();
     
     
@@ -124,10 +124,10 @@ export const usesBorder = (config?: BorderConfig): BorderStuff => {
             ...vars({
                 // adaptive color functions:
                 [borderVars.borderColorFn] : switchOf(
-                    themableVars.borderCond, // first  priority
-                    themableVars.border,     // second priority
+                    themeableVars.borderCond, // first  priority
+                    themeableVars.border,     // second priority
                     
-                    config?.borderColor,     // default => uses config's border color
+                    config?.borderColor,      // default => uses config's border color
                 ),
                 
                 

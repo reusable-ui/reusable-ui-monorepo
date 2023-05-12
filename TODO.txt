@@ -2,8 +2,6 @@
 [high prior] protect size='md' from <parent size='sm|lg'>
 [high prior] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
-[med prior ] rename themable to themeable
-
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>

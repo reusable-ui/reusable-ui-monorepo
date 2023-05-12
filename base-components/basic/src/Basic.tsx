@@ -24,8 +24,8 @@ import {
     
     
     // color options of UI:
-    ThemableProps,
-    useThemable,
+    ThemeableProps,
+    useThemeable,
     
     
     
@@ -76,7 +76,7 @@ export interface BasicProps<TElement extends Element = HTMLElement>
         
         // variants:
         ResizableProps,
-        ThemableProps,
+        ThemeableProps,
         GradientableProps,
         OutlineableProps,
         MildableProps,
@@ -91,7 +91,7 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
     
     // variants:
     const resizableVariant    = useResizable(props);
-    const themableVariant     = useThemable(props);
+    const themeableVariant    = useThemeable(props);
     const gradientableVariant = useGradientable(props);
     const outlineableVariant  = useOutlineable(props);
     const mildableVariant     = useMildable(props);
@@ -121,7 +121,7 @@ const Basic = <TElement extends Element = HTMLElement>(props: BasicProps<TElemen
         
         // variants:
         resizableVariant.class,
-        themableVariant.class,
+        themeableVariant.class,
         gradientableVariant.class,
         outlineableVariant.class,
         mildableVariant.class,

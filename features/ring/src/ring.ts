@@ -26,8 +26,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 
 
 
@@ -61,7 +61,7 @@ export interface RingConfig {
  */
 export const usesRing = (config?: RingConfig): RingStuff => {
     // dependencies:
-    const {themableVars} = usesThemable();
+    const {themeableVars} = usesThemeable();
     
     
     
@@ -71,10 +71,10 @@ export const usesRing = (config?: RingConfig): RingStuff => {
             ...vars({
                 // adaptive color functions:
                 [ringVars.ringFn] : switchOf(
-                    themableVars.ringCond, // first  priority
-                    themableVars.ring,     // second priority
+                    themeableVars.ringCond, // first  priority
+                    themeableVars.ring,     // second priority
                     
-                    config?.ring,          // default => uses config's ring
+                    config?.ring,           // default => uses config's ring
                 ),
                 
                 

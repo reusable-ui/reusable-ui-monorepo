@@ -26,8 +26,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemable,
-}                           from '@reusable-ui/themable'        // color options of UI
+    usesThemeable,
+}                           from '@reusable-ui/themeable'       // color options of UI
 import {
     // hooks:
     usesOutlineable,
@@ -78,7 +78,7 @@ export interface ForegroundConfig {
  */
 export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
     // dependencies:
-    const {themableVars   } = usesThemable();
+    const {themeableVars  } = usesThemeable();
     const {outlineableVars} = usesOutlineable();
     const {mildableVars   } = usesMildable();
     
@@ -90,14 +90,14 @@ export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
             ...vars({
                 // adaptive color functions:
                 [foregroundVars.foregFn   ] : switchOf(
-                    themableVars.foregCond,     // first  priority
-                    themableVars.foreg,         // second priority
+                    themeableVars.foregCond,    // first  priority
+                    themeableVars.foreg,        // second priority
                     
                     config?.foreg,              // default => uses config's foreground
                 ),
                 [foregroundVars.altForegFn] : switchOf(
-                    themableVars.altForegCond,  // first  priority
-                    themableVars.altForeg,      // second priority
+                    themeableVars.altForegCond, // first  priority
+                    themeableVars.altForeg,     // second priority
                     
                     config?.altForeg,           // default => uses config's alternate foreground
                 ),
