@@ -3,7 +3,6 @@
 [high prior] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [med prior ] rename themable to themeable
-[med prior ] rename onFullyExpanded and onFullyCollapsed to onExpanded(Start|End) and onCollapsed(Start|End)
 
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
 [med prior ] fix <HamburgerMenuButton> animation
