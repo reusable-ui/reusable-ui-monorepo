@@ -53,8 +53,8 @@
 [published  ] @reusable-ui/clickable        [updated api]
 [published  ] @reusable-ui/active-as-click  [no      api]
 [published  ] @reusable-ui/invalidable      [updated api]
-[published  ] @reusable-ui/checkable
-[published  ] @reusable-ui/validation-icon
+[published  ] @reusable-ui/checkable        [no      api]
+[published  ] @reusable-ui/validation-icon  [no      api]
 
 [published  ] @reusable-ui/core
 
