@@ -217,17 +217,32 @@ export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule
 export interface ValidityChangeEvent
     extends
         // states:
-        Required<Pick<ValidationProps, 'isValid'>>
+        Required<Pick<ValidationProps,
+            |'isValid'
+        >>
 {
 }
 export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
     extends
         // validations:
-        ValidationProps
+        Partial<ValidationProps>
 {
     // validations:
     onValidation ?: EventHandler<TValidityChangeEvent>
 }
+
+export const enum InvalidableState {
+    Validated      = 3,
+    Validating     = 2,
+    Unvalidating   = 1,
+    
+    Neutralized    = 0,
+    
+    Uninvalidating = -1,
+    Invalidating   = -2,
+    Invalidated    = -3,
+}
+
 export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & AccessibilityProps) => {
     // fn props:
     const propEnabled    = usePropEnabled(props);
