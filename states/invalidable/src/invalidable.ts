@@ -100,28 +100,28 @@ const [invalidableVars] = cssVars<InvalidableVars>({ prefix: 'iv', minify: false
 // .validated will be added after validating-animation done:
 const selectorIfValidated      = '.validated'
 // .validating = styled valid, :valid = native valid:
-// the .validated, .unvalidating, .neutralized are used to overwrite native :valid
-const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .neutralized, .invalidated, .invalidating)))'
+// the .validated, .unvalidating, .noval are used to overwrite native :valid
+const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .noval, .invalidated, .invalidating)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
 const selectorIfUnvalidating   = '.unvalidating'
 // if all above are not set => unvalidated:
-// optionally use .neutralized to overwrite native :valid
-const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .neutralized)'
+// optionally use .noval to overwrite native :valid
+const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .noval)'
 
 // .invalidated will be added after invalidating-animation done:
 const selectorIfInvalidated    = '.invalidated'
 // .invalidating = styled invalid, :invalid = native invalid:
-// the .invalidated, .uninvalidating, .neutralized are used to overwrite native :invalid
-const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .neutralized, .validated, .validating)))'
+// the .invalidated, .uninvalidating, .noval are used to overwrite native :invalid
+const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .noval, .validated, .validating)))'
 // .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
 const selectorIfUninvalidating = '.uninvalidating'
 // if all above are not set => uninvalidated:
-// optionally use .neutralized to overwrite native :invalid
-const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .neutralized)'
+// optionally use .noval to overwrite native :invalid
+const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .noval)'
 
 // if all above are not set => neutralized
-// optionally use .neutralized to kill pseudo :valid & :invalid:
-const selectorIfNeutralized    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .neutralized)'
+// optionally use .noval to kill pseudo :valid & :invalid:
+const selectorIfNeutralized    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .noval)'
 
 export const ifValidated       = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
 export const ifValidating      = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
@@ -335,7 +335,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     // interfaces:
-    const isNeutralized = ( // things makes `isValidFn` *always 0*
+    const isNoValidation = ( // things makes `isValidFn` *always 0*
         !propEditable           // the <control> is not editable      => no validation
         ||
         (propIsValid === null)  // the <ancestor> forced to *uncheck* => no validation
@@ -349,7 +349,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
          * `null`  : uncheck/unvalidating/uninvalidating
         */
         isValid : ((typeof(isValid) === 'boolean') ? isValid : null) as ValResult,
-        isNeutralized,
+        isNoValidation,
         
         class   : [
             // valid classes:
@@ -378,8 +378,8 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             
             // neutral classes:
             ((): string|null => {
-                if (isNeutralized) {
-                    return 'neutralized';
+                if (isNoValidation) {
+                    return 'noval';
                 }
                 else {
                     return null; // discard all classes above
