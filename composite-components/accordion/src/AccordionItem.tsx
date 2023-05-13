@@ -175,6 +175,11 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
     
     // states:
     const [isExpanded, , toggleExpanded] = useUncontrollableCollapsible<TExpandedChangeEvent>({
+        enabled         : props.enabled,
+        inheritEnabled  : props.inheritEnabled,
+        readOnly        : props.readOnly,
+        inheritReadOnly : props.inheritReadOnly,
+        
         defaultExpanded,
         expanded,
         onExpandedChange,
