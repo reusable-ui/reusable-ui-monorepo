@@ -4,7 +4,6 @@
 [med prior ] fix <HamburgerMenuButton> animation
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
 [med prior ] fix <List listStyle='tab' outlined={true}> the unselected ones should appear outlined & the whole <Tab> should have underline
-[med prior ] slimming down barrels ambigous
 
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 [med prior ] add autoCapitalize implementation
