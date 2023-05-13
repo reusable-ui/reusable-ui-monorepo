@@ -24,12 +24,20 @@ import {
     useMergeRefs,
     useMergeClasses,
     useMergeStyles,
+    useScheduleTriggerEvent,
     
     
     
     // a semantic management system for react web components:
     SemanticTag,
     SemanticRole,
+    
+    
+    
+    // an accessibility management system:
+    usePropAccessibility,
+    AccessibilityProps,
+    AccessibilityProvider,
     
     
     
@@ -48,6 +56,11 @@ import {
     UncontrollableCollapsibleProps,
     useUncontrollableCollapsible,
     useLastKnownExpandedSize,
+    
+    
+    
+    // a capability of UI to be disabled:
+    DisableableProps,
     
     
     
@@ -107,10 +120,15 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         BasicProps<TElement>,
         
         // states:
+        DisableableProps,
+        
         CollapsibleProps<TExpandedChangeEvent>,
         CollapsibleEventProps,
         ControllableCollapsibleProps<TExpandedChangeEvent>,
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
+        
+        // accessibilities:
+        Omit<AccessibilityProps, 'active'|'inheritActive'>,
         
         // components:
         ButtonComponentProps,
@@ -177,6 +195,12 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // states:
+        enabled,
+        inheritEnabled,
+        
+        readOnly,
+        inheritReadOnly,
+        
         defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
         onExpandedChange, // take, to be handled by `useUncontrollableCollapsible`
@@ -215,6 +239,11 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // states:
     const [isExpanded, setExpanded] = useUncontrollableCollapsible<TExpandedChangeEvent>({
+        enabled,
+        inheritEnabled,
+        readOnly,
+        inheritReadOnly,
+        
         defaultExpanded,
         expanded,
         // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
@@ -310,23 +339,50 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     
-    // handlers:
-    const handleExpandedChangeInternal       = useEvent<EventHandler<TExpandedChangeEvent>>((event) => {
-        setExpanded(event.expanded);
-    });
-    const handleExpandedChangeByToggleButton = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+    // accessibilities:
+    const propAccess           = usePropAccessibility(props);
+    const {enabled: propEnabled, readOnly: propReadOnly} = propAccess;
+    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
+    
+    
+    
+    // events:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
+    const triggerExpandedChangeByToggleButton = useEvent<React.Dispatch<boolean>>((expanded) => {
         // create an expanded event:
-        const expandedChangeEvent = { expanded: event.active } as TExpandedChangeEvent;
+        const expandedChangeEvent = { expanded } as TExpandedChangeEvent;
         
         
         
-        // <ToggleButton> expanded/collapsed => request to show/hide the <DetailsBody>:
-        onExpandedChange?.(expandedChangeEvent); // request to change the [expanded] to <Parent>
+        if (onExpandedChange) scheduleTriggerEvent(() => { // runs the `onExpandedChange` event *next after* current macroTask completed
+            // fire `onExpandedChange` react event:
+            // <ToggleButton> expanded/collapsed => request to show/hide the <DetailsBody>:
+            onExpandedChange(expandedChangeEvent); // request to change the [expanded] to <Parent>
+        });
         
         
         
         // actions:
-        handleExpandedChangeInternal(expandedChangeEvent);
+        handleExpandedChangeInternal(expandedChangeEvent); // update for uncontrollable <Details>
+    });
+    
+    
+    
+    // handlers:
+    const handleExpandedChangeInternal       = useEvent<EventHandler<TExpandedChangeEvent>>((event) => {
+        setExpanded(event.expanded);
+    });
+    
+    const handleExpandedChangeByToggleButton = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // conditions:
+        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        
+        const newExpanded = event.active;
+        if (newExpanded === isExpanded) return; // still the same => nothing to update
+        
+        
+        
+        triggerExpandedChangeByToggleButton(newExpanded);
     });
     const handleToggleButtonActiveChange     = useMergeEvents(
         // preserves the original `onActiveChange` from `toggleButtonComponent`:
@@ -382,107 +438,109 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
         >
-            {/* <ToggleButton> */}
-            {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
-                // props:
-                {
-                    // basic variant props:
-                    ...basicVariantProps,
+            <AccessibilityProvider {...propAccess}>
+                {/* <ToggleButton> */}
+                {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
+                    // props:
+                    {
+                        // basic variant props:
+                        ...basicVariantProps,
+                        
+                        
+                        
+                        // other props:
+                        ...toggleButtonComponent.props,
+                        
+                        
+                        
+                        // semantics:
+                        semanticTag     : toggleButtonComponent.props.semanticTag  ?? _defaultTogglerSemanticTag,
+                        semanticRole    : toggleButtonComponent.props.semanticRole ?? _defaultTogglerSemanticRole,
+                        'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? collapsibleId,
+                        
+                        
+                        
+                        // classes:
+                        classes         : toggleButtonClasses,
+                        
+                        
+                        
+                        // states:
+                        active          : toggleButtonComponent.props.active ?? isExpanded,
+                        onActiveChange  : handleToggleButtonActiveChange,
+                        
+                        
+                        
+                        /* <Button> */
+                        buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps>(buttonComponent,
+                            // props:
+                            {
+                                // refs:
+                                elmRef      : mergedButtonRef,
+                                
+                                
+                                
+                                // variants:
+                                orientation : buttonComponent.props.orientation ?? buttonOrientation,
+                                buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
+                            },
+                        ),
+                    },
                     
                     
                     
-                    // other props:
-                    ...toggleButtonComponent.props,
-                    
-                    
-                    
-                    // semantics:
-                    semanticTag     : toggleButtonComponent.props.semanticTag  ?? _defaultTogglerSemanticTag,
-                    semanticRole    : toggleButtonComponent.props.semanticRole ?? _defaultTogglerSemanticRole,
-                    'aria-controls' : toggleButtonComponent.props['aria-controls'] ?? collapsibleId,
-                    
-                    
-                    
-                    // classes:
-                    classes         : toggleButtonClasses,
-                    
-                    
-                    
-                    // states:
-                    active          : toggleButtonComponent.props.active ?? isExpanded,
-                    onActiveChange  : handleToggleButtonActiveChange,
-                    
-                    
-                    
-                    /* <Button> */
-                    buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps>(buttonComponent,
-                        // props:
-                        {
-                            // refs:
-                            elmRef      : mergedButtonRef,
-                            
-                            
-                            
-                            // variants:
-                            orientation : buttonComponent.props.orientation ?? buttonOrientation,
-                            buttonStyle : buttonComponent.props.buttonStyle ?? buttonStyle,
-                        },
-                    ),
-                },
+                    // children:
+                    buttonComponent.props.children ?? toggleButtonComponent.props.children ?? buttonChildren ?? label,
+                )}
                 
                 
                 
-                // children:
-                buttonComponent.props.children ?? toggleButtonComponent.props.children ?? buttonChildren ?? label,
-            )}
-            
-            
-            
-            {/* collapsible <Basic> */}
-            {React.cloneElement<BasicProps<Element>>(bodyComponent,
-                // props:
-                {
-                    // basic variant props:
-                    ...basicVariantProps,
+                {/* collapsible <Basic> */}
+                {React.cloneElement<BasicProps<Element>>(bodyComponent,
+                    // props:
+                    {
+                        // basic variant props:
+                        ...basicVariantProps,
+                        
+                        
+                        
+                        // other props:
+                        ...bodyComponent.props,
+                        
+                        
+                        
+                        // refs:
+                        outerRef         : mergedBodyOuterRef,
+                        
+                        
+                        
+                        // identifiers:
+                        id               : collapsibleId,
+                        
+                        
+                        
+                        // classes:
+                        stateClasses     : bodyStateClasses,
+                        classes          : bodyClasses,
+                        
+                        
+                        
+                        // styles:
+                        style            : mergedBodyStyle,
+                        
+                        
+                        
+                        // handlers:
+                        onAnimationStart : handleBodyAnimationStart,
+                        onAnimationEnd   : handleBodyAnimationEnd,
+                    },
                     
                     
                     
-                    // other props:
-                    ...bodyComponent.props,
-                    
-                    
-                    
-                    // refs:
-                    outerRef         : mergedBodyOuterRef,
-                    
-                    
-                    
-                    // identifiers:
-                    id               : collapsibleId,
-                    
-                    
-                    
-                    // classes:
-                    stateClasses     : bodyStateClasses,
-                    classes          : bodyClasses,
-                    
-                    
-                    
-                    // styles:
-                    style            : mergedBodyStyle,
-                    
-                    
-                    
-                    // handlers:
-                    onAnimationStart : handleBodyAnimationStart,
-                    onAnimationEnd   : handleBodyAnimationEnd,
-                },
-                
-                
-                
-                // children:
-                bodyComponent.props.children ?? ((!lazy || isVisible) && children),
-            )}
+                    // children:
+                    bodyComponent.props.children ?? ((!lazy || isVisible) && children),
+                )}
+            </AccessibilityProvider>
         </Basic>
     );
 };
