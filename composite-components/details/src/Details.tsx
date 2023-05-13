@@ -128,7 +128,7 @@ export interface DetailsProps<TElement extends Element = HTMLElement, TExpandedC
         UncontrollableCollapsibleProps<TExpandedChangeEvent>,
         
         // accessibilities:
-        Omit<AccessibilityProps, 'active'|'inheritActive'>,
+        AccessibilityProps,
         
         // components:
         ButtonComponentProps,
@@ -197,6 +197,9 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         // states:
         enabled,
         inheritEnabled,
+        
+        active,
+        inheritActive,
         
         readOnly,
         inheritReadOnly,
@@ -341,7 +344,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // accessibilities:
     const propAccess           = usePropAccessibility(props);
-    const {enabled: propEnabled, readOnly: propReadOnly} = propAccess;
+    const {enabled: propEnabled, readOnly: propReadOnly, active: propActive} = propAccess;
     const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
     
     
@@ -466,7 +469,7 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                         
                         
                         // states:
-                        active          : toggleButtonComponent.props.active ?? isExpanded,
+                        active          : toggleButtonComponent.props.active ?? ((props.active !== undefined) ? propActive : undefined) ?? isExpanded,
                         onActiveChange  : handleToggleButtonActiveChange,
                         
                         
