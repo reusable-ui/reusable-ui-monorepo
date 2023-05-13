@@ -66,7 +66,7 @@ export const useTabStyleSheet = dynamicStyleSheet(
 export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>
     extends
         // bases:
-        Omit<GenericProps<TElement>,            // the *wrapper* component of <Generic<TElement> >
+        Omit<GenericProps<TElement>,            // the *wrapper* component made from <Generic<TElement> >
             // refs:
             |'elmRef'                           // the elmRef is moved to <TabHeader>
             
@@ -82,7 +82,7 @@ export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedCh
             |'children'                         // aliased `children` to `tabPanels`
             |'dangerouslySetInnerHTML'          // not supported
         >,
-        Omit<TabHeaderProps<Element>,           // the *main* component of <List<Element> >
+        Omit<TabHeaderProps<Element>,           // the *main* component made from <List<Element> >
             // <Generic>:
             |keyof Omit<GenericProps<TElement>,
                 // refs:
@@ -93,7 +93,7 @@ export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedCh
                 |'dangerouslySetInnerHTML'      // not supported
             >
         >,
-        Omit<TabBodyProps<Element>,             // the *complement* component of <Content<Element> >
+        Omit<TabBodyProps<Element>,             // the *complement* component made from <Content<Element> >
             |keyof BasicProps<Element>
         >,
         
@@ -185,7 +185,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
     
     // jsx:
     return (
-        /* the *wrapper* component of <Generic<TElement> > */
+        /* the *wrapper* component made from <Generic<TElement> > */
         <Generic<TElement>
             // other props:
             {...restGenericProps}
@@ -228,7 +228,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                 tabId={id}
                 tabPanelStyle={tabPanelStyle}
             >
-                {/* the *main* component of <List<Element> > */}
+                {/* the *main* component made from <List<Element> > */}
                 <TabHeader<Element>
                     // refs:
                     elmRef={elmRef}
@@ -268,10 +268,20 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                     listItemComponent={listItemComponent}
                 />
                 
-                {/* the *complement* component of <Content<Element> > */}
+                {/* the *complement* component made from <Content<Element> > */}
                 <TabBody<Element>
                     // variants:
                     {...basicVariantProps}
+                    
+                    
+                    
+                    // // states:
+                    // enabled={enabled}
+                    // inheritEnabled={inheritEnabled}
+                    // active={active}
+                    // inheritActive={inheritActive}
+                    // readOnly={readOnly}
+                    // inheritReadOnly={inheritReadOnly}
                     
                     
                     
