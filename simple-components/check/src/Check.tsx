@@ -243,7 +243,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     const [isActive, , toggleActive] = useUncontrollableActivatable<ActiveChangeEvent>({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
-        
         readOnly        : props.readOnly,
         inheritReadOnly : props.inheritReadOnly,
         

@@ -111,7 +111,6 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     const [isActive, setActive] = useUncontrollableActivatable<ActiveChangeEvent>({
         enabled         : props.enabled,
         inheritEnabled  : props.inheritEnabled,
-        
         readOnly        : props.readOnly,
         inheritReadOnly : props.inheritReadOnly,
         
