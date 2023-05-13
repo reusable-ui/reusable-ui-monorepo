@@ -42,10 +42,13 @@ import {
 import {
     // react components:
     BasicProps,
-    Basic,
     
     BasicComponentProps,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // react components:
+    Content,
+}                           from '@reusable-ui/content'         // a base component
 import type {
     // react components:
     ButtonProps,
@@ -161,7 +164,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // components:
-        basicComponent      = (<Basic<TElement>                             /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        basicComponent      = (<Content<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
         
         prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' /> as React.ReactComponentElement<any, ButtonProps>),
         nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' /> as React.ReactComponentElement<any, ButtonProps>),
