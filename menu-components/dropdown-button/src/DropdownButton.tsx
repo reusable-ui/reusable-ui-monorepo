@@ -254,6 +254,11 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     // states:
     const [isExpanded, setExpanded] = useUncontrollableCollapsible<TDropdownExpandedChangeEvent>({
+        enabled         : props.enabled,
+        inheritEnabled  : props.inheritEnabled,
+        readOnly        : props.readOnly,
+        inheritReadOnly : props.inheritReadOnly,
+        
         defaultExpanded,
         expanded,
         // onExpandedChange, // trigger manually `onExpandedChange`, not to passed here to avoid double trigger of `onExpandedChange`
@@ -346,9 +351,12 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // conditions:
         if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
         
+        const newExpanded = event.active;
+        if (newExpanded === isExpanded) return; // still the same => nothing to update
         
         
-        triggerExpandedChangeByToggleButton(event.active);
+        
+        triggerExpandedChangeByToggleButton(newExpanded);
     });
     const handleToggleButtonActiveChange     = useMergeEvents(
         // preserves the original `onActiveChange` from `toggleButtonComponent`:
