@@ -52,10 +52,13 @@ import {
 import {
     // react components:
     BasicProps,
-    Basic,
     
     BasicComponentProps,
 }                           from '@reusable-ui/basic'           // a base component
+import {
+    // react components:
+    Container,
+}                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
 import {
     // react components:
     Fallbacks,
@@ -192,7 +195,7 @@ const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeE
         
         
         // components:
-        basicComponent = (<Basic<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        basicComponent = (<Container<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
         
         
         
