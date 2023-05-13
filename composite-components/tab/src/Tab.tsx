@@ -275,16 +275,6 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                     
                     
                     
-                    // // states:
-                    // enabled={enabled}
-                    // inheritEnabled={inheritEnabled}
-                    // active={active}
-                    // inheritActive={inheritActive}
-                    // readOnly={readOnly}
-                    // inheritReadOnly={inheritReadOnly}
-                    
-                    
-                    
                     // components:
                     bodyComponent={bodyComponent}
                 />
