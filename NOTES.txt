@@ -333,3 +333,29 @@ features:                                                                      [
 
 <AccordionItem>	        base: <ListItem>                                    CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
 <Details>			    base: <Basic>                                       CollapsibleProps        CollapsibleEventProps       ControllableCollapsibleProps        UncontrollableCollapsibleProps
+
+
+=========================================================================================
+
+// list of <Component>s that made up from <Content|usesContent :
+
+
+<Masonry>		baseComponent		styles
+<Form>		baseComponent		styles
+<Carousel>		basicComponent		styles
+
+<List>						styles.content
+<Details>						styles.content
+<Label>						styles.content
+
+<Card>						styles (base2)
+<Alert>						styles (base2)
+
+<TabBody>		bodyComponent
+
+
+=========================================================================================
+
+// list of <Component>s that made up from <Container|usesContainer :
+
+<Navbar>		basicComponent		styles
