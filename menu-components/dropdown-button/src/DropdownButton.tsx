@@ -18,6 +18,13 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useScheduleTriggerEvent,
+    
+    
+    
+    // an accessibility management system:
+    usePropEnabled,
+    usePropReadOnly,
     
     
     
@@ -301,23 +308,47 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     
-    // handlers:
-    const handleExpandedChangeInternal       = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
-        setExpanded(event.expanded);
-    });
-    const handleExpandedChangeByToggleButton = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+    // accessibilities:
+    const propEnabled          = usePropEnabled(props);
+    const propReadOnly         = usePropReadOnly(props);
+    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
+    
+    
+    
+    // events:
+    const scheduleTriggerEvent = useScheduleTriggerEvent();
+    const triggerExpandedChangeByToggleButton = useEvent<React.Dispatch<boolean>>((expanded) => {
         // create an expanded event:
-        const dropdownExpandedChangeEvent = { expanded: event.active, actionType: 'ui' } as TDropdownExpandedChangeEvent;
+        const dropdownExpandedChangeEvent = { expanded, actionType: 'ui' } as TDropdownExpandedChangeEvent;
         
         
         
-        // <ToggleButton> expanded/collapsed => request to show/hide the <Dropdown> with `actionType`:
-        onExpandedChange?.(dropdownExpandedChangeEvent); // request to change the [expanded] to <Parent>
+        if (onExpandedChange) scheduleTriggerEvent(() => { // runs the `onExpandedChange` event *next after* current macroTask completed
+            // fire `onExpandedChange` react event:
+            // <ToggleButton> expanded/collapsed => request to show/hide the <Dropdown> with `actionType`:
+            onExpandedChange(dropdownExpandedChangeEvent); // request to change the [expanded] to <Parent>
+        });
         
         
         
         // actions:
-        handleExpandedChangeInternal(dropdownExpandedChangeEvent);
+        handleExpandedChangeInternal(dropdownExpandedChangeEvent); // update for uncontrollable <DropdownButton>
+    });
+    
+    
+    
+    // handlers:
+    const handleExpandedChangeInternal       = useEvent<EventHandler<TDropdownExpandedChangeEvent>>((event) => {
+        setExpanded(event.expanded);
+    });
+    
+    const handleExpandedChangeByToggleButton = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
+        // conditions:
+        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        
+        
+        
+        triggerExpandedChangeByToggleButton(event.active);
     });
     const handleToggleButtonActiveChange     = useMergeEvents(
         // preserves the original `onActiveChange` from `toggleButtonComponent`:
@@ -328,6 +359,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // forwards the original `onExpandedChange` from `props`:
         handleExpandedChangeByToggleButton,
     );
+    
     const handleDropdownExpandedChange       = useMergeEvents(
         // preserves the original `onExpandedChange` from `dropdownComponent`:
         dropdownComponent.props.onExpandedChange,
@@ -340,8 +372,9 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         // actions:
-        handleExpandedChangeInternal,
+        handleExpandedChangeInternal, // update for uncontrollable <DropdownButton>
     );
+    
     const handleDropdownFloatingUpdate       = useMergeEvents(
         // preserves the original `onFloatingUpdate` from `dropdownComponent`:
         dropdownComponent.props.onFloatingUpdate,
