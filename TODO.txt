@@ -1,4 +1,3 @@
-[high prior] add [enabled] property to <Details>
 [high prior] protect size='md' from <parent size='sm|lg'>
 
 [med prior ] fix border separator on <Accordion|Details|Similar> when outlined={true}
