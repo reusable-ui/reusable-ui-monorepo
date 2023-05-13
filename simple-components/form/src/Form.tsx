@@ -104,11 +104,10 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         formValidator.handleValidation,
     );
     const invalidableState = useInvalidable<HTMLFormElement>({
-        // enabled           : props.enabled,
-        // inheritEnabled    : props.inheritEnabled,
-        
-        // readOnly          : props.readOnly,
-        // inheritReadOnly   : props.inheritReadOnly,
+     // enabled           : props.enabled,         // the <Form> can't be disabled
+     // inheritEnabled    : props.inheritEnabled,  // the <Form> can't be disabled
+     // readOnly          : props.readOnly,        // the <Form> can't be readOnly
+     // inheritReadOnly   : props.inheritReadOnly, // the <Form> can't be readOnly
         
         enableValidation  : props.enableValidation,
         isValid           : props.isValid,
