@@ -230,10 +230,7 @@ export interface ValidityChangeEvent
 export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
     extends
         // validations:
-        Partial<ValidationProps>,
-        
-        // accessibilities:
-        AccessibilityProps // the controllable/uncontrollable's accessibility of: enabled, readOnly, active
+        Partial<ValidationProps>
 {
     // validations:
     onValidation ?: EventHandler<TValidityChangeEvent>
@@ -263,7 +260,7 @@ export interface InvalidableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
-export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent>): InvalidableApi<TElement> => {
+export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): InvalidableApi<TElement> => {
     // fn props:
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
