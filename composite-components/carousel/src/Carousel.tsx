@@ -39,7 +39,7 @@ import {
     // react components:
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
-import {
+import type {
     // react components:
     BasicProps,
     
@@ -164,7 +164,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // components:
-        basicComponent      = (<Content<TElement> /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        basicComponent      = (<Content<TElement>                           /> as React.ReactComponentElement<any, BasicProps<TElement>>),
         
         prevButtonComponent = (<ButtonIcon iconPosition='start' icon='prev' /> as React.ReactComponentElement<any, ButtonProps>),
         nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='next' /> as React.ReactComponentElement<any, ButtonProps>),
