@@ -427,15 +427,12 @@ export interface ControllableCollapsibleProps<TExpandedChangeEvent extends Expan
 export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
-        ControllableCollapsibleProps<TExpandedChangeEvent>,
-        
-        // accessibilities:
-        AccessibilityProps // the uncontrollable's accessibility of: enabled, readOnly, active
+        ControllableCollapsibleProps<TExpandedChangeEvent>
 {
     // states:
     defaultExpanded  ?: boolean
 }
-export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // accessibilities:
     const propEnabled          = usePropEnabled(props);
     const propReadOnly         = usePropReadOnly(props);
