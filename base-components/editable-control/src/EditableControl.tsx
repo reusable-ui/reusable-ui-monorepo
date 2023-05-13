@@ -108,7 +108,6 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     const invalidableState = useInvalidable<TElement>({
         enabled           : props.enabled,
         inheritEnabled    : props.inheritEnabled,
-        
         readOnly          : props.readOnly,
         inheritReadOnly   : props.inheritReadOnly,
         
