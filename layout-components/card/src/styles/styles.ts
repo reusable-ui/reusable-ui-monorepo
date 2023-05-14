@@ -237,6 +237,10 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
+    // features:
+    const {borderRule   , borderVars   } = usesBorder(cards);
+    const {animationRule, animationVars} = usesAnimation(cards as any);
+    
     // capabilities:
     const {groupableRule} = usesGroupable({
         ...options,
@@ -248,10 +252,6 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
         itemsSelector             : ':nth-child(n)', // select <header>, <footer>, <body>, and <foreign-elm>
         swapFirstItem             : true,
     });
-    
-    // features:
-    const {borderRule   , borderVars   } = usesBorder(cards);
-    const {animationRule, animationVars} = usesAnimation(cards as any);
     
     
     
