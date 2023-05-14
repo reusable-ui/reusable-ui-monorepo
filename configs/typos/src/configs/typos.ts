@@ -19,7 +19,7 @@ import {
 
 // configs:
 export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
-    const basics = {
+    const bases = {
         // backgrounds:
         /**
          * The default is a solid color of `colors.backg`.  
@@ -80,24 +80,24 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
     };
     
     return {
-        ...basics,
+        ...bases,
         
         
         
         // typos:
-        fontSizeXs           : [['calc(', basics.fontSizeMd, '*', 0.50  , ')']] as CssKnownProps['fontSize'      ],
-        fontSizeSm           : [['calc(', basics.fontSizeMd, '*', 0.75  , ')']] as CssKnownProps['fontSize'      ],
-        fontSize             :            basics.fontSizeMd                     as CssKnownProps['fontSize'      ],
-        fontSizeLg           : [['calc(', basics.fontSizeMd, '*', 1.25  , ')']] as CssKnownProps['fontSize'      ],
-        fontSizeXl           : [['calc(', basics.fontSizeMd, '*', 1.50  , ')']] as CssKnownProps['fontSize'      ],
-        fontSizeXxl          : [['calc(', basics.fontSizeMd, '*', 1.75  , ')']] as CssKnownProps['fontSize'      ],
-        fontSizeXxxl         : [['calc(', basics.fontSizeMd, '*', 2.00  , ')']] as CssKnownProps['fontSize'      ],
+        fontSizeXs           : [['calc(', bases.fontSizeMd, '*', 0.50  , ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeSm           : [['calc(', bases.fontSizeMd, '*', 0.75  , ')']]  as CssKnownProps['fontSize'      ],
+        fontSize             :            bases.fontSizeMd                      as CssKnownProps['fontSize'      ],
+        fontSizeLg           : [['calc(', bases.fontSizeMd, '*', 1.25  , ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeXl           : [['calc(', bases.fontSizeMd, '*', 1.50  , ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeXxl          : [['calc(', bases.fontSizeMd, '*', 1.75  , ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeXxxl         : [['calc(', bases.fontSizeMd, '*', 2.00  , ')']]  as CssKnownProps['fontSize'      ],
         
-        fontFamily           : basics.fontFamilySansSerief                      as CssKnownProps['fontFamily'    ],
+        fontFamily           : bases.fontFamilySansSerief                       as CssKnownProps['fontFamily'    ],
         
-        fontWeight           : basics.fontWeightNormal                          as CssKnownProps['fontWeight'    ],
+        fontWeight           : bases.fontWeightNormal                           as CssKnownProps['fontWeight'    ],
         
-        lineHeight           : basics.lineHeightMd                              as CssKnownProps['lineHeight'    ],
+        lineHeight           : bases.lineHeightMd                               as CssKnownProps['lineHeight'    ],
     };
 }, { prefix: '' });
 export { typos as default }
