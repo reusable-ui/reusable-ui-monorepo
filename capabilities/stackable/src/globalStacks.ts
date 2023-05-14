@@ -6,7 +6,17 @@ import type {
 
 
 
-export type GlobalStacks = { [key: string]: CssKnownProps['zIndex'] }
+export type GlobalStacks = {
+    dropdown      : CssKnownProps['zIndex'],
+    
+    sticky        : CssKnownProps['zIndex'],
+    fixed         : CssKnownProps['zIndex'],
+    
+    modalBackdrop : CssKnownProps['zIndex'],
+    modalDialog   : CssKnownProps['zIndex'],
+    
+    tooltip       : CssKnownProps['zIndex'],
+}
 export const globalStacks : GlobalStacks = {
     dropdown      : 1000,
     
