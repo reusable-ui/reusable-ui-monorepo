@@ -38,44 +38,61 @@ export const [badges, badgeValues, cssBadgeConfig] = cssConfig(() => {
     
     
     
-    const basics = {
+    const bases = {
+        // animations:
+        ...keyframesExciteRule,
+        animExcite      : [
+            ['300ms', 'linear', 'both', 'alternate', 2, keyframesExcite],
+        ]                                                                       as CssKnownProps['animation'    ],
+        
+        
+        
         // spacings:
-        paddingInline   : '0.65em'                                          as CssKnownProps['paddingInline'],
-        paddingBlock    : '0.35em'                                          as CssKnownProps['paddingBlock' ],
+        paddingInlineMd : '0.65em'                                              as CssKnownProps['paddingInline'],
+        paddingBlockMd  : '0.35em'                                              as CssKnownProps['paddingBlock' ],
         
         
         
         // typos:
-        whiteSpace      : 'normal'                                          as CssKnownProps['whiteSpace'   ],
-        fontSize        : '0.75em'                                          as CssKnownProps['fontSize'     ],
-        fontWeight      : typos.fontWeightBold                              as CssKnownProps['fontWeight'   ],
+        whiteSpace      : 'normal'                                              as CssKnownProps['whiteSpace'   ],
+        fontSizeMd      : '0.75em'                                              as CssKnownProps['fontSize'     ],
+        fontWeight      : typos.fontWeightBold                                  as CssKnownProps['fontWeight'   ],
+    };
+    
+    
+    
+    const subs = {
+        // spacings:
+        paddingInlineSm : [['calc(', bases.paddingInlineMd, '/', 1.25, ')']]    as CssKnownProps['paddingInline'],
+        paddingBlockSm  : [['calc(', bases.paddingBlockMd , '/', 1.25, ')']]    as CssKnownProps['paddingBlock' ],
+        paddingInlineLg : [['calc(', bases.paddingInlineMd, '*', 1.25, ')']]    as CssKnownProps['paddingInline'],
+        paddingBlockLg  : [['calc(', bases.paddingBlockMd , '*', 1.25, ')']]    as CssKnownProps['paddingBlock' ],
+        
+        
+        
+        // typos:
+        fontSizeSm      : [['calc(', bases.fontSizeMd   , '/', 1.25, ')']]      as CssKnownProps['fontSize'     ],
+        fontSizeLg      : [['calc(', bases.fontSizeMd   , '*', 1.25, ')']]      as CssKnownProps['fontSize'     ],
+    };
+    
+    
+    
+    const defaults = {
+        // spacings:
+        paddingInline   : bases.paddingInlineMd                                 as CssKnownProps['paddingInline'],
+        paddingBlock    : bases.paddingBlockMd                                  as CssKnownProps['paddingBlock' ],
+        
+        
+        
+        // typos:
+        fontSize        : bases.fontSizeMd                                      as CssKnownProps['fontSize'     ],
     };
     
     
     
     return {
-        ...basics,
-        
-        
-        
-        // animations:
-        ...keyframesExciteRule,
-        animExcite      : [
-            ['300ms', 'linear', 'both', 'alternate', 2, keyframesExcite],
-        ]                                                                   as CssKnownProps['animation'    ],
-        
-        
-        
-        // spacings:
-        paddingInlineSm : [['calc(', basics.paddingInline, '/', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockSm  : [['calc(', basics.paddingBlock , '/', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        paddingInlineLg : [['calc(', basics.paddingInline, '*', 1.25, ')']] as CssKnownProps['paddingInline'],
-        paddingBlockLg  : [['calc(', basics.paddingBlock , '*', 1.25, ')']] as CssKnownProps['paddingBlock' ],
-        
-        
-        
-        // typos:
-        fontSizeSm      : [['calc(', basics.fontSize     , '/', 1.25, ')']] as CssKnownProps['fontSize'     ],
-        fontSizeLg      : [['calc(', basics.fontSize     , '*', 1.25, ')']] as CssKnownProps['fontSize'     ],
+        ...bases,
+        ...subs,
+        ...defaults,
     };
 }, { prefix: 'bge' });
