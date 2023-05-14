@@ -1,6 +1,5 @@
 [high prior] protect size='md' from <parent size='sm|lg'>
 
-[med prior ] add bird view z-Index stack
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
 [med prior ] fix <List listStyle='tab' outlined={true}> the unselected ones should appear outlined & the whole <Tab> should have underline
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
