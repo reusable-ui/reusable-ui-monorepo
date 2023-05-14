@@ -114,6 +114,14 @@ export const usesDetailsLayout = () => {
             ...children(itemElm, {
                 // borders:
                 ...separatorRule(), // turns the current border as separator between <ToggleButton> & <DetailsBody>
+                ...style({
+                    /*
+                        A fix of separator (border) color of <DetailsHeader> & <DetailsBody> when `outlined={true}`.
+                        When <DetailsHeader active={true}>, the borderColor overriden to <DetailsHeader>'s theme color.
+                        It should be <Details>'s theme color, regradless of <DetailsHeader>'s theme color.
+                    */
+                    [borderVars.borderColor]: 'inherit',
+                }),
             }),
             
             
