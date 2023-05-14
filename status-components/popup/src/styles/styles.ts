@@ -19,6 +19,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    globalStacks,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ifCollapsed,
     usesCollapsible,
@@ -56,7 +61,7 @@ export const usesPopupLayout = memoizeStyle(() => {
         ...style({
             // positions:
             ...rule('.overlay', {
-                zIndex: 1080,
+                zIndex: globalStacks.tooltip,
             }),
             
             
