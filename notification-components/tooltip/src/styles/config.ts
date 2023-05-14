@@ -58,16 +58,18 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
     
     
     
-    return {
-        ...bases,
-        
-        
-        
+    const subs = {
         // sizes:
         arrowInlineSizeSm     : [['calc((', bases.arrowInlineSizeMd, ')*0.75)']]                            as CssKnownProps['inlineSize'],
         arrowBlockSizeSm      : [['calc((', bases.arrowBlockSizeMd , ')*0.75)']]                            as CssKnownProps['blockSize' ],
         arrowInlineSizeLg     : [['calc((', bases.arrowInlineSizeMd, ')*1.50)']]                            as CssKnownProps['inlineSize'],
         arrowBlockSizeLg      : [['calc((', bases.arrowBlockSizeMd , ')*1.50)']]                            as CssKnownProps['blockSize' ],
+    };
+    
+    
+    
+    const defaults = {
+        // sizes:
         arrowInlineSize       : bases.arrowInlineSizeMd                                                     as CssKnownProps['inlineSize'],
         arrowBlockSize        : bases.arrowBlockSizeMd                                                      as CssKnownProps['blockSize' ],
         
@@ -75,5 +77,13 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
         
         // typos:
         fontSize              : bases.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...subs,
+        ...defaults,
     };
 }, { prefix: 'ttip' });
