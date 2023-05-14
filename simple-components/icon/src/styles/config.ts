@@ -19,7 +19,7 @@ import {
 
 // configs:
 export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
-    const basics = {
+    const bases = {
         // color:
         color      : 'currentColor'                                 as CssKnownProps['backgroundColor'],
         altColor   : 'gray'                                         as CssKnownProps['backgroundColor'],
@@ -27,26 +27,37 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         
         // sizes:
         sizeMd     : '24px'                                         as CssKnownProps['blockSize'],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // sizes:
-        size       :            basics.sizeMd                       as CssKnownProps['blockSize'],
-        sizeXs     : [['calc(', basics.sizeMd, '*', 0.50  , ')']]   as CssKnownProps['blockSize'],
-        sizeSm     : [['calc(', basics.sizeMd, '*', 0.75  , ')']]   as CssKnownProps['blockSize'],
-        sizeLg     : [['calc(', basics.sizeMd, '*', 1.50  , ')']]   as CssKnownProps['blockSize'],
-        sizeXl     : [['calc(', basics.sizeMd, '*', 2.00  , ')']]   as CssKnownProps['blockSize'],
-        size1em    : '1em'                                          as CssKnownProps['blockSize'],
         
         
         
         // animations:
         transition : basicConfigVars.transition                     as CssKnownProps['transition'],
+    };
+    
+    
+    
+    const subs = {
+        // sizes:
+        sizeXs     : [['calc(', bases.sizeMd, '*', 0.50  , ')']]    as CssKnownProps['blockSize'],
+        sizeSm     : [['calc(', bases.sizeMd, '*', 0.75  , ')']]    as CssKnownProps['blockSize'],
+        sizeMd     :            bases.sizeMd                        as CssKnownProps['blockSize'],
+        sizeLg     : [['calc(', bases.sizeMd, '*', 1.50  , ')']]    as CssKnownProps['blockSize'],
+        sizeXl     : [['calc(', bases.sizeMd, '*', 2.00  , ')']]    as CssKnownProps['blockSize'],
+        size1em    : '1em'                                          as CssKnownProps['blockSize'],
+    };
+    
+    
+    
+    const defaults = {
+        // sizes:
+        size       :            subs.sizeMd                         as CssKnownProps['blockSize'],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...subs,
+        ...defaults,
     };
 }, { prefix: 'ico' });
