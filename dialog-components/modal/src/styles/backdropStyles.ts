@@ -67,15 +67,15 @@ export const onBackdropStylesChange = watchChanges(cssModalConfig.onChange);
 export const usesBackdropLayout = memoizeStyle(() => {
     // dependencies:
     
-    // capabilities:
-    const {                groupableVars} = usesGroupable();
-    
     // features:
     const {borderRule    , borderVars   } = usesBorder({
         borderWidth  : 'inherit',
         borderRadius : 'inherit',
     });
     const {animationRule , animationVars} = usesAnimation();
+    
+    // capabilities:
+    const {                groupableVars} = usesGroupable();
     
     
     
