@@ -20,25 +20,25 @@ export type CssLength = CssComplexValueOf<CssKnownValueOf<'gap'>>
 
 //#region configs
 export const [spacers, spacerValues, cssSpacerConfig] = cssConfig(() => {
-    const basics = {
+    const bases = {
         none    : '0rem'    as CssLength,
         md      : '1rem'    as CssLength,
     };
     
     const defaults = {
-        default : basics.md as CssLength,
+        default : bases.md as CssLength,
     };
     
     return {
-        ...basics,
+        ...bases,
         ...defaults,
         
-        xxs     : [['calc(', basics.md, '/', 8  , ')']] as CssLength,
-        xs      : [['calc(', basics.md, '/', 4  , ')']] as CssLength,
-        sm      : [['calc(', basics.md, '/', 2  , ')']] as CssLength,
+        xxs     : [['calc(', bases.md, '/', 8  , ')']] as CssLength,
+        xs      : [['calc(', bases.md, '/', 4  , ')']] as CssLength,
+        sm      : [['calc(', bases.md, '/', 2  , ')']] as CssLength,
         
-        lg      : [['calc(', basics.md, '*', 1.5, ')']] as CssLength,
-        xl      : [['calc(', basics.md, '*', 3  , ')']] as CssLength,
+        lg      : [['calc(', bases.md, '*', 1.5, ')']] as CssLength,
+        xl      : [['calc(', bases.md, '*', 3  , ')']] as CssLength,
     };
 }, { prefix: 'spc' });
 export { spacers as default }
