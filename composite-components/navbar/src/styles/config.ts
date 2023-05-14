@@ -9,6 +9,12 @@ import {
     cssConfig,
 }                           from '@cssfn/core'                  // writes css in javascript
 
+// reusable-ui core:
+import {
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    globalStacks,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
+
 // reusable-ui components:
 import {
     // configs:
@@ -39,7 +45,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // positions:
-        zIndex                    : 1020                        as CssKnownProps['zIndex'         ],
+        zIndex                    : globalStacks.sticky         as CssKnownProps['zIndex'         ],
         position                  : 'sticky'                    as CssKnownProps['position'       ],
         insetBlockStart           : '0px'                       as CssKnownProps['insetBlockStart'],
         
