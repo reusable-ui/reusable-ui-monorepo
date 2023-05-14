@@ -17,11 +17,6 @@ import {
 
 // reusable-ui core:
 import {
-    // border (stroke) stuff of UI:
-    usesBorder,
-    
-    
-    
     // groups a list of UIs into a single UI:
     usesGroupable,
     
@@ -90,9 +85,6 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // features:
-    const {borderVars} = usesBorder(lists);
-    
     // capabilities:
     const {separatorRule} = usesGroupable({
         orientationInlineSelector : parentOrientationInlineSelector,
@@ -108,17 +100,6 @@ export const usesListItemBaseLayout = (options?: OrientationableOptions) => {
             Accordion supports: a separator between Accordion's header & body.
         */
         ...separatorRule(), // turns the current border as separator between <ListItem> & <foreign-elm>
-        /*
-            A fix of separator (border) color of <AccordionHeader> & <AccordionBody> when `outlined={true}`.
-            When <AccordionHeader active={true}>, the borderColor overriden to <AccordionHeader>'s theme color.
-            It should use <List>'s theme color, regradless of <AccordionHeader>'s theme color.
-            
-            When <List listStyle='button'>, the borderColor will be re-overriden by variant `.button` because
-            the variant has a higher specificity.
-        */
-        ...style({
-            [borderVars.borderColor]: 'inherit',
-        }),
         
         
         

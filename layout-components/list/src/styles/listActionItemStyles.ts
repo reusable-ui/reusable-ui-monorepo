@@ -7,6 +7,11 @@ import {
 
 // reusable-ui core:
 import {
+    // border (stroke) stuff of UI:
+    usesBorder,
+    
+    
+    
     // a capability of UI to be highlighted/selected/activated:
     ifActive,
     MarkActiveOptions,
@@ -51,10 +56,32 @@ const _defaultMarkActiveOptions : MarkActiveOptions = { outlined: null, mild: nu
 
 // styles:
 export const usesListActionItemLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {borderVars} = usesBorder();
+    
+    
+    
     return style({
         // layouts:
         ...usesActionControlLayout(),
         ...inheritBorderFromParent(),
+        
+        
+        
+        // borders:
+        /*
+            A fix of separator (border) color of <AccordionHeader> & <AccordionBody> when `outlined={true}`.
+            When <AccordionHeader active={true}>, the borderColor overriden to <AccordionHeader>'s theme color.
+            It should be <List>'s theme color, regradless of <AccordionHeader>'s theme color.
+            
+            When <List listStyle='button'>, the borderColor will be re-overriden by variant `.button` because
+            the variant has a higher specificity.
+        */
+        ...style({
+            [borderVars.borderColor]: 'inherit',
+        }),
     });
 };
 
