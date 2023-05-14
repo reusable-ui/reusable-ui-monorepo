@@ -184,11 +184,11 @@ export const usesModalSideLayout = () => {
 export const usesModalSideVariants = () => {
     // dependencies:
     
-    // capabilities:
-    const {groupableVars} = usesGroupable();
-    
     // features:
     const {borderVars   } = usesBorder();
+    
+    // capabilities:
+    const {groupableVars} = usesGroupable();
     
     
     
