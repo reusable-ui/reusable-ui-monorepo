@@ -19,10 +19,10 @@ import {
 
 // configs:
 export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
-    const basics = {
+    const bases = {
         // sizes:
-        arrowInlineSize       : '0.8rem'                                                                    as CssKnownProps['inlineSize'],
-        arrowBlockSize        : '0.8rem'                                                                    as CssKnownProps['blockSize' ],
+        arrowInlineSizeMd     : '0.8rem'                                                                    as CssKnownProps['inlineSize'],
+        arrowBlockSizeMd      : '0.8rem'                                                                    as CssKnownProps['blockSize' ],
         
      // arrowClipPath         : 'polygon(100% 0, 100% 100%, 0 100%)'                                        as CssKnownProps['clipPath'  ],
         arrowClipPath         : 'polygon(200% -100%, 200% 200%, -100% 200%)'                                as CssKnownProps['clipPath'  ], // compensates for boxShadow
@@ -40,33 +40,40 @@ export const [tooltips, tooltipValues, cssTooltipConfig] = cssConfig(() => {
         
         
         
-        // typos:
-        whiteSpace            : 'normal'                                                                    as CssKnownProps['whiteSpace'],
-        fontSize              : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]               as CssKnownProps['fontSize'  ],
-        fontSizeSm            : typos.fontSizeSm                                                            as CssKnownProps['fontSize'  ],
-        fontSizeLg            : typos.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
-    };
-    
-    
-    
-    return {
-        ...basics,
-        
-        
-        
-        // sizes:
-        arrowInlineSizeSm     : [['calc((', basics.arrowInlineSize, ')*0.75)']]                             as CssKnownProps['inlineSize'],
-        arrowBlockSizeSm      : [['calc((', basics.arrowBlockSize , ')*0.75)']]                             as CssKnownProps['blockSize' ],
-        arrowInlineSizeLg     : [['calc((', basics.arrowInlineSize, ')*1.50)']]                             as CssKnownProps['inlineSize'],
-        arrowBlockSizeLg      : [['calc((', basics.arrowBlockSize , ')*1.50)']]                             as CssKnownProps['blockSize' ],
-        
-        
-        
         // animations:
         transformOrigin       : 'center'                                                                    as CssKnownProps['transformOrigin'],
         transformOriginTop    : 'bottom'                                                                    as CssKnownProps['transformOrigin'],
         transformOriginRight  : 'left'                                                                      as CssKnownProps['transformOrigin'],
         transformOriginBottom : 'top'                                                                       as CssKnownProps['transformOrigin'],
         transformOriginLeft   : 'right'                                                                     as CssKnownProps['transformOrigin'],
+        
+        
+        
+        // typos:
+        whiteSpace            : 'normal'                                                                    as CssKnownProps['whiteSpace'],
+        fontSizeSm            : typos.fontSizeSm                                                            as CssKnownProps['fontSize'  ],
+        fontSizeMd            : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]               as CssKnownProps['fontSize'  ],
+        fontSizeLg            : typos.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        
+        
+        
+        // sizes:
+        arrowInlineSizeSm     : [['calc((', bases.arrowInlineSizeMd, ')*0.75)']]                            as CssKnownProps['inlineSize'],
+        arrowBlockSizeSm      : [['calc((', bases.arrowBlockSizeMd , ')*0.75)']]                            as CssKnownProps['blockSize' ],
+        arrowInlineSizeLg     : [['calc((', bases.arrowInlineSizeMd, ')*1.50)']]                            as CssKnownProps['inlineSize'],
+        arrowBlockSizeLg      : [['calc((', bases.arrowBlockSizeMd , ')*1.50)']]                            as CssKnownProps['blockSize' ],
+        arrowInlineSize       : bases.arrowInlineSizeMd                                                     as CssKnownProps['inlineSize'],
+        arrowBlockSize        : bases.arrowBlockSizeMd                                                      as CssKnownProps['blockSize' ],
+        
+        
+        
+        // typos:
+        fontSize              : bases.fontSizeMd                                                            as CssKnownProps['fontSize'  ],
     };
 }, { prefix: 'ttip' });
