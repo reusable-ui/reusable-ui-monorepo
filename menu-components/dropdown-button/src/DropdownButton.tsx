@@ -223,7 +223,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         
-        // stackable:
+        // global stackable:
         viewport,
         
         
@@ -501,7 +501,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    // stackable:
+                    // global stackable:
                     viewport           : dropdownComponent.props.viewport           ?? viewport,
                 },
                 

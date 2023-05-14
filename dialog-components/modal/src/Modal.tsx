@@ -42,8 +42,8 @@ import {
     
     
     // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
-    StackableProps,
-    useStackable,
+    GlobalStackableProps,
+    useGlobalStackable,
     
     
     
@@ -115,7 +115,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         >,
         
         // capabilities:
-        StackableProps,
+        GlobalStackableProps,
         
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
@@ -150,7 +150,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // capabilities:
-    const {viewportElm, portalElm} = useStackable(props);
+    const {viewportElm, portalElm} = useGlobalStackable(props);
     
     
     
@@ -182,7 +182,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         
-        // stackable:
+        // global stackable:
         viewport        : _viewport,        // remove
         
         
@@ -706,7 +706,7 @@ export interface ModalComponentProps<TElement extends Element = HTMLElement, TMo
     
     
     
-    // stackable:
+    // global stackable:
     viewport       ?: ModalProps<TElement, TModalExpandedChangeEvent>['viewport']
     
     

@@ -199,7 +199,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         
-        // stackable:
+        // global stackable:
         viewport,
         
         
@@ -441,7 +441,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // stackable:
+            // global stackable:
             viewport,
         },
         

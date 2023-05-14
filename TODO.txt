@@ -1,19 +1,18 @@
 [high prior] protect size='md' from <parent size='sm|lg'>
-[high prior] rename stackable to globalStackable
 
-[med prior ] fix <HamburgerMenuButton> animation
+[med prior ] add bird view z-Index stack
 [med prior ] fix <NavPrevItem|NavNextItem> arrow when <parent orientation='block'>
 [med prior ] fix <List listStyle='tab' outlined={true}> the unselected ones should appear outlined & the whole <Tab> should have underline
-
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
-[med prior ] add autoCapitalize implementation
-[med prior ] add bird view z-Index stack
+[med prior ] fix <HamburgerMenuButton> animation
 
+[low prior ] add autoCapitalize implementation
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
-[low prior ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 
 
+
+[deferred  ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 [deferred  ] fixed minor animation_abort_effect in active-as-click
 [deferred  ] upgrade onAnimationEnd detection on excitable state (side effect of *hack* on active-as-click)
 [deferred  ] upgrade onAnimationEnd detection on animating-state (side effect of *hack* on active-as-click)
@@ -73,7 +72,7 @@ group sequences:
 // states:
 
 // floatable:
-// stackable:
+// global stackable:
 
 // components:
 

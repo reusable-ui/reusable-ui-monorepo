@@ -42,8 +42,8 @@ import {
     
     
     // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
-    StackableProps,
-    useStackable,
+    GlobalStackableProps,
+    useGlobalStackable,
     
     
     
@@ -128,7 +128,7 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
         PopupProps<TElement, TExpandedChangeEvent>,
         
         // capabilities:
-        StackableProps,
+        GlobalStackableProps,
         
         // components:
         ArrowComponentProps<Element>
@@ -154,7 +154,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // capabilities:
-    const {portalElm}                 = useStackable(props);
+    const {portalElm}                 = useGlobalStackable(props);
     
     
     
@@ -171,7 +171,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         
-        // stackable:
+        // global stackable:
         viewport       : _viewport,             // remove
         
         

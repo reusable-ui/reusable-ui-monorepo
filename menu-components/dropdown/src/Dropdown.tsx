@@ -40,8 +40,8 @@ import {
     
     
     // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
-    StackableProps,
-    useStackable,
+    GlobalStackableProps,
+    useGlobalStackable,
     
     
     
@@ -111,7 +111,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         >,
         
         // capabilities:
-        StackableProps,
+        GlobalStackableProps,
         
         // states:
         ControllableCollapsibleProps<TDropdownExpandedChangeEvent>,
@@ -146,7 +146,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // capabilities:
-    const {portalElm}            = useStackable(props);
+    const {portalElm}            = useGlobalStackable(props);
     
     
     
@@ -164,7 +164,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         
         
-        // stackable:
+        // global stackable:
         viewport     : _viewport, // remove
         
         

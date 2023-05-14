@@ -328,7 +328,7 @@ const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             
-            // stackable:
+            // global stackable:
             viewport         : modalComponent.props.viewport ?? viewport,
             
             

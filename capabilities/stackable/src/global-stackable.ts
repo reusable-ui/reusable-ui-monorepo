@@ -28,16 +28,16 @@ import {
 
 // capabilities:
 
-//#region stackable
-export interface StackableProps
+//#region global stackable
+export interface GlobalStackableProps
 {
-    // stackable:
+    // global stackable:
     viewport ?: React.RefObject<Element>|Element|null // getter ref
 }
-export const useStackable = (props: StackableProps) => {
+export const useGlobalStackable = (props: GlobalStackableProps) => {
     // rest props:
     const {
-        // stackable:
+        // global stackable:
         viewport,
     } = props;
     
@@ -82,4 +82,4 @@ export const useStackable = (props: StackableProps) => {
         portalElm,
     };
 };
-//#endregion stackable
+//#endregion global stackable
