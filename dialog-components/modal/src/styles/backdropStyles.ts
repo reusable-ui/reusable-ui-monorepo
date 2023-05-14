@@ -33,6 +33,11 @@ import {
     
     
     
+    // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context:
+    globalStacks,
+    
+    
+    
     // groups a list of UIs into a single UI:
     usesGroupable,
     
@@ -97,7 +102,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
                 position : 'fixed',    // global <Modal>: directly inside `body > portal` => fixed position
             }),
             inset        : 0,          // span the <Modal> to the edges of <container>
-            zIndex       : 1040,
+            zIndex       : globalStacks.modalBackdrop,
             
             
             
