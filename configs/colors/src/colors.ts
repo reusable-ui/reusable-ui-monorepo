@@ -127,7 +127,7 @@ const boldColor     = (color: Color): Color => color.mix(colorValuesProxy.foreg 
 
 
 //#region define colors by group
-const basics = {
+const bases = {
     blue     : Color('#0d6efd'),
     indigo   : Color('#6610f2'),
     purple   : Color('#6f42c1'),
@@ -146,18 +146,18 @@ const basics = {
 };
 
 const themes = {
-    primary   : basics.blue,
-    secondary : basics.gray,
-    success   : basics.green,
-    info      : basics.cyan,
-    warning   : basics.yellow,
-    danger    : basics.red,
+    primary   : bases.blue,
+    secondary : bases.gray,
+    success   : bases.green,
+    info      : bases.cyan,
+    warning   : bases.yellow,
+    danger    : bases.red,
     light     : Color('#f8f9fa'),
     dark      : Color('#212529'),
 };
 
 const pageBg  = {
-    backg     : basics.white,
+    backg     : bases.white,
 };
 const pageFg  = {
     foreg     : textColorInit(pageBg.backg),
@@ -215,7 +215,7 @@ const themesBold = {
 };
 
 const colorList  = {
-    ...basics,
+    ...bases,
     ...themes,
     ...pageBg,
     ...pageFg,
