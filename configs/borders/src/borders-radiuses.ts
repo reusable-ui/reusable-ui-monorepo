@@ -33,7 +33,7 @@ export const [radiuses, radiusValues, cssBorderRadiusConfig] = cssConfig(() => {
     };
     
     const defaults = {
-        default : bases.md  as BorderRadius,
+        default : bases.md   as BorderRadius,
     };
     
     return {
