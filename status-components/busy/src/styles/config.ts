@@ -13,20 +13,31 @@ import {
 
 // configs:
 export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
-    const basics = {
+    const bases = {
         // typos:
-        fontSize   : '1em'                                          as CssKnownProps['fontSize'      ],
+        fontSizeMd : '1em'                                          as CssKnownProps['fontSize'      ],
+    };
+    
+    
+    
+    const subs = {
+        // typos:
+        fontSizeSm : [['calc(', bases.fontSizeMd, '/', 1.25, ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeLg : [['calc(', bases.fontSizeMd, '*', 1.25, ')']]  as CssKnownProps['fontSize'      ],
+    };
+    
+    
+    
+    const defaults = {
+        // typos:
+        fontSize   : bases.fontSizeMd                               as CssKnownProps['fontSize'      ],
     };
     
     
     
     return {
-        ...basics,
-        
-        
-        
-        // typos:
-        fontSizeSm : [['calc(', basics.fontSize, '/', 1.25, ')']]   as CssKnownProps['fontSize'      ],
-        fontSizeLg : [['calc(', basics.fontSize, '*', 1.25, ')']]   as CssKnownProps['fontSize'      ],
+        ...bases,
+        ...subs,
+        ...defaults,
     };
 }, { prefix: 'busy' });
