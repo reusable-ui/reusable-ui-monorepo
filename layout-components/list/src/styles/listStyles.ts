@@ -144,6 +144,9 @@ export const usesListLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
+    // features:
+    const {borderRule, borderVars} = usesBorder(lists);
+    
     // capabilities:
     const {groupableRule} = usesGroupable({
         ...options,
@@ -154,9 +157,6 @@ export const usesListLayout = (options?: OrientationableOptions) => {
         orientationBlockSelector  : parentOrientationBlockSelector,
         itemsSelector             : wrapperElm,
     });
-    
-    // features:
-    const {borderRule, borderVars} = usesBorder(lists);
     
     
     
