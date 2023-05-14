@@ -107,18 +107,6 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     
     // dependencies:
     
-    // capabilities:
-    const {groupableRule} = usesGroupable({
-        orientationInlineSelector : parentOrientationInlineSelector,
-        orientationBlockSelector  : parentOrientationBlockSelector,
-        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
-    });
-    const {separatorRule} = usesGroupable({
-        orientationInlineSelector : parentOrientationInlineSelector,
-        orientationBlockSelector  : parentOrientationBlockSelector,
-        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
-    });
-    
     // features:
     const {
         borderRule: trackBorderRule,
@@ -149,6 +137,18 @@ export const usesRangeLayout = (options?: OrientationableOptions) => {
     );
     
     const {rangeRule, rangeVars} = usesRange();
+    
+    // capabilities:
+    const {groupableRule} = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
+    });
+    const {separatorRule} = usesGroupable({
+        orientationInlineSelector : parentOrientationInlineSelector,
+        orientationBlockSelector  : parentOrientationBlockSelector,
+        itemsSelector             : [trackLowerElm, trackUpperElm], // only select <trackLower> & <trackUpper>, do not modify the <thumb>
+    });
     
     
     
