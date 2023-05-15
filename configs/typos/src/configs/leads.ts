@@ -25,7 +25,7 @@ import {
 export const [leads, leadValues, cssLeadConfig] = cssConfig(() => {
     return {
         // foregrounds:
-        foreg             : pargs.foreg             as CssKnownProps['foreground'],
+        foreg             : pargs.foreg             as CssKnownProps['foreground'       ],
         
         
         
@@ -38,12 +38,12 @@ export const [leads, leadValues, cssLeadConfig] = cssConfig(() => {
         
         
         // typos:
-        fontSize          : typos.fontSizeMd        as CssKnownProps['fontSize'      ],
-        fontFamily        : pargs.fontFamily        as CssKnownProps['fontFamily'    ],
-        fontWeight        : typos.fontWeightLight   as CssKnownProps['fontWeight'    ],
-        fontStyle         : pargs.fontStyle         as CssKnownProps['fontStyle'     ],
-        textDecoration    : pargs.textDecoration    as CssKnownProps['textDecoration'],
-        lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'    ],
+        fontSize          : typos.fontSizeMd        as CssKnownProps['fontSize'         ],
+        fontFamily        : pargs.fontFamily        as CssKnownProps['fontFamily'       ],
+        fontWeight        : typos.fontWeightLight   as CssKnownProps['fontWeight'       ],
+        fontStyle         : pargs.fontStyle         as CssKnownProps['fontStyle'        ],
+        textDecoration    : pargs.textDecoration    as CssKnownProps['textDecoration'   ],
+        lineHeight        : pargs.lineHeight        as CssKnownProps['lineHeight'       ],
     };
 }, { prefix: 'lead' });
 export { leads as default }

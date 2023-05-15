@@ -21,12 +21,12 @@ import {
 export const [horzRules, horzRuleValues, cssHorzRuleConfig] = cssConfig(() => {
     return {
         // appearances:
-        opacity        : 0.25               as CssKnownProps['opacity'],
+        opacity           : 0.25            as CssKnownProps['opacity'          ],
         
         
         
         // foregrounds:
-        foreg          : 'inherit'          as CssKnownProps['foreground'],
+        foreg             : 'inherit'       as CssKnownProps['foreground'       ],
         
         
         
