@@ -42,21 +42,27 @@ export type Border      = CssComplexValueOf<CssKnownValueOf<'border'>>
 //#region configs
 export const [borders, borderValues, cssBorderConfig] = cssConfig(() => {
     const widths = {
-        none  : '0px'          as BorderWidth,
-        hair  : '1px'          as BorderWidth,
-        thin  : '2px'          as BorderWidth,
-        bold  : '4px'          as BorderWidth,
+        none         : '0px'                                        as BorderWidth,
+        hair         : '1px'                                        as BorderWidth,
+        thin         : '2px'                                        as BorderWidth,
+        bold         : '4px'                                        as BorderWidth,
     };
+    
+    
     
     const styles = {
-        color : 'currentColor' as BorderColor,
-        style : 'solid'        as BorderStyle,
+        color        : 'currentColor'                               as BorderColor,
+        style        : 'solid'                                      as BorderStyle,
     };
     
+    
+    
     const defaults = {
-        defaultWidth : widths.hair                                 as BorderWidth,
-        default      : [[styles.style, widths.hair, styles.color]] as Border,
+        defaultWidth : widths.hair                                  as BorderWidth,
+        default      : [[styles.style, widths.hair, styles.color]]  as Border,
     };
+    
+    
     
     return {
         ...widths,
