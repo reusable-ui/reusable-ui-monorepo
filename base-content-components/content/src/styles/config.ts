@@ -25,22 +25,37 @@ import {
 
 // configs:
 export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // animations:
-        transition      : basics.transition as CssKnownProps['transition'],
+        transition      : basics.transition     as CssKnownProps['transition'],
         
-        mediaTransition : basics.transition as CssKnownProps['transition'],
+        mediaTransition : basics.transition     as CssKnownProps['transition'],
         
         
         
         // spacings:
-        paddingInline   : spacers.default   as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlock    : spacers.default   as CssKnownProps['paddingBlock' ], // override to <Basic>
-        paddingInlineSm : spacers.sm        as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlockSm  : spacers.sm        as CssKnownProps['paddingBlock' ], // override to <Basic>
-        paddingInlineLg : spacers.lg        as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlockLg  : spacers.lg        as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineSm : spacers.sm            as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockSm  : spacers.sm            as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineMd : spacers.md            as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockMd  : spacers.md            as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInlineLg : spacers.lg            as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlockLg  : spacers.lg            as CssKnownProps['paddingBlock' ], // override to <Basic>
         
-        linkSpacing     : spacers.sm        as CssKnownProps['gapInline'],
+        linkSpacing     : spacers.sm            as CssKnownProps['gapInline'],
+    };
+    
+    
+    
+    const defaults = {
+        // spacings:
+        paddingInline : bases.paddingInlineMd   as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlock  : bases.paddingBlockMd    as CssKnownProps['paddingBlock' ], // override to <Basic>
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'ct' });
