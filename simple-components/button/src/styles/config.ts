@@ -19,24 +19,39 @@ import {
 
 // configs:
 export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // spacings:
-        gapInline          : spacers.sm as CssKnownProps['gapInline'],
-        gapBlock           : spacers.sm as CssKnownProps['gapBlock' ],
-        gapInlineSm        : spacers.xs as CssKnownProps['gapInline'],
-        gapBlockSm         : spacers.xs as CssKnownProps['gapBlock' ],
-        gapInlineLg        : spacers.md as CssKnownProps['gapInline'],
-        gapBlockLg         : spacers.md as CssKnownProps['gapBlock' ],
+        gapInlineSm        : spacers.xs         as CssKnownProps['gapInline'],
+        gapBlockSm         : spacers.xs         as CssKnownProps['gapBlock' ],
+        gapInlineMd        : spacers.sm         as CssKnownProps['gapInline'],
+        gapBlockMd         : spacers.sm         as CssKnownProps['gapBlock' ],
+        gapInlineLg        : spacers.md         as CssKnownProps['gapInline'],
+        gapBlockLg         : spacers.md         as CssKnownProps['gapBlock' ],
         
         
         
         // typos:
-        whiteSpace         : 'normal'   as CssKnownProps['whiteSpace'],
+        whiteSpace         : 'normal'           as CssKnownProps['whiteSpace'],
         
         
         
         // ghost style:
-        ghostOpacity       : 0.5        as CssKnownProps['opacity'],
-        ghostOpacityArrive : 1          as CssKnownProps['opacity'],
+        ghostOpacity       : 0.5                as CssKnownProps['opacity'],
+        ghostOpacityArrive : 1                  as CssKnownProps['opacity'],
+    };
+    
+    
+    
+    const defaults = {
+        // spacings:
+        gapInline          : bases.gapInlineMd  as CssKnownProps['gapInline'],
+        gapBlock           : bases.gapBlockMd   as CssKnownProps['gapBlock' ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'btn' });
