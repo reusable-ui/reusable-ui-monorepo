@@ -48,8 +48,8 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
     
     const defaults = {
         // spacings:
-        paddingInline : bases.paddingInlineMd   as CssKnownProps['paddingInline'], // override to <Basic>
-        paddingBlock  : bases.paddingBlockMd    as CssKnownProps['paddingBlock' ], // override to <Basic>
+        paddingInline   : bases.paddingInlineMd as CssKnownProps['paddingInline'], // override to <Basic>
+        paddingBlock    : bases.paddingBlockMd  as CssKnownProps['paddingBlock' ], // override to <Basic>
     };
     
     
