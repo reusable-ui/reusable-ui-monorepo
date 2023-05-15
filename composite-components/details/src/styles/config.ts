@@ -19,10 +19,10 @@ import {
 
 // configs:
 export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // layouts:
-        togglerDisplay   : 'block'                  as CssKnownProps['display'  ],
-        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'],
+        togglerDisplay   : 'block'                  as CssKnownProps['display'     ],
+        togglerTextAlign : 'start'                  as CssKnownProps['textAlign'   ],
         
         
         
@@ -31,8 +31,22 @@ export const [details, detailsValues, cssDetailsConfig] = cssConfig(() => {
         borderWidth      : basics.borderWidth       as CssKnownProps['borderWidth' ],
         borderColor      : basics.borderColor       as CssKnownProps['borderColor' ],
         
-        borderRadius     : basics.borderRadius      as CssKnownProps['borderRadius'],
         borderRadiusSm   : basics.borderRadiusSm    as CssKnownProps['borderRadius'],
+        borderRadiusMd   : basics.borderRadiusMd    as CssKnownProps['borderRadius'],
         borderRadiusLg   : basics.borderRadiusLg    as CssKnownProps['borderRadius'],
+    };
+    
+    
+    
+    const defaults = {
+        // borders:
+        borderRadius     : bases.borderRadiusMd     as CssKnownProps['borderRadius'],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'dtl' });
