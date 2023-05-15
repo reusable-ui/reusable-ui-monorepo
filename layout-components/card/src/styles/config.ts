@@ -19,14 +19,14 @@ import {
 
 // configs:
 export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // borders:
         borderStyle    : basics.borderStyle     as CssKnownProps['borderStyle' ],
         borderWidth    : basics.borderWidth     as CssKnownProps['borderWidth' ],
         borderColor    : basics.borderColor     as CssKnownProps['borderColor' ],
         
-        borderRadius   : basics.borderRadius    as CssKnownProps['borderRadius'],
         borderRadiusSm : basics.borderRadiusSm  as CssKnownProps['borderRadius'],
+        borderRadiusMd : basics.borderRadiusMd  as CssKnownProps['borderRadius'],
         borderRadiusLg : basics.borderRadiusLg  as CssKnownProps['borderRadius'],
         
         
@@ -53,5 +53,19 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
             'brightness(70%)',
             'contrast(140%)',
         ]]                                      as CssKnownProps['filter'],
+    };
+    
+    
+    
+    const defaults = {
+        // borders:
+        borderRadius   : bases.borderRadiusMd   as CssKnownProps['borderRadius'],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'card' });
