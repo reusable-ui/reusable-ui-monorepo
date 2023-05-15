@@ -19,13 +19,28 @@ import {
 
 // configs:
 export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // spacings:
-        gapInline   : spacers.md    as CssKnownProps['gapInline'],
-        gapBlock    : spacers.md    as CssKnownProps['gapBlock' ],
-        gapInlineSm : spacers.sm    as CssKnownProps['gapInline'],
-        gapBlockSm  : spacers.sm    as CssKnownProps['gapBlock' ],
-        gapInlineLg : spacers.lg    as CssKnownProps['gapInline'],
-        gapBlockLg  : spacers.lg    as CssKnownProps['gapBlock' ],
+        gapInlineSm : spacers.sm        as CssKnownProps['gapInline'],
+        gapBlockSm  : spacers.sm        as CssKnownProps['gapBlock' ],
+        gapInlineMd : spacers.md        as CssKnownProps['gapInline'],
+        gapBlockMd  : spacers.md        as CssKnownProps['gapBlock' ],
+        gapInlineLg : spacers.lg        as CssKnownProps['gapInline'],
+        gapBlockLg  : spacers.lg        as CssKnownProps['gapBlock' ],
+    };
+    
+    
+    
+    const defaults = {
+        // spacings:
+        gapInline   : bases.gapInlineMd as CssKnownProps['gapInline'],
+        gapBlock    : bases.gapBlockMd  as CssKnownProps['gapBlock' ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'alrt' });
