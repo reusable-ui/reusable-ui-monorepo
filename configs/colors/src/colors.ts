@@ -128,46 +128,46 @@ const boldColor     = (color: Color): Color => color.mix(colorValuesProxy.foreg 
 
 //#region define colors by group
 const bases = {
-    blue     : Color('#0d6efd'),
-    indigo   : Color('#6610f2'),
-    purple   : Color('#6f42c1'),
-    pink     : Color('#d63384'),
-    red      : Color('#dc3545'),
-    orange   : Color('#fd7e14'),
-    yellow   : Color('#ffc107'),
-    green    : Color('#198754'),
-    teal     : Color('#20c997'),
-    cyan     : Color('#0dcaf0'),
+    blue          : Color('#0d6efd'),
+    indigo        : Color('#6610f2'),
+    purple        : Color('#6f42c1'),
+    pink          : Color('#d63384'),
+    red           : Color('#dc3545'),
+    orange        : Color('#fd7e14'),
+    yellow        : Color('#ffc107'),
+    green         : Color('#198754'),
+    teal          : Color('#20c997'),
+    cyan          : Color('#0dcaf0'),
     
-    black    : Color('#000000'),
-    white    : Color('#ffffff'),
-    gray     : Color('#6c757d'),
-    grayDark : Color('#343a40'),
+    black         : Color('#000000'),
+    white         : Color('#ffffff'),
+    gray          : Color('#6c757d'),
+    grayDark      : Color('#343a40'),
 };
 
 const themes = {
-    primary   : bases.blue,
-    secondary : bases.gray,
-    success   : bases.green,
-    info      : bases.cyan,
-    warning   : bases.yellow,
-    danger    : bases.red,
-    light     : Color('#f8f9fa'),
-    dark      : Color('#212529'),
+    primary       : bases.blue,
+    secondary     : bases.gray,
+    success       : bases.green,
+    info          : bases.cyan,
+    warning       : bases.yellow,
+    danger        : bases.red,
+    light         : Color('#f8f9fa'),
+    dark          : Color('#212529'),
 };
 
 const pageBg  = {
-    backg     : bases.white,
+    backg         : bases.white,
 };
 const pageFg  = {
-    foreg     : textColorInit(pageBg.backg),
+    foreg         : textColorInit(pageBg.backg),
 };
 const pageMix = {
-    backgThin : thinColor(pageBg.backg),
-    backgBold : boldColorInit(pageBg.backg),
+    backgThin     : thinColor(pageBg.backg),
+    backgBold     : boldColorInit(pageBg.backg),
     
-    foregThin : thinColor(pageFg.foreg),
-    foregMild : mildColorInit(pageFg.foreg),
+    foregThin     : thinColor(pageFg.foreg),
+    foregMild     : mildColorInit(pageFg.foreg),
 };
 
 const themesText = {
