@@ -21,6 +21,6 @@ import {
 export const [modalSides, modalSideValues, cssModalSideConfig] = cssConfig(() => {
     return {
         // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
+        cardCaptionGap : spacers.default    as CssKnownProps['gap'         ],
     };
 }, { prefix: 'mdlsde' });

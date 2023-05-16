@@ -21,12 +21,12 @@ import {
 export const [modalCards, modalCardValues, cssModalCardConfig] = cssConfig(() => {
     return {
         // positions:
-        horzAlign : 'center'                as CssKnownProps['justifyItems'],
-        vertAlign : 'center'                as CssKnownProps['alignItems'  ],
+        horzAlign      : 'center'           as CssKnownProps['justifyItems'],
+        vertAlign      : 'center'           as CssKnownProps['alignItems'  ],
         
         
         
         // spacings:
-        cardCaptionGap : spacers.default    as CssKnownProps['gap'],
+        cardCaptionGap : spacers.default    as CssKnownProps['gap'         ],
     };
 }, { prefix: 'mdlcrd' });
