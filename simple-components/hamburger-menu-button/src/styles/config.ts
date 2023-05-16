@@ -14,6 +14,12 @@ import {
     cssConfig,
 }                           from '@cssfn/core'                  // writes css in javascript
 
+// reusable-ui components:
+import {
+    // configs:
+    basics,
+}                           from '@reusable-ui/basic'           // a base component
+
 
 
 // configs:
@@ -92,20 +98,23 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
     
     
     
-    const hamburgerAnimDuration = '300ms';
-    
-    return {
+    const bases = {
         // animations:
-        hamburgerTopTransformIn  : topTransformCrossed        as CssKnownProps['transform'],
-        hamburgerMidTransformIn  : midTransformCrossed        as CssKnownProps['transform'],
-        hamburgerBtmTransformIn  : btmTransformCrossed        as CssKnownProps['transform'],
+        hamburgerTopTransformIn  : topTransformCrossed      as CssKnownProps['transform'        ],
+        hamburgerMidTransformIn  : midTransformCrossed      as CssKnownProps['transform'        ],
+        hamburgerBtmTransformIn  : btmTransformCrossed      as CssKnownProps['transform'        ],
         
-        hamburgerTopTransformOut : topTransformHamburger      as CssKnownProps['transform'],
-        hamburgerMidTransformOut : midTransformHamburger      as CssKnownProps['transform'],
-        hamburgerBtmTransformOut : btmTransformHamburger      as CssKnownProps['transform'],
+        hamburgerTopTransformOut : topTransformHamburger    as CssKnownProps['transform'        ],
+        hamburgerMidTransformOut : midTransformHamburger    as CssKnownProps['transform'        ],
+        hamburgerBtmTransformOut : btmTransformHamburger    as CssKnownProps['transform'        ],
         
-        
-        
+        animationDuration        : basics.animationDuration as CssKnownProps['animationDuration'],
+    };
+    
+    
+    
+    const subs = {
+        // animations:
         ...keyframesCrossingTopRule,
         ...keyframesHamburgeringTopRule,
         ...keyframesCrossingMidRule,
@@ -113,26 +122,31 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
         ...keyframesCrossingBtmRule,
         ...keyframesHamburgeringBtmRule,
         
-        hamburgerAnimDuration : hamburgerAnimDuration   as CssKnownProps['animationDuration'],
+        hamburgerTopAnimIn       : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesCrossingTop    ],
+        ]                                                   as CssKnownProps['animation'        ],
+        hamburgerMidAnimIn       : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesCrossingMid    ],
+        ]                                                   as CssKnownProps['animation'        ],
+        hamburgerBtmAnimIn       : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesCrossingBtm    ],
+        ]                                                   as CssKnownProps['animation'        ],
         
-        hamburgerTopAnimIn    : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingTop    ],
-        ]                                               as CssKnownProps['animation'],
-        hamburgerMidAnimIn    : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingMid    ],
-        ]                                               as CssKnownProps['animation'],
-        hamburgerBtmAnimIn    : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesCrossingBtm    ],
-        ]                                               as CssKnownProps['animation'],
-        
-        hamburgerTopAnimOut   : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringTop],
-        ]                                               as CssKnownProps['animation'],
-        hamburgerMidAnimOut   : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringMid],
-        ]                                               as CssKnownProps['animation'],
-        hamburgerBtmAnimOut   : [
-            [hamburgerAnimDuration, 'ease-out', 'both', keyframesHamburgeringBtm],
-        ]                                               as CssKnownProps['animation'],
+        hamburgerTopAnimOut      : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesHamburgeringTop],
+        ]                                                   as CssKnownProps['animation'        ],
+        hamburgerMidAnimOut      : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesHamburgeringMid],
+        ]                                                   as CssKnownProps['animation'        ],
+        hamburgerBtmAnimOut      : [
+            [bases.animationDuration, 'ease-out', 'both', keyframesHamburgeringBtm],
+        ]                                                   as CssKnownProps['animation'        ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...subs,
     };
 }, { prefix: 'hbgmn' });
