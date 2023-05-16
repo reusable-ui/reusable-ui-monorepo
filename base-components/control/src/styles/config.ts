@@ -44,7 +44,7 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     
     //#region keyframes
-    const frameBlurred  = style({
+    const frameBlurred = style({
         boxShadow : [
             ...boxShadows.filter((b) => (b !== boxShadowFocus)), // the rest boxShadow(s)
         ],
@@ -68,12 +68,12 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     
     
-    const frameLeft = style({
+    const frameLeft    = style({
         filter : [[
             ...filters.filter((f) => (f !== filterArrive)), // the rest filter(s)
         ]],
     });
-    const frameArrived  = style({
+    const frameArrived = style({
         filter : [[
             ...filters.filter((f) => (f !== filterArrive)), // the rest filter(s)
             filterArrive, // the interpolating filter
@@ -95,7 +95,7 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
     
     return {
         // accessibilities:
-        cursorDisable  : 'not-allowed'  as CssKnownProps['cursor'],
+        cursorDisable  : 'not-allowed'  as CssKnownProps['cursor'   ],
         
         
         
@@ -106,7 +106,7 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
         filterArrive   : [[
             'brightness(85%)',
             'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
-        ]]                              as CssKnownProps['filter'],
+        ]]                              as CssKnownProps['filter'   ],
         
         ...keyframesFocusRule,
         ...keyframesBlurRule,
