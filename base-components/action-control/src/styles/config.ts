@@ -67,7 +67,7 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
         from : frameReleased,
         to   : framePressed,
     });
-    keyframesPressAsActive.value   = `${keyframesPress.value}as-active`;     // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
+    keyframesPressAsActive.value    = `${keyframesPress.value}as-active`;    // the @keyframes name should contain 'active'  in order to be recognized by `useActivatable`
     const [keyframesReleaseAsPassiveRule, keyframesReleaseAsPassive] = keyframes({
         from : framePressed,
         to   : frameReleased,
@@ -79,33 +79,33 @@ export const [actionControls, actionControlValues, cssActionControlConfig] = css
     
     return {
         // accessibilities:
-        cursor      : 'pointer' as CssKnownProps['cursor'],
+        cursor               : 'pointer'    as CssKnownProps['cursor'   ],
         
         
         
         // animations:
-        filterPress : [[
+        filterPress          : [[
             'brightness(65%)',
             'contrast(150%)',
-        ]]                      as CssKnownProps['filter'],
+        ]]                                  as CssKnownProps['filter'   ],
         
         ...keyframesPressRule,
         ...keyframesReleaseRule,
-        animPress   : [
+        animPress            : [
             ['150ms', 'ease-out', 'both', keyframesPress ],
-        ]                       as CssKnownProps['animation'],
-        animRelease : [
+        ]                                   as CssKnownProps['animation'],
+        animRelease          : [
             ['300ms', 'ease-out', 'both', keyframesRelease],
-        ]                       as CssKnownProps['animation'],
+        ]                                   as CssKnownProps['animation'],
         
         // supports for `usesActiveAsClick()`:
         ...keyframesPressAsActiveRule,
         ...keyframesReleaseAsPassiveRule,
-        animPressAsActive   : [
+        animPressAsActive    : [
             ['150ms', 'ease-out', 'both', keyframesPressAsActive   ],
-        ]                       as CssKnownProps['animation'],
+        ]                                   as CssKnownProps['animation'],
         animReleaseAsPassive : [
             ['300ms', 'ease-out', 'both', keyframesReleaseAsPassive],
-        ]                       as CssKnownProps['animation'],
+        ]                                   as CssKnownProps['animation'],
     };
 }, { prefix: 'act' });
