@@ -35,7 +35,7 @@ export const [buttons, buttonValues, cssButtonConfig] = cssConfig(() => {
         
         
         
-        // ghost style:
+        // ghosts:
         ghostOpacity       : 0.5                as CssKnownProps['opacity'   ],
         ghostOpacityArrive : 1                  as CssKnownProps['opacity'   ],
     };
