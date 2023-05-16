@@ -32,7 +32,7 @@ import {
 // configs:
 export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
     //#region keyframes
-    const [barKeyframesRunningRule, barKeyframesRunning] = keyframes({
+    const [barKeyframesRunningRule     , barKeyframesRunning     ] = keyframes({
         from  : {
             backgroundPositionX : ['1rem', 0],
         },
@@ -68,8 +68,8 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         
         
         // backgrounds:
-        backgGrad      : basics.backgGrad                           as CssKnownProps['backgroundImage'],
-        backgGradBlock : (() => {
+        backgGrad                : basics.backgGrad                 as CssKnownProps['backgroundImage'],
+        backgGradBlock           : (() => {
             const value = [[...(basicValues.backgGrad as Extract<CssKnownProps['backgroundImage'], any[][]>)[0]]] as Extract<CssKnownProps['backgroundImage'], any[][]>;
             value[0][0] = value[0][0].toString().replace('180deg', '270deg');
             return value;
