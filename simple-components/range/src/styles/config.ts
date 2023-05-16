@@ -30,34 +30,39 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
         
         
         // accessibilities:
-        cursor               : 'col-resize'         as CssKnownProps['cursor'],
-        cursorBlock          : 'row-resize'         as CssKnownProps['cursor'],
+        cursor               : 'col-resize'         as CssKnownProps['cursor'       ],
+        cursorBlock          : 'row-resize'         as CssKnownProps['cursor'       ],
         
         
         
-        trackInlineSize      : 'auto'               as CssKnownProps['inlineSize'],
-        trackBlockSize       : '0.4em'              as CssKnownProps['blockSize' ],
-        trackBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius'],
+        // tracks:
+        trackInlineSize      : 'auto'               as CssKnownProps['inlineSize'   ],
+        trackBlockSize       : '0.4em'              as CssKnownProps['blockSize'    ],
+        trackBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius' ],
         trackPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
         trackPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
         
-        trackInlineSizeBlock : '0.4em'              as CssKnownProps['inlineSize'],
-        trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize' ],
+        trackInlineSizeBlock : '0.4em'              as CssKnownProps['inlineSize'   ],
+        trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize'    ],
         
+        // tracklowers:
         tracklowerFilter     : [[
             'brightness(0.9)',
-        ]]                                          as CssKnownProps['filter'],
+        ]]                                          as CssKnownProps['filter'       ],
+        
+        // trackuppers:
         trackupperFilter     : [[
             'brightness(0.85)',
             'contrast(0.5)',
             'saturate(0)',
-        ]]                                          as CssKnownProps['filter'],
+        ]]                                          as CssKnownProps['filter'       ],
         
         
         
-        thumbInlineSize      : '1em'                as CssKnownProps['inlineSize'],
-        thumbBlockSize       : '1em'                as CssKnownProps['blockSize' ],
-        thumbBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius'],
+        // thumbs:
+        thumbInlineSize      : '1em'                as CssKnownProps['inlineSize'   ],
+        thumbBlockSize       : '1em'                as CssKnownProps['blockSize'    ],
+        thumbBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius' ],
         thumbPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
         thumbPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
     };
