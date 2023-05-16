@@ -27,9 +27,9 @@ import {
 export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
     const bases = {
         // animations:
-        transition      : basics.transition     as CssKnownProps['transition'],
+        transition      : basics.transition     as CssKnownProps['transition'   ],
         
-        mediaTransition : basics.transition     as CssKnownProps['transition'],
+        mediaTransition : basics.transition     as CssKnownProps['transition'   ],
         
         
         
@@ -41,7 +41,7 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
         paddingInlineLg : spacers.lg            as CssKnownProps['paddingInline'], // override to <Basic>
         paddingBlockLg  : spacers.lg            as CssKnownProps['paddingBlock' ], // override to <Basic>
         
-        linkSpacing     : spacers.sm            as CssKnownProps['gapInline'],
+        linkSpacing     : spacers.sm            as CssKnownProps['gapInline'    ],
     };
     
     
