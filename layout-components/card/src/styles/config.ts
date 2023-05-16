@@ -32,14 +32,14 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         
         
         // animations:
-        transition     : basics.transition      as CssKnownProps['transition'],
-        itemTransition : basics.transition      as CssKnownProps['transition'],
+        transition     : basics.transition      as CssKnownProps['transition'  ],
+        itemTransition : basics.transition      as CssKnownProps['transition'  ],
         
         
         
         // sizes:
-        boxSizing      : 'border-box'           as CssKnownProps['boxSizing'], // the final size is including borders & paddings
-        blockSize      : '100%'                 as CssKnownProps['blockSize'], // fills the entire parent's height if the parent has a specific height, otherwise no effect
+        boxSizing      : 'border-box'           as CssKnownProps['boxSizing'   ], // the final size is including borders & paddings
+        blockSize      : '100%'                 as CssKnownProps['blockSize'   ], // fills the entire parent's height if the parent has a specific height, otherwise no effect
         
         
         
@@ -52,7 +52,7 @@ export const [cards, cardValues, cssCardConfig] = cssConfig(() => {
         captionFilter  : [[
             'brightness(70%)',
             'contrast(140%)',
-        ]]                                      as CssKnownProps['filter'],
+        ]]                                      as CssKnownProps['filter'      ],
     };
     
     
