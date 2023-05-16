@@ -15,22 +15,22 @@ import {
 export const [busies, busyValues, cssBusyConfig] = cssConfig(() => {
     const bases = {
         // typos:
-        fontSizeMd : '1em'                                          as CssKnownProps['fontSize'      ],
+        fontSizeMd : '1em'                                          as CssKnownProps['fontSize'],
     };
     
     
     
     const subs = {
         // typos:
-        fontSizeSm : [['calc(', bases.fontSizeMd, '/', 1.25, ')']]  as CssKnownProps['fontSize'      ],
-        fontSizeLg : [['calc(', bases.fontSizeMd, '*', 1.25, ')']]  as CssKnownProps['fontSize'      ],
+        fontSizeSm : [['calc(', bases.fontSizeMd, '/', 1.25, ')']]  as CssKnownProps['fontSize'],
+        fontSizeLg : [['calc(', bases.fontSizeMd, '*', 1.25, ')']]  as CssKnownProps['fontSize'],
     };
     
     
     
     const defaults = {
         // typos:
-        fontSize   : bases.fontSizeMd                               as CssKnownProps['fontSize'      ],
+        fontSize   : bases.fontSizeMd                               as CssKnownProps['fontSize'],
     };
     
     
