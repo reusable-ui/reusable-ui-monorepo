@@ -89,7 +89,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
      // modalUiBoxShadow    : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]   as CssKnownProps['boxShadow' ],
         modalUiFilter: [
             ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ]                                                           as CssKnownProps['filter'],
+        ]                                                           as CssKnownProps['filter'    ],
         
         
         
@@ -98,18 +98,18 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
         ...keyframesCollapseRule,
         animExpand          : [
             ['300ms', 'ease-out', 'both', keyframesExpand  ],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation' ],
         animCollapse        : [
             ['300ms', 'ease-in' , 'both', keyframesCollapse],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation' ],
         
         modalUiFilterExcite : [[
             'invert(80%)',
-        ]]                                                          as CssKnownProps['filter'   ],
+        ]]                                                          as CssKnownProps['filter'    ],
         
         ...modalUiKeyframesExciteRule,
         modalUiAnimExcite   : [
             ['150ms', 'ease', 'both', 'alternate-reverse', 5, modalUiKeyframesExcite],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation' ],
     };
 }, { prefix: 'mdl' });
