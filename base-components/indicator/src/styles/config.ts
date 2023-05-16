@@ -98,10 +98,10 @@ export const [indicators, indicatorValues, cssIndicatorConfig] = cssConfig(() =>
         filterDisable : [[
             'grayscale(50%)',
             'contrast(50%)',
-        ]]                          as CssKnownProps['filter'],
+        ]]                          as CssKnownProps['filter'   ],
         filterActive  : [[
             'brightness(100%)',
-        ]]                          as CssKnownProps['filter'],
+        ]]                          as CssKnownProps['filter'   ],
         
         ...keyframesDisableRule,
         ...keyframesEnableRule,
