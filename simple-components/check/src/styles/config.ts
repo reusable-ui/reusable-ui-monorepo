@@ -33,7 +33,7 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
     
     
     //#region keyframes
-    const frameChecked = style({
+    const frameChecked  = style({
         filter    : [[
             checkFilterIn,
         ]],
@@ -42,7 +42,7 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
             checkTransformIn,
         ]],
     });
-    const frameCleared = style({
+    const frameCleared  = style({
         filter    : [[
             checkFilterOut,
         ]],
@@ -51,16 +51,16 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
             checkTransformOut,
         ]],
     });
-    const [keyframesCheckRule, keyframesCheck] = keyframes({
+    const [keyframesRegularCheckRule, keyframesRegularCheck] = keyframes({
         from  : frameCleared,
         to    : frameChecked,
     });
-    keyframesCheck.value = 'check'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
-    const [keyframesClearRule, keyframesClear] = keyframes({
+    keyframesRegularCheck.value = 'regularCheck'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
+    const [keyframesRegularClearRule, keyframesRegularClear] = keyframes({
         from  : frameChecked,
         to    : frameCleared,
     });
-    keyframesClear.value = 'clear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
+    keyframesRegularClear.value = 'regularClear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
     
     
     
@@ -78,18 +78,18 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
             checkTransformOut,
         ]],
     });
-    const [keyframesSwitchCheckRule, keyframesSwitchCheck] = keyframes({
+    const [keyframesSwitchCheckRule, keyframesSwitchCheck]   = keyframes({
         from  : frameCleared,
         '50%' : frameChecking,
         to    : frameChecked,
     });
-    keyframesSwitchCheck.value = 'switchCheck'; // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
-    const [keyframesSwitchClearRule, keyframesSwitchClear] = keyframes({
+    keyframesSwitchCheck.value  = 'switchCheck';  // the @keyframes name should contain 'check' in order to be recognized by `usesCheckable`
+    const [keyframesSwitchClearRule, keyframesSwitchClear]   = keyframes({
         from  : frameChecked,
         '50%' : frameClearing,
         to    : frameCleared,
     });
-    keyframesSwitchClear.value = 'switchClear'; // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
+    keyframesSwitchClear.value  = 'switchClear';  // the @keyframes name should contain 'clear' in order to be recognized by `usesCheckable`
     //#endregion keyframes
     
     
@@ -115,13 +115,13 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         checkTransformIn        : 'initial' as CssKnownProps['transform'],
         checkTransformOut       : 'initial' as CssKnownProps['transform'],
         
-        ...keyframesCheckRule,
-        ...keyframesClearRule,
+        ...keyframesRegularCheckRule,
+        ...keyframesRegularClearRule,
         checkAnimIn             : [
-            ['150ms', 'ease-out', 'both', keyframesCheck      ],
+            ['150ms', 'ease-out', 'both', keyframesRegularCheck],
         ]                                   as CssKnownProps['animation'],
         checkAnimOut            : [
-            ['150ms', 'ease-out', 'both', keyframesClear      ],
+            ['150ms', 'ease-out', 'both', keyframesRegularClear],
         ]                                   as CssKnownProps['animation'],
         
         
@@ -141,10 +141,10 @@ export const [checks, checkValues, cssCheckConfig] = cssConfig(() => {
         ...keyframesSwitchCheckRule,
         ...keyframesSwitchClearRule,
         switchCheckAnimIn       : [
-            ['200ms', 'ease-out', 'both', keyframesSwitchCheck],
+            ['200ms', 'ease-out', 'both', keyframesSwitchCheck ],
         ]                                   as CssKnownProps['animation'],
         switchCheckAnimOut      : [
-            ['200ms', 'ease-out', 'both', keyframesSwitchClear],
+            ['200ms', 'ease-out', 'both', keyframesSwitchClear ],
         ]                                   as CssKnownProps['animation'],
     };
 }, { prefix: 'chk' });
