@@ -25,32 +25,33 @@ export const [icons, iconValues, cssIconConfig] = cssConfig(() => {
         altColor   : 'gray'                                         as CssKnownProps['backgroundColor'],
         
         
+        
         // sizes:
-        sizeMd     : '24px'                                         as CssKnownProps['blockSize'],
+        sizeMd     : '24px'                                         as CssKnownProps['blockSize'      ],
         
         
         
         // animations:
-        transition : basicConfigVars.transition                     as CssKnownProps['transition'],
+        transition : basicConfigVars.transition                     as CssKnownProps['transition'     ],
     };
     
     
     
     const subs = {
         // sizes:
-        sizeXs     : [['calc(', bases.sizeMd, '*', 0.50  , ')']]    as CssKnownProps['blockSize'],
-        sizeSm     : [['calc(', bases.sizeMd, '*', 0.75  , ')']]    as CssKnownProps['blockSize'],
-        sizeMd     :            bases.sizeMd                        as CssKnownProps['blockSize'],
-        sizeLg     : [['calc(', bases.sizeMd, '*', 1.50  , ')']]    as CssKnownProps['blockSize'],
-        sizeXl     : [['calc(', bases.sizeMd, '*', 2.00  , ')']]    as CssKnownProps['blockSize'],
-        size1em    : '1em'                                          as CssKnownProps['blockSize'],
+        sizeXs     : [['calc(', bases.sizeMd, '*', 0.50  , ')']]    as CssKnownProps['blockSize'      ],
+        sizeSm     : [['calc(', bases.sizeMd, '*', 0.75  , ')']]    as CssKnownProps['blockSize'      ],
+        
+        sizeLg     : [['calc(', bases.sizeMd, '*', 1.50  , ')']]    as CssKnownProps['blockSize'      ],
+        sizeXl     : [['calc(', bases.sizeMd, '*', 2.00  , ')']]    as CssKnownProps['blockSize'      ],
+        size1em    : '1em'                                          as CssKnownProps['blockSize'      ],
     };
     
     
     
     const defaults = {
         // sizes:
-        size       :            subs.sizeMd                         as CssKnownProps['blockSize'],
+        size       :            bases.sizeMd                        as CssKnownProps['blockSize'      ],
     };
     
     
