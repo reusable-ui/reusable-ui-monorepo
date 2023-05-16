@@ -20,7 +20,7 @@ export const [inputs, inputValues, cssInputConfig] = cssConfig(() => {
         
         
         // backgrounds:
-        backgGrad : [
+        backgGrad          : [
             ['linear-gradient(180deg, rgba(0,0,0, 0.2), rgba(255,255,255, 0.2))', 'border-box'],
         ]                           as CssKnownProps['backgroundImage'],
     };
