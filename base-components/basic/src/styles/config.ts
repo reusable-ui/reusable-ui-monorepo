@@ -68,7 +68,7 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         
         
         // animations:
-        transitionDuration   : '300ms'                                                          as CssKnownProps['transitionDuration'],
+        animationDuration    : '300ms'                                                          as CssKnownProps['animationDuration' ],
         
         
         
@@ -99,27 +99,27 @@ export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
         // animations:
         transition           : [
             // appearances:
-            ['opacity'      , bases.transitionDuration, 'ease-out'],
+            ['opacity'      , bases.animationDuration, 'ease-out'],
             
             // sizes:
-            ['inline-size'  , bases.transitionDuration, 'ease-out'],
-            ['block-size'   , bases.transitionDuration, 'ease-out'],
+            ['inline-size'  , bases.animationDuration, 'ease-out'],
+            ['block-size'   , bases.animationDuration, 'ease-out'],
             
             // backgrounds:
-            ['background'   , bases.transitionDuration, 'ease-out'],
+            ['background'   , bases.animationDuration, 'ease-out'],
             
             // foregrounds:
-            ['color'        , bases.transitionDuration, 'ease-out'],
+            ['color'        , bases.animationDuration, 'ease-out'],
             
             // borders:
-            ['border'       , bases.transitionDuration, 'ease-out'],
-            ['border-radius', bases.transitionDuration, 'ease-out'],
+            ['border'       , bases.animationDuration, 'ease-out'],
+            ['border-radius', bases.animationDuration, 'ease-out'],
             
             // spacings:
-         // ['padding'      , bases.transitionDuration, 'ease-out'], // beautiful but uncomfortable
+         // ['padding'      , bases.animationDuration, 'ease-out'], // beautiful but uncomfortable
             
             // typos:
-            ['font-size'    , bases.transitionDuration, 'ease-out'],
+            ['font-size'    , bases.animationDuration, 'ease-out'],
         ]                                                                                       as CssKnownProps['transition'        ],
     };
     
