@@ -64,7 +64,7 @@
 
 // base-components:
 [no css     ] [documented  ] [          atomic] @reusable-ui/generic
-[modularized] [documented  ] [          atomic] @reusable-ui/basic                              [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/basic                              [updated config]    [Sm|Md|Lg]
 [modularized] [documented  ] [          atomic] @reusable-ui/indicator                          [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/control                            [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/action-control                     [updated config]
@@ -73,16 +73,16 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/editable-action-control            [no      config]
 
 // base-content-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/container                          [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/content    *button                 [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/container                          [updated config]    [Xs|Sm|Md|Lg|Xl|Xxl|Xxxl]
+[modularized] [documented  ] [          atomic] @reusable-ui/content    *button                 [updated config]    [Sm|Md|Lg]
 
 // simple-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/icon                               [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/icon                               [updated config]    [Xs|Sm|Md|Lg|Xl|1em]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/label                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/button                             [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/button                             [updated config]    [Sm|Md|Lg]
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button                      [no      config]
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button                         [no      config]
-[modularized] [documented  ] [full    compound] @reusable-ui/button-icon                        [updated config]
+[modularized] [documented  ] [full    compound] @reusable-ui/button-icon                        [updated config]    [Xs|Sm|Md|Lg|Xl]
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button                       [no      config]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]
@@ -92,18 +92,18 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
 
 // layout-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/card                               [updated config]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/masonry
+[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/card                               [updated config]    [Sm|Md|Lg]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/masonry                            [updated config]    [Sm|Md|Lg]
 
 // status-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/popup                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/badge                              [updated config]
-[modularized] [documented  ] [partial compound] @reusable-ui/busy                               [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/badge                              [updated config]    [Sm|Md|Lg]
+[modularized] [documented  ] [partial compound] @reusable-ui/busy                               [updated config]    [Sm|Md|Lg]
 
 // notification-components:
-[slimmodular] [documented  ] [partial compound] @reusable-ui/alert                              [updated config]
-[slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip                            [updated config]
+[slimmodular] [documented  ] [partial compound] @reusable-ui/alert                              [updated config]    [Sm|Md|Lg]
+[slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip                            [updated config]    [Sm|Md|Lg]
 
 // menu-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/collapse                           [updated config]
@@ -118,7 +118,7 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side                         [updated config]
 
 // composite-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]    [Sm|Md|Lg]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/group                              [updated config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/nav                                [no      config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/navscroll                          [no      config]
@@ -126,9 +126,9 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/accordion                          [updated config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion                [no      config]
 [slimmodular] [documented  ] [full    compound] @reusable-ui/tab                                [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel                           [updated config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel                           [updated config]    [Sm|Md|Lg]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/navbar                             [updated config]
-[slimmodular] [undocumented] [full    compound] @reusable-ui/details                            [updated config]
+[slimmodular] [undocumented] [full    compound] @reusable-ui/details                            [updated config]    [Sm|Md|Lg]
 
 // utility-components:
 [slimmodular] [documented  ] [          atomic] @reusable-ui/visually-hidden                    [no      config]
