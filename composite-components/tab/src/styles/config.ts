@@ -153,10 +153,10 @@ export const [tabs, tabValues, cssTabConfig] = cssConfig(() => {
         ...panelKeyframesCollapseMaxContentRule,
         panelAnimExpandMaxContent   : [
             ['300ms', 'ease-out', 'both', panelKeyframesExpandMaxContent  ],
-        ]                                                               as CssKnownProps['animation'],
+        ]                                                                       as CssKnownProps['animation'],
         panelAnimCollapseMaxContent : [
             ['300ms', 'ease-out', 'both', panelKeyframesCollapseMaxContent],
-        ]                                                               as CssKnownProps['animation'],
+        ]                                                                       as CssKnownProps['animation'],
         
         
         
@@ -164,9 +164,9 @@ export const [tabs, tabValues, cssTabConfig] = cssConfig(() => {
         ...panelKeyframesCollapseFitContentRule,
         panelAnimExpandFitContent   : [
             ['300ms', 'ease-out', 'both', panelKeyframesExpandFitContent  ],
-        ]                                                               as CssKnownProps['animation'],
+        ]                                                                       as CssKnownProps['animation'],
         panelAnimCollapseFitContent : [
             ['300ms', 'ease-out', 'both', panelKeyframesCollapseFitContent],
-        ]                                                               as CssKnownProps['animation'],
+        ]                                                                       as CssKnownProps['animation'],
     };
 }, { prefix: 'tab' });
