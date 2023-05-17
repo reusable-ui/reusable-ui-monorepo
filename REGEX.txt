@@ -3,5 +3,10 @@
 
 
 
+// config ending with Inline|Block:
+^(    )+\w+(?<!padding|Padding|margin|Margin|inset|Inset|gap|Gap)(Inline|Block)(?!Size)\w*\s*:
+
+
+
 // config ending with Inline|Block without Xs|Sm|Md|Lg|Xl|Xxl|Xxxl:
 ^(    )+\w+(?<!padding|Padding|margin|Margin|inset|Inset|gap|Gap)(Inline|Block)(?!Size)\w*(?<!Xs|Sm|Md|Lg|Xl|Xxl|Xxxl)\s*:
