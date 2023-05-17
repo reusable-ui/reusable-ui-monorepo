@@ -23,7 +23,6 @@ export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
         // sizes:
         minInlineSizeInline   : '8rem'                      as CssKnownProps['minInlineSize'],
         minBlockSizeInline    : 'unset'                     as CssKnownProps['minBlockSize' ],
-        
         minInlineSizeBlock    : 'unset'                     as CssKnownProps['minInlineSize'],
         minBlockSizeBlock     : '8rem'                      as CssKnownProps['minBlockSize' ],
         
