@@ -85,7 +85,6 @@ export const [typos, typoValues, cssTypoConfig] = cssConfig(() => {
         // typos:
         fontSizeXs           : [['calc(', bases.fontSizeMd, '*', 0.50  , ')']]  as CssKnownProps['fontSize'      ],
         fontSizeSm           : [['calc(', bases.fontSizeMd, '*', 0.75  , ')']]  as CssKnownProps['fontSize'      ],
-        
         fontSizeLg           : [['calc(', bases.fontSizeMd, '*', 1.25  , ')']]  as CssKnownProps['fontSize'      ],
         fontSizeXl           : [['calc(', bases.fontSizeMd, '*', 1.50  , ')']]  as CssKnownProps['fontSize'      ],
         fontSizeXxl          : [['calc(', bases.fontSizeMd, '*', 1.75  , ')']]  as CssKnownProps['fontSize'      ],
