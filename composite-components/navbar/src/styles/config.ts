@@ -45,70 +45,70 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // positions:
-        zIndex                    : globalStacks.sticky         as CssKnownProps['zIndex'         ],
-        position                  : 'sticky'                    as CssKnownProps['position'       ],
-        insetBlockStart           : '0px'                       as CssKnownProps['insetBlockStart'],
+        zIndex                    : globalStacks.sticky         as CssKnownProps['zIndex'          ],
+        position                  : 'sticky'                    as CssKnownProps['position'        ],
+        insetBlockStart           : '0px'                       as CssKnownProps['insetBlockStart' ],
         
         
         
         // sizes:
-        boxSizing                 : 'content-box'               as CssKnownProps['boxSizing'],
-        blockSize                 : 'auto'                      as CssKnownProps['blockSize'],
+        boxSizing                 : 'content-box'               as CssKnownProps['boxSizing'       ],
+        blockSize                 : 'auto'                      as CssKnownProps['blockSize'       ],
         
         
         
         // borders:
-        borderWidth               : '0px'                       as CssKnownProps['borderWidth' ],
-        borderRadius              : '0px'                       as CssKnownProps['borderRadius'],
+        borderWidth               : '0px'                       as CssKnownProps['borderWidth'     ],
+        borderRadius              : '0px'                       as CssKnownProps['borderRadius'    ],
         boxShadow                 : [
             [0, 0, '10px', 'rgba(0,0,0,0.5)'],
-        ]                                                       as CssKnownProps['boxShadow'   ],
+        ]                                                       as CssKnownProps['boxShadow'       ],
         
         
         
         // spacings:
-        paddingInline             : containers.paddingInline    as CssKnownProps['paddingInline'],
-        paddingBlock              : basics.paddingBlock         as CssKnownProps['paddingBlock' ],
-        gapInline                 : basics.paddingInline        as CssKnownProps['gapInline'    ],
-        gapBlock                  : basics.paddingBlock         as CssKnownProps['gapBlock'     ],
+        paddingInline             : containers.paddingInline    as CssKnownProps['paddingInline'   ],
+        paddingBlock              : basics.paddingBlock         as CssKnownProps['paddingBlock'    ],
+        gapInline                 : basics.paddingInline        as CssKnownProps['gapInline'       ],
+        gapBlock                  : basics.paddingBlock         as CssKnownProps['gapBlock'        ],
         
         
         
-        // list:
-        listGridArea              : '2/1/2/3'                   as CssKnownProps['gridArea'       ],
-        listGridAreaExpand        : 'unset'                     as CssKnownProps['gridArea'       ],
+        // lists:
+        listGridArea              : '2/1/2/3'                   as CssKnownProps['gridArea'        ],
+        listGridAreaExpand        : 'unset'                     as CssKnownProps['gridArea'        ],
         
-        listDisplay               : 'flex'                      as CssKnownProps['display'        ],
-        listFlexDirection         : 'column'                    as CssKnownProps['flexDirection'  ],
-        listFlexDirectionExpand   : 'row'                       as CssKnownProps['flexDirection'  ],
-        listJustifySelf           : 'stretch'                   as CssKnownProps['justifySelf'    ],
-        listAlignSelf             : 'stretch'                   as CssKnownProps['alignSelf'      ],
+        listDisplay               : 'flex'                      as CssKnownProps['display'         ],
+        listFlexDirection         : 'column'                    as CssKnownProps['flexDirection'   ],
+        listFlexDirectionExpand   : 'row'                       as CssKnownProps['flexDirection'   ],
+        listJustifySelf           : 'stretch'                   as CssKnownProps['justifySelf'     ],
+        listAlignSelf             : 'stretch'                   as CssKnownProps['alignSelf'       ],
         
         listMarginInline          : [[
             'calc(0px - ', containers.paddingInline, ')',
-        ]]                                                      as CssKnownProps['marginInline'   ],
-        listMarginInlineExpand    : 'unset'                     as CssKnownProps['marginInline'   ],
-        listMarginBlock           : 'unset'                     as CssKnownProps['marginBlock'    ],
+        ]]                                                      as CssKnownProps['marginInline'    ],
+        listMarginInlineExpand    : 'unset'                     as CssKnownProps['marginInline'    ],
+        listMarginBlock           : 'unset'                     as CssKnownProps['marginBlock'     ],
         listMarginBlockExpand     : [[
             'calc(0px - ', basics.paddingBlock, ')',
-        ]]                                                      as CssKnownProps['marginBlock'    ],
+        ]]                                                      as CssKnownProps['marginBlock'     ],
         
-        // floating list:
-        listPosition              : 'absolute'                  as CssKnownProps['position'       ],
-        listPositionExpand        : 'unset'                     as CssKnownProps['position'       ],
-        listInsetInline           : '0px'                       as CssKnownProps['insetInline'    ],
-        listInsetInlineExpand     : 'unset'                     as CssKnownProps['insetInline'    ],
-        listInsetBlockStart       : basics.paddingBlock         as CssKnownProps['insetBlockStart'],
-        listInsetBlockStartExpand : 'unset'                     as CssKnownProps['insetBlockStart'],
+        // floating lists:
+        listPosition              : 'absolute'                  as CssKnownProps['position'        ],
+        listPositionExpand        : 'unset'                     as CssKnownProps['position'        ],
+        listInsetInline           : '0px'                       as CssKnownProps['insetInline'     ],
+        listInsetInlineExpand     : 'unset'                     as CssKnownProps['insetInline'     ],
+        listInsetBlockStart       : basics.paddingBlock         as CssKnownProps['insetBlockStart' ],
+        listInsetBlockStartExpand : 'unset'                     as CssKnownProps['insetBlockStart' ],
         
         
         
-        // menu:
-        menuDisplay               : 'flex'                      as CssKnownProps['display'       ],
-        menuFlexDirection         : 'row'                       as CssKnownProps['flexDirection' ],
-        menuJustifyContent        : 'center'                    as CssKnownProps['justifyContent'],
-        menuAlignItems            : 'center'                    as CssKnownProps['alignItems'    ],
-        menuFlexWrap              : 'nowrap'                    as CssKnownProps['flexWrap'      ],
-        menuWhiteSpace            : 'nowrap'                    as CssKnownProps['whiteSpace'    ],
+        // menus:
+        menuDisplay               : 'flex'                      as CssKnownProps['display'         ],
+        menuFlexDirection         : 'row'                       as CssKnownProps['flexDirection'   ],
+        menuJustifyContent        : 'center'                    as CssKnownProps['justifyContent'  ],
+        menuAlignItems            : 'center'                    as CssKnownProps['alignItems'      ],
+        menuFlexWrap              : 'nowrap'                    as CssKnownProps['flexWrap'        ],
+        menuWhiteSpace            : 'nowrap'                    as CssKnownProps['whiteSpace'      ],
     };
 }, { prefix: 'navb' });
