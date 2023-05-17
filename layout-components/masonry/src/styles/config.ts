@@ -33,10 +33,10 @@ export const [masonries, masonryValues, cssMasonryConfig] = cssConfig(() => {
         
         // spacings:
         gapInlineSm          : spacers.xs                   as CssKnownProps['gapInline'  ],
-        gapInlineMd          : spacers.sm                   as CssKnownProps['gapInline'  ],
-        gapInlineLg          : spacers.md                   as CssKnownProps['gapInline'  ],
         gapBlockSm           : spacers.xs                   as CssKnownProps['gapBlock'   ],
+        gapInlineMd          : spacers.sm                   as CssKnownProps['gapInline'  ],
         gapBlockMd           : spacers.sm                   as CssKnownProps['gapBlock'   ],
+        gapInlineLg          : spacers.md                   as CssKnownProps['gapInline'  ],
         gapBlockLg           : spacers.md                   as CssKnownProps['gapBlock'   ],
     };
     
