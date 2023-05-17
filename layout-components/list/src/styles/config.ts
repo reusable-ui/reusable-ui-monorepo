@@ -32,106 +32,112 @@ import {
 export const [lists, listValues, cssListConfig] = cssConfig(() => {
     const bases = {
         // borders:
-        borderStyle                          : basics.borderStyle               as CssKnownProps['borderStyle'  ],
-        borderWidth                          : basics.borderWidth               as CssKnownProps['borderWidth'  ],
-        borderColor                          : basics.borderColor               as CssKnownProps['borderColor'  ],
+        borderStyle                           : basics.borderStyle                          as CssKnownProps['borderStyle'  ],
+        borderWidth                           : basics.borderWidth                          as CssKnownProps['borderWidth'  ],
+        borderColor                           : basics.borderColor                          as CssKnownProps['borderColor'  ],
         
-        borderRadiusSm                       : basics.borderRadiusSm            as CssKnownProps['borderRadius' ],
-        borderRadiusMd                       : basics.borderRadiusMd            as CssKnownProps['borderRadius' ],
-        borderRadiusLg                       : basics.borderRadiusLg            as CssKnownProps['borderRadius' ],
+        borderRadiusSm                        : basics.borderRadiusSm                       as CssKnownProps['borderRadius' ],
+        borderRadiusMd                        : basics.borderRadiusMd                       as CssKnownProps['borderRadius' ],
+        borderRadiusLg                        : basics.borderRadiusLg                       as CssKnownProps['borderRadius' ],
         
         
         
         // animations:
-        transition                           : basics.transition                as CssKnownProps['transition'   ],
-        itemTransition                       : basics.transition                as CssKnownProps['transition'   ],
-        contentTransition                    : basics.transition                as CssKnownProps['transition'   ],
-        tabTransition                        : basics.transition                as CssKnownProps['transition'   ],
-        bulletTransition                     : basics.transition                as CssKnownProps['transition'   ],
+        transition                            : basics.transition                           as CssKnownProps['transition'   ],
+        itemTransition                        : basics.transition                           as CssKnownProps['transition'   ],
+        contentTransition                     : basics.transition                           as CssKnownProps['transition'   ],
+        tabTransition                         : basics.transition                           as CssKnownProps['transition'   ],
+        bulletTransition                      : basics.transition                           as CssKnownProps['transition'   ],
         
         
         
         // buttons:
-        buttonSpacingSm                      : spacers.xs                       as CssKnownProps['gapInline'    ],
-        buttonSpacingMd                      : spacers.sm                       as CssKnownProps['gapInline'    ],
-        buttonSpacingLg                      : spacers.md                       as CssKnownProps['gapInline'    ],
+        buttonSpacingSm                       : spacers.xs                                  as CssKnownProps['gapInline'    ],
+        buttonSpacingMd                       : spacers.sm                                  as CssKnownProps['gapInline'    ],
+        buttonSpacingLg                       : spacers.md                                  as CssKnownProps['gapInline'    ],
         
         
         
         // tabs:
-        tabTextAlign                         : 'center'                         as CssKnownProps['textAlign'    ],
+        tabTextAlign                          : 'center'                                    as CssKnownProps['textAlign'    ],
         
         
         
         // breadcrumbs:
-        breadcrumbPaddingInlineSm            : basics.paddingBlockSm            as CssKnownProps['paddingInline'],
-        breadcrumbPaddingBlockSm             : basics.paddingBlockSm            as CssKnownProps['paddingBlock' ],
-        breadcrumbPaddingInlineMd            : basics.paddingBlockMd            as CssKnownProps['paddingInline'],
-        breadcrumbPaddingBlockMd             : basics.paddingBlockMd            as CssKnownProps['paddingBlock' ],
-        breadcrumbPaddingInlineLg            : basics.paddingBlockLg            as CssKnownProps['paddingInline'],
-        breadcrumbPaddingBlockLg             : basics.paddingBlockLg            as CssKnownProps['paddingBlock' ],
+        breadcrumbPaddingInlineSm             : basics.paddingBlockSm                       as CssKnownProps['paddingInline'],
+        breadcrumbPaddingBlockSm              : basics.paddingBlockSm                       as CssKnownProps['paddingBlock' ],
+        breadcrumbPaddingInlineMd             : basics.paddingBlockMd                       as CssKnownProps['paddingInline'],
+        breadcrumbPaddingBlockMd              : basics.paddingBlockMd                       as CssKnownProps['paddingBlock' ],
+        breadcrumbPaddingInlineLg             : basics.paddingBlockLg                       as CssKnownProps['paddingInline'],
+        breadcrumbPaddingBlockLg              : basics.paddingBlockLg                       as CssKnownProps['paddingBlock' ],
         
-        breadcrumbSeparatorImage             : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><polyline points='7.5 3 16.5 12 7.5 21' fill='none' stroke='#000' stroke-linecap='square' stroke-width='3'/></svg>")}")`                                                    as CssKnownProps['maskImage'],
-        breadcrumbSeparatorImageBlock        : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><polyline points='7.5 3 16.5 12 7.5 21' fill='none' stroke='#000' stroke-linecap='square' stroke-width='3' transform-origin='center' transform='rotate(90)'/></svg>")}")`   as CssKnownProps['maskImage'],
-        breadcrumbSeparatorInlineSize        : '0.8em'                          as CssKnownProps['inlineSize'   ],
-        breadcrumbSeparatorBlockSize         : 'auto'                           as CssKnownProps['blockSize'    ],
-        breadcrumbSeparatorInlineSizeBlock   : 'auto'                           as CssKnownProps['inlineSize'   ],
-        breadcrumbSeparatorBlockSizeBlock    : '0.8em'                          as CssKnownProps['blockSize'    ],
-        breadcrumbSeparatorMarginInline      : '0.25em'                         as CssKnownProps['marginInline' ],
-        breadcrumbSeparatorMarginBlock       : '0em'                            as CssKnownProps['marginBlock'  ],
-        breadcrumbSeparatorMarginInlineBlock : '0em'                            as CssKnownProps['marginInline' ],
-        breadcrumbSeparatorMarginBlockBlock  : '0.25em'                         as CssKnownProps['marginBlock'  ],
+        breadcrumbSeparatorImageInline        : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><polyline points='7.5 3 16.5 12 7.5 21' fill='none' stroke='#000' stroke-linecap='square' stroke-width='3'/></svg>")}")`                                                   as CssKnownProps['maskImage'],
+        breadcrumbSeparatorImageBlock         : `url("data:image/svg+xml,${escapeSvg("<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><polyline points='7.5 3 16.5 12 7.5 21' fill='none' stroke='#000' stroke-linecap='square' stroke-width='3' transform-origin='center' transform='rotate(90)'/></svg>")}")`  as CssKnownProps['maskImage'],
+        breadcrumbSeparatorInlineSizeInline   : '0.8em'                                     as CssKnownProps['inlineSize'   ],
+        breadcrumbSeparatorBlockSizeInline    : 'auto'                                      as CssKnownProps['blockSize'    ],
+        breadcrumbSeparatorInlineSizeBlock    : 'auto'                                      as CssKnownProps['inlineSize'   ],
+        breadcrumbSeparatorBlockSizeBlock     : '0.8em'                                     as CssKnownProps['blockSize'    ],
+        breadcrumbSeparatorMarginInlineInline : '0.25em'                                    as CssKnownProps['marginInline' ],
+        breadcrumbSeparatorMarginBlockInline  : '0em'                                       as CssKnownProps['marginBlock'  ],
+        breadcrumbSeparatorMarginInlineBlock  : '0em'                                       as CssKnownProps['marginInline' ],
+        breadcrumbSeparatorMarginBlockBlock   : '0.25em'                                    as CssKnownProps['marginBlock'  ],
         
         
         
         // bullets:
-        bulletSpacingSm                      : spacers.xs                       as CssKnownProps['gapInline'    ],
-        bulletSpacingMd                      : spacers.sm                       as CssKnownProps['gapInline'    ],
-        bulletSpacingLg                      : spacers.md                       as CssKnownProps['gapInline'    ],
+        bulletSpacingSm                       : spacers.xs                                  as CssKnownProps['gapInline'    ],
+        bulletSpacingMd                       : spacers.sm                                  as CssKnownProps['gapInline'    ],
+        bulletSpacingLg                       : spacers.md                                  as CssKnownProps['gapInline'    ],
         
-        bulletPaddingSm                      : spacers.xxs                      as CssKnownProps['paddingInline'],
-        bulletPaddingMd                      : spacers.xs                       as CssKnownProps['paddingInline'],
-        bulletPaddingLg                      : spacers.sm                       as CssKnownProps['paddingInline'],
+        bulletPaddingSm                       : spacers.xxs                                 as CssKnownProps['paddingInline'],
+        bulletPaddingMd                       : spacers.xs                                  as CssKnownProps['paddingInline'],
+        bulletPaddingLg                       : spacers.sm                                  as CssKnownProps['paddingInline'],
         
         
         
         // numbered:
         /* a non_nested counter */
-        numberedContent                      : [[
+        numberedContent                       : [[
             'counter(ListNumber)',
             '". "'
-        ]]                                                                      as CssKnownProps['content'      ],
+        ]]                                                                                 as CssKnownProps['content'      ],
         
         /* a nested counter */
-        // numberedContent                      : [[
+        // numberedContent                       : [[
         //     'counters(ListNumber, ".")',
         //     '". "'
-        // ]]                                                                      as CssKnownProps['content'      ],
+        // ]]                                                                                 as CssKnownProps['content'      ],
     };
     
     
     
     const defaults = {
         // borders:
-        borderRadius                         : bases.borderRadiusMd             as CssKnownProps['borderRadius' ],
+        borderRadius                          : bases.borderRadiusMd                        as CssKnownProps['borderRadius' ],
         
         
         
         // buttons:
-        buttonSpacing                        : bases.buttonSpacingMd            as CssKnownProps['gapInline'    ],
+        buttonSpacing                         : bases.buttonSpacingMd                       as CssKnownProps['gapInline'    ],
         
         
         
         // breadcrumbs:
-        breadcrumbPaddingInline              : bases.breadcrumbPaddingInlineMd  as CssKnownProps['paddingInline'],
-        breadcrumbPaddingBlock               : bases.breadcrumbPaddingBlockMd   as CssKnownProps['paddingBlock' ],
+        breadcrumbPaddingInline               : bases.breadcrumbPaddingInlineMd             as CssKnownProps['paddingInline'],
+        breadcrumbPaddingBlock                : bases.breadcrumbPaddingBlockMd              as CssKnownProps['paddingBlock' ],
+        
+        breadcrumbSeparatorImage              : bases.breadcrumbSeparatorImageBlock         as CssKnownProps['maskImage'],
+        breadcrumbSeparatorInlineSize         : bases.breadcrumbSeparatorInlineSizeBlock    as CssKnownProps['inlineSize'   ],
+        breadcrumbSeparatorBlockSize          : bases.breadcrumbSeparatorBlockSizeBlock     as CssKnownProps['blockSize'    ],
+        breadcrumbSeparatorMarginInline       : bases.breadcrumbSeparatorMarginInlineBlock  as CssKnownProps['marginInline' ],
+        breadcrumbSeparatorMarginBlock        : bases.breadcrumbSeparatorMarginBlockBlock   as CssKnownProps['marginBlock'  ],
         
         
         
         // bullets:
-        bulletSpacing                        : bases.bulletSpacingMd            as CssKnownProps['gapInline'    ],
+        bulletSpacing                         : bases.bulletSpacingMd                       as CssKnownProps['gapInline'    ],
         
-        bulletPadding                        : bases.bulletPaddingMd            as CssKnownProps['paddingInline'],
+        bulletPadding                         : bases.bulletPaddingMd                       as CssKnownProps['paddingInline'],
     };
     
     
