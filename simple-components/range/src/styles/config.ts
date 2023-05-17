@@ -19,51 +19,77 @@ import {
 
 // configs:
 export const [ranges, rangeValues, cssRangeConfig] = cssConfig(() => {
-    return {
+    const bases = {
         // sizes:
-        minInlineSize        : '8rem'               as CssKnownProps['minInlineSize'],
-        minBlockSize         : 'unset'              as CssKnownProps['minBlockSize' ],
+        minInlineSizeInline   : '8rem'                      as CssKnownProps['minInlineSize'],
+        minBlockSizeInline    : 'unset'                     as CssKnownProps['minBlockSize' ],
         
-        minInlineSizeBlock   : 'unset'              as CssKnownProps['minInlineSize'],
-        minBlockSizeBlock    : '8rem'               as CssKnownProps['minBlockSize' ],
+        minInlineSizeBlock    : 'unset'                     as CssKnownProps['minInlineSize'],
+        minBlockSizeBlock     : '8rem'                      as CssKnownProps['minBlockSize' ],
         
         
         
         // accessibilities:
-        cursor               : 'col-resize'         as CssKnownProps['cursor'       ],
-        cursorBlock          : 'row-resize'         as CssKnownProps['cursor'       ],
+        cursorInline          : 'col-resize'                as CssKnownProps['cursor'       ],
+        cursorBlock           : 'row-resize'                as CssKnownProps['cursor'       ],
         
         
         
         // tracks:
-        trackInlineSize      : 'auto'               as CssKnownProps['inlineSize'   ],
-        trackBlockSize       : '0.4em'              as CssKnownProps['blockSize'    ],
-        trackBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius' ],
-        trackPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
-        trackPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
+        trackInlineSizeInline : 'auto'                      as CssKnownProps['inlineSize'   ],
+        trackBlockSizeInline  : '0.4em'                     as CssKnownProps['blockSize'    ],
+        trackInlineSizeBlock  : '0.4em'                     as CssKnownProps['inlineSize'   ],
+        trackBlockSizeBlock   : 'auto'                      as CssKnownProps['blockSize'    ],
+        trackBorderRadius     : borderRadiuses.pill         as CssKnownProps['borderRadius' ],
+        trackPaddingInline    : '0em'                       as CssKnownProps['paddingInline'],
+        trackPaddingBlock     : '0em'                       as CssKnownProps['paddingBlock' ],
         
-        trackInlineSizeBlock : '0.4em'              as CssKnownProps['inlineSize'   ],
-        trackBlockSizeBlock  : 'auto'               as CssKnownProps['blockSize'    ],
         
         // tracklowers:
-        tracklowerFilter     : [[
+        tracklowerFilter      : [[
             'brightness(0.9)',
-        ]]                                          as CssKnownProps['filter'       ],
+        ]]                                                  as CssKnownProps['filter'       ],
         
         // trackuppers:
-        trackupperFilter     : [[
+        trackupperFilter      : [[
             'brightness(0.85)',
             'contrast(0.5)',
             'saturate(0)',
-        ]]                                          as CssKnownProps['filter'       ],
+        ]]                                                  as CssKnownProps['filter'       ],
         
         
         
         // thumbs:
-        thumbInlineSize      : '1em'                as CssKnownProps['inlineSize'   ],
-        thumbBlockSize       : '1em'                as CssKnownProps['blockSize'    ],
-        thumbBorderRadius    : borderRadiuses.pill  as CssKnownProps['borderRadius' ],
-        thumbPaddingInline   : '0em'                as CssKnownProps['paddingInline'],
-        thumbPaddingBlock    : '0em'                as CssKnownProps['paddingBlock' ],
+        thumbInlineSize       : '1em'                       as CssKnownProps['inlineSize'   ],
+        thumbBlockSize        : '1em'                       as CssKnownProps['blockSize'    ],
+        thumbBorderRadius     : borderRadiuses.pill         as CssKnownProps['borderRadius' ],
+        thumbPaddingInline    : '0em'                       as CssKnownProps['paddingInline'],
+        thumbPaddingBlock     : '0em'                       as CssKnownProps['paddingBlock' ],
+    };
+    
+    
+    
+    const defaults = {
+        // sizes:
+        minInlineSize         : bases.minInlineSizeInline   as CssKnownProps['minInlineSize'],
+        minBlockSize          : bases.minBlockSizeInline    as CssKnownProps['minBlockSize' ],
+        
+        
+        
+        // accessibilities:
+        cursor                : bases.cursorInline          as CssKnownProps['cursor'       ],
+        
+        
+        
+        // tracks:
+        trackInlineSize       : bases.trackInlineSizeInline as CssKnownProps['inlineSize'   ],
+        trackBlockSize        : bases.trackBlockSizeInline  as CssKnownProps['blockSize'    ],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'rnge' });
