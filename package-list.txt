@@ -92,47 +92,47 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
 
 // layout-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/list
-[slimmodular] [documented  ] [          atomic] @reusable-ui/card
+[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/card                               [updated config]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/masonry
 
 // status-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/popup
-[modularized] [documented  ] [          atomic] @reusable-ui/badge
-[modularized] [documented  ] [partial compound] @reusable-ui/busy
+[modularized] [documented  ] [          atomic] @reusable-ui/popup                              [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/badge                              [updated config]
+[modularized] [documented  ] [partial compound] @reusable-ui/busy                               [updated config]
 
 // notification-components:
-[slimmodular] [documented  ] [partial compound] @reusable-ui/alert
-[slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip
+[slimmodular] [documented  ] [partial compound] @reusable-ui/alert                              [updated config]
+[slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip                            [updated config]
 
 // menu-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/collapse
-[slimmodular] [documented  ] [partial compound] @reusable-ui/dropdown
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button
+[modularized] [documented  ] [          atomic] @reusable-ui/collapse                           [updated config]
+[slimmodular] [documented  ] [partial compound] @reusable-ui/dropdown                           [updated config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button                    [no      config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list                      [updated config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button               [no      config]
 
 // dialog-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/modal
-[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-card
-[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side
+[modularized] [documented  ] [          atomic] @reusable-ui/modal                              [updated config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-card                         [updated config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side                         [updated config]
 
 // composite-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/progress
-[slimmodular] [documented  ] [          atomic] @reusable-ui/group
-[not needopt] [documented  ] [full    compound] @reusable-ui/nav
-[not needopt] [documented  ] [full    compound] @reusable-ui/navscroll
-[not needopt] [documented  ] [full    compound] @reusable-ui/pagination
-[slimmodular] [documented  ] [full    compound] @reusable-ui/accordion
-[not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion
-[slimmodular] [documented  ] [full    compound] @reusable-ui/tab
-[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel
-[slimmodular] [documented  ] [          atomic] @reusable-ui/navbar
-[slimmodular] [undocumented] [full    compound] @reusable-ui/details
+[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/group                              [updated config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/nav                                [no      config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/navscroll                          [no      config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/pagination                         [no      config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/accordion                          [updated config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion                [no      config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/tab                                [updated config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel                           [updated config]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/navbar                             [updated config]
+[slimmodular] [undocumented] [full    compound] @reusable-ui/details                            [updated config]
 
 // utility-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/visually-hidden
-[not needopt] [undocumented] @reusable-ui/dimensions
-[not needopt] [undocumented] @reusable-ui/responsives
+[slimmodular] [documented  ] [          atomic] @reusable-ui/visually-hidden                    [no      config]
+[not needopt] [undocumented] @reusable-ui/dimensions                                            [no      config]
+[not needopt] [undocumented] @reusable-ui/responsives                                           [no      config]
 
 [published  ] @reusable-ui/components
