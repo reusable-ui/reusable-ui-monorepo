@@ -43,7 +43,7 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     
     //#region keyframes
-    const frameCollapsed    = style({
+    const frameCollapsedBlock     = style({
         maxBlockSize  : 0,
         paddingBlock  : 0,
         
@@ -52,13 +52,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
             overflowY : 'hidden',
         }),
     });
-    const frameIntermediate = style({
+    const frameIntermediateBlock  = style({
         overflowY     : 'clip',
         ...fallback({
             overflowY : 'hidden',
         }),
     });
-    const frameExpanded     = style({
+    const frameExpandedBlock      = style({
         maxBlockSize  : switchOf(
             lastKnownExpandedSizeVars.blockSize,
             '100vh',
@@ -67,18 +67,18 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         
         overflowY     : 'unset',
     });
-    const [keyframesExpandRule  , keyframesExpand  ] = keyframes({
-        from  : frameCollapsed,
-        '99%' : frameIntermediate,
-        to    : frameExpanded,
+    const [keyframesExpandBlockRule   , keyframesExpandBlock   ] = keyframes({
+        from  : frameCollapsedBlock,
+        '99%' : frameIntermediateBlock,
+        to    : frameExpandedBlock,
     });
-    keyframesExpand.value   = 'expand';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
-    const [keyframesCollapseRule, keyframesCollapse] = keyframes({
-        from  : frameExpanded,
-        '1%'  : frameIntermediate,
-        to    : frameCollapsed,
+    keyframesExpandBlock.value    = 'expandBlock';    // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
+    const [keyframesCollapseBlockRule , keyframesCollapseBlock ] = keyframes({
+        from  : frameExpandedBlock,
+        '1%'  : frameIntermediateBlock,
+        to    : frameCollapsedBlock,
     });
-    keyframesCollapse.value = 'collapse'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
+    keyframesCollapseBlock.value  = 'collapseBlock';  // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     
     
     
@@ -122,15 +122,15 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     
     
-    return {
+    const bases = {
         // animations:
-        ...keyframesExpandRule,
-        ...keyframesCollapseRule,
-        animExpand         : [
-            ['300ms', 'ease-out', 'both', keyframesExpand  ],
+        ...keyframesExpandBlockRule,
+        ...keyframesCollapseBlockRule,
+        animExpandBlock    : [
+            ['300ms', 'ease-out', 'both', keyframesExpandBlock   ],
         ]                                                           as CssKnownProps['animation'],
-        animCollapse       : [
-            ['300ms', 'ease-out', 'both', keyframesCollapse],
+        animCollapseBlock  : [
+            ['300ms', 'ease-out', 'both', keyframesCollapseBlock ],
         ]                                                           as CssKnownProps['animation'],
         
         
@@ -143,5 +143,20 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         animCollapseInline : [
             ['300ms', 'ease-out', 'both', keyframesCollapseInline],
         ]                                                           as CssKnownProps['animation'],
+    };
+    
+    
+    
+    const defaults = {
+        // animations:
+        animExpand         : bases.animExpandBlock                  as CssKnownProps['animation'],
+        animCollapse       : bases.animCollapseBlock                as CssKnownProps['animation'],
+    };
+    
+    
+    
+    return {
+        ...bases,
+        ...defaults,
     };
 }, { prefix: 'clp' });
