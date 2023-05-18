@@ -25,6 +25,11 @@ import {
     
     
     
+    // padding (inner spacing) stuff of UI:
+    usesPadding,
+    
+    
+    
     // a capability of UI to rotate its layout:
     OrientationableOptions,
     usesOrientationable,
@@ -62,7 +67,8 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
     // dependencies:
     
     // features:
-    const {animationRule, animationVars} = usesAnimation();
+    const {animationRule, animationVars} = usesAnimation(collapses as any);
+    const {paddingRule  , paddingVars  } = usesPadding(collapses as any);
     
     
     
@@ -88,13 +94,21 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
             
             
             // animations:
-            anim : animationVars.anim,
+            anim          : animationVars.anim,
+            
+            
+            
+            // spacings:
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
         }),
         
         
         
         // features:
         ...animationRule(), // must be placed at the last
+        ...paddingRule(),   // must be placed at the last
     });
 }, onCollapseStylesChange);
 
