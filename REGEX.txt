@@ -13,5 +13,5 @@
 
 
 
-// config ending with Expand|Collapse:
-^(    )+\w+(Expand|Collapse)\w*\s*:
+// config ending with Expand|Collapse excepts animExpand|animCollapse:
+^(    )+\w+(?<!anim)(Expand|Collapse)\w*\s*:
