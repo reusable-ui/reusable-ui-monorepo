@@ -680,6 +680,10 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                     
                     
                     // customize:
+                    ...ifParentOrientationInline({ // inline
+                        // overwrites propName = {breadcrumbSeparator}PropName{Inline}:
+                        ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'inline')),
+                    }),
                     ...ifParentOrientationBlock({  // block
                         // overwrites propName = {breadcrumbSeparator}PropName{Block}:
                         ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
