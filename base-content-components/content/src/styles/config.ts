@@ -58,4 +58,4 @@ export const [contents, contentValues, cssContentConfig] = cssConfig(() => {
         ...bases,
         ...defaults,
     };
-}, { prefix: 'ct' });
+}, { prefix: 'ctn' });
