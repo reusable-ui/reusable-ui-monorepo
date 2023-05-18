@@ -316,7 +316,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
         
         
         // features:
-        // borderRule(),    // moved out to dedicated border stroke for each list & wrapper
+        // borderRule(), // must be placed at the last // moved out to dedicated border stroke for each list & wrapper
     });
 };
 
@@ -385,12 +385,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     // dependencies:
     
     // features:
-    const {backgroundVars             } = usesBackground();
-    const {borderRule    , borderVars } = usesBorder(lists);
-    const {                paddingVars} = usesPadding();
+    const {backgroundRule, backgroundVars} = usesBackground();
+    const {borderRule    , borderVars    } = usesBorder(lists);
+    const {                paddingVars   } = usesPadding();
     
     // variants:
-    const {resizableRule              } = usesResizable(lists);
+    const {resizableRule                 } = usesResizable(lists);
     
     
     
@@ -648,7 +648,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             // layouts:
                             ...usesIconImage({
                                 image : lists.breadcrumbSeparatorImage,
-                                color : backgroundVars.altBackgColor,
+                                color : backgroundVars.backgColor,
                             }),
                             ...style({
                                 // layouts:
@@ -688,6 +688,15 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                         // overwrites propName = {breadcrumbSeparator}PropName{Block}:
                         ...overwriteProps(lists, usesSuffixedProps(usesPrefixedProps(lists, 'breadcrumbSeparator', false), 'block')),
                     }),
+                    
+                    
+                    
+                    // features:
+                    /*
+                        Because the `usesListLayout()` doesn't implement `backgroundRule()`,
+                        we need to implement `backgroundRule()` here to support `usesIconImage()`.
+                    */
+                    ...backgroundRule(), // must be placed at the last
                 }),
             }),
             rule('.bullet', {
