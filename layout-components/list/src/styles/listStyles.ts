@@ -16,6 +16,11 @@ import {
     
     
     
+    // strongly typed of css variables:
+    switchOf,
+    
+    
+    
     // reads/writes css variables configuration:
     usesCssProps,
     usesPrefixedProps,
@@ -71,6 +76,11 @@ import {
     
     // size options of UI:
     usesResizable,
+    
+    
+    
+    // mild (soft color) variant of UI:
+    usesMildable,
     
     
     
@@ -391,6 +401,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
     
     // variants:
     const {resizableRule                 } = usesResizable(lists);
+    const {                mildableVars  } = usesMildable();
     
     
     
@@ -648,7 +659,12 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                             // layouts:
                             ...usesIconImage({
                                 image : lists.breadcrumbSeparatorImage,
-                                color : backgroundVars.backgColor,
+                                color : switchOf(
+                                 // outlineableVars.backgTg,        // always    regular_color when .outlined
+                                    mildableVars.backgTg,           // switch to mild_color    when .mild
+                                    
+                                    backgroundVars.backgColorFn,    // default => uses regular_color
+                                ),
                             }),
                             ...style({
                                 // layouts:
