@@ -11,4 +11,4 @@ export const [labels, labelValues, cssLabelConfig] = cssConfig(() => {
     return {
         /* no config props yet */
     };
-}, { prefix: 'lb' });
+}, { prefix: 'lbl' });
