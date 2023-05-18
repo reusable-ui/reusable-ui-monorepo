@@ -16,8 +16,8 @@ import { ensureRendererWorkersReady } from '@cssfn/cssfn'
 
 
 
-// eslint-disable-next-line
-const _loaded = await ensureRendererWorkersReady();
+// // eslint-disable-next-line
+// const _loaded = await ensureRendererWorkersReady();
 
 
 
