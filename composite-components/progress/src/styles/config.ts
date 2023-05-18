@@ -32,7 +32,7 @@ import {
 // configs:
 export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
     //#region keyframes
-    const [barKeyframesRunningRule     , barKeyframesRunning     ] = keyframes({
+    const [barKeyframesRunningInlineRule, barKeyframesRunningInline] = keyframes({
         from  : {
             backgroundPositionX : ['1rem', 0],
         },
@@ -40,11 +40,11 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
             backgroundPositionX : [0, 0],
         },
     });
-    barKeyframesRunning.value      = 'running';      // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
+    barKeyframesRunningInline.value = 'runningInline'; // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
     
     
     
-    const [barKeyframesRunningBlockRule, barKeyframesRunningBlock] = keyframes({
+    const [barKeyframesRunningBlockRule , barKeyframesRunningBlock ] = keyframes({
         from  : {
             backgroundPositionY : ['1rem', 0],
         },
@@ -52,15 +52,15 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
             backgroundPositionY : [0, 0],
         },
     });
-    barKeyframesRunningBlock.value = 'runningBlock'; // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
+    barKeyframesRunningBlock.value  = 'runningBlock';  // the @keyframes name should contain 'running' in order to be recognized by `useRunnable`
     //#endregion keyframes
     
     
     
     const bases = {
         // sizes:
-        minInlineSize            : '8rem'                           as CssKnownProps['minInlineSize'  ], // fills the entire parent's width:
-        minBlockSize             : 'auto'                           as CssKnownProps['minBlockSize'   ], // depends on ProgressBar's height
+        minInlineSizeInline      : '8rem'                           as CssKnownProps['minInlineSize'  ], // fills the entire parent's width:
+        minBlockSizeInline       : 'auto'                           as CssKnownProps['minBlockSize'   ], // depends on ProgressBar's height
         
         minInlineSizeBlock       : 'auto'                           as CssKnownProps['minInlineSize'  ], // depends on ProgressBar's width
         minBlockSizeBlock        : '8rem'                           as CssKnownProps['minBlockSize'   ], // manually set the min height
@@ -68,7 +68,7 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         
         
         // backgrounds:
-        backgGrad                : basics.backgGrad                 as CssKnownProps['backgroundImage'],
+        backgGradInline          : basics.backgGrad                 as CssKnownProps['backgroundImage'],
         backgGradBlock           : (() => {
             const value = [[...(basicValues.backgGrad as Extract<CssKnownProps['backgroundImage'], any[][]>)[0]]] as Extract<CssKnownProps['backgroundImage'], any[][]>;
             value[0][0] = value[0][0].toString().replace('180deg', '270deg');
@@ -90,15 +90,15 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         
         barBoxSizing             : 'border-box'                     as CssKnownProps['boxSizing'      ], // the final size is including borders & paddings
         
-        barMinInlineSize         : 'unset'                          as CssKnownProps['minInlineSize'  ],
-        barMinBlockSizeSm        : spacers.xs                       as CssKnownProps['minBlockSize'   ],
-        barMinBlockSizeMd        : spacers.md                       as CssKnownProps['minBlockSize'   ],
-        barMinBlockSizeLg        : spacers.xl                       as CssKnownProps['minBlockSize'   ],
-        
-        barMinBlockSizeBlock     : 'unset'                          as CssKnownProps['minBlockSize'   ],
+        barMinInlineSizeInline   : 'unset'                          as CssKnownProps['minInlineSize'  ],
         barMinInlineSizeBlockSm  : spacers.xs                       as CssKnownProps['minInlineSize'  ],
         barMinInlineSizeBlockMd  : spacers.md                       as CssKnownProps['minInlineSize'  ],
         barMinInlineSizeBlockLg  : spacers.xl                       as CssKnownProps['minInlineSize'  ],
+        
+        barMinBlockSizeInlineSm  : spacers.xs                       as CssKnownProps['minBlockSize'   ],
+        barMinBlockSizeInlineMd  : spacers.md                       as CssKnownProps['minBlockSize'   ],
+        barMinBlockSizeInlineLg  : spacers.xl                       as CssKnownProps['minBlockSize'   ],
+        barMinBlockSizeBlock     : 'unset'                          as CssKnownProps['minBlockSize'   ],
         
         
         
@@ -108,28 +108,51 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
         
         
         // animations:
-        ...barKeyframesRunningRule,
+        ...barKeyframesRunningInlineRule,
         ...barKeyframesRunningBlockRule,
-        barAnimRunning           : [
-            ['1000ms', 'linear', 'both', 'infinite', barKeyframesRunning]
+        barAnimRunningInline     : [
+            ['1000ms', 'linear', 'both', 'infinite', barKeyframesRunningInline]
         ]                                                           as CssKnownProps['animation'      ],
         barAnimRunningBlock      : [
-            ['1000ms', 'linear', 'both', 'infinite', barKeyframesRunningBlock]
+            ['1000ms', 'linear', 'both', 'infinite', barKeyframesRunningBlock ]
         ]                                                           as CssKnownProps['animation'      ],
     };
     
     
     
     const defaults = {
+        // sizes:
+        minInlineSize            : bases.minInlineSizeInline        as CssKnownProps['minInlineSize'  ],
+        minBlockSize             : bases.minBlockSizeInline         as CssKnownProps['minBlockSize'   ],
+        
+        
+        
+        // backgrounds:
+        backgGrad                : bases.backgGradInline            as CssKnownProps['backgroundImage'],
+        
+        
+        
         // bars:
         barBackgStripedWidth     : bases.barBackgStripedWidthMd     as CssKnownProps['backgroundSize' ],
         barBackgStripedHeight    : bases.barBackgStripedHeightMd    as CssKnownProps['backgroundSize' ],
         
         
         
-        barMinBlockSize          : bases.barMinBlockSizeMd          as CssKnownProps['minBlockSize'   ],
-        
         barMinInlineSizeBlock    : bases.barMinInlineSizeBlockMd    as CssKnownProps['minInlineSize'  ],
+        barMinBlockSizeInline    : bases.barMinBlockSizeInlineMd    as CssKnownProps['minBlockSize'   ],
+        
+        
+        
+        // animations:
+        barAnimRunning           : bases.barAnimRunningInline       as CssKnownProps['animation'      ],
+    };
+    
+    
+    
+    const defaults2 = {
+        // bars:
+        barMinInlineSize         :    bases.barMinInlineSizeInline  as CssKnownProps['minInlineSize'  ],
+        barMinBlockSize          : defaults.barMinBlockSizeInline   as CssKnownProps['minBlockSize'   ],
     };
     
     
@@ -137,5 +160,6 @@ export const [progresses, progressValues, cssProgressConfig] = cssConfig(() => {
     return {
         ...bases,
         ...defaults,
+        ...defaults2,
     };
 }, { prefix: 'prgs' });
