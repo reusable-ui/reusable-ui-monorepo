@@ -86,13 +86,13 @@
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button                       [no      config]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]    [Inline|Block]
 [modularized] [documented  ] [          atomic] @reusable-ui/check                              [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/radio                              [updated config]
 [slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
 
 // layout-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]  [Inline|Block]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/card                               [updated config]    [Sm|Md|Lg]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/masonry                            [updated config]    [Sm|Md|Lg]
 
@@ -106,10 +106,10 @@
 [slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip                            [updated config]    [Sm|Md|Lg]
 
 // menu-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/collapse                           [updated config]
+[modularized] [documented  ] [          atomic] @reusable-ui/collapse                           [updated config]    [Inline|Block]
 [slimmodular] [documented  ] [partial compound] @reusable-ui/dropdown                           [updated config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button                    [no      config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list                      [updated config]
+[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list                      [updated config]    [Inline|Block]
 [not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button               [no      config]
 
 // dialog-components:
@@ -118,7 +118,7 @@
 [slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side                         [updated config]
 
 // composite-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]    [Sm|Md|Lg]
+[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]    [Sm|Md|Lg]  [Inline|Block]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/group                              [updated config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/nav                                [no      config]
 [not needopt] [documented  ] [full    compound] @reusable-ui/navscroll                          [no      config]
