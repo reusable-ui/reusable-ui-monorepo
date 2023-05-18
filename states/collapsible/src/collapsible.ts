@@ -140,11 +140,11 @@ export const usesCollapsible = <TConfigProps extends CssConfigProps = CssConfigP
                 iif(!!config, {
                     ...ifExpand({
                         // overwrites propName = propName{'Expand'}:
-                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Expand')),
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'expand')),
                     }),
                     ...ifCollapse({
                         // overwrites propName = propName{'Collapse'}:
-                        ...overwriteProps(config!, usesSuffixedProps(config!, 'Collapse')),
+                        ...overwriteProps(config!, usesSuffixedProps(config!, 'collapse')),
                     }),
                 }),
             ]),
