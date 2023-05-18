@@ -37,108 +37,108 @@ import {
 export const [basics, basicValues, cssBasicConfig] = cssConfig(() => {
     const bases = {
         // backgrounds:
-        backg                : 'transparent'                                                    as CssKnownProps['background'        ],
-        altBackg             : colors.primary                                                   as CssKnownProps['background'        ],
-        backgGrad            : [
+        backg                    : 'transparent'                                                    as CssKnownProps['background'        ],
+        altBackg                 : colors.primary                                                   as CssKnownProps['background'        ],
+        backgGrad                : [
             ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],
-        ]                                                                                       as CssKnownProps['backgroundImage'   ],
+        ]                                                                                           as CssKnownProps['backgroundImage'   ],
         
         
         
         // foregrounds:
-        foreg                : 'currentColor'                                                   as CssKnownProps['foreground'        ],
-        altForeg             : colors.primaryText                                               as CssKnownProps['foreground'        ],
+        foreg                    : 'currentColor'                                                   as CssKnownProps['foreground'        ],
+        altForeg                 : colors.primaryText                                               as CssKnownProps['foreground'        ],
         
         
         
         // borders:
-        borderStyle          : borders.style                                                    as CssKnownProps['borderStyle'       ],
-        borderWidth          : borders.defaultWidth                                             as CssKnownProps['borderWidth'       ],
-        borderColor          : borders.color                                                    as CssKnownProps['borderColor'       ],
+        borderStyle              : borders.style                                                    as CssKnownProps['borderStyle'       ],
+        borderWidth              : borders.defaultWidth                                             as CssKnownProps['borderWidth'       ],
+        borderColor              : borders.color                                                    as CssKnownProps['borderColor'       ],
         
-        borderRadiusSm       : borderRadiuses.sm                                                as CssKnownProps['borderRadius'      ],
-        borderRadiusMd       : borderRadiuses.md                                                as CssKnownProps['borderRadius'      ],
-        borderRadiusLg       : borderRadiuses.lg                                                as CssKnownProps['borderRadius'      ],
+        borderRadiusSm           : borderRadiuses.sm                                                as CssKnownProps['borderRadius'      ],
+        borderRadiusMd           : borderRadiuses.md                                                as CssKnownProps['borderRadius'      ],
+        borderRadiusLg           : borderRadiuses.lg                                                as CssKnownProps['borderRadius'      ],
         
         
         
         // rings:
-        ring                 : colors.secondaryThin                                             as CssKnownProps['color'             ],
+        ring                     : colors.secondaryThin                                             as CssKnownProps['color'             ],
         
         
         
         // animations:
-        animationDuration    : '300ms'                                                          as CssKnownProps['animationDuration' ],
+        defaultAnimationDuration : '300ms'                                                          as CssKnownProps['animationDuration' ],
         
         
         
         // spacings:
-        paddingInlineSm      : spacers.sm                                                       as CssKnownProps['paddingInline'     ],
-        paddingBlockSm       : spacers.xs                                                       as CssKnownProps['paddingBlock'      ],
-        paddingInlineMd      : [['calc((', spacers.sm, '+', spacers.md, ')/2)']]                as CssKnownProps['paddingInline'     ],
-        paddingBlockMd       : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']]                as CssKnownProps['paddingBlock'      ],
-        paddingInlineLg      : spacers.md                                                       as CssKnownProps['paddingInline'     ],
-        paddingBlockLg       : spacers.sm                                                       as CssKnownProps['paddingBlock'      ],
+        paddingInlineSm          : spacers.sm                                                       as CssKnownProps['paddingInline'     ],
+        paddingBlockSm           : spacers.xs                                                       as CssKnownProps['paddingBlock'      ],
+        paddingInlineMd          : [['calc((', spacers.sm, '+', spacers.md, ')/2)']]                as CssKnownProps['paddingInline'     ],
+        paddingBlockMd           : [['calc((', spacers.xs, '+', spacers.sm, ')/2)']]                as CssKnownProps['paddingBlock'      ],
+        paddingInlineLg          : spacers.md                                                       as CssKnownProps['paddingInline'     ],
+        paddingBlockLg           : spacers.sm                                                       as CssKnownProps['paddingBlock'      ],
         
         
         
         // typos:
-        fontSizeSm           : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]    as CssKnownProps['fontSize'          ],
-        fontSizeMd           : typos.fontSizeMd                                                 as CssKnownProps['fontSize'          ],
-        fontSizeLg           : typos.fontSizeLg                                                 as CssKnownProps['fontSize'          ],
-        fontFamily           : 'inherit'                                                        as CssKnownProps['fontFamily'        ],
-        fontWeight           : 'inherit'                                                        as CssKnownProps['fontWeight'        ],
-        fontStyle            : 'inherit'                                                        as CssKnownProps['fontStyle'         ],
-        textDecoration       : 'inherit'                                                        as CssKnownProps['textDecoration'    ],
-        lineHeight           : 'inherit'                                                        as CssKnownProps['lineHeight'        ],
+        fontSizeSm               : [['calc((', typos.fontSizeSm, '+', typos.fontSizeMd, ')/2)']]    as CssKnownProps['fontSize'          ],
+        fontSizeMd               : typos.fontSizeMd                                                 as CssKnownProps['fontSize'          ],
+        fontSizeLg               : typos.fontSizeLg                                                 as CssKnownProps['fontSize'          ],
+        fontFamily               : 'inherit'                                                        as CssKnownProps['fontFamily'        ],
+        fontWeight               : 'inherit'                                                        as CssKnownProps['fontWeight'        ],
+        fontStyle                : 'inherit'                                                        as CssKnownProps['fontStyle'         ],
+        textDecoration           : 'inherit'                                                        as CssKnownProps['textDecoration'    ],
+        lineHeight               : 'inherit'                                                        as CssKnownProps['lineHeight'        ],
     };
     
     
     
     const subs = {
         // animations:
-        transition           : [
+        transition               : [
             // appearances:
-            ['opacity'      , bases.animationDuration, 'ease-out'],
+            ['opacity'      , bases.defaultAnimationDuration, 'ease-out'],
             
             // sizes:
-            ['inline-size'  , bases.animationDuration, 'ease-out'],
-            ['block-size'   , bases.animationDuration, 'ease-out'],
+            ['inline-size'  , bases.defaultAnimationDuration, 'ease-out'],
+            ['block-size'   , bases.defaultAnimationDuration, 'ease-out'],
             
             // backgrounds:
-            ['background'   , bases.animationDuration, 'ease-out'],
+            ['background'   , bases.defaultAnimationDuration, 'ease-out'],
             
             // foregrounds:
-            ['color'        , bases.animationDuration, 'ease-out'],
+            ['color'        , bases.defaultAnimationDuration, 'ease-out'],
             
             // borders:
-            ['border'       , bases.animationDuration, 'ease-out'],
-            ['border-radius', bases.animationDuration, 'ease-out'],
+            ['border'       , bases.defaultAnimationDuration, 'ease-out'],
+            ['border-radius', bases.defaultAnimationDuration, 'ease-out'],
             
             // spacings:
-         // ['padding'      , bases.animationDuration, 'ease-out'], // beautiful but uncomfortable
+         // ['padding'      , bases.defaultAnimationDuration, 'ease-out'], // beautiful but uncomfortable
             
             // typos:
-            ['font-size'    , bases.animationDuration, 'ease-out'],
-        ]                                                                                       as CssKnownProps['transition'        ],
+            ['font-size'    , bases.defaultAnimationDuration, 'ease-out'],
+        ]                                                                                           as CssKnownProps['transition'        ],
     };
     
     
     
     const defaults = {
         // borders:
-        borderRadius         : bases.borderRadiusMd                                             as CssKnownProps['borderRadius'      ],
+        borderRadius             : bases.borderRadiusMd                                             as CssKnownProps['borderRadius'      ],
         
         
         
         // spacings:
-        paddingInline        : bases.paddingInlineMd                                            as CssKnownProps['paddingInline'     ],
-        paddingBlock         : bases.paddingBlockMd                                             as CssKnownProps['paddingBlock'      ],
+        paddingInline            : bases.paddingInlineMd                                            as CssKnownProps['paddingInline'     ],
+        paddingBlock             : bases.paddingBlockMd                                             as CssKnownProps['paddingBlock'      ],
         
         
         
         // typos:
-        fontSize             : bases.fontSizeMd                                                 as CssKnownProps['fontSize'          ],
+        fontSize                 : bases.fontSizeMd                                                 as CssKnownProps['fontSize'          ],
     };
     
     
