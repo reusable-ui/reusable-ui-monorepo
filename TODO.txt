@@ -1,4 +1,3 @@
-[high prior] protect size='md' from <parent size='sm|lg'>
 [high prior] cssConfig prefix should have at least 3 characters
 
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
