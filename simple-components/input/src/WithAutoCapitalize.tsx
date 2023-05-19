@@ -62,7 +62,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
         if (shiftKey || altKey || ctrlKey || metaKey) return; // ignore when [shift] [alt] [ctrl] [win] key is pressed
         if (!code || !key)                            return; // ignore autocomplete event
         if (!code?.startsWith('Key'))                 return; // ignore [backspace] [enter] [tab] etc
-        if (key === key?.toLocaleUpperCase())         return; // ignore already UPPERCASED
+        if (key === key?.toUpperCase())               return; // ignore already UPPERCASED
         
         
         
@@ -84,7 +84,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
             
             case 'words':
                 // the *first* letter of each *word* should be UPPERCASED => separated by <space(s)>
-                if (!!prevValue && !prevValue.match(/\s$/)) return; // the prev letter should be a <space> -or- no_prev_letter
+                if (!!prevValue && !prevValue.match(/\s$/))    return; // the prev letter should be a <space> -or- no_prev_letter
                 break;
             
             case 'on':
@@ -102,12 +102,12 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
         
         
         // event propagations:
-        event.preventDefault(); // intercept the user's lowercase input & replace with uppercase
+        event.preventDefault(); // intercepts the user's lowercase input & replace with UPPERCASE
         
         
         
         // update value:
-        const newValue = prevValue + key.toLocaleUpperCase() + value.slice(selectionEnd!);
+        const newValue = prevValue + key.toUpperCase() + value.slice(selectionEnd!);
         
         
         
