@@ -115,7 +115,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
         // trigger events:
         // react *hack*: trigger `onChange` event:
         scheduleTriggerEvent(() => { // runs the `input` event *next after* current macroTask completed
-            const oldValue = inputElm.value;
+            const oldValue = inputElm.value;                     // react *hack* get_prev_value *before* modifying
             inputElm.value = newValue;                           // react *hack* set_value *before* firing `input` event
             (inputElm as any)._valueTracker?.setValue(oldValue); // react *hack* in order to React *see* the changes when `input` event fired
             
