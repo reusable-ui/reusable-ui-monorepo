@@ -10,7 +10,7 @@ import {
     useEvent,
     useMergeEvents,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
+}                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 
 
@@ -24,9 +24,9 @@ export interface WithAutoCapitalizeProps
     /**
      * Required.  
      *   
-     * The underlying `<Element>` to be `<Link>`-ed and manipulated of `[active]` & `[aria-current]` props, based on the current page url.
+     * The underlying `<Input>` to be autoCapitalized.
      */
-    children  : React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement>>
+    children : React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement>>
 }
 const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null => {
     // rest props:
