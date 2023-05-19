@@ -107,7 +107,8 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
         
         
         // update value:
-        const newValue = prevValue + key.toUpperCase() + value.slice(selectionEnd!);
+        const keyUpper = key.toUpperCase();
+        const newValue = prevValue + keyUpper + value.slice(selectionEnd!);
         
         
         
@@ -126,7 +127,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
             
             
             // fire `input` native event to trigger `onChange` synthetic event:
-            inputElm.dispatchEvent(new Event('input', { bubbles: true, cancelable: false, composed: true }));
+            inputElm.dispatchEvent(new InputEvent('input', { bubbles: true, cancelable: false, composed: true, data: keyUpper, dataTransfer: null, inputType: 'insertText', isComposing: false, view: null, detail: 0 }));
         });
     });
     const handleKeyDownCapture         = useMergeEvents(
