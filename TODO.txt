@@ -1,6 +1,5 @@
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 
-[low prior ] add autoCapitalize implementation
 [low prior ] fix <Carousel> fast clicking [prev] & [next] button
 [low prior ] fix <Carousel> touch scroll sync with <Navscroll>
 
