@@ -66,7 +66,7 @@ function App() {
                             
                             
                             event.preventDefault();  // intercept the user's lowercase input & replace with uppercase
-                            event.stopPropagation(); // mute the event to another event listeners
+                            // event.stopPropagation(); // mute the event to another event listeners
                             
                             // execute the action on next macroTask:
                             setTimeout(() => {
@@ -98,11 +98,25 @@ function App() {
                             console.log('up: ', event.nativeEvent);
                             if (event.isTrusted) {
                                 event.preventDefault();
-                                event.stopPropagation();
+                                // event.stopPropagation();
                             }
                         }}
                         onChange={(event) => {
                             console.log('change: ', event, event.target.value);
+                        }}
+                    />
+                    <TextInput theme='primary' autoCapitalize='sentences'
+                        onKeyDown={(event) => {
+                            console.log('onKeyDown: ', event, (event.target as any).value);
+                        }}
+                        onKeyUp={(event) => {
+                            console.log('onKeyUp: ', event, (event.target as any).value);
+                        }}
+                        onChange={(event) => {
+                            console.log('onChange: ', event, event.target.value);
+                        }}
+                        onBlur={(event) => {
+                            event.preventDefault();
                         }}
                     />
                 </article>

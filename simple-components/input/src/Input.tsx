@@ -33,6 +33,12 @@ import {
     EditableTextControl,
 }                           from '@reusable-ui/editable-text-control'   // a base component
 
+// internals:
+import {
+    // react components:
+    WithAutoCapitalize,
+}                           from './WithAutoCapitalize.js'
+
 
 
 // styles:
@@ -115,6 +121,24 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
     list           ?: string
 }
 const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
+    // jsx:
+    const inputJsx = <InputInternal {...props} />;
+    if (
+        props.autoCapitalize
+        &&
+        !['off', 'none'].includes(props.autoCapitalize ?? 'off')
+        &&
+        ['text', 'search', /*'password', 'email', 'url'*/].includes(props.type ?? 'text')
+    ) {
+        return (
+            <WithAutoCapitalize>
+                {inputJsx}
+            </WithAutoCapitalize>
+        );
+    } // if
+    return inputJsx;
+};
+const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // styles:
     const styleSheet = useInputStyleSheet();
     
