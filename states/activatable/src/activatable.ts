@@ -423,10 +423,10 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
         } // if
         
         if ((element && doTriggerOnChange) || onActiveChange) scheduleTriggerEvent(() => { // runs the `click` & `onActiveChange` events *next after* current macroTask completed
-            // *hack*: trigger `onChange` event:
+            // react *hack*: trigger `onChange` event:
             // side effect: toggles the [checked] prop:
             if (element && doTriggerOnChange) {
-                (element as any)._valueTracker?.stopTracking?.(); // react *hack*
+                (element as any)._valueTracker?.setValue(`${!active}`); // react *hack* in order to React *see* the changes when `input` event fired
                 
                 // fire `click` native event to trigger `onChange` synthetic event:
                 element.dispatchEvent(new PointerEvent('click', { bubbles: true, cancelable: true, composed: true }));
