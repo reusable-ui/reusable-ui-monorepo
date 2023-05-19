@@ -122,7 +122,7 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
 }
 const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // jsx:
-    const inputJsx = <InputInternal {...props} />;
+    const inputJsx = <InputInternal<TElement> {...props} />;
     if (
         props.autoCapitalize
         &&
