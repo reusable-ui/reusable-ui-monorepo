@@ -358,7 +358,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // functions:
-    const cloneDummyToList = (dummyShift = dummyDiff.current) => {
+    const cloneDummyToList = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -379,25 +379,26 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide which side to be moved:
-        const modifLeft = listShift <= (itemsCount / 2);
-        if (modifLeft) { // modify the left side
-            Array.from(listElm.childNodes).slice(0, listShift) // take nth elements from the left
-            .forEach((item) => listElm.append(item));          // insert the items at the end
-        }
-        else { // modify the right side
+        moveNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the fewest listItem(s) to move
+        if (moveNextSide) { // move the right listItem(s) to the left_most
             Array.from(listElm.childNodes).slice(-(itemsCount - listShift))            // take nth elements from the right
             .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
             .forEach((item) => listElm.insertBefore(item, listElm.firstElementChild)); // insert the items at the beginning
+        }
+        else { // move the left listItem(s) to the right_most
+            Array.from(listElm.childNodes).slice(0, listShift) // take nth elements from the left
+            .forEach((item) => listElm.append(item));          // insert the items at the end
         } // if
         
         
         
         // set the listElm's scrollPos to the correct image:
-        const listStyle  = getComputedStyle(listElm);
-        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const steps      = modifLeft ? (itemsCount - listShift) : (-listShift);
+        const listStyle       = getComputedStyle(listElm);
+        const frameWidth      = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        const listScrollWidth = frameWidth * itemsCount;
+        const listNewPos      = listCurrentPos + (frameWidth * (itemsCount - listShift));
         listElm.scrollTo({
-            left     : listCurrentPos + (frameWidth * steps),
+            left     : ((listNewPos % listScrollWidth) + listScrollWidth) % listScrollWidth, // wrap pos if overflowed/underflowed
             behavior : ('instant' as any) // no scrolling animation during sync
         });
         
@@ -406,6 +407,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
     };
+    (window as any).cloneDummyToList = cloneDummyToList;
     
     const scrollBy           = (listElm: TElement, nextSlide: boolean) => {
         const parent = listElm;
@@ -756,12 +758,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide the shift amount of dummyListElm:
-        const dummyShift = (touchedItemIndex.current + (isPositiveMovement ? 1 : 0));
+        const dummyShift = normalizeShift(touchedItemIndex.current + (isPositiveMovement ? 1 : 0));
         if (dummyDiff.current === dummyShift) return; // already shifted => ignore
         dummyDiff.current = dummyShift;
         console.log(dummyShift);
         // TODO: move the all listItem(s) before/after the current touchedItemIndex
-        // cloneDummyToList(dummyShift);
+        cloneDummyToList(dummyShift);
     });
     
     
