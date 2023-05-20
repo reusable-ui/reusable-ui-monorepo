@@ -213,13 +213,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     // states:
     const dummyDiff = useRef<number>(0);
-    const updateDummyDiff = (diff: number) => {
+    const normalizeShift = (shift: number) => {
         // conditions:
-        if (!itemsCount) return;
+        if (!itemsCount) return shift;
         
         
         
-        dummyDiff.current = (((dummyDiff.current - diff) % itemsCount) + itemsCount) % itemsCount;
+        return ((shift % itemsCount) + itemsCount) % itemsCount;
+    };
+    const shiftDummyDiff = (diff: number) => {
+        dummyDiff.current = normalizeShift(dummyDiff.current - diff);
     };
     
     
@@ -353,11 +356,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // functions:
-    const normalizeListItems = (listElm: TElement) => {
-        if (!itemsCount) return; // empty items => nothing to do
+    const normalizeListItems = (itemsShift = dummyDiff.current) => {
+        // conditions:
         
-        const dummyCurrentDiff = dummyDiff.current;
-        if (!dummyCurrentDiff) return; // no difference => nothing to do
+        if (!itemsCount) return; // empty items => nothing to shift
+        
+        itemsShift = normalizeShift(itemsShift);
+        if (!itemsShift) return; // no difference => nothing to shift
+        
+        
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to shift
         
         
         
@@ -367,13 +377,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide which side to be moved:
-        const modifLeft = dummyCurrentDiff <= (itemsCount / 2);
+        const modifLeft = itemsShift <= (itemsCount / 2);
         if (modifLeft) { // modify the left side
-            Array.from(listElm.childNodes).slice(0, dummyCurrentDiff) // take nth elements from the left
-            .forEach((item) => listElm.append(item));                 // insert the items at the end
+            Array.from(listElm.childNodes).slice(0, itemsShift) // take nth elements from the left
+            .forEach((item) => listElm.append(item));           // insert the items at the end
         }
         else { // modify the right side
-            Array.from(listElm.childNodes).slice(-(itemsCount - dummyCurrentDiff))     // take nth elements from the right
+            Array.from(listElm.childNodes).slice(-(itemsCount - itemsShift))           // take nth elements from the right
             .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
             .forEach((item) => listElm.insertBefore(item, listElm.firstElementChild)); // insert the items at the beginning
         } // if
@@ -383,7 +393,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // set the listElm's scrollPos to the correct image:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const steps      = modifLeft ? (itemsCount - dummyCurrentDiff) : (-dummyCurrentDiff);
+        const steps      = normalizeShift(modifLeft ? (itemsCount - itemsShift) : (-itemsShift));
         listElm.scrollTo({
             left     : listCurrentPos + (frameWidth * steps),
             behavior : ('instant' as any) // no scrolling animation during sync
@@ -391,8 +401,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // reset the diff of listElm & dummyListElm:
-        dummyDiff.current = 0;
+        // update the diff of listElm & dummyListElm:
+        dummyDiff.current = normalizeShift(dummyDiff.current - itemsShift);
     };
     
     const scrollBy           = (listElm: TElement, nextSlide: boolean) => {
@@ -536,7 +546,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 
                 
                 // calculate the diff of listElm & dummyListElm:
-                updateDummyDiff(-1);
+                shiftDummyDiff(-1); // shift once to left (will wrap to the right_most)
             } // if
             
             
@@ -622,7 +632,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 
                 
                 // calculate the diff of listElm & dummyListElm:
-                updateDummyDiff(1);
+                shiftDummyDiff(1); // shift once to right (will wrap to the left_most)
             } // if
             
             
@@ -683,9 +693,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const dummyListElm = dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
         
-        const listElm      = listRefInternal.current;
-        if (!listElm)      return; // listElm must be exist to sync
-        
         
         
         // set the dummyListElm's scrollPos to the correct image:
@@ -696,7 +703,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // sync listElm scrolling position to dummyListElm scrolling position:
-        normalizeListItems(listElm);
+        normalizeListItems();
+        // normalizeListItems(dummyDiff.current + Math.floor(itemsCount / 2));
     });
     
     
