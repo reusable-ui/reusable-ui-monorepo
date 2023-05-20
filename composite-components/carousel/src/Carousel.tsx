@@ -224,6 +224,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const shiftDummyDiff = (diff: number) => {
         dummyDiff.current = normalizeShift(dummyDiff.current + diff);
     };
+    const touchedItemIndex = useRef<number>(0);
+    const prevTouchPos     = useRef<number>(0);
     
     
     
@@ -598,6 +600,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // actions:
         handlePrevClickInternal,
     );
+    
     const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return;
@@ -684,7 +687,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // actions:
         handleNextClickInternal,
     );
-    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>((event) => {
+    
+    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         if (!dummyDiff.current) return; // no difference => nothing to do
         
         
@@ -703,6 +707,61 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // sync listElm scrolling position to dummyListElm scrolling position:
         cloneDummyToList();
+    });
+    
+    const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        
+        
+        // set the initial touch pos to detect the movement direction later:
+        prevTouchPos.current = event.touches[0].pageX;
+        
+        
+        
+        // get the shown listItem's index by position:
+        const listStyle  = getComputedStyle(listElm);
+        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
+    });
+    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        if (event.touches.length !== 1) return; // ignore multi touches
+        
+        
+        
+        // track the touch pos changes:
+        const oldTouchPos    = prevTouchPos.current;
+        const newTouchPos    = event.touches[0].pageX;
+        // prevTouchPos.current = newTouchPos; // no need to accumulatively track the prev pos, just use the first pos (when touching begin) as the reference
+        
+        
+        
+        // detect the movement direction:
+        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        let isPositiveMovement : boolean|null = null;
+        if (newTouchPos > oldTouchPos) {      // move to right
+            isPositiveMovement = isLtr;
+        }
+        else if (newTouchPos < oldTouchPos) { // move to left
+            isPositiveMovement = !isLtr;
+        } // if
+        if (isPositiveMovement === null) return; // not move => ignore
+        
+        
+        
+        // decide the shift amount of dummyListElm:
+        const dummyShift = (touchedItemIndex.current + (isPositiveMovement ? 1 : 0));
+        if (dummyDiff.current === dummyShift) return; // already shifted => ignore
+        dummyDiff.current = dummyShift;
+        console.log(dummyShift);
+        // TODO: move the all listItem(s) before/after the current touchedItemIndex
+        // cloneDummyToList(dummyShift);
     });
     
     
@@ -740,6 +799,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     // classes:
                     classes={_defaultListElmClasses}
+                    
+                    
+                    
+                    // handlers:
+                    onTouchStart  = {listHandleTouchStart}
+                    onTouchMove   = {listHandleTouchMove }
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
