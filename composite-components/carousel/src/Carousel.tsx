@@ -393,7 +393,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // set the listElm's scrollPos to the correct image:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const steps      = normalizeShift(modifLeft ? (itemsCount - itemsShift) : (-itemsShift));
+        const steps      = modifLeft ? (itemsCount - itemsShift) : (-itemsShift);
         listElm.scrollTo({
             left     : listCurrentPos + (frameWidth * steps),
             behavior : ('instant' as any) // no scrolling animation during sync
