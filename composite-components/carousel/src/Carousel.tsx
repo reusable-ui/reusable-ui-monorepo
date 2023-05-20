@@ -407,7 +407,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
     };
-    (window as any).cloneDummyToList = cloneDummyToList;
     
     const scrollBy           = (listElm: TElement, nextSlide: boolean) => {
         const parent = listElm;
@@ -758,12 +757,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide the shift amount of dummyListElm:
-        const dummyShift = normalizeShift(touchedItemIndex.current + (isPositiveMovement ? 1 : 0));
-        if (dummyDiff.current === dummyShift) return; // already shifted => ignore
-        dummyDiff.current = dummyShift;
-        console.log(dummyShift);
-        // TODO: move the all listItem(s) before/after the current touchedItemIndex
-        cloneDummyToList(dummyShift);
+        const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
+        if (dummyDiff.current === shiftAmount) return; // already shifted => ignore
+        dummyDiff.current = shiftAmount; // mark as shifted
+        
+        cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount);
+        console.log('shifted');
     });
     
     
