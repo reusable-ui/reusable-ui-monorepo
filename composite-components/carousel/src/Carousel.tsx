@@ -469,13 +469,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const isBeginOfScroll    = (listElm: TElement) => (
         (listElm.scrollLeft <= 0.5)
-        &&
-        (listElm.scrollTop  <= 0.5)
+        // &&
+        // (listElm.scrollTop  <= 0.5) // no need to check vertical scrollbar
     );
     const isEndOfScroll      = (listElm: TElement) => (
         (((listElm.scrollWidth  - listElm.clientWidth ) - listElm.scrollLeft) <= 0.5)
-        &&
-        (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5)
+        // &&
+        // (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5) // no need to check vertical scrollbar
     );
     
     
