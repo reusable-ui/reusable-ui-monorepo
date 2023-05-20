@@ -685,8 +685,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handleNextClickInternal,
     );
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>((event) => {
-        const dummyCurrentDiff = dummyDiff.current;
-        if (!dummyCurrentDiff) return; // no difference => nothing to do
+        if (!dummyDiff.current) return; // no difference => nothing to do
         
         
         
