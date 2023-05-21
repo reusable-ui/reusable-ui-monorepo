@@ -725,7 +725,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
+        touchedItemIndex.current = normalizeShift(Math.round(listElm.scrollLeft / frameWidth) + dummyDiff.current);
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
@@ -759,7 +759,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // decide the shift amount of dummyListElm:
         const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
         if (dummyDiff.current === shiftAmount) return; // already shifted => ignore
-        
+        console.log({ index: touchedItemIndex.current, dummyDiff: dummyDiff.current, shiftAmount });
+        // mutate the listItem(s):
         cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
     });
     
