@@ -225,7 +225,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         dummyDiff.current = normalizeShift(dummyDiff.current + diff);
     };
     const touchedItemIndex = useRef<number>(0);
-    const prevTouchPos     = useRef<number>(0);
+    const initialTouchPos  = useRef<number>(0);
+    const prevTouch        = useRef<{ pos: number, tick: number }>({ pos: 0, tick: 0 });
     
     
     
@@ -354,6 +355,30 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             delete (dummyListElm as any).scrollTo;
         };
     }, [infiniteLoop]); // (re)run the setups & cleanups on every time the infiniteLoop mode changes
+    
+    // prevents browser's scrolling implementation, we use our scrolling implementation:
+    useEffect(() => {
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for setup
+        
+        
+        // handlers:
+        const listHandleTouchStart = (event: TouchEvent) => {
+            event.preventDefault();
+        };
+        
+        
+        
+        // setups:
+        listElm.addEventListener('touchstart', listHandleTouchStart, { passive: false });
+        
+        
+        
+        // cleanups:
+        return () => {
+            listElm.removeEventListener('touchstart', listHandleTouchStart);
+        };
+    }, []);
     
     
     
@@ -720,7 +745,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the initial touch pos to detect the movement direction later:
-        prevTouchPos.current = event.touches[0].pageX;
+        const touchPos = event.touches[0].pageX;
+        initialTouchPos.current = touchPos;
+        prevTouch.current = { pos: touchPos, tick: performance.now() };
         
         
         
@@ -738,10 +765,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // track the touch pos changes:
-        const oldTouchPos    = prevTouchPos.current;
+        // track the touch pos direction:
+        const oldTouchPos    = initialTouchPos.current;
         const newTouchPos    = event.touches[0].pageX;
-        // prevTouchPos.current = newTouchPos; // no need to accumulatively track the prev pos, just use the first pos (when touching begin) as the reference
         
         
         
@@ -772,6 +798,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the shifted listItem's index:
         touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
+        
+        
+        
+        // track the touch pos velocity:
+        const touchDirection = newTouchPos - prevTouch.current.pos;           // calculate the velocity before updating the prev
+        const touchDuration  = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
+        const touchVelocity  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
+        prevTouch.current    = { pos: newTouchPos, tick: performance.now() }; // update the prev
+        
+        
+        
+        // scroll implementation:
+        listElm.scrollBy({
+            left     : Math.round(touchVelocity * 10),
+            behavior : 'smooth',
+        });
     });
     
     
