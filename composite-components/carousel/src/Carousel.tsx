@@ -215,7 +215,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // states:
-    const dummyDiff = useRef<number>(0);
+    const dummyDiff         = useRef<number>(0);
     const touchedItemIndex  = useRef<number>(0);
     
     const initialTouchTick  = useRef<number>(0);
@@ -891,7 +891,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             listElm.style.scrollBehavior = '';
         } // if
     });
-    const listHandleScroll      = useEvent<React.UIEventHandler<TElement>>((event) => {
+    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
