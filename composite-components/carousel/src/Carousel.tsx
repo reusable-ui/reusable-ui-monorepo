@@ -780,12 +780,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         else if (newTouchPos < oldTouchPos) { // move to left
             isPositiveMovement = !isLtr;
         } // if
-        if (isPositiveMovement === null) return; // not move => ignore
         
         
         
         // detect if not already been shifted:
-        if (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0)) {
+        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0))) {
             // decide the shift amount of dummyListElm:
             const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
             // mutate the listItem(s):
@@ -800,7 +799,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // track the touch pos velocity:
-        const touchDirection = oldTouchPos - newTouchPos;           // calculate the velocity before updating the prev
+        const touchDirection = prevTouch.current.pos - newTouchPos;           // calculate the velocity before updating the prev
         const touchDuration  = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
         const touchVelocity  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
         prevTouch.current    = { pos: newTouchPos, tick: performance.now() }; // update the prev
@@ -808,14 +807,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        const listStyle  = getComputedStyle(listElm);
-        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        // listElm.scrollBy({
-        //     left     : touchDirection,
-        //     behavior : 'smooth',
-        // });
-        listElm.scrollLeft = touchDirection;
-        console.log(touchDirection, listElm.scrollLeft);
+        listElm.scrollLeft += touchDirection + (touchVelocity * 20);
+        console.log(touchDirection, touchVelocity);
     });
     
     
