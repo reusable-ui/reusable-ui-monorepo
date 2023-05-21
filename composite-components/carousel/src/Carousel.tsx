@@ -715,9 +715,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     );
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
+        // conditions:
         if (!dummyDiff.current) return; // no difference => nothing to do
-        
-        
         
         const dummyListElm = dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
@@ -755,6 +754,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
         touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
+        
+        
+        
+        // temporary disable the snapScroll:
+        listElm.style.scrollSnapType = 'none';
+        listElm.style.scrollBehavior = 'auto';
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
@@ -810,6 +815,51 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         listElm.scrollLeft += touchDirection + (touchVelocity * 20);
         console.log(touchDirection, touchVelocity);
     });
+    const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        if (event.touches.length !== 0) return; // ignore multi touches
+        
+        
+        
+        // get the shown listItem's index by position:
+        const listStyle  = getComputedStyle(listElm);
+        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        if ((listElm.scrollLeft % frameWidth) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
+            // update the nearest listItem's index:
+            touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
+            // snap scroll to the nearest fragment step:
+            listElm.scrollTo({
+                left : touchedItemIndex.current * frameWidth,
+                behavior : 'smooth',
+            });
+        }
+        else { // an exact step (fragment step) => restore the CSS snapScroll
+            // restore the CSS snapScroll:
+            listElm.style.scrollSnapType = '';
+            listElm.style.scrollBehavior = '';
+        } // if
+    });
+    const listHandleScroll      = useEvent<React.UIEventHandler<TElement>>((event) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        
+        
+        // set the listElm's scrollPos to the correct image:
+        const listStyle = getComputedStyle(listElm);
+        const frameWidth     = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        if ((listElm.scrollLeft % frameWidth) >= 0.5) return; // not an exact step (fragment step) => scrolling is still in progress => abort
+        
+        
+        
+        // restore the CSS snapScroll:
+        listElm.style.scrollSnapType = '';
+        listElm.style.scrollBehavior = '';
+    });
     
     
     
@@ -852,6 +902,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     // handlers:
                     onTouchStart  = {listHandleTouchStart}
                     onTouchMove   = {listHandleTouchMove }
+                    onTouchEnd    = {listHandleTouchEnd  }
+                    onScroll      = {listHandleScroll    }
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
