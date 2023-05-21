@@ -854,20 +854,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultTouchMovementThreshold) && (touchDuration <= _defaultTouchDurationThreshold)) {
-            const restScroll    = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
-            const finishingScrollLeft = listElm.scrollLeft + restScroll;
-            
-            // update the nearest listItem's index:
-            touchedItemIndex.current = Math.round(finishingScrollLeft / frameWidth);
-            // snap scroll to the nearest fragment step:
-            listElm.scrollTo({
-                left     : touchedItemIndex.current * frameWidth,
-                behavior : 'smooth',
-            });
-            
-            
-            
-            return; // no need to *auto scroll completation*:
+            const restScroll          = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
+            if (Math.abs(restScroll) >= 0.5) {
+                const finishingScrollLeft = listElm.scrollLeft + restScroll;
+                
+                // update the nearest listItem's index:
+                touchedItemIndex.current = Math.round(finishingScrollLeft / frameWidth);
+                // snap scroll to the nearest fragment step:
+                listElm.scrollTo({
+                    left     : touchedItemIndex.current * frameWidth,
+                    behavior : 'smooth',
+                });
+                
+                
+                
+                return; // no need to *auto scroll completation*:
+            } // if
         } // if
         
         
