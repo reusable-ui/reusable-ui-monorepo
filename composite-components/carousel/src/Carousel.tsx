@@ -213,17 +213,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     // states:
     const dummyDiff = useRef<number>(0);
-    const normalizeShift = (shift: number) => {
-        // conditions:
-        if (!itemsCount) return shift;
-        
-        
-        
-        return ((shift % itemsCount) + itemsCount) % itemsCount;
-    };
-    const shiftDummyDiff = (diff: number) => {
-        dummyDiff.current = normalizeShift(dummyDiff.current + diff);
-    };
     const touchedItemIndex  = useRef<number>(0);
     const initialTouchPos   = useRef<number>(0);
     const prevTouch         = useRef<{ pos: number, tick: number }>({ pos: 0, tick: 0 });
@@ -384,7 +373,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // functions:
-    const cloneDummyToList = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
+    const normalizeShift       = (shift: number) => {
+        // conditions:
+        if (!itemsCount) return shift;
+        
+        
+        
+        return ((shift % itemsCount) + itemsCount) % itemsCount;
+    };
+    const shiftDummyDiff       = (diff: number) => {
+        dummyDiff.current = normalizeShift(dummyDiff.current + diff);
+    };
+    
+    const cloneDummyToList     = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -434,7 +435,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
     };
     
-    const scrollBy           = (listElm: TElement, nextSlide: boolean) => {
+    const calculateScrollLimit = (deltaScroll: number) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return deltaScroll; // listElm must be exist to manipulate
+        
+        
+        
+        const listStyle             = getComputedStyle(listElm);
+        const frameWidth            = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        const limitedScrollMin      = ((touchedItemIndex.current - 1) * frameWidth) - listElm.scrollLeft;
+        const limitedScrollMax      = ((touchedItemIndex.current + 1) * frameWidth) - listElm.scrollLeft;
+        return Math.min(Math.max(
+            deltaScroll,
+        limitedScrollMin), limitedScrollMax);
+    };
+    
+    const scrollBy             = (listElm: TElement, nextSlide: boolean) => {
         const parent = listElm;
         
         
@@ -463,7 +480,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             behavior : 'smooth',
         });
     };
-    const scrollTo           = (targetSlide: HTMLElement|null) => {
+    const scrollTo             = (targetSlide: HTMLElement|null) => {
         if (!targetSlide) return;
         const parent = targetSlide.parentElement;
         if (!parent) return;
@@ -496,12 +513,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         });
     };
     
-    const isBeginOfScroll    = (listElm: TElement) => (
+    const isBeginOfScroll      = (listElm: TElement) => (
         (listElm.scrollLeft <= 0.5)
         // &&
         // (listElm.scrollTop  <= 0.5) // no need to check vertical scrollbar
     );
-    const isEndOfScroll      = (listElm: TElement) => (
+    const isEndOfScroll        = (listElm: TElement) => (
         (((listElm.scrollWidth  - listElm.clientWidth ) - listElm.scrollLeft) <= 0.5)
         // &&
         // (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5) // no need to check vertical scrollbar
@@ -813,9 +830,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        const scrollMovement = touchDirection;
-        // TODO: limit the scrollMovement
-        listElm.scrollLeft  += scrollMovement;
+        listElm.scrollLeft         += calculateScrollLimit(touchDirection);
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
@@ -827,9 +842,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        const scrollMovement = (prevTouchVelocity.current * 20);
-        // TODO: limit the scrollMovement
-        listElm.scrollLeft  += scrollMovement;
+        listElm.scrollLeft  += calculateScrollLimit(prevTouchVelocity.current * 100);
         
         
         
@@ -841,7 +854,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
             // snap scroll to the nearest fragment step:
             listElm.scrollTo({
-                left : touchedItemIndex.current * frameWidth,
+                left     : touchedItemIndex.current * frameWidth,
                 behavior : 'smooth',
             });
         }
