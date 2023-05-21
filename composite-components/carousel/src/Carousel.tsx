@@ -725,7 +725,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        touchedItemIndex.current = normalizeShift(Math.round(listElm.scrollLeft / frameWidth) + dummyDiff.current);
+        touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
