@@ -784,25 +784,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // detect if already been shifted:
-        if (touchedItemIndex.current === (isPositiveMovement ? (itemsCount - 1) : 0)) return; // already shifted to the beginning/end => no need to modify
-        
-        
-        
-        // decide the shift amount of dummyListElm:
-        const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
-        // mutate the listItem(s):
-        cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
-        
-        
-        
-        // update the shifted listItem's index:
-        touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
+        // detect if not already been shifted:
+        if (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0)) {
+            // decide the shift amount of dummyListElm:
+            const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
+            // mutate the listItem(s):
+            cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
+            
+            
+            
+            // update the shifted listItem's index:
+            touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
+        } // if
         
         
         
         // track the touch pos velocity:
-        const touchDirection = newTouchPos - prevTouch.current.pos;           // calculate the velocity before updating the prev
+        const touchDirection = oldTouchPos - newTouchPos;           // calculate the velocity before updating the prev
         const touchDuration  = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
         const touchVelocity  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
         prevTouch.current    = { pos: newTouchPos, tick: performance.now() }; // update the prev
@@ -810,10 +808,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        listElm.scrollBy({
-            left     : Math.round(touchVelocity * 10),
-            behavior : 'smooth',
-        });
+        const listStyle  = getComputedStyle(listElm);
+        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        // listElm.scrollBy({
+        //     left     : touchDirection,
+        //     behavior : 'smooth',
+        // });
+        listElm.scrollLeft = touchDirection;
+        console.log(touchDirection, listElm.scrollLeft);
     });
     
     
