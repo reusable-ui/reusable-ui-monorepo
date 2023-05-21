@@ -812,7 +812,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        listElm.scrollLeft += touchDirection + (touchVelocity * 20);
+        const scrollMovement = touchDirection + (touchVelocity * 20);
+        listElm.scrollLeft  += scrollMovement;
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
