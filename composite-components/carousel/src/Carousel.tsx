@@ -763,7 +763,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // decide the shift amount of dummyListElm:
         const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
-        console.log({ index: touchedItemIndex.current, dummyDiff: dummyDiff.current, shiftAmount });
         // mutate the listItem(s):
         cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
         
@@ -771,9 +770,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the shifted listItem's index:
         touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
-        console.log({ index: touchedItemIndex.current });
     });
-    (window as any).cloneDummyToList = cloneDummyToList;
     
     
     
