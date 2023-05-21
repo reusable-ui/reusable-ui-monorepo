@@ -715,6 +715,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
+        if (event.touches.length !== 1) return; // ignore multi touches
+        
         
         
         // set the initial touch pos to detect the movement direction later:
