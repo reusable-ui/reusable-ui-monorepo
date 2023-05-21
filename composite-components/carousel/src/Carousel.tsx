@@ -757,12 +757,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // detect if already been shifted:
-        if (isPositiveMovement) {
-            if (touchedItemIndex.current === (itemsCount - 1)) return; // already shifted to the end        => no need to modify
-        }
-        else {
-            if (touchedItemIndex.current === 0)                return;  // already shifted to the beginning => no need to modify
-        } // if
+        if (touchedItemIndex.current === (isPositiveMovement ? (itemsCount - 1) : 0)) return; // already shifted to the beginning/end => no need to modify
         
         
         
@@ -775,7 +770,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // update the shifted listItem's index:
-        touchedItemIndex.current = normalizeShift(touchedItemIndex.current - shiftAmount);
+        touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
         console.log({ index: touchedItemIndex.current });
     });
     (window as any).cloneDummyToList = cloneDummyToList;
