@@ -86,11 +86,14 @@ import {
 
 
 // defaults:
-const _defaultListElmClasses      : Optional<string>[] = ['list']
-const _defaultDummyListElmClasses : Optional<string>[] = ['list', 'dummy']
-const _defaultPrevButtonClasses   : Optional<string>[] = ['prevBtn']
-const _defaultNextButtonClasses   : Optional<string>[] = ['nextBtn']
-const _defaultNavscrollClasses    : Optional<string>[] = ['nav']
+const _defaultListElmClasses         : Optional<string>[] = ['list']
+const _defaultDummyListElmClasses    : Optional<string>[] = ['list', 'dummy']
+const _defaultPrevButtonClasses      : Optional<string>[] = ['prevBtn']
+const _defaultNextButtonClasses      : Optional<string>[] = ['nextBtn']
+const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
+
+const _defaultTouchMovementThreshold : number = 20  /* pixel */
+const _defaultTouchDurationThreshold : number = 200 /* milliseconds */
 
 
 
@@ -214,9 +217,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // states:
     const dummyDiff = useRef<number>(0);
     const touchedItemIndex  = useRef<number>(0);
+    
+    const initialTouchTick  = useRef<number>(0);
     const initialTouchPos   = useRef<number>(0);
-    const prevTouch         = useRef<{ pos: number, tick: number }>({ pos: 0, tick: 0 });
-    const prevTouchVelocity = useRef<number>(0);
+    const prevTouchPos      = useRef<number>(0);
     
     
     
@@ -762,9 +766,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the initial touch pos to detect the movement direction later:
+        initialTouchTick.current = performance.now();
         const touchPos = event.touches[0].pageX;
         initialTouchPos.current = touchPos;
-        prevTouch.current = { pos: touchPos, tick: performance.now() };
+        prevTouchPos.current = touchPos;
         
         
         
@@ -789,8 +794,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // track the touch pos direction:
-        const oldTouchPos    = initialTouchPos.current;
-        const newTouchPos    = event.touches[0].pageX;
+        const oldTouchPos = initialTouchPos.current;
+        const newTouchPos = event.touches[0].pageX;
         
         
         
@@ -821,11 +826,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // track the touch pos velocity:
-        const touchDirection       = prevTouch.current.pos - newTouchPos;           // calculate the velocity before updating the prev
-        const touchDuration        = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
-        prevTouchVelocity.current  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
-        prevTouch.current          = { pos: newTouchPos, tick: performance.now() }; // update the prev
+        // track the touch pos direction:
+        const touchDirection = prevTouchPos.current - newTouchPos; // calculate the direction before updating the prev
+        prevTouchPos.current = newTouchPos;                        // update the prev
         
         
         
@@ -841,14 +844,36 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // scroll implementation:
-        listElm.scrollLeft  += calculateScrollLimit(prevTouchVelocity.current * 100);
-        
-        
-        
-        // get the shown listItem's index by position:
+        // get the listItem's frame width:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        
+        
+        
+        // scroll implementation:
+        const touchDirection = initialTouchPos.current - prevTouchPos.current;
+        const touchDuration = performance.now() - initialTouchTick.current;
+        if ((Math.abs(touchDirection) >= _defaultTouchMovementThreshold) && (touchDuration <= _defaultTouchDurationThreshold)) {
+            const restScroll    = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
+            const finishingScrollLeft = listElm.scrollLeft + restScroll;
+            
+            // update the nearest listItem's index:
+            touchedItemIndex.current = Math.round(finishingScrollLeft / frameWidth);
+            // snap scroll to the nearest fragment step:
+            listElm.scrollTo({
+                left     : touchedItemIndex.current * frameWidth,
+                behavior : 'smooth',
+            });
+            
+            
+            
+            return; // no need to *auto scroll completation*:
+        } // if
+        
+        
+        
+        // the *auto scroll completation*:
+        // get the shown listItem's index by position:
         if ((listElm.scrollLeft % frameWidth) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
             // update the nearest listItem's index:
             touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
