@@ -224,9 +224,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const shiftDummyDiff = (diff: number) => {
         dummyDiff.current = normalizeShift(dummyDiff.current + diff);
     };
-    const touchedItemIndex = useRef<number>(0);
-    const initialTouchPos  = useRef<number>(0);
-    const prevTouch        = useRef<{ pos: number, tick: number }>({ pos: 0, tick: 0 });
+    const touchedItemIndex  = useRef<number>(0);
+    const initialTouchPos   = useRef<number>(0);
+    const prevTouch         = useRef<{ pos: number, tick: number }>({ pos: 0, tick: 0 });
+    const prevTouchVelocity = useRef<number>(0);
     
     
     
@@ -804,15 +805,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // track the touch pos velocity:
-        const touchDirection = prevTouch.current.pos - newTouchPos;           // calculate the velocity before updating the prev
-        const touchDuration  = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
-        const touchVelocity  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
-        prevTouch.current    = { pos: newTouchPos, tick: performance.now() }; // update the prev
+        const touchDirection       = prevTouch.current.pos - newTouchPos;           // calculate the velocity before updating the prev
+        const touchDuration        = performance.now() - prevTouch.current.tick;    // calculate the velocity before updating the prev
+        prevTouchVelocity.current  = touchDirection / touchDuration;                // calculate the velocity before updating the prev
+        prevTouch.current          = { pos: newTouchPos, tick: performance.now() }; // update the prev
         
         
         
         // scroll implementation:
-        const scrollMovement = touchDirection + (touchVelocity * 20);
+        const scrollMovement = touchDirection;
+        // TODO: limit the scrollMovement
         listElm.scrollLeft  += scrollMovement;
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -821,6 +823,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if (!listElm) return; // listElm must be exist to manipulate
         
         if (event.touches.length !== 0) return; // ignore multi touches
+        
+        
+        
+        // scroll implementation:
+        const scrollMovement = (prevTouchVelocity.current * 20);
+        // TODO: limit the scrollMovement
+        listElm.scrollLeft  += scrollMovement;
         
         
         
