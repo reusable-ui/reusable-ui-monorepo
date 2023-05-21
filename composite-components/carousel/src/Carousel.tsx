@@ -898,16 +898,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // set the listElm's scrollPos to the correct image:
-        const listStyle = getComputedStyle(listElm);
-        const frameWidth     = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        if ((listElm.scrollLeft % frameWidth) >= 0.5) return; // not an exact step (fragment step) => scrolling is still in progress => abort
-        
-        
-        
-        // restore the CSS snapScroll:
+        // detect the scrolling end:
+        const listStyle  = getComputedStyle(listElm);
+        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+            // restore the CSS snapScroll:
         listElm.style.scrollSnapType = '';
         listElm.style.scrollBehavior = '';
+        } // if
     });
     
     
