@@ -787,19 +787,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
-        if ((slidingStatus.current === SlidingStatus.AutoScrolling) || (slidingStatus.current === SlidingStatus.FollowsPointer)) return; // if `AutoScrolling`|`FollowsPointer` => already have mutating dummyListElm => do not sync back to listElm
-        
-        if (!dummyDiff.current) return; // no difference => nothing to do
+        if (slidingStatus.current !== SlidingStatus.MirrorScrolling) return; // only process `MirrorScrolling`
         
         const dummyListElm = dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
         
         
         
-        // set the dummyListElm's scrollPos to the correct image:
+        // detect the scrolling end:
         const dummyListStyle = getComputedStyle(dummyListElm);
         const frameWidth     = dummyListElm.clientWidth - (Number.parseInt(dummyListStyle.paddingLeft) || 0) - (Number.parseInt(dummyListStyle.paddingRight ) || 0);
-        if ((dummyListElm.scrollLeft % frameWidth) >= 0.5) return; // not an exact step (fragment step) => scrolling is still in progress => abort
+        if ((dummyListElm.scrollLeft % frameWidth) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of syncing listElm to dummyListElm
+        
+        
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.Passive;
+        
+        
+        
+        // conditions:
+        if (!dummyDiff.current) return; // no difference => nothing to sync
         
         
         
@@ -967,7 +975,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.Passive) return; // only process `MirrorScrolling`|`AutoScrolling`|`FollowsPointer` state
+        if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -975,34 +983,32 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // sync listElm scroll to dummyListElm:
-        if (slidingStatus.current !== SlidingStatus.MirrorScrolling) { // do not mirror back to dummyListElm // only process `AutoScrolling`|`FollowsPointer` state
-            const dummyListElm = dummyListRefInternal.current;
-            if (dummyListElm) { // dummyListElm must be exist for syncing
-                const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-                const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
-                const ratio             = dummyMaxPos / listMaxPos;
-                const dummyScrollPos    = listElm.scrollLeft * ratio;
-                const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
-                const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
-                const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
-                
-                dummyListElm.scrollLeft = Math.round(
-                    Math.min(Math.max(
-                        dummyLeftAbs
-                    , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
-                );
-            } // if
+        const dummyListElm = dummyListRefInternal.current;
+        if (dummyListElm) { // dummyListElm must be exist for syncing
+            const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
+            const ratio             = dummyMaxPos / listMaxPos;
+            const dummyScrollPos    = listElm.scrollLeft * ratio;
+            const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
+            const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
+            const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
+            
+            dummyListElm.scrollLeft = Math.round(
+                Math.min(Math.max(
+                    dummyLeftAbs
+                , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
+            );
         } // if
         
         
         
         // detect the scrolling end:
-        if ((slidingStatus.current === SlidingStatus.MirrorScrolling) || (slidingStatus.current === SlidingStatus.AutoScrolling)) {
+        if (slidingStatus.current === SlidingStatus.AutoScrolling) {
             const listStyle  = getComputedStyle(listElm);
             const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
             if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
                 // restore the CSS snapScroll on listElm & dummyListElm:
-                if (slidingStatus.current === SlidingStatus.AutoScrolling) enableFreeScrolling(false);
+                enableFreeScrolling(false);
                 
                 
                 
