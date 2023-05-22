@@ -5,6 +5,7 @@
 [low prior ] fix <Carousel> swiping last to first causing indicator jump abruptly (no animation)
 [low prior ] fix <Carousel> touch slide left/right transition causing jumpy listItems(s) to another image
 [low prior ] fix <Carousel> touch slide left/right transition causing scrolling locked by abrupt listItem(s) migration
+[low prior ] fix <Carousel> fix clipped tall slides on Firefox
 
 [low prior ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
 [low prior ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
