@@ -513,7 +513,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (scrollLeft || scrollRight) {
             // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
+            slidingStatus.current = (parent === dummyListRefInternal.current) ? SlidingStatus.MirrorScrolling : SlidingStatus.AutoScrolling;
             
             
             
@@ -552,7 +552,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (scrollLeft || scrollRight) {
             // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
+            slidingStatus.current = (parent === dummyListRefInternal.current) ? SlidingStatus.MirrorScrolling : SlidingStatus.AutoScrolling;
             
             
             
