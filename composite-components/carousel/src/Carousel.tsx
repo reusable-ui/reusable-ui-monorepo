@@ -829,6 +829,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
+        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
