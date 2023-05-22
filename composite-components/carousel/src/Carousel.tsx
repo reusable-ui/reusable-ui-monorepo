@@ -785,7 +785,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
-        if ((slidingStatus.current !== SlidingStatus.Passive) && (slidingStatus.current !== SlidingStatus.MirrorScrolling)) return; // only process `Passive`|`MirrorScrolling` state
+        if ((slidingStatus.current === SlidingStatus.AutoScrolling) || (slidingStatus.current === SlidingStatus.FollowsPointer)) return; // if `AutoScrolling`|`FollowsPointer` => already have mutating dummyListElm => do not sync back to listElm
         
         if (!dummyDiff.current) return; // no difference => nothing to do
         
