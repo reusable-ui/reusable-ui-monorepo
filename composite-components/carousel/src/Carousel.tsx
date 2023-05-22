@@ -971,7 +971,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // sync listElm scroll to dummyListElm:
-        if (slidingStatus.current !== SlidingStatus.MirrorScrolling) { // do not mirror back to dummyListElm
+        if (slidingStatus.current !== SlidingStatus.MirrorScrolling) { // do not mirror back to dummyListElm // only process `AutoScrolling`|`FollowsPointer` state
             const dummyListElm = dummyListRefInternal.current;
             if (dummyListElm) { // dummyListElm must be exist for syncing
                 const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
