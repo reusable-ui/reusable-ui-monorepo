@@ -283,9 +283,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const ratio           = listMaxPos / dummyMaxPos;
             const listCurrentPos  = dummyCurrentPos * ratio;
             const listLeft        = dummyLeft       * ratio;
-            const listDiff        = ((itemsCount - dummyDiff.current) * listElm.clientWidth); // converts logical diff to physical diff
-            const listLeftLoop    = listCurrentPos + listLeft + listDiff;                     // current scroll + scroll by + diff
-            const listLeftAbs     = listLeftLoop % listElm.scrollWidth;                       // wrap overflowed left
+            const listDiffPhysc   = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
+            const listLeftLoop    = listCurrentPos + listLeft + listDiffPhysc;              // current scroll + scroll by + diff
+            const listLeftAbs     = listLeftLoop % listElm.scrollWidth;                     // wrap overflowed left
             
             return {
                 left     : Math.round(
@@ -898,13 +898,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
+        // sync listElm scroll to dummyListElm:
+        const dummyListElm = dummyListRefInternal.current;
+        if (dummyListElm) { // dummyListElm must be exist for syncing
+            const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
+            const ratio             = dummyMaxPos / listMaxPos;
+            const dummyScrollPos    = listElm.scrollLeft * ratio;
+            const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
+            const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
+            const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
+            
+            dummyListElm.scrollLeft = Math.round(
+                Math.min(Math.max(
+                    dummyLeftAbs
+                , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
+            );
+        } // if
+        
+        
+        
         // detect the scrolling end:
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
         if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
             // restore the CSS snapScroll:
-        listElm.style.scrollSnapType = '';
-        listElm.style.scrollBehavior = '';
+            listElm.style.scrollSnapType = '';
+            listElm.style.scrollBehavior = '';
         } // if
     });
     
