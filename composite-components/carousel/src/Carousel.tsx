@@ -222,9 +222,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
     const enum SlidingStatus {
-        Passive   = 0,
-        Finishing = 1,
-        Active    = 2,
+        Passive       = 0,
+        AutoScrolling = 1,
+        Active        = 2,
     }
     const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
     
@@ -744,7 +744,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process passive state (ignore being active/finishing state)
+        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive` state (ignore being `Active`/`AutoScrolling` state)
         
         if (!dummyDiff.current) return; // no difference => nothing to do
         
@@ -858,7 +858,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.Active) return; // only process active state (ignore already finishing/passive state)
+        if (slidingStatus.current !== SlidingStatus.Active) return; // only process `Active` state (ignore already `AutoScrolling`/`Passive` state)
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -880,7 +880,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const restScroll          = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
                 // mark the sliding status:
-                slidingStatus.current = SlidingStatus.Finishing;
+                slidingStatus.current = SlidingStatus.AutoScrolling;
                 
                 
                 
@@ -906,7 +906,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         if ((listElm.scrollLeft % frameWidth) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
             // mark the sliding status:
-            slidingStatus.current = SlidingStatus.Finishing;
+            slidingStatus.current = SlidingStatus.AutoScrolling;
             
             
             
@@ -931,7 +931,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.Passive) return; // only process active/finishing state (ignore already passive state)
+        if (slidingStatus.current === SlidingStatus.Passive) return; // only process `Active`/`AutoScrolling` state (ignore already `Passive` state)
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
