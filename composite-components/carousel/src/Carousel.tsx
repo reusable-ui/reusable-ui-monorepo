@@ -927,6 +927,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
+        if (slidingStatus.current === SlidingStatus.Passive) return;
+        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
@@ -934,22 +936,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
-        if (slidingStatus.current !== SlidingStatus.Passive) {
-            if (dummyListElm) { // dummyListElm must be exist for syncing
-                const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-                const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
-                const ratio             = dummyMaxPos / listMaxPos;
-                const dummyScrollPos    = listElm.scrollLeft * ratio;
-                const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
-                const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
-                const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
-                
-                dummyListElm.scrollLeft = Math.round(
-                    Math.min(Math.max(
-                        dummyLeftAbs
-                    , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
-                );
-            } // if
+        if (dummyListElm) { // dummyListElm must be exist for syncing
+            const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
+            const ratio             = dummyMaxPos / listMaxPos;
+            const dummyScrollPos    = listElm.scrollLeft * ratio;
+            const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
+            const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
+            const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
+            
+            dummyListElm.scrollLeft = Math.round(
+                Math.min(Math.max(
+                    dummyLeftAbs
+                , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
+            );
         } // if
         
         
