@@ -500,11 +500,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        parent.scrollBy({
-            left     : scrollLeft,
-            top      : scrollRight,
-            behavior : 'smooth',
-        });
+        if (scrollLeft || scrollRight) {
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
+            parent.scrollBy({
+                left     : scrollLeft,
+                top      : scrollRight,
+                behavior : 'smooth',
+            });
+        } // if
     };
     const scrollTo             = (targetSlide: HTMLElement|null) => {
         if (!targetSlide) return;
@@ -532,11 +539,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        parent.scrollBy({
-            left     : scrollLeft,
-            top      : scrollRight,
-            behavior : 'smooth',
-        });
+        if (scrollLeft || scrollRight) {
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
+            parent.scrollBy({
+                left     : scrollLeft,
+                top      : scrollRight,
+                behavior : 'smooth',
+            });
+        } // if
     };
     
     const isBeginOfScroll      = (listElm: TElement) => (
