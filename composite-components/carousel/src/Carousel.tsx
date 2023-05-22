@@ -222,9 +222,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
     const enum SlidingStatus {
-        Passive       = 0,
-        AutoScrolling = 1,
-        Active        = 2,
+        Passive        = 0,
+        AutoScrolling  = 1,
+        FollowsPointer = 2,
     }
     const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
     
@@ -744,7 +744,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive` state (ignore being `Active`/`AutoScrolling` state)
+        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive` state (ignore being `FollowsPointer`/`AutoScrolling` state)
         
         if (!dummyDiff.current) return; // no difference => nothing to do
         
@@ -819,9 +819,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // mark the sliding status:
-        if (slidingStatus.current !== SlidingStatus.Active) {
+        if (slidingStatus.current !== SlidingStatus.FollowsPointer) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
-            slidingStatus.current = SlidingStatus.Active; // the slide distance is long enough => start a sliding_action
+            slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
         } // if
         
         
@@ -858,7 +858,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.Active) return; // only process `Active` state (ignore already `AutoScrolling`/`Passive` state)
+        if (slidingStatus.current !== SlidingStatus.FollowsPointer) return; // only process `FollowsPointer` state (ignore already `AutoScrolling`/`Passive` state)
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -919,9 +919,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             });
         }
         else { // an exact step (fragment step) => restore the CSS snapScroll
-            // restore the CSS snapScroll:
+            // restore the CSS snapScroll on listElm:
             listElm.style.scrollSnapType = '';
             listElm.style.scrollBehavior = '';
+            
+            // restore the CSS snapScroll on listElm:
+            const dummyListElm = dummyListRefInternal.current;
+            if (dummyListElm) { // dummyListElm must be exist for syncing
+                dummyListElm.style.scrollSnapType = '';
+                dummyListElm.style.scrollBehavior = '';
+            } // if
             
             
             
@@ -931,7 +938,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.Passive) return; // only process `Active`/`AutoScrolling` state (ignore already `Passive` state)
+        if (slidingStatus.current === SlidingStatus.Passive) return; // only process `FollowsPointer`/`AutoScrolling` state (ignore already `Passive` state)
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -959,23 +966,25 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // detect the scrolling end:
-        const listStyle  = getComputedStyle(listElm);
-        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
-            // restore the CSS snapScroll on listElm:
-            listElm.style.scrollSnapType = '';
-            listElm.style.scrollBehavior = '';
-            
-            // restore the CSS snapScroll on listElm:
-            if (dummyListElm) { // dummyListElm must be exist for syncing
-                dummyListElm.style.scrollSnapType = '';
-                dummyListElm.style.scrollBehavior = '';
+        if (slidingStatus.current === SlidingStatus.AutoScrolling) {
+            const listStyle  = getComputedStyle(listElm);
+            const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+            if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+                // restore the CSS snapScroll on listElm:
+                listElm.style.scrollSnapType = '';
+                listElm.style.scrollBehavior = '';
+                
+                // restore the CSS snapScroll on listElm:
+                if (dummyListElm) { // dummyListElm must be exist for syncing
+                    dummyListElm.style.scrollSnapType = '';
+                    dummyListElm.style.scrollBehavior = '';
+                } // if
+                
+                
+                
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.Passive;
             } // if
-            
-            
-            
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
     
