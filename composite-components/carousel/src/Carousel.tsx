@@ -312,6 +312,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         const oriScrollBy = dummyListElm.scrollBy;
         dummyListElm.scrollBy = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
+            const willScrollingXAxis = (typeof(optionsOrX) !== 'number') ? !!optionsOrX?.left : !!optionsOrX;
+            if (willScrollingXAxis) slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
             const listElm = listRefInternal.current;
             if (listElm) { // listElm must be exist to sync
                 listElm.scrollBy(calculateListScrollPos(this, listElm, optionsOrX, true));
@@ -330,6 +335,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         const oriScrollTo = dummyListElm.scrollTo;
         dummyListElm.scrollTo = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
+            const willScrollingXAxis = ((typeof(optionsOrX) !== 'number') ? optionsOrX?.left : optionsOrX) !== this.scrollLeft;
+            if (willScrollingXAxis) slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
             const listElm = listRefInternal.current;
             if (listElm) { // listElm must be exist to sync
                 listElm.scrollTo(calculateListScrollPos(this, listElm, optionsOrX, false));
