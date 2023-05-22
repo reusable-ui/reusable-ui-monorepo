@@ -1,7 +1,5 @@
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 
-[low prior ] fix <Carousel> fast clicking [prev] & [next] button
-[low prior ] fix <Carousel> fast touch scroll
 [low prior ] fix <Carousel> swiping last to first causing indicator jump abruptly (no animation)
 [low prior ] fix <Carousel> touch slide left/right transition causing jumpy listItems(s) to another image
 [low prior ] fix <Carousel> touch slide left/right transition causing scrolling locked by abrupt listItem(s) migration
