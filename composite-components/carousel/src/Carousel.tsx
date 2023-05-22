@@ -744,7 +744,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process passive state (ignore active/finishing state)
+        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process passive state (ignore being active/finishing state)
         
         if (!dummyDiff.current) return; // no difference => nothing to do
         
@@ -858,6 +858,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
+        if (slidingStatus.current !== SlidingStatus.Active) return; // only process active state (ignore already finishing/passive state)
+        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
@@ -929,7 +931,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.Passive) return; // only process active/finishing state (ignore passive state)
+        if (slidingStatus.current === SlidingStatus.Passive) return; // only process active/finishing state (ignore already passive state)
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
