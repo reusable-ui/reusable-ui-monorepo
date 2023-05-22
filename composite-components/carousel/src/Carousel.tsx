@@ -611,6 +611,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // handlers:
     const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
+        if (slidingStatus.current === SlidingStatus.MirrorScrolling) return; // protect from messy scrolling
         if (event.defaultPrevented) return;
         
         
@@ -698,6 +699,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
+        if (slidingStatus.current === SlidingStatus.MirrorScrolling) return; // protect from messy scrolling
         if (event.defaultPrevented) return;
         
         
