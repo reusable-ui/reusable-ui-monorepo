@@ -826,11 +826,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listStyle  = getComputedStyle(listElm);
         const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
         touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
-        
-        
-        
-        // temporary disable the snapScroll on listElm & dummyListElm so it can follow our scroll implementation:
-        enableFreeScrolling(true);
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
@@ -855,6 +850,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if (slidingStatus.current !== SlidingStatus.FollowsPointer) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
             slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
+            
+            
+            
+            // temporary disable the snapScroll on listElm & dummyListElm so it can follow our scroll implementation:
+            enableFreeScrolling(true);
         } // if
         
         
