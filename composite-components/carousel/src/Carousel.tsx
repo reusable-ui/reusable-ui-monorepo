@@ -93,8 +93,8 @@ const _defaultNextButtonClasses      : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
 
 const _defaultSlideThreshold         : number = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
-const _defaultTouchMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
-const _defaultTouchDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action
+const _defaultSwipeMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
+const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action
 
 
 // styles:
@@ -872,7 +872,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // scroll implementation:
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
-        if ((Math.abs(touchDirection) >= _defaultTouchMovementThreshold) && (touchDuration <= _defaultTouchDurationThreshold)) {
+        if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
             const restScroll          = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
                 // mark the sliding status:
@@ -934,20 +934,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
-        if (dummyListElm) { // dummyListElm must be exist for syncing
-            const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
-            const ratio             = dummyMaxPos / listMaxPos;
-            const dummyScrollPos    = listElm.scrollLeft * ratio;
-            const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
-            const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
-            const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
-            
-            dummyListElm.scrollLeft = Math.round(
-                Math.min(Math.max(
-                    dummyLeftAbs
-                , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
-            );
+        if (slidingStatus.current !== SlidingStatus.Passive) {
+            if (dummyListElm) { // dummyListElm must be exist for syncing
+                const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+                const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
+                const ratio             = dummyMaxPos / listMaxPos;
+                const dummyScrollPos    = listElm.scrollLeft * ratio;
+                const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth; // converts logical diff to physical diff
+                const dummyLeftLoop     = dummyScrollPos + dummyDiffPhysc;              // current scroll + diff
+                const dummyLeftAbs      = dummyLeftLoop % dummyListElm.scrollWidth;     // wrap overflowed left
+                
+                dummyListElm.scrollLeft = Math.round(
+                    Math.min(Math.max(
+                        dummyLeftAbs
+                    , 0), dummyMaxPos) // make sure the `dummyLeftAbs` doesn't exceed the range of 0 - `dummyMaxPos`
+                );
+            } // if
         } // if
         
         
