@@ -92,9 +92,9 @@ const _defaultPrevButtonClasses      : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses      : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
 
-const _defaultTouchMovementThreshold : number = 20  /* pixel */
-const _defaultTouchDurationThreshold : number = 300 /* milliseconds */
-
+const _defaultSlideThreshold         : number = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
+const _defaultTouchMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
+const _defaultTouchDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action
 
 
 // styles:
@@ -221,6 +221,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const initialTouchTick  = useRef<number>(0);
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
+    const enum SlidingStatus {
+        Passive   = 0,
+        Finishing = 1,
+        Active    = 2,
+    }
+    const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     
     
@@ -801,8 +807,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // track the touch pos direction:
-        const oldTouchPos = initialTouchPos.current;
-        const newTouchPos = event.touches[0].pageX;
+        const oldTouchPos         = initialTouchPos.current;
+        const newTouchPos         = event.touches[0].pageX;
+        
+        const touchDirection      = initialTouchPos.current - prevTouchPos.current; // calculate the direction before updating the prev
+        const touchDirectionDelta = prevTouchPos.current - newTouchPos;             // calculate the direction before updating the prev
+        prevTouchPos.current      = newTouchPos;                                    // update the prev
+        
+        
+        
+        // mark the sliding status:
+        if (slidingStatus.current !== SlidingStatus.Active) {
+            if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
+            slidingStatus.current = SlidingStatus.Active; // the slide distance is long enough => start a sliding_action
+        } // if
         
         
         
@@ -833,14 +851,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // track the touch pos direction:
-        const touchDirection = prevTouchPos.current - newTouchPos; // calculate the direction before updating the prev
-        prevTouchPos.current = newTouchPos;                        // update the prev
-        
-        
-        
         // scroll implementation:
-        listElm.scrollLeft += calculateScrollLimit(touchDirection);
+        listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
     });
     const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
@@ -863,6 +875,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if ((Math.abs(touchDirection) >= _defaultTouchMovementThreshold) && (touchDuration <= _defaultTouchDurationThreshold)) {
             const restScroll          = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.Finishing;
+                
+                
+                
                 const finishingScrollLeft = listElm.scrollLeft + restScroll;
                 
                 // update the nearest listItem's index:
@@ -884,6 +901,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // the *auto scroll completation*:
         // get the shown listItem's index by position:
         if ((listElm.scrollLeft % frameWidth) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.Finishing;
+            
+            
+            
             // update the nearest listItem's index:
             touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
             // snap scroll to the nearest fragment step:
@@ -896,6 +918,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             // restore the CSS snapScroll:
             listElm.style.scrollSnapType = '';
             listElm.style.scrollBehavior = '';
+            
+            
+            
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
     const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
@@ -938,6 +965,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 dummyListElm.style.scrollSnapType = '';
                 dummyListElm.style.scrollBehavior = '';
             } // if
+            
+            
+            
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
     
