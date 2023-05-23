@@ -1000,10 +1000,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
+            const listScrollPos            = listElm.scrollLeft;
+            
             const dummyScrollPosMax        = dummyListElm.scrollWidth - dummyListElm.clientWidth;
             const listScrollPosMax         = listElm.scrollWidth - listElm.clientWidth;
             const dummyScale               = dummyScrollPosMax / listScrollPosMax;
-            const dummyScrollPosScaled     = listElm.scrollLeft * dummyScale;
+            const dummyScrollPosScaled     = listScrollPos * dummyScale;
             const dummySlideDistance       = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
             const dummyScrollPosDiff       = dummyDiff.current * dummySlideDistance;                        // converts logical diff to physical diff
             const dummyScrollPosOverflowed = dummyScrollPosScaled + dummyScrollPosDiff;                     // scroll pos + diff
