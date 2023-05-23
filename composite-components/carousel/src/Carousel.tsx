@@ -268,115 +268,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         });
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
-    // sync listElm scrolling position to dummyListElm scrolling position, every `scrollBy()`/`scrollTo()` called:
-    useEffect(() => {
-        // conditions:
-        
-        if (!infiniteLoop) return; // only for infiniteLoop mode
-        
-        const dummyListElm = dummyListRefInternal.current;
-        if (!dummyListElm) return; // dummyListElm must be exist for syncing
-        
-        
-        
-        // functions:
-        const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
-            const dummyScrollPos          = relative ? dummyListElm.scrollLeft : 0;
-            const dummyScrollBy           =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
-            const dummyBehavior           = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
-            
-            const listScrollPosMax        = listElm.scrollWidth - listElm.clientWidth;
-            const dummyScrollPosMax       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const listScale               = listScrollPosMax / dummyScrollPosMax;
-            const listScrollPosScaled     = dummyScrollPos * listScale;
-            const listScrollByScaled      = dummyScrollBy  * listScale;
-            const listSlideDistance       = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-            const listScrollPosDiff       = (itemsCount - dummyDiff.current) * listSlideDistance;         // converts logical diff to physical diff
-            const listScrollPosOverflowed = listScrollPosScaled + listScrollByScaled + listScrollPosDiff; // scroll pos + scroll by + diff
-            const listScrollPosPerioded   = periodify(listScrollPosOverflowed, listElm.scrollWidth);      // wrap overflowed left
-            const listScrollPosWrapped    = (
-                Math.min(listScrollPosPerioded, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
-                -
-                (
-                    Math.max(listScrollPosPerioded - listScrollPosMax, 0) // the excess (if any), should between: 0 and `listSlideDistance`
-                    /
-                    listSlideDistance                                     // normalize scale to the `listSlideDistance`, so the scale should between 0 and 1
-                    *
-                    listScrollPosMax                                      // will be used to scroll back from ending to beginning
-                )
-            );
-            
-            return {
-                left     : (
-                    listScrollPosWrapped
-                    -
-                    (relative ? listElm.scrollLeft : 0) // if relative, substract the result by the relativity
-                ),
-                
-                behavior : dummyBehavior,
-            };
-        };
-        
-        
-        
-        // setups:
-        
-        const oriScrollBy = dummyListElm.scrollBy;
-        dummyListElm.scrollBy = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
-            const willScrollingXAxis = (typeof(optionsOrX) !== 'number') ? !!optionsOrX?.left : !!optionsOrX;
-            if (willScrollingXAxis) slidingStatus.current = SlidingStatus.MirrorScrolling;
-            
-            
-            
-            const listElm = listRefInternal.current;
-            if (listElm) { // listElm must be exist to sync
-                listElm.scrollBy(calculateListScrollPos(this, listElm, optionsOrX, true));
-            } // if
-            
-            
-            
-            // call the original:
-            if (typeof(optionsOrX) !== 'number') {
-                (oriScrollBy as any).call(this, optionsOrX);
-            }
-            else {
-                (oriScrollBy as any).call(this, optionsOrX, y);
-            } // if
-        } as any);
-        
-        const oriScrollTo = dummyListElm.scrollTo;
-        dummyListElm.scrollTo = (function(this: TElement, optionsOrX?: ScrollToOptions|number, y?: number) {
-            const willScrollingXAxis = ((typeof(optionsOrX) !== 'number') ? optionsOrX?.left : optionsOrX) !== this.scrollLeft;
-            if (willScrollingXAxis) slidingStatus.current = SlidingStatus.MirrorScrolling;
-            
-            
-            
-            const listElm = listRefInternal.current;
-            if (listElm) { // listElm must be exist to sync
-                listElm.scrollTo(calculateListScrollPos(this, listElm, optionsOrX, false));
-            } // if
-            
-            
-            
-            // call the original:
-            if (typeof(optionsOrX) !== 'number') {
-                (oriScrollTo as any).call(this, optionsOrX);
-            }
-            else {
-                (oriScrollTo as any).call(this, optionsOrX, y);
-            } // if
-        } as any);
-        
-        
-        
-        // cleanups:
-        return () => {
-            // restore the hacked to the original (back to prototype):
-            delete (dummyListElm as any).scrollBy;
-            delete (dummyListElm as any).scrollTo;
-        };
-    }, [infiniteLoop]); // (re)run the setups & cleanups on every time the infiniteLoop mode changes
-    
     // prevents browser's scrolling implementation, we use our scrolling implementation:
     useEffect(() => {
         const listElm = listRefInternal.current;
@@ -834,6 +725,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
+        // sync dummyListElm scroll to listElm:
+        const listElm = listRefInternal.current;
+        if (listElm) { // listElm must be exist for syncing
+            syncListScrollPos(
+                /*sourceListElm    :*/ dummyListElm,
+                /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
+                
+                /*targetListElm    :*/ listElm,
+                /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+            );
+        } // if
+        
+        
+        
         // detect the scrolling end:
         const dummyListStyle = getComputedStyle(dummyListElm);
         const frameWidth     = dummyListElm.clientWidth - (Number.parseInt(dummyListStyle.paddingLeft) || 0) - (Number.parseInt(dummyListStyle.paddingRight ) || 0);
@@ -1018,7 +923,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
         const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist to manipulate
+        if (!listElm) return; // listElm must be exist for syncing
         
         
         
