@@ -470,7 +470,28 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
     };
-    
+    const syncListScrollPos    = (sourceListElm: TElement, sourceScrollPos: number, targetListElm: TElement, targetScrollDiff = 0) => {
+        const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
+        const sourceScrollPosMax        = sourceListElm.scrollWidth - sourceListElm.clientWidth;
+        const targetScale               = targetScrollPosMax / sourceScrollPosMax;
+        const targetScrollPosScaled     = sourceScrollPos * targetScale;
+        const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
+        const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
+        const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
+        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, targetListElm.scrollWidth); // wrap overflowed left
+        const targetScrollPosWrapped    = (
+            Math.min(targetScrollPosPerioded, targetScrollPosMax)         // limits from 0 to `targetScrollPosMax`
+            -
+            (
+                Math.max(targetScrollPosPerioded - targetScrollPosMax, 0) // the excess (if any), should between: 0 and `targetSlideDistance`
+                /
+                targetSlideDistance                                       // normalize scale to the `targetSlideDistance`, so the scale should between 0 and 1
+                *
+                targetScrollPosMax                                        // will be used to scroll back from ending to beginning
+            )
+        );
+        targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
+    };
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
         const listElm = listRefInternal.current;
