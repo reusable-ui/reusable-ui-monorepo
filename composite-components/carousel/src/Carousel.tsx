@@ -282,16 +282,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // functions:
         const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
             const dummyScrollPos    = relative ? dummyListElm.scrollLeft : 0;
-            const dummyLeft         =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
+            const dummyScrollBy     =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
             const dummyBehavior     = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
             
             const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
             const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
             const ratio             = listScrollPosMax / dummyScrollPosMax;
-            const listScrollPos     = dummyScrollPos * ratio;
-            const listLeft          = dummyLeft      * ratio;
+            const listScrollPosRaw  = dummyScrollPos * ratio;
+            const listScrollByRaw   = dummyScrollBy  * ratio;
             const listDiffPhysc     = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
-            const listLeftOverflow  = listScrollPos + listLeft + listDiffPhysc;               // scroll pos + scroll by + diff
+            const listLeftOverflow  = listScrollPosRaw + listScrollByRaw + listDiffPhysc;     // scroll pos + scroll by + diff
             const listLeftPeriod    = periodify(listLeftOverflow, listElm.scrollWidth);       // wrap overflowed left
             
             return {
@@ -993,9 +993,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
             const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
             const ratio             = dummyScrollPosMax / listScrollPosMax;
-            const dummyScrollPos    = listElm.scrollLeft * ratio;
+            const dummyScrollPosRaw = listElm.scrollLeft * ratio;
             const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
-            const dummyLeftOverflow = dummyScrollPos + dummyDiffPhysc;                        // scroll pos + diff
+            const dummyLeftOverflow = dummyScrollPosRaw + dummyDiffPhysc;                     // scroll pos + diff
             const dummyLeftPeriod   = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
             const dummyLeftWrap     = (
                 Math.min(dummyLeftPeriod, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
