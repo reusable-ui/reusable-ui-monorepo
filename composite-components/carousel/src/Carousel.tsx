@@ -1000,18 +1000,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const dummyScrollPosOverflowed = dummyScrollPosScaled + dummyScrollPosDiff;                     // scroll pos + diff
             const dummyScrollPosPerioded   = periodify(dummyScrollPosOverflowed, dummyListElm.scrollWidth); // wrap overflowed left
             const dummyScrollPosWrapped    = (
-                Math.min(dummyScrollPosPerioded, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
+                Math.min(dummyScrollPosPerioded, dummyScrollPosMax)         // limits from 0 to `dummyScrollPosMax`
                 -
                 (
-                    Math.max(dummyScrollPosPerioded - listScrollPosMax, 0) // the excess (if any)
+                    Math.max(dummyScrollPosPerioded - dummyScrollPosMax, 0) // the excess (if any)
                     /
-                    dummyListElm.clientWidth                               // based scale to the frameWidth
+                    dummyListElm.clientWidth                                // based scale to the frameWidth
                     *
-                    dummyScrollPosMax                                      // will be used to scroll back to beginning
+                    dummyScrollPosMax                                       // will be used to scroll back to beginning
                 )
             );
             
-            dummyListElm.scrollLeft = Math.round(dummyScrollPosWrapped);   // no fractional pixel
+            dummyListElm.scrollLeft = Math.round(dummyScrollPosWrapped);    // no fractional pixel
         } // if
         
         
