@@ -248,11 +248,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // fn props:
-        const listScrollPos   = listElm.scrollLeft;
-        const listMaxPos      = listElm.scrollWidth - listElm.clientWidth;
-        const dummyMaxPos     = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-        const ratio           = dummyMaxPos / listMaxPos;
-        const dummyScrollPos  = listScrollPos * ratio;
+        const listScrollPos     = listElm.scrollLeft;
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+        const ratio             = dummyScrollPosMax / listScrollPosMax;
+        const dummyScrollPos    = listScrollPos * ratio;
         
         
         
@@ -261,7 +261,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             left     : Math.round(
                 Math.min(Math.max(
                     dummyScrollPos
-                , 0), dummyMaxPos) // make sure the `dummyScrollPos` doesn't exceed the range of 0 - `dummyMaxPos`
+                , 0), dummyScrollPosMax) // make sure the `dummyScrollPos` doesn't exceed the range of 0 - `dummyScrollPosMax`
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
@@ -281,24 +281,24 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // functions:
         const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
-            const dummyScrollPos   = relative ? dummyListElm.scrollLeft : 0;
-            const dummyLeft        =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
-            const dummyBehavior    = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
+            const dummyScrollPos    = relative ? dummyListElm.scrollLeft : 0;
+            const dummyLeft         =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
+            const dummyBehavior     = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
             
-            const listMaxPos       = listElm.scrollWidth - listElm.clientWidth;
-            const dummyMaxPos      = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const ratio            = listMaxPos / dummyMaxPos;
-            const listScrollPos    = dummyScrollPos * ratio;
-            const listLeft         = dummyLeft      * ratio;
-            const listDiffPhysc    = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
-            const listLeftOverflow = listScrollPos + listLeft + listDiffPhysc;               // scroll pos + scroll by + diff
-            const listLeftPeriod   = periodify(listLeftOverflow, listElm.scrollWidth);       // wrap overflowed left
+            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+            const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const ratio             = listScrollPosMax / dummyScrollPosMax;
+            const listScrollPos     = dummyScrollPos * ratio;
+            const listLeft          = dummyLeft      * ratio;
+            const listDiffPhysc     = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
+            const listLeftOverflow  = listScrollPos + listLeft + listDiffPhysc;               // scroll pos + scroll by + diff
+            const listLeftPeriod    = periodify(listLeftOverflow, listElm.scrollWidth);       // wrap overflowed left
             
             return {
                 left     : Math.round(
                     Math.min(Math.max(
                         listLeftPeriod
-                    , 0), listMaxPos) // make sure the `listLeftPeriod` doesn't exceed the range of 0 - `listMaxPos`
+                    , 0), listScrollPosMax) // make sure the `listLeftPeriod` doesn't exceed the range of 0 - `listScrollPosMax`
                     -
                     (relative ? listElm.scrollLeft : 0) // if relative, substract the result by the relativity
                 ),
@@ -990,22 +990,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
-            const dummyMaxPos       = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const listMaxPos        = listElm.scrollWidth - listElm.clientWidth;
-            const ratio             = dummyMaxPos / listMaxPos;
+            const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+            const ratio             = dummyScrollPosMax / listScrollPosMax;
             const dummyScrollPos    = listElm.scrollLeft * ratio;
             const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
             const dummyLeftOverflow = dummyScrollPos + dummyDiffPhysc;                        // scroll pos + diff
             const dummyLeftPeriod   = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
             const dummyLeftWrap     = (
-                Math.min(dummyLeftPeriod, listMaxPos)  // limits from 0 to listMaxPos
+                Math.min(dummyLeftPeriod, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
                 -
                 (
-                    Math.max(dummyLeftPeriod - listMaxPos, 0) // the excess (if any)
+                    Math.max(dummyLeftPeriod - listScrollPosMax, 0) // the excess (if any)
                     /
-                    dummyListElm.clientWidth                  // ratio to the frameWidth
+                    dummyListElm.clientWidth                        // ratio to the frameWidth
                     *
-                    dummyMaxPos                               // will be used to scroll back to beginning
+                    dummyScrollPosMax                               // will be used to scroll back to beginning
                 )
             );
             
