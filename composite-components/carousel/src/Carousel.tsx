@@ -394,13 +394,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // functions:
+    const periodValue          = (value: number, period: number) => {
+        return ((value % period) + period) % period;
+    };
     const normalizeShift       = (shift: number) => {
         // conditions:
         if (!itemsCount) return shift;
         
         
         
-        return ((shift % itemsCount) + itemsCount) % itemsCount;
+        return periodValue(shift, itemsCount);
     };
     const shiftDummyDiff       = (diff: number) => {
         dummyDiff.current = normalizeShift(dummyDiff.current + diff);
@@ -446,7 +449,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listScrollWidth = frameWidth * itemsCount;
         const listNewPos      = listCurrentPos + (frameWidth * (itemsCount - listShift));
         listElm.scrollTo({
-            left     : ((listNewPos % listScrollWidth) + listScrollWidth) % listScrollWidth, // wrap pos if overflowed/underflowed
+            left     : periodValue(listNewPos, listScrollWidth), // period_wrap pos if overflowed/underflowed
             behavior : ('instant' as any) // no scrolling animation during sync
         });
         
