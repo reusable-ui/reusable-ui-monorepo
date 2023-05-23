@@ -444,12 +444,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the listElm's scrollPos to the correct image:
-        const listStyle       = getComputedStyle(listElm);
-        const frameWidth      = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const listScrollWidth = itemsCount * frameWidth;
-        const listNewPos      = listCurrentPos + ((itemsCount - listShift) * frameWidth);
+        const listStyle        = getComputedStyle(listElm);
+        const frameWidth       = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        const listScrollWidth  = itemsCount * frameWidth;
+        const listDiffPhysc    = (itemsCount - listShift) * frameWidth;        // converts logical diff to physical diff
+        const listLeftOverflow = listCurrentPos + listDiffPhysc;               // current scroll + diff
+        const listLeftPeriod   = periodify(listLeftOverflow, listScrollWidth); // wrap overflowed left
         listElm.scrollTo({
-            left     : periodify(listNewPos, listScrollWidth), // period_wrap pos if overflowed/underflowed
+            left     : listLeftPeriod,
             behavior : ('instant' as any) // no scrolling animation during sync
         });
         
