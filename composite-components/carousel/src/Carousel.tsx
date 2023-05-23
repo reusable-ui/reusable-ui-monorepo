@@ -1003,9 +1003,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 Math.min(dummyScrollPosPerioded, dummyScrollPosMax)         // limits from 0 to `dummyScrollPosMax`
                 -
                 (
-                    Math.max(dummyScrollPosPerioded - dummyScrollPosMax, 0) // the excess (if any)
+                    Math.max(dummyScrollPosPerioded - dummyScrollPosMax, 0) // the excess (if any), should between: 0 and `dummyListElm.clientWidth`
                     /
-                    dummyListElm.clientWidth                                // based scale to the frameWidth
+                    dummyListElm.clientWidth                                // normalize scale to the `dummyListElm.clientWidth`, so the scale should between 0 and 1
                     *
                     dummyScrollPosMax                                       // will be used to scroll back to beginning
                 )
