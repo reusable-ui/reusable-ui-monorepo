@@ -310,6 +310,32 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         dummyDiff.current = normalizeShift(dummyDiff.current + diff);
     };
     
+    const syncListScrollPos    = (sourceListElm: TElement|undefined, sourceScrollPos: number|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
+        const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
+        const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
+        const targetScale               = targetScrollPosMax / sourceScrollPosMax;
+        const targetScrollPosScaled     = (sourceScrollPos ?? 0) * targetScale;
+        const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
+        const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
+        const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
+        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
+        const targetScrollPosWrapped    = (
+            // range from 0 to `targetScrollPosMax`:
+            Math.min(targetScrollPosPerioded, targetScrollPosMax)
+            
+            -
+            
+            // range from `targetScrollPosMax` to rest:
+            (
+                Math.max(targetScrollPosPerioded - targetScrollPosMax, 0)
+                /
+                targetSlideDistance // normalize scale to the `targetSlideDistance`, so the scale should between 0 and 1
+                *
+                targetScrollPosMax  // will be used to scroll back from ending to beginning
+            )
+        );
+        targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
+    };
     const cloneDummyToList     = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
         
@@ -352,32 +378,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
-    };
-    const syncListScrollPos    = (sourceListElm: TElement|undefined, sourceScrollPos: number|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
-        const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
-        const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
-        const targetScale               = targetScrollPosMax / sourceScrollPosMax;
-        const targetScrollPosScaled     = (sourceScrollPos ?? 0) * targetScale;
-        const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
-        const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
-        const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
-        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
-        const targetScrollPosWrapped    = (
-            // range from 0 to `targetScrollPosMax`:
-            Math.min(targetScrollPosPerioded, targetScrollPosMax)
-            
-            -
-            
-            // range from `targetScrollPosMax` to rest:
-            (
-                Math.max(targetScrollPosPerioded - targetScrollPosMax, 0)
-                /
-                targetSlideDistance // normalize scale to the `targetSlideDistance`, so the scale should between 0 and 1
-                *
-                targetScrollPosMax  // will be used to scroll back from ending to beginning
-            )
-        );
-        targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
     };
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
