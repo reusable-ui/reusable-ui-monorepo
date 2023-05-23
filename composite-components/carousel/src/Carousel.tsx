@@ -290,9 +290,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const listScale               = listScrollPosMax / dummyScrollPosMax;
             const listScrollPosScaled     = dummyScrollPos * listScale;
             const listScrollByScaled      = dummyScrollBy  * listScale;
-            const listDiffPhysc           = (itemsCount - dummyDiff.current) * listElm.clientWidth;   // converts logical diff to physical diff
-            const listScrollPosOverflowed = listScrollPosScaled + listScrollByScaled + listDiffPhysc; // scroll pos + scroll by + diff
-            const listScrollPosPerioded   = periodify(listScrollPosOverflowed, listElm.scrollWidth);  // wrap overflowed left
+            const listScrollPosDiff       = (itemsCount - dummyDiff.current) * listElm.clientWidth;       // converts logical diff to physical diff
+            const listScrollPosOverflowed = listScrollPosScaled + listScrollByScaled + listScrollPosDiff; // scroll pos + scroll by + diff
+            const listScrollPosPerioded   = periodify(listScrollPosOverflowed, listElm.scrollWidth);      // wrap overflowed left
             
             return {
                 left     : Math.round(
@@ -994,8 +994,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const listScrollPosMax         = listElm.scrollWidth - listElm.clientWidth;
             const dummyScale               = dummyScrollPosMax / listScrollPosMax;
             const dummyScrollPosScaled     = listElm.scrollLeft * dummyScale;
-            const dummyDiffPhysc           = dummyDiff.current * dummyListElm.clientWidth;                  // converts logical diff to physical diff
-            const dummyScrollPosOverflowed = dummyScrollPosScaled + dummyDiffPhysc;                         // scroll pos + diff
+            const dummyScrollPosDiff       = dummyDiff.current * dummyListElm.clientWidth;                  // converts logical diff to physical diff
+            const dummyScrollPosOverflowed = dummyScrollPosScaled + dummyScrollPosDiff;                     // scroll pos + diff
             const dummyScrollPosPerioded   = periodify(dummyScrollPosOverflowed, dummyListElm.scrollWidth); // wrap overflowed left
             const dummyScrollPosWrapped    = (
                 Math.min(dummyScrollPosPerioded, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
