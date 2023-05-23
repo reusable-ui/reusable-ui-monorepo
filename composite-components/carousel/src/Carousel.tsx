@@ -251,8 +251,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listScrollPos     = listElm.scrollLeft;
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
         const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-        const ratio             = dummyScrollPosMax / listScrollPosMax;
-        const dummyScrollPos    = listScrollPos * ratio;
+        const dummyScale        = dummyScrollPosMax / listScrollPosMax;
+        const dummyScrollPos    = listScrollPos * dummyScale;
         
         
         
@@ -281,18 +281,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // functions:
         const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
-            const dummyScrollPos    = relative ? dummyListElm.scrollLeft : 0;
-            const dummyScrollBy     =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
-            const dummyBehavior     = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
+            const dummyScrollPos      = relative ? dummyListElm.scrollLeft : 0;
+            const dummyScrollBy       =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
+            const dummyBehavior       = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
             
-            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-            const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const ratio             = listScrollPosMax / dummyScrollPosMax;
-            const listScrollPosRaw  = dummyScrollPos * ratio;
-            const listScrollByRaw   = dummyScrollBy  * ratio;
-            const listDiffPhysc     = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
-            const listLeftOverflow  = listScrollPosRaw + listScrollByRaw + listDiffPhysc;     // scroll pos + scroll by + diff
-            const listLeftPeriod    = periodify(listLeftOverflow, listElm.scrollWidth);       // wrap overflowed left
+            const listScrollPosMax    = listElm.scrollWidth - listElm.clientWidth;
+            const dummyScrollPosMax   = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listScale           = listScrollPosMax / dummyScrollPosMax;
+            const listScrollPosScaled = dummyScrollPos * listScale;
+            const listScrollByScaled  = dummyScrollBy  * listScale;
+            const listDiffPhysc       = (itemsCount - dummyDiff.current) * listElm.clientWidth;   // converts logical diff to physical diff
+            const listLeftOverflow    = listScrollPosScaled + listScrollByScaled + listDiffPhysc; // scroll pos + scroll by + diff
+            const listLeftPeriod      = periodify(listLeftOverflow, listElm.scrollWidth);         // wrap overflowed left
             
             return {
                 left     : Math.round(
@@ -990,20 +990,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
-            const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-            const ratio             = dummyScrollPosMax / listScrollPosMax;
-            const dummyScrollPosRaw = listElm.scrollLeft * ratio;
-            const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
-            const dummyLeftOverflow = dummyScrollPosRaw + dummyDiffPhysc;                     // scroll pos + diff
-            const dummyLeftPeriod   = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
-            const dummyLeftWrap     = (
+            const dummyScrollPosMax    = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+            const listScrollPosMax     = listElm.scrollWidth - listElm.clientWidth;
+            const dummyScale           = dummyScrollPosMax / listScrollPosMax;
+            const dummyScrollPosScaled = listElm.scrollLeft * dummyScale;
+            const dummyDiffPhysc       = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
+            const dummyLeftOverflow    = dummyScrollPosScaled + dummyDiffPhysc;                  // scroll pos + diff
+            const dummyLeftPeriod      = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
+            const dummyLeftWrap        = (
                 Math.min(dummyLeftPeriod, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
                 -
                 (
                     Math.max(dummyLeftPeriod - listScrollPosMax, 0) // the excess (if any)
                     /
-                    dummyListElm.clientWidth                        // ratio to the frameWidth
+                    dummyListElm.clientWidth                        // based scale to the frameWidth
                     *
                     dummyScrollPosMax                               // will be used to scroll back to beginning
                 )
