@@ -997,12 +997,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
             const dummyLeftOverflow = dummyScrollPos + dummyDiffPhysc;                        // current scroll + diff
             const dummyLeftPeriod   = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
-            
-            dummyListElm.scrollLeft = Math.round(
-                Math.min(Math.max(
-                    dummyLeftPeriod
-                , 0), dummyMaxPos) // make sure the `dummyLeftPeriod` doesn't exceed the range of 0 - `dummyMaxPos`
+            const dummyLeftWrap     = (
+                Math.min(dummyLeftPeriod, listMaxPos)  // limits from 0 to listMaxPos
+                -
+                (
+                    Math.max(dummyLeftPeriod - listMaxPos, 0) // the excess (if any)
+                    /
+                    dummyListElm.clientWidth                  // ratio to the frameWidth
+                    *
+                    dummyMaxPos                               // will be used to scroll back to beginning
+                )
             );
+            
+            dummyListElm.scrollLeft = Math.round(dummyLeftWrap); // no fractional pixel
         } // if
         
         
