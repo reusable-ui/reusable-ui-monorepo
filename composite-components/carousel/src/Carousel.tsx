@@ -325,11 +325,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // remember the current listElm's scrollPos before modifying:
-        const listScrollPos = listElm.scrollLeft;
-        
-        
-        
         // decide which side to be moved:
         moveNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the fewest listItem(s) to move
         if (moveNextSide) { // move the right listItem(s) to the left_most
@@ -345,27 +340,24 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the listElm's scrollPos to the correct image:
-        const listStyle        = getComputedStyle(listElm);
-        const frameWidth       = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const listScrollWidth  = itemsCount * frameWidth;
-        const listDiffPhysc    = (itemsCount - listShift) * frameWidth;        // converts logical diff to physical diff
-        const listLeftOverflow = listScrollPos + listDiffPhysc;                // scroll pos + diff
-        const listLeftPeriod   = periodify(listLeftOverflow, listScrollWidth); // wrap overflowed left
-        listElm.scrollTo({
-            left     : listLeftPeriod,
-            behavior : ('instant' as any) // no scrolling animation during sync
-        });
+        syncListScrollPos(
+            /*sourceListElm    :*/ undefined,
+            /*sourceScrollPos  :*/ undefined,
+            
+            /*targetListElm    :*/ listElm,
+            /*targetScrollDiff :*/ (moveNextSide ? (itemsCount - 1) : 0)
+        );
         
         
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
     };
-    const syncListScrollPos    = (sourceListElm: TElement, sourceScrollPos: number, targetListElm: TElement, targetScrollDiff = 0) => {
+    const syncListScrollPos    = (sourceListElm: TElement|undefined, sourceScrollPos: number|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
-        const sourceScrollPosMax        = sourceListElm.scrollWidth - sourceListElm.clientWidth;
+        const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
         const targetScale               = targetScrollPosMax / sourceScrollPosMax;
-        const targetScrollPosScaled     = sourceScrollPos * targetScale;
+        const targetScrollPosScaled     = (sourceScrollPos ?? 0) * targetScale;
         const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
         const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
         const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
