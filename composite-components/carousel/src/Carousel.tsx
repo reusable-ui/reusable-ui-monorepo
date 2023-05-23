@@ -294,12 +294,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const listScrollPosDiff       = (itemsCount - dummyDiff.current) * listSlideDistance;         // converts logical diff to physical diff
             const listScrollPosOverflowed = listScrollPosScaled + listScrollByScaled + listScrollPosDiff; // scroll pos + scroll by + diff
             const listScrollPosPerioded   = periodify(listScrollPosOverflowed, listElm.scrollWidth);      // wrap overflowed left
+            const listScrollPosWrapped    = (
+                Math.min(listScrollPosPerioded, listScrollPosMax)         // limits from 0 to `listScrollPosMax`
+                -
+                (
+                    Math.max(listScrollPosPerioded - listScrollPosMax, 0) // the excess (if any), should between: 0 and `listSlideDistance`
+                    /
+                    listSlideDistance                                     // normalize scale to the `listSlideDistance`, so the scale should between 0 and 1
+                    *
+                    listScrollPosMax                                      // will be used to scroll back from ending to beginning
+                )
+            );
             
             return {
-                left     : Math.round(
-                    Math.min(Math.max(
-                        listScrollPosPerioded
-                    , 0), listScrollPosMax)             // make sure the `listScrollPosPerioded` doesn't exceed the range of 0 - `listScrollPosMax`
+                left     : (
+                    listScrollPosWrapped
                     -
                     (relative ? listElm.scrollLeft : 0) // if relative, substract the result by the relativity
                 ),
