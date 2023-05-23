@@ -386,10 +386,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        const listStyle             = getComputedStyle(listElm);
-        const frameWidth            = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-        const limitedScrollMin      = ((touchedItemIndex.current - 1) * frameWidth) - listElm.scrollLeft;
-        const limitedScrollMax      = ((touchedItemIndex.current + 1) * frameWidth) - listElm.scrollLeft;
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const limitedScrollMin  = ((touchedItemIndex.current - 1) * listSlideDistance) - listElm.scrollLeft;
+        const limitedScrollMax  = ((touchedItemIndex.current + 1) * listSlideDistance) - listElm.scrollLeft;
         return Math.min(Math.max(
             deltaScroll,
         limitedScrollMin), limitedScrollMax);
