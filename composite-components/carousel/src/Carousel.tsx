@@ -1021,29 +1021,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // sync listElm scroll to dummyListElm:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
-            const listScrollPos            = listElm.scrollLeft;
-            
-            const dummyScrollPosMax        = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-            const listScrollPosMax         = listElm.scrollWidth - listElm.clientWidth;
-            const dummyScale               = dummyScrollPosMax / listScrollPosMax;
-            const dummyScrollPosScaled     = listScrollPos * dummyScale;
-            const dummySlideDistance       = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
-            const dummyScrollPosDiff       = dummyDiff.current * dummySlideDistance;                        // converts logical diff to physical diff
-            const dummyScrollPosOverflowed = dummyScrollPosScaled + dummyScrollPosDiff;                     // scroll pos + diff
-            const dummyScrollPosPerioded   = periodify(dummyScrollPosOverflowed, dummyListElm.scrollWidth); // wrap overflowed left
-            const dummyScrollPosWrapped    = (
-                Math.min(dummyScrollPosPerioded, dummyScrollPosMax)         // limits from 0 to `dummyScrollPosMax`
-                -
-                (
-                    Math.max(dummyScrollPosPerioded - dummyScrollPosMax, 0) // the excess (if any), should between: 0 and `dummySlideDistance`
-                    /
-                    dummySlideDistance                                      // normalize scale to the `dummySlideDistance`, so the scale should between 0 and 1
-                    *
-                    dummyScrollPosMax                                       // will be used to scroll back from ending to beginning
-                )
+            syncListScrollPos(
+                /*sourceListElm    :*/ listElm,
+                /*sourceScrollPos  :*/ listElm.scrollLeft,
+                
+                /*targetListElm    :*/ dummyListElm,
+                /*targetScrollDiff :*/ dummyDiff.current,
             );
-            
-            dummyListElm.scrollLeft = Math.round(dummyScrollPosWrapped);    // no fractional pixel
         } // if
         
         
