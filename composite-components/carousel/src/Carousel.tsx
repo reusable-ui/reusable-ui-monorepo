@@ -248,11 +248,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // fn props:
-        const listCurrentPos  = listElm.scrollLeft;
+        const listScrollPos   = listElm.scrollLeft;
         const listMaxPos      = listElm.scrollWidth - listElm.clientWidth;
         const dummyMaxPos     = dummyListElm.scrollWidth - dummyListElm.clientWidth;
         const ratio           = dummyMaxPos / listMaxPos;
-        const dummyCurrentPos = listCurrentPos * ratio;
+        const dummyScrollPos  = listScrollPos * ratio;
         
         
         
@@ -260,8 +260,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         dummyListElm.scrollTo({
             left     : Math.round(
                 Math.min(Math.max(
-                    dummyCurrentPos
-                , 0), dummyMaxPos) // make sure the `dummyCurrentPos` doesn't exceed the range of 0 - `dummyMaxPos`
+                    dummyScrollPos
+                , 0), dummyMaxPos) // make sure the `dummyScrollPos` doesn't exceed the range of 0 - `dummyMaxPos`
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
@@ -281,17 +281,17 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // functions:
         const calculateListScrollPos = (dummyListElm: TElement, listElm: TElement, optionsOrX: ScrollToOptions|number|undefined, relative: boolean) => {
-            const dummyCurrentPos  = relative ? dummyListElm.scrollLeft : 0;
+            const dummyScrollPos   = relative ? dummyListElm.scrollLeft : 0;
             const dummyLeft        =  (typeof(optionsOrX) !== 'number') ? (optionsOrX?.left ?? 0) : optionsOrX;
             const dummyBehavior    = ((typeof(optionsOrX) !== 'number') && optionsOrX?.behavior) || 'smooth';
             
             const listMaxPos       = listElm.scrollWidth - listElm.clientWidth;
             const dummyMaxPos      = dummyListElm.scrollWidth - dummyListElm.clientWidth;
             const ratio            = listMaxPos / dummyMaxPos;
-            const listCurrentPos   = dummyCurrentPos * ratio;
-            const listLeft         = dummyLeft       * ratio;
+            const listScrollPos    = dummyScrollPos * ratio;
+            const listLeft         = dummyLeft      * ratio;
             const listDiffPhysc    = (itemsCount - dummyDiff.current) * listElm.clientWidth; // converts logical diff to physical diff
-            const listLeftOverflow = listCurrentPos + listLeft + listDiffPhysc;              // current scroll + scroll by + diff
+            const listLeftOverflow = listScrollPos + listLeft + listDiffPhysc;               // scroll pos + scroll by + diff
             const listLeftPeriod   = periodify(listLeftOverflow, listElm.scrollWidth);       // wrap overflowed left
             
             return {
@@ -425,7 +425,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // remember the current listElm's scrollPos before modifying:
-        const listCurrentPos = listElm.scrollLeft;
+        const listScrollPos = listElm.scrollLeft;
         
         
         
@@ -448,7 +448,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const frameWidth       = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
         const listScrollWidth  = itemsCount * frameWidth;
         const listDiffPhysc    = (itemsCount - listShift) * frameWidth;        // converts logical diff to physical diff
-        const listLeftOverflow = listCurrentPos + listDiffPhysc;               // current scroll + diff
+        const listLeftOverflow = listScrollPos + listDiffPhysc;                // scroll pos + diff
         const listLeftPeriod   = periodify(listLeftOverflow, listScrollWidth); // wrap overflowed left
         listElm.scrollTo({
             left     : listLeftPeriod,
@@ -995,7 +995,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const ratio             = dummyMaxPos / listMaxPos;
             const dummyScrollPos    = listElm.scrollLeft * ratio;
             const dummyDiffPhysc    = dummyDiff.current * dummyListElm.clientWidth;           // converts logical diff to physical diff
-            const dummyLeftOverflow = dummyScrollPos + dummyDiffPhysc;                        // current scroll + diff
+            const dummyLeftOverflow = dummyScrollPos + dummyDiffPhysc;                        // scroll pos + diff
             const dummyLeftPeriod   = periodify(dummyLeftOverflow, dummyListElm.scrollWidth); // wrap overflowed left
             const dummyLeftWrap     = (
                 Math.min(dummyLeftPeriod, listMaxPos)  // limits from 0 to listMaxPos
