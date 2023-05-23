@@ -478,29 +478,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
         const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
         const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
-        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, targetListElm.scrollWidth); // wrap overflowed left
+        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
         const targetScrollPosWrapped    = (
             // range from 0 to `targetScrollPosMax`:
             Math.min(targetScrollPosPerioded, targetScrollPosMax)
             
             -
             
-            // range from `targetScrollPosMax` to span `targetSlideDistance`:
+            // range from `targetScrollPosMax` to rest:
             (
-                Math.min(
-                    Math.max(targetScrollPosPerioded - targetScrollPosMax, 0),
-                    targetSlideDistance
-                )
+                Math.max(targetScrollPosPerioded - targetScrollPosMax, 0)
                 /
                 targetSlideDistance // normalize scale to the `targetSlideDistance`, so the scale should between 0 and 1
                 *
                 targetScrollPosMax  // will be used to scroll back from ending to beginning
             )
-            
-            +
-            
-            // range from (`targetScrollPosMax` + `targetSlideDistance`) to rest:
-            Math.max(targetScrollPosPerioded - (targetScrollPosMax + targetSlideDistance), 0)
         );
         targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
     };
