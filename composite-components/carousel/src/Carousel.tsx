@@ -248,11 +248,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // fn props:
-        const listScrollPos     = listElm.scrollLeft;
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const dummyScrollPosMax = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-        const dummyScale        = dummyScrollPosMax / listScrollPosMax;
-        const dummyScrollPos    = listScrollPos * dummyScale;
+        const listScrollPos        = listElm.scrollLeft;
+        const listScrollPosMax     = listElm.scrollWidth - listElm.clientWidth;
+        const dummyScrollPosMax    = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+        const dummyScale           = dummyScrollPosMax / listScrollPosMax;
+        const dummyScrollPosScaled = listScrollPos * dummyScale;
         
         
         
@@ -260,8 +260,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         dummyListElm.scrollTo({
             left     : Math.round(
                 Math.min(Math.max(
-                    dummyScrollPos
-                , 0), dummyScrollPosMax) // make sure the `dummyScrollPos` doesn't exceed the range of 0 - `dummyScrollPosMax`
+                    dummyScrollPosScaled
+                , 0), dummyScrollPosMax) // make sure the `dummyScrollPosScaled` doesn't exceed the range of 0 - `dummyScrollPosMax`
             ),
             
             behavior : ('instant' as any) // no scrolling animation during sync
