@@ -935,9 +935,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // detect the scrolling end:
         if (slidingStatus.current === SlidingStatus.AutoScrolling) {
-            const listStyle  = getComputedStyle(listElm);
-            const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
-            if (!((listElm.scrollLeft % frameWidth) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+            const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+            if (!((listElm.scrollLeft % listSlideDistance) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
                 // restore the CSS snapScroll on listElm & dummyListElm:
                 enableFreeScrolling(false);
                 
