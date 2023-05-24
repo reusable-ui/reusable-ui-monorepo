@@ -762,20 +762,25 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
+        // conditions:
+        if (slidingStatus.current !== SlidingStatus.AutoScrolling) return;
+        
+        
+        
         // detect the scrolling end:
-        if (slidingStatus.current === SlidingStatus.AutoScrolling) {
-            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-            const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-            if (!((listElm.scrollLeft % listSlideDistance) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
-                // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
-                await new Promise<void>((resolved) => setTimeout(resolved, 0));
-                
-                
-                
-                // mark the sliding status:
-                slidingStatus.current = SlidingStatus.Passive;
-            } // if
-        } // if
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        if ((listElm.scrollLeft % listSlideDistance) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+        
+        
+        
+        // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
+        await new Promise<void>((resolved) => setTimeout(resolved, 0));
+        
+        
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.Passive;
     });
     
     
