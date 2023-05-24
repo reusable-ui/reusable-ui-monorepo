@@ -787,7 +787,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // setups:
-        // sync listElm scroll to dummyListElm:
+        // sync listElm scroll to dummyListElm before dummyListElm becomes the *source of truth*:
         syncListScrollPos(
             /*sourceListElm    :*/ listElm,
             /*sourceScrollPos  :*/ listElm.scrollLeft,
@@ -800,7 +800,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // cleanups:
         return () => {
-            // sync dummyListElm layout to listElm:
+            // sync dummyListElm layout (as the previous *source of truth*) to listElm:
             if (dummyDiff.current) { // has difference => need to sync
                 // sync listElm scrolling position to dummyListElm scrolling position:
                 cloneDummyToList();
