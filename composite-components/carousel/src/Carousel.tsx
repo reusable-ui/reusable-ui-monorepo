@@ -737,7 +737,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
-    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>(async (event) => {
+    const listHandleScroll        = useEvent(async (event: Event) => {
         // conditions:
         if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
@@ -775,6 +775,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             } // if
         } // if
     });
+    
+    
+    
+    // dom effects:
+    // attach/detach passive events:
+    useEffect(() => {
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for setup
+        
+        
+        
+        // setups:
+        listElm.addEventListener('scroll', listHandleScroll, { passive: false });
+        
+        
+        
+        // cleanups:
+        return () => {
+            listElm.removeEventListener('scroll', listHandleScroll);
+        };
+    }, []);
     
     
     
@@ -818,7 +839,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     onTouchStart  = {listHandleTouchStart}
                     onTouchMove   = {listHandleTouchMove }
                     onTouchEnd    = {listHandleTouchEnd  }
-                    onScroll      = {listHandleScroll    }
+                    // onScroll      = {listHandleScroll    } // can't setup event here, we need *passive* listener
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
