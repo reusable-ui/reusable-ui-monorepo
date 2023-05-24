@@ -378,18 +378,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // a delay time for the prev mutation has fully settled:
-        await new Promise<void>((resolved) => {
-            requestAnimationFrame(() => {
-                // mark the sliding status:
-                slidingStatus.current = SlidingStatus.Passive;
-                
-                
-                
-                // resolved:
-                resolved();
-            });
-        });
+        // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
+        await new Promise<void>((resolved) => setTimeout(resolved, 0));
+        
+        
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.Passive;
     };
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
@@ -742,7 +737,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
-    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>((event) => {
+    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>(async (event) => {
         // conditions:
         if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
@@ -770,6 +765,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
             const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
             if (!((listElm.scrollLeft % listSlideDistance) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+                // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
+                await new Promise<void>((resolved) => setTimeout(resolved, 0));
+                
+                
+                
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.Passive;
             } // if
