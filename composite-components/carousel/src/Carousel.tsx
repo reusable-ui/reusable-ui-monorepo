@@ -732,9 +732,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // detect the scrolling end:
-        const dummyListStyle = getComputedStyle(dummyListElm);
-        const frameWidth     = dummyListElm.clientWidth - (Number.parseInt(dummyListStyle.paddingLeft) || 0) - (Number.parseInt(dummyListStyle.paddingRight ) || 0);
-        if ((dummyListElm.scrollLeft % frameWidth) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of syncing listElm to dummyListElm
+        const dummyScrollPosMax  = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+        const dummySlideDistance = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
+        if ((dummyListElm.scrollLeft % dummySlideDistance) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of syncing listElm to dummyListElm
         
         
         
