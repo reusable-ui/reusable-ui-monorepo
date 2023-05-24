@@ -470,16 +470,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.AutoScrolling;
-        
-        // update the neighbor listItem's index:
-        currentItemIndex++;
-        // snap scroll to the neighbor fragment step:
-        listElm.scrollTo({
-            left     : currentItemIndex * listSlideDistance,
-            behavior : 'smooth',
+        requestAnimationFrame(() => { // a delay time for the prev mutation has fully settled
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
+            // update the neighbor listItem's index:
+            currentItemIndex++;
+            // snap scroll to the neighbor fragment step:
+            listElm.scrollTo({
+                left     : currentItemIndex * listSlideDistance,
+                behavior : 'smooth',
+            });
         });
     });
     const handlePrevClick         = useMergeEvents(
@@ -525,16 +528,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.AutoScrolling;
-        
-        // update the neighbor listItem's index:
-        currentItemIndex--;
-        // snap scroll to the neighbor fragment step:
-        listElm.scrollTo({
-            left     : currentItemIndex * listSlideDistance,
-            behavior : 'smooth',
+        requestAnimationFrame(() => { // a delay time for the prev mutation has fully settled
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.AutoScrolling;
+            
+            
+            
+            // update the neighbor listItem's index:
+            currentItemIndex--;
+            // snap scroll to the neighbor fragment step:
+            listElm.scrollTo({
+                left     : currentItemIndex * listSlideDistance,
+                behavior : 'smooth',
+            });
         });
     });
     const handleNextClick         = useMergeEvents(
