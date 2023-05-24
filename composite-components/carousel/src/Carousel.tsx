@@ -217,10 +217,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
     const enum SlidingStatus {
-        Passive         = 0,
-        MirrorScrolling = 1,
-        AutoScrolling   = 2,
-        FollowsPointer  = 3,
+        Passive        = 0,
+        Calibrate      = 1,
+        AutoScrolling  = 2,
+        FollowsPointer = 3,
     }
     const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
     
@@ -328,7 +328,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         );
         targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
     };
-    const cloneDummyToList     = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
+    const cloneDummyToList     = async (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -357,6 +357,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.Calibrate;
+        
+        
+        
         // set the listElm's scrollPos to the correct image:
         syncListScrollPos(
             /*sourceListElm    :*/ undefined,
@@ -370,6 +375,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
+        
+        
+        
+        // a delay time for the prev mutation has fully settled:
+        await new Promise<void>((resolved) => {
+            requestAnimationFrame(() => {
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.Passive;
+                
+                
+                
+                // resolved:
+                resolved();
+            });
+        });
     };
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
@@ -421,7 +441,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // handlers:
-    const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
         // conditions:
         if (event.defaultPrevented) return;
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
@@ -443,7 +463,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            cloneDummyToList(0 - currentItemIndex, false);
+            await cloneDummyToList(0 - currentItemIndex, false);
             
             
             
@@ -454,19 +474,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        requestAnimationFrame(() => { // a delay time for the prev mutation has fully settled
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
-            
-            
-            
-            // update the neighbor listItem's index:
-            currentItemIndex++;
-            // snap scroll to the neighbor fragment step:
-            listElm.scrollTo({
-                left     : currentItemIndex * listSlideDistance,
-                behavior : 'smooth',
-            });
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.AutoScrolling;
+        
+        
+        
+        // update the neighbor listItem's index:
+        currentItemIndex++;
+        // snap scroll to the neighbor fragment step:
+        listElm.scrollTo({
+            left     : currentItemIndex * listSlideDistance,
+            behavior : 'smooth',
         });
     });
     const handlePrevClick         = useMergeEvents(
@@ -479,7 +498,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handlePrevClickInternal,
     );
     
-    const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
         // conditions:
         if (event.defaultPrevented) return;
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
@@ -501,7 +520,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
+            await cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
             
             
             
@@ -512,19 +531,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // scroll implementation:
-        requestAnimationFrame(() => { // a delay time for the prev mutation has fully settled
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
-            
-            
-            
-            // update the neighbor listItem's index:
-            currentItemIndex--;
-            // snap scroll to the neighbor fragment step:
-            listElm.scrollTo({
-                left     : currentItemIndex * listSlideDistance,
-                behavior : 'smooth',
-            });
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.AutoScrolling;
+        
+        
+        
+        // update the neighbor listItem's index:
+        currentItemIndex--;
+        // snap scroll to the neighbor fragment step:
+        listElm.scrollTo({
+            left     : currentItemIndex * listSlideDistance,
+            behavior : 'smooth',
         });
     });
     const handleNextClick         = useMergeEvents(
@@ -537,9 +555,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handleNextClickInternal,
     );
     
-    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
+    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(async () => {
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.MirrorScrolling) return; // only process `MirrorScrolling`
+        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive`
         
         const dummyListElm = dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
@@ -567,18 +585,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.Passive;
-        
-        
-        
         // conditions:
         if (!dummyDiff.current) return; // no difference => nothing to sync
         
         
         
         // sync listElm scrolling position to dummyListElm scrolling position:
-        cloneDummyToList();
+        await cloneDummyToList();
     });
     
     const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -603,7 +616,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const listSlideDistance  = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
         touchedItemIndex.current = Math.round(listElm.scrollLeft / listSlideDistance);
     });
-    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>((event) => {
+    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
         // conditions:
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
@@ -649,7 +662,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             // decide the shift amount of dummyListElm:
             const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
             // mutate the listItem(s):
-            cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
+            await cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
             
             
             
