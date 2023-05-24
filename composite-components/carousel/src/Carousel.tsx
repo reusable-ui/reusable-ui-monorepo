@@ -226,69 +226,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     
-    // dom effects:
-    
-    // sync dummyListElm scrolling position to listElm scrolling position, once, at startup:
-    useEffect(() => {
-        // conditions:
-        
-        if (!infiniteLoop) return; // only for infiniteLoop mode
-        
-        const dummyListElm = dummyListRefInternal.current;
-        if (!dummyListElm) return; // dummyListElm must be exist to sync
-        
-        const listElm      = listRefInternal.current;
-        if (!listElm)      return; // listElm must be exist for syncing
-        
-        
-        
-        // fn props:
-        const listScrollPos        = listElm.scrollLeft;
-        const listScrollPosMax     = listElm.scrollWidth - listElm.clientWidth;
-        const dummyScrollPosMax    = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-        const dummyScale           = dummyScrollPosMax / listScrollPosMax;
-        const dummyScrollPosScaled = listScrollPos * dummyScale;
-        
-        
-        
-        // setups:
-        dummyListElm.scrollTo({
-            left     : Math.round(
-                Math.min(Math.max(
-                    dummyScrollPosScaled
-                , 0), dummyScrollPosMax) // make sure the `dummyScrollPosScaled` doesn't exceed the range of 0 - `dummyScrollPosMax`
-            ),
-            
-            behavior : ('instant' as any) // no scrolling animation during sync
-        });
-    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
-    
-    // prevents browser's scrolling implementation, we use our scrolling implementation:
-    useEffect(() => {
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist for setup
-        
-        
-        // handlers:
-        const listHandleTouchStart = (event: TouchEvent) => {
-            event.preventDefault();
-        };
-        
-        
-        
-        // setups:
-        listElm.addEventListener('touchstart', listHandleTouchStart, { passive: false });
-        
-        
-        
-        // cleanups:
-        return () => {
-            listElm.removeEventListener('touchstart', listHandleTouchStart);
-        };
-    }, []);
-    
-    
-    
     // functions:
     const periodify            = (value: number, period: number) => {
         return ((value % period) + period) % period;
@@ -458,12 +395,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            await cloneDummyToList(0 - currentItemIndex, false);
+            await cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
             
             
             
             // update the shifted listItem's index:
-            currentItemIndex = 0;
+            currentItemIndex = (itemsCount - 1);
         } // if
         
         
@@ -476,9 +413,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // update the neighbor listItem's index:
-        currentItemIndex++;
+        currentItemIndex--;
         // snap scroll to the neighbor fragment step:
-        listElm.scrollLeft++; // make a non_zero fragment to de-confuse the scrolling end detection
+        listElm.scrollLeft--; // make a non_zero fragment to de-confuse the scrolling end detection
         listElm.scrollTo({
             left     : currentItemIndex * listSlideDistance,
             behavior : 'smooth',
@@ -516,12 +453,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            await cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
+            await cloneDummyToList(0 - currentItemIndex, false);
             
             
             
             // update the shifted listItem's index:
-            currentItemIndex = (itemsCount - 1);
+            currentItemIndex = 0;
         } // if
         
         
@@ -534,9 +471,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // update the neighbor listItem's index:
-        currentItemIndex--;
+        currentItemIndex++;
         // snap scroll to the neighbor fragment step:
-        listElm.scrollLeft--; // make a non_zero fragment to de-confuse the scrolling end detection
+        listElm.scrollLeft++; // make a non_zero fragment to de-confuse the scrolling end detection
         listElm.scrollTo({
             left     : currentItemIndex * listSlideDistance,
             behavior : 'smooth',
@@ -777,6 +714,32 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // dom effects:
+    
+    // prevents browser's scrolling implementation, we use our scrolling implementation:
+    useEffect(() => {
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for setup
+        
+        
+        
+        // handlers:
+        const listHandleTouchStart = (event: TouchEvent) => {
+            event.preventDefault();
+        };
+        
+        
+        
+        // setups:
+        listElm.addEventListener('touchstart', listHandleTouchStart, { passive: false });
+        
+        
+        
+        // cleanups:
+        return () => {
+            listElm.removeEventListener('touchstart', listHandleTouchStart);
+        };
+    }, []);
+    
     // attach/detach passive events:
     useEffect(() => {
         const listElm = listRefInternal.current;
@@ -794,6 +757,41 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             listElm.removeEventListener('scroll', listHandleScroll);
         };
     }, []);
+    
+    // sync back dummyListElm scrolling position to listElm scrolling position, once, at cleanup:
+    useEffect(() => {
+        // conditions:
+        
+        if (!infiniteLoop) return; // only for infiniteLoop mode
+        
+        const dummyListElm = dummyListRefInternal.current;
+        if (!dummyListElm) return; // dummyListElm must be exist for syncing
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for syncing
+        
+        
+        
+        // cleanups:
+        return () => {
+            // sync dummyListElm layout to listElm:
+            if (dummyDiff.current) { // has difference => need to sync
+                // sync listElm scrolling position to dummyListElm scrolling position:
+                cloneDummyToList();
+            } // if
+            
+            
+            
+            // sync dummyListElm scroll to listElm:
+            syncListScrollPos(
+                /*sourceListElm    :*/ dummyListElm,
+                /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
+                
+                /*targetListElm    :*/ listElm,
+                /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+            );
+        };
+    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
     
     
