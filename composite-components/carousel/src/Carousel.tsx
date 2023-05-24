@@ -772,7 +772,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         };
     }, []);
     
-    // sync back dummyListElm scrolling position to listElm scrolling position, once, at cleanup:
+    // sync forth & back dummyListElm scrolling position to listElm scrolling position, at `infiniteLoop` transition:
     useEffect(() => {
         // conditions:
         
@@ -800,7 +800,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // cleanups:
         return () => {
-            // sync dummyListElm layout (as the previous *source of truth*) to listElm:
+            // sync dummyListElm (as the previous *source of truth*) to listElm:
             if (dummyDiff.current) { // has difference => need to sync
                 // sync listElm scrolling position to dummyListElm scrolling position:
                 cloneDummyToList();
