@@ -559,36 +559,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const dummyListElm = dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
         
-        
-        
-        // sync dummyListElm scroll to listElm:
         const listElm = listRefInternal.current;
-        if (listElm) { // listElm must be exist for syncing
-            syncListScrollPos(
-                /*sourceListElm    :*/ dummyListElm,
-                /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
-                
-                /*targetListElm    :*/ listElm,
-                /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-            );
+        if (!listElm) return; // listElm must be exist for syncing
+        
+        
+        
+        // sync dummyListElm layout to listElm:
+        if (dummyDiff.current) { // has difference => need to sync
+            // sync listElm scrolling position to dummyListElm scrolling position:
+            await cloneDummyToList();
         } // if
         
         
         
-        // detect the scrolling end:
-        const dummyScrollPosMax  = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-        const dummySlideDistance = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
-        if ((dummyListElm.scrollLeft % dummySlideDistance) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of syncing listElm to dummyListElm
-        
-        
-        
-        // conditions:
-        if (!dummyDiff.current) return; // no difference => nothing to sync
-        
-        
-        
-        // sync listElm scrolling position to dummyListElm scrolling position:
-        await cloneDummyToList();
+        // sync dummyListElm scroll to listElm:
+        syncListScrollPos(
+            /*sourceListElm    :*/ dummyListElm,
+            /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
+            
+            /*targetListElm    :*/ listElm,
+            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+        );
     });
     
     const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
