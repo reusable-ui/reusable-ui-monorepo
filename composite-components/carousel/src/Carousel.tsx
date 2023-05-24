@@ -281,7 +281,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide which side to be moved:
-        const theNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the fewest listItem(s) to move
+        const theNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the smallest listItem(s) to change in order to sync with dummyListElm (+ dummyShift)
         if (theNextSide) { // move the right listItem(s) to the left_most
             Array.from(listElm.childNodes).slice(-(itemsCount - listShift))            // take nth elements from the right
             .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
@@ -300,12 +300,28 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the listElm's scrollPos to the correct image:
-        if (moveNextSide !== undefined) syncListScrollPos(
+        let targetScrollIndex: number|undefined = undefined;
+        if (moveNextSide === true) {
+            targetScrollIndex = (itemsCount - 1); // move to last index
+        }
+        else if (moveNextSide === false) {
+            targetScrollIndex = 0; // move to first index
+        }
+        else {
+            const dummyListElm = dummyListRefInternal.current;
+            if (dummyListElm) {
+                // get the shown dummyListItem's index by position:
+                const dummyScrollPosMax  = dummyListElm.scrollWidth - dummyListElm.clientWidth;
+                const dummySlideDistance = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
+                targetScrollIndex        = Math.round(dummyListElm.scrollLeft / dummySlideDistance);
+            } // if
+        } // if
+        if (targetScrollIndex !== undefined) syncListScrollPos(
             /*sourceListElm    :*/ undefined,
             /*sourceScrollPos  :*/ undefined,
             
             /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ (moveNextSide ? (itemsCount - 1) : 0)
+            /*targetScrollDiff :*/ targetScrollIndex
         );
         
         
