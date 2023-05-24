@@ -387,22 +387,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         limitedScrollMin), limitedScrollMax);
     };
     
-    const enableFreeScrolling  = (enable: boolean) => {
-        // temporary disable the snapScroll on listElm so it can follow our scroll implementation:
-        const listElm = listRefInternal.current;
-        if (listElm) {
-            listElm.style.scrollSnapType = enable ? 'none' : '';
-            listElm.style.scrollBehavior = enable ? 'auto' : '';
-        } // if
-        
-        // temporary disable the snapScroll on dummyListElm so it can sync listElm's scroll position:
-        const dummyListElm = dummyListRefInternal.current;
-        if (dummyListElm) { // dummyListElm must be exist for syncing
-            dummyListElm.style.scrollSnapType = enable ? 'none' : '';
-            dummyListElm.style.scrollBehavior = enable ? 'auto' : '';
-        } // if
-    };
-    
     
     
     // classes:
@@ -644,11 +628,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if (slidingStatus.current !== SlidingStatus.FollowsPointer) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
             slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
-            
-            
-            
-            // temporary disable the snapScroll on listElm & dummyListElm so it can follow our scroll implementation:
-            enableFreeScrolling(true);
         } // if
         
         
@@ -746,11 +725,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             });
         }
         else { // an exact step (fragment step) => restore the CSS snapScroll
-            // restore the CSS snapScroll on listElm & dummyListElm:
-            enableFreeScrolling(false);
-            
-            
-            
             // mark the sliding status:
             slidingStatus.current = SlidingStatus.Passive;
         } // if
@@ -783,11 +757,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
             const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
             if (!((listElm.scrollLeft % listSlideDistance) >= 0.5)) { // scrolling fragment is (almost) zero => it's the moment of a scrolling end
-                // restore the CSS snapScroll on listElm & dummyListElm:
-                enableFreeScrolling(false);
-                
-                
-                
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.Passive;
             } // if

@@ -110,8 +110,9 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             
             // scrolls:
             overflowX      : 'scroll',                  // enable horizontal scrolling
-            scrollSnapType : [['inline', 'mandatory']], // enable horizontal scroll snap
-            scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
+            // no need scroll snap anymore - we use js solution for scrolling
+            // scrollSnapType : [['inline', 'mandatory']], // enable horizontal scroll snap
+            // scrollBehavior : 'smooth',                  // smooth scrolling when it's triggered by the navigation or CSSOM scrolling APIs
             WebkitOverflowScrolling : 'touch',          // supports for iOS Safari
             
             // DON'T: causes the user cannot scroll the whole page on the top of <Carousel>
