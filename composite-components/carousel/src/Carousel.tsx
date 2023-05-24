@@ -849,9 +849,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // get the listItem's frame width:
-        const listStyle  = getComputedStyle(listElm);
-        const frameWidth = listElm.clientWidth - (Number.parseInt(listStyle.paddingLeft) || 0) - (Number.parseInt(listStyle.paddingRight ) || 0);
+        // get the listItem's slide distance:
+        const listScrollPosMax   = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance  = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
         
         
         
@@ -859,20 +859,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
-            const restScroll          = calculateScrollLimit(frameWidth * ((touchDirection > 0) ? 1 : -1));
+            const restScroll          = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
                 
                 
                 
-                const finishingScrollLeft = listElm.scrollLeft + restScroll;
+                const futureScrollPos = listElm.scrollLeft + restScroll;
                 
                 // update the nearest listItem's index:
-                touchedItemIndex.current = Math.round(finishingScrollLeft / frameWidth);
+                touchedItemIndex.current = Math.round(futureScrollPos / listSlideDistance);
                 // snap scroll to the nearest fragment step:
                 listElm.scrollTo({
-                    left     : touchedItemIndex.current * frameWidth,
+                    left     : touchedItemIndex.current * listSlideDistance,
                     behavior : 'smooth',
                 });
                 
@@ -886,17 +886,17 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // the *auto scroll completation*:
         // get the shown listItem's index by position:
-        if ((listElm.scrollLeft % frameWidth) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
+        if ((listElm.scrollLeft % listSlideDistance) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
             // mark the sliding status:
             slidingStatus.current = SlidingStatus.AutoScrolling;
             
             
             
             // update the nearest listItem's index:
-            touchedItemIndex.current = Math.round(listElm.scrollLeft / frameWidth);
+            touchedItemIndex.current = Math.round(listElm.scrollLeft / listSlideDistance);
             // snap scroll to the nearest fragment step:
             listElm.scrollTo({
-                left     : touchedItemIndex.current * frameWidth,
+                left     : touchedItemIndex.current * listSlideDistance,
                 behavior : 'smooth',
             });
         }
