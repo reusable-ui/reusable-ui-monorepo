@@ -308,13 +308,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             targetScrollIndex = 0; // move to first index
         }
         else {
-            const dummyListElm = dummyListRefInternal.current;
-            if (dummyListElm) {
-                // get the shown dummyListItem's index by position:
-                const dummyScrollPosMax  = dummyListElm.scrollWidth - dummyListElm.clientWidth;
-                const dummySlideDistance = itemsCount ? (dummyScrollPosMax / (itemsCount - 1)) : 0;
-                targetScrollIndex        = Math.round(dummyListElm.scrollLeft / dummySlideDistance);
-            } // if
+            // get the shown listItem's index by position:
+            const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+            const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+            let   currentItemIndex  = Math.round(listElm.scrollLeft / listSlideDistance);
+            targetScrollIndex       = normalizeShift(currentItemIndex + dummyShift);
         } // if
         if (targetScrollIndex !== undefined) syncListScrollPos(
             /*sourceListElm    :*/ undefined,
@@ -807,17 +805,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 // sync listElm scrolling position to dummyListElm scrolling position:
                 cloneDummyToList();
             } // if
-            
-            
-            
-            // // sync dummyListElm scroll to listElm:
-            // syncListScrollPos(
-            //     /*sourceListElm    :*/ dummyListElm,
-            //     /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
-                
-            //     /*targetListElm    :*/ listElm,
-            //     /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-            // );
         };
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
