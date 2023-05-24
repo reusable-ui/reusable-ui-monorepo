@@ -60,11 +60,6 @@ import {
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
-    // utilities:
-    Dimension,
-    
-    
-    
     // react components:
     NavscrollProps,
     Navscroll,
@@ -306,9 +301,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         return periodify(shift, itemsCount);
     };
-    const shiftDummyDiff       = (diff: number) => {
-        dummyDiff.current = normalizeShift(dummyDiff.current + diff);
-    };
     
     const syncListScrollPos    = (sourceListElm: TElement|undefined, sourceScrollPos: number|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
@@ -411,93 +403,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         } // if
     };
     
-    const scrollBy             = (listElm: TElement, nextSlide: boolean) => {
-        const parent = listElm;
-        
-        
-        
-        // calculate the limit of the allowed scrolling distances:
-        const [minLeft, maxLeft, minTop, maxTop] = [
-            -parent.scrollLeft,
-            (parent.scrollWidth  - parent.clientWidth ) - parent.scrollLeft,
-            
-            -parent.scrollTop,
-            (parent.scrollHeight - parent.clientHeight) - parent.scrollTop,
-        ];
-        
-        // calculate the scrolling distance:
-        const parentStyle = getComputedStyle(parent);
-        const [scrollLeft, scrollRight] = [
-            Math.min(Math.max((listElm.clientWidth  - (Number.parseInt(parentStyle.paddingLeft) || 0)  - (Number.parseInt(parentStyle.paddingRight ) || 0)) * (nextSlide ? 1 : -1), minLeft), maxLeft),
-            Math.min(Math.max((listElm.clientHeight - (Number.parseInt(parentStyle.paddingTop ) || 0)  - (Number.parseInt(parentStyle.paddingBottom) || 0)) * (nextSlide ? 1 : -1), minTop ), maxTop ),
-        ];
-        
-        
-        
-        if (scrollLeft || scrollRight) {
-            // mark the sliding status:
-            slidingStatus.current = (parent === dummyListRefInternal.current) ? SlidingStatus.MirrorScrolling : SlidingStatus.AutoScrolling;
-            
-            
-            
-            parent.scrollBy({
-                left     : scrollLeft,
-                top      : scrollRight,
-                behavior : 'smooth',
-            });
-        } // if
-    };
-    const scrollTo             = (targetSlide: HTMLElement|null) => {
-        if (!targetSlide) return;
-        const parent = targetSlide.parentElement;
-        if (!parent) return;
-        
-        
-        
-        // calculate the limit of the allowed scrolling distances:
-        const [minLeft, maxLeft, minTop, maxTop] = [
-            -parent.scrollLeft,
-            (parent.scrollWidth  - parent.clientWidth ) - parent.scrollLeft,
-            
-            -parent.scrollTop,
-            (parent.scrollHeight - parent.clientHeight) - parent.scrollTop,
-        ];
-        
-        // calculate the scrolling distance:
-        const parentStyle = getComputedStyle(parent);
-        const dimension = Dimension.from(targetSlide);
-        const [scrollLeft, scrollRight] = [
-            Math.min(Math.max(dimension.offsetLeft - (Number.parseInt(parentStyle.paddingLeft) || 0), minLeft), maxLeft),
-            Math.min(Math.max(dimension.offsetTop  - (Number.parseInt(parentStyle.paddingTop ) || 0), minTop ), maxTop ),
-        ];
-        
-        
-        
-        if (scrollLeft || scrollRight) {
-            // mark the sliding status:
-            slidingStatus.current = (parent === dummyListRefInternal.current) ? SlidingStatus.MirrorScrolling : SlidingStatus.AutoScrolling;
-            
-            
-            
-            parent.scrollBy({
-                left     : scrollLeft,
-                top      : scrollRight,
-                behavior : 'smooth',
-            });
-        } // if
-    };
-    
-    const isBeginOfScroll      = (listElm: TElement) => (
-        (listElm.scrollLeft <= 0.5)
-        // &&
-        // (listElm.scrollTop  <= 0.5) // no need to check vertical scrollbar
-    );
-    const isEndOfScroll        = (listElm: TElement) => (
-        (((listElm.scrollWidth  - listElm.clientWidth ) - listElm.scrollLeft) <= 0.5)
-        // &&
-        // (((listElm.scrollHeight - listElm.clientHeight) - listElm.scrollTop ) <= 0.5) // no need to check vertical scrollbar
-    );
-    
     
     
     // classes:
@@ -534,81 +439,48 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // handlers:
     const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.MirrorScrolling) return; // protect from messy scrolling
         if (event.defaultPrevented) return;
+        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        // all necessary task will be performed, no further action needed:
+        event.preventDefault();
         
         
         
-        const dummyListElm = dummyListRefInternal.current;
-        const listElm      = listRefInternal.current;
+        // get the shown listItem's index by position:
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        let   currentItemIndex  = Math.round(listElm.scrollLeft / listSlideDistance);
         
         
         
-        if (infiniteLoop && dummyListElm) {
-            let itemsShifted = false;
-            if (listElm && isBeginOfScroll(listElm)) {
-                // move the last item to the first:
-                const item = listElm.lastElementChild;
-                if (item) {
-                    // remember the current scrollPos before modifying:
-                    const scrollPos = listElm.scrollLeft;
-                    
-                    
-                    
-                    listElm.insertBefore(item, listElm.firstElementChild); // insert the items at the beginning
-                    itemsShifted = true;
-                    
-                    
-                    
-                    // set the current scrollPos to the next item, so the scrolling effect can occur:
-                    listElm.scrollTo({ left: (scrollPos + listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
-                } // if
-                
-                
-                
-                // calculate the diff of listElm & dummyListElm:
-                shiftDummyDiff(-1); // shift the dummyListElm once to left (will wrap to the right_most)
-            } // if
+        if (infiniteLoop) {
+            // mutate the listItem(s):
+            cloneDummyToList(0 - currentItemIndex, false);
             
             
             
-            const doScroll = () => {
-                if (isBeginOfScroll(dummyListElm)) {
-                    // scroll to last:
-                    scrollTo(dummyListElm.lastElementChild as (HTMLElement|null));
-                }
-                else {
-                    // scroll to previous:
-                    scrollBy(dummyListElm, false);
-                } // if
-            };
-            if (itemsShifted) {
-                setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
-            }
-            else {
-                doScroll();
-            } // if
-            
-            
-            
-            // all necessary task has been performed, no further action needed:
-            event.preventDefault();
-        }
-        else if (listElm) {
-            if (isBeginOfScroll(listElm)) {
-                // scroll to last:
-                scrollTo(listElm.lastElementChild as (HTMLElement|null));
-            }
-            else {
-                // scroll to previous:
-                scrollBy(listElm, false);
-            } // if
-            
-            
-            
-            // all necessary task has been performed, no further action needed:
-            event.preventDefault();
+            // update the shifted listItem's index:
+            currentItemIndex = 0;
         } // if
+        
+        
+        
+        // scroll implementation:
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.AutoScrolling;
+        
+        // update the neighbor listItem's index:
+        currentItemIndex++;
+        // snap scroll to the neighbor fragment step:
+        listElm.scrollTo({
+            left     : currentItemIndex * listSlideDistance,
+            behavior : 'smooth',
+        });
     });
     const handlePrevClick         = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
@@ -622,81 +494,48 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
         // conditions:
-        if (slidingStatus.current === SlidingStatus.MirrorScrolling) return; // protect from messy scrolling
         if (event.defaultPrevented) return;
+        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        // all necessary task will be performed, no further action needed:
+        event.preventDefault();
         
         
         
-        const dummyListElm = dummyListRefInternal.current;
-        const listElm      = listRefInternal.current;
+        // get the shown listItem's index by position:
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        let   currentItemIndex  = Math.round(listElm.scrollLeft / listSlideDistance);
         
         
         
-        if (infiniteLoop && dummyListElm) {
-            let itemsShifted = false;
-            if (listElm && isEndOfScroll(listElm)) {
-                // move the first item to the last:
-                const item = listElm.firstElementChild;
-                if (item) {
-                    // remember the current scrollPos before modifying:
-                    const scrollPos = listElm.scrollLeft;
-                    
-                    
-                    
-                    listElm.append(item); // insert the items at the end
-                    itemsShifted = true;
-                    
-                    
-                    
-                    // set the current scrollPos to the prev item, so the scrolling effect can occur:
-                    listElm.scrollTo({ left: (scrollPos - listElm.clientWidth), behavior: ('instant' as any) }); // no scrolling animation during sync
-                } // if
-                
-                
-                
-                // calculate the diff of listElm & dummyListElm:
-                shiftDummyDiff(1); // shift the dummyListElm once to right (will wrap to the left_most)
-            } // if
+        if (infiniteLoop) {
+            // mutate the listItem(s):
+            cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
             
             
             
-            const doScroll = () => {
-                if (isEndOfScroll(dummyListElm)) {
-                    // scroll to first:
-                    scrollTo(dummyListElm.firstElementChild as (HTMLElement|null));
-                }
-                else {
-                    // scroll to next:
-                    scrollBy(dummyListElm, true);
-                } // if
-            };
-            if (itemsShifted) {
-                setTimeout(doScroll, 0); // wait until scrolling shift completed and then doScroll()
-            }
-            else {
-                doScroll();
-            } // if
-            
-            
-            
-            // all necessary task has been performed, no further action needed:
-            event.preventDefault();
-        }
-        else if (listElm) {
-            if (isEndOfScroll(listElm)) {
-                // scroll to first:
-                scrollTo(listElm.firstElementChild as (HTMLElement|null));
-            }
-            else {
-                // scroll to next:
-                scrollBy(listElm, true);
-            } // if
-            
-            
-            
-            // all necessary task has been performed, no further action needed:
-            event.preventDefault();
+            // update the shifted listItem's index:
+            currentItemIndex = (itemsCount - 1);
         } // if
+        
+        
+        
+        // scroll implementation:
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.AutoScrolling;
+        
+        // update the neighbor listItem's index:
+        currentItemIndex--;
+        // snap scroll to the neighbor fragment step:
+        listElm.scrollTo({
+            left     : currentItemIndex * listSlideDistance,
+            behavior : 'smooth',
+        });
     });
     const handleNextClick         = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
