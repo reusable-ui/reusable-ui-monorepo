@@ -850,8 +850,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the listItem's slide distance:
-        const listScrollPosMax   = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance  = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
         
         
         
