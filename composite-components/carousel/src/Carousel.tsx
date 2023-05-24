@@ -281,8 +281,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // decide which side to be moved:
-        moveNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the fewest listItem(s) to move
-        if (moveNextSide) { // move the right listItem(s) to the left_most
+        const theNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the fewest listItem(s) to move
+        if (theNextSide) { // move the right listItem(s) to the left_most
             Array.from(listElm.childNodes).slice(-(itemsCount - listShift))            // take nth elements from the right
             .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
             .forEach((item) => listElm.insertBefore(item, listElm.firstElementChild)); // insert the items at the beginning
@@ -300,7 +300,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // set the listElm's scrollPos to the correct image:
-        syncListScrollPos(
+        if (moveNextSide !== undefined) syncListScrollPos(
             /*sourceListElm    :*/ undefined,
             /*sourceScrollPos  :*/ undefined,
             
@@ -772,6 +772,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
+        // setups:
+        // sync listElm scroll to dummyListElm:
+        syncListScrollPos(
+            /*sourceListElm    :*/ listElm,
+            /*sourceScrollPos  :*/ listElm.scrollLeft,
+            
+            /*targetListElm    :*/ dummyListElm,
+            /*targetScrollDiff :*/ dummyDiff.current,
+        );
+        
+        
+        
         // cleanups:
         return () => {
             // sync dummyListElm layout to listElm:
@@ -782,14 +794,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             
             
-            // sync dummyListElm scroll to listElm:
-            syncListScrollPos(
-                /*sourceListElm    :*/ dummyListElm,
-                /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
+            // // sync dummyListElm scroll to listElm:
+            // syncListScrollPos(
+            //     /*sourceListElm    :*/ dummyListElm,
+            //     /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
                 
-                /*targetListElm    :*/ listElm,
-                /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-            );
+            //     /*targetListElm    :*/ listElm,
+            //     /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+            // );
         };
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
