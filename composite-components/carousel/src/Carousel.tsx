@@ -360,6 +360,31 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the shifted listItem's index:
         return (isPositiveMovement ? 0 : (itemsCount - 1));
     };
+    const performScrolling      = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
+        // conditions:
+        if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist to manipulate
+        
+        
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.AutoScrolling;
+        
+        
+        
+        // make a non_zero fragment to de-confuse the scrolling end detection:
+        if (isExactScrollPos(listElm) && (currentItemIndex !== undefined)) listElm.scrollLeft += (futureItemIndex > currentItemIndex) ? 1 : -1;
+        
+        
+        
+        // snap scroll to the nearest fragment step:
+        listElm.scrollTo({
+            left     : futureItemIndex * getSlideDistance(listElm),
+            behavior : 'smooth',
+        });
+    }
     
     
     
@@ -422,19 +447,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // scroll implementation:
         
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.AutoScrolling;
-        
-        
-        
-        // update the neighbor listItem's index:
-        currentItemIndex--;
-        // snap scroll to the neighbor fragment step:
-        listElm.scrollLeft--; // make a non_zero fragment to de-confuse the scrolling end detection
-        listElm.scrollTo({
-            left     : currentItemIndex * getSlideDistance(listElm),
-            behavior : 'smooth',
-        });
+        // scroll to previous neighbor step:
+        performScrolling(currentItemIndex, currentItemIndex - 1);
     });
     const handlePrevClick         = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
@@ -473,19 +487,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // scroll implementation:
         
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.AutoScrolling;
-        
-        
-        
-        // update the neighbor listItem's index:
-        currentItemIndex++;
-        // snap scroll to the neighbor fragment step:
-        listElm.scrollLeft++; // make a non_zero fragment to de-confuse the scrolling end detection
-        listElm.scrollTo({
-            left     : currentItemIndex * getSlideDistance(listElm),
-            behavior : 'smooth',
-        });
+        // scroll to next neighbor step:
+        performScrolling(currentItemIndex, currentItemIndex + 1);
     });
     const handleNextClick         = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
@@ -624,20 +627,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
             const restScroll = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
-                // mark the sliding status:
-                slidingStatus.current = SlidingStatus.AutoScrolling;
-                
-                
-                
-                const futureScrollPos = listElm.scrollLeft + restScroll;
-                
-                // update the nearest listItem's index:
-                touchedItemIndex.current = Math.round(futureScrollPos / listSlideDistance);
-                // snap scroll to the nearest fragment step:
-                listElm.scrollTo({
-                    left     : touchedItemIndex.current * listSlideDistance,
-                    behavior : 'smooth',
-                });
+                // scroll to nearest neighbor step:
+                performScrolling(undefined, Math.round((listElm.scrollLeft + restScroll) / listSlideDistance));
                 
                 
                 
@@ -650,18 +641,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // the *auto scroll completation*:
         // get the shown listItem's index by position:
         if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
-            
-            
-            
-            // update the nearest listItem's index:
-            touchedItemIndex.current = getNearestScrollIndex(listElm);
-            // snap scroll to the nearest fragment step:
-            listElm.scrollTo({
-                left     : touchedItemIndex.current * listSlideDistance,
-                behavior : 'smooth',
-            });
+            // scroll to nearest neighbor step:
+            performScrolling(undefined, getNearestScrollIndex(listElm));
         }
         else { // the listElm is in the exact_position => the sliding animation is completed
             // mark the sliding status:
