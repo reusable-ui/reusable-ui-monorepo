@@ -307,7 +307,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
-    (window as any).setRelativeShiftPos = setRelativeShiftPos;
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
         const listElm = listRefInternal.current;
