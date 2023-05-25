@@ -280,38 +280,35 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = originSlidingStatus;
         } // try
     };
-    const setRelativeShiftPos  = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
+    const setRelativeShiftPos  = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
         
-        const listShift = normalizeShift(itemsCount - dummyShift);
-        if (!listShift) return; // no difference => nothing to shift
+        const absoluteShift = normalizeShift((baseShift ?? (itemsCount - dummyDiff.current)) + targetShiftDiff);
+        if (!absoluteShift) return; // no difference => nothing to shift
         
         
         
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist to shift
-        
-        
-        
-        // decide which side to be moved:
-        const theNextSide = moveNextSide ?? (listShift > (itemsCount / 2)); // determine the smallest listItem(s) to change in order to sync with dummyListElm (+ dummyShift)
-        if (theNextSide) { // move the right listItem(s) to the left_most
-            Array.from(listElm.childNodes).slice(-(itemsCount - listShift))            // take nth elements from the right
-            .reverse()                                                                 // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
-            .forEach((item) => listElm.insertBefore(item, listElm.firstElementChild)); // insert the items at the beginning
+        // decide which side to be moved (the least effort):
+        const moveNextSide = (absoluteShift > (itemsCount / 2)); // determine the smallest slide(s) to migrate
+        if (moveNextSide) { // move the right slide(s) to the left_most
+            Array.from(targetListElm.childNodes).slice(-(itemsCount - absoluteShift))              // take nth elements from the right
+            .reverse()                                                                             // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
+            .forEach((item) => targetListElm.insertBefore(item, targetListElm.firstElementChild)); // insert the items at the beginning
         }
-        else { // move the left listItem(s) to the right_most
-            Array.from(listElm.childNodes).slice(0, listShift) // take nth elements from the left
-            .forEach((item) => listElm.append(item));          // insert the items at the end
+        else { // move the left slide(s) to the right_most
+            Array.from(targetListElm.childNodes).slice(0, absoluteShift) // take nth elements from the left
+            .forEach((item) => targetListElm.append(item));              // insert the items at the end
         } // if
         
         
         
         // update the diff of listElm & dummyListElm:
-        dummyDiff.current = normalizeShift(dummyDiff.current + listShift);
+        console.log({current: dummyDiff.current, absoluteShift, new: (itemsCount- absoluteShift)})
+        dummyDiff.current = absoluteShift;
     };
+    (window as any).setRelativeShiftPos = setRelativeShiftPos;
     const calculateScrollLimit = (deltaScroll: number) => {
         // conditions:
         const listElm = listRefInternal.current;
@@ -383,8 +380,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         if (infiniteLoop) {
-            // move the front image(s) to the beginning so we can scroll the listElm further_backward (creates an infinite scroll illusion):
-            setRelativeShiftPos(itemsCount - (currentItemIndex + 1), true);
+            // shift the current image to the last, so we can scroll the listElm further_backward (creates an infinite scroll illusion):
+            setRelativeShiftPos(
+                /*baseShift        :*/ 0,
+                /*targetListElm    :*/ listElm,
+                /*targetShiftDiff  :*/ currentItemIndex + 1,
+            );
             
             // immediately scroll to last index (it will scroll to step_backward_once):
             await setRelativeScrollPos(
@@ -449,8 +450,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         if (infiniteLoop) {
-            // move the back image(s) to the end so we can scroll the listElm further_forward (creates an infinite scroll illusion):
-            setRelativeShiftPos(0 - currentItemIndex, false);
+            // shift the current image to the first, so we can scroll the listElm further_forward (creates an infinite scroll illusion):
+            setRelativeShiftPos(
+                /*baseShift        :*/ 0,
+                /*targetListElm    :*/ listElm,
+                /*targetShiftDiff  :*/ currentItemIndex,
+            );
             
             // immediately scroll to first index (it will scroll to step_forward_once):
             await setRelativeScrollPos(
@@ -508,19 +513,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // sync dummyListElm layout to listElm:
         if (dummyDiff.current) { // has difference => need to sync
-            // move the image(s) to the correct place, so the listElm's image_order looks similar to dummyListElm:
-            setRelativeShiftPos();
+            // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
+            setRelativeShiftPos(
+                /*baseShift        :*/ 0,
+                /*targetListElm    :*/ listElm,
+                /*targetShiftDiff  :*/ -dummyDiff.current,
+            );
         } // if
         
         
-        
-        // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
-        setRelativeScrollPos(
-            /*sourceListElm    :*/ dummyListElm,
+        // TODO:
+        // // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
+        // setRelativeScrollPos(
+        //     /*sourceListElm    :*/ dummyListElm,
             
-            /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-        );
+        //     /*targetListElm    :*/ listElm,
+        //     /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+        // );
     });
     
     const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -589,9 +598,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // detect if not already been shifted:
         if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0))) {
             // decide the shift amount of dummyListElm:
-            const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
-            // move the front|back image(s) to the beginning|end so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
-            setRelativeShiftPos((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
+            // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
+            setRelativeShiftPos(
+                /*baseShift        :*/ 0,
+                /*targetListElm    :*/ listElm,
+                /*targetShiftDiff  :*/ touchedItemIndex.current + (isPositiveMovement ? 1 : 0),
+            );
             
             // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
             await setRelativeScrollPos(
@@ -798,8 +810,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return () => {
             // sync dummyListElm (as the previous *source of truth*) to listElm:
             if (dummyDiff.current) { // has difference => need to sync
-                // move the image(s) to the correct place, so the listElm's image_order looks similar to dummyListElm:
-                setRelativeShiftPos();
+                // shift the current image similar to the dummyListElm, so the dummyListElm cloned to listElm:
+                setRelativeShiftPos(
+                    /*baseShift        :*/ 0,
+                    /*targetListElm    :*/ listElm,
+                    /*targetShiftDiff  :*/ -dummyDiff.current,
+                );
             } // if
         };
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
