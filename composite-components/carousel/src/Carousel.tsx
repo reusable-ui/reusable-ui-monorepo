@@ -285,28 +285,28 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (!itemsCount) return; // empty items => nothing to shift
         
-        const absoluteShift = normalizeShift((baseShift ?? (itemsCount - dummyDiff.current)) + targetShiftDiff);
-        if (!absoluteShift) return; // no difference => nothing to shift
+        const relativeShift = normalizeShift((baseShift ?? (itemsCount - dummyDiff.current)) + targetShiftDiff);
+        if (!relativeShift) return; // no difference => nothing to shift
         
         
         
         // decide which side to be moved (the least effort):
-        const moveNextSide = (absoluteShift > (itemsCount / 2)); // determine the smallest slide(s) to migrate
+        const moveNextSide = (relativeShift > (itemsCount / 2)); // determine the smallest slide(s) to migrate
         if (moveNextSide) { // move the right slide(s) to the left_most
-            Array.from(targetListElm.childNodes).slice(-(itemsCount - absoluteShift))              // take nth elements from the right
+            Array.from(targetListElm.childNodes).slice(-(itemsCount - relativeShift))              // take nth elements from the right
             .reverse()                                                                             // inserting at the beginning causes the inserted items to be reversed, so we're re-reversing them to keep the order
             .forEach((item) => targetListElm.insertBefore(item, targetListElm.firstElementChild)); // insert the items at the beginning
         }
         else { // move the left slide(s) to the right_most
-            Array.from(targetListElm.childNodes).slice(0, absoluteShift) // take nth elements from the left
+            Array.from(targetListElm.childNodes).slice(0, relativeShift) // take nth elements from the left
             .forEach((item) => targetListElm.append(item));              // insert the items at the end
         } // if
         
         
         
         // update the diff of listElm & dummyListElm:
-        console.log({current: dummyDiff.current, absoluteShift, new: (itemsCount- absoluteShift)})
-        dummyDiff.current = absoluteShift;
+        dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
+        console.log(dummyDiff.current);
     };
     (window as any).setRelativeShiftPos = setRelativeShiftPos;
     const calculateScrollLimit = (deltaScroll: number) => {
