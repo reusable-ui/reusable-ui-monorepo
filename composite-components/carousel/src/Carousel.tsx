@@ -333,6 +333,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
+    const prepareScrolling      = async (currentItemIndex: number, isPositiveMovement: boolean): Promise<number> => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return currentItemIndex; // listElm must be exist to manipulate
+        
+        
+        
+        // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
+        setRelativeShiftPos(
+            /*baseShift        :*/ 0,
+            /*targetListElm    :*/ listElm,
+            /*targetShiftDiff  :*/ currentItemIndex + (isPositiveMovement ? 0 : 1),
+        );
+        
+        // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
+        await setRelativeScrollPos(
+            /*baseListElm      :*/ undefined,
+            
+            /*targetListElm    :*/ listElm,
+            /*targetScrollDiff :*/ (isPositiveMovement ? 0 : (itemsCount - 1)),
+        );
+        
+        
+        
+        // update the shifted listItem's index:
+        return (isPositiveMovement ? 0 : (itemsCount - 1));
+    };
     
     
     
@@ -387,25 +414,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         if (infiniteLoop) {
-            // shift the current image to the last, so we can scroll the listElm further_backward (creates an infinite scroll illusion):
-            setRelativeShiftPos(
-                /*baseShift        :*/ 0,
-                /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ currentItemIndex + 1,
-            );
-            
-            // immediately scroll to last index (it will scroll to step_backward_once):
-            await setRelativeScrollPos(
-                /*baseListElm      :*/ undefined,
-                
-                /*targetListElm    :*/ listElm,
-                /*targetScrollDiff :*/ (itemsCount - 1),
-            );
-            
-            
-            
-            // update the shifted listItem's index:
-            currentItemIndex = (itemsCount - 1);
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
         } // if
         
         
@@ -455,25 +465,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         if (infiniteLoop) {
-            // shift the current image to the first, so we can scroll the listElm further_forward (creates an infinite scroll illusion):
-            setRelativeShiftPos(
-                /*baseShift        :*/ 0,
-                /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ currentItemIndex,
-            );
-            
-            // immediately scroll to first index (it will scroll to step_forward_once):
-            await setRelativeScrollPos(
-                /*baseListElm      :*/ undefined,
-                
-                /*targetListElm    :*/ listElm,
-                /*targetScrollDiff :*/ 0,
-            );
-            
-            
-            
-            // update the shifted listItem's index:
-            currentItemIndex = 0;
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
         } // if
         
         
@@ -590,35 +583,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const isLtr = (getComputedStyle(listElm).direction === 'ltr');
         let isPositiveMovement : boolean|null = null;
         if (newTouchPos > oldTouchPos) {      // move to right
-            isPositiveMovement = isLtr;
+            isPositiveMovement = !isLtr;
         }
         else if (newTouchPos < oldTouchPos) { // move to left
-            isPositiveMovement = !isLtr;
+            isPositiveMovement = isLtr;
         } // if
         
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0))) {
-            // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
-            setRelativeShiftPos(
-                /*baseShift        :*/ 0,
-                /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ touchedItemIndex.current + (isPositiveMovement ? 1 : 0),
-            );
-            
-            // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
-            await setRelativeScrollPos(
-                /*baseListElm      :*/ undefined,
-                
-                /*targetListElm    :*/ listElm,
-                /*targetScrollDiff :*/ (isPositiveMovement ? (itemsCount - 1) : 0),
-            );
-            
-            
-            
-            // update the shifted listItem's index:
-            touchedItemIndex.current = (isPositiveMovement ? (itemsCount - 1) : 0);
+        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? 0 : (itemsCount - 1)))) {
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            touchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
         } // if
         
         
