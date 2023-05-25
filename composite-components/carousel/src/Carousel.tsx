@@ -382,7 +382,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        let currentItemIndex  = getNearestScrollIndex(listElm);
+        let currentItemIndex = getNearestScrollIndex(listElm);
         
         
         
@@ -450,7 +450,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        let currentItemIndex  = getNearestScrollIndex(listElm);
+        let currentItemIndex = getNearestScrollIndex(listElm);
         
         
         
@@ -647,7 +647,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
-            const restScroll          = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
+            const restScroll = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
             if (Math.abs(restScroll) >= 0.5) {
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
