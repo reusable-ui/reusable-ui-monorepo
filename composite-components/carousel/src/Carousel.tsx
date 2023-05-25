@@ -239,7 +239,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return periodify(shift, itemsCount);
     };
     
-    const setRelativeScrollPos = async (sourceListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
+    const setRelativeScrollPos = async (sourceListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
         const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
         const targetScale               = targetScrollPosMax / sourceScrollPosMax;
@@ -387,7 +387,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             setRelativeShiftPos(itemsCount - (currentItemIndex + 1), true);
             
             // immediately scroll to last index (it will scroll to step_backward_once):
-            await setRelativeScrollPos(undefined, listElm, (itemsCount - 1));
+            await setRelativeScrollPos(
+                /*sourceListElm    :*/ undefined,
+                
+                /*targetListElm    :*/ listElm,
+                /*targetScrollDiff :*/ (itemsCount - 1),
+            );
             
             
             
@@ -448,7 +453,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             setRelativeShiftPos(0 - currentItemIndex, false);
             
             // immediately scroll to first index (it will scroll to step_forward_once):
-            await setRelativeScrollPos(undefined, listElm, 0);
+            await setRelativeScrollPos(
+                /*sourceListElm    :*/ undefined,
+                
+                /*targetListElm    :*/ listElm,
+                /*targetScrollDiff :*/ 0,
+            );
             
             
             
@@ -584,12 +594,17 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             setRelativeShiftPos((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
             
             // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
-            await setRelativeScrollPos(undefined, listElm, isPositiveMovement ? (itemsCount - 1) : 0);
+            await setRelativeScrollPos(
+                /*sourceListElm    :*/ undefined,
+                
+                /*targetListElm    :*/ listElm,
+                /*targetScrollDiff :*/ (isPositiveMovement ? (itemsCount - 1) : 0),
+            );
             
             
             
             // update the shifted listItem's index:
-            touchedItemIndex.current = isPositiveMovement ? (itemsCount - 1) : 0;
+            touchedItemIndex.current = (isPositiveMovement ? (itemsCount - 1) : 0);
         } // if
         
         
