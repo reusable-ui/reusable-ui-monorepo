@@ -267,15 +267,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // mark the sliding status:
-        slidingStatus.current = SlidingStatus.Calibrate;
-        
-        targetListElm.scrollLeft = Math.round(targetScrollPosWrapped); // no fractional pixel
-        
-        // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
-        await new Promise<void>((resolved) => setTimeout(resolved, 0));
-        
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.Passive;
+        const originSlidingStatus = slidingStatus.current;
+        if (originSlidingStatus === SlidingStatus.Passive) slidingStatus.current = SlidingStatus.Calibrate;
+        try {
+            targetListElm.scrollLeft = Math.round(targetScrollPosWrapped); // no fractional pixel
+            
+            // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
+            await new Promise<void>((resolved) => setTimeout(resolved, 0));
+        }
+        finally {
+            // mark the sliding status:
+            slidingStatus.current = originSlidingStatus;
+        } // try
     };
     const setRelativeShiftPos  = (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
