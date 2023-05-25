@@ -330,6 +330,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const isExactScrollPos     = (listElm: TElement) => {
         return (listElm.scrollLeft % getSlideDistance(listElm)) < 0.5;
     };
+    const getNearestScrollIndex = (listElm: TElement) => {
+        return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
+    };
     
     
     
@@ -381,7 +384,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
         const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-        let   currentItemIndex  = Math.round(listElm.scrollLeft / listSlideDistance);
+        let   currentItemIndex  = getNearestScrollIndex(listElm);
         
         
         
@@ -451,7 +454,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
         const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-        let   currentItemIndex  = Math.round(listElm.scrollLeft / listSlideDistance);
+        let   currentItemIndex  = getNearestScrollIndex(listElm);
         
         
         
@@ -556,9 +559,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        const listScrollPosMax   = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance  = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-        touchedItemIndex.current = Math.round(listElm.scrollLeft / listSlideDistance);
+        touchedItemIndex.current = getNearestScrollIndex(listElm);
     });
     const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
         // conditions:
@@ -685,7 +686,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             
             // update the nearest listItem's index:
-            touchedItemIndex.current = Math.round(listElm.scrollLeft / listSlideDistance);
+            touchedItemIndex.current = getNearestScrollIndex(listElm);
             // snap scroll to the nearest fragment step:
             listElm.scrollTo({
                 left     : touchedItemIndex.current * listSlideDistance,
