@@ -382,8 +382,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        const listSlideDistance = getSlideDistance(listElm);
-        let   currentItemIndex  = getNearestScrollIndex(listElm);
+        let currentItemIndex  = getNearestScrollIndex(listElm);
         
         
         
@@ -423,7 +422,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // snap scroll to the neighbor fragment step:
         listElm.scrollLeft--; // make a non_zero fragment to de-confuse the scrolling end detection
         listElm.scrollTo({
-            left     : currentItemIndex * listSlideDistance,
+            left     : currentItemIndex * getSlideDistance(listElm),
             behavior : 'smooth',
         });
     });
@@ -451,8 +450,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        const listSlideDistance = getSlideDistance(listElm);
-        let   currentItemIndex  = getNearestScrollIndex(listElm);
+        let currentItemIndex  = getNearestScrollIndex(listElm);
         
         
         
@@ -492,7 +490,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // snap scroll to the neighbor fragment step:
         listElm.scrollLeft++; // make a non_zero fragment to de-confuse the scrolling end detection
         listElm.scrollTo({
-            left     : currentItemIndex * listSlideDistance,
+            left     : currentItemIndex * getSlideDistance(listElm),
             behavior : 'smooth',
         });
     });
