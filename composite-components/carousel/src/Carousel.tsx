@@ -723,11 +723,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
-        // await new Promise<void>((resolved) => setTimeout(resolved, 0));
-        
-        
-        
         // mark the sliding status:
         slidingStatus.current = SlidingStatus.Passive;
     });
