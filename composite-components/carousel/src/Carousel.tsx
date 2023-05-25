@@ -314,8 +314,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const listSlideDistance = getSlideDistance(listElm);
         const limitedScrollMin  = ((touchedItemIndex.current - 1) * listSlideDistance) - listElm.scrollLeft;
         const limitedScrollMax  = ((touchedItemIndex.current + 1) * listSlideDistance) - listElm.scrollLeft;
         return Math.min(Math.max(
@@ -382,8 +381,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const listSlideDistance = getSlideDistance(listElm);
         let   currentItemIndex  = getNearestScrollIndex(listElm);
         
         
@@ -452,8 +450,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the shown listItem's index by position:
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const listSlideDistance = getSlideDistance(listElm);
         let   currentItemIndex  = getNearestScrollIndex(listElm);
         
         
@@ -643,8 +640,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // get the listItem's slide distance:
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        const listSlideDistance = getSlideDistance(listElm);
         
         
         
