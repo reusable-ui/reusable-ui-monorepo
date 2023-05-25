@@ -339,6 +339,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // navigation functions:
     const prepareScrolling      = async (currentItemIndex: number, isPositiveMovement: boolean): Promise<number> => {
         // conditions:
+        if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
+        
         const listElm = listRefInternal.current;
         if (!listElm) return currentItemIndex; // listElm must be exist to manipulate
         
@@ -442,10 +444,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        if (infiniteLoop) {
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
-        } // if
+        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
         
         
         
@@ -482,10 +482,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        if (infiniteLoop) {
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
-        } // if
+        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
         
         
         
