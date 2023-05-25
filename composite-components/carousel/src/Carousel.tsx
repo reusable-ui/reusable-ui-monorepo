@@ -227,10 +227,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // functions:
-    const periodify            = (value: number, period: number) => {
+    const periodify             = (value: number, period: number) => {
         return ((value % period) + period) % period;
     };
-    const normalizeShift       = (shift: number) => {
+    const normalizeShift        = (shift: number) => {
         // conditions:
         if (!itemsCount) return shift;
         
@@ -239,7 +239,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return periodify(shift, itemsCount);
     };
     
-    const setRelativeScrollPos = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
+    const getSlideDistance      = (listElm: TElement) => {
+        // get the listItem's slide distance:
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        return itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+    };
+    const isExactScrollPos      = (listElm: TElement) => {
+        return (listElm.scrollLeft % getSlideDistance(listElm)) < 0.5;
+    };
+    const getNearestScrollIndex = (listElm: TElement) => {
+        return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
+    };
+    const calculateScrollLimit  = (deltaScroll: number) => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return deltaScroll; // listElm must be exist to manipulate
+        
+        
+        
+        const listSlideDistance = getSlideDistance(listElm);
+        const limitedScrollMin  = ((touchedItemIndex.current - 1) * listSlideDistance) - listElm.scrollLeft;
+        const limitedScrollMax  = ((touchedItemIndex.current + 1) * listSlideDistance) - listElm.scrollLeft;
+        return Math.min(Math.max(
+            deltaScroll,
+        limitedScrollMin), limitedScrollMax);
+    };
+    
+    const setRelativeScrollPos  = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
         const baseScrollPosMax          = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
         const targetScale               = targetScrollPosMax / baseScrollPosMax;
@@ -280,7 +306,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = originSlidingStatus;
         } // try
     };
-    const setRelativeShiftPos  = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
+    const setRelativeShiftPos   = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -306,31 +332,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
-    };
-    const calculateScrollLimit = (deltaScroll: number) => {
-        // conditions:
-        const listElm = listRefInternal.current;
-        if (!listElm) return deltaScroll; // listElm must be exist to manipulate
-        
-        
-        
-        const listSlideDistance = getSlideDistance(listElm);
-        const limitedScrollMin  = ((touchedItemIndex.current - 1) * listSlideDistance) - listElm.scrollLeft;
-        const limitedScrollMax  = ((touchedItemIndex.current + 1) * listSlideDistance) - listElm.scrollLeft;
-        return Math.min(Math.max(
-            deltaScroll,
-        limitedScrollMin), limitedScrollMax);
-    };
-    const getSlideDistance     = (listElm: TElement) => {
-        // get the listItem's slide distance:
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        return itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-    };
-    const isExactScrollPos     = (listElm: TElement) => {
-        return (listElm.scrollLeft % getSlideDistance(listElm)) < 0.5;
-    };
-    const getNearestScrollIndex = (listElm: TElement) => {
-        return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
     };
     
     
