@@ -306,7 +306,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
-        console.log(dummyDiff.current);
     };
     (window as any).setRelativeShiftPos = setRelativeShiftPos;
     const calculateScrollLimit = (deltaScroll: number) => {
@@ -515,21 +514,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         if (dummyDiff.current) { // has difference => need to sync
             // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
             setRelativeShiftPos(
-                /*baseShift        :*/ 0,
+                /*baseShift        :*/ undefined,
                 /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ -dummyDiff.current,
+                /*targetShiftDiff  :*/ 0,
             );
         } // if
         
         
-        // TODO:
-        // // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
-        // setRelativeScrollPos(
-        //     /*sourceListElm    :*/ dummyListElm,
+        
+        // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
+        setRelativeScrollPos(
+            /*sourceListElm    :*/ dummyListElm,
             
-        //     /*targetListElm    :*/ listElm,
-        //     /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-        // );
+            /*targetListElm    :*/ listElm,
+            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+        );
     });
     
     const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -812,9 +811,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             if (dummyDiff.current) { // has difference => need to sync
                 // shift the current image similar to the dummyListElm, so the dummyListElm cloned to listElm:
                 setRelativeShiftPos(
-                    /*baseShift        :*/ 0,
+                    /*baseShift        :*/ undefined,
                     /*targetListElm    :*/ listElm,
-                    /*targetShiftDiff  :*/ -dummyDiff.current,
+                    /*targetShiftDiff  :*/ 0,
                 );
             } // if
         };
