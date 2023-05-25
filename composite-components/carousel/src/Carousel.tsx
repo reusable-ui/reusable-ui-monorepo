@@ -226,7 +226,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     
-    // functions:
+    // utility functions:
     const periodify             = (value: number, period: number) => {
         return ((value % period) + period) % period;
     };
@@ -239,6 +239,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return periodify(shift, itemsCount);
     };
     
+    // measuring functions:
     const getSlideDistance      = (listElm: TElement) => {
         // get the listItem's slide distance:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
@@ -265,6 +266,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         limitedScrollMin), limitedScrollMax);
     };
     
+    // mutation functions:
     const setRelativeScrollPos  = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
         const baseScrollPosMax          = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
@@ -333,6 +335,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
+    
+    // navigation functions:
     const prepareScrolling      = async (currentItemIndex: number, isPositiveMovement: boolean): Promise<number> => {
         // conditions:
         const listElm = listRefInternal.current;
