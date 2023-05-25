@@ -600,7 +600,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // detect if not already been shifted:
         if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? (itemsCount - 1) : 0))) {
-            // decide the shift amount of dummyListElm:
             // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
             setRelativeShiftPos(
                 /*baseShift        :*/ 0,
