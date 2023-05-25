@@ -239,11 +239,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return periodify(shift, itemsCount);
     };
     
-    const setRelativeScrollPos = async (sourceListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
+    const setRelativeScrollPos = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
-        const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
-        const targetScale               = targetScrollPosMax / sourceScrollPosMax;
-        const targetScrollPosScaled     = (sourceListElm?.scrollLeft ?? 0) * targetScale;
+        const baseScrollPosMax          = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
+        const targetScale               = targetScrollPosMax / baseScrollPosMax;
+        const targetScrollPosScaled     = (baseListElm?.scrollLeft ?? 0) * targetScale;
         const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
         const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
         const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
@@ -387,7 +387,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             // immediately scroll to last index (it will scroll to step_backward_once):
             await setRelativeScrollPos(
-                /*sourceListElm    :*/ undefined,
+                /*baseListElm      :*/ undefined,
                 
                 /*targetListElm    :*/ listElm,
                 /*targetScrollDiff :*/ (itemsCount - 1),
@@ -457,7 +457,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             // immediately scroll to first index (it will scroll to step_forward_once):
             await setRelativeScrollPos(
-                /*sourceListElm    :*/ undefined,
+                /*baseListElm      :*/ undefined,
                 
                 /*targetListElm    :*/ listElm,
                 /*targetScrollDiff :*/ 0,
@@ -523,7 +523,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
         setRelativeScrollPos(
-            /*sourceListElm    :*/ dummyListElm,
+            /*baseListElm      :*/ dummyListElm,
             
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
@@ -605,7 +605,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
             await setRelativeScrollPos(
-                /*sourceListElm    :*/ undefined,
+                /*baseListElm      :*/ undefined,
                 
                 /*targetListElm    :*/ listElm,
                 /*targetScrollDiff :*/ (isPositiveMovement ? (itemsCount - 1) : 0),
@@ -702,7 +702,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
             await setRelativeScrollPos(
-                /*sourceListElm    :*/ listElm,
+                /*baseListElm      :*/ listElm,
                 
                 /*targetListElm    :*/ dummyListElm,
                 /*targetScrollDiff :*/ dummyDiff.current,
@@ -796,7 +796,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // setups:
         // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync to listElm's scroll_pos, before dummyListElm becomes the *source of truth*:
         setRelativeScrollPos(
-            /*sourceListElm    :*/ listElm,
+            /*baseListElm      :*/ listElm,
             
             /*targetListElm    :*/ dummyListElm,
             /*targetScrollDiff :*/ dummyDiff.current,
