@@ -265,7 +265,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         );
         targetListElm.scrollLeft = Math.round(targetScrollPosWrapped);    // no fractional pixel
     };
-    const cloneDummyToList     = async (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
+    const setRelativeShiftPos  = async (dummyShift = dummyDiff.current, moveNextSide : boolean|undefined = undefined) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -408,7 +408,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            await cloneDummyToList(itemsCount - (currentItemIndex + 1), true);
+            await setRelativeShiftPos(itemsCount - (currentItemIndex + 1), true);
             
             
             
@@ -466,7 +466,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         if (infiniteLoop) {
             // mutate the listItem(s):
-            await cloneDummyToList(0 - currentItemIndex, false);
+            await setRelativeShiftPos(0 - currentItemIndex, false);
             
             
             
@@ -517,7 +517,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // sync dummyListElm layout to listElm:
         if (dummyDiff.current) { // has difference => need to sync
             // sync listElm scrolling position to dummyListElm scrolling position:
-            await cloneDummyToList();
+            await setRelativeShiftPos();
         } // if
         
         
@@ -599,7 +599,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             // decide the shift amount of dummyListElm:
             const shiftAmount = touchedItemIndex.current + (isPositiveMovement ? 1 : 0);
             // mutate the listItem(s):
-            await cloneDummyToList((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
+            await setRelativeShiftPos((isPositiveMovement ? itemsCount : 0) - shiftAmount, isPositiveMovement);
             
             
             
@@ -799,7 +799,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             // sync dummyListElm (as the previous *source of truth*) to listElm:
             if (dummyDiff.current) { // has difference => need to sync
                 // sync listElm scrolling position to dummyListElm scrolling position:
-                cloneDummyToList();
+                setRelativeShiftPos();
             } // if
         };
     }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
