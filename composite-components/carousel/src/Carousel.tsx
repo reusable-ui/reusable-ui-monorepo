@@ -368,6 +368,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     };
     const performScrolling      = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
+        if ((futureItemIndex < 0) || (futureItemIndex > (itemsCount - 1))) {
+            // TODO: out of range of finite scroll
+            console.log('out of range!');
+            return;
+        } // if
+        
         if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
         
         const listElm = listRefInternal.current;
@@ -390,7 +396,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             left     : futureItemIndex * getSlideDistance(listElm),
             behavior : 'smooth',
         });
-    }
+    };
     
     
     
