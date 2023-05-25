@@ -239,11 +239,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return periodify(shift, itemsCount);
     };
     
-    const setRelativeScrollPos = (sourceListElm: TElement|undefined, sourceScrollPos: number|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
+    const setRelativeScrollPos = (sourceListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff = 0) => {
         const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
         const sourceScrollPosMax        = sourceListElm ? (sourceListElm.scrollWidth - sourceListElm.clientWidth) : targetScrollPosMax;
         const targetScale               = targetScrollPosMax / sourceScrollPosMax;
-        const targetScrollPosScaled     = (sourceScrollPos ?? 0) * targetScale;
+        const targetScrollPosScaled     = (sourceListElm?.scrollLeft ?? 0) * targetScale;
         const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
         const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
         const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
@@ -316,7 +316,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         } // if
         if (targetScrollIndex !== undefined) setRelativeScrollPos(
             /*sourceListElm    :*/ undefined,
-            /*sourceScrollPos  :*/ undefined,
             
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ targetScrollIndex
@@ -523,10 +522,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // sync dummyListElm scroll to listElm:
+        // set the listElm's scrollPos to the correct image:
         setRelativeScrollPos(
             /*sourceListElm    :*/ dummyListElm,
-            /*sourceScrollPos  :*/ dummyListElm.scrollLeft,
             
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
@@ -690,12 +688,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // sync listElm scroll to dummyListElm:
+        // set the dummyListElm's scrollPos to the correct image:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
             setRelativeScrollPos(
                 /*sourceListElm    :*/ listElm,
-                /*sourceScrollPos  :*/ listElm.scrollLeft,
                 
                 /*targetListElm    :*/ dummyListElm,
                 /*targetScrollDiff :*/ dummyDiff.current,
@@ -787,10 +784,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // setups:
-        // sync listElm scroll to dummyListElm before dummyListElm becomes the *source of truth*:
+        // set the dummyListElm's scrollPos to the correct image, before dummyListElm becomes the *source of truth*:
         setRelativeScrollPos(
             /*sourceListElm    :*/ listElm,
-            /*sourceScrollPos  :*/ listElm.scrollLeft,
             
             /*targetListElm    :*/ dummyListElm,
             /*targetScrollDiff :*/ dummyDiff.current,
