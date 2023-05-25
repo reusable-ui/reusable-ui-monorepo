@@ -322,6 +322,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             deltaScroll,
         limitedScrollMin), limitedScrollMax);
     };
+    const getSlideDistance     = (listElm: TElement) => {
+        // get the listItem's slide distance:
+        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
+        return itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+    };
+    const isExactScrollPos     = (listElm: TElement) => {
+        return (listElm.scrollLeft % getSlideDistance(listElm)) < 0.5;
+    };
     
     
     
@@ -670,7 +678,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // the *auto scroll completation*:
         // get the shown listItem's index by position:
-        if ((listElm.scrollLeft % listSlideDistance) >= 0.5) { // not an exact step (fragment step) => need scroll to nearest fragment step
+        if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
             // mark the sliding status:
             slidingStatus.current = SlidingStatus.AutoScrolling;
             
@@ -684,7 +692,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                 behavior : 'smooth',
             });
         }
-        else { // an exact step (fragment step) => restore the CSS snapScroll
+        else { // the listElm is in the exact_position => the sliding animation is completed
             // mark the sliding status:
             slidingStatus.current = SlidingStatus.Passive;
         } // if
@@ -717,9 +725,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // detect the scrolling end:
-        const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        const listSlideDistance = itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
-        if ((listElm.scrollLeft % listSlideDistance) >= 0.5) return; // scrolling fragment is (almost) zero => it's the moment of a scrolling end
+        if (!isExactScrollPos(listElm)) return; // the listElm is NOT in the exact_position yet => ignore => wait for another scroll_step
         
         
         
