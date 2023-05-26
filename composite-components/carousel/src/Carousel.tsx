@@ -565,7 +565,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchMove     = useEvent(async (event: TouchEvent) => {
         // conditions:
+        /*
+            The `touchedItemIndex.current` is assigned by `listHandleTouchStart()`
+            and *accumulatively* processed by `listHandleTouchMove()` in *asynchronous* way.
+            
+            The *accumulative* and *asynchronous* of `listHandleTouchMove()` creates a *race_condition* thus
+            makes the value of `touchedItemIndex.current` corrupted.
+            
+            To workaround this problem, we *drop* a/some `listHandleTouchMove()` call when
+            the previous `listHandleTouchMove()` is still awaiting `prepareScrolling()`.
+        */
         if (touchMoveBusy.current) return; // protect from incomplete async
+        
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
