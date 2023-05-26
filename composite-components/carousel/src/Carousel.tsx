@@ -640,7 +640,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // scroll implementation:
         listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
     });
-    const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>((event) => {
+    const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
+        // a macroTask delay to make sure the `touchend` event is executed *after* `touchmove`:
+        await new Promise<void>((resolved) => setTimeout(resolved, 0));
+        
+        
+        
         // conditions:
         if (slidingStatus.current !== SlidingStatus.FollowsPointer) return; // only process `FollowsPointer`
         
