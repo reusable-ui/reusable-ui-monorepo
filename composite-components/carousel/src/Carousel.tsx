@@ -561,7 +561,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         touchedItemIndex.current = getNearestScrollIndex(listElm);
     });
-    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
+    const listHandleTouchMove     = useEvent(async (event: TouchEvent) => {
         // conditions:
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
@@ -698,30 +698,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     // dom effects:
     
     // prevents browser's scrolling implementation, we use our scrolling implementation:
-    useEffect(() => {
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist for setup
-        
-        
-        
-        // handlers:
-        const listHandleTouchStart = (event: TouchEvent) => {
-            event.preventDefault();
-        };
-        
-        
-        
-        // setups:
-        listElm.addEventListener('touchstart', listHandleTouchStart, { passive: false });
-        
-        
-        
-        // cleanups:
-        return () => {
-            listElm.removeEventListener('touchstart', listHandleTouchStart);
-        };
-    }, []);
-    
     // attach/detach passive events:
     useEffect(() => {
         const listElm = listRefInternal.current;
@@ -730,13 +706,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         // setups:
-        listElm.addEventListener('scroll', listHandleScroll, { passive: false });
+        listElm.addEventListener('touchmove', listHandleTouchMove, { passive: false });
+        listElm.addEventListener('scroll'   , listHandleScroll   , { passive: false });
         
         
         
         // cleanups:
         return () => {
-            listElm.removeEventListener('scroll', listHandleScroll);
+            listElm.removeEventListener('touchmove', listHandleTouchMove);
+            listElm.removeEventListener('scroll'   , listHandleScroll   );
         };
     }, []);
     
@@ -819,9 +797,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     // handlers:
                     onTouchStart  = {listHandleTouchStart}
-                    onTouchMove   = {listHandleTouchMove }
+                    // onTouchMove   = {listHandleTouchMove } // can't setup event here, we need *passive* listener, we use async event_handler that needs to be called in *sequential* order
                     onTouchEnd    = {listHandleTouchEnd  }
-                    // onScroll      = {listHandleScroll    } // can't setup event here, we need *passive* listener
+                    // onScroll      = {listHandleScroll    } // can't setup event here, we need *passive* listener, we use async event_handler that needs to be called in *sequential* order
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
