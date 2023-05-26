@@ -248,7 +248,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         return itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
     };
     const isExactScrollPos      = (listElm: TElement) => {
-        return (listElm.scrollLeft % getSlideDistance(listElm)) < 0.5;
+        const listSlideDistance = getSlideDistance(listElm);
+        const rest = listElm.scrollLeft % listSlideDistance;
+        return (rest < 0.5) || ((listSlideDistance - rest) < 0.5);
     };
     const getNearestScrollIndex = (listElm: TElement) => {
         return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
