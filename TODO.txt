@@ -1,6 +1,5 @@
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 
-[low prior ] fix <Carousel> non infinite loop mode
 [low prior ] add <Carousel> momentum scroll
 [low prior ] add <Carousel> controllable/uncontrollable activeSlideIndex
 [low prior ] fix <Carousel> clipped tall slides on Firefox
