@@ -213,6 +213,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const dummyDiff         = useRef<number>(0);
     const touchedItemIndex  = useRef<number>(0);
     
+    const touchMoveBusy     = useRef<boolean>(false);
+    
     const initialTouchTick  = useRef<number>(0);
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
@@ -563,6 +565,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     });
     const listHandleTouchMove     = useEvent(async (event: TouchEvent) => {
         // conditions:
+        if (touchMoveBusy.current) return; // protect from incomplete async
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
@@ -582,10 +585,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         
         
-        // mark the sliding status:
+        // conditions:
         if (slidingStatus.current !== SlidingStatus.FollowsPointer) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
-            slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
         } // if
         
         
@@ -604,9 +606,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // detect if not already been shifted:
         if ((isPositiveMovement !== null) && (touchedItemIndex.current !== (isPositiveMovement ? 0 : (itemsCount - 1)))) {
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            touchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+            touchMoveBusy.current = true;
+            try {
+                // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                touchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+            }
+            finally {
+                touchMoveBusy.current = false;
+            } // try
         } // if
+        
+        
+        
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
         
         
         
