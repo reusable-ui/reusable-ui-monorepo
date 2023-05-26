@@ -371,15 +371,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     const performScrolling      = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
         const maxItemIndex = (itemsCount - 1);
-        if ((futureItemIndex < 0) || (futureItemIndex > maxItemIndex)) {
-            if (maxItemIndex <= 0) return; // only zero/one slide
-            else if (futureItemIndex < 0) {
-                futureItemIndex = maxItemIndex;
-            }
-            else {
-                futureItemIndex = 0;
-            } // if
-        } // if
+        if ((futureItemIndex < 0) || (futureItemIndex > maxItemIndex)) return; // out of range => ignore
         
         if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
         
@@ -459,13 +451,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
         currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
+        let futureItemIndex = currentItemIndex - 1;
+        if (futureItemIndex < 0) futureItemIndex = (itemsCount - 1); // scroll to the last slide (for non_infinite_loop)
         
         
         
         // scroll implementation:
         
         // scroll to previous neighbor step:
-        performScrolling(currentItemIndex, currentItemIndex - 1);
+        performScrolling(currentItemIndex, futureItemIndex);
     });
     const handlePrevClick         = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
@@ -497,13 +491,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
         currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
+        let futureItemIndex = currentItemIndex + 1;
+        if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
         
         
         
         // scroll implementation:
         
         // scroll to next neighbor step:
-        performScrolling(currentItemIndex, currentItemIndex + 1);
+        performScrolling(currentItemIndex, futureItemIndex);
     });
     const handleNextClick         = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
