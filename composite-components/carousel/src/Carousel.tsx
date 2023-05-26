@@ -370,10 +370,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     };
     const performScrolling      = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
-        if ((futureItemIndex < 0) || (futureItemIndex > (itemsCount - 1))) {
-            // TODO: out of range of finite scroll
-            console.log('out of range!');
-            return;
+        const maxItemIndex = (itemsCount - 1);
+        if ((futureItemIndex < 0) || (futureItemIndex > maxItemIndex)) {
+            if (maxItemIndex <= 0) return; // only zero/one slide
+            else if (futureItemIndex < 0) {
+                futureItemIndex = maxItemIndex;
+            }
+            else {
+                futureItemIndex = 0;
+            } // if
         } // if
         
         if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
