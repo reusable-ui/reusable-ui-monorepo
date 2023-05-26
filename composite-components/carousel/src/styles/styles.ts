@@ -118,7 +118,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             // DON'T: causes the user cannot scroll the whole page on the top of <Carousel>
             // overscrollBehavior      : 'none',        // do not forward scroll action to the parent element
             
-            touchAction    : 'pan-y',
+            touchAction    : 'pan-y pinch-zoom',        // no swipeLeft/swipeRight handling, we use our scroll implementation
             
             
             
