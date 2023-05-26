@@ -566,7 +566,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         touchedItemIndex.current = getNearestScrollIndex(listElm);
     });
-    const listHandleTouchMove     = useEvent(async (event: TouchEvent) => {
+    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
         // conditions:
         /*
             The `touchedItemIndex.current` is assigned by `listHandleTouchStart()`
@@ -689,7 +689,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
-    const listHandleScroll        = useEvent(async (event: Event) => {
+    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>(async (event) => {
         // conditions:
         if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
@@ -728,28 +728,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // dom effects:
-    
-    // prevents browser's scrolling implementation, we use our scrolling implementation:
-    // attach/detach passive events:
-    useEffect(() => {
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist for setup
-        
-        
-        
-        // setups:
-        listElm.addEventListener('touchmove', listHandleTouchMove, { passive: false });
-        listElm.addEventListener('scroll'   , listHandleScroll   , { passive: false });
-        
-        
-        
-        // cleanups:
-        return () => {
-            listElm.removeEventListener('touchmove', listHandleTouchMove);
-            listElm.removeEventListener('scroll'   , listHandleScroll   );
-        };
-    }, []);
-    
     // sync forth & back dummyListElm scrolling position to listElm scrolling position, at `infiniteLoop` transition:
     useEffect(() => {
         // conditions:
@@ -829,10 +807,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     // handlers:
                     onTouchStart  = {listHandleTouchStart}
-                    // onTouchMove   = {listHandleTouchMove } // can't setup event here, we need a *passive* listener. The execution order of `listHandleTouchMove` => `listHandleTouchEnd` => `listHandleScroll` is matter
+                    onTouchMove   = {listHandleTouchMove }
                     onTouchEnd    = {listHandleTouchEnd  }
                     onTouchCancel = {listHandleTouchEnd  }
-                    // onScroll      = {listHandleScroll    } // can't setup event here, we need a *passive* listener. The execution order of `listHandleTouchMove` => `listHandleTouchEnd` => `listHandleScroll` is matter
+                    onScroll      = {listHandleScroll    }
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
