@@ -823,6 +823,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     onTouchStart  = {listHandleTouchStart}
                     // onTouchMove   = {listHandleTouchMove } // can't setup event here, we need *passive* listener, we use async event_handler that needs to be called in *sequential* order
                     onTouchEnd    = {listHandleTouchEnd  }
+                    onTouchCancel = {listHandleTouchEnd  }
                     // onScroll      = {listHandleScroll    } // can't setup event here, we need *passive* listener, we use async event_handler that needs to be called in *sequential* order
                 >
                     {React.Children.map(children, (child, index) => {
