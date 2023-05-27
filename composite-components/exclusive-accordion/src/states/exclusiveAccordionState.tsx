@@ -21,6 +21,7 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
+    useScheduleTriggerEvent,
     
     
     
@@ -116,8 +117,16 @@ const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends E
         // actions:
         handleExpandedChangeInternal,
     );
+    
+    
+    
+    // events:
+    const scheduleTriggerEvent         = useScheduleTriggerEvent();
     const triggerExpandedChange        = useEvent((expanded: boolean, listIndex: number): void => {
-        handleExpandedChange?.({ expanded, listIndex } as TExclusiveExpandedChangeEvent);
+        if (handleExpandedChange) scheduleTriggerEvent(() => { // runs the `onExpandedChange` event *next after* current macroTask completed
+            // fire `onExpandedChange` react event:
+            handleExpandedChange({ expanded, listIndex } as TExclusiveExpandedChangeEvent);
+        });
     });
     
     
