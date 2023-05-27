@@ -1,12 +1,12 @@
-[med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
-
-[low prior ] add <Carousel> momentum scroll
 [low prior ] add <Carousel> controllable/uncontrollable activeSlideIndex
+[low prior ] add <Carousel> momentum scroll
 [low prior ] fix <Carousel> clipped tall slides on Firefox
 
 [low prior ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
 [low prior ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
 [low prior ] fix <NavPrevItem|NavNextItem> based on <List>'s physical orientation
+
+[med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 
 [deferred  ] fix <HamburgerMenuButton> animation (side effect of *hack* on active-as-click)
 [deferred  ] fixed minor animation_abort_effect in active-as-click
