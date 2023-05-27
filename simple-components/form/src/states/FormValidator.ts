@@ -48,7 +48,12 @@ const isFormValid = (element: HTMLFormElement): ValResult => {
     return null; // uncheck
 };
 
-export const useFormValidator      = (customValidator?: CustomValidatorHandler) => {
+export interface FormValidatorApi {
+    handleValidation : EventHandler<ValidityChangeEvent>
+    handleInit       : EventHandler<HTMLFormElement>
+    handleChange     : React.FormEventHandler<HTMLFormElement>
+}
+export const useFormValidator      = (customValidator?: CustomValidatorHandler): FormValidatorApi => {
     // states:
     // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
@@ -130,6 +135,7 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler) 
     
     
     
+    // api:
     return {
         handleValidation,
         handleInit,

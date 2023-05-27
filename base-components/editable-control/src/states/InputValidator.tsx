@@ -48,7 +48,12 @@ export const isEditableControlElement = (element: Element): element is EditableC
     return !!(element as unknown as EditableControlElement).validity;
 };
 
-export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler) => {
+export interface InputValidatorApi<TElement extends EditableControlElement = EditableControlElement> {
+    handleValidation : EventHandler<ValidityChangeEvent>
+    handleInit       : EventHandler<TElement>
+    handleChange     : React.ChangeEventHandler<TElement>
+}
+export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler): InputValidatorApi<TElement> => {
     // states:
     // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
     const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
@@ -130,6 +135,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
     
     
     
+    // api:
     return {
         handleValidation,
         handleInit,
