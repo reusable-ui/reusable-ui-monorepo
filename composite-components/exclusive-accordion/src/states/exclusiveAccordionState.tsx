@@ -47,21 +47,21 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-export interface ExclusiveAccordionState
+export interface ExclusiveAccordionStateApi
 {
     // states:
     expandedListIndex         : number,
     triggerExpandedChange     : (expanded: boolean, listIndex: number) => void
 }
 
-const ExclusiveAccordionStateContext = createContext<ExclusiveAccordionState>({
+const ExclusiveAccordionStateContext = createContext<ExclusiveAccordionStateApi>({
     // states:
     expandedListIndex         : _defaultExpandedListIndex,
     triggerExpandedChange     : () => { throw Error('not inside <ExclusiveAccordionStateProvider>'); },
 });
 ExclusiveAccordionStateContext.displayName  = 'ExclusiveAccordionState';
 
-export const useExclusiveAccordionState = (): ExclusiveAccordionState => {
+export const useExclusiveAccordionState = (): ExclusiveAccordionStateApi => {
     return useContext(ExclusiveAccordionStateContext);
 }
 
