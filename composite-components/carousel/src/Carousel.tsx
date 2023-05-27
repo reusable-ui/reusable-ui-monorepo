@@ -824,8 +824,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (dummyListElm) dummyHandleScroll();
     }, []); // runs once on startup
     
+    const prevScrollIndexRef = useRef<number>(scrollIndex);
     useIsomorphicLayoutEffect(() => {
         // conditions:
+        const prevScrollIndex = prevScrollIndexRef.current;
+        if (prevScrollIndex === scrollIndex) return; // no change => ignore
+        prevScrollIndexRef.current = scrollIndex;    // update
+        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
         
@@ -835,6 +840,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // setups:
+        
+        // make a non_zero fragment to de-confuse the scrolling end detection:
+        if (isExactScrollPos(listElm)) listElm.scrollLeft += (scrollIndex > prevScrollIndex) ? 1 : -1;
         
         // snap scroll to the desired scrollIndex:
         primaryListElm.scrollTo({
