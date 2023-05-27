@@ -55,7 +55,7 @@ export interface TabExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-export interface TabState
+export interface TabStateApi
 {
     // behaviors:
     defaultLazy             ?: boolean
@@ -74,7 +74,7 @@ export interface TabState
     tabPanelStyle            : TabPanelStyle
 }
 
-const TabStateContext = createContext<TabState>({
+const TabStateContext = createContext<TabStateApi>({
     // behaviors:
     defaultLazy              : undefined,
     
@@ -93,7 +93,7 @@ const TabStateContext = createContext<TabState>({
 });
 TabStateContext.displayName  = 'TabState';
 
-export const useTabState = (): TabState => {
+export const useTabState = (): TabStateApi => {
     return useContext(TabStateContext);
 }
 
