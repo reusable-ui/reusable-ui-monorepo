@@ -36,6 +36,7 @@
     "@reusable-ui/animating-state": "^5.3.0",
     "@reusable-ui/client-sides": "^5.3.0",
     "@reusable-ui/collapsible": "^5.3.0",
+    "@reusable-ui/scrollable": "^5.3.0",
     "@reusable-ui/colorable": "^5.3.0",
     "@reusable-ui/floatable": "^5.3.0",
     "@reusable-ui/focuses": "^5.3.0",

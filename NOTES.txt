@@ -48,6 +48,7 @@ packages                        VAR     CFG
 // reusable-ui states:
 @reusable-ui/excitable          ex  // UPDATED              PEER: shared in config of [filter]                                                                  , register [anim, filter]
 @reusable-ui/collapsible        co  // UPDATED              NO_PEER: no shared variables                                                                        , register [anim]
+@reusable-ui/scrollable             // no private vars      NO_PEER: no shared variables                                                                        , no_register
 @reusable-ui/disableable        di  // UPDATED              PEER: shared in config of [filter]                                                                  , register [anim, filter]
 @reusable-ui/activatable        ac  // UPDATED              PEER: shared in config of [filter] + supports for usesActiveAsClick()                               , register [anim, filter]
 @reusable-ui/focusable          fo  // UPDATED              PEER: shared in config of [boxShadow]                                                               , register [anim, boxShadow]

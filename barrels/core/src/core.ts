@@ -46,6 +46,7 @@ export * from '@reusable-ui/colorable'                      // colorize the UI b
 // reusable-ui states:
 /*peer*/ export * from '@reusable-ui/excitable'             // a capability of UI to highlight itself to attract user's attention
 export * from '@reusable-ui/collapsible'                    // a capability of UI to expand/reduce its size or toggle the visibility
+export * from '@reusable-ui/scrollable'                     // a capability of UI to scroll/switch its contents
 /*peer*/ export * from '@reusable-ui/disableable'           // a capability of UI to be disabled
 /*peer*/ export * from '@reusable-ui/activatable'           // a capability of UI to be highlighted/selected/activated
 /*peer*/ export * from '@reusable-ui/focusable'             // a capability of UI to be focused

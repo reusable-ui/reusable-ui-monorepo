@@ -46,6 +46,7 @@
 // reusable-ui states:
 [published  ] @reusable-ui/excitable        [updated api]
 [published  ] @reusable-ui/collapsible      [updated api]
+[published  ] @reusable-ui/scrollable       [no      api]
 [published  ] @reusable-ui/disableable      [updated api]
 [published  ] @reusable-ui/activatable      [updated api]
 [published  ] @reusable-ui/focusable        [updated api]
