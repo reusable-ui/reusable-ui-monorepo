@@ -805,8 +805,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
         
-        const dummyListElm = dummyListRefInternal.current; // optional
-        const primaryListElm = dummyListElm ?? listElm;    // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
+        const dummyListElm   = dummyListRefInternal.current; // optional
+        const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
         
         
         
@@ -829,8 +829,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
         
-        const dummyListElm = dummyListRefInternal.current; // optional
-        const primaryListElm = dummyListElm ?? listElm;    // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
+        const dummyListElm   = dummyListRefInternal.current; // optional
+        const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
         
         
         
