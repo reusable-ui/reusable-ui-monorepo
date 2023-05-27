@@ -80,7 +80,7 @@ export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent exte
     children                 ?: React.ReactNode
 }
 const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): JSX.Element|null => {
-    // rest props:
+    // props:
     const {
         // states:
         defaultExpandedListIndex,
