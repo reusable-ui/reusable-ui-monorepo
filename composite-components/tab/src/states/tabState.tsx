@@ -21,6 +21,7 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
+    useScheduleTriggerEvent,
     
     
     
@@ -179,8 +180,16 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
         // actions:
         handleExpandedChangeInternal,
     );
+    
+    
+    
+    // events:
+    const scheduleTriggerEvent         = useScheduleTriggerEvent();
     const triggerExpandedChange        = useEvent((tabIndex: number): void => {
-        handleExpandedChange?.({ expanded: true, tabIndex } as TTabExpandedChangeEvent);
+        if (handleExpandedChange) scheduleTriggerEvent(() => { // runs the `onExpandedChange` event *next after* current macroTask completed
+            // fire `onExpandedChange` react event:
+            handleExpandedChange({ expanded: true, tabIndex } as TTabExpandedChangeEvent);
+        });
     });
     
     
