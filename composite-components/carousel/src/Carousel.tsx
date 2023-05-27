@@ -433,9 +433,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // handlers:
-    const handlePrevClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
+    const handlePrevClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
         // conditions:
-        if (event.defaultPrevented) return;
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
@@ -463,7 +464,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // scroll to previous neighbor step:
         performScrolling(currentItemIndex, futureItemIndex);
     });
-    const handlePrevClick         = useMergeEvents(
+    const handlePrevClick          = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
         prevButtonComponent.props.onClick,
         
@@ -473,9 +474,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handlePrevClickInternal,
     );
     
-    const handleNextClickInternal = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
+    const handleNextClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
         // conditions:
-        if (event.defaultPrevented) return;
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
@@ -503,7 +505,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // scroll to next neighbor step:
         performScrolling(currentItemIndex, futureItemIndex);
     });
-    const handleNextClick         = useMergeEvents(
+    const handleNextClick          = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
         nextButtonComponent.props.onClick,
         
@@ -513,7 +515,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handleNextClickInternal,
     );
     
-    const dummyHandleScroll       = useEvent<React.UIEventHandler<TElement>>(() => {
+    const dummyHandleScroll        = useEvent<React.UIEventHandler<TElement>>(() => {
         // conditions:
         if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive`
         
@@ -546,8 +548,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         );
     });
     
-    const listHandleTouchStart    = useEvent<React.TouchEventHandler<TElement>>((event) => {
+    const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
@@ -566,8 +570,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // get the shown listItem's index by position:
         touchedItemIndex.current = getNearestScrollIndex(listElm);
     });
-    const listHandleTouchMove     = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
+    const handleTouchStart         = useMergeEvents(
+        // preserves the original `onTouchStart`:
+        props.onTouchStart,
+        
+        
+        
+        // actions:
+        handleTouchStartInternal,
+    );
+    const handleTouchMoveInternal  = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
         // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
         /*
             The `touchedItemIndex.current` is assigned by `listHandleTouchStart()`
             and *accumulatively* processed by `listHandleTouchMove()` in *asynchronous* way.
@@ -640,7 +655,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         // scroll implementation:
         listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
     });
-    const listHandleTouchEnd      = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
+    const handleTouchMove          = useMergeEvents(
+        // preserves the original `onTouchMove`:
+        props.onTouchMove,
+        
+        
+        
+        // actions:
+        handleTouchMoveInternal,
+    );
+    const handleTouchEndInternal   = useEvent<React.TouchEventHandler<TElement>>(async (event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
         // a macroTask delay to make sure the `touchend` event is executed *after* `touchmove`:
         await new Promise<void>((resolved) => setTimeout(resolved, 0));
         
@@ -689,7 +718,26 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
-    const listHandleScroll        = useEvent<React.UIEventHandler<TElement>>(async (event) => {
+    const handleTouchEnd           = useMergeEvents(
+        // preserves the original `onTouchEnd`:
+        props.onTouchEnd,
+        
+        
+        
+        // actions:
+        handleTouchEndInternal,
+    );
+    const handleTouchCancel        = useMergeEvents(
+        // preserves the original `onTouchCancel`:
+        props.onTouchCancel,
+        
+        
+        
+        // actions:
+        handleTouchEndInternal,
+    );
+    
+    const listHandleScroll         = useEvent<React.UIEventHandler<TElement>>(async (event) => {
         // conditions:
         if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
         
@@ -781,6 +829,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
             
             // classes:
             mainClass : basicComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            
+            
+            
+            // handlers:
+            onTouchStart  : handleTouchStart,
+            onTouchMove   : handleTouchMove,
+            onTouchEnd    : handleTouchEnd,
+            onTouchCancel : handleTouchCancel,
         },
         
         
@@ -806,10 +862,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
                     
                     
                     // handlers:
-                    onTouchStart  = {listHandleTouchStart}
-                    onTouchMove   = {listHandleTouchMove }
-                    onTouchEnd    = {listHandleTouchEnd  }
-                    onTouchCancel = {listHandleTouchEnd  }
                     onScroll      = {listHandleScroll    }
                 >
                     {React.Children.map(children, (child, index) => {
