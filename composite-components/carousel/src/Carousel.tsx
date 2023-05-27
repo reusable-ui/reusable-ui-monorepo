@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -23,6 +22,7 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -32,6 +32,15 @@ import {
     
     // basic variants of UI:
     useBasicVariantProps,
+    
+    
+    
+    // a capability of UI to scroll/switch its contents:
+    ScrollIndexChangeEvent,
+    ScrollableProps,
+    ControllableScrollableProps,
+    UncontrollableScrollableProps,
+    useUncontrollableScrollable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -100,7 +109,7 @@ export const useCarouselStyleSheet = dynamicStyleSheet(
 
 
 // react components:
-export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
+export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
         // bases:
         BasicProps<TElement>,
@@ -110,6 +119,11 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
             // semantics:
             |'role' // we redefined [role] in <Generic>
         >,
+        
+        // states:
+        ScrollableProps<TScrollIndexChangeEvent>,
+        ControllableScrollableProps<TScrollIndexChangeEvent>,
+        UncontrollableScrollableProps<TScrollIndexChangeEvent>,
         
         // variants:
         CarouselVariant,
@@ -132,7 +146,7 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement>
     // children:
     children            ?: React.ReactNode
 }
-const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselProps<TElement>): JSX.Element|null => {
+const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>(props: CarouselProps<TElement, TScrollIndexChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet        = useCarouselStyleSheet();
     
@@ -158,6 +172,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         
         // variants:
         infiniteLoop : _infiniteLoop, // remove
+        
+        
+        
+        // states:
+        defaultScrollIndex  : _defaultScrollIndex,  // take, to be handled by `useUncontrollableScrollable`
+        scrollIndex         : _scrollIndex,         // take, to be handled by `useUncontrollableScrollable`
+        onScrollIndexChange : _onScrollIndexChange, // take, to be handled by `useUncontrollableScrollable`
         
         
         
@@ -225,6 +246,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         FollowsPointer = 3,
     }
     const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
+    
+    const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props);
     
     
     
@@ -515,7 +538,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
         handleNextClickInternal,
     );
     
-    const dummyHandleScroll        = useEvent<React.UIEventHandler<TElement>>(() => {
+    const dummyHandleScroll        = useEvent(() => {
         // conditions:
         if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive`
         
@@ -776,44 +799,88 @@ const Carousel = <TElement extends HTMLElement = HTMLElement>(props: CarouselPro
     
     
     // dom effects:
-    // sync forth & back dummyListElm scrolling position to listElm scrolling position, at `infiniteLoop` transition:
-    useEffect(() => {
+    
+    useIsomorphicLayoutEffect(() => {
         // conditions:
-        
-        if (!infiniteLoop) return; // only for infiniteLoop mode
-        
-        const dummyListElm = dummyListRefInternal.current;
-        if (!dummyListElm) return; // dummyListElm must be exist for syncing
-        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
+        
+        const dummyListElm = dummyListRefInternal.current; // optional
+        const primaryListElm = dummyListElm ?? listElm;    // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
         
         
         
         // setups:
-        // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync to listElm's scroll_pos, before dummyListElm becomes the *source of truth*:
+        
+        // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync to scrollIndex:
         setRelativeScrollPos(
-            /*baseListElm      :*/ listElm,
+            /*baseListElm      :*/ undefined,
             
-            /*targetListElm    :*/ dummyListElm,
-            /*targetScrollDiff :*/ dummyDiff.current,
+            /*targetListElm    :*/ primaryListElm,
+            /*targetScrollDiff :*/ scrollIndex,
         );
         
+        // mirros dummyListElm to listElm:
+        if (dummyListElm) dummyHandleScroll();
+    }, []); // runs once on startup
+    
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for syncing
+        
+        const dummyListElm = dummyListRefInternal.current; // optional
+        const primaryListElm = dummyListElm ?? listElm;    // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
         
         
-        // cleanups:
-        return () => {
-            // sync dummyListElm (as the previous *source of truth*) to listElm:
-            if (dummyDiff.current) { // has difference => need to sync
-                // shift the current image similar to the dummyListElm, so the dummyListElm cloned to listElm:
-                setRelativeShiftPos(
-                    /*baseShift        :*/ undefined,
-                    /*targetListElm    :*/ listElm,
-                    /*targetShiftDiff  :*/ 0,
-                );
-            } // if
-        };
-    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
+        
+        // setups:
+        
+        // snap scroll to the desired scrollIndex:
+        primaryListElm.scrollTo({
+            left     : scrollIndex * getSlideDistance(primaryListElm),
+            behavior : 'smooth',
+        });
+    }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
+    
+    // // // // sync forth & back dummyListElm scrolling position to listElm scrolling position, at `infiniteLoop` transition:
+    // // // useIsomorphicLayoutEffect(() => {
+    // // //     // conditions:
+    // // //     
+    // // //     if (!infiniteLoop) return; // only for infiniteLoop mode
+    // // //     
+    // // //     const dummyListElm = dummyListRefInternal.current;
+    // // //     if (!dummyListElm) return; // dummyListElm must be exist for syncing
+    // // //     
+    // // //     const listElm = listRefInternal.current;
+    // // //     if (!listElm) return; // listElm must be exist for syncing
+    // // //     
+    // // //     
+    // // //     
+    // // //     // setups:
+    // // //     // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync to listElm's scroll_pos, before dummyListElm becomes the *source of truth*:
+    // // //     setRelativeScrollPos(
+    // // //         /*baseListElm      :*/ listElm,
+    // // //         
+    // // //         /*targetListElm    :*/ dummyListElm,
+    // // //         /*targetScrollDiff :*/ dummyDiff.current,
+    // // //     );
+    // // //     
+    // // //     
+    // // //     
+    // // //     // cleanups:
+    // // //     return () => {
+    // // //         // sync dummyListElm (as the previous *source of truth*) to listElm:
+    // // //         if (dummyDiff.current) { // has difference => need to sync
+    // // //             // shift the current image similar to the dummyListElm, so the dummyListElm cloned to listElm:
+    // // //             setRelativeShiftPos(
+    // // //                 /*baseShift        :*/ undefined,
+    // // //                 /*targetListElm    :*/ listElm,
+    // // //                 /*targetShiftDiff  :*/ 0,
+    // // //             );
+    // // //         } // if
+    // // //     };
+    // // // }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
     
     
