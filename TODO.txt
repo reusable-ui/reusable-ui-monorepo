@@ -12,6 +12,8 @@
 [deferred  ] fixed minor animation_abort_effect in active-as-click
 [deferred  ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
+[deferred  ] on <Carousel>, touchAction: 'none' still *leaking* scroll behavior when swiping quickly & many2 times
+
 [deferred  ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 
 [deferred  ] fix <Tooltip outlined={true}> <Arrow>
