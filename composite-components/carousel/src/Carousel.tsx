@@ -863,7 +863,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // calculate the desired pos:
         const scrollLeftAbsolute    = normalizeShift(scrollIndex - dummyDiff.current) * getSlideDistance(listElm);
         const scrollLeftRelative    = scrollLeftAbsolute - listElm.scrollLeft;
-        if (scrollLeftRelative >= _defaultScrollingPrecision) {
+        if (Math.abs(scrollLeftRelative) >= _defaultScrollingPrecision) {
             const scrollLeftRelative1px = Math.max(Math.min(scrollLeftRelative, 1), -1); // move max 1 pixel (-1|0|+1)
             
             // make a non_zero fragment to de-confuse the scrolling end detection:
