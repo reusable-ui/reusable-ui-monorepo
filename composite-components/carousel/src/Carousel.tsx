@@ -584,7 +584,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync to dummyListElm's scroll_pos:
+        // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync with dummyListElm's scroll_pos:
         setRelativeScrollPos(
             /*baseListElm      :*/ dummyListElm,
             
@@ -791,7 +791,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync to listElm's scroll_pos:
+        // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync with listElm's scroll_pos:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
             await setRelativeScrollPos(
@@ -835,7 +835,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // setups:
         
-        // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync to scrollIndex:
+        // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync with scrollIndex:
         setRelativeScrollPos(
             /*baseListElm      :*/ undefined,
             
@@ -843,7 +843,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*targetScrollDiff :*/ scrollIndex,
         );
         
-        // mirros dummyListElm to listElm:
+        // mirrors dummyListElm to listElm:
         if (dummyListElm) dummyHandleScroll();
     }, []); // runs once on startup
     
