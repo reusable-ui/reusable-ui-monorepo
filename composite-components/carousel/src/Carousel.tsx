@@ -824,6 +824,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // dom effects:
     
+    // initial scroll pos setup (without scrolling effect):
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const listElm = listRefInternal.current;
@@ -848,6 +849,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (dummyListElm) dummyHandleScroll();
     }, []); // runs once on startup
     
+    // changing scroll pos (with scrolling effect):
     const prevScrollIndexRef = useRef<number>(scrollIndex);
     useIsomorphicLayoutEffect(() => {
         // conditions:
@@ -858,19 +860,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
         
-        const dummyListElm   = dummyListRefInternal.current; // optional
-        const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
+        // const dummyListElm   = dummyListRefInternal.current; // optional
+        // const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
         
         
         
         // setups:
+        // // mark the sliding status:
+        // slidingStatus.current = SlidingStatus.AutoScrolling;
         
-        // make a non_zero fragment to de-confuse the scrolling end detection:
-        if (isExactScrollPos(listElm)) listElm.scrollLeft += (scrollIndex > prevScrollIndex) ? 1 : -1;
+        // // make a non_zero fragment to de-confuse the scrolling end detection:
+        // if (isExactScrollPos(listElm)) listElm.scrollLeft += (scrollIndex > prevScrollIndex) ? 1 : -1;
         
         // snap scroll to the desired scrollIndex:
-        primaryListElm.scrollTo({
-            left     : scrollIndex * getSlideDistance(primaryListElm),
+        console.log('scroll to: ', scrollIndex)
+        listElm.scrollTo({
+            left     : scrollIndex * getSlideDistance(listElm),
             behavior : 'smooth',
         });
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
