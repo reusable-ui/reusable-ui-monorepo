@@ -375,11 +375,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        // the new index:
+        const newIndex = (
+            isPositiveMovement
+            ? 0                 // moved the current image to the first
+            : (itemsCount - 1)  // moved the current image to the last
+        );
+        
+        
+        
         // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
         setRelativeShiftPos(
             /*baseShift        :*/ 0,
             /*targetListElm    :*/ listElm,
-            /*targetShiftDiff  :*/ currentItemIndex + (isPositiveMovement ? 0 : 1),
+            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - newIndex),
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
@@ -387,13 +396,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*baseListElm      :*/ undefined,
             
             /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ (isPositiveMovement ? 0 : (itemsCount - 1)),
+            /*targetScrollDiff :*/ newIndex,
         );
         
         
         
         // update the shifted listItem's index:
-        return (isPositiveMovement ? 0 : (itemsCount - 1));
+        return newIndex;
     };
     const performScrolling      = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
