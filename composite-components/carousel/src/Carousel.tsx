@@ -860,9 +860,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
         
-        // const dummyListElm   = dummyListRefInternal.current; // optional
-        // const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => use dummyListElm as the *source of truth* -otherwise- listElm
-        
         
         
         // setups:
@@ -883,45 +880,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             behavior : 'smooth',
         });
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
-    
-    // // // // sync forth & back dummyListElm scrolling position to listElm scrolling position, at `infiniteLoop` transition:
-    // // // useIsomorphicLayoutEffect(() => {
-    // // //     // conditions:
-    // // //     
-    // // //     if (!infiniteLoop) return; // only for infiniteLoop mode
-    // // //     
-    // // //     const dummyListElm = dummyListRefInternal.current;
-    // // //     if (!dummyListElm) return; // dummyListElm must be exist for syncing
-    // // //     
-    // // //     const listElm = listRefInternal.current;
-    // // //     if (!listElm) return; // listElm must be exist for syncing
-    // // //     
-    // // //     
-    // // //     
-    // // //     // setups:
-    // // //     // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync to listElm's scroll_pos, before dummyListElm becomes the *source of truth*:
-    // // //     setRelativeScrollPos(
-    // // //         /*baseListElm      :*/ listElm,
-    // // //         
-    // // //         /*targetListElm    :*/ dummyListElm,
-    // // //         /*targetScrollDiff :*/ dummyDiff.current,
-    // // //     );
-    // // //     
-    // // //     
-    // // //     
-    // // //     // cleanups:
-    // // //     return () => {
-    // // //         // sync dummyListElm (as the previous *source of truth*) to listElm:
-    // // //         if (dummyDiff.current) { // has difference => need to sync
-    // // //             // shift the current image similar to the dummyListElm, so the dummyListElm cloned to listElm:
-    // // //             setRelativeShiftPos(
-    // // //                 /*baseShift        :*/ undefined,
-    // // //                 /*targetListElm    :*/ listElm,
-    // // //                 /*targetShiftDiff  :*/ 0,
-    // // //             );
-    // // //         } // if
-    // // //     };
-    // // // }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop mode changes
     
     
     
