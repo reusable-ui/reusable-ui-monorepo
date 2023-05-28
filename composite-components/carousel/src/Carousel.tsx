@@ -405,45 +405,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // // // // mark the sliding status:
-        // // // slidingStatus.current = SlidingStatus.AutoScrolling;
-        // // // 
-        // // // 
-        // // // 
-        // // // // make a non_zero fragment to de-confuse the scrolling end detection:
-        // // // if (isExactScrollPos(listElm) && (currentItemIndex !== undefined)) listElm.scrollLeft += (futureItemIndex > currentItemIndex) ? 1 : -1;
-        // // // 
-        // // // 
-        // // // 
-        // // // // snap scroll to the nearest fragment step:
-        // // // listElm.scrollTo({
-        // // //     left     : futureItemIndex * getSlideDistance(listElm),
-        // // //     behavior : 'smooth',
-        // // // });
+        // calculate the desired index:
+        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex - dummyDiff.current);
+        const movementItemIndex = futureItemIndex - currentItemIndex;
         
         
         
-        setScrollIndex((currentScrollIndex) => normalizeShift(
-            // the current index:
-            currentScrollIndex
-            
-            +
-            
-            // the movement:
-            (
-                // the future index:
-                futureItemIndex
-                -
-                // the current index:
-                (
-                    // if specified, it help us to determine the current index:
-                    currentItemIndex
-                    ??
-                    // if not specified, calculate it from listElm's position (the caller may performing re-alignment of snapScroll):
-                    getNearestScrollIndex(listElm)
-                )
-            )
-        ));
+        if (!movementItemIndex) {
+            // restore (scroll snap) to prev index of no movement:
+            listElm.scrollTo({
+                left     : currentItemIndex * getSlideDistance(listElm),
+                behavior : 'smooth',
+            });
+        }
+        else {
+            // update the scrollIndex (and re-render):
+            setScrollIndex((currentScrollIndex) => normalizeShift(
+                currentScrollIndex // the current index
+                +
+                movementItemIndex  // the movement
+            ));
+        } // if
     };
     
     
