@@ -367,6 +367,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // navigation functions:
     const getOptimalIndexForMovement = (isPositiveMovement: boolean) => {
+        if (!itemsCount) return 0;
+        
         return (
             isPositiveMovement
             ? 0                 // moved the current image to the first
