@@ -417,13 +417,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate the desired index:
-        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex - dummyDiff.current);
+        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex /* === currentDummyItemIndex */ - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
         const movementItemIndex = futureItemIndex - currentItemIndex;
         
         
         
         if (!movementItemIndex) {
-            // restore (scroll snap) to prev index of no movement:
+            // if no movement => restore (scroll snap) to current index:
             listElm.scrollTo({
                 left     : currentItemIndex * getSlideDistance(listElm),
                 behavior : 'smooth',
@@ -432,9 +432,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         else {
             // update the scrollIndex (and re-render):
             setScrollIndex((currentScrollIndex) => normalizeShift(
-                currentScrollIndex // the current index
+                currentScrollIndex // the current scroll index
                 +
-                movementItemIndex  // the movement
+                movementItemIndex  // the item movement
             ));
         } // if
     };
