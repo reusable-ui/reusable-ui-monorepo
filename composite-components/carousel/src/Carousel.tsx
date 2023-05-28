@@ -577,16 +577,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
         );
-        
-        
-        
-        // detect the scrolling end:
-        if (!isExactScrollPos(dummyListElm)) return; // the dummyListElm is NOT in the exact_position yet => ignore => wait for another scroll_step
-        
-        
-        
-        // update the scrollIndex (and re-render):
-        setScrollIndex(getNearestScrollIndex(dummyListElm));
     });
     
     const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
