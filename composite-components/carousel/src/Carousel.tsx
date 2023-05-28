@@ -100,6 +100,8 @@ const _defaultSlideThreshold         : number = 5   /* pixel */         // the m
 const _defaultSwipeMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
 const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action
 
+const _defaultScrollingPrecision     : number = 0.5 /* pixel */
+
 
 // styles:
 export const useCarouselStyleSheet = dynamicStyleSheet(
@@ -273,7 +275,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const isExactScrollPos      = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
         const rest = listElm.scrollLeft % listSlideDistance;
-        return (rest < 0.5) || ((listSlideDistance - rest) < 0.5);
+        return (rest < _defaultScrollingPrecision) || ((listSlideDistance - rest) < _defaultScrollingPrecision);
     };
     const getNearestScrollIndex = (listElm: TElement) => {
         return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
@@ -575,6 +577,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
         );
+        
+        
+        
+        // detect the scrolling end:
+        if (!isExactScrollPos(dummyListElm)) return; // the dummyListElm is NOT in the exact_position yet => ignore => wait for another scroll_step
+        
+        
+        
+        // update the scrollIndex (and re-render):
+        setScrollIndex(getNearestScrollIndex(dummyListElm));
     });
     
     const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -724,7 +736,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
             const restScroll = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
-            if (Math.abs(restScroll) >= 0.5) {
+            if (Math.abs(restScroll) >= _defaultScrollingPrecision) {
                 // scroll to nearest neighbor step:
                 performScrolling(undefined, Math.round((listElm.scrollLeft + restScroll) / listSlideDistance));
                 
@@ -851,16 +863,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // calculate the desired pos:
         const scrollLeftAbsolute    = normalizeShift(scrollIndex - dummyDiff.current) * getSlideDistance(listElm);
         const scrollLeftRelative    = scrollLeftAbsolute - listElm.scrollLeft;
-        const scrollLeftRelative1px = Math.max(Math.min(scrollLeftRelative, 1), -1); // move max 1 pixel (-1|0|+1)
-        
-        // make a non_zero fragment to de-confuse the scrolling end detection:
-        if (scrollLeftRelative1px && isExactScrollPos(listElm)) listElm.scrollLeft += scrollLeftRelative1px;
-        
-        // snap scroll to the desired scrollIndex:
-        listElm.scrollTo({
-            left     : scrollLeftAbsolute,
-            behavior : 'smooth',
-        });
+        if (scrollLeftRelative >= _defaultScrollingPrecision) {
+            const scrollLeftRelative1px = Math.max(Math.min(scrollLeftRelative, 1), -1); // move max 1 pixel (-1|0|+1)
+            
+            // make a non_zero fragment to de-confuse the scrolling end detection:
+            if (scrollLeftRelative1px && isExactScrollPos(listElm)) listElm.scrollLeft += scrollLeftRelative1px;
+            
+            // snap scroll to the desired scrollIndex:
+            listElm.scrollTo({
+                left     : scrollLeftAbsolute,
+                behavior : 'smooth',
+            });
+        } // if
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
     
     
