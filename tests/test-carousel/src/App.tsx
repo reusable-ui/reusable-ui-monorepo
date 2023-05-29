@@ -30,7 +30,10 @@ function App() {
                 <Styles />
             </HeadPortal>
             <div className="App">
-                <Carousel theme='primary' style={style} infiniteLoop={false} scrollIndex={value} onScrollIndexChange={({scrollIndex}) => setValue(scrollIndex)}>
+                <Carousel theme='primary' style={style} infiniteLoop={false} scrollIndex={value} onScrollIndexChange={({scrollIndex}) => {
+                    console.log('Carousel_1 set to: ', scrollIndex);
+                    setValue(scrollIndex);
+                }}>
                     <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
@@ -41,7 +44,7 @@ function App() {
                 </Carousel>
                 <br />
                 <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} onScrollIndexChange={({scrollIndex}) => {
-                    console.log('set to: ', scrollIndex)
+                    console.log('Carousel_2 set to: ', scrollIndex);
                     setValue(scrollIndex);
                 }}>
                     <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
