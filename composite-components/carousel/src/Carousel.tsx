@@ -103,6 +103,12 @@ const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the m
 const _defaultScrollingPrecision     : number = 0.5 /* pixel */
 
 
+
+// utilities:
+const noInterceptMark = Symbol('no intercept');
+
+
+
 // styles:
 export const useCarouselStyleSheet = dynamicStyleSheet(
     () => import(/* webpackPrefetch: true */ './styles/styles.js')
@@ -430,8 +436,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
             listElm.scrollTo({
-                left     : currentItemIndex * getSlideDistance(listElm),
-                behavior : 'smooth',
+                left                     : currentItemIndex * getSlideDistance(listElm),
+                behavior                 : 'smooth',
+                
+                [noInterceptMark as any] : undefined, // no intercept call hack
             });
         }
         else {
@@ -894,8 +902,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // snap scroll to the desired scrollIndex:
             listElm.scrollTo({
-                left     : futureScrollLeftAbsolute,
-                behavior : 'smooth',
+                left                     : futureScrollLeftAbsolute,
+                behavior                 : 'smooth',
+                
+                [noInterceptMark as any] : undefined, // no intercept call hack
             });
         } // if
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
@@ -918,8 +928,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // replace with interceptors:
         primaryListElm.scrollTo = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
-            // call the original:
-            (oriScrollTo.call as any)(this, leftOrOptions, ...rest);
+            // conditionally call the original:
+            if ((typeof(leftOrOptions) === 'object') && (noInterceptMark in leftOrOptions)) {
+                (oriScrollTo.call as any)(this, leftOrOptions, ...rest);
+                
+                return; // no further intercept
+            } // if
             
             
             
@@ -929,8 +943,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm));
         } as any;
         primaryListElm.scrollBy = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
-            // call the original:
-            (oriScrollBy.call as any)(this, leftOrOptions, ...rest);
+            // conditionally call the original:
+            if ((typeof(leftOrOptions) === 'object') && (noInterceptMark in leftOrOptions)) {
+                (oriScrollBy.call as any)(this, leftOrOptions, ...rest);
+                
+                return; // no further intercept
+            } // if
             
             
             
