@@ -848,12 +848,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     }, []); // runs once on startup
     
     // changing scroll pos (with scrolling effect):
-    const prevScrollIndexRef = useRef<number>(scrollIndex);
+    const prevScrollIndexRef = useRef<number>(scrollIndex);     // initial
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        const prevScrollIndex = prevScrollIndexRef.current;
-        if (prevScrollIndex === scrollIndex) return; // no change => ignore
-        prevScrollIndexRef.current = scrollIndex;    // update
+        if (prevScrollIndexRef.current === scrollIndex) return; // no change => ignore
+        prevScrollIndexRef.current = scrollIndex;               // update
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
