@@ -900,6 +900,57 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         } // if
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
     
+    // intercepts scrollTo/scrollBy by external call:
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for intercepting
+        
+        const dummyListElm   = dummyListRefInternal.current; // optional
+        const primaryListElm = dummyListElm ?? listElm;      // if dummyListElm exists => intercepts dummyListElm -otherwise- listElm
+        
+        
+        
+        // setups:
+        // backup the originals:
+        const oriScrollTo = primaryListElm.scrollTo;
+        const oriScrollBy = primaryListElm.scrollBy;
+        
+        // replace with interceptors:
+        primaryListElm.scrollTo = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
+            // call the original:
+            (oriScrollTo.call as any)(this, leftOrOptions, ...rest);
+            
+            
+            
+            // the intercept implementation:
+            const futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
+            if (futureScrollLeftAbsolute === undefined) return;
+            console.log('intercept: scrollTo');
+        } as any;
+        primaryListElm.scrollBy = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
+            // call the original:
+            (oriScrollBy.call as any)(this, leftOrOptions, ...rest);
+            
+            
+            
+            // the intercept implementation:
+            const futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
+            if (futureScrollLeftRelative === undefined) return;
+            const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
+            console.log('intercept: scrollBy');
+        } as any;
+        
+        
+        
+        // cleanups:
+        return () => {
+            // restore the originals:
+            primaryListElm.scrollTo = oriScrollTo;
+            primaryListElm.scrollBy = oriScrollBy;
+        };
+    }, []); // runs once on startup
+    
     
     
     // jsx:
