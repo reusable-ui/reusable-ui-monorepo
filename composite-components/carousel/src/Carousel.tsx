@@ -926,7 +926,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // the intercept implementation:
             const futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (futureScrollLeftAbsolute === undefined) return;
-            console.log('intercept: scrollTo');
+            setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm));
         } as any;
         primaryListElm.scrollBy = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
             // call the original:
@@ -938,7 +938,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (futureScrollLeftRelative === undefined) return;
             const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
-            console.log('intercept: scrollBy');
+            setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm));
         } as any;
         
         
