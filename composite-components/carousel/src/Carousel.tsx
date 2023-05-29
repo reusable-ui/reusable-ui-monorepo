@@ -845,7 +845,25 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // mirrors dummyListElm to listElm:
         if (dummyListElm) dummyHandleScroll();
-    }, []); // runs once on startup
+        
+        
+        
+        // cleanups:
+        return () => {
+            if (/*before: HAS dummyListElm*/dummyListElm && /*after: NO dummyListElm*/!dummyListRefInternal.current) { // mutation from infiniteLoop to finiteLoop: flush the dummyListElm to listElm
+                dummyListRefInternal.current = dummyListElm;
+                try {
+                    // mirrors dummyListElm to listElm:
+                    dummyHandleScroll();
+                }
+                finally {
+                    dummyListRefInternal.current = null;
+                } // try
+            } // if
+            
+            /* no need to cleanup if no  mutation from infiniteLoop to finiteLoop */
+        };
+    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop changes
     
     // changing scroll pos (with scrolling effect):
     const prevScrollIndexRef = useRef<number>(scrollIndex);     // initial
