@@ -385,7 +385,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const newIndex = getOptimalIndexForMovement(isPositiveMovement);
+        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement);
         
         
         
@@ -393,7 +393,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         setRelativeShiftPos(
             /*baseShift        :*/ 0,
             /*targetListElm    :*/ listElm,
-            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - newIndex),
+            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - optimalItemIndex),
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
@@ -401,13 +401,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*baseListElm      :*/ undefined,
             
             /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ newIndex,
+            /*targetScrollDiff :*/ optimalItemIndex,
         );
         
         
         
         // update the shifted listItem's index:
-        return newIndex;
+        return optimalItemIndex;
     };
     const performScrolling           = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
