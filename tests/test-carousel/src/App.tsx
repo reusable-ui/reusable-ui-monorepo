@@ -17,9 +17,6 @@ import {
 
 function App() {
     const [value, setValue] = useState(0);
-    const handleTriggerRerender = () => {
-        setValue(value + 1);
-    };
     const style = useMemo<React.CSSProperties>(() => ({
         maxWidth  : '400px',
         maxHeight : '300px',
@@ -33,12 +30,7 @@ function App() {
                 <Styles />
             </HeadPortal>
             <div className="App">
-                <article className='actions'>
-                    <button onClick={handleTriggerRerender}>
-                        Trigger re-render whole app
-                    </button>
-                </article>
-                <Carousel theme='primary' style={style} infiniteLoop={false}>
+                <Carousel theme='primary' style={style} infiniteLoop={false} scrollIndex={value} onScrollIndexChange={({scrollIndex}) => setValue(scrollIndex)}>
                     <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
@@ -48,7 +40,10 @@ function App() {
                     <img alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
                 </Carousel>
                 <br />
-                <Carousel theme='primary' style={style} infiniteLoop={true}>
+                <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} onScrollIndexChange={({scrollIndex}) => {
+                    console.log('set to: ', scrollIndex)
+                    setValue(scrollIndex);
+                }}>
                     <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/leaf-800x700.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/building-800x500.jpg' />
