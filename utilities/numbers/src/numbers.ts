@@ -29,7 +29,13 @@ export const decimalify = <TNumber extends number|null|undefined>(number: TNumbe
     return Number.parseFloat(roundedNumber.toFixed(11)) as TNumber;
 };
 
-export const clamp = (min: number, value: number, max: number, step?: number): number => {
+export const clamp = <TOpt extends number|null|undefined>(min: number|null|undefined, value: number|TOpt, max: number|null|undefined, step?: number|null|undefined): number|TOpt => {
+    // conditions:
+    if (value === null     ) return value;
+    if (value === undefined) return value;
+    
+    
+    
     // defaults:
     min  ??= Number.MIN_SAFE_INTEGER;
     max  ??= Number.MAX_SAFE_INTEGER;

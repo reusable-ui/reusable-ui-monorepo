@@ -28,7 +28,7 @@ import {
 // reusable-ui core:
 import {
     // a set of numeric utility functions:
-    decimalify,
+    clamp,
     
     
     
@@ -414,43 +414,15 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const stepFn     : number  = (step === 'any') ? 0 : Math.abs(step ?? 1);
     const negativeFn : boolean = (maxFn < minFn);
     
-    const trimValue    = useEvent((value: number): number => {
-        // make sure the requested value is between the min value & max value:
-        value     = Math.min(Math.max(
-            value
-        , (negativeFn ? maxFn : minFn)), (negativeFn ? minFn : maxFn));
-        
-        // if step was specified => stepping the value starting from min value:
-        if (stepFn > 0) {
-            let steps    = Math.round((value - minFn) / stepFn); // get the_nearest_stepped_value
-            
-            // make sure the_nearest_stepped_value is not exceeded the max value:
-            let maxSteps = (maxFn - minFn) / stepFn;
-            maxSteps     = negativeFn ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
-            
-            // re-align the steps:
-            steps        = negativeFn ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
-            
-            // calculate the new value:
-            value        = minFn + (steps * stepFn);
-        } // if
-        
-        return decimalify(value);
+    const trimValue = useEvent(<TOpt extends number|null|undefined>(value: number|TOpt): number|TOpt => {
+        return clamp(minFn, value, maxFn, stepFn);
     });
-    const trimValueOpt = (value: number|undefined): number|undefined => {
-        // conditions:
-        if (value === undefined) return undefined;
-        
-        
-        
-        return trimValue(value);
-    };
     
     
     
     // fn props:
-    const valueFn        : number|undefined = trimValueOpt(value);
-    const defaultValueFn : number|undefined = trimValueOpt(defaultValue);
+    const valueFn        : number|undefined = trimValue(value);
+    const defaultValueFn : number|undefined = trimValue(defaultValue);
     
     
     

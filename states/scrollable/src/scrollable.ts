@@ -6,7 +6,7 @@ import {
 
 // reusable-ui utilities:
 import {
-    decimalify,
+    clamp,
 }                           from '@reusable-ui/numbers'         // a set of numeric utility functions
 import {
     // hooks:
@@ -64,50 +64,16 @@ export interface UncontrollableScrollableOptions {
 export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>(props: UncontrollableScrollableProps<TScrollIndexChangeEvent>, options?: UncontrollableScrollableOptions): readonly [number, React.Dispatch<React.SetStateAction<number>>] => {
     // options:
     const {
-        min  = Number.MIN_SAFE_INTEGER,
-        max  = Number.MAX_SAFE_INTEGER,
-        step = 0,
+        min,
+        max,
+        step,
     } = options ?? {};
-    const negative : boolean = (max < min);
-    
-    
-    
-    // validations:
-    if ((step !== undefined) && (step < 0)) throw Error('`step` cannot be a negative value.');
     
     
     
     // utilities:
-    const trimValue = (value: number): number => {
-        // make sure the requested value is between the min value & max value:
-        value     = Math.min(Math.max(
-            value
-        , (negative ? max : min)), (negative ? min : max));
-        
-        // if step was specified => stepping the value starting from min value:
-        if (step > 0) {
-            let steps    = Math.round((value - min) / step); // get the_nearest_stepped_value
-            
-            // make sure the_nearest_stepped_value is not exceeded the max value:
-            let maxSteps = (max - min) / step;
-            maxSteps     = negative ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
-            
-            // re-align the steps:
-            steps        = negative ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
-            
-            // calculate the new value:
-            value        = min + (steps * step);
-        } // if
-        
-        return decimalify(value);
-    };
-    const trimValueOpt = (value: number|undefined): number|undefined => {
-        // conditions:
-        if (value === undefined) return undefined;
-        
-        
-        
-        return trimValue(value);
+    const trimValue = <TOpt extends number|null|undefined>(value: number|TOpt): number|TOpt => {
+        return clamp(min, value, max, step);
     };
     
     
@@ -120,7 +86,7 @@ export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends Scro
     /*
      * scrollIndex state is based on [controllable scrollIndex] (if set) and fallback to [uncontrollable scrollIndex]
      */
-    const scrollIndexFn : number = trimValueOpt(props.scrollIndex) /*controllable*/ ?? scrollIndexDn /*uncontrollable*/;
+    const scrollIndexFn : number = trimValue(props.scrollIndex) /*controllable*/ ?? scrollIndexDn /*uncontrollable*/;
     
     
     
