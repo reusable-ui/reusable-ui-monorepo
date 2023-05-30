@@ -402,14 +402,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     
     // navigation functions:
-    const getOptimalIndexForMovement = (isPositiveMovement: boolean) => {
-        if (!itemsCount) return 0;
+    const getOptimalIndexForMovement = (movementItemIndex: number) => {
+        const maxItemIndex = (itemsCount - 1);
+        if (maxItemIndex <= 0) return 0; // the listItems(s) are impossible to move => always return 0
         
-        return (
-            isPositiveMovement
-            ? 0                 // moved the current image to the first
-            : (itemsCount - 1)  // moved the current image to the last
-        );
+        const futureItemIndex          = scrollIndex            + movementItemIndex; // predict the future index, regardless the range
+        const clampedFutureItemIndex   = Math.min(Math.max(
+            futureItemIndex,
+        /*minItemIndex: */0), maxItemIndex);
+        
+        const previousItemIndex        = clampedFutureItemIndex - movementItemIndex; // predict the past   index, regardless the range
+        const clampedPreviousItemIndex = Math.min(Math.max(
+            previousItemIndex,
+        /*minItemIndex: */0), maxItemIndex);
+        
+        return clampedPreviousItemIndex;
     };
     const prepareScrolling           = async (currentItemIndex: number, isPositiveMovement: boolean): Promise<number> => {
         // conditions:
@@ -421,7 +428,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement);
+        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement ? +1 : -1);
         
         
         
@@ -694,7 +701,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement))) {
+        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement ? +1 : -1))) {
             touchMoveBusy.current = true;
             try {
                 // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
