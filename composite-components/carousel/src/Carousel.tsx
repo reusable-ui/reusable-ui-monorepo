@@ -370,6 +370,36 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
+    const normalizeListScrollPos     = async (currentDummyListElm?: TElement) => {
+        // conditions:
+        const dummyListElm = currentDummyListElm ?? dummyListRefInternal.current;
+        if (!dummyListElm) return; // dummyListElm must be exist for syncing
+        
+        const listElm = listRefInternal.current;
+        if (!listElm) return; // listElm must be exist for syncing
+        
+        
+        
+        // normalize scroll pos as seen on dummyListElm (navigation indicator):
+        if (dummyDiff.current) { // has difference => need to sync
+            // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
+            setRelativeShiftPos(
+                /*baseShift        :*/ undefined,
+                /*targetListElm    :*/ listElm,
+                /*targetShiftDiff  :*/ 0,
+            );
+        } // if
+        
+        
+        
+        // immediately scroll to the correct position, so that the visual_current_image appears not_moving (as seen before scrolled):
+        await setRelativeScrollPos(
+            /*baseListElm      :*/ dummyListElm,
+            
+            /*targetListElm    :*/ listElm,
+            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
+        );
+    };
     
     // navigation functions:
     const getOptimalIndexForMovement = (isPositiveMovement: boolean) => {
@@ -572,33 +602,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive`
         
-        const dummyListElm = dummyListRefInternal.current;
-        if (!dummyListElm) return; // dummyListElm must be exist for syncing
-        
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist for syncing
         
         
-        
-        // sync dummyListElm layout to listElm:
-        if (dummyDiff.current) { // has difference => need to sync
-            // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
-            setRelativeShiftPos(
-                /*baseShift        :*/ undefined,
-                /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ 0,
-            );
-        } // if
-        
-        
-        
-        // immediately scroll to the correct position, so the listElm's scroll_pos is in_sync with dummyListElm's scroll_pos:
-        setRelativeScrollPos(
-            /*baseListElm      :*/ dummyListElm,
-            
-            /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-        );
+        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+        normalizeListScrollPos();
     });
     
     const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -827,8 +834,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // mirrors dummyListElm to listElm:
-        if (dummyListElm) dummyHandleScroll();
+        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+        normalizeListScrollPos();
     });
     
     
@@ -856,22 +863,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*targetScrollDiff :*/ scrollIndex,
         );
         
-        // mirrors dummyListElm to listElm:
-        if (dummyListElm) dummyHandleScroll();
+        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+        if (dummyListElm) normalizeListScrollPos(dummyListElm);
         
         
         
         // cleanups:
         return () => {
             if (/*before: HAS dummyListElm*/dummyListElm && /*after: NO dummyListElm*/!dummyListRefInternal.current) { // mutation from infiniteLoop to finiteLoop: flush the dummyListElm to listElm
-                dummyListRefInternal.current = dummyListElm;
-                try {
-                    // mirrors dummyListElm to listElm:
-                    dummyHandleScroll();
-                }
-                finally {
-                    dummyListRefInternal.current = null;
-                } // try
+                // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+                normalizeListScrollPos(dummyListElm);
             } // if
             
             /* no need to cleanup if no  mutation from infiniteLoop to finiteLoop */
