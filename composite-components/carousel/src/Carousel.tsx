@@ -257,7 +257,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     }
     const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
     
-    const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props);
+    const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
+        min  : 0,
+        max  : (itemsCount - 1),
+        step : undefined,
+    });
     
     
     
