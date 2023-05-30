@@ -6,7 +6,7 @@ import {
 
 // reusable-ui utilities:
 import {
-    decimalize,
+    decimalify,
 }                           from '@reusable-ui/numbers'         // a set of numeric utility functions
 import {
     // hooks:
@@ -99,7 +99,7 @@ export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends Scro
             value        = min + (steps * step);
         } // if
         
-        return decimalize(value);
+        return decimalify(value);
     };
     const trimValueOpt = (value: number|undefined): number|undefined => {
         // conditions:

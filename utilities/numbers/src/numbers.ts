@@ -18,7 +18,7 @@ export const parseNumber = (expression: number|string|ReadonlyArray<string>|null
     return result;
 };
 
-export const decimalize = <TNumber extends number|null|undefined>(number: TNumber) : TNumber => {
+export const decimalify = <TNumber extends number|null|undefined>(number: TNumber) : TNumber => {
     // conditions:
     if (typeof(number) !== 'number') return number;
     if (!Number.isFinite(number))    return number;

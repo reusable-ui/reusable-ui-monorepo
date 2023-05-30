@@ -28,7 +28,7 @@ import {
 // reusable-ui core:
 import {
     // a set of numeric utility functions:
-    decimalize,
+    decimalify,
     
     
     
@@ -435,7 +435,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             value        = minFn + (steps * stepFn);
         } // if
         
-        return decimalize(value);
+        return decimalify(value);
     });
     const trimValueOpt = (value: number|undefined): number|undefined => {
         // conditions:
