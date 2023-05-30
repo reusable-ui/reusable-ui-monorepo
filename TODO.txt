@@ -1,6 +1,5 @@
 [hi  prior ] add min & max limit of scrollable
 
-[low prior ] add <Carousel> controllable/uncontrollable activeSlideIndex
 [low prior ] add <Carousel> momentum scroll
 [low prior ] fix <Carousel> clipped tall slides on Firefox
 
