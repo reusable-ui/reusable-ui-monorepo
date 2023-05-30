@@ -824,6 +824,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // mark the sliding status:
         slidingStatus.current = SlidingStatus.Passive;
+        
+        
+        
+        // mirrors dummyListElm to listElm:
+        if (dummyListElm) dummyHandleScroll();
     });
     
     
