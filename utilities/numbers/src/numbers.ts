@@ -39,7 +39,7 @@ export const clamp = (min: number, value: number, max: number, step?: number): n
     
     
     // make sure the requested value is between the min value & max value:
-    value     = Math.min(Math.max(
+    value = Math.min(Math.max(
         value
     , (negative ? max : min)), (negative ? min : max));
     
