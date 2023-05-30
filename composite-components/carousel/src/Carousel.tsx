@@ -102,6 +102,8 @@ const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the m
 
 const _defaultScrollingPrecision     : number = 0.5 /* pixel */
 
+const _defaultMovementStep           : number = 1   /* step(s) */
+
 
 
 // utilities:
@@ -428,7 +430,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement ? +1 : -1);
+        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep);
         
         
         
@@ -701,7 +703,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement ? +1 : -1))) {
+        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
             touchMoveBusy.current = true;
             try {
                 // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
