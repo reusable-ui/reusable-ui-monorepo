@@ -747,10 +747,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
-            const restScroll = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
-            if (Math.abs(restScroll) >= _defaultScrollingPrecision) {
+            const restScrollToNeighbor = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
+            if (Math.abs(restScrollToNeighbor) >= _defaultScrollingPrecision) { // a significant movement detected
                 // scroll to nearest neighbor step:
-                performScrolling(undefined, Math.round((listElm.scrollLeft + restScroll) / listSlideDistance));
+                performScrolling(undefined, Math.round((listElm.scrollLeft + restScrollToNeighbor) / listSlideDistance));
                 
                 
                 
@@ -891,7 +891,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
         const futureScrollLeftAbsolute = futureItemIndex * getSlideDistance(listElm);
         const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
-        if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) {
+        if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
             const futureScrollLeftRelative1px = Math.max(Math.min(futureScrollLeftRelative, 1), -1); // move max 1 pixel (-1|0|+1)
             
             // mark the sliding status:
@@ -932,31 +932,41 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if ((typeof(leftOrOptions) === 'object') && (noInterceptMark in leftOrOptions)) {
                 (oriScrollTo.call as any)(this, leftOrOptions, ...rest);
                 
-                return; // no further intercept
+                return; // just call the original, no further intercept
             } // if
             
             
             
-            // the intercept implementation:
+            // calculate the desired pos:
             const futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
-            if (futureScrollLeftAbsolute === undefined) return;
-            setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm));
+            if (futureScrollLeftAbsolute === undefined) return; // undefined => ignore // zero => okay
+            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
+            if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
+                // update the scrollIndex (and re-render):
+                setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)); // a fractional index is allowed
+            } // if
         } as any;
         primaryListElm.scrollBy = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
             // conditionally call the original:
             if ((typeof(leftOrOptions) === 'object') && (noInterceptMark in leftOrOptions)) {
                 (oriScrollBy.call as any)(this, leftOrOptions, ...rest);
                 
-                return; // no further intercept
+                return; // just call the original, no further intercept
             } // if
             
             
             
-            // the intercept implementation:
+            // calculate the desired pos:
             const futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
-            if (futureScrollLeftRelative === undefined) return;
-            const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
-            setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm));
+            if (!futureScrollLeftRelative) return; // undefined => ignore // zero => not moving => ignore
+            if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
+                const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
+                
+                
+                
+                // update the scrollIndex (and re-render):
+                setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)); // a fractional index is allowed
+            } // if
         } as any;
         
         
@@ -967,7 +977,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             primaryListElm.scrollTo = oriScrollTo;
             primaryListElm.scrollBy = oriScrollBy;
         };
-    }, []); // runs once on startup
+    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop changes
     
     
     
