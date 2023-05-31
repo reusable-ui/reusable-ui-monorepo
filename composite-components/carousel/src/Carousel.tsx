@@ -242,13 +242,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // states:
     const dummyDiff         = useRef<number>(0);
-    const touchedItemIndex  = useRef<number>(0);
     
-    const touchMoveBusy     = useRef<boolean>(false);
+    const touchedItemIndex  = useRef<number>(0);
+    const isTouchMoveBusy   = useRef<boolean>(false);
     
     const initialTouchTick  = useRef<number>(0);
     const initialTouchPos   = useRef<number>(0);
     const prevTouchPos      = useRef<number>(0);
+    
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
@@ -666,7 +667,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             To workaround this problem, we *drop* a/some `listHandleTouchMove()` call when
             the previous `listHandleTouchMove()` is still awaiting `prepareScrolling()`.
         */
-        if (touchMoveBusy.current) return; // protect from incomplete async
+        if (isTouchMoveBusy.current) return; // protect from incomplete async
         
         if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
@@ -708,13 +709,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // detect if not already been shifted:
         if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
-            touchMoveBusy.current = true;
+            isTouchMoveBusy.current = true;
             try {
                 // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                 touchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
             }
             finally {
-                touchMoveBusy.current = false;
+                isTouchMoveBusy.current = false;
             } // try
         } // if
         
