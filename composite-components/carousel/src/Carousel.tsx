@@ -518,7 +518,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 slidingStatus.current = SlidingStatus.AutoScrolling;
                 
                 // snap scroll to the desired scrollIndex:
-                restScrollMomentum.current += (revertScrollLeftRelative / slideDistance);
+                restScrollMomentum.current = (revertScrollLeftRelative / slideDistance);
                 listElm.scrollTo({
                     left                     : revertScrollLeftAbsolute,
                     behavior                 : 'smooth',
@@ -983,7 +983,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             slidingStatus.current = SlidingStatus.AutoScrolling;
             
             // snap scroll to the desired scrollIndex:
-            restScrollMomentum.current += (futureScrollLeftRelative / slideDistance);
+            restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
             listElm.scrollTo({
                 left                     : futureScrollLeftAbsolute,
                 behavior                 : 'smooth',
