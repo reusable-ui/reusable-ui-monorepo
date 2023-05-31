@@ -321,7 +321,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return deltaScrollPos;
     };
     const isNearZeroScrollMomentum   = () => {
-        return Math.abs(restScrollMomentum.current) < 0.1;
+        return Math.abs(restScrollMomentum.current) < 0.1; // the precision is quite poor, it may be uncertain up to 0.05, so we set to 0.1 for a safer margin
     };
     
     // mutation functions:
