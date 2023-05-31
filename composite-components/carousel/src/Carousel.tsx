@@ -510,14 +510,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // if no movement => restore (scroll snap) to current index:
             
             // calculate the desired pos:
-            const revertScrollLeftAbsolute = currentItemIndex * getSlideDistance(listElm);
+            const slideDistance            = getSlideDistance(listElm);
+            const revertScrollLeftAbsolute = currentItemIndex * slideDistance;
             const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
             if (Math.abs(revertScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
-                // // mark the sliding status:
-                // slidingStatus.current = SlidingStatus.AutoScrolling;
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.AutoScrolling;
                 
                 // snap scroll to the desired scrollIndex:
-                restScrollMomentum.current += movementItemIndex;
+                restScrollMomentum.current += (revertScrollLeftRelative / slideDistance);
                 listElm.scrollTo({
                     left                     : revertScrollLeftAbsolute,
                     behavior                 : 'smooth',
