@@ -253,13 +253,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const prevScrollPos      = useRef<number>(0);
     const restScrollMomentum = useRef<number>(0);
     
+    const signalScrolled     = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
         AutoScrolling  = 2,
         FollowsPointer = 3,
     }
-    const slidingStatus     = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus      = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : 0,
@@ -325,15 +326,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // mutation functions:
     const setRelativeScrollPos       = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
-        const targetScrollPosMax        = targetListElm.scrollWidth - targetListElm.clientWidth;
-        const baseScrollPosMax          = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
-        const targetScale               = targetScrollPosMax / baseScrollPosMax;
-        const targetScrollPosScaled     = (baseListElm?.scrollLeft ?? 0) * targetScale;
-        const targetSlideDistance       = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
-        const targetScrollPosDiff       = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
-        const targetScrollPosOverflowed = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
-        const targetScrollPosPerioded   = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
-        const targetScrollPosWrapped    = (
+        const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
+        const baseScrollPosMax              = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
+        const targetScale                   = targetScrollPosMax / baseScrollPosMax;
+        const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
+        const targetSlideDistance           = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
+        const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
+        const targetScrollPosOverflowed     = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
+        const targetScrollPosPerioded       = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
+        const targetScrollPosWrapped        = (
             // range from 0 to `targetScrollPosMax`:
             Math.min(targetScrollPosPerioded, targetScrollPosMax)
             
@@ -348,22 +349,35 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 targetScrollPosMax  // will be used to scroll back from ending to beginning
             )
         );
+        const targetScrollPosWrappedRounded = Math.round(targetScrollPosWrapped); // no fractional pixel
         
         
         
-        // mark the sliding status:
-        const originSlidingStatus = slidingStatus.current;
-        if (originSlidingStatus === SlidingStatus.Passive) slidingStatus.current = SlidingStatus.Calibrate;
-        try {
-            targetListElm.scrollLeft = Math.round(targetScrollPosWrapped); // no fractional pixel
-            
-            // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
-            await new Promise<void>((resolved) => setTimeout(resolved, 0));
-        }
-        finally {
+        // adjustment:
+        if (Math.abs(targetListElm.scrollLeft - targetScrollPosWrappedRounded) >= _defaultScrollingPrecision) { // a significant movement detected
             // mark the sliding status:
-            slidingStatus.current = originSlidingStatus;
-        } // try
+            const originSlidingStatus = slidingStatus.current;
+            if (originSlidingStatus === SlidingStatus.Passive) slidingStatus.current = SlidingStatus.Calibrate;
+            try {
+                const promiseScrolled = (
+                    (targetListElm === listRefInternal.current)
+                    ? new Promise<void>((resolved) => {
+                        signalScrolled.current?.();        // invoke previous pending_callback (if any)
+                        signalScrolled.current = resolved; // setup a new pending_callback
+                    })
+                    : null
+                );
+                
+                targetListElm.scrollLeft = targetScrollPosWrappedRounded;
+                
+                // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
+                await promiseScrolled;
+            }
+            finally {
+                // mark the sliding status:
+                slidingStatus.current = originSlidingStatus;
+            } // try
+        } // if
     };
     const setRelativeShiftPos        = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
         // conditions:
@@ -828,6 +842,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     );
     
     const listHandleScroll         = useEvent<React.UIEventHandler<TElement>>(async (event) => {
+        // signals:
+        if (signalScrolled.current) {
+            signalScrolled.current();           // invoke previous pending_callback
+            signalScrolled.current = undefined; // reset pending_callback
+        } // if
+        
+        
+        
         // conditions:
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist for syncing
