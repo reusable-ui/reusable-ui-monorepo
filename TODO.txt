@@ -1,5 +1,4 @@
 [low prior ] add <Carousel> momentum scroll
-[med prior ] fix scrolling end detection when jumping from/to first_item to/from last_item, inconsistenly stucked in between`
 [med prior ] for infilite_loop mode => controllable set => figure out the nearest path between go_straight and go_teleport
 [low prior ] fix <Carousel> clipped tall slides on Firefox
 
