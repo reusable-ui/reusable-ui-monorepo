@@ -897,7 +897,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // accumulates scroll momentum:
         restScrollMomentum.current -= (deltaScrollPos / getSlideDistance(listElm));
-        console.log('rest scroll: ', restScrollMomentum.current);
+        console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
         
         
         
