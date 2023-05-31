@@ -968,13 +968,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
         const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
         if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
-            const futureScrollLeftRelative1px = Math.max(Math.min(futureScrollLeftRelative, 1), -1); // move max 1 pixel (-1|0|+1)
-            
             // mark the sliding status:
             slidingStatus.current = SlidingStatus.AutoScrolling;
-            
-            // make a non_zero fragment to de-confuse the scrolling end detection:
-            if (futureScrollLeftRelative1px && isExactScrollPos(listElm)) listElm.scrollLeft += futureScrollLeftRelative1px;
             
             // snap scroll to the desired scrollIndex:
             restScrollMomentum.current += (futureScrollLeftRelative / slideDistance);
