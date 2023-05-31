@@ -320,8 +320,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return deltaScrollPos;
     };
-    const isZeroScrollMomentum       = () => {
-        return Math.abs(restScrollMomentum.current) < 0.05;
+    const isNearZeroScrollMomentum   = () => {
+        return Math.abs(restScrollMomentum.current) < 0.1;
     };
     
     // mutation functions:
@@ -891,9 +891,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect the scrolling end:
-        if (!isExactScrollPos(listElm)) return; // still scrolling between steps   => wait for another scroll_step
-        if (!isZeroScrollMomentum())    return; // still having scrolling momentum => wait for another scroll_step
-        restScrollMomentum.current = 0;         // reset to true zero
+        if (!isExactScrollPos(listElm))  return; // still scrolling between steps   => wait for another scroll_step
+        if (!isNearZeroScrollMomentum()) return; // still having scrolling momentum => wait for another scroll_step
+        restScrollMomentum.current = 0;          // reset to true zero
         console.log('ZERO');
         
         
