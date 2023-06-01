@@ -252,6 +252,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const prevScrollPos      = useRef<number>(0);
     const restScrollMomentum = useRef<number>(0);
+    const ranScrollMomentum  = useRef<number>(0);
     
     const signalScrolled     = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
@@ -331,8 +332,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const targetScale                   = targetScrollPosMax / baseScrollPosMax;
         const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
         const targetSlideDistance           = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
-        const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance;                          // converts logical diff to physical diff
-        const targetScrollPosOverflowed     = targetScrollPosScaled + targetScrollPosDiff;                     // scroll pos + diff
+        const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
+        const targetScrollPosOverflowed     = (
+            // scroll pos:
+            targetScrollPosScaled
+            +
+            // diff:
+            targetScrollPosDiff
+            +
+            // progressing:
+            ((targetListElm === listRefInternal.current) ?
+                ranScrollMomentum.current * targetSlideDistance
+            : 0)
+        );
         const targetScrollPosPerioded       = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
         const targetScrollPosWrapped        = (
             // range from 0 to `targetScrollPosMax`:
@@ -901,7 +913,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // accumulates scroll momentum:
-        restScrollMomentum.current -= (deltaScrollPos / getSlideDistance(listElm));
+        const deltaScrollMomentum = (deltaScrollPos / getSlideDistance(listElm));
+        restScrollMomentum.current -= deltaScrollMomentum;
+        ranScrollMomentum.current  += deltaScrollMomentum;
         console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
         
         
@@ -910,6 +924,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!isExactScrollPos(listElm))  return; // still scrolling between steps   => wait for another scroll_step
         if (!isNearZeroScrollMomentum()) return; // still having scrolling momentum => wait for another scroll_step
         restScrollMomentum.current = 0;          // reset to true zero
+        ranScrollMomentum.current  = 0;          // completed => reset too
         console.log('ZERO');
         
         
