@@ -438,7 +438,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     
     // navigation functions:
-    const getOptimalIndexForMovement = (movementItemIndex: number) => {
+    const getOptimalIndexForMovement = (currentItemIndex: number|undefined, movementItemIndex: number) => {
         const maxItemIndex = (itemsCount - 1);
         if (maxItemIndex <= 0) return 0; // the listItems(s) are impossible to move => always return 0
         
@@ -447,7 +447,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             futureItemIndex,
         /*minItemIndex: */0), maxItemIndex);
         
-        const previousItemIndex        = clampedFutureItemIndex - movementItemIndex; // predict the past   index, regardless the range
+        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex /* === currentDummyItemIndex */ - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
+        const progressingScrollIndex       = normalizeShift(scrollIndex - dummyDiff.current);
+        const progressingMovementItemIndex = progressingScrollIndex - currentItemIndex;
+        
+        const previousItemIndex        = clampedFutureItemIndex - movementItemIndex - progressingMovementItemIndex; // predict the past index, regardless the range
         const clampedPreviousItemIndex = Math.min(Math.max(
             previousItemIndex,
         /*minItemIndex: */0), maxItemIndex);
@@ -464,7 +468,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep);
+        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep);
         
         
         
@@ -749,7 +753,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
+        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(undefined, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
             isTouchMoveBusy.current = true;
             try {
                 // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
@@ -897,7 +901,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // accumulates scroll momentum:
         restScrollMomentum.current -= (deltaScrollPos / getSlideDistance(listElm));
-        console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
+        // console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
         
         
         
@@ -905,7 +909,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!isExactScrollPos(listElm))  return; // still scrolling between steps   => wait for another scroll_step
         if (!isNearZeroScrollMomentum()) return; // still having scrolling momentum => wait for another scroll_step
         restScrollMomentum.current = 0;          // reset to true zero
-        console.log('ZERO');
+        // console.log('ZERO');
         
         
         
