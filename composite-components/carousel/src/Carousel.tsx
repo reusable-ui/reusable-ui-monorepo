@@ -606,13 +606,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // get the shown listItem's index by position:
-        let currentItemIndex = getNearestScrollIndex(listElm);
+        const currentItemIndex = getNearestScrollIndex(listElm);
         
         
         
         // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
-        let futureItemIndex = currentItemIndex - 1;
+        const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
+        let futureItemIndex = optimizedCurrentItemIndex - 1;
         if (futureItemIndex < 0) futureItemIndex = (itemsCount - 1); // scroll to the last slide (for non_infinite_loop)
         
         
@@ -620,7 +620,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scroll implementation:
         
         // scroll to previous neighbor step:
-        performScrolling(currentItemIndex, futureItemIndex);
+        performScrolling(optimizedCurrentItemIndex, futureItemIndex);
     });
     const handlePrevClick          = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
@@ -648,13 +648,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // get the shown listItem's index by position:
-        let currentItemIndex = getNearestScrollIndex(listElm);
+        const currentItemIndex = getNearestScrollIndex(listElm);
         
         
         
         // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        currentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
-        let futureItemIndex = currentItemIndex + 1;
+        const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
+        let futureItemIndex = optimizedCurrentItemIndex + 1;
         if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
         
         
@@ -662,7 +662,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scroll implementation:
         
         // scroll to next neighbor step:
-        performScrolling(currentItemIndex, futureItemIndex);
+        performScrolling(optimizedCurrentItemIndex, futureItemIndex);
     });
     const handleNextClick          = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
