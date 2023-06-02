@@ -725,7 +725,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             The *accumulative* and *asynchronous* of `listHandleTouchMove()` creates a *race_condition* thus
             makes the value of `touchedItemIndex.current` corrupted.
             
-            To workaround this problem, we *drop* a/some `listHandleTouchMove()` call when
+            To workaround this problem, we *await* the `listHandleTouchMove()` call when
             the previous `listHandleTouchMove()` is still awaiting `prepareScrolling()`.
         */
         if (promiseTouchMoveDone.current) { // protect from incomplete previous async
