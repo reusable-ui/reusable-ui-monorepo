@@ -241,27 +241,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // states:
-    const dummyDiff            = useRef<number>(0);
+    const dummyDiff                 = useRef<number>(0);
     
-    const touchedItemIndex     = useRef<number>(0);
-    const promiseTouchMoveDone = useRef<Promise<number>|undefined>(undefined);
+    const touchedItemIndex          = useRef<number>(0);
+    const optimizedTouchedItemIndex = useRef<number>(0);
     
-    const initialTouchTick     = useRef<number>(0);
-    const initialTouchPos      = useRef<number>(0);
-    const prevTouchPos         = useRef<number>(0);
+    const initialTouchTick          = useRef<number>(0);
+    const initialTouchPos           = useRef<number>(0);
+    const prevTouchPos              = useRef<number>(0);
     
-    const prevScrollPos        = useRef<number>(0);
-    const restScrollMomentum   = useRef<number>(0);
-    const ranScrollMomentum    = useRef<number>(0);
+    const prevScrollPos             = useRef<number>(0);
+    const restScrollMomentum        = useRef<number>(0);
+    const ranScrollMomentum         = useRef<number>(0);
     
-    const signalScrolled       = useRef<(() => void)|undefined>(undefined);
+    const signalScrolled            = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
         AutoScrolling  = 2,
         FollowsPointer = 3,
     }
-    const slidingStatus        = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : 0,
@@ -719,21 +719,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        /*
-            The `touchedItemIndex.current` is assigned by `listHandleTouchStart()`
-            and *accumulatively* processed by `listHandleTouchMove()` in *asynchronous* way.
-            
-            The *accumulative* and *asynchronous* of `listHandleTouchMove()` creates a *race_condition* thus
-            makes the value of `touchedItemIndex.current` corrupted.
-            
-            To workaround this problem, we *await* the `listHandleTouchMove()` call when
-            the previous `listHandleTouchMove()` is still awaiting `prepareScrolling()`.
-        */
-        if (promiseTouchMoveDone.current) { // protect from incomplete previous async
-            await promiseTouchMoveDone.current;
-            promiseTouchMoveDone.current = undefined; // mark as done
-        } // if
-        
         // TODO: delete
         // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
@@ -780,13 +765,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
             
             // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            promiseTouchMoveDone.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement);
-            try {
-                touchedItemIndex.current = await promiseTouchMoveDone.current;
-            }
-            finally {
-                promiseTouchMoveDone.current = undefined; // mark as done
-            } // try
+            optimizedTouchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
         } // if
         
         
@@ -841,15 +820,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
             // TODO: begin check new alg
-            const currentItemIndex = touchedItemIndex.current;
+            const optimizedCurrentItemIndex = optimizedTouchedItemIndex.current;
             
-            let futureItemIndex = currentItemIndex + 1;
+            let futureItemIndex = optimizedCurrentItemIndex + 1;
             if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
             
             
             // scroll to next neighbor step:
-            console.log('scrollTo: ', {from: currentItemIndex, to: futureItemIndex})
-            performScrolling(currentItemIndex, futureItemIndex);
+            console.log('scrollTo: ', {from: optimizedCurrentItemIndex, to: futureItemIndex})
+            performScrolling(optimizedCurrentItemIndex, futureItemIndex);
             
             
             
