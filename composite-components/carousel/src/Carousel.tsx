@@ -773,10 +773,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null)
-            // TODO: fix change detection alg
-            // && (touchedItemIndex.current !== getOptimalIndexForMovement(undefined, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))
-        ) {
+        if (isPositiveMovement !== null) {
             // TODO: remove log
             const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
             console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
@@ -849,6 +846,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // scroll to next neighbor step:
+            console.log('scrollTo: ', {from: currentItemIndex, to: futureItemIndex})
             performScrolling(currentItemIndex, futureItemIndex);
             
             
@@ -1037,6 +1035,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             slidingStatus.current = SlidingStatus.AutoScrolling;
             
             // snap scroll to the desired scrollIndex:
+            console.log((listElm.scrollLeft > futureScrollLeftAbsolute) ? 'ERROR: ' : 'OK: ', { current: listElm.scrollLeft, future: futureScrollLeftAbsolute, ran: ranScrollMomentum.current, rest: restScrollMomentum.current  });
             restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
             listElm.scrollTo({
                 left                     : futureScrollLeftAbsolute,
