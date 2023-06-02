@@ -241,27 +241,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // states:
-    const dummyDiff          = useRef<number>(0);
+    const dummyDiff            = useRef<number>(0);
     
-    const touchedItemIndex   = useRef<number>(0);
-    const isTouchMoveBusy    = useRef<boolean>(false);
+    const touchedItemIndex     = useRef<number>(0);
+    const promiseTouchMoveDone = useRef<Promise<number>|undefined>(undefined);
     
-    const initialTouchTick   = useRef<number>(0);
-    const initialTouchPos    = useRef<number>(0);
-    const prevTouchPos       = useRef<number>(0);
+    const initialTouchTick     = useRef<number>(0);
+    const initialTouchPos      = useRef<number>(0);
+    const prevTouchPos         = useRef<number>(0);
     
-    const prevScrollPos      = useRef<number>(0);
-    const restScrollMomentum = useRef<number>(0);
-    const ranScrollMomentum  = useRef<number>(0);
+    const prevScrollPos        = useRef<number>(0);
+    const restScrollMomentum   = useRef<number>(0);
+    const ranScrollMomentum    = useRef<number>(0);
     
-    const signalScrolled     = useRef<(() => void)|undefined>(undefined);
+    const signalScrolled       = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
         AutoScrolling  = 2,
         FollowsPointer = 3,
     }
-    const slidingStatus      = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus        = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : 0,
@@ -524,25 +524,26 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         if (!movementItemIndex) {
-            // if no movement => restore (scroll snap) to current index:
-            
-            // calculate the desired pos:
-            const slideDistance            = getSlideDistance(listElm);
-            const revertScrollLeftAbsolute = currentItemIndex * slideDistance;
-            const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
-            if (Math.abs(revertScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
-                // mark the sliding status:
-                slidingStatus.current = SlidingStatus.AutoScrolling;
-                
-                // snap scroll to the desired scrollIndex:
-                restScrollMomentum.current = (revertScrollLeftRelative / slideDistance);
-                listElm.scrollTo({
-                    left                     : revertScrollLeftAbsolute,
-                    behavior                 : 'smooth',
-                    
-                    [noInterceptMark as any] : undefined, // no intercept call hack
-                });
-            } // if
+            // TODO: uncomment
+            // // // if no movement => restore (scroll snap) to current index:
+            // // 
+            // // // calculate the desired pos:
+            // // const slideDistance            = getSlideDistance(listElm);
+            // // const revertScrollLeftAbsolute = currentItemIndex * slideDistance;
+            // // const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
+            // // if (Math.abs(revertScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
+            // //     // mark the sliding status:
+            // //     slidingStatus.current = SlidingStatus.AutoScrolling;
+            // //     
+            // //     // snap scroll to the desired scrollIndex:
+            // //     restScrollMomentum.current = (revertScrollLeftRelative / slideDistance);
+            // //     listElm.scrollTo({
+            // //         left                     : revertScrollLeftAbsolute,
+            // //         behavior                 : 'smooth',
+            // //         
+            // //         [noInterceptMark as any] : undefined, // no intercept call hack
+            // //     });
+            // // } // if
         }
         else {
             // update the scrollIndex (and re-render):
@@ -592,7 +593,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        // TODO: delete
+        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -633,7 +635,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        // TODO: delete
+        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -725,9 +728,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             To workaround this problem, we *drop* a/some `listHandleTouchMove()` call when
             the previous `listHandleTouchMove()` is still awaiting `prepareScrolling()`.
         */
-        if (isTouchMoveBusy.current) return; // protect from incomplete async
+        if (promiseTouchMoveDone.current) { // protect from incomplete previous async
+            await promiseTouchMoveDone.current;
+            promiseTouchMoveDone.current = undefined; // mark as done
+        } // if
         
-        if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
+        // TODO: delete
+        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -766,14 +773,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (touchedItemIndex.current !== getOptimalIndexForMovement(undefined, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
-            isTouchMoveBusy.current = true;
+        if ((isPositiveMovement !== null)
+            // TODO: fix change detection alg
+            // && (touchedItemIndex.current !== getOptimalIndexForMovement(undefined, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))
+        ) {
+            // TODO: remove log
+            const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
+            console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
+            
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            promiseTouchMoveDone.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement);
             try {
-                // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                touchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+                touchedItemIndex.current = await promiseTouchMoveDone.current;
             }
             finally {
-                isTouchMoveBusy.current = false;
+                promiseTouchMoveDone.current = undefined; // mark as done
             } // try
         } // if
         
@@ -784,8 +798,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // scroll implementation:
-        listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
+        // TODO: uncomment
+        // // // scroll implementation:
+        // // listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
@@ -826,29 +841,48 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
-            const restScrollToNeighbor = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
-            if (Math.abs(restScrollToNeighbor) >= _defaultScrollingPrecision) { // a significant movement detected
-                // scroll to nearest neighbor step:
-                performScrolling(undefined, Math.round((listElm.scrollLeft + restScrollToNeighbor) / listSlideDistance));
-                
-                
-                
-                return; // no need to *auto scroll completation*:
-            } // if
+            // TODO: begin check new alg
+            const currentItemIndex = touchedItemIndex.current;
+            
+            let futureItemIndex = currentItemIndex + 1;
+            if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
+            
+            
+            // scroll to next neighbor step:
+            performScrolling(currentItemIndex, futureItemIndex);
+            
+            
+            
+            return; // no need to *auto scroll completation*:
+            // TODO: end check new alg
+            
+            
+            
+            // TODO: remove old alg
+            // // const restScrollToNeighbor = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
+            // // if (Math.abs(restScrollToNeighbor) >= _defaultScrollingPrecision) { // a significant movement detected
+            // //     // scroll to nearest neighbor step:
+            // //     performScrolling(undefined, Math.round((listElm.scrollLeft + restScrollToNeighbor) / listSlideDistance));
+            // //     
+            // //     
+            // //     
+            // //     return; // no need to *auto scroll completation*:
+            // // } // if
         } // if
         
         
         
-        // the *auto scroll completation*:
-        // get the shown listItem's index by position:
-        if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
-            // scroll to nearest neighbor step:
-            performScrolling(undefined, getNearestScrollIndex(listElm));
-        }
-        else { // the listElm is in the exact_position => the sliding animation is completed
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.Passive;
-        } // if
+        // TODO: uncomment
+        // // // the *auto scroll completation*:
+        // // // get the shown listItem's index by position:
+        // // if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
+        // //     // scroll to nearest neighbor step:
+        // //     performScrolling(undefined, getNearestScrollIndex(listElm));
+        // // }
+        // // else { // the listElm is in the exact_position => the sliding animation is completed
+        // //     // mark the sliding status:
+        // //     slidingStatus.current = SlidingStatus.Passive;
+        // // } // if
     });
     const handleTouchEnd           = useMergeEvents(
         // preserves the original `onTouchEnd`:
