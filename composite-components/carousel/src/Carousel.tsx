@@ -822,7 +822,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // TODO: begin check new alg
             const optimizedCurrentItemIndex = optimizedTouchedItemIndex.current;
             
-            let futureItemIndex = optimizedCurrentItemIndex + 1;
+            let futureItemIndex = optimizedCurrentItemIndex + ((touchDirection >= 0) ? +1 : -1);
             if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
             
             
