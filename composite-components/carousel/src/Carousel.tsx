@@ -317,7 +317,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const oldScrollPos    = prevScrollPos.current;
         const newScrollPos    = listElm.scrollLeft;
         const deltaScrollPos  = newScrollPos - oldScrollPos;
-        prevScrollPos.current = newScrollPos; // update
+        prevScrollPos.current = newScrollPos; // update the pos change
         
         return deltaScrollPos;
     };
@@ -381,6 +381,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 );
                 
                 targetListElm.scrollLeft = targetScrollPosWrappedRounded;
+                if (targetListElm === listRefInternal.current) prevScrollPos.current = targetListElm.scrollLeft; // update the pos change
                 
                 // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
                 await promiseScrolled;
@@ -798,6 +799,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // TODO: uncomment
         // // // scroll implementation:
         // // listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
+        // // prevScrollPos.current = listElm.scrollLeft; // update the pos change
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
