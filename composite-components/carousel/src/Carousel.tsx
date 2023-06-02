@@ -759,7 +759,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // detect if not already been shifted:
-        if (isPositiveMovement !== null) {
+        if ((isPositiveMovement !== null) && (optimizedTouchedItemIndex.current !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
             // TODO: remove log
             const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
             console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
