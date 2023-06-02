@@ -244,7 +244,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const dummyDiff                 = useRef<number>(0);
     
     const touchedItemIndex          = useRef<number>(0);
-    const optimizedTouchedItemIndex = useRef<number>(0);
+    // const optimizedTouchedItemIndex = useRef<number>(0);
     
     const initialTouchTick          = useRef<number>(0);
     const initialTouchPos           = useRef<number>(0);
@@ -733,8 +733,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const oldTouchPos         = initialTouchPos.current;
         const newTouchPos         = event.touches[0].pageX;
         
-        const touchDirection      = initialTouchPos.current - prevTouchPos.current; // calculate the direction before updating the prev
-        const touchDirectionDelta = prevTouchPos.current - newTouchPos;             // calculate the direction before updating the prev
+        const touchDirection      = initialTouchPos.current - prevTouchPos.current; // a touch direction relative to initial touch
+        const touchDirectionDelta = prevTouchPos.current - newTouchPos;             // a touch direction relative to previous movement
         prevTouchPos.current      = newTouchPos;                                    // update the prev
         
         
@@ -746,27 +746,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // detect the movement direction:
-        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-        let isPositiveMovement : boolean|null = null;
-        if (newTouchPos > oldTouchPos) {      // move to right
-            isPositiveMovement = !isLtr;
-        }
-        else if (newTouchPos < oldTouchPos) { // move to left
-            isPositiveMovement = isLtr;
-        } // if
-        
-        
-        
-        // detect if not already been shifted:
-        if ((isPositiveMovement !== null) && (optimizedTouchedItemIndex.current !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep))) {
-            // TODO: remove log
-            const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
-            console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
-            
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            optimizedTouchedItemIndex.current = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
-        } // if
+        // TODO: fix buggy
+        // // // detect the movement direction:
+        // // const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        // // const isPositiveMovement = (touchDirection >= 0) === isLtr;
+        // // 
+        // // 
+        // // 
+        // // // detect if not already been shifted:
+        // // if (optimizedTouchedItemIndex.current /* cache */ !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep)) {
+        // //     // TODO: remove log
+        // //     const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
+        // //     console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
+        // //     
+        // //     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        // //     optimizedTouchedItemIndex.current /* cache */ = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+        // // } // if
         
         
         
@@ -812,12 +807,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // scroll implementation:
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
-        const touchDuration = performance.now() - initialTouchTick.current;
+        const touchDuration  = performance.now() - initialTouchTick.current;
         if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
-            // TODO: begin check new alg
-            const optimizedCurrentItemIndex = optimizedTouchedItemIndex.current;
+            // detect the movement direction:
+            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+            const isPositiveMovement = (touchDirection >= 0) === isLtr;
             
-            let futureItemIndex = optimizedCurrentItemIndex + ((touchDirection >= 0) ? +1 : -1);
+            
+            
+            // TODO: begin check new alg
+            const optimizedCurrentItemIndex = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+            
+            let futureItemIndex = optimizedCurrentItemIndex + (isPositiveMovement ? +1 : -1);
             if (futureItemIndex < 0) futureItemIndex = (itemsCount - 1); // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
             
