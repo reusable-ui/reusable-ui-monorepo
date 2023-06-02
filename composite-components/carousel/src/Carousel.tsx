@@ -810,11 +810,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // get the listItem's slide distance:
-        const listSlideDistance = getSlideDistance(listElm);
-        
-        
-        
         // scroll implementation:
         const touchDirection = initialTouchPos.current - prevTouchPos.current;
         const touchDuration = performance.now() - initialTouchTick.current;
