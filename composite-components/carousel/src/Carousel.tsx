@@ -597,9 +597,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        // TODO: delete
-        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
-        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
@@ -638,9 +635,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const handleNextClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        // TODO: delete
-        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -726,9 +720,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (promiseTouchMoveCompleted.current) {
             await promiseTouchMoveCompleted.current;
         } // if
-        
-        // TODO: delete
-        // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
