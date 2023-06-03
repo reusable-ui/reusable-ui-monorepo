@@ -543,6 +543,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             ));
         } // if
     };
+    const getIsPositiveMovement      = (touchDirection: number): boolean|undefined => {
+        const listElm = listRefInternal.current;
+        if (!listElm) return undefined; // listElm must be exist to measure
+        
+        
+        
+        // determine the positiveness based on lrt|rtl culture:
+        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        return (touchDirection > 0) === isLtr;
+    };
     
     
     
@@ -729,6 +739,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // a *minimum* holding_movement is required in order to perform hold_scroll action
         } // if
         
+        const isPositiveMovement = getIsPositiveMovement(touchDirection);
+        if (isPositiveMovement === undefined)                          return; // unknown movement => ignore
+        
         
         
         // mark the sliding status:
@@ -751,12 +764,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         ranScrollMomentum.current  = Math.min(Math.max( // limits to hold_scroll 1 slide (backward|forward)
             touchDirection / getSlideDistance(listElm),
         -1), 1);
-        
-        
-        
-        // detect the movement direction:
-        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-        const isPositiveMovement = (touchDirection >= 0) === isLtr;
         
         
         
@@ -821,11 +828,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // conditions:
             if (!(Math.abs(touchDirection) >= _defaultSwipeMovementThreshold)) return; // a *minimum* swipe_movement is required in order to perform swipe_scroll action
             
-            
-            
-            // detect the movement direction:
-            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-            const isPositiveMovement = (touchDirection >= 0) === isLtr;
+            const isPositiveMovement = getIsPositiveMovement(touchDirection);
+            if (isPositiveMovement === undefined)                              return; // unknown movement => ignore
             
             
             
