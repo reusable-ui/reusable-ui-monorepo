@@ -458,7 +458,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             previousItemIndex,
         /*minItemIndex: */0), maxItemIndex);
         
-        // console.log({prog: progressingScrollIndex, progMov: progressingMovementItemIndex, curr: currentItemIndex, past: previousItemIndex, pastC: clampedPreviousItemIndex, optim: clampedPreviousItemIndex, target: normalizeShift(scrollIndex + movementItemIndex) })
         return clampedPreviousItemIndex;
     };
     const prepareScrolling           = async (currentItemIndex: number, isPositiveMovement: boolean, preserveMomentum = true): Promise<number> => {
@@ -913,7 +912,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const deltaScrollMomentum = (deltaScrollPos / getSlideDistance(listElm));
         restScrollMomentum.current -= deltaScrollMomentum;
         ranScrollMomentum.current  += deltaScrollMomentum;
-        // console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
         
         
         
@@ -922,7 +920,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!isNearZeroScrollMomentum()) return; // still having scrolling momentum => wait for another scroll_step
         restScrollMomentum.current = 0;          // reset to true zero
         ranScrollMomentum.current  = 0;          // completed => reset too
-        // console.log('ZERO');
         
         
         
