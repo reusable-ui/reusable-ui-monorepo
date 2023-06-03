@@ -716,15 +716,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        // force the `handleTouchMoveInternal` runs in sequential order (wait if the previous `handleTouchMoveInternal` still running/awaiting process):
-        if (promiseTouchMoveCompleted.current) {
-            await promiseTouchMoveCompleted.current;
-        } // if
-        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
         if (event.touches.length !== 1) return; // ignore multi touches
+        
+        // force the `handleTouchMoveInternal` runs in sequential order (wait if the previous `handleTouchMoveInternal` still running/awaiting process):
+        if (promiseTouchMoveCompleted.current) {
+            await promiseTouchMoveCompleted.current;
+        } // if
         
         
         
