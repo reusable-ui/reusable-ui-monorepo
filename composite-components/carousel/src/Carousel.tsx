@@ -241,28 +241,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // states:
-    const dummyDiff                      = useRef<number>(0);
+    const dummyDiff                 = useRef<number>(0);
     
-    const touchedItemIndex               = useRef<number>(0);
-    const optimizedTouchedItemIndexCache = useRef<number>(-1);
-    const promiseTouchMoveCompleted      = useRef<Promise<number>|undefined>(undefined);
+    const touchedItemIndex          = useRef<number>(0);
+    const promiseTouchMoveCompleted = useRef<Promise<number>|undefined>(undefined);
     
-    const initialTouchTick               = useRef<number>(0);
-    const initialTouchPos                = useRef<number>(0);
-    const prevTouchPos                   = useRef<number>(0);
+    const initialTouchTick          = useRef<number>(0);
+    const initialTouchPos           = useRef<number>(0);
+    const prevTouchPos              = useRef<number>(0);
     
-    const prevScrollPos                  = useRef<number>(0);
-    const restScrollMomentum             = useRef<number>(0);
-    const ranScrollMomentum              = useRef<number>(0);
+    const prevScrollPos             = useRef<number>(0);
+    const restScrollMomentum        = useRef<number>(0);
+    const ranScrollMomentum         = useRef<number>(0);
     
-    const signalScrolled                 = useRef<(() => void)|undefined>(undefined);
+    const signalScrolled            = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
         AutoScrolling  = 2,
         FollowsPointer = 3,
     }
-    const slidingStatus                  = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : 0,
@@ -762,16 +761,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // detect if not already been shifted:
-        const optimalItemIndex = getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, false);
-        if (optimizedTouchedItemIndexCache.current !== optimalItemIndex) { // make sure the optimization only runs once for current slide position, thus not resetting the *temporary* `listElm.scrollLeft` by touch_dragging
-            optimizedTouchedItemIndexCache.current = optimalItemIndex;
-            
-            
-            
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        if (touchedItemIndex.current !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, false)) { // make sure the optimization runs as minimal as needed, so the transformation of `listElm.scrollLeft +=` preserved
             promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
-            await promiseTouchMoveCompleted.current;
+            touchedItemIndex.current = await promiseTouchMoveCompleted.current;
             promiseTouchMoveCompleted.current = undefined;
         } // if
         
@@ -782,10 +775,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // TODO: uncomment
-        // // // scroll implementation:
-        // // listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
-        // // prevScrollPos.current = listElm.scrollLeft; // update the pos change
+        // scroll implementation:
+        listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
+        prevScrollPos.current = listElm.scrollLeft; // update the pos change
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
@@ -827,7 +819,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
-            // TODO: begin check new alg
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
             const optimizedCurrentItemIndex = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
             
             let futureItemIndex = optimizedCurrentItemIndex + (isPositiveMovement ? +1 : -1);
@@ -835,42 +827,30 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
             
             
-            // scroll to next neighbor step:
-            console.log('scrollTo: ', {from: optimizedCurrentItemIndex, to: futureItemIndex})
+            
+            // scroll implementation:
+            
+            // scroll to previous|next neighbor step:
             performScrolling(optimizedCurrentItemIndex, futureItemIndex);
             
             
             
             return; // no need to *auto scroll completation*:
-            // TODO: end check new alg
-            
-            
-            
-            // TODO: remove old alg
-            // // const restScrollToNeighbor = calculateScrollLimit(listSlideDistance * ((touchDirection > 0) ? 1 : -1));
-            // // if (Math.abs(restScrollToNeighbor) >= _defaultScrollingPrecision) { // a significant movement detected
-            // //     // scroll to nearest neighbor step:
-            // //     performScrolling(undefined, Math.round((listElm.scrollLeft + restScrollToNeighbor) / listSlideDistance));
-            // //     
-            // //     
-            // //     
-            // //     return; // no need to *auto scroll completation*:
-            // // } // if
         } // if
         
         
         
-        // TODO: uncomment
-        // // // the *auto scroll completation*:
-        // // // get the shown listItem's index by position:
-        // // if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
-        // //     // scroll to nearest neighbor step:
-        // //     performScrolling(undefined, getNearestScrollIndex(listElm));
-        // // }
-        // // else { // the listElm is in the exact_position => the sliding animation is completed
-        // //     // mark the sliding status:
-        // //     slidingStatus.current = SlidingStatus.Passive;
-        // // } // if
+        // TODO: fix this
+        // the *auto scroll completation*:
+        // get the shown listItem's index by position:
+        if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
+            // scroll to nearest neighbor step:
+            performScrolling(undefined, getNearestScrollIndex(listElm));
+        }
+        else { // the listElm is in the exact_position => the sliding animation is completed
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.Passive;
+        } // if
     });
     const handleTouchEnd           = useMergeEvents(
         // preserves the original `onTouchEnd`:
