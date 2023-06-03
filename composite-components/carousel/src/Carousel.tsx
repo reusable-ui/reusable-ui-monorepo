@@ -98,7 +98,7 @@ const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
 
 const _defaultSlideThreshold         : number = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
 const _defaultSwipeMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
-const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action
+const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
 
 const _defaultScrollingPrecision     : number = 0.5 /* pixel */
 
@@ -297,20 +297,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const getNearestScrollIndex      = (listElm: TElement) => {
         return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
-    };
-    const calculateScrollLimit       = (deltaScroll: number) => {
-        // conditions:
-        const listElm = listRefInternal.current;
-        if (!listElm) return deltaScroll; // listElm must be exist to manipulate
-        
-        
-        
-        const listSlideDistance = getSlideDistance(listElm);
-        const limitedScrollMin  = ((touchedItemIndex.current - 1) * listSlideDistance) - listElm.scrollLeft;
-        const limitedScrollMax  = ((touchedItemIndex.current + 1) * listSlideDistance) - listElm.scrollLeft;
-        return Math.min(Math.max(
-            deltaScroll,
-        limitedScrollMin), limitedScrollMax);
     };
     const measureScrollDelta         = (listElm: TElement) => {
         // logs:
@@ -728,12 +714,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // track the touch pos direction:
-        const oldTouchPos         = initialTouchPos.current;
-        const newTouchPos         = event.touches[0].pageX;
+        const newTouchPos    = event.touches[0].pageX;
         
-        const touchDirection      = initialTouchPos.current - prevTouchPos.current; // a touch direction relative to initial touch
-        const touchDirectionDelta = prevTouchPos.current - newTouchPos;             // a touch direction relative to previous movement
-        prevTouchPos.current      = newTouchPos;                                    // update the prev
+        const touchDirection = initialTouchPos.current - prevTouchPos.current; // a touch direction relative to initial touch
+        prevTouchPos.current = newTouchPos;                                    // update the prev
         
         
         
@@ -744,30 +728,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // TODO: fix buggy
-        // detect the movement direction:
-        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-        const isPositiveMovement = (touchDirection >= 0) === isLtr;
-        
-        
-        
-        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        if (touchedItemIndex.current !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, false)) { // make sure the optimization runs as minimal as needed, so the transformation of `listElm.scrollLeft +=` preserved
+        // hold_scroll implementation:
+        const touchDuration = performance.now() - initialTouchTick.current;
+        if (touchDuration > _defaultSwipeDurationThreshold) {
+            // detect the movement direction:
+            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+            const isPositiveMovement = (touchDirection >= 0) === isLtr;
+            
+            
+            
+            // customize the momentum:
+            restScrollMomentum.current = 0;
+            ranScrollMomentum.current  = Math.min(Math.max( // limits to hold_scroll 1 slide (backward|forward)
+                touchDirection / getSlideDistance(listElm),
+            -1), 1);
+            
+            
+            
+            // hold_scroll implementation:
             promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
             touchedItemIndex.current = await promiseTouchMoveCompleted.current;
             promiseTouchMoveCompleted.current = undefined;
+            
+            
+            
+            // mark the sliding status:
+            slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
         } // if
-        
-        
-        
-        // mark the sliding status:
-        slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
-        
-        
-        
-        // scroll implementation:
-        listElm.scrollLeft += calculateScrollLimit(touchDirectionDelta);
-        prevScrollPos.current = listElm.scrollLeft; // update the pos change
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
