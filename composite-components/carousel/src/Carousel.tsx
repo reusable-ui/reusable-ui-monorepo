@@ -829,35 +829,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
-            if (
-                ( isPositiveMovement && (restScrollMomentum.current < 0))
-                ||
-                (!isPositiveMovement && (restScrollMomentum.current > 0))
-            ) {
-                // stop the running scrolling:
-                listElm.scrollTo({
-                    left                     : listElm.scrollLeft, // scroll to current scroll position itself
-                    behavior                 : 'auto',
-                    
-                    [noInterceptMark as any] : undefined, // no intercept call hack
-                });
-                
-                
-                
-                // customize the momentum:
-                const unappliedScrollMomentum = restScrollMomentum.current;
-                const progressingScrollIndex  = normalizeShift(scrollIndex - dummyDiff.current);
-                const appliedScrollIndex      = progressingScrollIndex - unappliedScrollMomentum;
-                const nextDestScrollIndex     = isPositiveMovement ? Math.ceil(appliedScrollIndex) : Math.floor(appliedScrollIndex);
-                const nextMovementScrollIndex = nextDestScrollIndex - appliedScrollIndex;
-                
-                restScrollMomentum.current    = nextMovementScrollIndex;
-                ranScrollMomentum.current     = 0;
-                return; // TODO: completing the action
-            } // if
-            
-            
-            
             // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
             const optimizedCurrentItemIndex = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
             
