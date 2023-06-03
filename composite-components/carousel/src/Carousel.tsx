@@ -96,13 +96,16 @@ const _defaultPrevButtonClasses      : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses      : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
 
-const _defaultSlideThreshold         : number = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
-const _defaultSwipeMovementThreshold : number = 20  /* pixel */         // the minimum distance to considered swiping_action
-const _defaultSwipeDurationThreshold : number = 300 /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
+const _defaultSlideThreshold         : number  = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
+const _defaultSwipeMovementThreshold : number  = 20  /* pixel */         // the minimum distance to considered swiping_action
+const _defaultSwipeDurationThreshold : number  = 300 /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
 
-const _defaultScrollingPrecision     : number = 0.5 /* pixel */
+const _defaultScrollingPrecision     : number  = 0.5 /* pixel */
 
-const _defaultMovementStep           : number = 1   /* step(s) */
+const _defaultMovementStep           : number  = 1   /* step(s) */
+
+const _defaultScrollMomentumAccum    : boolean = true
+const _defaultScrollMomentumWeight   : number  = 0
 
 
 
@@ -143,18 +146,24 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
         NavscrollComponentProps<Element>
 {
     // refs:
-    scrollingRef        ?: React.Ref<TElement> // setter ref
+    scrollingRef         ?: React.Ref<TElement> // setter ref
+    
+    
+    
+    // scrolls:
+    scrollMomentumAccum  ?: boolean
+    scrollMomentumWeight ?: number
     
     
     
     // components:
-    prevButtonComponent ?: ButtonComponentProps['buttonComponent']
-    nextButtonComponent ?: ButtonComponentProps['buttonComponent']
+    prevButtonComponent  ?: ButtonComponentProps['buttonComponent']
+    nextButtonComponent  ?: ButtonComponentProps['buttonComponent']
     
     
     
     // children:
-    children            ?: React.ReactNode
+    children             ?: React.ReactNode
 }
 const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>(props: CarouselProps<TElement, TScrollIndexChangeEvent>): JSX.Element|null => {
     // styles:
@@ -182,6 +191,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // variants:
         infiniteLoop : _infiniteLoop, // remove
+        
+        
+        
+        // scrolls:
+        scrollMomentumAccum  = _defaultScrollMomentumAccum,
+        scrollMomentumWeight = _defaultScrollMomentumWeight,
         
         
         
@@ -594,6 +609,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
+        if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
+        
         // all necessary task will be performed, no further action needed:
         event.preventDefault();
         
@@ -632,6 +649,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
+        
+        if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
         
         // all necessary task will be performed, no further action needed:
         event.preventDefault();
@@ -818,6 +837,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // if
         }
         else {
+            // conditions:
+            if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
+            
+            
+            
             // track the touch pos direction:
             const touchDirection = initialTouchPos.current - prevTouchPos.current;
             
