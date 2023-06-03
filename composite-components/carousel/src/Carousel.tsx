@@ -256,10 +256,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const signalScrolled            = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
-        Passive        = 0,
-        Calibrate      = 1,
-        AutoScrolling  = 2,
-        FollowsPointer = 3,
+        Passive       = 0,
+        Calibrate     = 1,
+        AutoScrolling = 2,
+        HoldScroll    = 3,
     }
     const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
     
@@ -722,7 +722,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.FollowsPointer) {
+        if (slidingStatus.current !== SlidingStatus.HoldScroll) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
         } // if
         
@@ -731,9 +731,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // hold_scroll implementation:
         const touchDuration = performance.now() - initialTouchTick.current;
         if (touchDuration > _defaultSwipeDurationThreshold) {
-            // detect the movement direction:
-            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-            const isPositiveMovement = (touchDirection >= 0) === isLtr;
+            // stop the running scrolling:
+            listElm.scrollTo({
+                left                     : listElm.scrollLeft, // scroll to current scroll position itself
+                behavior                 : 'auto',
+                
+                [noInterceptMark as any] : undefined, // no intercept call hack
+            });
             
             
             
@@ -745,6 +749,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
+            // detect the movement direction:
+            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+            const isPositiveMovement = (touchDirection >= 0) === isLtr;
+            
+            
+            
             // hold_scroll implementation:
             promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
             touchedItemIndex.current = await promiseTouchMoveCompleted.current;
@@ -753,7 +763,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // mark the sliding status:
-            slidingStatus.current = SlidingStatus.FollowsPointer; // the slide distance is long enough => start a sliding_action
+            slidingStatus.current = SlidingStatus.HoldScroll; // mark as hold_scroll action
         } // if
     });
     const handleTouchMove          = useMergeEvents(
@@ -777,7 +787,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.FollowsPointer) return; // only process `FollowsPointer`
+        if (slidingStatus.current !== SlidingStatus.HoldScroll) return; // only process `HoldScroll`
         
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
@@ -869,7 +879,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.FollowsPointer)) return; // only process `AutoScrolling`|`FollowsPointer` state
+        if ((slidingStatus.current !== SlidingStatus.AutoScrolling) && (slidingStatus.current !== SlidingStatus.HoldScroll)) return; // only process `AutoScrolling`|`HoldScroll` state
         
         
         
