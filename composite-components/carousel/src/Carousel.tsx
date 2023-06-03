@@ -723,10 +723,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // conditions:
         const touchDuration = performance.now() - initialTouchTick.current;
-        if (!(touchDuration > _defaultSwipeDurationThreshold)) return;
+        if (!(touchDuration > _defaultSwipeDurationThreshold))         return; // a *minimum* holding_duration is required in order to perform hold_scroll action
         
-        if (slidingStatus.current !== SlidingStatus.HoldScroll) {
-            if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
+        if (slidingStatus.current !== SlidingStatus.HoldScroll) {              // if not already having hold_scroll action
+            if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // a *minimum* holding_movement is required in order to perform hold_scroll action
         } // if
         
         
@@ -786,8 +786,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if (slidingStatus.current !== SlidingStatus.HoldScroll) return; // only process `HoldScroll`
-        
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
@@ -795,10 +793,36 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // scroll implementation:
-        const touchDirection = initialTouchPos.current - prevTouchPos.current;
-        const touchDuration  = performance.now() - initialTouchTick.current;
-        if ((Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) && (touchDuration <= _defaultSwipeDurationThreshold)) {
+        if (slidingStatus.current === SlidingStatus.HoldScroll) {
+            // unmark the sliding status:
+            slidingStatus.current = SlidingStatus.Passive; // mark as free
+            
+            
+            
+            // hold_scroll implementation:
+            // the *auto scroll completation*:
+            
+            // get the shown listItem's index by position:
+            if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
+                // scroll to nearest neighbor step:
+                performScrolling(undefined, getNearestScrollIndex(listElm));
+            }
+            else { // the listElm is in the exact_position => the sliding animation is completed
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.Passive;
+            } // if
+        }
+        else {
+            // track the touch pos direction:
+            const touchDirection = initialTouchPos.current - prevTouchPos.current;
+            
+            
+            
+            // conditions:
+            if (!(Math.abs(touchDirection) >= _defaultSwipeMovementThreshold)) return; // a *minimum* swipe_movement is required in order to perform swipe_scroll action
+            
+            
+            
             // detect the movement direction:
             const isLtr = (getComputedStyle(listElm).direction === 'ltr');
             const isPositiveMovement = (touchDirection >= 0) === isLtr;
@@ -814,28 +838,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
-            // scroll implementation:
+            // swipe_scroll implementation:
             
             // scroll to previous|next neighbor step:
             performScrolling(optimizedCurrentItemIndex, futureItemIndex);
-            
-            
-            
-            return; // no need to *auto scroll completation*:
-        } // if
-        
-        
-        
-        // TODO: fix this
-        // the *auto scroll completation*:
-        // get the shown listItem's index by position:
-        if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
-            // scroll to nearest neighbor step:
-            performScrolling(undefined, getNearestScrollIndex(listElm));
-        }
-        else { // the listElm is in the exact_position => the sliding animation is completed
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.Passive;
         } // if
     });
     const handleTouchEnd           = useMergeEvents(
