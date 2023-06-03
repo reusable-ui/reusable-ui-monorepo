@@ -105,7 +105,7 @@ const _defaultScrollingPrecision     : number  = 0.5 /* pixel */
 const _defaultMovementStep           : number  = 1   /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
-const _defaultScrollMomentumWeight   : number  = 0
+const _defaultScrollMomentumWeight   : number  = 1
 
 
 
@@ -857,14 +857,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (isScrollMomentumReachesLimit(touchedItemIndex.current)) return; // the accumulation of scroll momentum had reached the limit => ignore
             
             const isPositiveMovement = getIsPositiveMovement(touchDirection);
-            if (isPositiveMovement === undefined)                              return; // unknown movement => ignore
+            if (isPositiveMovement === undefined) return; // unknown movement => ignore
+            
+            
+            
+            // calculate the scroll accelaration:
+            const touchDuration      = performance.now() - initialTouchTick.current;
+            const touchVelocity      = Math.abs(touchDirection) / touchDuration;
+            const scrollAccelaration = touchVelocity * scrollMomentumWeight;
             
             
             
             // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
             const optimizedCurrentItemIndex = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
             
-            let futureItemIndex = optimizedCurrentItemIndex + (isPositiveMovement ? +1 : -1);
+            let futureItemIndex = (
+                optimizedCurrentItemIndex
+                +
+                (
+                    (Math.round(
+                        Math.min(Math.max( // limits the step to min=1, max=(itemCount - 1)
+                            scrollAccelaration,
+                        1), (itemsCount - 1))
+                    )
+                    *
+                    (isPositiveMovement ? +1 : -1))
+                )
+            );
             if (futureItemIndex < 0) futureItemIndex = (itemsCount - 1); // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
             
