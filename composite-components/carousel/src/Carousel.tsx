@@ -241,27 +241,28 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // states:
-    const dummyDiff                 = useRef<number>(0);
+    const dummyDiff                      = useRef<number>(0);
     
-    const touchedItemIndex          = useRef<number>(0);
-    // const optimizedTouchedItemIndex = useRef<number>(0);
+    const touchedItemIndex               = useRef<number>(0);
+    const optimizedTouchedItemIndexCache = useRef<number>(-1);
+    const promiseTouchMoveCompleted      = useRef<Promise<number>|undefined>(undefined);
     
-    const initialTouchTick          = useRef<number>(0);
-    const initialTouchPos           = useRef<number>(0);
-    const prevTouchPos              = useRef<number>(0);
+    const initialTouchTick               = useRef<number>(0);
+    const initialTouchPos                = useRef<number>(0);
+    const prevTouchPos                   = useRef<number>(0);
     
-    const prevScrollPos             = useRef<number>(0);
-    const restScrollMomentum        = useRef<number>(0);
-    const ranScrollMomentum         = useRef<number>(0);
+    const prevScrollPos                  = useRef<number>(0);
+    const restScrollMomentum             = useRef<number>(0);
+    const ranScrollMomentum              = useRef<number>(0);
     
-    const signalScrolled            = useRef<(() => void)|undefined>(undefined);
+    const signalScrolled                 = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive        = 0,
         Calibrate      = 1,
         AutoScrolling  = 2,
         FollowsPointer = 3,
     }
-    const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus                  = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : 0,
@@ -451,7 +452,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     
     // navigation functions:
-    const getOptimalIndexForMovement = (currentItemIndex: number|undefined, movementItemIndex: number) => {
+    const getOptimalIndexForMovement = (currentItemIndex: number|undefined, movementItemIndex: number, preserveMomentum = true) => {
         const maxItemIndex = (itemsCount - 1);
         if (maxItemIndex <= 0) return 0; // the listItems(s) are impossible to move => always return 0
         
@@ -460,19 +461,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             futureItemIndex,
         /*minItemIndex: */0), maxItemIndex);
         
-        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex /* === currentDummyItemIndex */ - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
-        const progressingScrollIndex       = normalizeShift(scrollIndex - dummyDiff.current);
-        const progressingMovementItemIndex = progressingScrollIndex - currentItemIndex;
+        let progressingMovementItemIndex = 0;
+        if (preserveMomentum) {
+            if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex /* === currentDummyItemIndex */ - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
+            const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
+            progressingMovementItemIndex = progressingScrollIndex - currentItemIndex;
+        } // if
         
         const previousItemIndex        = clampedFutureItemIndex - movementItemIndex - progressingMovementItemIndex; // predict the past index, regardless the range
         const clampedPreviousItemIndex = Math.min(Math.max(
             previousItemIndex,
         /*minItemIndex: */0), maxItemIndex);
         
-        console.log({prog: progressingMovementItemIndex, past: previousItemIndex, pastC: clampedPreviousItemIndex, optim: clampedPreviousItemIndex, target: normalizeShift(scrollIndex + movementItemIndex) })
+        // console.log({prog: progressingScrollIndex, progMov: progressingMovementItemIndex, curr: currentItemIndex, past: previousItemIndex, pastC: clampedPreviousItemIndex, optim: clampedPreviousItemIndex, target: normalizeShift(scrollIndex + movementItemIndex) })
         return clampedPreviousItemIndex;
     };
-    const prepareScrolling           = async (currentItemIndex: number, isPositiveMovement: boolean): Promise<number> => {
+    const prepareScrolling           = async (currentItemIndex: number, isPositiveMovement: boolean, preserveMomentum = true): Promise<number> => {
         // conditions:
         if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
         
@@ -482,7 +486,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep);
+        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, preserveMomentum);
         
         
         
@@ -719,6 +723,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
+        // force the `handleTouchMoveInternal` runs in sequential order (wait if the previous `handleTouchMoveInternal` still running/awaiting process):
+        if (promiseTouchMoveCompleted.current) {
+            await promiseTouchMoveCompleted.current;
+        } // if
+        
         // TODO: delete
         // if (slidingStatus.current === SlidingStatus.AutoScrolling) return; // protect from messy scrolling
         
@@ -747,21 +756,24 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // TODO: fix buggy
-        // // // detect the movement direction:
-        // // const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-        // // const isPositiveMovement = (touchDirection >= 0) === isLtr;
-        // // 
-        // // 
-        // // 
-        // // // detect if not already been shifted:
-        // // if (optimizedTouchedItemIndex.current /* cache */ !== getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep)) {
-        // //     // TODO: remove log
-        // //     const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
-        // //     console.log({ ran: ranScrollMomentum.current, restMomentum: restScrollMomentum.current, progress: progressingScrollIndex, touchIndex: touchedItemIndex.current })
-        // //     
-        // //     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        // //     optimizedTouchedItemIndex.current /* cache */ = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
-        // // } // if
+        // detect the movement direction:
+        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        const isPositiveMovement = (touchDirection >= 0) === isLtr;
+        
+        
+        
+        // detect if not already been shifted:
+        const optimalItemIndex = getOptimalIndexForMovement(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, false);
+        if (optimizedTouchedItemIndexCache.current !== optimalItemIndex) { // make sure the optimization only runs once for current slide position, thus not resetting the *temporary* `listElm.scrollLeft` by touch_dragging
+            optimizedTouchedItemIndexCache.current = optimalItemIndex;
+            
+            
+            
+            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
+            await promiseTouchMoveCompleted.current;
+            promiseTouchMoveCompleted.current = undefined;
+        } // if
         
         
         
@@ -926,7 +938,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const deltaScrollMomentum = (deltaScrollPos / getSlideDistance(listElm));
         restScrollMomentum.current -= deltaScrollMomentum;
         ranScrollMomentum.current  += deltaScrollMomentum;
-        console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
+        // console.log('rest momentum: ', restScrollMomentum.current.toFixed(4));
         
         
         
@@ -935,7 +947,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!isNearZeroScrollMomentum()) return; // still having scrolling momentum => wait for another scroll_step
         restScrollMomentum.current = 0;          // reset to true zero
         ranScrollMomentum.current  = 0;          // completed => reset too
-        console.log('ZERO');
+        // console.log('ZERO');
         
         
         
@@ -1013,7 +1025,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             slidingStatus.current = SlidingStatus.AutoScrolling;
             
             // snap scroll to the desired scrollIndex:
-            console.log((listElm.scrollLeft > futureScrollLeftAbsolute) ? 'ERROR: ' : 'OK: ', { current: listElm.scrollLeft, future: futureScrollLeftAbsolute, ran: ranScrollMomentum.current, rest: restScrollMomentum.current  });
+            // console.log((listElm.scrollLeft > futureScrollLeftAbsolute) ? 'ERROR: ' : 'OK: ', { current: listElm.scrollLeft, future: futureScrollLeftAbsolute, ran: ranScrollMomentum.current, rest: restScrollMomentum.current  });
             restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
             listElm.scrollTo({
                 left                     : futureScrollLeftAbsolute,
