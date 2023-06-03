@@ -768,7 +768,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // hold_scroll implementation:
-        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
+        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, /*preserveMomentum = */false);
         touchedItemIndex.current = await promiseTouchMoveCompleted.current;
         promiseTouchMoveCompleted.current = undefined;
     });
@@ -807,9 +807,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // hold_scroll implementation:
-            // the *auto scroll completation*:
             
-            // get the shown listItem's index by position:
+            // the *auto scroll completation*:
             if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
                 // scroll to nearest neighbor step:
                 performScrolling(undefined, getNearestScrollIndex(listElm));
