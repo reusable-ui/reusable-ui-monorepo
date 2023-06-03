@@ -722,49 +722,48 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
+        const touchDuration = performance.now() - initialTouchTick.current;
+        if (!(touchDuration > _defaultSwipeDurationThreshold)) return;
+        
         if (slidingStatus.current !== SlidingStatus.HoldScroll) {
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // the slide distance is too small => not considered a sliding_action
         } // if
         
         
         
+        // mark the sliding status:
+        slidingStatus.current = SlidingStatus.HoldScroll; // mark as hold_scroll action
+        
+        
+        
+        // stop the running scrolling:
+        listElm.scrollTo({
+            left                     : listElm.scrollLeft, // scroll to current scroll position itself
+            behavior                 : 'auto',
+            
+            [noInterceptMark as any] : undefined, // no intercept call hack
+        });
+        
+        
+        
+        // customize the momentum:
+        restScrollMomentum.current = 0;
+        ranScrollMomentum.current  = Math.min(Math.max( // limits to hold_scroll 1 slide (backward|forward)
+            touchDirection / getSlideDistance(listElm),
+        -1), 1);
+        
+        
+        
+        // detect the movement direction:
+        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        const isPositiveMovement = (touchDirection >= 0) === isLtr;
+        
+        
+        
         // hold_scroll implementation:
-        const touchDuration = performance.now() - initialTouchTick.current;
-        if (touchDuration > _defaultSwipeDurationThreshold) {
-            // stop the running scrolling:
-            listElm.scrollTo({
-                left                     : listElm.scrollLeft, // scroll to current scroll position itself
-                behavior                 : 'auto',
-                
-                [noInterceptMark as any] : undefined, // no intercept call hack
-            });
-            
-            
-            
-            // customize the momentum:
-            restScrollMomentum.current = 0;
-            ranScrollMomentum.current  = Math.min(Math.max( // limits to hold_scroll 1 slide (backward|forward)
-                touchDirection / getSlideDistance(listElm),
-            -1), 1);
-            
-            
-            
-            // detect the movement direction:
-            const isLtr = (getComputedStyle(listElm).direction === 'ltr');
-            const isPositiveMovement = (touchDirection >= 0) === isLtr;
-            
-            
-            
-            // hold_scroll implementation:
-            promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
-            touchedItemIndex.current = await promiseTouchMoveCompleted.current;
-            promiseTouchMoveCompleted.current = undefined;
-            
-            
-            
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.HoldScroll; // mark as hold_scroll action
-        } // if
+        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, false);
+        touchedItemIndex.current = await promiseTouchMoveCompleted.current;
+        promiseTouchMoveCompleted.current = undefined;
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
