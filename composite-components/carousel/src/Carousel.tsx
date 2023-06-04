@@ -1065,7 +1065,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     const isPositiveMovement = (teleNextDistance < telePrevDistance);
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, isPositiveMovement);
+                    const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, isPositiveMovement, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                     
                     
