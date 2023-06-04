@@ -457,7 +457,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         preserveMomentum ?: boolean
         scrollIndex      ?: number
     }
-    const getOptimalIndexForMovement      = (currentItemIndex: number|undefined, movementItemIndex: number, options?: MovementOptions) => {
+    const getOptimalIndexForMovement      = (currentItemIndex: number|undefined, movementItemIndex: number, options?: MovementOptions): number => {
         // options:
         const {
             preserveMomentum = true,
@@ -466,13 +466,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        const minItemIndex = 0;
         const maxItemIndex = (itemsCount - 1);
-        if (maxItemIndex <= 0) return 0; // the listItems(s) are impossible to move => always return 0
+        if (maxItemIndex <= minItemIndex) return currentItemIndex ?? normalizeShift(indicatorItemIndex - dummyDiff.current); // the listItems(s) are impossible to move => always return the unoptimized
         
         const futureItemIndex          = indicatorItemIndex     + movementItemIndex; // predict the future index, regardless the range
         const clampedFutureItemIndex   = Math.min(Math.max(
             futureItemIndex,
-        /*minItemIndex: */0), maxItemIndex);
+        minItemIndex), maxItemIndex);
         
         let progressingMovementItemIndex = 0;
         if (preserveMomentum) {
@@ -483,7 +484,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const previousItemIndex        = clampedFutureItemIndex - movementItemIndex - progressingMovementItemIndex; // predict the past index, regardless the range
         const clampedPreviousItemIndex = Math.min(Math.max(
             previousItemIndex,
-        /*minItemIndex: */0), maxItemIndex);
+        minItemIndex), maxItemIndex);
         
         return clampedPreviousItemIndex;
     };
