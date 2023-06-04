@@ -641,9 +641,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */false);
-        let futureItemIndex = optimizedCurrentItemIndex - 1;
+        // update current slide index:
+        let futureItemIndex = currentItemIndex - 1;
         if (futureItemIndex < 0) futureItemIndex = (itemsCount - 1); // scroll to the last slide (for non_infinite_loop)
         
         
@@ -651,7 +650,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scroll implementation:
         
         // scroll to previous neighbor step:
-        performScrolling(optimizedCurrentItemIndex, futureItemIndex);
+        performScrolling(currentItemIndex, futureItemIndex);
     });
     const handlePrevClick          = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
@@ -682,9 +681,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-        const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, /*isPositiveMovement = */true);
-        let futureItemIndex = optimizedCurrentItemIndex + 1;
+        // update current slide index:
+        let futureItemIndex = currentItemIndex + 1;
         if (futureItemIndex > (itemsCount - 1)) futureItemIndex = 0; // scroll to the first slide (for non_infinite_loop)
         
         
@@ -692,7 +690,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scroll implementation:
         
         // scroll to next neighbor step:
-        performScrolling(optimizedCurrentItemIndex, futureItemIndex);
+        performScrolling(currentItemIndex, futureItemIndex);
     });
     const handleNextClick          = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
@@ -881,11 +879,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
-            // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            const optimizedCurrentItemIndex = await prepareScrolling(touchedItemIndex.current, isPositiveMovement);
+            // update current slide index:
+            const currentItemIndex = touchedItemIndex.current;
             
             let futureItemIndex = (
-                optimizedCurrentItemIndex
+                currentItemIndex
                 +
                 (
                     (Math.round(
@@ -905,7 +903,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // swipe_scroll implementation:
             
             // scroll to previous|next neighbor step:
-            performScrolling(optimizedCurrentItemIndex, futureItemIndex);
+            performScrolling(currentItemIndex, futureItemIndex);
         } // if
     });
     const handleTouchEnd           = useMergeEvents(
@@ -1065,19 +1063,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     const isPositiveMovement = (teleNextDistance < telePrevDistance);
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, isPositiveMovement, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, isPositiveMovement, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
-                    
-                    
-                    
-                    if (!isPositiveMovement) {
-                        console.log('TODO: tele prev', {indicatorItemIndex, scrollIndex, currentItemIndex, optimizedCurrentItemIndex});
-                        return;
-                    }
-                    else {
-                        console.log('TODO: tele next', {indicatorItemIndex, scrollIndex, currentItemIndex, optimizedCurrentItemIndex});
-                        return;
-                    } // if
                 } // if
             } // if
             
