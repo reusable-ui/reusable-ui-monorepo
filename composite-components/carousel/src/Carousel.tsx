@@ -27,6 +27,7 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMountedFlag,
     
     
     
@@ -984,6 +985,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // dom effects:
+    const isMounted = useMountedFlag();
     
     // initial scroll pos setup (without scrolling effect):
     useIsomorphicLayoutEffect(() => {
@@ -1035,45 +1037,59 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // setups:
-        
-        if (infiniteLoop) { // looking for a chance of *shorter_paths* by *teleporting*:
-            // get the shown listItem's index by position:
-            const indicatorItemIndex = normalizeShift(getNearestScrollIndex(listElm) + dummyDiff.current);
-            
-            const straightDistance = Math.abs(scrollIndex - indicatorItemIndex);
-            const telePrevDistance = itemsCount - scrollIndex        + indicatorItemIndex;
-            const teleNextDistance = itemsCount - indicatorItemIndex + scrollIndex;
-            
-            if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
-                if (telePrevDistance < teleNextDistance) {
-                    console.log('TODO: tele prev', {indicatorItemIndex, scrollIndex});
-                    return;
-                }
-                else {
-                    console.log('TODO: tele next', {indicatorItemIndex, scrollIndex});
-                    return;
+        (async () => {
+            // looking for a chance of *shorter_paths* by *teleporting*:
+            if (infiniteLoop) {
+                // get the shown listItem's index by position:
+                const currentItemIndex   = getNearestScrollIndex(listElm);
+                const indicatorItemIndex = normalizeShift(currentItemIndex + dummyDiff.current);
+                
+                const straightDistance = Math.abs(scrollIndex - indicatorItemIndex);
+                const telePrevDistance = itemsCount - scrollIndex        + indicatorItemIndex;
+                const teleNextDistance = itemsCount - indicatorItemIndex + scrollIndex;
+                
+                if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
+                    // determine which movement is the nearest way:
+                    const isPositiveMovement = (teleNextDistance < telePrevDistance);
+                    
+                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                    const optimizedCurrentItemIndex = await prepareScrolling(currentItemIndex, isPositiveMovement);
+                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                    
+                    
+                    
+                    if (!isPositiveMovement) {
+                        console.log('TODO: tele prev', {indicatorItemIndex, scrollIndex, currentItemIndex, optimizedCurrentItemIndex});
+                        return;
+                    }
+                    else {
+                        console.log('TODO: tele next', {indicatorItemIndex, scrollIndex, currentItemIndex, optimizedCurrentItemIndex});
+                        return;
+                    } // if
                 } // if
             } // if
-        } // if
-        
-        // calculate the desired pos:
-        const slideDistance            = getSlideDistance(listElm);
-        const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
-        const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
-        const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
-        if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
-            // mark the sliding status:
-            slidingStatus.current = SlidingStatus.AutoScrolling;
             
-            // snap scroll to the desired scrollIndex:
-            restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
-            listElm.scrollTo({
-                left                     : futureScrollLeftAbsolute,
-                behavior                 : 'smooth',
+            
+            
+            // calculate the desired pos:
+            const slideDistance            = getSlideDistance(listElm);
+            const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
+            const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
+            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
+            if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
+                // mark the sliding status:
+                slidingStatus.current = SlidingStatus.AutoScrolling;
                 
-                [noInterceptMark as any] : undefined, // no intercept call hack
-            });
-        } // if
+                // snap scroll to the desired scrollIndex:
+                restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
+                listElm.scrollTo({
+                    left                     : futureScrollLeftAbsolute,
+                    behavior                 : 'smooth',
+                    
+                    [noInterceptMark as any] : undefined, // no intercept call hack
+                });
+            } // if
+        })();
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
     
     // intercepts scrollTo/scrollBy by external call:
