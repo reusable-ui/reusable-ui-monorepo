@@ -487,7 +487,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return clampedPreviousItemIndex;
     };
-    const prepareScrolling                = async (currentItemIndex: number, isPositiveMovement: boolean, options?: MovementOptions): Promise<number> => {
+    const prepareScrolling                = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
         // conditions:
         if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
         
@@ -497,7 +497,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, options);
+        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, movementItemIndex, options);
         
         
         
@@ -804,7 +804,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // hold_scroll implementation:
-        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, { preserveMomentum: false });
+        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
         touchedItemIndex.current = await promiseTouchMoveCompleted.current;
         promiseTouchMoveCompleted.current = undefined;
     });
@@ -1059,11 +1059,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 const teleNextDistance = itemsCount - indicatorItemIndex + scrollIndex;
                 
                 if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
-                    // determine which movement is the nearest way:
-                    const isPositiveMovement = (teleNextDistance < telePrevDistance);
+                    // determine which movement (and direction) is the nearest way:
+                    const movementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, isPositiveMovement, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 } // if
             } // if
