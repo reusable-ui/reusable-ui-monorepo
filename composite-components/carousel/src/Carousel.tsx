@@ -1036,6 +1036,24 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // setups:
         
+        if (infiniteLoop) { // looking for a chance of *shorter_paths* by *teleporting*:
+            // get the shown listItem's index by position:
+            const currentItemIndex = getNearestScrollIndex(listElm);
+            
+            const straightDistance = Math.abs(scrollIndex - currentItemIndex);
+            const telePrevDistance = itemsCount - scrollIndex      + currentItemIndex;
+            const teleNextDistance = itemsCount - currentItemIndex + scrollIndex;
+            
+            if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
+                if (telePrevDistance < teleNextDistance) {
+                    console.log('TODO: tele prev');
+                }
+                else {
+                    console.log('TODO: tele next');
+                } // if
+            } // if
+        } // if
+        
         // calculate the desired pos:
         const slideDistance            = getSlideDistance(listElm);
         const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
