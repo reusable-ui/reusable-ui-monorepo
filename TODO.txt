@@ -1,4 +1,3 @@
-[med prior ] for infilite_loop mode => controllable set => figure out the nearest path between go_straight and go_teleport
 [low prior ] fix <Carousel> clipped tall slides on Firefox
 
 [low prior ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
