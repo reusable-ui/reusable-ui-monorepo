@@ -1124,7 +1124,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */primaryListElm.scrollLeft;
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // update the scrollIndex (and re-render):
-                setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)); // a fractional index is allowed
+                setScrollIndex(
+                    normalizeShift( // no underflow|overflow
+                        Math.round(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)) // no fractional index
+                    )
+                );
             } // if
         } as any;
         primaryListElm.scrollBy = function(this: any, leftOrOptions: number|ScrollToOptions, ...rest: any[]): void {
@@ -1146,7 +1150,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 
                 // update the scrollIndex (and re-render):
-                setScrollIndex(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)); // a fractional index is allowed
+                setScrollIndex(
+                    normalizeShift( // no underflow|overflow
+                        Math.round(futureScrollLeftAbsolute / getSlideDistance(primaryListElm)) // no fractional index
+                    )
+                );
             } // if
         } as any;
         
