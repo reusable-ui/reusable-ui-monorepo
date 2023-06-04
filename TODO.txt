@@ -1,3 +1,4 @@
+[low prior ] fix <Carousel> balanced left & right slides (for infinite scroll only)
 [low prior ] fix <Carousel> clipped tall slides on Firefox
 
 [low prior ] fix [aria-orientation] => from logical isOrientationBlock => convert to physical isOrientationVertical on <List> & <Range>
