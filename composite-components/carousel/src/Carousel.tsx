@@ -453,7 +453,17 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     
     // navigation functions:
-    const getOptimalIndexForMovement      = (currentItemIndex: number|undefined, movementItemIndex: number, preserveMomentum = true) => {
+    interface MovementOptions {
+        preserveMomentum ?: boolean
+    }
+    const getOptimalIndexForMovement      = (currentItemIndex: number|undefined, movementItemIndex: number, options?: MovementOptions) => {
+        // options:
+        const {
+            preserveMomentum = true,
+        } = options ?? {};
+        
+        
+        
         const maxItemIndex = (itemsCount - 1);
         if (maxItemIndex <= 0) return 0; // the listItems(s) are impossible to move => always return 0
         
@@ -475,7 +485,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return clampedPreviousItemIndex;
     };
-    const prepareScrolling                = async (currentItemIndex: number, isPositiveMovement: boolean, preserveMomentum = true): Promise<number> => {
+    const prepareScrolling                = async (currentItemIndex: number, isPositiveMovement: boolean, options?: MovementOptions): Promise<number> => {
         // conditions:
         if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
         
@@ -485,7 +495,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // the new index:
-        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, preserveMomentum);
+        const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, options);
         
         
         
@@ -794,7 +804,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // hold_scroll implementation:
-        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, /*preserveMomentum = */false);
+        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement, { preserveMomentum: false });
         touchedItemIndex.current = await promiseTouchMoveCompleted.current;
         promiseTouchMoveCompleted.current = undefined;
     });
