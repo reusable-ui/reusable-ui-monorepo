@@ -477,7 +477,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         let progressingMovementItemIndex = 0;
         if (preserveMomentum) {
             if (currentItemIndex === undefined) currentItemIndex = normalizeShift(indicatorItemIndex - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
-            progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
+            progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex, indicatorItemIndex);
         } // if
         
         const previousItemIndex        = clampedFutureItemIndex - movementItemIndex - progressingMovementItemIndex; // predict the past index, regardless the range
@@ -579,8 +579,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const isLtr = (getComputedStyle(listElm).direction === 'ltr');
         return (touchDirection > 0) === isLtr;
     };
-    const getProgressingMovementItemIndex = (currentItemIndex: number) => {
-        const progressingScrollIndex = normalizeShift(scrollIndex - dummyDiff.current);
+    const getProgressingMovementItemIndex = (currentItemIndex: number, indicatorItemIndex = scrollIndex) => {
+        const progressingScrollIndex = normalizeShift(indicatorItemIndex - dummyDiff.current);
         return progressingScrollIndex - currentItemIndex;
     };
     const isScrollMomentumReachesLimit    = (currentItemIndex: number) => {
