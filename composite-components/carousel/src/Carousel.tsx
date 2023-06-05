@@ -892,9 +892,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 +
                 (
                     (Math.round(
-                        Math.min(Math.max( // limits the step to min=1, max=maxItemIndex
+                        Math.min(Math.max( // limits the step to min=1, max=rangeItemIndex
                             scrollAccelaration,
-                        1), maxItemIndex)
+                        1), (maxItemIndex - minItemIndex))
                     )
                     *
                     (isPositiveMovement ? +1 : -1))
