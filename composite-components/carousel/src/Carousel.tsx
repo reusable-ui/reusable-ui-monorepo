@@ -1118,22 +1118,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 // get the shown listItem's index by position:
                 const currentItemIndex   = getNearestScrollIndex(listElm);
                 const indicatorItemIndex = normalizeShift(currentItemIndex + dummyDiff.current);
+                const movementItemIndex  = scrollIndex - indicatorItemIndex;
                 
-                const straightDistance = Math.abs(scrollIndex - indicatorItemIndex);
-                const telePrevDistance = itemsCount - scrollIndex        + indicatorItemIndex;
-                const teleNextDistance = itemsCount - indicatorItemIndex + scrollIndex;
+                const straightDistance   = Math.abs(movementItemIndex);
+                const telePrevDistance   = itemsCount - scrollIndex        + indicatorItemIndex;
+                const teleNextDistance   = itemsCount - indicatorItemIndex + scrollIndex;
                 
                 if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
                     // determine which movement (and direction) is the nearest way:
-                    const movementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
+                    const shortMovementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 }
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
                 } // if
             } // if
             
