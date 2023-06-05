@@ -256,10 +256,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const minItemIndex           = 0;
     const maxItemIndex           = (itemsCount - 1);
-    const rangeItemIndex         = maxItemIndex         - minItemIndex
     
-    const minMovementItemIndex   = minItemIndex;
-    const maxMovementItemIndex   = maxItemIndex;
+    const scrollMargin           = 0;
+    const minMovementItemIndex   = minItemIndex + scrollMargin;
+    const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
     
     
@@ -312,7 +312,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const getSlideDistance                = (listElm: TElement) => {
         // get the listItem's slide distance:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        return itemsCount ? (listScrollPosMax / rangeItemIndex) : 0;
+        return itemsCount ? (listScrollPosMax / rangeMovementItemIndex) : 0;
     };
     const isExactScrollPos                = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
@@ -341,7 +341,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const baseScrollPosMax              = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
         const targetScale                   = targetScrollPosMax / baseScrollPosMax;
         const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
-        const targetSlideDistance           = itemsCount ? (targetScrollPosMax / rangeItemIndex) : 0;
+        const targetSlideDistance           = getSlideDistance(targetListElm);
         const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
         const targetScrollPosOverflowed     = (
             // scroll pos:
