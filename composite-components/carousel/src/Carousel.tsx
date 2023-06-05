@@ -901,10 +901,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     (isPositiveMovement ? +1 : -1))
                 )
             );
-            const minItemIndex = 0;
-            const maxItemIndex = (itemsCount - 1);
-            if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
-            if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
+            const minMovementItemIndex = 0;
+            const maxMovementItemIndex = (itemsCount - 1);
+            if (futureItemIndex < minMovementItemIndex) futureItemIndex = maxMovementItemIndex; // scroll to the last  slide (for non_infinite_loop)
+            if (futureItemIndex > maxMovementItemIndex) futureItemIndex = minMovementItemIndex; // scroll to the first slide (for non_infinite_loop)
             
             
             
