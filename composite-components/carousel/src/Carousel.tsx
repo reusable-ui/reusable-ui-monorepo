@@ -253,8 +253,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // fn props:
     const itemsCount           = React.Children.count(children);
-    const minMovementItemIndex = 0;
-    const maxMovementItemIndex = (itemsCount - 1);
+    const minItemIndex         = 0;
+    const maxItemIndex         = (itemsCount - 1);
+    const minMovementItemIndex = minItemIndex;
+    const maxMovementItemIndex = maxItemIndex;
     
     
     
@@ -282,8 +284,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
-        min  : 0,
-        max  : (itemsCount - 1),
+        min  : minItemIndex,
+        max  : maxItemIndex,
         step : undefined,
     });
     
@@ -306,7 +308,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const getSlideDistance                = (listElm: TElement) => {
         // get the listItem's slide distance:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        return itemsCount ? (listScrollPosMax / (itemsCount - 1)) : 0;
+        return itemsCount ? (listScrollPosMax / maxItemIndex) : 0;
     };
     const isExactScrollPos                = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
@@ -335,7 +337,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const baseScrollPosMax              = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
         const targetScale                   = targetScrollPosMax / baseScrollPosMax;
         const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
-        const targetSlideDistance           = itemsCount ? (targetScrollPosMax / (itemsCount - 1)) : 0;
+        const targetSlideDistance           = itemsCount ? (targetScrollPosMax / maxItemIndex) : 0;
         const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
         const targetScrollPosOverflowed     = (
             // scroll pos:
@@ -890,9 +892,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 +
                 (
                     (Math.round(
-                        Math.min(Math.max( // limits the step to min=1, max=(itemCount - 1)
+                        Math.min(Math.max( // limits the step to min=1, max=maxItemIndex
                             scrollAccelaration,
-                        1), (itemsCount - 1))
+                        1), maxItemIndex)
                     )
                     *
                     (isPositiveMovement ? +1 : -1))
