@@ -1073,6 +1073,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                }
+                else {
+                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                    await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: indicatorItemIndex });
                 } // if
             } // if
             
