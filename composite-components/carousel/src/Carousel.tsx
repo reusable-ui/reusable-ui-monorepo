@@ -594,7 +594,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const isScrollMomentumReachesLimit    = (currentItemIndex: number) => {
         const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
-        return Math.abs(progressingMovementItemIndex) >= (itemsCount - 2);
+        return Math.abs(progressingMovementItemIndex) >= (rangeMovementItemIndex - 1); // the 1_wide range is reserved for scrolling_action
     };
     
     
