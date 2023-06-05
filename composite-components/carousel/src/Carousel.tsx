@@ -97,16 +97,18 @@ const _defaultPrevButtonClasses      : Optional<string>[] = ['prevBtn']
 const _defaultNextButtonClasses      : Optional<string>[] = ['nextBtn']
 const _defaultNavscrollClasses       : Optional<string>[] = ['nav']
 
-const _defaultSlideThreshold         : number  = 5   /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
-const _defaultSwipeMovementThreshold : number  = 20  /* pixel */         // the minimum distance to considered swiping_action
-const _defaultSwipeDurationThreshold : number  = 300 /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
+const _defaultSlideThreshold         : number  = 5    /* pixel */         // the minimum distance to start sliding_action (but not yet swiping action)
+const _defaultSwipeMovementThreshold : number  = 20   /* pixel */         // the minimum distance to considered swiping_action
+const _defaultSwipeDurationThreshold : number  = 300  /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
 
-const _defaultScrollingPrecision     : number  = 0.5 /* pixel */
+const _defaultScrollingPrecision     : number  = 0.5  /* pixel */
 
-const _defaultMovementStep           : number  = 1   /* step(s) */
+const _defaultMovementStep           : number  = 1    /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
 const _defaultScrollMomentumWeight   : number  = 1
+
+const _defaultMaxInitialLoad         : number  = 1000 /* ms */
 
 
 
@@ -307,6 +309,44 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return periodify(shift, itemsCount);
     };
+    const ensureCssLoaded                 = async () : Promise<boolean> => {
+        // conditions:
+        const listElm = listRefInternal.current;
+        if (!listElm) return false; // listElm must be exist for testing
+        
+        
+        
+        // utilities:
+        const liveStyle = getComputedStyle(listElm);
+        const isCssLoaded = () => liveStyle.overflowX === 'scroll';
+        
+        
+        
+        // tests:
+        if (isCssLoaded()) return true;
+        
+        return new Promise<boolean>(async (resolved) => {
+            const initialTestTime = performance.now();
+            for (let currentTestTime = initialTestTime; (currentTestTime - initialTestTime) < _defaultMaxInitialLoad; currentTestTime = performance.now()) {
+                // wait for a frame duration:
+                await new Promise<void>((resolved) => {
+                    requestAnimationFrame(() => resolved());
+                });
+                
+                if (isCssLoaded()) {
+                    // loaded => return the result:
+                    
+                    resolved(true);
+                    return;
+                } // if
+            } // for
+            
+            
+            
+            // test expires:
+            resolved(false);
+        });
+    };
     
     // measuring functions:
     const getSlideDistance                = (listElm: TElement) => {
@@ -431,6 +471,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
         // conditions:
+        if (scrollMargin) return; // if has scrollMargin => impossible to normalize
+        
         const dummyListElm = currentDummyListElm ?? dummyListRefInternal.current;
         if (!dummyListElm) return; // dummyListElm must be exist for syncing
         
@@ -1018,17 +1060,31 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // setups:
-        
-        // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync with scrollIndex:
-        setRelativeScrollPos(
-            /*baseListElm      :*/ undefined,
+        (async () => {
+            await ensureCssLoaded();
             
-            /*targetListElm    :*/ primaryListElm,
-            /*targetScrollDiff :*/ scrollIndex,
-        );
-        
-        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-        if (dummyListElm) normalizeListScrollPos(dummyListElm);
+            // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync with scrollIndex:
+            setRelativeScrollPos(
+                /*baseListElm      :*/ undefined,
+                
+                /*targetListElm    :*/ primaryListElm,
+                /*targetScrollDiff :*/ scrollIndex,
+            );
+            
+            // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+            if (dummyListElm) {
+                if (scrollMargin) {
+                    // get the shown listItem's index by position:
+                    const currentItemIndex   = getNearestScrollIndex(listElm);
+                    
+                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                    await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
+                }
+                else {
+                    normalizeListScrollPos(dummyListElm);
+                } // if
+            } // if
+        })();
         
         
         
