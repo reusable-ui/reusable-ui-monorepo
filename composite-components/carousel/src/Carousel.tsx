@@ -252,7 +252,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // fn props:
-    const itemsCount = React.Children.count(children);
+    const itemsCount           = React.Children.count(children);
+    const minMovementItemIndex = 0;
+    const maxMovementItemIndex = (itemsCount - 1);
     
     
     
@@ -466,9 +468,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        const minMovementItemIndex = 0;
-        const maxMovementItemIndex = (itemsCount - 1);
+        // conditions:
         if (maxMovementItemIndex <= minMovementItemIndex) return currentItemIndex ?? normalizeShift(indicatorItemIndex - dummyDiff.current); // the slides(s) are impossible to move => always return the unoptimized
+        
+        
         
         const futureItemIndex          = indicatorItemIndex     + movementItemIndex; // predict the future index, regardless the range
         const clampedFutureItemIndex   = Math.min(Math.max(
@@ -524,8 +527,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const performScrolling                = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
-        const minMovementItemIndex = 0;
-        const maxMovementItemIndex = (itemsCount - 1);
         if ((futureItemIndex < minMovementItemIndex) || (futureItemIndex > maxMovementItemIndex)) return; // out of movement range => ignore
         
         if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
@@ -645,8 +646,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // update current slide index:
         let futureItemIndex = currentItemIndex - 1;
-        const minMovementItemIndex = 0;
-        const maxMovementItemIndex = (itemsCount - 1);
         if (futureItemIndex < minMovementItemIndex) futureItemIndex = maxMovementItemIndex; // scroll to the last slide (for non_infinite_loop)
         
         
@@ -687,8 +686,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // update current slide index:
         let futureItemIndex = currentItemIndex + 1;
-        const minMovementItemIndex = 0;
-        const maxMovementItemIndex = (itemsCount - 1);
         if (futureItemIndex > maxMovementItemIndex) futureItemIndex = minMovementItemIndex; // scroll to the first slide (for non_infinite_loop)
         
         
@@ -901,8 +898,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     (isPositiveMovement ? +1 : -1))
                 )
             );
-            const minMovementItemIndex = 0;
-            const maxMovementItemIndex = (itemsCount - 1);
             if (futureItemIndex < minMovementItemIndex) futureItemIndex = maxMovementItemIndex; // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > maxMovementItemIndex) futureItemIndex = minMovementItemIndex; // scroll to the first slide (for non_infinite_loop)
             
