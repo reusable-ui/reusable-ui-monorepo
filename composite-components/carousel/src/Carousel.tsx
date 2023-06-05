@@ -533,7 +533,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const performScrolling                = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
         // conditions:
-        if ((futureItemIndex < minMovementItemIndex) || (futureItemIndex > maxMovementItemIndex)) return; // out of movement range => ignore
+        if ((futureItemIndex < minItemIndex) || (futureItemIndex > maxItemIndex)) return; // out of movement range => ignore
         
         if ((currentItemIndex !== undefined) && (currentItemIndex === futureItemIndex)) return; // no diff => ignore
         
