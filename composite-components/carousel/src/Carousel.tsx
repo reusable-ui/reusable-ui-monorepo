@@ -394,6 +394,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             ((targetListElm === listRefInternal.current) ?
                 ranScrollMomentum.current * targetSlideDistance
             : 0)
+            -
+            // scroll margin:
+            ((targetListElm === listRefInternal.current) ?
+                scrollMargin * targetSlideDistance
+            : 0)
         );
         const targetScrollPosPerioded       = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
         const targetScrollPosWrapped        = (
@@ -487,7 +492,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             setRelativeShiftPos(
                 /*baseShift        :*/ undefined,
                 /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ 0,
+                /*targetShiftDiff  :*/ 0 + scrollMargin, // TODO: check `+ scrollMargin`
             );
         } // if
         
@@ -557,7 +562,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         setRelativeShiftPos(
             /*baseShift        :*/ 0,
             /*targetListElm    :*/ listElm,
-            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - optimalItemIndex),
+            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - optimalItemIndex) + scrollMargin, // TODO: check `+ scrollMargin`
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
