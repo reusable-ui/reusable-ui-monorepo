@@ -252,11 +252,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // fn props:
-    const itemsCount           = React.Children.count(children);
-    const minItemIndex         = 0;
-    const maxItemIndex         = (itemsCount - 1);
-    const minMovementItemIndex = minItemIndex;
-    const maxMovementItemIndex = maxItemIndex;
+    const itemsCount             = React.Children.count(children);
+    const minItemIndex           = 0;
+    const maxItemIndex           = (itemsCount - 1);
+    const minMovementItemIndex   = minItemIndex;
+    const maxMovementItemIndex   = maxItemIndex;
+    const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
     
     
     
@@ -892,9 +893,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 +
                 (
                     (Math.round(
-                        Math.min(Math.max( // limits the step to min=1, max=rangeItemIndex
+                        Math.min(Math.max( // limits the step to min=1, max=rangeMovementItemIndex
                             scrollAccelaration,
-                        1), (maxItemIndex - minItemIndex))
+                        1), rangeMovementItemIndex)
                     )
                     *
                     (isPositiveMovement ? +1 : -1))
