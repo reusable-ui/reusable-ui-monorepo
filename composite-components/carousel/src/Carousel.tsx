@@ -258,6 +258,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const minItemIndex           = 0;
     const maxItemIndex           = (itemsCount - 1);
+    const rangeItemIndex         = maxItemIndex - minItemIndex;
     
     const scrollMargin           = 0;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
@@ -352,7 +353,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const getSlideDistance                = (listElm: TElement) => {
         // get the listItem's slide distance:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
-        return itemsCount ? (listScrollPosMax / rangeMovementItemIndex) : 0;
+        const range = (listElm === listRefInternal.current) ? rangeMovementItemIndex : rangeItemIndex;
+        return itemsCount ? (listScrollPosMax / range) : 0;
     };
     const isExactScrollPos                = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
@@ -378,10 +380,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     // mutation functions:
     const setRelativeScrollPos            = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
-        const baseScrollPosMax              = baseListElm ? (baseListElm.scrollWidth - baseListElm.clientWidth) : targetScrollPosMax;
-        const targetScale                   = targetScrollPosMax / baseScrollPosMax;
-        const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
         const targetSlideDistance           = getSlideDistance(targetListElm);
+        const targetScale                   = baseListElm ? (targetSlideDistance / getSlideDistance(baseListElm)) : 1;
+        const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
         const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
         const targetScrollPosOverflowed     = (
             // scroll pos:
