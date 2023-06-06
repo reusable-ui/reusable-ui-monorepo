@@ -362,13 +362,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return (rest < _defaultScrollingPrecision) || ((listSlideDistance - rest) < _defaultScrollingPrecision);
     };
     const getNearestScrollIndex           = () => {
-        const dummyListElm = dummyListRefInternal.current; // preferable
-        if (dummyListElm) return normalizeShift(Math.round(dummyListElm.scrollLeft / getSlideDistance(dummyListElm)) - dummyDiff.current);
+        // conditions:
+        const primaryListElm = dummyListRefInternal.current ?? listRefInternal.current;
+        if (!primaryListElm) return 0; // (dummyListElm ?? listElm) must be exist for measuring
         
-        const listElm = listRefInternal.current;
-        if (listElm) return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
         
-        return 0;
+        
+        // measure:
+        return Math.round(primaryListElm.scrollLeft / getSlideDistance(primaryListElm));
     };
     const measureScrollDelta              = (listElm: TElement) => {
         // logs:
