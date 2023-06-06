@@ -361,7 +361,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const rest = listElm.scrollLeft % listSlideDistance;
         return (rest < _defaultScrollingPrecision) || ((listSlideDistance - rest) < _defaultScrollingPrecision);
     };
-    const getNearestScrollIndex           = (listElm: TElement) => {
+    const getVisualNearestScrollIndex     = (listElm: TElement) => {
         return Math.round(listElm.scrollLeft / getSlideDistance(listElm));
     };
     const measureScrollDelta              = (listElm: TElement) => {
@@ -689,7 +689,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
         
         // get the shown listItem's index by position:
-        const currentItemIndex = getNearestScrollIndex(listElm);
+        const currentItemIndex = getVisualNearestScrollIndex(listElm);
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -729,7 +729,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
         
         // get the shown listItem's index by position:
-        const currentItemIndex = getNearestScrollIndex(listElm);
+        const currentItemIndex = getVisualNearestScrollIndex(listElm);
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -789,7 +789,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // get the shown listItem's index by position:
-        touchedItemIndex.current = getNearestScrollIndex(listElm);
+        touchedItemIndex.current = getVisualNearestScrollIndex(listElm);
     });
     const handleTouchStart         = useMergeEvents(
         // preserves the original `onTouchStart`:
@@ -904,7 +904,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // the *auto scroll completation*:
             if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
                 // scroll to nearest neighbor step:
-                performScrolling(undefined, getNearestScrollIndex(listElm));
+                performScrolling(undefined, getVisualNearestScrollIndex(listElm));
             }
             else { // the listElm is in the exact_position => the sliding animation is completed
                 // mark the sliding status:
@@ -1081,7 +1081,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (dummyListElm) {
                 if (scrollMargin) {
                     // get the shown listItem's index by position:
-                    const currentItemIndex   = getNearestScrollIndex(listElm);
+                    const currentItemIndex   = getVisualNearestScrollIndex(listElm);
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
@@ -1122,7 +1122,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // looking for a chance of *shorter_paths* by *teleporting*:
             if (infiniteLoop) {
                 // get the shown listItem's index by position:
-                const currentItemIndex   = getNearestScrollIndex(listElm);
+                const currentItemIndex   = getVisualNearestScrollIndex(listElm);
                 const indicatorItemIndex = normalizeShift(currentItemIndex + dummyDiff.current);
                 const movementItemIndex  = scrollIndex - indicatorItemIndex;
                 
