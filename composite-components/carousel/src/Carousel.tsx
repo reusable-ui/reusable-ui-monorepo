@@ -108,7 +108,7 @@ const _defaultMovementStep           : number  = 1    /* step(s) */
 const _defaultScrollMomentumAccum    : boolean = true
 const _defaultScrollMomentumWeight   : number  = 1
 
-const _defaultMaxInitialLoad         : number  = 1000 /* ms */
+const _defaultMaxInitialLoad         : number  = 3000 /* ms */
 
 
 
@@ -483,6 +483,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
     const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
+        // TODO: remove debugger:
+        if (window) return;
+        
         // conditions:
         if (scrollMargin) return; // if has scrollMargin => impossible to normalize
         
@@ -550,6 +553,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             previousItemIndex,
         minMovementItemIndex), maxMovementItemIndex);
         
+        // TODO: remove debugger:
+        console.log('prepare movement', { currentItemIndex, movementItemIndex, indicatorItemIndex, optim: clampedPreviousItemIndex});
         return clampedPreviousItemIndex;
     };
     const prepareScrolling                = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
@@ -570,7 +575,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         setRelativeShiftPos(
             /*baseShift        :*/ 0,
             /*targetListElm    :*/ listElm,
-            /*targetShiftDiff  :*/ currentItemIndex + (itemsCount - optimalItemIndex) + scrollMargin, // TODO: check `+ scrollMargin`
+            /*targetShiftDiff  :*/ currentItemIndex - optimalItemIndex,
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
