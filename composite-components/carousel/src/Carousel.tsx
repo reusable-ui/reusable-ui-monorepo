@@ -1123,6 +1123,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (infiniteLoop) {
                 // get the shown listItem's index by position:
                 const currentItemIndex   = getVisualNearestScrollIndex(listElm);
+                // TODO: remove debugger:
+                console.log({ currentItemIndex });
+                await new Promise<void>((resolved) => {
+                    setTimeout(() => {
+                        resolved();
+                    }, 1000);
+                });
                 const indicatorItemIndex = normalizeShift(currentItemIndex + dummyDiff.current);
                 const movementItemIndex  = scrollIndex - indicatorItemIndex;
                 
@@ -1137,10 +1144,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: indicatorItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                    // TODO: remove debugger:
+                    await new Promise<void>((resolved) => {
+                        setTimeout(() => {
+                            resolved();
+                        }, 1000);
+                    });
                 }
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
+                    // TODO: remove debugger:
+                    await new Promise<void>((resolved) => {
+                        setTimeout(() => {
+                            resolved();
+                        }, 1000);
+                    });
                 } // if
             } // if
             
