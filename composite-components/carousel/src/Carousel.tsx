@@ -1124,19 +1124,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                         resolved();
                     }, 1000);
                 });
-                const indicatorItemIndex = normalizeShift(currentItemIndex + dummyDiff.current);
-                const movementItemIndex  = scrollIndex - indicatorItemIndex;
+                const movementItemIndex  = scrollIndex - currentItemIndex;
                 
                 const straightDistance   = Math.abs(movementItemIndex);
-                const telePrevDistance   = itemsCount - scrollIndex        + indicatorItemIndex;
-                const teleNextDistance   = itemsCount - indicatorItemIndex + scrollIndex;
+                const telePrevDistance   = itemsCount - scrollIndex      + currentItemIndex;
+                const teleNextDistance   = itemsCount - currentItemIndex + scrollIndex;
                 
                 if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
                     // determine which movement (and direction) is the nearest way:
                     const shortMovementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: currentItemIndex });
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                     // TODO: remove debugger:
                     await new Promise<void>((resolved) => {
@@ -1147,7 +1146,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 }
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: indicatorItemIndex });
+                    await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: currentItemIndex });
                     // TODO: remove debugger:
                     await new Promise<void>((resolved) => {
                         setTimeout(() => {
