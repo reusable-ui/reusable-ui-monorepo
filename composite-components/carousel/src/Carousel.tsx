@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 2;
+    const scrollMargin           = 0;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -554,13 +554,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return clampedPreviousItemIndex;
     };
     const prepareScrolling                = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
-        // options:
-        const {
-            scrollIndex : indicatorItemIndex = scrollIndex
-        } = options ?? {};
-        
-        
-        
         // conditions:
         if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
         
@@ -572,7 +565,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // the new index:
         const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, movementItemIndex, options);
         const shiftImage       = optimalItemIndex - currentItemIndex;
-        const shiftDiff        = currentItemIndex - indicatorItemIndex;
+        const shiftDiff        = normalizeShift((currentItemIndex + movementItemIndex) - scrollIndex);
         const scrollImage      = optimalItemIndex - scrollMargin;
         
         
@@ -597,7 +590,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // TODO: remove debugger:
-        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, scroll: scrollImage, /*mov: movementItemIndex,*/ diff: dummyDiff.current});
+        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, scroll: scrollImage, mov: movementItemIndex, diff: dummyDiff.current });
         // update the shifted listItem's index:
         return optimalItemIndex;
     };
@@ -1019,7 +1012,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync with listElm's scroll_pos:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
-            console.log('dummy sync', { diff: dummyDiff.current });
+            // console.log('dummy sync', { diff: dummyDiff.current });
             await setRelativeScrollPos(
                 /*baseListElm      :*/ listElm,
                 
@@ -1130,7 +1123,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 // get the shown listItem's index by position:
                 const currentItemIndex   = getVisualNearestScrollIndex();
                 // TODO: remove debugger:
-                console.log({ currentItemIndex });
+                // console.log({ currentItemIndex });
                 await new Promise<void>((resolved) => {
                     setTimeout(() => {
                         resolved();
@@ -1173,7 +1166,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // calculate the desired pos:
             const slideDistance            = getSlideDistance(listElm);
             const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
-            console.log({futureItemIndex})
+            // console.log({futureItemIndex})
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
