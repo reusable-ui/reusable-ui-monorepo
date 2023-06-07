@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 0;
+    const scrollMargin           = 2;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -1070,14 +1070,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*targetScrollDiff :*/ scrollIndex,
             );
             
-            // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-            if (dummyListElm) {
-                // get the shown listItem's index by position:
-                const currentItemIndex   = getVisualNearestScrollIndex();
-                
-                // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
-            } // if
+            // TODO: fix buggy
+            // // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+            // if (dummyListElm) {
+            //     // get the shown listItem's index by position:
+            //     const currentItemIndex   = getVisualNearestScrollIndex();
+            //     
+            //     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+            //     await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
+            // } // if
         })();
         
         
@@ -1154,7 +1155,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // calculate the desired pos:
             const slideDistance            = getSlideDistance(listElm);
-            const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current);
+            const futureItemIndex          = normalizeShift(scrollIndex - dummyDiff.current) - scrollMargin;
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
