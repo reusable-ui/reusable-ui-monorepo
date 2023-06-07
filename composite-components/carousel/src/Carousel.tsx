@@ -1152,6 +1152,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: currentItemIndex });
+                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                     // TODO: remove debugger:
                     await new Promise<void>((resolved) => {
                         setTimeout(() => {
