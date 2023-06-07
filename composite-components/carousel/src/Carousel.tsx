@@ -1072,16 +1072,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
             if (dummyListElm) {
-                if (scrollMargin) {
-                    // get the shown listItem's index by position:
-                    const currentItemIndex   = getVisualNearestScrollIndex();
-                    
-                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
-                }
-                else {
-                    normalizeListScrollPos(dummyListElm);
-                } // if
+                // get the shown listItem's index by position:
+                const currentItemIndex   = getVisualNearestScrollIndex();
+                
+                // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
             } // if
         })();
         
