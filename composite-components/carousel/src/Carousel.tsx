@@ -402,11 +402,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             ((targetListElm === listRefInternal.current) ?
                 ranScrollMomentum.current * targetSlideDistance
             : 0)
-            -
-            // scroll margin:
-            ((targetListElm === listRefInternal.current) ?
-                scrollMargin * targetSlideDistance
-            : 0)
         );
         const targetScrollPosPerioded       = periodify(targetScrollPosOverflowed, (targetScrollPosMax + targetSlideDistance)); // wrap overflowed left
         const targetScrollPosWrapped        = (
@@ -483,9 +478,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
     const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
-        // TODO: remove debugger:
-        if (window) return;
-        
         // conditions:
         if (scrollMargin) return; // if has scrollMargin => impossible to normalize
         
@@ -567,8 +559,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // the new index:
         const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, movementItemIndex, options);
         const shiftImage       = optimalItemIndex - currentItemIndex;
+        const scrollImage      = optimalItemIndex - scrollMargin;
         // TODO: remove debugger:
-        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, mov: movementItemIndex});
+        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, scroll: scrollImage, mov: movementItemIndex});
         
         
         
@@ -584,7 +577,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*baseListElm      :*/ undefined,
             
             /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ optimalItemIndex,
+            /*targetScrollDiff :*/ scrollImage,
         );
         
         
