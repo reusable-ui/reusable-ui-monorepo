@@ -553,8 +553,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             previousItemIndex,
         minMovementItemIndex), maxMovementItemIndex);
         
-        // TODO: remove debugger:
-        console.log('prepare movement', { currentItemIndex, movementItemIndex, indicatorItemIndex, optim: clampedPreviousItemIndex});
         return clampedPreviousItemIndex;
     };
     const prepareScrolling                = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
@@ -568,6 +566,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // the new index:
         const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, movementItemIndex, options);
+        const shiftImage       = optimalItemIndex - currentItemIndex;
+        // TODO: remove debugger:
+        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, mov: movementItemIndex});
         
         
         
@@ -575,7 +576,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         setRelativeShiftPos(
             /*baseShift        :*/ 0,
             /*targetListElm    :*/ listElm,
-            /*targetShiftDiff  :*/ currentItemIndex - optimalItemIndex,
+            /*targetShiftDiff  :*/ -shiftImage,
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
