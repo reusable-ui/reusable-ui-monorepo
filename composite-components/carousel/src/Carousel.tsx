@@ -571,7 +571,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate the desired index:
-        if (currentItemIndex === undefined) currentItemIndex = normalizeShift(scrollIndex /* === currentDummyItemIndex */ - dummyDiff.current); // if not specified => calculate the list_item_index based from dummy_item_index
+        if (currentItemIndex === undefined) currentItemIndex = scrollIndex; // if not specified => get the index from props
         const movementItemIndex = futureItemIndex - currentItemIndex;
         
         
@@ -860,8 +860,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // the *auto scroll completation*:
             if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
+                // get the shown listItem's index by position:
+                const currentItemIndex = getVisualNearestScrollIndex();
+                console.log('snap scroll to: ', currentItemIndex); // TODO: remove debugger
+                
                 // scroll to nearest neighbor step:
-                performScrolling(undefined, getVisualNearestScrollIndex());
+                performScrolling(undefined, currentItemIndex);
             }
             else { // the listElm is in the exact_position => the sliding animation is completed
                 // mark the sliding status:
@@ -869,6 +873,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // if
         }
         else {
+            console.log('swipe action!'); // TODO: remove debugger
             // track the touch pos direction:
             const touchDirection = initialTouchPos.current - prevTouchPos.current;
             
