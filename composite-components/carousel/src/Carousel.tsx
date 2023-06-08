@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 2;
+    const scrollMargin           = 0;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -1036,7 +1036,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             );
             
             // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-            updateListPresentation();
+            updateListPresentation(); // setup the correct slide & scrollbar to the right position
         })();
         
         
@@ -1047,7 +1047,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 dummyListRefInternal.current = dummyListElm;
                 try {
                     // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-                    updateListPresentation();
+                    updateListPresentation(); // flush the correct scrollbar to the normal position (if has been teleported)
                 }
                 finally {
                     dummyListRefInternal.current = null;
