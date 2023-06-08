@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 1;
+    const scrollMargin           = 2;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -271,6 +271,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const dummyDiff                 = useRef<number>(0);
     
     const touchedItemIndex          = useRef<number>(0);
+    const optimalTouchedItemIndex   = useRef<number>(0);
     const promiseTouchMoveCompleted = useRef<Promise<number>|undefined>(undefined);
     
     const initialTouchTick          = useRef<number>(0);
@@ -821,7 +822,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // hold_scroll implementation:
         promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
-        touchedItemIndex.current = await promiseTouchMoveCompleted.current;
+        optimalTouchedItemIndex.current   = await promiseTouchMoveCompleted.current;
         promiseTouchMoveCompleted.current = undefined;
     });
     const handleTouchMove          = useMergeEvents(
@@ -878,7 +879,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
             
-            if (isScrollMomentumReachesLimit(touchedItemIndex.current)) return; // the accumulation of scroll momentum had reached the limit => ignore
+            // get the touched listItem's index by position:
+            const currentItemIndex = optimalTouchedItemIndex.current;
+            
+            if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
             
             const isPositiveMovement = getIsPositiveMovement(touchDirection);
             if (isPositiveMovement === undefined) return; // unknown movement => ignore
@@ -893,8 +897,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            const currentItemIndex = touchedItemIndex.current;
-            
             let futureItemIndex = (
                 currentItemIndex
                 +
