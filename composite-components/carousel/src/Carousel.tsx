@@ -737,16 +737,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         handleNextClickInternal,
     );
     
-    const dummyHandleScroll        = useEvent(() => {
-        // conditions:
-        if (slidingStatus.current !== SlidingStatus.Passive) return; // only process `Passive`
-        
-        
-        
-        // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-        updateListPresentation();
-    });
-    
     const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
@@ -1327,11 +1317,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     // classes:
                     classes={_defaultDummyListElmClasses}
-                    
-                    
-                    
-                    // handlers:
-                    onScroll={dummyHandleScroll}
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
