@@ -479,7 +479,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
         console.log('diff updated', { diff: dummyDiff.current });
     };
-    const normalizeListScrollPos          = async () => {
+    const updateListPresentation          = async () => {
         // get the shown listItem's index by position:
         const currentItemIndex   = scrollIndex;
         
@@ -743,8 +743,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-        normalizeListScrollPos();
+        // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
+        updateListPresentation();
     });
     
     const handleTouchStartInternal = useEvent<React.TouchEventHandler<TElement>>((event) => {
@@ -1018,8 +1018,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-        normalizeListScrollPos();
+        // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
+        updateListPresentation();
     });
     
     
@@ -1050,8 +1050,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*targetScrollDiff :*/ scrollIndex,
             );
             
-            // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-            normalizeListScrollPos();
+            // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
+            updateListPresentation();
         })();
         
         
@@ -1061,8 +1061,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (/*before: HAS dummyListElm*/dummyListElm && /*after: NO dummyListElm*/!dummyListRefInternal.current) { // mutation from infiniteLoop to finiteLoop: flush the dummyListElm to listElm
                 dummyListRefInternal.current = dummyListElm;
                 try {
-                    // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-                    normalizeListScrollPos();
+                    // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
+                    updateListPresentation();
                 }
                 finally {
                     dummyListRefInternal.current = null;
