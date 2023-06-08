@@ -578,10 +578,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
+            const restoreItemIndex = currentItemIndex - scrollMargin;
             
             // calculate the desired pos:
             const slideDistance            = getSlideDistance(listElm);
-            const revertScrollLeftAbsolute = currentItemIndex * slideDistance;
+            const revertScrollLeftAbsolute = restoreItemIndex * slideDistance;
             const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
             if (Math.abs(revertScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
@@ -862,7 +863,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
                 // get the shown listItem's index by position:
                 const currentItemIndex = getVisualNearestScrollIndex();
-                console.log('snap scroll to: ', currentItemIndex); // TODO: remove debugger
                 
                 // scroll to nearest neighbor step:
                 performScrolling(undefined, currentItemIndex);
@@ -873,7 +873,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // if
         }
         else {
-            console.log('swipe action!'); // TODO: remove debugger
             // track the touch pos direction:
             const touchDirection = initialTouchPos.current - prevTouchPos.current;
             
