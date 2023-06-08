@@ -101,7 +101,7 @@ const _defaultSlideThreshold         : number  = 5    /* pixel */         // the
 const _defaultSwipeMovementThreshold : number  = 20   /* pixel */         // the minimum distance to considered swiping_action
 const _defaultSwipeDurationThreshold : number  = 300  /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
 
-const _defaultScrollingPrecision     : number  = 0.5  /* pixel */
+const _defaultScrollingPrecision     : number  = 0.6  /* pixel */         // the browser's rounding error may up to 0.5px, so we set to 0.6 for the minimum uncertainty
 
 const _defaultMovementStep           : number  = 1    /* step(s) */
 
@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 0;
+    const scrollMargin           = 1;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
