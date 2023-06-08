@@ -1005,11 +1005,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // mark the sliding status:
         slidingStatus.current = SlidingStatus.Passive;
-        
-        
-        
-        // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-        updateListPresentation();
     });
     
     
