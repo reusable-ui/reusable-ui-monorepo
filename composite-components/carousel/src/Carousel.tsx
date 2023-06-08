@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 0;
+    const scrollMargin           = 2;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -1138,9 +1138,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: currentItemIndex });
-                    futureItemIndex        = optimalItemIndex + shortMovementItemIndex;
+                    futureItemIndex        = optimalItemIndex + shortMovementItemIndex - scrollMargin;
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                    
                     // TODO: remove debugger:
+                    console.log({ optimalItemIndex, shortMovementItemIndex, futureItemIndex });
                     await new Promise<void>((resolved) => {
                         setTimeout(() => {
                             resolved();
@@ -1150,9 +1152,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: currentItemIndex });
-                    futureItemIndex        = optimalItemIndex + movementItemIndex;
+                    futureItemIndex        = optimalItemIndex + movementItemIndex - scrollMargin;
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                    
                     // TODO: remove debugger:
+                    console.log({ optimalItemIndex, movementItemIndex, futureItemIndex });
                     await new Promise<void>((resolved) => {
                         setTimeout(() => {
                             resolved();
