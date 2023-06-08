@@ -455,7 +455,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         if (!itemsCount) return; // empty items => nothing to shift
         
-        const relativeShift = normalizeShift((baseShift ?? (itemsCount - dummyDiff.current)) + targetShiftDiff);
+        const relativeShift = normalizeShift((baseShift ?? -dummyDiff.current /*(undo prev shift => makes an absolute shift)*/) + targetShiftDiff);
+        console.log({ relativeShift })
         if (!relativeShift) return; // no difference => nothing to shift
         
         
@@ -494,7 +495,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (dummyDiff.current) { // has difference => need to sync
             // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
             setRelativeShiftPos(
-                /*baseShift        :*/ undefined,
+                /*baseShift        :*/ undefined /* undefined = absolute shift */,
                 /*targetListElm    :*/ listElm,
                 /*targetShiftDiff  :*/ 0 + scrollMargin, // TODO: check `+ scrollMargin`
             );
@@ -504,7 +505,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // immediately scroll to the correct position, so that the visual_current_image appears not_moving (as seen before scrolled):
         await setRelativeScrollPos(
-            /*baseListElm      :*/ dummyListElm,
+            /*baseListElm      :*/ dummyListElm /* relative to dummyListElm's scroll */,
             
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
@@ -566,14 +567,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // shift the current image to the last|first, so we can scroll the listElm further_backward|further_forward (creates an infinite scroll illusion):
         setRelativeShiftPos(
-            /*baseShift        :*/ 0,
+            /*baseShift        :*/ undefined /* undefined = absolute shift */,
             /*targetListElm    :*/ listElm,
             /*targetShiftDiff  :*/ -shiftImage,
         );
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
         await setRelativeScrollPos(
-            /*baseListElm      :*/ undefined,
+            /*baseListElm      :*/ undefined /* undefined = absolute scroll */,
             
             /*targetListElm    :*/ listElm,
             /*targetScrollDiff :*/ scrollImage,
@@ -1008,7 +1009,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (dummyListElm) { // dummyListElm must be exist for syncing
             // console.log('dummy sync', { diff: dummyDiff.current });
             await setRelativeScrollPos(
-                /*baseListElm      :*/ listElm,
+                /*baseListElm      :*/ listElm /* relative to listElm's scroll */,
                 
                 /*targetListElm    :*/ dummyListElm,
                 /*targetScrollDiff :*/ dummyDiff.current + scrollMargin,
@@ -1068,7 +1069,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync with scrollIndex:
             setRelativeScrollPos(
-                /*baseListElm      :*/ undefined,
+                /*baseListElm      :*/ undefined /* undefined = absolute scroll */,
                 
                 /*targetListElm    :*/ primaryListElm,
                 /*targetScrollDiff :*/ scrollIndex,
