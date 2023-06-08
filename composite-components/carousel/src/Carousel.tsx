@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 2;
+    const scrollMargin           = 0;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -481,6 +481,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
         // conditions:
+        if (window) return;
         if (scrollMargin) return; // if has scrollMargin => impossible to normalize
         
         const dummyListElm = currentDummyListElm ?? dummyListRefInternal.current;
@@ -499,6 +500,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*targetListElm    :*/ listElm,
                 /*targetShiftDiff  :*/ 0 + scrollMargin, // TODO: check `+ scrollMargin`
             );
+            console.log('NORMALIZED');
         } // if
         
         
