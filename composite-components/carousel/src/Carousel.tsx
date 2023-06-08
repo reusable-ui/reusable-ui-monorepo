@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 0;
+    const scrollMargin           = 2;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -479,39 +479,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
         console.log('diff updated', { diff: dummyDiff.current });
     };
-    const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
-        // conditions:
-        if (window) return;
-        if (scrollMargin) return; // if has scrollMargin => impossible to normalize
+    const normalizeListScrollPos          = async () => {
+        // get the shown listItem's index by position:
+        const currentItemIndex   = scrollIndex;
         
-        const dummyListElm = currentDummyListElm ?? dummyListRefInternal.current;
-        if (!dummyListElm) return; // dummyListElm must be exist for syncing
-        
-        const listElm = listRefInternal.current;
-        if (!listElm) return; // listElm must be exist for syncing
-        
-        
-        
-        // normalize scroll pos as seen on dummyListElm (navigation indicator):
-        if (dummyDiff.current) { // has difference => need to sync
-            // shift the current image similar to the dummyListElm, so we can scroll the listElm as the same effect as dummyListElm (creates a clone scroll):
-            setRelativeShiftPos(
-                /*baseShift        :*/ undefined /* undefined = absolute shift */,
-                /*targetListElm    :*/ listElm,
-                /*targetShiftDiff  :*/ 0 + scrollMargin, // TODO: check `+ scrollMargin`
-            );
-            console.log('NORMALIZED');
-        } // if
-        
-        
-        
-        // immediately scroll to the correct position, so that the visual_current_image appears not_moving (as seen before scrolled):
-        await setRelativeScrollPos(
-            /*baseListElm      :*/ dummyListElm /* relative to dummyListElm's scroll */,
-            
-            /*targetListElm    :*/ listElm,
-            /*targetScrollDiff :*/ (itemsCount - dummyDiff.current),
-        );
+        // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+        await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: currentItemIndex });
     };
     
     // navigation functions:
@@ -1077,15 +1050,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*targetScrollDiff :*/ scrollIndex,
             );
             
-            // TODO: fix buggy
-            // // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-            // if (dummyListElm) {
-            //     // get the shown listItem's index by position:
-            //     const currentItemIndex   = getVisualNearestScrollIndex();
-            //     
-            //     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-            //     await prepareScrolling(currentItemIndex, /*movementItemIndex = */0/* no_movement, just to optimize */, { scrollIndex: scrollIndex });
-            // } // if
+            // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+            normalizeListScrollPos();
         })();
         
         
@@ -1093,8 +1059,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // cleanups:
         return () => {
             if (/*before: HAS dummyListElm*/dummyListElm && /*after: NO dummyListElm*/!dummyListRefInternal.current) { // mutation from infiniteLoop to finiteLoop: flush the dummyListElm to listElm
-                // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
-                normalizeListScrollPos(dummyListElm);
+                dummyListRefInternal.current = dummyListElm;
+                try {
+                    // normalize listElm scroll pos as seen on dummyListElm (navigation indicator), without changing the visual_current_image:
+                    normalizeListScrollPos();
+                }
+                finally {
+                    dummyListRefInternal.current = null;
+                } // try
             } // if
             
             /* no need to cleanup if no  mutation from infiniteLoop to finiteLoop */
