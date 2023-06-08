@@ -474,13 +474,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // TODO: remove
-        // // update the diff of listElm & dummyListElm:
-        // dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift + scrollMargin);
-        // console.log('diff updated', { diff: dummyDiff.current });
+        // update the diff of listElm & dummyListElm:
+        dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift + scrollMargin);
+        console.log('diff updated', { diff: dummyDiff.current });
     };
     const normalizeListScrollPos          = async (currentDummyListElm?: TElement) => {
-        if (window) return;
         // conditions:
         if (scrollMargin) return; // if has scrollMargin => impossible to normalize
         
@@ -500,9 +498,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*targetListElm    :*/ listElm,
                 /*targetShiftDiff  :*/ 0 + scrollMargin, // TODO: check `+ scrollMargin`
             );
-            // reset the diff of listElm & dummyListElm:
-            dummyDiff.current = 0;
-            console.log('diff reset', { diff: dummyDiff.current });
         } // if
         
         
@@ -565,7 +560,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // the new index:
         const optimalItemIndex = getOptimalIndexForMovement(currentItemIndex, movementItemIndex, options);
         const shiftImage       = optimalItemIndex - currentItemIndex;
-        const shiftDiff        = normalizeShift((currentItemIndex + movementItemIndex) - scrollIndex);
         const scrollImage      = optimalItemIndex - scrollMargin;
         
         
@@ -576,8 +570,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /*targetListElm    :*/ listElm,
             /*targetShiftDiff  :*/ -shiftImage,
         );
-        // update the diff of listElm & dummyListElm:
-        dummyDiff.current = shiftDiff;
         
         // immediately scroll to last|first index (it will scroll to step_backward_once|step_forward_once):
         await setRelativeScrollPos(
@@ -1109,6 +1101,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (prevScrollIndexRef.current === scrollIndex) return; // no change => ignore
+        const prevScrollIndex = prevScrollIndexRef.current;     // backup
         prevScrollIndexRef.current = scrollIndex;               // update
         
         const listElm = listRefInternal.current;
@@ -1121,7 +1114,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // looking for a chance of *shorter_paths* by *teleporting*:
             if (infiniteLoop) {
                 // get the shown listItem's index by position:
-                const currentItemIndex   = getVisualNearestScrollIndex();
+                const currentItemIndex   = prevScrollIndex;
                 // TODO: remove debugger:
                 // console.log({ currentItemIndex });
                 await new Promise<void>((resolved) => {
