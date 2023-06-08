@@ -456,7 +456,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (!itemsCount) return; // empty items => nothing to shift
         
         const relativeShift = normalizeShift((baseShift ?? -dummyDiff.current /*(undo prev shift => makes an absolute shift)*/) + targetShiftDiff);
-        console.log({ relativeShift })
         if (!relativeShift) return; // no difference => nothing to shift
         
         
@@ -477,7 +476,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
-        console.log('diff updated', { diff: dummyDiff.current });
     };
     const updateListPresentation          = async () => {
         // get the shown listItem's index by position:
@@ -557,8 +555,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // TODO: remove debugger:
-        console.log('prepare movement', { vis: currentItemIndex, optim: optimalItemIndex, shift: shiftImage, scroll: scrollImage, mov: movementItemIndex, diff: dummyDiff.current });
         // update the shifted listItem's index:
         return optimalItemIndex;
     };
@@ -669,7 +665,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
-        console.log({ currentItemIndex }); // TODO: remove log
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -707,7 +702,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
-        console.log({ currentItemIndex }); // TODO: remove log
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -972,7 +966,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // immediately scroll to the correct position, so the dummyListElm's scroll_pos is in_sync with listElm's scroll_pos:
         const dummyListElm = dummyListRefInternal.current;
         if (dummyListElm) { // dummyListElm must be exist for syncing
-            // console.log('dummy sync', { diff: dummyDiff.current });
             await setRelativeScrollPos(
                 /*baseListElm      :*/ listElm /* relative to listElm's scroll */,
                 
@@ -1081,13 +1074,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // looking for a chance of *shorter_paths* by *teleporting*:
             if (infiniteLoop) {
-                // TODO: remove debugger:
-                // console.log({ currentItemIndex });
-                await new Promise<void>((resolved) => {
-                    setTimeout(() => {
-                        resolved();
-                    }, 1000);
-                });
                 const movementItemIndex  = scrollIndex - currentItemIndex;
                 
                 const straightDistance   = Math.abs(movementItemIndex);
@@ -1102,28 +1088,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: currentItemIndex });
                     futureItemIndex        = optimalItemIndex + shortMovementItemIndex - scrollMargin;
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
-                    
-                    // TODO: remove debugger:
-                    console.log({ optimalItemIndex, shortMovementItemIndex, futureItemIndex });
-                    await new Promise<void>((resolved) => {
-                        setTimeout(() => {
-                            resolved();
-                        }, 1000);
-                    });
                 }
                 else {
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: currentItemIndex });
                     futureItemIndex        = optimalItemIndex + movementItemIndex - scrollMargin;
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
-                    
-                    // TODO: remove debugger:
-                    console.log({ optimalItemIndex, movementItemIndex, futureItemIndex });
-                    await new Promise<void>((resolved) => {
-                        setTimeout(() => {
-                            resolved();
-                        }, 1000);
-                    });
                 } // if
             } // if
             
