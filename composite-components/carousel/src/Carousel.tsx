@@ -693,6 +693,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
+        console.log({ currentItemIndex }); // TODO: remove log
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -730,6 +731,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
+        console.log({ currentItemIndex }); // TODO: remove log
         
         if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
         
@@ -1009,7 +1011,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 /*baseListElm      :*/ listElm,
                 
                 /*targetListElm    :*/ dummyListElm,
-                /*targetScrollDiff :*/ dummyDiff.current,
+                /*targetScrollDiff :*/ dummyDiff.current + scrollMargin,
             );
         } // if
         
