@@ -369,21 +369,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        return normalizeShift(
+        const fractionalScrollIndex = normalizeShift(
             (listElm.scrollLeft / getSlideDistance(listElm))
             +
             scrollMargin
             +
             dummyDiff.current
         );
-        // // conditions:
-        // const primaryListElm = dummyListRefInternal.current ?? listRefInternal.current;
-        // if (!primaryListElm) return 0; // (dummyListElm ?? listElm) must be exist for measuring
-        // 
-        // 
-        // 
-        // // measurement:
-        // return Math.round(primaryListElm.scrollLeft / getSlideDistance(primaryListElm));
+        if (fractionalScrollIndex > (maxItemIndex + 0.5)) return minItemIndex;
+        return Math.round(fractionalScrollIndex);
     };
     const measureScrollDelta              = (listElm: TElement) => {
         // logs:
@@ -589,6 +583,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        console.log('performScrolling', { movementItemIndex, currentItemIndex, futureItemIndex });
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
             const restoreItemIndex = currentItemIndex - scrollMargin;
@@ -764,7 +759,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         touchedItemIndex.current = getVisualNearestScrollIndex();
-        console.log('touch vis', touchedItemIndex.current);
     });
     const handleTouchStart         = useMergeEvents(
         // preserves the original `onTouchStart`:
@@ -790,6 +784,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         } // if
         
         
+        
+        console.log('touch vis', getVisualNearestScrollIndex());
         
         // track the touch pos direction:
         const newTouchPos    = event.touches[0].pageX;
@@ -879,7 +875,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 const currentItemIndex = getVisualNearestScrollIndex();
                 
                 // scroll to nearest neighbor step:
-                console.log('restore scroll snap');
                 performScrolling(undefined, currentItemIndex);
             }
             else { // the listElm is in the exact_position => the sliding animation is completed
