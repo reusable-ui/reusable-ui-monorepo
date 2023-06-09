@@ -566,6 +566,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return optimalItemIndex;
     };
     const performScrolling                = (currentItemIndex: number|undefined, futureItemIndex: number): void => {
+        futureItemIndex = normalizeShift(futureItemIndex);
         // conditions:
         if ((futureItemIndex < minItemIndex) || (futureItemIndex > maxItemIndex)) return; // out of movement range => ignore
         
@@ -606,11 +607,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         }
         else {
             // update the scrollIndex (and re-render):
-            setScrollIndex((currentScrollIndex) => normalizeShift(
-                currentScrollIndex // the current scroll index
-                +
-                movementItemIndex  // the item movement
-            ));
+            setScrollIndex(futureItemIndex);
         } // if
     };
     const getIsPositiveMovement           = (touchDirection: number): boolean|undefined => {
@@ -870,8 +867,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate the swipe_scroll action conditions:
+        const hasHoldScrollAction  = (slidingStatus.current === SlidingStatus.HoldScroll);
         const hasSwipeScrollAction = (
-            (slidingStatus.current !== SlidingStatus.HoldScroll)
+            !hasHoldScrollAction
             &&
             (Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) // a *minimum* swipe_movement is required in order to perform swipe_scroll action
             &&
@@ -913,14 +911,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             );
             if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
+        }
+        else if (!hasHoldScrollAction) { // neither swipe_scroll nor hold_scroll action => nothing to do
+            return;
         } // if
         
         
         
         // hold_scroll|swipe_scroll implementation:
         
-        // scroll to previous|current|next neighbor step:
+        // TODO: remove debugger:
         console.log({hasSwipeScrollAction, currentItemIndex, futureItemIndex});
+        await new Promise<void>((resolved) => {
+            setTimeout(() => {
+                resolved();
+            }, 1000);
+        });
+        // scroll to previous|current|next neighbor step:
         performScrolling(hasSwipeScrollAction ? currentItemIndex : undefined, futureItemIndex);
     });
     const handleTouchEnd           = useMergeEvents(
