@@ -875,7 +875,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             &&
             (scrollMomentumAccum || (slidingStatus.current !== SlidingStatus.AutoScrolling)) // do not accumulate the scroll momentum if not enabled
             &&
-            !isScrollMomentumReachesLimit(optimalTouchedItemIndex.current) // the accumulation of scroll momentum had reached the limit => ignore
+            !isScrollMomentumReachesLimit(currentItemIndex) // the accumulation of scroll momentum had reached the limit => ignore
             &&
             (isPositiveMovement !== undefined) // unknown movement => ignore
         );
