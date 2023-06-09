@@ -369,15 +369,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        const fractionalScrollIndex = normalizeShift(
+        const fractionalScrollIndexOverflowed = (
             (listElm.scrollLeft / getSlideDistance(listElm))
             +
             scrollMargin
             +
             dummyDiff.current
         );
-        if (fractionalScrollIndex > (maxItemIndex + 0.5)) return minItemIndex;
-        return Math.round(fractionalScrollIndex);
+        return normalizeShift(Math.round(fractionalScrollIndexOverflowed));
     };
     const measureScrollDelta              = (listElm: TElement) => {
         // logs:
@@ -583,10 +582,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        console.log('performScrolling', { movementItemIndex, currentItemIndex, futureItemIndex });
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
-            const restoreItemIndex = currentItemIndex - scrollMargin;
+            const restoreItemIndex = normalizeShift(currentItemIndex - scrollMargin - dummyDiff.current);
             
             // calculate the desired pos:
             const slideDistance            = getSlideDistance(listElm);
@@ -784,8 +782,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         } // if
         
         
-        
-        console.log('touch vis', getVisualNearestScrollIndex());
         
         // track the touch pos direction:
         const newTouchPos    = event.touches[0].pageX;
