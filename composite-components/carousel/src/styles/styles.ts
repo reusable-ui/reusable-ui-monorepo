@@ -121,7 +121,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             // buggy on Chrome:
          // touchAction    : 'pan-y pinch-zoom',        // no swipeLeft/swipeRight handling, we use our scroll implementation
             // workaround for the buggy with similar behavior:
-            // touchAction    : 'pinch-zoom',
+            touchAction    : 'pinch-zoom',
             pointerEvents  : 'none',       // prevents  user interaction (the interaction will be bubbled to <parent> element)
             ...children(itemElm, {
                 pointerEvents : 'initial', // preserves user interaction // cancel out *inherited* `pointerEvents`
