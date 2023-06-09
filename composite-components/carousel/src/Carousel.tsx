@@ -885,6 +885,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // conditions:
+            console.log('swipe!', { touchDirection, threshold: _defaultSwipeMovementThreshold });
             if (!(Math.abs(touchDirection) >= _defaultSwipeMovementThreshold)) return; // a *minimum* swipe_movement is required in order to perform swipe_scroll action
             
             if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
