@@ -920,13 +920,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // hold_scroll|swipe_scroll implementation:
         
-        // TODO: remove debugger:
-        console.log({hasSwipeScrollAction, currentItemIndex, futureItemIndex});
-        await new Promise<void>((resolved) => {
-            setTimeout(() => {
-                resolved();
-            }, 1000);
-        });
         // scroll to previous|current|next neighbor step:
         performScrolling(hasSwipeScrollAction ? currentItemIndex : undefined, futureItemIndex);
     });
