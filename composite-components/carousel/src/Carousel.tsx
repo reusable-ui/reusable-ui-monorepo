@@ -857,49 +857,39 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        if (slidingStatus.current === SlidingStatus.HoldScroll) {
-            // unmark the sliding status:
-            slidingStatus.current = SlidingStatus.Passive; // mark as free
-            
-            
-            
-            // hold_scroll implementation:
-            
-            // the *auto scroll completation*:
-            if (!isExactScrollPos(listElm)) { // the listElm is NOT in the exact_position => needs to be re-aligned to the nearest exact_position
-                // get the shown listItem's index by position:
-                const currentItemIndex = getVisualNearestScrollIndex();
-                
-                // scroll to nearest neighbor step:
-                performScrolling(undefined, currentItemIndex);
-            }
-            else { // the listElm is in the exact_position => the sliding animation is completed
-                // mark the sliding status:
-                slidingStatus.current = SlidingStatus.Passive;
-            } // if
-        }
-        else {
-            // track the touch pos direction:
-            const touchDirection = initialTouchPos.current - prevTouchPos.current;
-            
-            
-            
-            // conditions:
-            console.log('swipe!', { touchDirection, threshold: _defaultSwipeMovementThreshold });
-            if (!(Math.abs(touchDirection) >= _defaultSwipeMovementThreshold)) return; // a *minimum* swipe_movement is required in order to perform swipe_scroll action
-            
-            if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
-            
-            // get the touched listItem's index by position:
-            const currentItemIndex = optimalTouchedItemIndex.current;
-            
-            if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
-            
-            const isPositiveMovement = getIsPositiveMovement(touchDirection);
-            if (isPositiveMovement === undefined) return; // unknown movement => ignore
-            
-            
-            
+        // get the shown listItem's index by position:
+        const currentItemIndex = getVisualNearestScrollIndex();
+        let   futureItemIndex  = currentItemIndex;
+        
+        
+        
+        // track the touch pos direction:
+        const touchDirection     = initialTouchPos.current - prevTouchPos.current;
+        const isPositiveMovement = getIsPositiveMovement(touchDirection);
+        
+        
+        
+        // calculate the swipe_scroll action conditions:
+        const hasSwipeScrollAction = (
+            (slidingStatus.current !== SlidingStatus.HoldScroll)
+            &&
+            (Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) // a *minimum* swipe_movement is required in order to perform swipe_scroll action
+            &&
+            (scrollMomentumAccum || (slidingStatus.current !== SlidingStatus.AutoScrolling)) // do not accumulate the scroll momentum if not enabled
+            &&
+            !isScrollMomentumReachesLimit(optimalTouchedItemIndex.current) // the accumulation of scroll momentum had reached the limit => ignore
+            &&
+            (isPositiveMovement !== undefined) // unknown movement => ignore
+        );
+        
+        
+        
+        // unmark the sliding status:
+        slidingStatus.current = SlidingStatus.Passive; // mark as free
+        
+        
+        
+        if (hasSwipeScrollAction) {
             // calculate the scroll accelaration:
             const touchDuration      = performance.now() - initialTouchTick.current;
             const touchVelocity      = Math.abs(touchDirection) / touchDuration;
@@ -908,7 +898,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            let futureItemIndex = (
+            futureItemIndex = (
                 currentItemIndex
                 +
                 (
@@ -923,14 +913,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             );
             if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
-            
-            
-            
-            // swipe_scroll implementation:
-            
-            // scroll to previous|next neighbor step:
-            performScrolling(currentItemIndex, futureItemIndex);
         } // if
+        
+        
+        
+        // hold_scroll|swipe_scroll implementation:
+        
+        // scroll to previous|current|next neighbor step:
+        console.log({hasSwipeScrollAction, currentItemIndex, futureItemIndex});
+        performScrolling(hasSwipeScrollAction ? currentItemIndex : undefined, futureItemIndex);
     });
     const handleTouchEnd           = useMergeEvents(
         // preserves the original `onTouchEnd`:
