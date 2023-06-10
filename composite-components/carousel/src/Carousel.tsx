@@ -586,7 +586,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        console.log('performScrolling', { movementItemIndex }); // TODO: remove debugger
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
             const restoreItemIndex = normalizeShift(currentItemIndex - scrollMargin - dummyDiff.current);
@@ -610,6 +609,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // if
         }
         else {
+            console.log('setScrollIndex', { movementItemIndex, futureItemIndex }); // TODO: remove debugger
             // update the scrollIndex (and re-render):
             setScrollIndex(futureItemIndex);
         } // if
@@ -845,7 +845,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const movementItemIndex = limitsMinMaxMovement(currentItemIndex,
             touchDirection / getSlideDistance(listElm)
         );
-        console.log({movementItemIndex});
         
         
         
@@ -1146,7 +1145,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const slideDistance            = getSlideDistance(listElm);
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
-            console.log({ abs: futureScrollLeftAbsolute, rel: futureScrollLeftRelative, status: slidingStatus.current, momen: restScrollMomentum.current, ranMomen: ranScrollMomentum.current }); // TODO: remove debugger
+            console.log({ prev: prevScrollIndex, now: scrollIndex, abs: futureScrollLeftAbsolute, rel: futureScrollLeftRelative, status: slidingStatus.current, momen: restScrollMomentum.current, ranMomen: ranScrollMomentum.current }); // TODO: remove debugger
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
