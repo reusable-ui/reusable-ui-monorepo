@@ -586,6 +586,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        console.log('performScrolling', { movementItemIndex }); // TODO: remove debugger
         if (!movementItemIndex) {
             // if no movement => restore (scroll snap) to current index:
             const restoreItemIndex = normalizeShift(currentItemIndex - scrollMargin - dummyDiff.current);
@@ -945,7 +946,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // swipe_scroll implementation:
             await prepareScrolling(currentItemIndex, futureItemIndex);
         }
-        else if (!hasHoldScrollAction) { // neither swipe_scroll nor hold_scroll action => nothing to do
+        else if (hasHoldScrollAction) {
+            // reset the momentum:
+            restScrollMomentum.current = 0;
+            ranScrollMomentum.current  = 0;
+        }
+        else { // neither swipe_scroll nor hold_scroll action => nothing to do
             return;
         } // if
         
@@ -1140,6 +1146,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const slideDistance            = getSlideDistance(listElm);
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
+            console.log({ abs: futureScrollLeftAbsolute, rel: futureScrollLeftRelative, status: slidingStatus.current, momen: restScrollMomentum.current, ranMomen: ranScrollMomentum.current }); // TODO: remove debugger
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
