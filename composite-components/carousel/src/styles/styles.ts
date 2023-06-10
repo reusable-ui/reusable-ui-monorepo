@@ -161,10 +161,10 @@ export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}
         
         
         // sizes:
-        flex            : [[0, 0, 'calc(100% / 3)']], // ungrowable, unshrinkable, initial 100% parent's width
+        flex            : [[0, 0, 'calc(100% / 1)']], // ungrowable, unshrinkable, initial 100% parent's width
         // (important) force the media follow the <li> width, so it doesn't break the flex width:
         boxSizing       : 'border-box',               // the final size is including borders & paddings
-        inlineSize      : 'calc(100% / 3)',           // fills the entire parent's width
+        inlineSize      : 'calc(100% / 1)',           // fills the entire parent's width
         
         
         

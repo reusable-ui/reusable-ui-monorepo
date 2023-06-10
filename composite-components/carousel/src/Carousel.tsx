@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 1;
+    const scrollMargin           = 0;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -626,6 +626,25 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const getProgressingMovementItemIndex = (currentItemIndex: number, indicatorItemIndex = scrollIndex) => {
         return indicatorItemIndex /* greedy: from re-render */ - currentItemIndex /* delayed: from visual measurement */;
     };
+    const limitMinMaxMovement             = (currentItemIndex: number, movementItemIndex: number) => {
+        const maxMovementByRange = rangeMovementItemIndex - (2 * scrollMargin);
+        movementItemIndex = Math.min(Math.max(
+            movementItemIndex,
+        -maxMovementByRange), +maxMovementByRange);
+        
+        
+        
+        const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
+        const maxMovementByProgressing     = maxMovementByRange - progressingMovementItemIndex
+        console.log({maxMovementByRange, progressingMovementItemIndex});
+        movementItemIndex = Math.min(Math.max(
+            movementItemIndex,
+        -maxMovementByProgressing), +maxMovementByProgressing);
+        
+        
+        
+        return movementItemIndex;
+    };
     const isScrollMomentumReachesLimit    = (currentItemIndex: number) => {
         const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
         return Math.abs(progressingMovementItemIndex) >= (rangeMovementItemIndex - 1); // the 1_wide range is reserved for scrolling_action
@@ -674,7 +693,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
         
-        if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
+        // calculate if there is an available go_backward movement:
+        const movementItemIndex = limitMinMaxMovement(currentItemIndex, -_defaultMovementStep);
+        if (!movementItemIndex) return;
         
         // all necessary task will be performed, no further action needed:
         event.preventDefault();
@@ -682,7 +703,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // update current slide index:
-        let futureItemIndex = currentItemIndex - 1;
+        let futureItemIndex = currentItemIndex + movementItemIndex;
         if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last slide (for non_infinite_loop)
         
         
@@ -711,7 +732,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // get the shown listItem's index by position:
         const currentItemIndex = getVisualNearestScrollIndex();
         
-        if (isScrollMomentumReachesLimit(currentItemIndex)) return; // the accumulation of scroll momentum had reached the limit => ignore
+        // calculate if there is an available go_forward movement:
+        const movementItemIndex = limitMinMaxMovement(currentItemIndex, +_defaultMovementStep);
+        if (!movementItemIndex) return;
         
         // all necessary task will be performed, no further action needed:
         event.preventDefault();
@@ -719,7 +742,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // update current slide index:
-        let futureItemIndex = currentItemIndex + 1;
+        let futureItemIndex = currentItemIndex + movementItemIndex;
         if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
         
         
