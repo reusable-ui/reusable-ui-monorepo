@@ -106,7 +106,7 @@ const _defaultScrollingPrecision     : number  = 0.9  /* pixel */         // the
 const _defaultMovementStep           : number  = 1    /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
-const _defaultScrollMomentumWeight   : number  = 10
+const _defaultScrollMomentumWeight   : number  = 0
 
 const _defaultMaxInitialLoad         : number  = 3000 /* ms */
 
@@ -1146,6 +1146,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // reset the momentum:
+            restScrollMomentum.current = 0;
             ranScrollMomentum.current  = 0; // reset the ran momentum (if was set by hold_scroll)
             
             
