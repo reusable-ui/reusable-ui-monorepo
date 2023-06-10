@@ -609,7 +609,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // if
         }
         else {
-            console.log('setScrollIndex', { movementItemIndex, futureItemIndex }); // TODO: remove debugger
             // update the scrollIndex (and re-render):
             setScrollIndex(futureItemIndex);
         } // if
@@ -1155,7 +1154,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const slideDistance            = getSlideDistance(listElm);
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftAbsolute = */listElm.scrollLeft;
-            console.log({ prev: prevScrollIndex, now: scrollIndex, abs: futureScrollLeftAbsolute, rel: futureScrollLeftRelative, status: slidingStatus.current, momen: restScrollMomentum.current, ranMomen: ranScrollMomentum.current }); // TODO: remove debugger
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
