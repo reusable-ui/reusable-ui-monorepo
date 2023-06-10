@@ -1146,6 +1146,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
+            // reset the momentum:
+            ranScrollMomentum.current  = 0; // reset the ran momentum (if was set by hold_scroll)
+            
+            
+            
             // calculate the desired pos:
             const slideDistance            = getSlideDistance(listElm);
             const futureScrollLeftAbsolute = futureItemIndex * slideDistance;
@@ -1157,7 +1162,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 // snap scroll to the desired scrollIndex:
                 restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
-                ranScrollMomentum.current  = 0; // reset the ran momentum (if was set by hold_scroll)
                 listElm.scrollTo({
                     left                     : futureScrollLeftAbsolute,
                     behavior                 : 'smooth',
