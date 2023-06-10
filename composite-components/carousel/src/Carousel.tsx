@@ -106,7 +106,7 @@ const _defaultScrollingPrecision     : number  = 0.9  /* pixel */         // the
 const _defaultMovementStep           : number  = 1    /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
-const _defaultScrollMomentumWeight   : number  = 0
+const _defaultScrollMomentumWeight   : number  = 2
 
 const _defaultMaxInitialLoad         : number  = 3000 /* ms */
 
