@@ -271,7 +271,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const dummyDiff                 = useRef<number>(0);
     
     const touchedItemIndex          = useRef<number>(0);
-    const optimalTouchedItemIndex   = useRef<number>(0);
     const promiseTouchMoveCompleted = useRef<Promise<number>|undefined>(undefined);
     
     const initialTouchTick          = useRef<number>(0);
@@ -826,7 +825,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // hold_scroll implementation:
         promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
-        optimalTouchedItemIndex.current   = await promiseTouchMoveCompleted.current;
+        await promiseTouchMoveCompleted.current;
         promiseTouchMoveCompleted.current = undefined;
     });
     const handleTouchMove          = useMergeEvents(
@@ -896,21 +895,23 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            futureItemIndex = (
-                currentItemIndex
-                +
-                (
-                    (Math.round(
-                        Math.min(Math.max( // limits the step to min=1, max=rangeMovementItemIndex
-                            scrollAccelaration,
-                        1), rangeMovementItemIndex)
-                    )
-                    *
-                    (isPositiveMovement ? +1 : -1))
+            const movementItemIndex = (
+                (Math.round(
+                    Math.min(Math.max( // limits the step to min=1, max=rangeMovementItemIndex
+                        scrollAccelaration,
+                    1), rangeMovementItemIndex)
                 )
+                *
+                (isPositiveMovement ? +1 : -1))
             );
+            futureItemIndex = currentItemIndex + movementItemIndex;
             if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
+            
+            
+            
+            // swipe_scroll implementation:
+            prepareScrolling(currentItemIndex, futureItemIndex);
         }
         else if (!hasHoldScrollAction) { // neither swipe_scroll nor hold_scroll action => nothing to do
             return;
