@@ -260,7 +260,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 0;
+    const scrollMargin           = 1;
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -626,7 +626,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const getProgressingMovementItemIndex = (currentItemIndex: number, indicatorItemIndex = scrollIndex) => {
         return indicatorItemIndex /* greedy: from re-render */ - currentItemIndex /* delayed: from visual measurement */;
     };
-    const limitMinMaxMovement             = (currentItemIndex: number, movementItemIndex: number) => {
+    const limitsMinMaxMovement            = (currentItemIndex: number, movementItemIndex: number) => {
         const maxMovementByRange = rangeMovementItemIndex - (2 * scrollMargin);
         movementItemIndex = Math.min(Math.max(
             movementItemIndex,
@@ -689,7 +689,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const currentItemIndex = getVisualNearestScrollIndex();
         
         // calculate if there is an available go_backward movement:
-        const movementItemIndex = limitMinMaxMovement(currentItemIndex, -_defaultMovementStep);
+        const movementItemIndex = limitsMinMaxMovement(currentItemIndex, -_defaultMovementStep);
         if (!movementItemIndex) return;
         
         // all necessary task will be performed, no further action needed:
@@ -728,7 +728,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const currentItemIndex = getVisualNearestScrollIndex();
         
         // calculate if there is an available go_forward movement:
-        const movementItemIndex = limitMinMaxMovement(currentItemIndex, +_defaultMovementStep);
+        const movementItemIndex = limitsMinMaxMovement(currentItemIndex, +_defaultMovementStep);
         if (!movementItemIndex) return;
         
         // all necessary task will be performed, no further action needed:
@@ -911,7 +911,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            const movementItemIndex = limitMinMaxMovement(currentItemIndex,
+            const movementItemIndex = limitsMinMaxMovement(currentItemIndex,
                 (Math.round(
                     Math.max( // ensures the accelaration is at least 1
                         scrollAccelaration,
