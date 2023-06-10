@@ -636,7 +636,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
         const maxMovementByProgressing     = maxMovementByRange - progressingMovementItemIndex
-        console.log({maxMovementByRange, progressingMovementItemIndex});
         movementItemIndex = Math.min(Math.max(
             movementItemIndex,
         -maxMovementByProgressing), +maxMovementByProgressing);
@@ -644,10 +643,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         return movementItemIndex;
-    };
-    const isScrollMomentumReachesLimit    = (currentItemIndex: number) => {
-        const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
-        return Math.abs(progressingMovementItemIndex) >= (rangeMovementItemIndex - 1); // the 1_wide range is reserved for scrolling_action
     };
     
     
@@ -702,7 +697,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // update current slide index:
+        // calculate the future index:
         let futureItemIndex = currentItemIndex + movementItemIndex;
         if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last slide (for non_infinite_loop)
         
@@ -741,7 +736,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // update current slide index:
+        // calculate the future index:
         let futureItemIndex = currentItemIndex + movementItemIndex;
         if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
         
@@ -897,8 +892,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             &&
             (scrollMomentumAccum || (slidingStatus.current !== SlidingStatus.AutoScrolling)) // do not accumulate the scroll momentum if not enabled
             &&
-            !isScrollMomentumReachesLimit(currentItemIndex) // the accumulation of scroll momentum had reached the limit => ignore
-            &&
             (isPositiveMovement !== undefined) // unknown movement => ignore
         );
         
@@ -918,15 +911,20 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            const movementItemIndex = (
+            const movementItemIndex = limitMinMaxMovement(currentItemIndex,
                 (Math.round(
-                    Math.min(Math.max( // limits the step to min=1, max=rangeMovementItemIndex
+                    Math.max( // ensures the accelaration is at least 1
                         scrollAccelaration,
-                    1), rangeMovementItemIndex)
+                    1)
                 )
                 *
                 (isPositiveMovement ? +1 : -1))
             );
+            if (!movementItemIndex) return; // no movement available => nothing to do
+            
+            
+            
+            // calculate the future index:
             futureItemIndex = currentItemIndex + movementItemIndex;
             if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
             if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
@@ -934,7 +932,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // swipe_scroll implementation:
-            prepareScrolling(currentItemIndex, futureItemIndex);
+            await prepareScrolling(currentItemIndex, futureItemIndex);
         }
         else if (!hasHoldScrollAction) { // neither swipe_scroll nor hold_scroll action => nothing to do
             return;
