@@ -268,27 +268,27 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // states:
-    const dummyDiff                 = useRef<number>(0);
+    const dummyDiff                     = useRef<number>(0);
     
-    const touchedItemIndex          = useRef<number>(0);
-    const promiseTouchMoveCompleted = useRef<Promise<number>|undefined>(undefined);
+    const touchedItemIndex              = useRef<number>(0);
+    const promisePrevScrollingCompleted = useRef<Promise<void>|undefined>(undefined);
     
-    const initialTouchTick          = useRef<number>(0);
-    const initialTouchPos           = useRef<number>(0);
-    const prevTouchPos              = useRef<number>(0);
+    const initialTouchTick              = useRef<number>(0);
+    const initialTouchPos               = useRef<number>(0);
+    const prevTouchPos                  = useRef<number>(0);
     
-    const prevScrollPos             = useRef<number>(0);
-    const restScrollMomentum        = useRef<number>(0);
-    const ranScrollMomentum         = useRef<number>(0);
+    const prevScrollPos                 = useRef<number>(0);
+    const restScrollMomentum            = useRef<number>(0);
+    const ranScrollMomentum             = useRef<number>(0);
     
-    const signalScrolled            = useRef<(() => void)|undefined>(undefined);
+    const signalScrolled                = useRef<(() => void)|undefined>(undefined);
     const enum SlidingStatus {
         Passive       = 0,
         Calibrate     = 1,
         AutoScrolling = 2,
         HoldScroll    = 3,
     }
-    const slidingStatus             = useRef<SlidingStatus>(SlidingStatus.Passive);
+    const slidingStatus                 = useRef<SlidingStatus>(SlidingStatus.Passive);
     
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : minItemIndex,
@@ -391,6 +391,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     
     // mutation functions:
+    const ensurePrevScrollingCompleted    = async () => {
+        await promisePrevScrollingCompleted.current;
+    };
     const setRelativeScrollPos            = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
         const targetSlideDistance           = getSlideDistance(targetListElm);
@@ -435,20 +438,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const originSlidingStatus = slidingStatus.current;
             if (originSlidingStatus === SlidingStatus.Passive) slidingStatus.current = SlidingStatus.Calibrate;
             try {
-                const promiseScrolled = (
+                promisePrevScrollingCompleted.current = (
                     (targetListElm === listRefInternal.current)
                     ? new Promise<void>((resolved) => {
                         signalScrolled.current?.();        // invoke previous pending_callback (if any)
                         signalScrolled.current = resolved; // setup a new pending_callback
                     })
-                    : null
+                    : undefined
                 );
                 
                 targetListElm.scrollLeft = targetScrollPosWrappedRounded;
                 if (targetListElm === listRefInternal.current) prevScrollPos.current = targetListElm.scrollLeft; // update the pos change
                 
                 // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
-                await promiseScrolled;
+                await promisePrevScrollingCompleted.current;
+                promisePrevScrollingCompleted.current = undefined;
             }
             finally {
                 // mark the sliding status:
@@ -772,10 +776,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const listElm = listRefInternal.current;
         if (!listElm) return; // listElm must be exist to manipulate
         
-        // force the `handleTouchMoveInternal` runs in sequential order (wait if the previous `handleTouchMoveInternal` still running/awaiting process):
-        if (promiseTouchMoveCompleted.current) {
-            await promiseTouchMoveCompleted.current;
-        } // if
+        // ensures the prev (async) scrolling process was completed:
+        await ensurePrevScrollingCompleted();
         
         
         
@@ -824,9 +826,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // hold_scroll implementation:
-        promiseTouchMoveCompleted.current = prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
-        await promiseTouchMoveCompleted.current;
-        promiseTouchMoveCompleted.current = undefined;
+        await prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
