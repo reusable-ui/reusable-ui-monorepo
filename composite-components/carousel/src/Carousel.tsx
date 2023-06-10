@@ -946,9 +946,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             await prepareScrolling(currentItemIndex, futureItemIndex);
         }
         else if (hasHoldScrollAction) {
-            // reset the momentum:
-            restScrollMomentum.current = 0;
-            ranScrollMomentum.current  = 0;
+            /*
+                DO NOT RESET the `ranScrollMomentum.current`.
+                It's important to preserve (continue) the scrolled slide
+                during NEXT re-render caused by `scrollIndex` change.
+            */
+            // // reset the momentum:
+            // restScrollMomentum.current = 0;
+            // ranScrollMomentum.current  = 0;
         }
         else { // neither swipe_scroll nor hold_scroll action => nothing to do
             return;
@@ -1152,6 +1157,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 // snap scroll to the desired scrollIndex:
                 restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
+                ranScrollMomentum.current  = 0; // reset the ran momentum (if was set by hold_scroll)
                 listElm.scrollTo({
                     left                     : futureScrollLeftAbsolute,
                     behavior                 : 'smooth',
