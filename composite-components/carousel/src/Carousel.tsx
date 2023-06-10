@@ -106,7 +106,7 @@ const _defaultScrollingPrecision     : number  = 0.9  /* pixel */         // the
 const _defaultMovementStep           : number  = 1    /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
-const _defaultScrollMomentumWeight   : number  = 1
+const _defaultScrollMomentumWeight   : number  = 10
 
 const _defaultMaxInitialLoad         : number  = 3000 /* ms */
 
@@ -799,6 +799,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        // get the shown listItem's index by position:
+        const currentItemIndex = touchedItemIndex.current;
+        
+        
+        
         // track the touch pos direction:
         const newTouchPos    = event.touches[0].pageX;
         
@@ -835,16 +840,22 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        // update current slide index:
+        const movementItemIndex = limitsMinMaxMovement(currentItemIndex,
+            touchDirection / getSlideDistance(listElm)
+        );
+        console.log({movementItemIndex});
+        
+        
+        
         // customize the momentum:
         restScrollMomentum.current = 0;
-        ranScrollMomentum.current  = Math.min(Math.max( // limits to hold_scroll 1 slide (backward|forward)
-            touchDirection / getSlideDistance(listElm),
-        -1), 1);
+        ranScrollMomentum.current  = movementItemIndex;
         
         
         
         // hold_scroll implementation:
-        await prepareScrolling(touchedItemIndex.current, isPositiveMovement ? +_defaultMovementStep : -_defaultMovementStep, { preserveMomentum: false });
+        await prepareScrolling(currentItemIndex, movementItemIndex, { preserveMomentum: false });
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
