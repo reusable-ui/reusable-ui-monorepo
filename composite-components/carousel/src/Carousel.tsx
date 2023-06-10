@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -27,6 +28,7 @@ import {
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
+    useMergeStyles,
     useMountedFlag,
     
     
@@ -83,6 +85,10 @@ import {
 
 // internals:
 import {
+    // features:
+    usesCarousel,
+}                           from './features/carousel.js'
+import {
     // variants:
     CarouselVariant,
     useCarouselVariant,
@@ -107,6 +113,7 @@ const _defaultMovementStep           : number  = 1    /* step(s) */
 
 const _defaultScrollMomentumAccum    : boolean = true
 const _defaultScrollMomentumWeight   : number  = 2
+const _defaultScrollMargin           : number  = 0
 
 const _defaultMaxInitialLoad         : number  = 3000 /* ms */
 
@@ -156,6 +163,7 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
     // scrolls:
     scrollMomentumAccum  ?: boolean
     scrollMomentumWeight ?: number
+    scrollMargin         ?: number
     
     
     
@@ -200,6 +208,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scrolls:
         scrollMomentumAccum  = _defaultScrollMomentumAccum,
         scrollMomentumWeight = _defaultScrollMomentumWeight,
+        scrollMargin         : scrollMarginFractional = _defaultScrollMargin,
         
         
         
@@ -260,7 +269,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const maxItemIndex           = (itemsCount - 1);
     const rangeItemIndex         = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = 1;
+    const scrollMargin           = Math.ceil(Math.abs(scrollMarginFractional));
     const minMovementItemIndex   = minItemIndex + scrollMargin;
     const maxMovementItemIndex   = maxItemIndex - scrollMargin;
     const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
@@ -675,6 +684,36 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // identifiers:
         ..._defaultNavscrollClasses,
+    );
+    
+    
+    
+    // features:
+    const {carouselVars} = usesCarousel();
+    
+    
+    
+    // styles:
+    const scrollMarginStyle = useMemo<React.CSSProperties>(() => ({
+        // values:
+        [
+            carouselVars.scrollMargin
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : scrollMargin,
+        
+        [
+            carouselVars.scrollMarginFr
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ] : scrollMarginFractional,
+    }), [scrollMargin, scrollMarginFractional]);
+    const mergedStyle     = useMergeStyles(
+        // values:
+        scrollMarginStyle,
+        
+        
+        
+        // preserves the original `style` (can overwrite the `scrollMarginStyle`):
+        props.style,
     );
     
     
@@ -1259,8 +1298,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // classes:
-            mainClass : basicComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            mainClass     : basicComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
             
+            
+            
+            // styles:
+            style         : mergedStyle,
             
             
             // handlers:

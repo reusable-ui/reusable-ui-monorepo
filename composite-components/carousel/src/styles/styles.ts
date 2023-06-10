@@ -48,6 +48,10 @@ import {
 
 // internals:
 import {
+    // features:
+    usesCarousel,
+}                           from '../features/carousel.js'
+import {
     // elements:
     listElm,
     dummyListElm,
@@ -74,6 +78,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
     
     // features:
     const {paddingVars} = usesPadding(carousels);
+    const {carouselRule} = usesCarousel();
     
     
     
@@ -139,6 +144,11 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             // customize:
             ...usesCssProps(usesPrefixedProps(carousels, 'list')), // apply config's cssProps starting with list***
         }),
+        
+        
+        
+        // features:
+        ...carouselRule(), // must be placed at the last
     });
 };
 
@@ -147,6 +157,11 @@ export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}
     const {
         mediaSelectorWithExcept,
     } = usesContentChildrenMediaOptions(options);
+    
+    
+    
+    // features:
+    const {carouselVars} = usesCarousel();
     
     
     
@@ -161,10 +176,10 @@ export const usesCarouselItemLayout = (options: ContentChildrenMediaOptions = {}
         
         
         // sizes:
-        flex            : [[0, 0, 'calc(100% / 3)']], // ungrowable, unshrinkable, initial 100% parent's width
+        flex            : [[0, 0, `calc(100% / (1 + (2 * ${carouselVars.scrollMargin})))`]], // ungrowable, unshrinkable, initial 100% parent's width
         // (important) force the media follow the <li> width, so it doesn't break the flex width:
-        boxSizing       : 'border-box',               // the final size is including borders & paddings
-        inlineSize      : 'calc(100% / 3)',           // fills the entire parent's width
+        boxSizing       : 'border-box',                                                      // the final size is including borders & paddings
+        inlineSize      : `calc(100% / (1 + (2 * ${carouselVars.scrollMargin})))`,           // fills the entire parent's width
         
         
         

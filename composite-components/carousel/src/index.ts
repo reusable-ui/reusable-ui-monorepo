@@ -1,3 +1,4 @@
+export *            from './features/carousel.js'
 export *            from './variants/CarouselVariant.js'
 
 // export *            from './styles/elements.js' // private only, not for (bare) export
