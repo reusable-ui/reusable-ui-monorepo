@@ -635,7 +635,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         const progressingMovementItemIndex = getProgressingMovementItemIndex(currentItemIndex);
-        const maxMovementByProgressing     = maxMovementByRange - progressingMovementItemIndex
+        const maxMovementByProgressing     = maxMovementByRange - progressingMovementItemIndex;
+        console.log({maxMovementByRange, progressingMovementItemIndex, maxMovementByProgressing})
         movementItemIndex = Math.min(Math.max(
             movementItemIndex,
         -maxMovementByProgressing), +maxMovementByProgressing);
@@ -698,8 +699,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate the future index:
-        let futureItemIndex = currentItemIndex + movementItemIndex;
-        if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last slide (for non_infinite_loop)
+        const futureItemIndex = normalizeShift(currentItemIndex + movementItemIndex);
         
         
         
@@ -737,8 +737,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate the future index:
-        let futureItemIndex = currentItemIndex + movementItemIndex;
-        if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
+        const futureItemIndex = normalizeShift(currentItemIndex + movementItemIndex);
         
         
         
@@ -935,13 +934,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // calculate the future index:
-            futureItemIndex = currentItemIndex + movementItemIndex;
-            if (futureItemIndex < minItemIndex) futureItemIndex = maxItemIndex; // scroll to the last  slide (for non_infinite_loop)
-            if (futureItemIndex > maxItemIndex) futureItemIndex = minItemIndex; // scroll to the first slide (for non_infinite_loop)
+            futureItemIndex = normalizeShift(currentItemIndex + movementItemIndex);
             
             
             
             // swipe_scroll implementation:
+            console.log({movementItemIndex, currentItemIndex, futureItemIndex})
             await prepareScrolling(currentItemIndex, futureItemIndex);
         }
         else if (hasHoldScrollAction) {
