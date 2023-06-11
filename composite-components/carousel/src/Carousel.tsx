@@ -1162,10 +1162,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 const straightDistance   = Math.abs(movementItemIndex);
                 const telePrevDistance   = itemsCount - scrollIndex      + currentItemIndex;
                 const teleNextDistance   = itemsCount - currentItemIndex + scrollIndex;
+                console.log({str: straightDistance, prev: telePrevDistance, next: teleNextDistance, maxMov: rangeMovementItemIndex});
                 
                 if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
                     // determine which movement (and direction) is the nearest way:
                     const shortMovementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
+                    console.log({shortMov: shortMovementItemIndex});
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: currentItemIndex });
@@ -1173,6 +1175,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 }
                 else {
+                    console.log({shortMov: movementItemIndex});
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: currentItemIndex });
                     futureItemIndex        = optimalItemIndex + movementItemIndex - scrollMargin;

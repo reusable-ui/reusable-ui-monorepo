@@ -18,7 +18,7 @@ import {
 function App() {
     const [value, setValue] = useState(0);
     const style = useMemo<React.CSSProperties>(() => ({
-        maxWidth  : '400px',
+        maxWidth  : 'calc(400px * 1)',
         maxHeight : '300px',
     }), []);
     
@@ -30,8 +30,8 @@ function App() {
                 <Styles />
             </HeadPortal>
             <div className="App">
-                <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
-                    // console.log('Carousel_2 set to: ', scrollIndex);
+                <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} scrollMargin={2} onScrollIndexChange={({scrollIndex}) => {
+                    console.log('Carousel_2 set to: ', scrollIndex);
                     setValue(scrollIndex);
                 }}>
                     <img alt='lorem image' src='/images/lorem-img/waves-800x600.jpg' />
