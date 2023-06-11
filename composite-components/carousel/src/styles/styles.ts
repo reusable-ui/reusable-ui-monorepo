@@ -77,8 +77,8 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
     // dependencies:
     
     // features:
-    const {paddingVars} = usesPadding(carousels);
-    const {carouselRule} = usesCarousel();
+    const {              paddingVars } = usesPadding(carousels);
+    const {carouselRule, carouselVars} = usesCarousel();
     
     
     
@@ -108,7 +108,7 @@ export const usesCarouselListLayout = (options?: ContentChildrenMediaOptions) =>
             
             // spacings:
             // cancel-out parent's padding with negative margin:
-            marginInline   : `calc(0px - ${paddingVars.paddingInline})`,
+            marginInline   : `calc(0px - ${paddingVars.paddingInline} - (((${carouselVars.scrollMargin} - ${carouselVars.scrollMarginFr}) / (1 + (2 * ${carouselVars.scrollMarginFr}))) * 100%))`,
             marginBlock    : `calc(0px - ${paddingVars.paddingBlock})`,
             
             

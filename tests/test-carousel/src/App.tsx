@@ -30,7 +30,7 @@ function App() {
                 <Styles />
             </HeadPortal>
             <div className="App">
-                <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} scrollMargin={1} onScrollIndexChange={({scrollIndex}) => {
+                <Carousel theme='primary' style={style} infiniteLoop={true} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
                     // console.log('Carousel_2 set to: ', scrollIndex);
                     setValue(scrollIndex);
                 }}>
