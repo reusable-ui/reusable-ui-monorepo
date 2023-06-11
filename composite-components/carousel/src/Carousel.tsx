@@ -636,7 +636,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return indicatorItemIndex /* greedy: from re-render */ - currentItemIndex /* delayed: from visual measurement */;
     };
     const limitsMinMaxMovement            = (currentItemIndex: number, movementItemIndex: number) => {
-        const maxMovementByRange = rangeMovementItemIndex - (2 * scrollMargin);
+        const maxMovementByRange = rangeMovementItemIndex;
         movementItemIndex = Math.min(Math.max(
             movementItemIndex,
         -maxMovementByRange), +maxMovementByRange);
