@@ -1123,6 +1123,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         (async () => {
             await ensureCssLoaded();
             
+            if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+            
             // immediately scroll to the correct position, so the dummyListElm|listElm's scroll_pos is in_sync with scrollIndex:
             setRelativeScrollPos(
                 /*baseListElm      :*/ undefined /* undefined = absolute scroll */,
@@ -1197,15 +1199,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
                     futureItemIndex        = optimalItemIndex + shortMovementItemIndex;
-                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 }
                 else {
                     console.log({mov: movementItemIndex});
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
                     futureItemIndex        = optimalItemIndex + movementItemIndex;
-                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 } // if
+                
+                if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
             } // if
             
             
