@@ -1189,21 +1189,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 const teleNextDistance  = itemsCount - currentItemIndex + futureItemIndex;
                 console.log({str: straightDistance, prev: telePrevDistance, next: teleNextDistance, maxMov: rangeMovementItemIndex});
                 
-                if (straightDistance <= rangeMovementItemIndex) {
-                    console.log({mov: movementItemIndex});
-                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
-                    const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
-                    futureItemIndex        = optimalItemIndex + movementItemIndex;
-                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
-                }
-                else /*if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance))*/ {
+                if ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance)) {
                     // determine which movement (and direction) is the nearest way:
                     const shortMovementItemIndex = (teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance;
-                    console.log({shortMov: shortMovementItemIndex});
+                    console.log({ telePrevDistance, teleNextDistance, shortMov: shortMovementItemIndex });
                     
                     // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                     const optimalItemIndex = await prepareScrolling(currentItemIndex, shortMovementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
                     futureItemIndex        = optimalItemIndex + shortMovementItemIndex;
+                    if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+                } // if
+                else {
+                    console.log({mov: movementItemIndex});
+                    // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
+                    const optimalItemIndex = await prepareScrolling(currentItemIndex, movementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
+                    futureItemIndex        = optimalItemIndex + movementItemIndex;
                     if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
                 } // if
             } // if
