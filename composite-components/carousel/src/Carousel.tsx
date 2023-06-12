@@ -383,14 +383,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        const fractionalScrollIndexOverflowed = (
-            (listElm.scrollLeft / getSlideDistance(listElm))
-            +
-            scrollMargin
-            +
-            dummyDiff.current
-        );
-        return normalizeShift(Math.round(fractionalScrollIndexOverflowed));
+        const scrollLeftAbsolute          = listElm.scrollLeft;
+        const physicalItemIndexFractional = scrollLeftAbsolute / getSlideDistance(listElm);
+        const itemIndexFractional         = physicalItemIndexFractional + scrollMargin;
+        const scrollIndexOverflowed       = itemIndexToScrollIndex(itemIndexFractional);
+        const scrollIndex                 = normalizeShift(Math.round(scrollIndexOverflowed)); // round to the nearest (can cause overflow, eg: 6.88 => 7 of [min: 0, max: 6]), then normalize (eg: 7 => 0)
+        return scrollIndex;
     };
     const measureScrollDelta                = (listElm: TElement) => {
         // logs:
@@ -859,6 +857,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // get the shown listItem's index by position:
         const visualScrollIndex = touchedScrollIndex.current;
+        getVisualNearestScrollIndex();
         
         
         
