@@ -308,10 +308,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // utility functions:
-    const periodify                       = (value: number, period: number) => {
+    const periodify                         = (value: number, period: number) => {
         return ((value % period) + period) % period;
     };
-    const normalizeShift                  = (shift: number) => {
+    const normalizeShift                    = (shift: number) => {
         // conditions:
         if (!itemsCount) return shift;
         
@@ -319,7 +319,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return periodify(shift, itemsCount);
     };
-    const ensureCssLoaded                 = async () : Promise<boolean> => {
+    const ensureCssLoaded                   = async () : Promise<boolean> => {
         // conditions:
         const listElm = listRefInternal.current;
         if (!listElm) return false; // listElm must be exist for testing
@@ -357,26 +357,26 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             resolved(false);
         });
     };
-    const scrollIndexToItemIndex          = (scrollIndex: number): number => {
+    const scrollIndexToItemIndex            = (scrollIndex: number): number => {
         return normalizeShift(scrollIndex - dummyDiff.current);
     };
-    const itemIndexToScrollIndex          = (itemIndex: number): number => {
+    const itemIndexToScrollIndex            = (itemIndex: number): number => {
         return normalizeShift(itemIndex   + dummyDiff.current);
     };
     
     // measuring functions:
-    const getSlideDistance                = (listElm: TElement) => {
+    const getSlideDistance                  = (listElm: TElement) => {
         // get the listItem's slide distance:
         const listScrollPosMax  = listElm.scrollWidth - listElm.clientWidth;
         const range = (listElm === listRefInternal.current) ? rangeMovementItemIndex : rangeItemIndex;
         return itemsCount ? (listScrollPosMax / range) : 0;
     };
-    const isExactScrollPos                = (listElm: TElement) => {
+    const isExactScrollPos                  = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
         const rest = listElm.scrollLeft % listSlideDistance;
         return (rest < _defaultScrollingPrecision) || ((listSlideDistance - rest) < _defaultScrollingPrecision);
     };
-    const getVisualNearestScrollIndex     = () => {
+    const getVisualNearestScrollIndex       = () => {
         // conditions:
         const listElm = listRefInternal.current;
         if (!listElm) return 0; // listElm must be exist for measuring
@@ -392,7 +392,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         );
         return normalizeShift(Math.round(fractionalScrollIndexOverflowed));
     };
-    const measureScrollDelta              = (listElm: TElement) => {
+    const measureScrollDelta                = (listElm: TElement) => {
         // logs:
         const oldScrollPos    = prevScrollPos.current;
         const newScrollPos    = listElm.scrollLeft;
@@ -401,15 +401,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         return deltaScrollPos;
     };
-    const isNearZeroScrollMomentum        = () => {
+    const isNearZeroScrollMomentum          = () => {
         return Math.abs(restScrollMomentum.current) < 0.1; // the precision is quite poor, it may be uncertain up to 0.05, so we set to 0.1 for a safer margin
     };
     
     // mutation functions:
-    const ensurePrevScrollingCompleted    = async () => {
+    const ensurePrevScrollingCompleted      = async () => {
         await promisePrevScrollingCompleted.current;
     };
-    const setRelativeScrollPos            = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
+    const setRelativeScrollPos              = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
         const targetSlideDistance           = getSlideDistance(targetListElm);
         const targetScale                   = baseListElm ? (targetSlideDistance / getSlideDistance(baseListElm)) : 1;
@@ -475,7 +475,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             } // try
         } // if
     };
-    const setRelativeShiftPos             = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
+    const setRelativeShiftPos               = (baseShift: number|undefined, targetListElm: TElement, targetShiftDiff: number) => {
         // conditions:
         
         if (!itemsCount) return; // empty items => nothing to shift
@@ -502,7 +502,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
-    const updateListPresentation          = async () => {
+    const updateListPresentation            = async () => {
         // get the shown listItem's index by position:
         const expectedScrollIndex = scrollIndex; // the *source of truth*
         
@@ -517,7 +517,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         preserveMomentum ?: boolean
         scrollIndex      ?: number
     }
-    const getOptimalIndexForMovement      = (currentItemIndex: number|undefined, movementItemIndex: number, options?: MovementOptions): number => {
+    const getOptimalIndexForMovement        = (currentItemIndex: number|undefined, movementItemIndex: number, options?: MovementOptions): number => {
         // options:
         const {
             preserveMomentum = true,
@@ -551,7 +551,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         console.log({currentItemIndex, movementItemIndex, futureItemIndex, progressingMovementScrollIndex, optimz: clampedPreviousItemIndex});
         return clampedPreviousItemIndex;
     };
-    const prepareScrolling                = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
+    const prepareScrolling                  = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
         // options:
         const {
             scrollIndex : currentScrollIndex = scrollIndex,
@@ -596,7 +596,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         console.log('prepareScrolling', { currentScrollIndex, optimalItemIndex, shiftImage, scrollImage, diff: dummyDiff.current });
         return optimalItemIndex;
     };
-    const performScrolling                = (currentScrollIndex: number|undefined, futureScrollIndex: number): void => {
+    const performScrolling                  = (currentScrollIndex: number|undefined, futureScrollIndex: number): void => {
         futureScrollIndex = normalizeShift(futureScrollIndex);
         // conditions:
         if ((futureScrollIndex < minItemIndex) || (futureScrollIndex > maxItemIndex)) return; // out of movement range => ignore
