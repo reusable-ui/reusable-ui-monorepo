@@ -1335,6 +1335,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             style         : mergedStyle,
             
             
+            
             // handlers:
             onTouchStart  : handleTouchStart,
             onTouchMove   : handleTouchMove,
@@ -1365,7 +1366,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // handlers:
-                    onScroll      = {listHandleScroll    }
+                    onScroll={listHandleScroll}
                 >
                     {React.Children.map(children, (child, index) => {
                         // conditions:
