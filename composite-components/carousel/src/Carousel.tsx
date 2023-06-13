@@ -208,7 +208,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scrolls:
         scrollMomentumAccum  = _defaultScrollMomentumAccum,
         scrollMomentumWeight = _defaultScrollMomentumWeight,
-        scrollMargin         : scrollMarginFractional = _defaultScrollMargin,
+        scrollMargin         : scrollMarginProp = _defaultScrollMargin,
         
         
         
@@ -263,16 +263,38 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // fn props:
-    const itemsCount             = React.Children.count(children);
+    const itemsCount              = React.Children.count(children);
     
-    const minItemIndex           = 0;
-    const maxItemIndex           = (itemsCount - 1);
-    const rangeItemIndex         = maxItemIndex - minItemIndex;
+    const minItemIndex            = 0;
+    const maxItemIndex            = (itemsCount - 1);
+    const rangeItemIndex          = maxItemIndex - minItemIndex;
     
-    const scrollMargin           = Math.ceil(Math.abs(scrollMarginFractional));
-    const minMovementItemIndex   = minItemIndex + scrollMargin;
-    const maxMovementItemIndex   = maxItemIndex - scrollMargin;
-    const rangeMovementItemIndex = maxMovementItemIndex - minMovementItemIndex;
+    const maxPossibleScrollMargin = Math.max(0,
+        Math.floor((itemsCount - 1) / 2)
+    );
+    
+    const scrollMarginPropAbs     = Math.abs(scrollMarginProp);
+    const scrollMarginFrPart      = scrollMarginPropAbs - Math.floor(scrollMarginPropAbs);
+    const scrollMarginIntPart     = scrollMarginPropAbs - scrollMarginFrPart;
+    
+    const scrollMarginFr          = (
+        !infiniteLoop
+        ? 0
+        : (
+            (scrollMarginPropAbs <= maxPossibleScrollMargin)
+            ? scrollMarginPropAbs
+            :   !scrollMarginFrPart
+                ?  maxPossibleScrollMargin
+                : Math.max(0,
+                    (maxPossibleScrollMargin - 1) + scrollMarginFrPart
+                )
+        )
+    );
+    console.log({maxPossibleScrollMargin, scrollMarginIntPart, scrollMarginFrPart, scrollMarginFr});
+    const scrollMargin            = Math.ceil(scrollMarginFr);
+    const minMovementItemIndex    = minItemIndex + scrollMargin;
+    const maxMovementItemIndex    = maxItemIndex - scrollMargin;
+    const rangeMovementItemIndex  = maxMovementItemIndex - minMovementItemIndex;
     
     
     
@@ -722,8 +744,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         [
             carouselVars.scrollMarginFr
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ] : scrollMarginFractional,
-    }), [scrollMargin, scrollMarginFractional]);
+        ] : scrollMarginFr,
+    }), [scrollMargin, scrollMarginFr]);
     const mergedStyle     = useMergeStyles(
         // values:
         scrollMarginStyle,
