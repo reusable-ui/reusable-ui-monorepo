@@ -275,7 +275,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const scrollMarginPropAbs     = Math.abs(scrollMarginProp);
     const scrollMarginFrPart      = scrollMarginPropAbs - Math.floor(scrollMarginPropAbs);
-    const scrollMarginIntPart     = scrollMarginPropAbs - scrollMarginFrPart;
     
     const scrollMarginFr          = (
         !infiniteLoop
@@ -290,7 +289,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 )
         )
     );
-    console.log({maxPossibleScrollMargin, scrollMarginIntPart, scrollMarginFrPart, scrollMarginFr});
     const scrollMargin            = Math.ceil(scrollMarginFr);
     const minMovementItemIndex    = minItemIndex + scrollMargin;
     const maxMovementItemIndex    = maxItemIndex - scrollMargin;
@@ -568,7 +566,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             previousItemIndex,
         minMovementItemIndex), maxMovementItemIndex);
         
-        console.log({currentItemIndex, movementItemIndex, futureItemIndex, progressingMovementScrollIndex, optimz: clampedPreviousItemIndex});
         return clampedPreviousItemIndex;
     };
     const prepareScrolling                  = async (currentItemIndex: number, movementItemIndex: number, options?: MovementOptions): Promise<number> => {
@@ -579,7 +576,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        console.log('prepareScrolling', { currentItemIndex, scrollIndex: options?.scrollIndex, diff: dummyDiff.current });
         // conditions:
         if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
         
@@ -613,7 +609,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // update the shifted listItem's index:
-        console.log('prepareScrolling', { currentScrollIndex, optimalItemIndex, shiftImage, scrollImage, diff: dummyDiff.current });
         return optimalItemIndex;
     };
     const performScrolling                  = (currentScrollIndex: number|undefined, futureScrollIndex: number): void => {
@@ -673,7 +668,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return (touchDirection > 0) === isLtr;
     };
     const getProgressingMovementScrollIndex = (visualScrollIndex: number, currentScrollIndex = scrollIndex) => {
-        console.log('getProgressingMovementScrollIndex', { currentScrollIndex, visualScrollIndex });
         return currentScrollIndex /* greedy: from re-render */ - visualScrollIndex /* delayed: from visual measurement */;
     };
     const limitsScrollMovement              = (visualScrollIndex: number, movementScrollIndex: number) => {
@@ -685,7 +679,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         const progressingMovementScrollIndex = getProgressingMovementScrollIndex(visualScrollIndex);
         const maxMovementByProgressing       = rangeMovementItemIndex - progressingMovementScrollIndex;
-        console.log({rangeMovementItemIndex, progressingMovementScrollIndex, maxMovementByProgressing});
         movementScrollIndex = Math.min(Math.max(
             movementScrollIndex,
         -maxMovementByProgressing), +maxMovementByProgressing);
@@ -1019,7 +1012,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // swipe_scroll implementation:
-            console.log({movementScrollIndex, visualScrollIndex, futureScrollIndex});
             await prepareScrolling(/*currentItemIndex = */scrollIndexToItemIndex(visualScrollIndex), futureScrollIndex);
         }
         else if (hasHoldScrollAction) {
@@ -1199,7 +1191,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // get the physical scroll index:
             let currentItemIndex = scrollIndexToItemIndex(currentScrollIndex);
             let futureItemIndex  = scrollIndexToItemIndex(futureScrollIndex);
-            console.log({currentScrollIndex, futureScrollIndex, currentItemIndex, futureItemIndex, diff: dummyDiff.current});
             
             
             
@@ -1220,7 +1211,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     ? ((teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance)
                     : movementItemIndex
                 );
-                console.log({straight: straightDistance, prev: telePrevDistance, next: teleNextDistance, shortest: shortestMovementItemIndex});
                 
                 
                 
@@ -1240,7 +1230,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // adjust the initial variables:
                     currentItemIndex = scrollIndexToItemIndex(normalizeShift(currentScrollIndex + excessMovement)); // shift + aware of diff change
                     shortestMovementItemIndex -= excessMovement; // reduce
-                    console.log({currentItemIndex, excessMovement, rangeMovementItemIndex, semiFutureScrollIndex, shortest: shortestMovementItemIndex});
                 } // if
                 
                 
