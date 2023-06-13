@@ -237,7 +237,8 @@ export const usesCarouselMediaLayout = () => {
             
             
             // sizes:
-            flex                  : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+            flex                  : [[0, 1, 'auto']], // ungrowable, shrinkable, initial from it's height
+            minBlockSize          : 0, // workaround for Firefox bug 
             
             
             
