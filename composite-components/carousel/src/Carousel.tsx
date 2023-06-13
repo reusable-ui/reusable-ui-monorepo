@@ -530,7 +530,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if (maxMovementItemIndex <= minMovementItemIndex) return currentItemIndex; // the slides(s) are impossible to move => always return the unoptimized
+        if (maxMovementItemIndex < minMovementItemIndex) return currentItemIndex; // the slides(s) are impossible to move => always return the unoptimized, if maxMovementItemIndex === minMovementItemIndex => also run the alg below just for alignment the image position
         
         
         
