@@ -1183,11 +1183,14 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             // looking for a chance of *shorter_paths* by *teleporting*:
             if (infiniteLoop) {
+                // calculate the possible paths:
                 const movementItemIndex = futureItemIndex - currentItemIndex;
                 
                 const straightDistance  = Math.abs(movementItemIndex);
                 const telePrevDistance  = itemsCount - futureItemIndex  + currentItemIndex;
                 const teleNextDistance  = itemsCount - currentItemIndex + futureItemIndex;
+                
+                
                 
                 // determine which movement (and direction) is the shortest way:
                 const shortestMovementItemIndex = (
@@ -1196,6 +1199,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     : movementItemIndex
                 );
                 console.log({straight: straightDistance, prev: telePrevDistance, next: teleNextDistance, shortest: shortestMovementItemIndex, maxMov: rangeMovementItemIndex});
+                
+                
+                
                 // prepare to scrolling by rearrange slide(s) positions & then update current slide index:
                 const optimalItemIndex = await prepareScrolling(currentItemIndex, shortestMovementItemIndex, { scrollIndex: itemIndexToScrollIndex(currentItemIndex) });
                 if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
