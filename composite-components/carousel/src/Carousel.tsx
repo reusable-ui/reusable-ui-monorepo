@@ -1153,7 +1153,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             /* no need to cleanup if no  mutation from infiniteLoop to finiteLoop */
         };
-    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop changes
+    }, [infiniteLoop, scrollMargin]); // (re)run the setups on every time the infiniteLoop|scrollMargin changes
     
     // changing scroll pos (with scrolling effect):
     const prevScrollIndexRef = useRef<number>(scrollIndex);     // initial
@@ -1218,7 +1218,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // adjust the initial variables:
                     currentItemIndex = scrollIndexToItemIndex(normalizeShift(currentScrollIndex + excessMovement)); // shift + aware of diff change
                     shortestMovementItemIndex -= excessMovement; // reduce
-                    console.log({currentItemIndex, excessMovement, semiFutureScrollIndex, shortest: shortestMovementItemIndex});
+                    console.log({currentItemIndex, excessMovement, rangeMovementItemIndex, semiFutureScrollIndex, shortest: shortestMovementItemIndex});
                 } // if
                 
                 
