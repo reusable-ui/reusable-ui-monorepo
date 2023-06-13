@@ -500,9 +500,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // update the diff of listElm & dummyListElm:
         dummyDiff.current = normalizeShift(dummyDiff.current + relativeShift);
     };
-    const updateListPresentation            = async () => {
+    const updateListPresentation            = async (expectedScrollIndex?: number) => {
         // get the shown listItem's index by position:
-        const expectedScrollIndex = scrollIndex; // the *source of truth*
+        expectedScrollIndex ??= scrollIndex; // the *source of truth*
         
         
         
@@ -1175,8 +1175,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // setups:
         (async () => {
             // get the physical scroll index:
-            const currentItemIndex = scrollIndexToItemIndex(currentScrollIndex);
-            let   futureItemIndex  = scrollIndexToItemIndex(futureScrollIndex);
+            let currentItemIndex = scrollIndexToItemIndex(currentScrollIndex);
+            let futureItemIndex  = scrollIndexToItemIndex(futureScrollIndex);
             console.log({currentScrollIndex, futureScrollIndex, currentItemIndex, futureItemIndex, diff: dummyDiff.current});
             
             
@@ -1193,12 +1193,33 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 
                 // determine which movement (and direction) is the shortest way:
-                const shortestMovementItemIndex = (
+                let shortestMovementItemIndex = (
                     ((telePrevDistance < straightDistance) || (teleNextDistance < straightDistance))
                     ? ((teleNextDistance < telePrevDistance) ? +teleNextDistance : -telePrevDistance)
                     : movementItemIndex
                 );
-                console.log({straight: straightDistance, prev: telePrevDistance, next: teleNextDistance, shortest: shortestMovementItemIndex, maxMov: rangeMovementItemIndex});
+                console.log({straight: straightDistance, prev: telePrevDistance, next: teleNextDistance, shortest: shortestMovementItemIndex});
+                
+                
+                
+                // workaround for excess movement:
+                if (Math.abs(shortestMovementItemIndex) > rangeMovementItemIndex) {
+                    // calculate the excess movement:
+                    const excessMovement = (shortestMovementItemIndex > 0) ? (shortestMovementItemIndex - rangeMovementItemIndex) : (shortestMovementItemIndex + rangeMovementItemIndex);
+                    
+                    
+                    
+                    // immediately jump to the nearest reachable movement:
+                    const semiFutureScrollIndex = currentScrollIndex + excessMovement;
+                    updateListPresentation(semiFutureScrollIndex); // causes diff change
+                    
+                    
+                    
+                    // adjust the initial variables:
+                    currentItemIndex = scrollIndexToItemIndex(normalizeShift(currentScrollIndex + excessMovement)); // shift + aware of diff change
+                    shortestMovementItemIndex -= excessMovement; // reduce
+                    console.log({currentItemIndex, excessMovement, semiFutureScrollIndex, shortest: shortestMovementItemIndex});
+                } // if
                 
                 
                 
