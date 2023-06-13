@@ -410,7 +410,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const setRelativeScrollPos              = async (baseListElm: TElement|undefined, targetListElm: TElement, targetScrollDiff: number) => {
         const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
         const targetSlideDistance           = getSlideDistance(targetListElm);
-        const targetScale                   = baseListElm ? (targetSlideDistance / getSlideDistance(baseListElm)) : 1;
+        const targetScale                   = baseListElm ? (targetSlideDistance / (getSlideDistance(baseListElm) || /* in case of the base's slideDistance is NaN => divide with targetSlideDistance itself to produce 1 */targetSlideDistance)) : 1;
         const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
         const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
         const targetScrollPosOverflowed     = (
@@ -1254,6 +1254,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     [noInterceptMark as any] : undefined, // no intercept call hack
                 });
+            }
+            else if (infiniteLoop) {
+                // in case of the delta scroll is zero (not causing to scroll), we need to *manually* scroll the dummyListElm to sync with the currentScrollIndex:
+                const dummyListElm   = dummyListRefInternal.current;
+                if (dummyListElm) {
+                    await setRelativeScrollPos(
+                        /*baseListElm      :*/ listElm /* relative to listElm's scroll */,
+                        
+                        /*targetListElm    :*/ dummyListElm,
+                        /*targetScrollDiff :*/ dummyDiff.current + scrollMargin,
+                    );
+                } // if
             } // if
         })();
     }, [scrollIndex]); // (re)run the setups on every time the scrollIndex changes
