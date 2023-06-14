@@ -228,7 +228,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     // variants:
     const listOrientationableVariant = useOrientationable(props, listDefaultOrientationableOptions);
-    const listIsOrientationBlock     = listOrientationableVariant.isOrientationBlock;
+    const listIsOrientationVertical  = listOrientationableVariant.isOrientationVertical;
     
     
     
@@ -286,21 +286,21 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-                 if (                                     (keyCode === 'tab'       )) setFocusNext(event.currentTarget);
-            else if (                                     (keyCode === 'pagedown'  )) setFocusNext(event.currentTarget);
-            else if (                                     (keyCode === 'pageup'    )) setFocusPrev(event.currentTarget);
+                 if (                                        (keyCode === 'tab'       )) setFocusNext(event.currentTarget);
+            else if (                                        (keyCode === 'pagedown'  )) setFocusNext(event.currentTarget);
+            else if (                                        (keyCode === 'pageup'    )) setFocusPrev(event.currentTarget);
             
-            else if (                                     (keyCode === 'home'      )) setFocusFirst(event.currentTarget);
-            else if (                                     (keyCode === 'end'       )) setFocusLast(event.currentTarget);
+            else if (                                        (keyCode === 'home'      )) setFocusFirst(event.currentTarget);
+            else if (                                        (keyCode === 'end'       )) setFocusLast(event.currentTarget);
             
-            else if ( listIsOrientationBlock &&           (keyCode === 'arrowdown' )) setFocusNext(event.currentTarget);
-            else if ( listIsOrientationBlock &&           (keyCode === 'arrowup'   )) setFocusPrev(event.currentTarget);
+            else if ( listIsOrientationVertical &&           (keyCode === 'arrowdown' )) setFocusNext(event.currentTarget);
+            else if ( listIsOrientationVertical &&           (keyCode === 'arrowup'   )) setFocusPrev(event.currentTarget);
             
-            else if (!listIsOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) setFocusNext(event.currentTarget);
-            else if (!listIsOrientationBlock && !isRtl && (keyCode === 'arrowright')) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationVertical && !isRtl && (keyCode === 'arrowleft' )) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationVertical && !isRtl && (keyCode === 'arrowright')) setFocusPrev(event.currentTarget);
             
-            else if (!listIsOrientationBlock &&  isRtl && (keyCode === 'arrowright')) setFocusNext(event.currentTarget);
-            else if (!listIsOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) setFocusPrev(event.currentTarget);
+            else if (!listIsOrientationVertical &&  isRtl && (keyCode === 'arrowright')) setFocusNext(event.currentTarget);
+            else if (!listIsOrientationVertical &&  isRtl && (keyCode === 'arrowleft' )) setFocusPrev(event.currentTarget);
             else return false; // not handled
             
             
