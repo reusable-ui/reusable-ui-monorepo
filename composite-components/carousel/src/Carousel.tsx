@@ -396,6 +396,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const setDomScrollPos                   = (listElm: TElement, scrollPos: number): void => {
         listElm.scrollLeft = scrollPos;
     };
+    const domScrollTo                       = (listElm: TElement, options: ScrollToOptions): void => {
+        listElm.scrollTo({
+            ...options,
+            
+            [noInterceptMark as any] : undefined, // no intercept call hack
+        });
+    };
     
     // measuring functions:
     const getSlideDistance                  = (listElm: TElement) => {
@@ -657,11 +664,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 // snap scroll to the desired scrollIndex:
                 restScrollMomentum.current = (revertScrollLeftRelative / slideDistance);
-                listElm.scrollTo({
-                    left                     : revertScrollLeftAbsolute,
-                    behavior                 : 'smooth',
-                    
-                    [noInterceptMark as any] : undefined, // no intercept call hack
+                domScrollTo(listElm, {
+                    left     : revertScrollLeftAbsolute,
+                    behavior : 'smooth',
                 });
             } // if
         }
@@ -916,11 +921,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // stop the running scrolling:
-        listElm.scrollTo({
-            left                     : getDomScrollPos(listElm), // scroll to current scroll position itself
-            behavior                 : 'auto',
-            
-            [noInterceptMark as any] : undefined, // no intercept call hack
+        domScrollTo(listElm, {
+            left     : getDomScrollPos(listElm), // scroll to current scroll position itself
+            behavior : 'auto',
         });
         
         
@@ -1272,11 +1275,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 // snap scroll to the desired scrollIndex:
                 restScrollMomentum.current = (futureScrollLeftRelative / slideDistance);
-                listElm.scrollTo({
-                    left                     : futureScrollLeftAbsolute,
-                    behavior                 : 'smooth',
-                    
-                    [noInterceptMark as any] : undefined, // no intercept call hack
+                domScrollTo(listElm, {
+                    left     : futureScrollLeftAbsolute,
+                    behavior : 'smooth',
                 });
             }
             else if (infiniteLoop) {
