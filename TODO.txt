@@ -1,4 +1,3 @@
-[low prior ] fix map physical isOrientationVertical on the handleMouse, handleKeyboard, flip trackUpper & trackLower
 [low prior ] fix <NavPrevItem|NavNextItem> based on <List>'s physical orientation
 
 [med prior ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
