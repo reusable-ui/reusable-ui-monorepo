@@ -1325,8 +1325,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // calculate the desired pos:
-            const futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
+            let futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (futureScrollLeftAbsolute === undefined) return; // undefined => ignore // zero => okay
+            if (isRtl) futureScrollLeftAbsolute = -futureScrollLeftAbsolute;
             const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftOffset = */getDomScrollPos(primaryListElm);
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // update the scrollIndex (and re-render):
@@ -1348,8 +1349,9 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // calculate the desired pos:
-            const futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
+            let futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (!futureScrollLeftRelative) return; // undefined => ignore // zero => not moving => ignore
+            if (isRtl) futureScrollLeftRelative = -futureScrollLeftRelative;
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftOffset = */getDomScrollPos(primaryListElm);
                 
@@ -1372,7 +1374,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             primaryListElm.scrollTo = oriScrollTo;
             primaryListElm.scrollBy = oriScrollBy;
         };
-    }, [infiniteLoop]); // (re)run the setups on every time the infiniteLoop changes
+    }, [infiniteLoop, isRtl]); // (re)run the setups on every time the infiniteLoop|isRtl changes
     
     
     
