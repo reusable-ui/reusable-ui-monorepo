@@ -30,6 +30,7 @@ import {
     useMergeClasses,
     useMergeStyles,
     useMountedFlag,
+    useIsRtl,
     
     
     
@@ -192,6 +193,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     
+    // cultures:
+    const [isRtl, setCarouselElmRef] = useIsRtl<TElement>();
+    
+    
+    
     // rest props:
     const {
         // refs:
@@ -222,8 +228,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // components:
         basicComponent      = (<Content<TElement>                               /> as React.ReactComponentElement<any, BasicProps<TElement>>),
         
-        prevButtonComponent = (<ButtonIcon iconPosition='start' icon='navleft'  /> as React.ReactComponentElement<any, ButtonProps>),
-        nextButtonComponent = (<ButtonIcon iconPosition='end'   icon='navright' /> as React.ReactComponentElement<any, ButtonProps>),
+        prevButtonComponent = (<ButtonIcon iconPosition='start' icon={isRtl ? 'navright' : 'navleft' }  /> as React.ReactComponentElement<any, ButtonProps>),
+        nextButtonComponent = (<ButtonIcon iconPosition='end'   icon={isRtl ? 'navleft'  : 'navright'} /> as React.ReactComponentElement<any, ButtonProps>),
         navscrollComponent  = (<Navscroll<Element>                              /> as React.ReactComponentElement<any, NavscrollProps<Element>>),
         
         
@@ -236,7 +242,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     // refs:
     const listRefInternal      = useRef<TElement|null>(null);
-    const mergedListRef        = useMergeRefs(
+    const mergedListRef        = useMergeRefs<TElement>(
         // preserves the original `elmRef`:
         elmRef,
         
@@ -248,10 +254,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         listRefInternal,
+        setCarouselElmRef,
     );
     
     const dummyListRefInternal = useRef<TElement|null>(null);
-    const mergedDummyListRef   = useMergeRefs(
+    const mergedDummyListRef   = useMergeRefs<TElement>(
         // preserves the original `scrollingRef` (conditionally):
         (infiniteLoop || undefined) && scrollingRef,
         
@@ -664,7 +671,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // determine the positiveness based on lrt|rtl culture:
-        const isLtr = (getComputedStyle(listElm).direction === 'ltr');
+        const isLtr = !isRtl;
         return (touchDirection > 0) === isLtr;
     };
     const getProgressingMovementScrollIndex = (visualScrollIndex: number, currentScrollIndex = scrollIndex) => {
