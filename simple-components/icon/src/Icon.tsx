@@ -73,12 +73,14 @@ export const customIconList = [
     'whatsapp',
     'close',
     'busy',
+    'navup',
+    'navdown',
     'navleft',
     'navright',
     'dropup',
     'dropdown',
-    'dropright',
     'dropleft',
+    'dropright',
 ] as const;
 export type CustomIconList  = (typeof customIconList)[number] | (string & {})
 
