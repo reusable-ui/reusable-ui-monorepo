@@ -138,6 +138,11 @@ export const useOrientationable = ({orientation}: OrientationableProps, defaultO
         );
     },
     get isOrientationVertical(): boolean {
+        /*
+            Assumes block === vertical, in most cases the `writing-mode` is `horizontal-tb`.
+            To check for the styling on element is quite expensive (needs to get the ref of the element and then may re-render).
+            For performance reason, we assume the `writing-mode = horizontal-tb`.
+        */
         return this.isOrientationBlock;
     },
     get 'aria-orientation'() {
