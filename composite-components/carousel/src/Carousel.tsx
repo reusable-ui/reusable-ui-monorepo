@@ -390,6 +390,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const itemIndexToScrollIndex            = (itemIndex: number): number => {
         return normalizeShift(itemIndex   + dummyDiff.current);
     };
+    const getDomScrollPos                   = (listElm: TElement): number => {
+        return listElm.scrollLeft;
+    };
+    const setDomScrollPos                   = (listElm: TElement, scrollPos: number): void => {
+        listElm.scrollLeft = scrollPos;
+    };
     
     // measuring functions:
     const getSlideDistance                  = (listElm: TElement) => {
@@ -400,7 +406,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     };
     const isExactScrollPos                  = (listElm: TElement) => {
         const listSlideDistance = getSlideDistance(listElm);
-        const rest = listElm.scrollLeft % listSlideDistance;
+        const rest = getDomScrollPos(listElm) % listSlideDistance;
         return (rest < _defaultScrollingPrecision) || ((listSlideDistance - rest) < _defaultScrollingPrecision);
     };
     const getVisualNearestScrollIndex       = () => {
@@ -410,7 +416,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        const scrollLeftAbsolute          = listElm.scrollLeft;
+        const scrollLeftAbsolute          = getDomScrollPos(listElm);
         const physicalItemIndexFractional = scrollLeftAbsolute / getSlideDistance(listElm);
         const itemIndexFractional         = physicalItemIndexFractional + scrollMargin;
         const scrollIndexOverflowed       = itemIndexToScrollIndex(itemIndexFractional);
@@ -420,7 +426,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const measureScrollDelta                = (listElm: TElement) => {
         // logs:
         const oldScrollPos    = prevScrollPos.current;
-        const newScrollPos    = listElm.scrollLeft;
+        const newScrollPos    = getDomScrollPos(listElm);
         const deltaScrollPos  = newScrollPos - oldScrollPos;
         prevScrollPos.current = newScrollPos; // update the pos change
         
@@ -473,7 +479,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // adjustment:
-        if (Math.abs(targetListElm.scrollLeft - targetScrollPosWrappedRounded) >= _defaultScrollingPrecision) { // a significant movement detected
+        if (Math.abs(getDomScrollPos(targetListElm) - targetScrollPosWrappedRounded) >= _defaultScrollingPrecision) { // a significant movement detected
             // mark the sliding status:
             const originSlidingStatus = slidingStatus.current;
             if (originSlidingStatus === SlidingStatus.Passive) slidingStatus.current = SlidingStatus.Calibrate;
@@ -487,8 +493,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     : undefined
                 );
                 
-                targetListElm.scrollLeft = targetScrollPosWrappedRounded;
-                if (targetListElm === listRefInternal.current) prevScrollPos.current = targetListElm.scrollLeft; // update the pos change
+                setDomScrollPos(targetListElm, targetScrollPosWrappedRounded);
+                if (targetListElm === listRefInternal.current) prevScrollPos.current = getDomScrollPos(targetListElm); // update the pos change
                 
                 // a delay time to ensure the scroll calibration has fully settled & the `onScroll` event has fired (it's safe to scroll further):
                 await promisePrevScrollingCompleted.current;
@@ -644,7 +650,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const physicalItemIndex        = normalizeShift(currentItemIndex - scrollMargin);
             const slideDistance            = getSlideDistance(listElm);
             const revertScrollLeftAbsolute = physicalItemIndex * slideDistance;
-            const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftOffset = */listElm.scrollLeft;
+            const revertScrollLeftRelative = revertScrollLeftAbsolute - /*currentScrollLeftOffset = */getDomScrollPos(listElm);
             if (Math.abs(revertScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
@@ -911,7 +917,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // stop the running scrolling:
         listElm.scrollTo({
-            left                     : listElm.scrollLeft, // scroll to current scroll position itself
+            left                     : getDomScrollPos(listElm), // scroll to current scroll position itself
             behavior                 : 'auto',
             
             [noInterceptMark as any] : undefined, // no intercept call hack
@@ -1259,7 +1265,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const physicalItemIndex        = normalizeShift(futureItemIndex - scrollMargin);
             const slideDistance            = getSlideDistance(listElm);
             const futureScrollLeftAbsolute = physicalItemIndex * slideDistance;
-            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftOffset = */listElm.scrollLeft;
+            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftOffset = */getDomScrollPos(listElm);
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // mark the sliding status:
                 slidingStatus.current = SlidingStatus.AutoScrolling;
@@ -1318,7 +1324,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             // calculate the desired pos:
             const futureScrollLeftAbsolute = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (futureScrollLeftAbsolute === undefined) return; // undefined => ignore // zero => okay
-            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftOffset = */primaryListElm.scrollLeft;
+            const futureScrollLeftRelative = futureScrollLeftAbsolute - /*currentScrollLeftOffset = */getDomScrollPos(primaryListElm);
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
                 // update the scrollIndex (and re-render):
                 setScrollIndex(
@@ -1342,7 +1348,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             const futureScrollLeftRelative = (typeof(leftOrOptions) === 'number') ? leftOrOptions : leftOrOptions.left;
             if (!futureScrollLeftRelative) return; // undefined => ignore // zero => not moving => ignore
             if (Math.abs(futureScrollLeftRelative) >= _defaultScrollingPrecision) { // a significant movement detected
-                const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftOffset = */primaryListElm.scrollLeft;
+                const futureScrollLeftAbsolute = futureScrollLeftRelative + /*currentScrollLeftOffset = */getDomScrollPos(primaryListElm);
                 
                 
                 
