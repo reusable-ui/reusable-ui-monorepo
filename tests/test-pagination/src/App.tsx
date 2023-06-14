@@ -66,6 +66,61 @@ function App() {
                         );
                     })}
                 </Pagination>
+                <hr />
+                <Pagination theme='primary'
+                    itemsLimit={10}
+                    orientation='inline'
+                    prevItems={
+                        <NavPrevItem
+                            onClick={() => setSelectedIndex(0)}
+                        />
+                    }
+                    nextItems={
+                        <NavNextItem
+                            onClick={() => setSelectedIndex(listArr.length - 1)}
+                        />
+                    }
+                    style={{direction: 'rtl'}}
+                >
+                    {listArr.map((index) => {
+                        return (
+                            <ListItem
+                                key={index}
+                                active={(selectedIndex === index)}
+                                onClick={() => setSelectedIndex(index)}
+                            >
+                                {index + 1}
+                            </ListItem>
+                        );
+                    })}
+                </Pagination>
+                <hr />
+                <Pagination theme='primary'
+                    itemsLimit={10}
+                    orientation='block'
+                    prevItems={
+                        <NavPrevItem
+                            onClick={() => setSelectedIndex(0)}
+                        />
+                    }
+                    nextItems={
+                        <NavNextItem
+                            onClick={() => setSelectedIndex(listArr.length - 1)}
+                        />
+                    }
+                >
+                    {listArr.map((index) => {
+                        return (
+                            <ListItem
+                                key={index}
+                                active={(selectedIndex === index)}
+                                onClick={() => setSelectedIndex(index)}
+                            >
+                                {index + 1}
+                            </ListItem>
+                        );
+                    })}
+                </Pagination>
             </div>
         </>
     );
