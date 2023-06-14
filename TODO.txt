@@ -1,4 +1,3 @@
-[low prior ] fix <NavPrevItem|NavNextItem> based on <List>'s physical orientation
 [low prior ] add rtl support for <Carousel>
 
 [deferred  ] fix <HamburgerMenuButton> animation (side effect of *hack* on active-as-click)
@@ -6,6 +5,7 @@
 [deferred  ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
 [deferred  ] fix [aria-orientation] => detect a physical orientation by detecting the writing-mode
+[deferred  ] fix <NavPrevItem|NavNextItem> based on <List>'s [aria-orientation]
 [deferred  ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 [deferred  ] fix <Tooltip outlined={true}> <Arrow>
 
