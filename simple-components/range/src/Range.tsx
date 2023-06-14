@@ -227,6 +227,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     // variants:
     const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
     const isOrientationBlock     = orientationableVariant.isOrientationBlock;
+    const isOrientationVertical  = orientationableVariant.isOrientationVertical;
     
     
     
@@ -780,18 +781,18 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         const style        = getComputedStyle(track);
-        const borderStart  = (Number.parseInt(isOrientationBlock ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
-        const paddingStart = (Number.parseInt(isOrientationBlock ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
-        const paddingEnd   = (Number.parseInt(isOrientationBlock ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
-        const thumbSize    =  (isOrientationBlock ? thumb.offsetHeight : thumb.offsetWidth);
-        const trackSize    = ((isOrientationBlock ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
+        const borderStart  = (Number.parseInt(isOrientationVertical ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
+        const paddingStart = (Number.parseInt(isOrientationVertical ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
+        const paddingEnd   = (Number.parseInt(isOrientationVertical ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
+        const thumbSize    =  (isOrientationVertical ? thumb.offsetHeight : thumb.offsetWidth);
+        const trackSize    = ((isOrientationVertical ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
         
         const rect         = track.getBoundingClientRect();
-        const cursorStart  = (isOrientationBlock ? event.clientY : event.clientX) - (isOrientationBlock ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
+        const cursorStart  = (isOrientationVertical ? event.clientY : event.clientX) - (isOrientationVertical ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
         // if ((cursorStart < 0) || (cursorStart > trackSize)) return; // setValueRatio will take care of this
         
         let valueRatio     = cursorStart / trackSize;
-        if (isOrientationBlock || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
+        if (isOrientationVertical || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
         
         changeValue('setValueRatio', valueRatio);
         
@@ -836,20 +837,20 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             
-                 if (                                 (keyCode === 'pagedown'  )) changeValue('decrease', 1    );
-            else if (                                 (keyCode === 'pageup'    )) changeValue('increase', 1    );
+                 if (                                    (keyCode === 'pagedown'  )) changeValue('decrease', 1    );
+            else if (                                    (keyCode === 'pageup'    )) changeValue('increase', 1    );
             
-            else if (                                 (keyCode === 'home'      )) changeValue('setValue', minFn);
-            else if (                                 (keyCode === 'end'       )) changeValue('setValue', maxFn);
+            else if (                                    (keyCode === 'home'      )) changeValue('setValue', minFn);
+            else if (                                    (keyCode === 'end'       )) changeValue('setValue', maxFn);
             
-            else if ( isOrientationBlock &&           (keyCode === 'arrowdown' )) changeValue('decrease', 1    );
-            else if ( isOrientationBlock &&           (keyCode === 'arrowup'   )) changeValue('increase', 1    );
+            else if ( isOrientationVertical &&           (keyCode === 'arrowdown' )) changeValue('decrease', 1    );
+            else if ( isOrientationVertical &&           (keyCode === 'arrowup'   )) changeValue('increase', 1    );
             
-            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowleft' )) changeValue('decrease', 1    );
-            else if (!isOrientationBlock && !isRtl && (keyCode === 'arrowright')) changeValue('increase', 1    );
+            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowleft' )) changeValue('decrease', 1    );
+            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowright')) changeValue('increase', 1    );
             
-            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowright')) changeValue('decrease', 1    );
-            else if (!isOrientationBlock &&  isRtl && (keyCode === 'arrowleft' )) changeValue('increase', 1    );
+            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowright')) changeValue('decrease', 1    );
+            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowleft' )) changeValue('increase', 1    );
             else return false; // not handled
             
             
