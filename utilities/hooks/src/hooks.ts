@@ -8,6 +8,7 @@ import {
     useCallback,
     useRef,
     useMemo,
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -202,4 +203,31 @@ export const useScheduleTriggerEvent = (): ScheduleTriggerEventFunction => {
             scheduledTriggerEventCallback();
         }, 0); // runs the event_delegator_callback *next after* current macroTask completed
     };
+};
+
+
+
+export const useIsRtl = <TElement extends Element = HTMLElement>(): readonly [boolean, React.Dispatch<React.SetStateAction<TElement|null>>] => {
+    // refs:
+    const [elmRef, setElmRef] = useState<TElement|null>(null);
+    
+    
+    
+    // states:
+    const [isRtl, setIsRtl] = useState<boolean>(false); // assumes the default direction (in most cases) is 'rtl'
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!elmRef) return; // the element must exist to measure
+        
+        
+        
+        // measuring:
+        const newIsRtl = (getComputedStyle(elmRef).direction === 'rtl');
+        if (isRtl === newIsRtl) return; // already the same => noting to change
+        setIsRtl(newIsRtl);
+    }); // perform direction check *every time* the component re-renders
+    
+    
+    
+    return [isRtl, setElmRef];
 };
