@@ -37,7 +37,7 @@ export const NavNextItem = <TElement extends Element = HTMLElement>(props: NavAc
                 ??
                 <Icon
                     // appearances:
-                    icon='next'
+                    icon='navright'
                     
                     
                     

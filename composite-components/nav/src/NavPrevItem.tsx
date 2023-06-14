@@ -37,7 +37,7 @@ export const NavPrevItem = <TElement extends Element = HTMLElement>(props: NavAc
                 ??
                 <Icon
                     // appearances:
-                    icon='prev'
+                    icon='navleft'
                     
                     
                     
