@@ -391,14 +391,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return normalizeShift(itemIndex   + dummyDiff.current);
     };
     const getDomScrollPos                   = (listElm: TElement): number => {
-        return listElm.scrollLeft;
+        return isRtl ? -listElm.scrollLeft : +listElm.scrollLeft;
     };
     const setDomScrollPos                   = (listElm: TElement, scrollPos: number): void => {
-        listElm.scrollLeft = scrollPos;
+        listElm.scrollLeft = isRtl ? -scrollPos : +scrollPos;
     };
-    const domScrollTo                       = (listElm: TElement, options: ScrollToOptions): void => {
+    const domScrollTo                       = (listElm: TElement, { left, top, behavior }: ScrollToOptions): void => {
         listElm.scrollTo({
-            ...options,
+            left     : (left !== undefined) ? (isRtl ? -left : +left) : undefined,
+            top      : top,
+            behavior : behavior,
             
             [noInterceptMark as any] : undefined, // no intercept call hack
         });
