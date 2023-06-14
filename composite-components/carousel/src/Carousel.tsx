@@ -444,7 +444,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const targetScrollPosMax            = targetListElm.scrollWidth - targetListElm.clientWidth;
         const targetSlideDistance           = getSlideDistance(targetListElm);
         const targetScale                   = baseListElm ? (targetSlideDistance / (getSlideDistance(baseListElm) || /* in case of the base's slideDistance is NaN => divide with targetSlideDistance itself to produce 1 */targetSlideDistance)) : 1;
-        const targetScrollPosScaled         = (baseListElm?.scrollLeft ?? 0) * targetScale;
+        const targetScrollPosScaled         = (baseListElm ? getDomScrollPos(baseListElm) : 0) * targetScale;
         const targetScrollPosDiff           = targetScrollDiff * targetSlideDistance; // converts logical diff to physical diff
         const targetScrollPosOverflowed     = (
             // scroll pos:
