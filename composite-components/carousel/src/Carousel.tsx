@@ -226,11 +226,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // components:
-        basicComponent      = (<Content<TElement>                               /> as React.ReactComponentElement<any, BasicProps<TElement>>),
+        basicComponent      = (<Content<TElement>                                                      /> as React.ReactComponentElement<any, BasicProps<TElement>>),
         
-        prevButtonComponent = (<ButtonIcon iconPosition='start' icon={isRtl ? 'navright' : 'navleft' }  /> as React.ReactComponentElement<any, ButtonProps>),
+        prevButtonComponent = (<ButtonIcon iconPosition='start' icon={isRtl ? 'navright' : 'navleft' } /> as React.ReactComponentElement<any, ButtonProps>),
         nextButtonComponent = (<ButtonIcon iconPosition='end'   icon={isRtl ? 'navleft'  : 'navright'} /> as React.ReactComponentElement<any, ButtonProps>),
-        navscrollComponent  = (<Navscroll<Element>                              /> as React.ReactComponentElement<any, NavscrollProps<Element>>),
+        navscrollComponent  = (<Navscroll<Element>                                                     /> as React.ReactComponentElement<any, NavscrollProps<Element>>),
         
         
         
