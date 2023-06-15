@@ -108,7 +108,7 @@ const _defaultSlideThreshold         : number  = 5    /* pixel */         // the
 const _defaultSwipeMovementThreshold : number  = 20   /* pixel */         // the minimum distance to considered swiping_action
 const _defaultSwipeDurationThreshold : number  = 300  /* milliseconds */  // the maximum time duration to considered swiping_action, longer than it will considered as hold_scroll
 
-const _defaultScrollingPrecision     : number  = 0.9  /* pixel */         // the browser's rounding error may up to 0.75px, so we set to 0.9 for the minimum uncertainty
+const _defaultScrollingPrecision     : number  = 1    /* pixel */         // the browser's rounding error may up to 1px, so we set to 1 for the minimum uncertainty
 
 const _defaultMovementStep           : number  = 1    /* step(s) */
 
