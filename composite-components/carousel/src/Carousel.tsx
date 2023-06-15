@@ -978,8 +978,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // track the touch pos direction:
-        const touchDirection     = initialTouchPos.current - prevTouchPos.current;
-        const isPositiveMovement = getIsPositiveMovement(touchDirection);
+        const touchDirection = (initialTouchPos.current - prevTouchPos.current) * (isRtl ? -1 : +1);
         
         
         
@@ -991,8 +990,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             (Math.abs(touchDirection) >= _defaultSwipeMovementThreshold) // a *minimum* swipe_movement is required in order to perform swipe_scroll action
             &&
             (scrollMomentumAccum || (slidingStatus.current !== SlidingStatus.AutoScrolling)) // do not accumulate the scroll momentum if not enabled
-            &&
-            (isPositiveMovement !== undefined) // unknown movement => ignore
         );
         
         
@@ -1005,20 +1002,21 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (hasSwipeScrollAction) {
             // calculate the scroll accelaration:
             const touchDuration      = performance.now() - initialTouchTick.current;
-            const touchVelocity      = Math.abs(touchDirection) / touchDuration;
-            const scrollAccelaration = touchVelocity * scrollMomentumWeight;
+            const touchVelocity      = touchDirection / touchDuration;
+            let   scrollAccelaration = touchVelocity * scrollMomentumWeight;
+            
+            
+            
+            // ensures the accelaration is at least -1 or +1:
+            if (Math.abs(scrollAccelaration) < 1) {
+                scrollAccelaration = (scrollAccelaration < 0) ? -1 : +1;
+            } // if
             
             
             
             // update current slide index:
             const movementScrollIndex = limitsScrollMovement(visualScrollIndex,
-                Math.round(
-                    Math.max( // ensures the accelaration is at least 1
-                        scrollAccelaration,
-                    1)
-                )
-                *
-                (isPositiveMovement ? +1 : -1)
+                Math.round(scrollAccelaration)
             );
             if (!movementScrollIndex) return; // no movement available => nothing to do
             
