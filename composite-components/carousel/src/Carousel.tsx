@@ -890,11 +890,11 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         const newTouchPos    = event.touches[0].pageX;
         
         const touchDirection = (initialTouchPos.current - prevTouchPos.current) * (isRtl ? -1 : +1); // a touch direction relative to initial touch & culture aware
-        prevTouchPos.current = newTouchPos;                                    // update the prev
+        prevTouchPos.current = newTouchPos; // update the prev
         
         
         
-        // conditions:
+        // calculate the hold_scroll action conditions:
         const touchDuration = performance.now() - initialTouchTick.current;
         if (!(touchDuration > _defaultSwipeDurationThreshold))         return; // a *minimum* holding_duration is required in order to perform hold_scroll action
         
