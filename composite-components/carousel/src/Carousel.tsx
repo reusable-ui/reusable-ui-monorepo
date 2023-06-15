@@ -677,16 +677,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             setScrollIndex(futureScrollIndex);
         } // if
     };
-    const getIsPositiveMovement             = (touchDirection: number): boolean|undefined => {
-        const listElm = listRefInternal.current;
-        if (!listElm) return undefined; // listElm must be exist to measure
-        
-        
-        
-        // determine the positiveness based on lrt|rtl culture:
-        const isLtr = !isRtl;
-        return (touchDirection > 0) === isLtr;
-    };
     const getProgressingMovementScrollIndex = (visualScrollIndex: number, currentScrollIndex = scrollIndex) => {
         return currentScrollIndex /* greedy: from re-render */ - visualScrollIndex /* delayed: from visual measurement */;
     };
@@ -899,7 +889,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // track the touch pos direction:
         const newTouchPos    = event.touches[0].pageX;
         
-        const touchDirection = initialTouchPos.current - prevTouchPos.current; // a touch direction relative to initial touch
+        const touchDirection = (initialTouchPos.current - prevTouchPos.current) * (isRtl ? -1 : +1); // a touch direction relative to initial touch & culture aware
         prevTouchPos.current = newTouchPos;                                    // update the prev
         
         
@@ -911,9 +901,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         if (slidingStatus.current !== SlidingStatus.HoldScroll) {              // if not already having hold_scroll action
             if (!(Math.abs(touchDirection) >= _defaultSlideThreshold)) return; // a *minimum* holding_movement is required in order to perform hold_scroll action
         } // if
-        
-        const isPositiveMovement = getIsPositiveMovement(touchDirection);
-        if (isPositiveMovement === undefined)                          return; // unknown movement => ignore
         
         
         
@@ -978,7 +965,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // track the touch pos direction:
-        const touchDirection = (initialTouchPos.current - prevTouchPos.current) * (isRtl ? -1 : +1);
+        const touchDirection = (initialTouchPos.current - prevTouchPos.current) * (isRtl ? -1 : +1); // a touch direction relative to initial touch & culture aware
         
         
         
