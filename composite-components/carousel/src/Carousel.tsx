@@ -329,7 +329,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const [scrollIndex, setScrollIndex] = useUncontrollableScrollable<TScrollIndexChangeEvent>(props, {
         min  : minItemIndex,
         max  : maxItemIndex,
-        step : undefined,
+        step : 1, // a fractional scrollIndex is not allowed, it will automatically rounded to nearest integer value
     });
     
     
