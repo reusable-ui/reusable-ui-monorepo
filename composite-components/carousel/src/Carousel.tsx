@@ -1024,7 +1024,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // swipe_scroll implementation:
-            await prepareScrolling(/*currentItemIndex = */scrollIndexToItemIndex(visualScrollIndex), futureScrollIndex);
+            await prepareScrolling(/*currentItemIndex = */scrollIndexToItemIndex(visualScrollIndex), steppedMovementItemIndex);
         }
         else if (hasHoldScrollAction) {
             /*
