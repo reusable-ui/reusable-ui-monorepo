@@ -1,4 +1,4 @@
-[low prior ] add rtl support for <Carousel>
+[hi prior  ] fix hold scroll bug on Firefox
 
 [deferred  ] fix <HamburgerMenuButton> animation (side effect of *hack* on active-as-click)
 [deferred  ] fixed minor animation_abort_effect in active-as-click
