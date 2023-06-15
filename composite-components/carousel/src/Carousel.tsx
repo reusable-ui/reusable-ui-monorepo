@@ -930,8 +930,17 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
+        // predict the future movement:
+        const steppedMovementItemIndex = (
+            (movementScrollIndex < 0)
+            ? Math.floor(movementScrollIndex) // rounded to lowest  integer to protect from premature movement
+            : Math.ceil(movementScrollIndex)  // rounded to highest integer to protect from premature movement
+        );
+        
+        
+        
         // hold_scroll implementation:
-        await prepareScrolling(/*currentItemIndex = */scrollIndexToItemIndex(visualScrollIndex), movementScrollIndex, { preserveMomentum: false });
+        await prepareScrolling(/*currentItemIndex = */scrollIndexToItemIndex(visualScrollIndex), steppedMovementItemIndex, { preserveMomentum: false });
     });
     const handleTouchMove          = useMergeEvents(
         // preserves the original `onTouchMove`:
@@ -1002,15 +1011,15 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             // update current slide index:
-            const movementScrollIndex = limitsScrollMovement(visualScrollIndex,
-                Math.round(scrollAccelaration)
+            const steppedMovementItemIndex = limitsScrollMovement(visualScrollIndex,
+                Math.round(scrollAccelaration) // rounded to nearest integer to protect from premature movement
             );
-            if (!movementScrollIndex) return; // no movement available => nothing to do
+            if (!steppedMovementItemIndex) return; // no movement available => nothing to do
             
             
             
             // calculate the future index:
-            futureScrollIndex = normalizeShift(visualScrollIndex + movementScrollIndex);
+            futureScrollIndex = normalizeShift(visualScrollIndex + steppedMovementItemIndex);
             
             
             
