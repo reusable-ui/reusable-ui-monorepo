@@ -1159,7 +1159,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             );
             
             // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-            updateListPresentation(); // setup the correct slide & scrollbar to the right position
+            /* no need to await */ updateListPresentation(); // setup the correct slide & scrollbar to the right position
         })();
         
         
@@ -1170,7 +1170,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 dummyListRefInternal.current = dummyListElm;
                 try {
                     // update listElm's image position & scroll position, as seen on dummyListElm (navigation indicator):
-                    updateListPresentation(); // flush the correct scrollbar to the normal position (if has been teleported)
+                    /* no need to await */ updateListPresentation(); // flush the correct scrollbar to the normal position (if has been teleported)
                 }
                 finally {
                     dummyListRefInternal.current = null;
@@ -1235,7 +1235,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     // immediately jump to the nearest reachable movement:
                     const semiFutureScrollIndex = currentScrollIndex + excessMovement;
-                    updateListPresentation(semiFutureScrollIndex); // causes diff change
+                    await updateListPresentation(semiFutureScrollIndex); // causes diff change
                     
                     
                     
