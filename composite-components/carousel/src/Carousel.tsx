@@ -1010,16 +1010,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             
             
             
-            // update current slide index:
-            const steppedLimitedScrollAccelaration = limitsScrollMovement(visualScrollIndex,
+            // predict the future movement:
+            const steppedMovementItemIndex = limitsScrollMovement(visualScrollIndex,
                 Math.round(scrollAccelaration) // rounded to nearest integer to protect from premature movement
             );
-            if (!steppedLimitedScrollAccelaration) return; // no movement available => nothing to do
+            if (!steppedMovementItemIndex) return; // no movement available => nothing to do
             
             
             
             // calculate the future index:
-            futureScrollIndex = normalizeShift(visualScrollIndex + steppedLimitedScrollAccelaration);
+            futureScrollIndex = normalizeShift(visualScrollIndex + steppedMovementItemIndex);
             
             
             
