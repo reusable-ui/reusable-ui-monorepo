@@ -1,4 +1,4 @@
-[hi prior  ] fix preventing default scoll implementation on Firefox
+[med prior ] fix preventing default scoll implementation on Firefox
 
 [deferred  ] fix <HamburgerMenuButton> animation (side effect of *hack* on active-as-click)
 [deferred  ] fixed minor animation_abort_effect in active-as-click
