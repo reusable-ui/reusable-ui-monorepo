@@ -1,5 +1,7 @@
 import {
     default as React,
+    useEffect,
+    useRef,
     useState,
 } from 'react';
 // import logo from './logo.svg';
@@ -19,6 +21,39 @@ function App() {
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    const hamburgerRef = useRef<HTMLButtonElement|null>(null);
+    useEffect(() => {
+        const hamburgerElm = hamburgerRef.current;
+        if (!hamburgerElm) return;
+        
+        
+        
+        const handleAnimationStart = (event: AnimationEvent) => {
+            if (!event.animationName.match(/active|passive|press|release/i)) return;
+            console.log('anim start: ', event.animationName);
+        };
+        const handleAnimationEnd = (event: AnimationEvent) => {
+            if (!event.animationName.match(/active|passive|press|release/i)) return;
+            console.log('anim end: ', event.animationName);
+        };
+        const handleAnimationCancel = (event: AnimationEvent) => {
+            if (!event.animationName.match(/active|passive|press|release/i)) return;
+            console.log('anim CANCEL: ', event.animationName);
+        };
+        
+        hamburgerElm.addEventListener('animationstart', handleAnimationStart);
+        hamburgerElm.addEventListener('animationend', handleAnimationEnd);
+        hamburgerElm.addEventListener('animationcancel', handleAnimationCancel);
+        
+        
+        
+        return () => {
+            hamburgerElm.removeEventListener('animationstart', handleAnimationStart);
+            hamburgerElm.removeEventListener('animationend', handleAnimationEnd);
+            hamburgerElm.removeEventListener('animationcancel', handleAnimationCancel);
+        };
+    });
+    
     
     
     return (
@@ -33,7 +68,7 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <HamburgerMenuButton theme='primary' />
+                    <HamburgerMenuButton elmRef={hamburgerRef} theme='primary' />
                     <HamburgerMenuButton theme='danger' />
                     <HamburgerMenuButton theme='success' mild={true} />
                     <HamburgerMenuButton theme='danger' outlined={true} />
