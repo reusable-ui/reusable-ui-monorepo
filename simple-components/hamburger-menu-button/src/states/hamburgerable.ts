@@ -28,8 +28,18 @@ import {
 
 // reusable-ui features:
 import {
+    // hooks:
+    useAnimatingState,
+    
+    
+    
     // animation stuff of UI:
     usesAnimation,
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
+    ActivatableApi,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
@@ -99,7 +109,6 @@ export const ifHamburgered       = (styles: CssStyleCollection): CssRule => rule
 export const ifCross             = (styles: CssStyleCollection): CssRule => rule([selectorIfCrossing   , selectorIfCrossed                                               ], styles);
 export const ifHamburger         = (styles: CssStyleCollection): CssRule => rule([                                          selectorIfHamburgering, selectorIfHamburgered], styles);
 export const ifCrossHamburgering = (styles: CssStyleCollection): CssRule => rule([selectorIfCrossing   , selectorIfCrossed, selectorIfHamburgering                       ], styles);
-
 
 
 
@@ -242,6 +251,109 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
             }),
         }),
         hamburgerableVars,
+    };
+};
+
+
+
+export const enum HamburgerableState {
+    Hamburgered  = 0,
+    Hamburgering = 1,
+    Crossing     = 2,
+    Crossed      = 3,
+}
+
+export interface HamburgerableApi<TElement extends Element = HTMLElement> {
+    active                : boolean
+    
+    state                 : HamburgerableState
+    class                 : string|null
+    
+    handleAnimationStart  : React.AnimationEventHandler<TElement>
+    handleAnimationEnd    : React.AnimationEventHandler<TElement>
+    handleAnimationCancel : React.AnimationEventHandler<TElement>
+}
+
+export const useHamburgerable = <TElement extends Element = HTMLElement>(activatableApi: ActivatableApi<TElement>): HamburgerableApi<TElement> => {
+    // states:
+    const {active} = activatableApi;
+    
+    
+    
+    // fn states:
+    /*
+     * state is hamburgered/crossed based on [controllable crossed = active]
+     * [uncontrollable crossed] is not supported
+     */
+    const crossedFn : boolean = active /*controllable*/;
+    
+    
+    
+    // states:
+    const [crossed, setCrossed, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
+        initialState  : crossedFn,
+        animationName : /((?<![a-z])(cross|hamburger)|(?<=[a-z])(Cross|Hamburger))(?![a-z])/,
+    });
+    
+    
+    
+    // update state:
+    if (crossed !== crossedFn) { // change detected => apply the change & start animating
+        setCrossed(crossedFn);   // remember the last change
+    } // if
+    
+    
+    
+    // fn props:
+    const state = ((): HamburgerableState => {
+        // crossing:
+        if (animation === true ) return HamburgerableState.Crossing;
+        
+        // hamburgering:
+        if (animation === false) return HamburgerableState.Hamburgering;
+        
+        // fully crossed:
+        if (crossed) return HamburgerableState.Crossed;
+        
+        // fully hamburgered:
+        return HamburgerableState.Hamburgered;
+    })();
+    const stateClass = ((): string|null => {
+        switch (state) {
+            // crossing:
+            case HamburgerableState.Crossing: {
+                return 'crossing';
+            };
+            
+            // hamburgering:
+            case HamburgerableState.Hamburgering: {
+                return 'hamburgering';
+            };
+            
+            // fully crossed:
+            case HamburgerableState.Crossed: {
+                return 'crossed';
+            };
+            
+            // fully hamburgered:
+            case HamburgerableState.Hamburgered: {
+                return null; // discard all classes above
+            };
+        } // switch
+    })();
+    
+    
+    
+    // api:
+    return {
+        active    : crossed,
+        
+        state     : state,
+        class     : stateClass,
+        
+        handleAnimationStart,
+        handleAnimationEnd,
+        handleAnimationCancel,
     };
 };
 //#endregion hamburgerable
