@@ -8,10 +8,12 @@ import {
     // cssfn css specific types:
     CssKnownProps,
     CssRule,
+    CssStyleCollection,
     
     
     
     // writes css in javascript:
+    rule,
     states,
     fallback,
     style,
@@ -83,6 +85,29 @@ export interface HamburgerableVars {
     btmAnim         : any
 }
 const [hamburgerableVars] = cssVars<HamburgerableVars>(); // no need to have SSR support because the variables are not shared externally (outside <HamburgerMenuButton>)
+
+
+
+// .crossed will be added after crossing-animation done:
+const selectorIfCrossed      = '.crossed'
+// .crossing = styled crossing:
+const selectorIfCrossing     = '.crossing'
+// .hamburgering will be added after loosing cross(ing|ed) and will be removed after hamburgering-animation done:
+const selectorIfHamburgering = '.hamburgering'
+// if all above are not set => hamburgered:
+const selectorIfHamburgered  = ':not(:is(.crossed, .crossing, .hamburgering))'
+
+
+
+export const ifCrossed           = (styles: CssStyleCollection): CssRule => rule(selectorIfCrossed     , styles);
+export const ifCrossing          = (styles: CssStyleCollection): CssRule => rule(selectorIfCrossing    , styles);
+export const ifHamburgering      = (styles: CssStyleCollection): CssRule => rule(selectorIfHamburgering, styles);
+export const ifHamburgered       = (styles: CssStyleCollection): CssRule => rule(selectorIfHamburgered , styles);
+
+export const ifCross             = (styles: CssStyleCollection): CssRule => rule([selectorIfCrossing   , selectorIfCrossed                                               ], styles);
+export const ifHamburger         = (styles: CssStyleCollection): CssRule => rule([                                          selectorIfHamburgering, selectorIfHamburgered], styles);
+export const ifCrossHamburgering = (styles: CssStyleCollection): CssRule => rule([selectorIfCrossing   , selectorIfCrossed, selectorIfHamburgering                       ], styles);
+
 
 
 
