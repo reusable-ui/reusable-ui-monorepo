@@ -282,7 +282,7 @@ export const useHamburgerable = <TElement extends Element = HTMLElement>(isActiv
     // states:
     const [crossed, setCrossed, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : crossedFn,
-        animationName : /((?<![a-z])(cross|hamburger)|(?<=[a-z])(Cross|Hamburger))(?![a-z])/,
+        animationName : /((?<![a-z])(hamburgerout|hamburgerin)|(?<=[a-z])(Hamburgerout|Hamburgerin))(?![a-z])/,
     });
     
     
