@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/colors",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "A color management system for web components using css variables (css custom properties).",
   "keywords": [
     "colors",

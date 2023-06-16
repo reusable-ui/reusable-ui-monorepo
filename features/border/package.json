@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/border",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "Border (stroke) stuff of UI.",
   "keywords": [
     "border",
@@ -36,7 +36,7 @@
     "@cssfn/core": "^3.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/outlineable": "^5.3.0",
-    "@reusable-ui/themeable": "^5.3.0"
+    "@reusable-ui/outlineable": "^6.0.0",
+    "@reusable-ui/themeable": "^6.0.0"
   }
 }

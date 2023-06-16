@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navigations",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "A set of navigation functions.",
   "keywords": [
     "navigations",
@@ -29,9 +29,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/accessibilities": "^5.3.0",
-    "@reusable-ui/client-sides": "^5.3.0",
-    "@reusable-ui/hooks": "^5.3.0",
+    "@reusable-ui/accessibilities": "^6.0.0",
+    "@reusable-ui/client-sides": "^6.0.0",
+    "@reusable-ui/hooks": "^6.0.0",
     "history": "^5.3.0"
   },
   "peerDependencies": {

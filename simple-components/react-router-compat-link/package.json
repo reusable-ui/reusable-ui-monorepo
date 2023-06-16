@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/react-router-compat-link",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "A react-router compatible Link for use with Reusable-UI components in harmony.",
   "keywords": [
     "link",
@@ -32,8 +32,8 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^5.3.0",
-    "@reusable-ui/generic": "^5.3.0"
+    "@reusable-ui/core": "^6.0.0",
+    "@reusable-ui/generic": "^6.0.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

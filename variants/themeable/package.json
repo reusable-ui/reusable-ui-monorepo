@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/themeable",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "Color options of UI.",
   "keywords": [
     "themeable",
@@ -35,6 +35,6 @@
     "@cssfn/core": "^3.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^5.3.0"
+    "@reusable-ui/colors": "^6.0.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/close-button",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "A button for dismissing content.",
   "keywords": [
     "close",
@@ -34,7 +34,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/button-icon": "^5.3.0"
+    "@reusable-ui/button-icon": "^6.0.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

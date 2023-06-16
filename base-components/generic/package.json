@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/generic",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "An unstyled basic building block of Reusable-UI components.",
   "keywords": [
     "component",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/core": "^5.3.0"
+    "@reusable-ui/core": "^6.0.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/validation-icon",
-  "version": "5.3.0",
+  "version": "6.0.0",
   "description": "An icon for indicating a validity status.",
   "keywords": [
     "validation",
@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/invalidable": "^5.3.0"
+    "@reusable-ui/invalidable": "^6.0.0"
   }
 }
