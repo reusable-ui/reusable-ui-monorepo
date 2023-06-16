@@ -14,6 +14,20 @@ import {
     dynamicStyleSheet,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
+// reusable-ui core:
+import {
+    // react helper hooks:
+    useEvent,
+    useMergeEvents,
+    useMergeClasses,
+    
+    
+    
+    // a capability of UI to be highlighted/selected/activated:
+    ActiveChangeEvent,
+    useUncontrollableActivatable,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
+
 // reusable-ui components:
 import {
     // semantics:
@@ -33,6 +47,12 @@ import {
     
     ToggleButtonComponentProps,
 }                           from '@reusable-ui/toggle-button'   // a base component
+
+// internals:
+import {
+    // states:
+    useHamburgerable,
+}                           from './states/hamburgerable.js'
 
 
 
@@ -75,11 +95,96 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
     
     
     
+    // states:
+    const [isActive, , toggleActive] = useUncontrollableActivatable<ActiveChangeEvent>(props);
+    const hamburgerableState = useHamburgerable<HTMLButtonElement>(isActive);
+    
+    
+    
     // rest props:
     const {
         // components:
         toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
     ...restToggleButtonProps} = props;
+    
+    
+    
+    // classes:
+    const stateClasses = useMergeClasses(
+        // preserves the original `stateClasses` from `toggleButtonComponent`:
+        toggleButtonComponent.props.stateClasses,
+        
+        
+        
+        // preserves the original `stateClasses` from `props`:
+        props.stateClasses,
+        
+        
+        
+        // states:
+        hamburgerableState.class,
+    );
+    
+    
+    
+    // handlers:
+    const handleClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        
+        
+        
+        // actions:
+        toggleActive();         // handle click as toggle [active]
+        event.preventDefault(); // handled
+    });
+    const handleClick          = useMergeEvents(
+        // preserves the original `onClick` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onClick,
+        
+        
+        
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
+        // actions:
+        handleClickInternal,
+    );
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onAnimationStart,
+        
+        
+        
+        // preserves the original `onAnimationStart` from `props`:
+        props.onAnimationStart,
+        
+        
+        
+        // states:
+        hamburgerableState.handleAnimationStart,
+    );
+    const handleAnimationEnd   = useMergeEvents(
+        // preserves the original `onAnimationEnd` from `toggleButtonComponent`:
+        toggleButtonComponent.props.onAnimationEnd,
+        
+        
+        
+        // preserves the original `onAnimationEnd` from `props`:
+        props.onAnimationEnd,
+        
+        
+        
+        // states:
+        hamburgerableState.handleAnimationEnd,
+    );
+    
+    
+    
+    // fn props:
+    const activeFn = (toggleButtonComponent.props.active ?? isActive);
     
     
     
@@ -95,12 +200,25 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
             
             
             // accessibilities:
-            label     : toggleButtonComponent.props.label     ?? props.label     ?? 'Toggle navigation',
+            label            : toggleButtonComponent.props.label     ?? props.label     ?? 'Toggle navigation',
             
             
             
             // classes:
-            mainClass : toggleButtonComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            mainClass        : toggleButtonComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            stateClasses,
+            
+            
+            
+            // states:
+            active           : activeFn,
+            
+            
+            
+            // handlers:
+            onClick          : handleClick,
+            onAnimationStart : handleAnimationStart,
+            onAnimationEnd   : handleAnimationEnd,
         },
         
         
