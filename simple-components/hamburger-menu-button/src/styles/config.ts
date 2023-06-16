@@ -54,6 +54,7 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
         '71%' : { transform: topTransformCrossedOver   },
         to    : { transform: topTransformCrossed       },
     });
+    keyframesCrossingTop.value     = 'hamburgerout'; // the @keyframes name should contain 'hamburgerout' in order to be recognized by `useHamburgerable`
     
     // crossed => hamburger:
     const [keyframesHamburgeringTopRule, keyframesHamburgeringTop] = keyframes({
@@ -62,6 +63,7 @@ export const [hamburgerMenuButtons, hamburgerMenuButtonValues, cssHamburgerMenuB
         '71%' : { transform: topTransformHamburgerOver, transformOrigin : [['91.7%', '12.5%']] },
         to    : { transform: topTransformHamburger     },
     });
+    keyframesHamburgeringTop.value = 'hamburgerin';  // the @keyframes name should contain 'hamburgerin'  in order to be recognized by `useHamburgerable`
     
     
     // hamburger => crossed:
