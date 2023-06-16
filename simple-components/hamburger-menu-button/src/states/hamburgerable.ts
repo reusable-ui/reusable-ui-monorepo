@@ -30,14 +30,6 @@ import {
 import {
     // animation stuff of UI:
     usesAnimation,
-    
-    
-    
-    // a capability of UI to be highlighted/selected/activated:
-    ifActivated,
-    ifActivating,
-    ifPassivating,
-    ifPassivated,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
@@ -199,22 +191,22 @@ export const usesHamburgerable = (config?: HamburgerableConfig): HamburgerableSt
             
             // animation states:
             ...states([
-                ifActivated({
+                ifCrossed({
                     ...transformInVars(),
                 }),
-                ifActivating({
+                ifCrossing({
                     ...transformInVars(),
                     ...transformOutVars(),
                     
                     ...animInVars(),
                 }),
-                ifPassivating({
+                ifHamburgering({
                     ...transformInVars(),
                     ...transformOutVars(),
                     
                     ...animOutVars(),
                 }),
-                ifPassivated({
+                ifHamburgered({
                     ...transformOutVars(),
                 }),
             ]),
