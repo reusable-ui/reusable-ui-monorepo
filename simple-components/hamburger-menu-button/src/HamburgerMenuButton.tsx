@@ -97,7 +97,7 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
     
     // states:
     const [isActive, , toggleActive] = useUncontrollableActivatable<ActiveChangeEvent>(props);
-    const hamburgerableState = useHamburgerable<HTMLButtonElement>(isActive);
+    const hamburgerableState = useHamburgerable<SVGPolylineElement>(isActive);
     
     
     
@@ -152,34 +152,6 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
         // actions:
         handleClickInternal,
     );
-    const handleAnimationStart = useMergeEvents(
-        // preserves the original `onAnimationStart` from `toggleButtonComponent`:
-        toggleButtonComponent.props.onAnimationStart,
-        
-        
-        
-        // preserves the original `onAnimationStart` from `props`:
-        props.onAnimationStart,
-        
-        
-        
-        // states:
-        hamburgerableState.handleAnimationStart,
-    );
-    const handleAnimationEnd   = useMergeEvents(
-        // preserves the original `onAnimationEnd` from `toggleButtonComponent`:
-        toggleButtonComponent.props.onAnimationEnd,
-        
-        
-        
-        // preserves the original `onAnimationEnd` from `props`:
-        props.onAnimationEnd,
-        
-        
-        
-        // states:
-        hamburgerableState.handleAnimationEnd,
-    );
     
     
     
@@ -217,8 +189,6 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
             
             // handlers:
             onClick          : handleClick,
-            onAnimationStart : handleAnimationStart,
-            onAnimationEnd   : handleAnimationEnd,
         },
         
         
@@ -226,7 +196,11 @@ const HamburgerMenuButton = (props: HamburgerMenuButtonProps): JSX.Element|null 
         // children:
         toggleButtonComponent.props.children ?? (
             <svg viewBox='0 0 24 24'>
-                <polyline points='3,4 21,4' />
+                <polyline points='3,4 21,4'
+                    // handlers:
+                    onAnimationStart = {hamburgerableState.handleAnimationStart}
+                    onAnimationEnd   = {hamburgerableState.handleAnimationEnd  }
+                />
                 <polyline points='3,12 21,12' />
                 <polyline points='3,20 21,20' />
             </svg>
