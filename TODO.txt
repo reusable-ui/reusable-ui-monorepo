@@ -1,13 +1,13 @@
-[med prior ] fix preventing default scoll implementation on Firefox
+[minor err ] fixed minor animation_abort_effect in active-as-click
+[minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
-[deferred  ] fixed minor animation_abort_effect in active-as-click
-[deferred  ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
+[minor err ] fix [aria-orientation] => detect a physical orientation by detecting the writing-mode
+[minor err ] fix <NavPrevItem|NavNextItem> based on <List>'s [aria-orientation]
 
-[deferred  ] fix [aria-orientation] => detect a physical orientation by detecting the writing-mode
-[deferred  ] fix <NavPrevItem|NavNextItem> based on <List>'s [aria-orientation]
-[deferred  ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
-[deferred  ] fix <Tooltip outlined={true}> <Arrow>
+[minor err ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
+[minor err ] fix <Tooltip outlined={true}> <Arrow>
 
+[unresolved] fix preventing default scoll implementation on Firefox
 [unresolved] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [next ver  ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
