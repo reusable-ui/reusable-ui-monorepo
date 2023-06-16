@@ -35,11 +35,6 @@ import {
     
     // animation stuff of UI:
     usesAnimation,
-    
-    
-    
-    // a capability of UI to be highlighted/selected/activated:
-    ActivatableApi,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
@@ -274,18 +269,13 @@ export interface HamburgerableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
-export const useHamburgerable = <TElement extends Element = HTMLElement>(activatableApi: ActivatableApi<TElement>): HamburgerableApi<TElement> => {
-    // states:
-    const {active} = activatableApi;
-    
-    
-    
+export const useHamburgerable = <TElement extends Element = HTMLElement>(isActive: boolean): HamburgerableApi<TElement> => {
     // fn states:
     /*
-     * state is hamburgered/crossed based on [controllable crossed = active]
+     * state is hamburgered/crossed based on [controllable crossed = isActive]
      * [uncontrollable crossed] is not supported
      */
-    const crossedFn : boolean = active /*controllable*/;
+    const crossedFn : boolean = isActive /*controllable*/;
     
     
     
