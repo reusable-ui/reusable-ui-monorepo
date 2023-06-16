@@ -156,12 +156,8 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
         BasicComponentProps<TElement>,
         NavscrollComponentProps<Element>
 {
-    // refs:
-    scrollingRef         ?: React.Ref<TElement> // setter ref
-    
-    
-    
     // scrolls:
+    scrollRef            ?: React.Ref<TElement> // setter ref
     scrollMomentumAccum  ?: boolean
     scrollMomentumWeight ?: number
     scrollMargin         ?: number
@@ -202,7 +198,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const {
         // refs:
         elmRef,
-        scrollingRef,
         
         
         
@@ -212,6 +207,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // scrolls:
+        scrollRef,
         scrollMomentumAccum  = _defaultScrollMomentumAccum,
         scrollMomentumWeight = _defaultScrollMomentumWeight,
         scrollMargin         : scrollMarginProp = _defaultScrollMargin,
@@ -248,8 +244,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         
-        // preserves the original `scrollingRef` (conditionally):
-        (!infiniteLoop || undefined) && scrollingRef,
+        // preserves the original `scrollRef` (conditionally):
+        (!infiniteLoop || undefined) && scrollRef,
         
         
         
@@ -259,8 +255,8 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     const dummyListRefInternal = useRef<TElement|null>(null);
     const mergedDummyListRef   = useMergeRefs<TElement>(
-        // preserves the original `scrollingRef` (conditionally):
-        (infiniteLoop || undefined) && scrollingRef,
+        // preserves the original `scrollRef` (conditionally):
+        (infiniteLoop || undefined) && scrollRef,
         
         
         
