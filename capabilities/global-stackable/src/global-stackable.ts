@@ -10,12 +10,6 @@ import {
     useState,
 }                           from 'react'
 
-// reusable-ui utilities:
-import {
-    // utilities:
-    isClientSide,
-}                           from '@reusable-ui/client-sides'    // a set of client-side functions
-
 // internals:
 import {
     // utilities:
@@ -57,7 +51,7 @@ export const useGlobalStackable = (props: GlobalStackableProps) => {
     // delays the rendering of portal until the page is fully hydrated
     useEffect(() => {
         // conditions:
-        if (!isClientSide) return; // client side only, server side => ignore
+        if (!viewportElm) return; // if undefined => server side => ignore
         
         
         

@@ -537,7 +537,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {
         // conditions:
-        if (!isModal) return; // only modal (blocking) mode
+        if (!viewportElm) return; // if undefined => server side => ignore
+        if (!isModal)     return; // only modal (blocking) mode
         
         
         
