@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/global-stackable",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "A capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context.",
   "keywords": [
     "global stackable",

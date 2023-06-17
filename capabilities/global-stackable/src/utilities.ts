@@ -14,7 +14,7 @@ import {
 
 // utilities:
 export const getViewportOrDefault = (viewport: React.RefObject<Element>|Element|null|undefined): Element|undefined => {
-    if (isClientSide) return undefined;
+    if (!isClientSide) return undefined; // server side => always return undefined
     
     
     
