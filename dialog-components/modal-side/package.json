@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/modal-side",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Overlays a card dialog to the side of site's page.",
   "keywords": [
     "modal",
@@ -42,8 +42,8 @@
     "@cssfn/cssfn-react": "^3.0.0",
     "@reusable-ui/card": "^6.0.0",
     "@reusable-ui/collapse": "^6.0.0",
-    "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/modal": "^6.0.0"
+    "@reusable-ui/core": "^6.0.1",
+    "@reusable-ui/modal": "^6.0.1"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

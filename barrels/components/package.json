@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -69,9 +69,9 @@
     "@reusable-ui/label": "^6.0.0",
     "@reusable-ui/list": "^6.0.0",
     "@reusable-ui/masonry": "^6.0.0",
-    "@reusable-ui/modal": "^6.0.0",
-    "@reusable-ui/modal-card": "^6.0.0",
-    "@reusable-ui/modal-side": "^6.0.0",
+    "@reusable-ui/modal": "^6.0.1",
+    "@reusable-ui/modal-card": "^6.0.1",
+    "@reusable-ui/modal-side": "^6.0.1",
     "@reusable-ui/nav": "^6.0.0",
     "@reusable-ui/nav-button": "^6.0.0",
     "@reusable-ui/navbar": "^6.0.0",
