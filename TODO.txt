@@ -1,3 +1,5 @@
+[high prior] update blockquote & add list.numbered/list.bulleted
+
 [medium err] fix <Carousel> touch scroll when infiniteLoop={false}
 
 [minor err ] fixed minor animation_abort_effect in active-as-click
