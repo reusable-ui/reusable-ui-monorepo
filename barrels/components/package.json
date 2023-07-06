@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -54,7 +54,7 @@
     "@reusable-ui/dropdown": "^6.0.0",
     "@reusable-ui/dropdown-button": "^6.0.0",
     "@reusable-ui/dropdown-list": "^6.0.0",
-    "@reusable-ui/dropdown-list-button": "^6.0.0",
+    "@reusable-ui/dropdown-list-button": "^6.0.1",
     "@reusable-ui/editable-action-control": "^6.0.0",
     "@reusable-ui/editable-control": "^6.0.0",
     "@reusable-ui/editable-text-control": "^6.0.0",
