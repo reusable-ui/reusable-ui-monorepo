@@ -128,8 +128,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
         inheritEnabled,
         readOnly,
         inheritReadOnly,
-        active,
-        inheritActive,
+        // active,        // activating the <Button> will not cause the <List> to active
+        // inheritActive, // activating the <Button> will not cause the <List> to active
     } = props;
     
     
@@ -168,8 +168,8 @@ const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownLis
                     inheritEnabled  : listComponent.props.inheritEnabled  ?? inheritEnabled,
                     readOnly        : listComponent.props.readOnly        ?? readOnly,
                     inheritReadOnly : listComponent.props.inheritReadOnly ?? inheritReadOnly,
-                    active          : listComponent.props.active          ?? active,
-                    inheritActive   : listComponent.props.inheritActive   ?? inheritActive,
+                 // active          : listComponent.props.active          ?? active,       // activating the <Button> will not cause the <List> to active
+                 // inheritActive   : listComponent.props.inheritActive   ?? inheritActive, // activating the <Button> will not cause the <List> to active
                 },
             )}
             
