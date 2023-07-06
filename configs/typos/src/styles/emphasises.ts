@@ -16,15 +16,23 @@ import {
 // styles:
 export default [
     globalScope({
-        ...rule(['del', 's', 'ins', 'u', 'small', '.small', 'strong', 'b', 'em', 'i'], {
+        ...rule([
+            'del', '.delete', 's',
+            'ins', '.insert', 'u',
+            'small', '.small',
+            'strong', 'b',
+            'em', 'i',
+            'sub', '.subscript',
+            'sup', '.superscript',
+        ], {
             // layouts:
             display        : 'inline',
         }),
-        ...rule(['del', 's'], {
+        ...rule(['del', '.delete', 's'], {
             // typos:
             textDecoration : 'line-through',
         }),
-        ...rule(['ins', 'u'], {
+        ...rule(['ins', '.insert', 'u'], {
             // typos:
             textDecoration : 'underline',
         }),
@@ -39,6 +47,14 @@ export default [
         ...rule(['em', 'i'], {
             // typos:
             fontStyle      : 'italic',
+        }),
+        ...rule(['sub', '.subscript'], {
+            // typos:
+            verticalAlign  : 'sub',
+        }),
+        ...rule(['sup', '.superscript'], {
+            // typos:
+            verticalAlign  : 'super',
         }),
     }),
 ];

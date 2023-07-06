@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -78,7 +78,7 @@
     "@reusable-ui/ring": "^6.0.0",
     "@reusable-ui/spacers": "^6.0.0",
     "@reusable-ui/themeable": "^6.0.0",
-    "@reusable-ui/typos": "^6.0.0",
+    "@reusable-ui/typos": "^6.0.1",
     "@reusable-ui/validation-icon": "^6.0.0",
     "@reusable-ui/validations": "^6.0.0"
   }
