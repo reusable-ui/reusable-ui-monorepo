@@ -19,7 +19,6 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "sideEffects": [
-    "dist/index.js",
     "dist/effects/*.js"
   ],
   "publishConfig": {
@@ -38,6 +37,7 @@
   "peerDependencies": {
     "@reusable-ui/borders": "^6.0.0",
     "@reusable-ui/colors": "^6.0.0",
-    "@reusable-ui/spacers": "^6.0.0"
+    "@reusable-ui/spacers": "^6.0.0",
+    "@reusable-ui/themeable": "^6.0.0"
   }
 }

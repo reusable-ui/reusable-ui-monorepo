@@ -1,6 +1,7 @@
 [high prior] updated <DropdownListButton> => updated barrels/components => waiting for publishing
 [high prior] updated typos emphasises => updated barrels/core => waiting for publishing
-[high prior] update blockquote & add list.numbered/list.bulleted
+[high prior] updated typos blockquote => updated barrels/core => waiting for publishing
+[high prior] add list.numbered/list.bulleted
 
 [medium err] fix <Carousel> touch scroll when infiniteLoop={false}
 
