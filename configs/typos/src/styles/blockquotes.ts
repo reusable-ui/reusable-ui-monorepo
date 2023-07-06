@@ -9,11 +9,6 @@ import {
     
     
     
-    // strongly typed of css variables:
-    switchOf,
-    
-    
-    
     // reads/writes css variables configuration:
     usesCssProps,
     usesPrefixedProps,
@@ -22,8 +17,8 @@ import {
 // reusable-ui variants:
 import {
     // hooks:
-    usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
+    usesBackground,
+}                           from '@reusable-ui/background'      // background stuff of UI
 
 // internals:
 import {
@@ -36,13 +31,16 @@ import {
 // styles:
 export default () => {
     // dependencies:
-    const {themeableVars} = usesThemeable();
+    
+    // features:
+    const {backgroundVars} = usesBackground();
     
     
     
     return [
         globalScope({
             ...rule(['blockquote', '.blockquote'], {
+                // layouts:
                 // positions:
                 position    : 'relative', // supports for `::before`
                 
@@ -54,10 +52,7 @@ export default () => {
                 
                 
                 // borders:
-                borderColor : switchOf(
-                    themeableVars.foregOutlined, // first  priority
-                    'currentColor',              // second priority
-                ),
+                borderColor : backgroundVars.altBackgColor,
                 
                 
                 
@@ -84,10 +79,7 @@ export default () => {
                     
                     
                     // foregrounds:
-                    foreg            : switchOf(
-                        themeableVars.foregOutlined, // first  priority
-                        'currentColor',              // second priority
-                    ),
+                    foreg            : backgroundVars.altBackgColor,
                     
                     
                     
