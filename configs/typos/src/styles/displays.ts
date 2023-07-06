@@ -17,7 +17,7 @@ import {
 
 
 // styles:
-export default [
+export default () => [
     globalScope({
         ...usesHeadingRule(displays, ['.display-']),
     }),

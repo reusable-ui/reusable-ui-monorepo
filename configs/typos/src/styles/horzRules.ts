@@ -25,7 +25,7 @@ import {
 
 
 // styles:
-export default [
+export default () => [
     globalScope({
         ...rule('hr', {
             // layouts:

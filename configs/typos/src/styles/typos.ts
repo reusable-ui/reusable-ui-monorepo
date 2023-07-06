@@ -19,7 +19,7 @@ import {
 
 
 // styles:
-export default [
+export default () => [
     globalScope({
         ...atRoot({
             // customize:

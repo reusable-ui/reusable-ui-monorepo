@@ -21,7 +21,7 @@ import {
 
 
 // styles:
-export default [
+export default () => [
     globalScope({
         ...rule(['p', '.p'], {
             ...rule(`:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`, {

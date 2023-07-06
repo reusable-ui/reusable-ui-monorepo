@@ -120,7 +120,7 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
         ),
     ]);
 };
-export default [
+export default () => [
     globalScope({
         ...usesHeadingRule(headings, ['h', '.h'], `:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`),
     }),

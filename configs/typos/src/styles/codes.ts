@@ -19,7 +19,7 @@ import {
 
 
 // styles:
-export default [
+export default () => [
     globalScope({
         ...rule(['code', '.code', 'var', '.var', 'samp', '.samp'], {
             // layouts:
