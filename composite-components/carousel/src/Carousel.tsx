@@ -772,15 +772,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
         
+        // all necessary task will be performed, no further action needed:
+        event.preventDefault();
+        
+        
+        
         // get the shown listItem's index by position:
         const visualScrollIndex = getVisualNearestScrollIndex();
+        
+        
         
         // calculate if there is an available go_backward movement:
         const movementScrollIndex = limitsScrollMovement(visualScrollIndex, -_defaultMovementStep);
         if (!movementScrollIndex) return;
-        
-        // all necessary task will be performed, no further action needed:
-        event.preventDefault();
         
         
         
@@ -810,15 +814,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
         
+        // all necessary task will be performed, no further action needed:
+        event.preventDefault();
+        
+        
+        
         // get the shown listItem's index by position:
         const visualScrollIndex = getVisualNearestScrollIndex();
+        
+        
         
         // calculate if there is an available go_forward movement:
         const movementScrollIndex = limitsScrollMovement(visualScrollIndex, +_defaultMovementStep);
         if (!movementScrollIndex) return;
-        
-        // all necessary task will be performed, no further action needed:
-        event.preventDefault();
         
         
         
