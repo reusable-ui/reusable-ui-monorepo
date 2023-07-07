@@ -22,7 +22,8 @@ export const [blockquotes, blockquoteValues, cssBlockquoteConfig] = cssConfig(()
     return {
         // backgrounds:
         backdropFilter         : [[
-            'saturate(400%)',
+            'contrast(80%)',    // second step: supports for light mode
+            'brightness(120%)', // first  step: supports for dark mode
         ]]                                              as CssKnownProps['backdropFilter'        ],
         
         
