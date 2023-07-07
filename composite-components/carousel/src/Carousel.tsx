@@ -595,8 +595,6 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // conditions:
-        if (!infiniteLoop) return currentItemIndex; // a NON infinite loop => NO need to rearrange slide(s) positions
-        
         const listElm = listRefInternal.current;
         if (!listElm) return currentItemIndex; // listElm must be exist to manipulate
         
@@ -677,6 +675,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         return currentScrollIndex /* greedy: from re-render */ - visualScrollIndex /* delayed: from visual measurement */;
     };
     const limitsScrollMovement              = (visualScrollIndex: number, movementScrollIndex: number) => {
+        if (!infiniteLoop) {
+            const limitMovePrev = minItemIndex - visualScrollIndex;
+            const limitMoveNext = maxItemIndex - visualScrollIndex;
+            movementScrollIndex = Math.min(Math.max(
+                movementScrollIndex,
+            limitMovePrev), limitMoveNext);
+        } // if
+        
+        
+        
         movementScrollIndex = Math.min(Math.max(
             movementScrollIndex,
         -rangeMovementItemIndex), +rangeMovementItemIndex);
