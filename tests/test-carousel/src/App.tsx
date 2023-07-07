@@ -2,10 +2,12 @@ import {
     default as React,
     useMemo,
     useState,
+    useRef,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import {
+    ImperativeScroll,
     Carousel,
 } from '@reusable-ui/carousel'
 import {
@@ -26,6 +28,7 @@ function App() {
         maxHeight : '300px',
         direction : 'rtl',
     }), []);
+    const scrollRef = useRef<(HTMLElement & ImperativeScroll)|null>(null);
     
     
     
@@ -48,7 +51,7 @@ function App() {
                     <img alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
                 </Carousel>
                 <hr />
-                <Carousel theme='primary' style={style} infiniteLoop={false} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
+                <Carousel scrollRef={scrollRef} theme='primary' style={style} infiniteLoop={false} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
                     console.log('Carousel_2 set to: ', scrollIndex);
                     setValue(scrollIndex);
                 }}>
@@ -60,6 +63,8 @@ function App() {
                     <img alt='lorem image' src='/images/lorem-img/water-500x800.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
                 </Carousel>
+                <button onClick={() => scrollRef.current?.scrollPrev()}>Prev</button>
+                <button onClick={() => scrollRef.current?.scrollNext()}>Next</button>
                 <hr />
                 <Carousel theme='primary' style={style2} infiniteLoop={true} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
                     console.log('Carousel_2 set to: ', scrollIndex);

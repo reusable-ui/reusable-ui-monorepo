@@ -3,7 +3,7 @@
 [high prior] updated typos blockquote => updated barrels/core => waiting for publishing
 [high prior] updated typos plainlist  => updated barrels/core => waiting for publishing
 
-[medium err] fix <Carousel> touch scroll when infiniteLoop={false}
+[medium err] updated <Carousel> touch scroll when infiniteLoop={false} => updated barrels/components => waiting for publishing
 
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)

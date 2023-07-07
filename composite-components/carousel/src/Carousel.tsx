@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useMemo,
+    useImperativeHandle,
 }                           from 'react'
 
 // cssfn:
@@ -133,6 +134,10 @@ export const useCarouselStyleSheet = dynamicStyleSheet(
 
 
 // react components:
+export interface ImperativeScroll {
+    scrollPrev(): Promise<void>
+    scrollNext(): Promise<void>
+}
 export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
         // bases:
@@ -157,7 +162,7 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
         NavscrollComponentProps<Element>
 {
     // scrolls:
-    scrollRef            ?: React.Ref<TElement> // setter ref
+    scrollRef            ?: React.Ref<TElement & Partial<ImperativeScroll>> // setter ref
     scrollMomentumAccum  ?: boolean
     scrollMomentumWeight ?: number
     scrollMargin         ?: number
@@ -765,15 +770,19 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     
+    // dom effects:
+    const isMounted = useMountedFlag();
+    
+    
+    
     // handlers:
-    const handlePrevClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
+    const handlePrevClickImpl      = useEvent(async (): Promise<void> => {
         // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+        
+        
         
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
-        
-        // all necessary task will be performed, no further action needed:
-        event.preventDefault();
         
         
         
@@ -801,6 +810,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // scroll to previous neighbor step:
         performScrolling(visualScrollIndex, futureScrollIndex);
     });
+    const handlePrevClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        event.preventDefault();
+        
+        
+        
+        // actions:
+        handlePrevClickImpl();
+    });
     const handlePrevClick          = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
         prevButtonComponent.props.onClick,
@@ -811,14 +830,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         handlePrevClickInternal,
     );
     
-    const handleNextClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>(async (event) => {
+    const handleNextClickImpl      = useEvent(async (): Promise<void> => {
         // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+        
+        
         
         if (!scrollMomentumAccum && (slidingStatus.current === SlidingStatus.AutoScrolling)) return; // do not accumulate the scroll momentum if not enabled
-        
-        // all necessary task will be performed, no further action needed:
-        event.preventDefault();
         
         
         
@@ -845,6 +863,16 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // scroll to next neighbor step:
         performScrolling(visualScrollIndex, futureScrollIndex);
+    });
+    const handleNextClickInternal  = useEvent<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+        // conditions:
+        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        event.preventDefault();
+        
+        
+        
+        // actions:
+        handleNextClickImpl();
     });
     const handleNextClick          = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
@@ -1145,11 +1173,18 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // mark the sliding status:
         slidingStatus.current = SlidingStatus.Passive;
     });
+    useImperativeHandle<Partial<ImperativeScroll>|null, (TElement & Partial<ImperativeScroll>)|null>(scrollRef, (): (TElement & Partial<ImperativeScroll>)|null => {
+        const listElm = listRefInternal.current as (TElement & Partial<ImperativeScroll>)|null;
+        if (listElm) {
+            listElm.scrollPrev = handlePrevClickImpl;
+            listElm.scrollNext = handleNextClickImpl;
+        } // if
+        return listElm;
+    }, []);
     
     
     
     // dom effects:
-    const isMounted = useMountedFlag();
     
     // initial scroll pos setup (without scrolling effect):
     useIsomorphicLayoutEffect(() => {

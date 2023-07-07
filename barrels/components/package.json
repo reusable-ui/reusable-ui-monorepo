@@ -42,7 +42,7 @@
     "@reusable-ui/button": "^6.0.0",
     "@reusable-ui/button-icon": "^6.0.0",
     "@reusable-ui/card": "^6.0.0",
-    "@reusable-ui/carousel": "^6.0.0",
+    "@reusable-ui/carousel": "^6.0.1",
     "@reusable-ui/check": "^6.0.0",
     "@reusable-ui/close-button": "^6.0.0",
     "@reusable-ui/collapse": "^6.0.0",
