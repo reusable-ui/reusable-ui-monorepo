@@ -18,3 +18,5 @@ export * from './kbds.js'
 export * from './emphasises.js'
 
 export * from './horzRules.js'
+
+export * from './plainLists.js'

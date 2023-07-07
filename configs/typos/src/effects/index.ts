@@ -18,3 +18,5 @@ import './kbds.js'        // side effect
 import './emphasises.js'  // side effect
 
 import './horzRules.js'   // side effect
+
+import './plainLists.js'  // side effect
