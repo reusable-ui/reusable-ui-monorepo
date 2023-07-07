@@ -42,6 +42,11 @@ export const [plainLists, plainListValues, cssPlainListConfig] = cssConfig(() =>
         
         
         
+        // lists:
+        listStylePosition  : 'inside'   as CssKnownProps['listStylePosition' ],
+        
+        
+        
         // ols:
         olListStyleType    : 'decimal'  as CssKnownProps['listStyleType'     ],
         
@@ -53,7 +58,7 @@ export const [plainLists, plainListValues, cssPlainListConfig] = cssConfig(() =>
         
         
         // lis:
-        /* no config props yet */
+        liTextAlign        : 'start'    as CssKnownProps['textAlign'         ],
     };
 }, { prefix: 'pList' });
 export { plainLists as default }
