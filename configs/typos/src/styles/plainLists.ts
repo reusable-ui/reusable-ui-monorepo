@@ -25,7 +25,7 @@ import {
 // styles:
 export default () => [
     globalScope({
-        ...rule(['.pList'], {
+        ...rule(['.plainList'], {
             // layouts:
             display : 'block',
             

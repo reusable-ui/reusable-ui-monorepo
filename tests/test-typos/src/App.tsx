@@ -47,12 +47,12 @@ function App() {
                 <blockquote>
                     Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
                 </blockquote>
-                <ol className='pList'>
+                <ol className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
                 </ol>
-                <ul className='pList'>
+                <ul className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
@@ -63,12 +63,12 @@ function App() {
                 <blockquote>
                     Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
                 </blockquote>
-                <ol className='pList'>
+                <ol className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
                 </ol>
-                <ul className='pList'>
+                <ul className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
@@ -78,12 +78,12 @@ function App() {
                 <blockquote>
                     Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
                 </blockquote>
-                <ol className='pList'>
+                <ol className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
                 </ol>
-                <ul className='pList'>
+                <ul className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
@@ -94,12 +94,12 @@ function App() {
                 <blockquote>
                     Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
                 </blockquote>
-                <ol className='pList'>
+                <ol className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
                 </ol>
-                <ul className='pList'>
+                <ul className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
@@ -110,12 +110,12 @@ function App() {
                 <blockquote>
                     Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
                 </blockquote>
-                <ol className='pList'>
+                <ol className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
                 </ol>
-                <ul className='pList'>
+                <ul className='plainList'>
                     <li>One</li>
                     <li>Two</li>
                     <li>Three</li>
