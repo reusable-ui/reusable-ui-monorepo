@@ -783,7 +783,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate if there is an available go_backward movement:
-        const movementScrollIndex = limitsScrollMovement(visualScrollIndex, -_defaultMovementStep);
+        let movementScrollIndex = limitsScrollMovement(visualScrollIndex, -_defaultMovementStep);
+        if (!movementScrollIndex && !infiniteLoop && rangeItemIndex) {
+            movementScrollIndex = limitsScrollMovement(visualScrollIndex, +rangeItemIndex);
+        } // if
         if (!movementScrollIndex) return;
         
         
@@ -825,7 +828,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         
         // calculate if there is an available go_forward movement:
-        const movementScrollIndex = limitsScrollMovement(visualScrollIndex, +_defaultMovementStep);
+        let movementScrollIndex = limitsScrollMovement(visualScrollIndex, +_defaultMovementStep);
+        if (!movementScrollIndex && !infiniteLoop && rangeItemIndex) {
+            movementScrollIndex = limitsScrollMovement(visualScrollIndex, -rangeItemIndex);
+        } // if
         if (!movementScrollIndex) return;
         
         
