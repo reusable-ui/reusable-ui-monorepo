@@ -265,15 +265,23 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             )
             {
                 if (
+                    //#region list of controls that internally HANDLE [navigation] keys
+                    // <CustomEditor>:
+                    (event.target as any)?.isContentEditable
+                    ||
+                    // <TextEditorMultiline>:
                     ((event.target as any)?.tagName === 'TEXTAREA')
                     ||
+                    // <TextEditorLike>, <Range>:
                     (
                         ((event.target as any)?.tagName === 'INPUT')
                         &&
+                        // controls that NOT handle [navigation] keys:
                         !['color', 'file'].includes((event.target as any)?.type ?? '')
                     )
+                    //#endregion list of controls that internally HANDLE [navigation] keys
                 ) {
-                    return false; // do not handle [navigation] keys if the event coming from <TextEditor>|<Range>
+                    return false; // do not handle [navigation] keys if the event coming from <CustomEditor>|<TextEditor>|<Range>
                 } // if
                 
                 
@@ -287,15 +295,23 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             )
             {
                 if (
+                    //#region list of controls that internally HANDLE [space] key
+                    // <CustomEditor>:
+                    (event.target as any)?.isContentEditable
+                    ||
+                    // <TextEditorMultiline>:
                     ((event.target as any)?.tagName === 'TEXTAREA')
                     ||
+                    // <TextEditorLike> (excluding <Range>):
                     (
                         ((event.target as any)?.tagName === 'INPUT')
                         &&
+                        // controls that NOT handle [space] key:
                         !['color', 'file', 'range'].includes((event.target as any)?.type ?? '')
                     )
+                    //#endregion list of controls that internally HANDLE [space] key
                 ) {
-                    return false; // do not handle [space] key if the event coming from <TextEditor>
+                    return false; // do not handle [space] key if the event coming from <CustomEditor>|<TextEditor> (excluding <Range>)
                 } // if
                 
                 

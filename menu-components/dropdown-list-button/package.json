@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-list-button",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "A button component with a dropdown list UI.",
   "keywords": [
     "dropdown",
@@ -40,9 +40,9 @@
   },
   "dependencies": {
     "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/dropdown": "^6.0.0",
-    "@reusable-ui/dropdown-button": "^6.0.0",
-    "@reusable-ui/dropdown-list": "^6.0.0",
+    "@reusable-ui/dropdown": "^6.0.1",
+    "@reusable-ui/dropdown-button": "^6.0.1",
+    "@reusable-ui/dropdown-list": "^6.0.1",
     "@reusable-ui/list": "^6.0.0"
   },
   "peerDependencies": {
