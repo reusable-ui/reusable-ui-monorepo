@@ -1,5 +1,3 @@
-[high prior] updated global-stackable => updated barrels/core => waiting for publishing
-
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
