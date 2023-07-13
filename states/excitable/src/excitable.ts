@@ -209,7 +209,7 @@ export const useExcitable = <TElement extends Element = HTMLElement, TExcitedCha
     const handleAnimationStart  = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
+        if (!/((^|[^a-z])(excite)|([a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
         
         
         
@@ -219,7 +219,7 @@ export const useExcitable = <TElement extends Element = HTMLElement, TExcitedCha
     const handleAnimationEnd    = useEvent<React.AnimationEventHandler<TElement>>((event) => {
         // conditions:
         if (event.target !== event.currentTarget) return; // ignores bubbling
-        if (!/((?<![a-z])(excite)|(?<=[a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
+        if (!/((^|[^a-z])(excite)|([a-z])(Excite))(?![a-z])/.test(event.animationName)) return; // ignores animation other than excite[Foo] or booExcite[Foo]
         
         
         

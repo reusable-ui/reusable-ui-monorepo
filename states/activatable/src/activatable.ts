@@ -271,7 +271,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
     // states:
     const [activated, setActivated, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : activeFn,
-        animationName : /((?<![a-z])(active|passive)|(?<=[a-z])(Active|Passive))(?![a-z])/,
+        animationName : /((^|[^a-z])(active|passive)|([a-z])(Active|Passive))(?![a-z])/,
     });
     
     

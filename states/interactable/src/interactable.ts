@@ -220,7 +220,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
     // states:
     const [arrived, setArrived, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : arrivedFn,
-        animationName : /((?<![a-z])(arrive|leave)|(?<=[a-z])(Arrive|Leave))(?![a-z])/,
+        animationName : /((^|[^a-z])(arrive|leave)|([a-z])(Arrive|Leave))(?![a-z])/,
     });
     
     

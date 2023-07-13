@@ -263,7 +263,7 @@ export const useFocusable = <TElement extends Element = HTMLElement>(props: Focu
     // states:
     const [focused, setFocused, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : focusedFn,
-        animationName : /((?<![a-z])(focus|blur)|(?<=[a-z])(Focus|Blur))(?![a-z])/,
+        animationName : /((^|[^a-z])(focus|blur)|([a-z])(Focus|Blur))(?![a-z])/,
     });
     
     

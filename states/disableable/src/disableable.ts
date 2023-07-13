@@ -197,7 +197,7 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
     // states:
     const [enabled, setEnabled, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : enabledFn,
-        animationName : /((?<![a-z])(enable|disable)|(?<=[a-z])(Enable|Disable))(?![a-z])/,
+        animationName : /((^|[^a-z])(enable|disable)|([a-z])(Enable|Disable))(?![a-z])/,
     });
     
     

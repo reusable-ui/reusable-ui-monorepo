@@ -230,7 +230,7 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
     // states:
     const [expanded, setExpanded, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : expandedFn,
-        animationName : /((?<![a-z])(expand|collapse)|(?<=[a-z])(Expand|Collapse))(?![a-z])/,
+        animationName : /((^|[^a-z])(expand|collapse)|([a-z])(Expand|Collapse))(?![a-z])/,
     });
     
     

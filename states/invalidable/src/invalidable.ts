@@ -313,7 +313,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     // states:
     const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
         initialState  : isValidFn,
-        animationName : /((?<![a-z])(valid|unvalid|invalid|uninvalid)|(?<=[a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
+        animationName : /((^|[^a-z])(valid|unvalid|invalid|uninvalid)|([a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
     });
     
     

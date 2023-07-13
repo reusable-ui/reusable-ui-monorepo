@@ -288,7 +288,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     // states:
     const [pressed, setPressed, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean, TElement>({
         initialState  : pressedFn,
-        animationName : /((?<![a-z])(press|release)|(?<=[a-z])(Press|Release))(?![a-z])/,
+        animationName : /((^|[^a-z])(press|release)|([a-z])(Press|Release))(?![a-z])/,
     });
     
     
