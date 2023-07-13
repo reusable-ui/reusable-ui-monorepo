@@ -31,7 +31,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.0.0"
+    "@cssfn/core": "^3.0.2"
   },
   "peerDependencies": {
     "@reusable-ui/border": "^6.0.5",

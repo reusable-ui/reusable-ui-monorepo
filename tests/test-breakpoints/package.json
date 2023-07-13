@@ -3,8 +3,8 @@
   "version": "6.0.5",
   "private": true,
   "dependencies": {
-    "@cssfn/core": "^3.0.0",
-    "@cssfn/cssfn-react": "^3.0.0",
+    "@cssfn/core": "^3.0.2",
+    "@cssfn/cssfn-react": "^3.0.2",
     "@reusable-ui/breakpoints": "^6.0.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

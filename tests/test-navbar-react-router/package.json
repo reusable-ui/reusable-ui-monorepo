@@ -3,7 +3,7 @@
   "version": "6.0.5",
   "private": true,
   "dependencies": {
-    "@cssfn/cssfn-dom": "^3.0.0",
+    "@cssfn/cssfn-dom": "^3.0.2",
     "@reusable-ui/collapse": "^6.0.5",
     "@reusable-ui/hamburger-menu-button": "^6.0.5",
     "@reusable-ui/nav": "^6.0.5",
