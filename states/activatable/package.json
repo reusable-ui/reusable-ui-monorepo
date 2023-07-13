@@ -39,10 +39,10 @@
     "@reusable-ui/semantics": "^6.0.5"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.0.0",
-    "@reusable-ui/animation": "^6.0.0",
-    "@reusable-ui/mildable": "^6.0.0",
-    "@reusable-ui/outlineable": "^6.0.0",
+    "@reusable-ui/accessibilities": "^6.0.5",
+    "@reusable-ui/animation": "^6.0.5",
+    "@reusable-ui/mildable": "^6.0.5",
+    "@reusable-ui/outlineable": "^6.0.5",
     "@types/react": "^18.0.0",
     "react": "^18.0.0"
   }

@@ -34,7 +34,7 @@
     "@cssfn/core": "^3.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/border": "^6.0.0",
-    "@reusable-ui/padding": "^6.0.0"
+    "@reusable-ui/border": "^6.0.5",
+    "@reusable-ui/padding": "^6.0.5"
   }
 }

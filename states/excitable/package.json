@@ -34,7 +34,7 @@
     "@reusable-ui/hooks": "^6.0.5"
   },
   "peerDependencies": {
-    "@reusable-ui/animation": "^6.0.0",
+    "@reusable-ui/animation": "^6.0.5",
     "@types/react": "^18.0.0",
     "react": "^18.0.0"
   }

@@ -35,9 +35,9 @@
     "@cssfn/core": "^3.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/background": "^6.0.0",
-    "@reusable-ui/borders": "^6.0.0",
-    "@reusable-ui/colors": "^6.0.0",
-    "@reusable-ui/spacers": "^6.0.0"
+    "@reusable-ui/background": "^6.0.5",
+    "@reusable-ui/borders": "^6.0.5",
+    "@reusable-ui/colors": "^6.0.5",
+    "@reusable-ui/spacers": "^6.0.5"
   }
 }
