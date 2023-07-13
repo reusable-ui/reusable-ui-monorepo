@@ -1,11 +1,11 @@
 {
   "name": "test-navscroll",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "private": true,
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/list": "^6.0.0",
-    "@reusable-ui/navscroll": "^6.0.0",
+    "@reusable-ui/list": "^6.0.5",
+    "@reusable-ui/navscroll": "^6.0.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

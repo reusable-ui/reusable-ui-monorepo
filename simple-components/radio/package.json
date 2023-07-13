@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/radio",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A UI for the user to select single option.",
   "keywords": [
     "radio",
@@ -35,8 +35,8 @@
   "dependencies": {
     "@cssfn/core": "^3.0.0",
     "@cssfn/cssfn-react": "^3.0.0",
-    "@reusable-ui/check": "^6.0.0",
-    "@reusable-ui/core": "^6.0.0"
+    "@reusable-ui/check": "^6.0.5",
+    "@reusable-ui/core": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

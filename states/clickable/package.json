@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/clickable",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A capability of UI to be clicked.",
   "keywords": [
     "clickable",
@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/animating-state": "^6.0.0",
-    "@reusable-ui/hooks": "^6.0.0"
+    "@reusable-ui/animating-state": "^6.0.5",
+    "@reusable-ui/hooks": "^6.0.5"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.0.0",

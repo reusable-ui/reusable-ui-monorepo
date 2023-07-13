@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/active-as-click",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "Shows the UI as clicked when activated.",
   "keywords": [
     "activatable",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/accordion",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "Represents a series of toggleable collapsing content.",
   "keywords": [
     "list",
@@ -41,9 +41,9 @@
   "dependencies": {
     "@cssfn/core": "^3.0.0",
     "@cssfn/cssfn-react": "^3.0.0",
-    "@reusable-ui/collapse": "^6.0.0",
-    "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/list": "^6.0.0"
+    "@reusable-ui/collapse": "^6.0.5",
+    "@reusable-ui/core": "^6.0.5",
+    "@reusable-ui/list": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/scrollable",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A capability of UI to scroll/switch its contents.",
   "keywords": [
     "scrollable",
@@ -31,8 +31,8 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/hooks": "^6.0.0",
-    "@reusable-ui/numbers": "^6.0.0"
+    "@reusable-ui/hooks": "^6.0.5",
+    "@reusable-ui/numbers": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

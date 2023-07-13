@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/borders",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A border (stroke) management system for web components using css variables (css custom properties).",
   "keywords": [
     "borders",

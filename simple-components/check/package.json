@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/check",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A UI for the user to select multiple options.",
   "keywords": [
     "check",
@@ -35,11 +35,11 @@
   "dependencies": {
     "@cssfn/core": "^3.0.0",
     "@cssfn/cssfn-react": "^3.0.0",
-    "@reusable-ui/button": "^6.0.0",
-    "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/editable-action-control": "^6.0.0",
-    "@reusable-ui/icon": "^6.0.0",
-    "@reusable-ui/input": "^6.0.0"
+    "@reusable-ui/button": "^6.0.5",
+    "@reusable-ui/core": "^6.0.5",
+    "@reusable-ui/editable-action-control": "^6.0.5",
+    "@reusable-ui/icon": "^6.0.5",
+    "@reusable-ui/input": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/interactable",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "Adds an interactive feel to a UI.",
   "keywords": [
     "interactable",
@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/animating-state": "^6.0.0",
-    "@reusable-ui/hooks": "^6.0.0"
+    "@reusable-ui/animating-state": "^6.0.5",
+    "@reusable-ui/hooks": "^6.0.5"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.0.0",

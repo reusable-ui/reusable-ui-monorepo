@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/next-compat-link",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A next-js compatible Link for use with Reusable-UI components in harmony.",
   "keywords": [
     "link",
@@ -33,7 +33,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/core": "^6.0.0"
+    "@reusable-ui/core": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

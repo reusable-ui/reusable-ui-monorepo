@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/disableable",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A capability of UI to be disabled.",
   "keywords": [
     "disableable",
@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/animating-state": "^6.0.0",
-    "@reusable-ui/semantics": "^6.0.0"
+    "@reusable-ui/animating-state": "^6.0.5",
+    "@reusable-ui/semantics": "^6.0.5"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.0.0",

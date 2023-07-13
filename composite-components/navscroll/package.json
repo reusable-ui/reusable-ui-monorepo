@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navscroll",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A navigation component to navigate within current page, based on scroll position.",
   "keywords": [
     "navigation",
@@ -35,9 +35,9 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/list": "^6.0.0",
-    "@reusable-ui/nav": "^6.0.0"
+    "@reusable-ui/core": "^6.0.5",
+    "@reusable-ui/list": "^6.0.5",
+    "@reusable-ui/nav": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

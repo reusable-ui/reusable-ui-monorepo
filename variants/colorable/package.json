@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/colorable",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "Colorize the UI based on its theme or the background theme.",
   "keywords": [
     "colorable",

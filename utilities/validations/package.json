@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/validations",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "A validation management system for react web components.",
   "keywords": [
     "validations",

@@ -1,6 +1,6 @@
 {
   "name": "test-nav-button-next-js",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@cssfn/cssfn-dom": "^3.0.0",
-    "@reusable-ui/nav": "^6.0.0",
-    "@reusable-ui/nav-button": "^6.0.0",
+    "@reusable-ui/nav": "^6.0.5",
+    "@reusable-ui/nav-button": "^6.0.5",
     "@types/node": "^20.1.0",
     "eslint": "^8.40.0",
     "eslint-config-next": "^13.4.1",

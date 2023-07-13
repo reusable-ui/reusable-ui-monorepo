@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/global-stackable",
-  "version": "6.0.3",
+  "version": "6.0.5",
   "description": "A capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context.",
   "keywords": [
     "global stackable",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.0.0",
-    "@reusable-ui/client-sides": "^6.0.0"
+    "@reusable-ui/client-sides": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

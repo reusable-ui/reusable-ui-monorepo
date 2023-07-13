@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/accessibilities",
-  "version": "6.0.0",
+  "version": "6.0.5",
   "description": "An accessibility management system for react web components.",
   "keywords": [
     "accessibilities",

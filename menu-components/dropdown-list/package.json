@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-list",
-  "version": "6.0.1",
+  "version": "6.0.5",
   "description": "Overlays a list element (menu).",
   "keywords": [
     "dropdown",
@@ -39,9 +39,9 @@
   "dependencies": {
     "@cssfn/core": "^3.0.0",
     "@cssfn/cssfn-react": "^3.0.0",
-    "@reusable-ui/core": "^6.0.0",
-    "@reusable-ui/dropdown": "^6.0.1",
-    "@reusable-ui/list": "^6.0.0"
+    "@reusable-ui/core": "^6.0.5",
+    "@reusable-ui/dropdown": "^6.0.5",
+    "@reusable-ui/list": "^6.0.5"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",
