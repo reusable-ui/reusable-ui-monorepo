@@ -1,3 +1,6 @@
+[med prior ] fix <Navbar>'s menu dropdown on mobile mode
+[med prior ] fix initial floatable position when inside the <ModalCard>
+
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
