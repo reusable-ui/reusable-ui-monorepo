@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/orientationable",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "A capability of UI to rotate its layout.",
   "keywords": [
     "orientation",
