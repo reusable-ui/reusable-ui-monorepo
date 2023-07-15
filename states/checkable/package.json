@@ -34,7 +34,7 @@
     "@cssfn/core": "^3.0.2"
   },
   "peerDependencies": {
-    "@reusable-ui/activatable": "^6.0.5",
-    "@reusable-ui/animation": "^6.0.5"
+    "@reusable-ui/activatable": "^6.0.6",
+    "@reusable-ui/animation": "^6.0.6"
   }
 }
