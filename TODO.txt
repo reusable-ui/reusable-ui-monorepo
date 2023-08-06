@@ -1,3 +1,7 @@
+[med prior ] usePropAccessibility => always return stable {object} reference
+[med prior ] usePropValidation    => always return stable {object} reference
+[med prior ] ValidationProvider   => always use    stable {object} reference
+
 [med prior ] fix <Navbar>'s menu dropdown on mobile mode
 [med prior ] fix initial floatable position when inside the <ModalCard>
 
