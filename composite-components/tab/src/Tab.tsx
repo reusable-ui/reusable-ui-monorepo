@@ -104,8 +104,13 @@ export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedCh
             |'tabId'                            // already aliased by `id`
         >
 {
+    // components:
+    tabHeaderComponent ?: React.ReactComponentElement<any, TabHeaderProps<Element>>|null
+    
+    
+    
     // children:
-    children : TabStateProps<TTabExpandedChangeEvent>['tabPanels']
+    children            : TabStateProps<TTabExpandedChangeEvent>['tabPanels']
 }
 const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>(props: TabProps<TElement, TTabExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -176,6 +181,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         
         
         // components:
+        tabHeaderComponent = (<TabHeader<Element> /> as React.ReactComponentElement<any, TabHeaderProps<Element> >),
         listComponent,
         listItemComponent,
         bodyComponent,
@@ -229,44 +235,48 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
                 tabPanelStyle={tabPanelStyle}
             >
                 {/* the *main* component made from <List<Element> > */}
-                <TabHeader<Element>
-                    // refs:
-                    elmRef={elmRef}
-                    
-                    
-                    
-                    // variants:
-                    {...basicVariantProps}
-                    
-                    orientation={orientation}
-                    listStyle={listStyle}
-                    
-                    
-                    
-                    // accessibilities:
-                    label={label}
-                    
-                    
-                    
-                    // behaviors:
-                    actionCtrl={actionCtrl}
-                    
-                    
-                    
-                    // states:
-                    enabled={enabled}
-                    inheritEnabled={inheritEnabled}
-                    active={active}
-                    inheritActive={inheritActive}
-                    readOnly={readOnly}
-                    inheritReadOnly={inheritReadOnly}
-                    
-                    
-                    
-                    // components:
-                    listComponent={listComponent}
-                    listItemComponent={listItemComponent}
-                />
+                {/* <TabHeader<Element>> */}
+                {(tabHeaderComponent !== null) && React.cloneElement<TabHeaderProps<Element>>(tabHeaderComponent,
+                    // props:
+                    {
+                        // refs:
+                        elmRef            : elmRef,
+                        
+                        
+                        
+                        // variants:
+                        ...basicVariantProps,
+                        
+                        orientation       : orientation,
+                        listStyle         : listStyle,
+                        
+                        
+                        
+                        // accessibilities:
+                        label             : label,
+                        
+                        
+                        
+                        // behaviors:
+                        actionCtrl        : actionCtrl,
+                        
+                        
+                        
+                        // states:
+                        enabled           : enabled,
+                        inheritEnabled    : inheritEnabled,
+                        active            : active,
+                        inheritActive     : inheritActive,
+                        readOnly          : readOnly,
+                        inheritReadOnly   : inheritReadOnly,
+                        
+                        
+                        
+                        // components:
+                        listComponent     : listComponent,
+                        listItemComponent : listItemComponent,
+                    },
+                )}
                 
                 {/* the *complement* component made from <Content<Element> > */}
                 <TabBody<Element>

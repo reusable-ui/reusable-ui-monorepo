@@ -32,6 +32,7 @@ function App() {
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    const [expandedTabIndex, setExpandedTabIndex] = useState(0);
     
     
     
@@ -49,7 +50,7 @@ function App() {
                 
                 <br />
                 
-                <Tab theme='primary' tabPanelStyle='fitContent' lazy>
+                <Tab theme='primary' lazy expandedTabIndex={expandedTabIndex} onExpandedChange={(event) => setExpandedTabIndex(event.tabIndex)}>
                     <TabPanel label='first'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
@@ -67,7 +68,7 @@ function App() {
                     </TabPanel>
                 </Tab>
                 
-                <Tab theme='primary' outlined>
+                <Tab tabHeaderComponent={null} theme='primary' lazy expandedTabIndex={expandedTabIndex} onExpandedChange={(event) => setExpandedTabIndex(event.tabIndex)}>
                     <TabPanel label='first'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
@@ -85,7 +86,7 @@ function App() {
                     </TabPanel>
                 </Tab>
                 
-                <Tab theme='primary' mild>
+                {/* <Tab theme='primary' outlined>
                     <TabPanel label='first'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
@@ -101,7 +102,25 @@ function App() {
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
-                </Tab>
+                </Tab> */}
+                
+                {/* <Tab theme='primary' mild>
+                    <TabPanel label='first'>
+                        <p>The detail of first item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </TabPanel>
+                    <TabPanel label='second'>
+                        <p>The detail of second item.</p>
+                        <ParagraphLorem />
+                    </TabPanel>
+                    <TabPanel label='third'>
+                        <p>The detail of third item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </TabPanel>
+                </Tab> */}
             </div>
         </>
     );
