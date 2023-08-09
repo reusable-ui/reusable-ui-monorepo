@@ -1173,6 +1173,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         // mark the sliding status:
         slidingStatus.current = SlidingStatus.Passive;
     });
+    
+    
+    
+    // imperatives:
     useImperativeHandle<Partial<ImperativeScroll>|null, (TElement & Partial<ImperativeScroll>)|null>(scrollRef, (): (TElement & Partial<ImperativeScroll>)|null => {
         const listElm = listRefInternal.current as (TElement & Partial<ImperativeScroll>)|null;
         if (listElm) {
