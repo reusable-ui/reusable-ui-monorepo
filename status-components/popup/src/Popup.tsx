@@ -106,6 +106,8 @@ const Popup = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         
         
         // floatable:
+        floatingRef        : _floatingRef,        // remove
+        
         floatingOn         : _floatingOn,         // remove
         floatingPlacement  : _floatingPlacement,  // remove
         floatingMiddleware : _floatingMiddleware, // remove
