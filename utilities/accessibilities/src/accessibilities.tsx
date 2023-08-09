@@ -118,6 +118,7 @@ export const usePropAccessibility = <TDefaultEnabled extends unknown = boolean, 
         (props.active ?? defaultActive)
     );
     return useMemo<Accessibility|TAccessibility<TDefaultEnabled, TDefaultReadOnly, TDefaultActive>>(() => ({
+        // accessibilities:
         enabled,  // mutable value
         readOnly, // mutable value
         active,   // mutable value
