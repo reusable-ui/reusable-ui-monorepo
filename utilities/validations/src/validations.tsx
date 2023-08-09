@@ -5,6 +5,11 @@ import {
     
     
     
+    // hooks:
+    useMemo,
+    
+    
+    
     // contexts:
     createContext,
     useContext,
@@ -119,11 +124,17 @@ export const usePropValidation = (props: ValidationProps): Validation & Validati
         
         return props.isValid;                                    // otherwise => use the component's validity
     })();
-    return {
+    return useMemo<Validation & ValidationRoot>(() => ({
+        // validations:
+        enableValidation, // mutable value
+        isValid,          // mutable value
+        atRoot,           // mutable value
+    }), [
+        // validations:
         enableValidation,
         isValid,
         atRoot,
-    };
+    ]);
 };
 
 export const usePropIsValid    = (props: ValidationProps): Result|undefined => {
@@ -160,11 +171,36 @@ export interface ValidationProps extends React.PropsWithChildren<Partial<Validat
 }
 const ValidationProvider = (props: ValidationProps): JSX.Element|null => {
     // fn props:
-    const { atRoot, ...propValidation } = usePropValidation(props);
-    if (atRoot) {
-        propValidation.enableValidation = props.enableValidation ?? _defaultEnableValidation;
-        propValidation.isValid          = props.isValid          ?? _defaultIsValid;
-    } // if
+    const propValidationWithRoot = usePropValidation(props);
+    const {
+        enableValidation,
+        isValid,
+    } = props;
+    
+    const propValidation = useMemo<Validation>(() => {
+        if (propValidationWithRoot.atRoot) {
+            // at root:
+            
+            const {
+                atRoot : _atRoot, // remove
+            ...propValidation} = propValidationWithRoot;
+            
+            propValidation.enableValidation = enableValidation ?? _defaultEnableValidation;
+            propValidation.isValid          = isValid          ?? _defaultIsValid;
+            
+            return propValidation;
+        }
+        else {
+            // at nested:
+            
+            return propValidationWithRoot; // a stable object as long as its properties remain the same
+        } // if
+    }, [
+        propValidationWithRoot, // a stable object as long as its properties remain the same
+        
+        enableValidation,
+        isValid,
+    ]);
     
     
     
