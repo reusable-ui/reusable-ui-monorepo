@@ -203,7 +203,10 @@ export const usePropActive = <TDefaultActive extends unknown = boolean>(props: A
 
 // react components:
 
-export interface AccessibilityProps extends Partial<Accessibility>
+export interface AccessibilityProps
+    extends
+        // accessibilities:
+        Partial<Accessibility>
 {
     /**
      * `undefined` : same as `true`.  
