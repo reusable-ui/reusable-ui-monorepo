@@ -5,7 +5,7 @@
 [med prior ] updated usePropValidation
 [med prior ] updated ValidationProvider
 
-[med prior ] fix <Navbar>'s menu dropdown on mobile mode
+[med prior ] updated <Navbar>
 [med prior ] fix initial floatable position when inside the <ModalCard>
 
 [minor err ] fixed minor animation_abort_effect in active-as-click

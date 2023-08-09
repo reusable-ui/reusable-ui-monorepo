@@ -64,6 +64,34 @@ import {
 // styles:
 export const onNavbarStylesChange = watchChanges(onContainerStylesChange, cssNavbarConfig.onChange);
 
+export const usesNavbarListLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {paddingRule, paddingVars} = usesPadding(usesPrefixedProps(navbars, 'list'));
+    
+    
+    
+    return style({
+        // layouts:
+        ...style({
+            // spacings:
+         // padding       : paddingVars.padding,
+            paddingInline : paddingVars.paddingInline,
+            paddingBlock  : paddingVars.paddingBlock,
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
+        }),
+        
+        
+        
+        // features:
+        ...paddingRule(), // must be placed at the last
+    });
+};
 export const usesNavbarLayout = () => {
     // dependencies:
     
@@ -87,8 +115,7 @@ export const usesNavbarLayout = () => {
                 ...usesCssProps(usesPrefixedProps(navbars, 'toggler')), // apply config's cssProps starting with toggler***
             }),
             ...descendants(listElm, {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
+                ...usesNavbarListLayout(),
             }),
             ...descendants(menuElm, {
                 // customize:
