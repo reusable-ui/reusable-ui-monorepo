@@ -206,9 +206,11 @@ export const usesTabBodyLayout = () => {
         
         
         // borders:
-        [borderVars.borderStartStartRadius] : '0px', // remove top radius
-        [borderVars.borderStartEndRadius  ] : '0px', // remove top radius
-        borderBlockStartWidth               : '0px', // remove top border (already applied by <Tab>)
+        ...rule(':not(:first-child)', {
+            [borderVars.borderStartStartRadius] : '0px', // remove top radius
+            [borderVars.borderStartEndRadius  ] : '0px', // remove top radius
+            borderBlockStartWidth               : '0px', // remove top border (already applied by <Tab>)
+        }),
         
         
         
@@ -334,8 +336,8 @@ export const usesTabLayout = () => {
         ...vars({
             // borders:
             [borderVars.borderWidth           ] : '0px',
-            [borderVars.borderStartStartRadius] : '0px',
-            [borderVars.borderStartEndRadius  ] : '0px',
+            [borderVars.borderStartStartRadius] : basics.borderRadius,
+            [borderVars.borderStartEndRadius  ] : basics.borderRadius,
             [borderVars.borderEndStartRadius  ] : basics.borderRadius,
             [borderVars.borderEndEndRadius    ] : basics.borderRadius,
         }),
