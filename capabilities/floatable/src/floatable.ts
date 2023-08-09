@@ -9,6 +9,7 @@ import {
     useRef,
     useMemo,
     useState,
+    useImperativeHandle,
 }                           from 'react'
 
 // reusable-ui utilities:
@@ -54,6 +55,8 @@ export interface ImperativeFloatable {
 export interface FloatableProps
 {
     // floatable:
+    floatingRef        ?: React.Ref<Partial<ImperativeFloatable>> // setter ref
+    
     floatingOn         ?: React.RefObject<Element>|Element|null // getter ref
     floatingPlacement  ?: FloatingPlacement
     floatingMiddleware ?: FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>)
@@ -70,6 +73,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     // rest props:
     const {
         // floatable:
+        floatingRef,
+        
         floatingOn,
         floatingPlacement   = 'top',
         floatingMiddleware,
@@ -206,6 +211,15 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // trigger the `onFloatingUpdate`
         handleFloatingUpdate?.(floatingPosition);
     });
+    
+    
+    
+    // imperatives:
+    useImperativeHandle<Partial<ImperativeFloatable>|null, Partial<ImperativeFloatable>|null>(floatingRef, (): Partial<ImperativeFloatable>|null => {
+        return {
+            updateFloatingPosition,
+        };
+    }, []);
     
     
     
