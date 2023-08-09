@@ -13,6 +13,7 @@ import {
     // hooks:
     useContext,
     useState,
+    useMemo,
 }                           from 'react'
 
 // reusable-ui core:
@@ -131,13 +132,21 @@ const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends E
     
     
     
+    // states:
+    const exclusiveAccordionStateApi = useMemo<ExclusiveAccordionStateApi>(() => ({
+        // states:
+        expandedListIndex     : expandedListIndexFn,   // mutable value
+        triggerExpandedChange : triggerExpandedChange, // stable ref
+    }), [
+        // states:
+        expandedListIndexFn,
+    ]);
+    
+    
+    
     // jsx:
     return (
-        <ExclusiveAccordionStateContext.Provider value={{
-            // states:
-            expandedListIndex     : expandedListIndexFn,
-            triggerExpandedChange : triggerExpandedChange,
-        }}>
+        <ExclusiveAccordionStateContext.Provider value={exclusiveAccordionStateApi}>
             {children}
         </ExclusiveAccordionStateContext.Provider>
     );
