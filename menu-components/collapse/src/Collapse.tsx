@@ -135,6 +135,8 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
         
         
         // floatable:
+        floatingRef        : _floatingRef,        // remove
+        
         floatingOn         : _floatingOn,         // remove
         floatingPlacement  : _floatingPlacement,  // remove
         floatingMiddleware : _floatingMiddleware, // remove
