@@ -471,7 +471,7 @@ export interface ResponsiveProviderProps<TFallback>
     
     
     // children:
-    children       : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
+    children        : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
 }
 const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>): JSX.Element|null => {
     // rest props:
