@@ -305,7 +305,7 @@ export const usesTabLayout = () => {
             
             
             // borders:
-            borderWidth            : borderVars.borderWidth, // need a borderWidth for influenting <TabBody>'s borderRadius
+            borderWidth            : borderVars.borderWidth, // needs a borderWidth for influenting <TabBody>'s borderRadius
          // borderRadius           : borderVars.borderRadius,
             borderStartStartRadius : borderVars.borderStartStartRadius,
             borderStartEndRadius   : borderVars.borderStartEndRadius,
@@ -335,7 +335,7 @@ export const usesTabLayout = () => {
         // manually applying `borderRule` feature:
         ...vars({
             // borders:
-            [borderVars.borderWidth           ] : '0px',
+            [borderVars.borderWidth           ] : '0px', // needs a borderWidth for influenting <TabBody>'s borderRadius
             [borderVars.borderStartStartRadius] : basics.borderRadius,
             [borderVars.borderStartEndRadius  ] : basics.borderRadius,
             [borderVars.borderEndStartRadius  ] : basics.borderRadius,
