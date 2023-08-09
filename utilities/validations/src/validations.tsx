@@ -145,7 +145,10 @@ export const usePropIsValid    = (props: ValidationProps): Result|undefined => {
 
 // react components:
 
-export interface ValidationProps extends React.PropsWithChildren<Partial<Validation>>
+export interface ValidationProps
+    extends
+        // validations:
+        Partial<Validation>
 {
     /**
      * `undefined` : same as `true`.  
@@ -169,7 +172,7 @@ export interface ValidationProps extends React.PropsWithChildren<Partial<Validat
      */
     inheritValidation ?: boolean
 }
-const ValidationProvider = (props: ValidationProps): JSX.Element|null => {
+const ValidationProvider = (props: React.PropsWithChildren<ValidationProps>): JSX.Element|null => {
     // fn props:
     const propValidationWithRoot = usePropValidation(props);
     const {
