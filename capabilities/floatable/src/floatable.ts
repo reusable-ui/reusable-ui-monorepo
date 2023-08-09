@@ -48,6 +48,9 @@ import {
 // capabilities:
 
 //#region floatable
+export interface ImperativeFloatable {
+    updateFloatingPosition(): Promise<void>
+}
 export interface FloatableProps
 {
     // floatable:
@@ -89,6 +92,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     // states:
     const [dynamicFloatingPlacement, setDynamicFloatingPlacement] = useState<FloatingPlacement>(floatingPlacement);
+    
+    const isMounted = useMountedFlag();
     
     
     
@@ -146,22 +151,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     
-    // dom effects:
-    const isMounted = useMountedFlag();
-    
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (!isVisible)  return; // <floatingUi> is fully hidden => no need to update
-        
-        const target     = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
-        if (!target)     return; // [floatingOn] was not specified => nothing to do
-        
-        const floatingUi = outerRef.current;
-        if (!floatingUi) return; // <floatingUi> was unloaded => nothing to do
-        
-        
-        
-        // handlers:
+    // unstable callbacks:
+    const getMiddleware          = useMemo<() => Promise<FloatingMiddleware[]>>(() => {
         const defaultMiddleware: FloatingMiddleware[] = [
             ...((floatingOffset || floatingShift) ? [offset({ // requires to be placed at the first order
                 mainAxis  : floatingOffset,
@@ -172,47 +163,95 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             ...(floatingAutoShift ? [shift()] : []),
         ];
         const middleware : FloatingMiddleware[] | ((defaultMiddleware: FloatingMiddleware[]) => Promise<FloatingMiddleware[]>) = (
-            floatingMiddleware
-            ?
-            (
-                Array.isArray(floatingMiddleware)
-                ?
-                floatingMiddleware
-                :
-                floatingMiddleware
-            )
-            :
-            defaultMiddleware
+            floatingMiddleware // array -or- async function
+            ??
+            defaultMiddleware  // array
         );
+        return async () => Array.isArray(middleware) ? middleware : (await middleware(defaultMiddleware));
+    }, [
+        // floatable:
+        floatingMiddleware,
         
-        const triggerFloatingUpdate = async () => {
-            // calculate the proper position of the <floatingUi>:
-            const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
-                placement  : floatingPlacement,
-                middleware : Array.isArray(middleware) ? middleware : (await middleware(defaultMiddleware)),
-                strategy   : floatingStrategy,
-            });
-            
-            
-            
-            if (!isMounted.current) return;
-            
-            
-            
-            // trigger the `onFloatingUpdate`
-            handleFloatingUpdate?.(floatingPosition);
-        };
+        floatingAutoFlip,
+        floatingAutoShift,
+        floatingOffset,
+        floatingShift,
+    ]);
+    
+    // stable callbacks:
+    const updateFloatingPosition = useEvent(async (): Promise<void> => {
+        // conditions:
+        if (!isMounted.current) return; // unmounted => abort
+        
+        if (!isVisible)         return; // <floatingUi> is fully hidden => no need to update
+        
+        const floatingUi = outerRef.current;
+        if (!floatingUi)        return; // <floatingUi> was unloaded => nothing to do
+        
+        const target     = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
+        if (!target)            return; // [floatingOn] was not specified => nothing to do
+        
+        
+        
+        // calculate the proper position of the <floatingUi>:
+        const floatingPosition = await computePosition(/*reference: */target, /*floating: */floatingUi as unknown as HTMLElement, /*options: */{
+            placement  : floatingPlacement,
+            middleware : await getMiddleware(),
+            strategy   : floatingStrategy,
+        });
+        if (!isMounted.current) return; // unmounted => abort
+        
+        
+        
+        // trigger the `onFloatingUpdate`
+        handleFloatingUpdate?.(floatingPosition);
+    });
+    
+    
+    
+    // dom effects:
+    useIsomorphicLayoutEffect(() => {
+        // actions:
+        updateFloatingPosition();
+    }, [
+        // conditions:
+        isVisible,         // update the position when <floatingUi> (re)shwon
+        
+        
+        
+        // floatable:
+        floatingOn,        // update the position when <floatingUi> change the target
+        floatingPlacement, // update the position when the floating placement change
+        floatingStrategy,  // update the position when the floating strategy  change
+        
+        floatingAutoFlip,  // update the position when the floating autoFlip  change
+        floatingAutoShift, // update the position when the floating autoShift change
+        floatingOffset,    // update the position when the floating offset    change
+        floatingShift,     // update the position when the floating shift     change
+    ]);
+    
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        const floatingUi = outerRef.current;
+        if (!floatingUi)        return; // <floatingUi> was unloaded => nothing to do
+        
+        const target     = (floatingOn instanceof Element) ? floatingOn : floatingOn?.current;
+        if (!target)            return; // [floatingOn] was not specified => nothing to do
+        
+        
+        
+        // handlers:
         let scrollHandled = false;
         const handleOffsetAncestorsScroll = () => {
             // conditions:
-            if (scrollHandled) return; // already handled => nothing to do
+            if (scrollHandled) return; // already being handled => nothing to do
             
             
             
             // actions:
             scrollHandled = true; // mark as handled
             requestAnimationFrame(() => { // the throttling limit
-                triggerFloatingUpdate();
+                updateFloatingPosition();
                 scrollHandled = false; // un-mark as handled
             });
         };
@@ -243,7 +282,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             
             
             // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
-            const elmResizeObserver = new ResizeObserver(triggerFloatingUpdate);
+            const elmResizeObserver = new ResizeObserver(updateFloatingPosition);
             elmResizeObserver.observe(target, { box: 'border-box' });
             for (const offsetAncestor of offsetAncestors) {
                 elmResizeObserver.observe(offsetAncestor, { box: 'content-box' });
@@ -276,26 +315,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
             cleanups?.();
         };
     }, [
-        // conditions:
-        isVisible,
-        
-        
-        
         // floatable:
-        floatingOn,
-        floatingPlacement,
-        floatingMiddleware,
-        floatingStrategy,
-        
-        floatingAutoFlip,
-        floatingAutoShift,
-        floatingOffset,
-        floatingShift,
-        
-        
-        
-        // handlers:
-        handleFloatingUpdate,
+        floatingOn,        // update the position when <floatingUi> change the target
     ]);
     
     
