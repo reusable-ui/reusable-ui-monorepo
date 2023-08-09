@@ -5,6 +5,11 @@ import {
     
     
     
+    // hooks:
+    useMemo,
+    
+    
+    
     // contexts:
     createContext,
     useContext,
@@ -79,41 +84,49 @@ export const usePropAccessibility = <TDefaultEnabled extends unknown = boolean, 
     
     
     
-    return {
-        enabled: (
-            (
-                inheritEnabled
-                ?
-                accessContext.enabled  // inherit
-                :
-                true                   // independent
-            )
-            &&
-            (props.enabled ?? defaultEnabled)
-        ),
-        readOnly: (
-            (
-                inheritReadOnly
-                ?
-                accessContext.readOnly // inherit
-                :
-                false                  // independent
-            )
-            ||
-            (props.readOnly ?? defaultReadOnly)
-        ),
-        active: (
-            (
-                inheritActive
-                ?
-                accessContext.active   // inherit
-                :
-                false                  // independent
-            )
-            ||
-            (props.active ?? defaultActive)
-        ),
-    };
+    const enabled  = (
+        (
+            inheritEnabled
+            ?
+            accessContext.enabled  // inherit
+            :
+            true                   // independent
+        )
+        &&
+        (props.enabled ?? defaultEnabled)
+    );
+    const readOnly = (
+        (
+            inheritReadOnly
+            ?
+            accessContext.readOnly // inherit
+            :
+            false                  // independent
+        )
+        ||
+        (props.readOnly ?? defaultReadOnly)
+    );
+    const active   = (
+        (
+            inheritActive
+            ?
+            accessContext.active   // inherit
+            :
+            false                  // independent
+        )
+        ||
+        (props.active ?? defaultActive)
+    );
+    return useMemo<Accessibility|TAccessibility<TDefaultEnabled, TDefaultReadOnly, TDefaultActive>>(() => ({
+        enabled,  // mutable value
+        readOnly, // mutable value
+        active,   // mutable value
+    }), [
+        // accessibilities:
+        enabled,
+        readOnly,
+        active,
+    ]);
 };
 
 export const usePropEnabled = <TDefaultEnabled extends unknown = boolean>(props: AccessibilityProps, defaultEnabled: boolean|TDefaultEnabled = _defaultEnabled): boolean|TDefaultEnabled => {
