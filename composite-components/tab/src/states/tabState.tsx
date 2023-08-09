@@ -13,6 +13,7 @@ import {
     // hooks:
     useContext,
     useState,
+    useMemo,
 }                           from 'react'
 
 // reusable-ui core:
@@ -194,25 +195,45 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
     
     
     
+    // states:
+    const tabStateApi = useMemo<TabStateApi>(() => ({
+        // behaviors:
+        defaultLazy           : lazy,                  // mutable value
+        
+        
+        
+        // states:
+        expandedTabIndex      : expandedTabIndexFn,    // mutable value
+        triggerExpandedChange : triggerExpandedChange, // stable ref
+        
+        
+        
+        // data:
+        tabPanels             : tabPanels,             // mutable value
+        tabId                 : tabId,                 // mutable value
+        tabPanelStyle         : tabPanelStyle,         // mutable value
+    }), [
+        // behaviors:
+        lazy,
+        
+        
+        
+        // states:
+        expandedTabIndexFn,
+        
+        
+        
+        // data:
+        tabPanels,
+        tabId,
+        tabPanelStyle,
+    ]);
+    
+    
+    
     // jsx:
     return (
-        <TabStateContext.Provider value={{
-            // behaviors:
-            defaultLazy           : lazy,
-            
-            
-            
-            // states:
-            expandedTabIndex      : expandedTabIndexFn,
-            triggerExpandedChange : triggerExpandedChange,
-            
-            
-            
-            // data:
-            tabPanels             : tabPanels,
-            tabId                 : tabId,
-            tabPanelStyle         : tabPanelStyle,
-        }}>
+        <TabStateContext.Provider value={tabStateApi}>
             {children}
         </TabStateContext.Provider>
     );
