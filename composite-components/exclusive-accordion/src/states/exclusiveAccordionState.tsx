@@ -75,13 +75,8 @@ export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent exte
     defaultExpandedListIndex ?: number
     expandedListIndex        ?: number
     onExpandedChange         ?: EventHandler<TExclusiveExpandedChangeEvent>
-    
-    
-    
-    // children:
-    children                 ?: React.ReactNode
 }
-const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>): JSX.Element|null => {
+const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>(props: React.PropsWithChildren<ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent>>): JSX.Element|null => {
     // props:
     const {
         // states:
