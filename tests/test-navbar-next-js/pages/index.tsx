@@ -24,11 +24,11 @@ export default function Home() {
       <Navbar theme='primary' expanded={undefined} breakpoint='lg'>{({
                     basicVariantProps,
                     navbarExpanded,
-                    menuExpanded,
-                    handleClickAsToggleMenu,
+                    listExpanded,
+                    handleClickToToggleList,
                 }) => <>
-                    {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={menuExpanded} onClick={handleClickAsToggleMenu} />}
-                    <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={menuExpanded}>
+                    {!navbarExpanded && <HamburgerMenuButton {...basicVariantProps} className='toggler' active={listExpanded} onClick={handleClickToToggleList} />}
+                    <Collapse className='list' mainClass={navbarExpanded ? '' : undefined} expanded={listExpanded}>
                         <Nav tag='ul' role='' {...basicVariantProps} orientation={navbarExpanded ? 'inline' : 'block'} listStyle='flat'>
                           <NavItem>
                               <Link href='/'>Home</Link>
