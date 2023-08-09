@@ -5,20 +5,21 @@ import {
     
     
     
+    // contexts:
+    createContext,
+    useContext,
+    
+    
+    
     // hooks:
     useState,
     useRef,
+    useMemo,
     
     
     
     // utilities:
     startTransition,
-    
-    
-    
-    // contexts:
-    createContext,
-    useContext,
 }                           from 'react'
 
 // reusable-ui core:
@@ -605,9 +606,20 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     
     
     
+    // states:
+    const responsiveState = useMemo<Responsive<TFallback>>(() => ({
+        // responsives:
+        currentFallback, // mutable value
+    }), [
+        // responsives:
+        currentFallback,
+    ]);
+    
+    
+    
     // jsx:
     return (
-        <ResponsiveContext.Provider value={{ currentFallback }}>
+        <ResponsiveContext.Provider value={responsiveState}>
             {childrenWithRefs}
         </ResponsiveContext.Provider>
     );
