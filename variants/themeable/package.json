@@ -35,6 +35,6 @@
     "@cssfn/core": "^3.0.2"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^6.0.6"
+    "@reusable-ui/colors": "^6.1.0"
   }
 }

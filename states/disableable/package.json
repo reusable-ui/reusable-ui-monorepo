@@ -33,10 +33,10 @@
   "dependencies": {
     "@cssfn/core": "^3.0.2",
     "@reusable-ui/animating-state": "^6.1.0",
-    "@reusable-ui/semantics": "^6.0.6"
+    "@reusable-ui/semantics": "^6.1.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.0.6",
-    "@reusable-ui/animation": "^6.0.6"
+    "@reusable-ui/accessibilities": "^6.1.0",
+    "@reusable-ui/animation": "^6.1.0"
   }
 }
