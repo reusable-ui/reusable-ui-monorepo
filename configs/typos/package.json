@@ -20,6 +20,8 @@
   "type": "module",
   "exports": {
     ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js",
     "./configs": "./dist/configs/index.js",
     "./configs/index": "./dist/configs/index.js",
     "./configs/index.js": "./dist/configs/index.js",
