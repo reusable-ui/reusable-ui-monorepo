@@ -128,10 +128,10 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesCollapseBlockRule,
         animExpandBlock    : [
             ['300ms', 'ease-out', 'both', keyframesExpandBlock   ],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation'    ],
         animCollapseBlock  : [
             ['300ms', 'ease-out', 'both', keyframesCollapseBlock ],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation'    ],
         
         
         
@@ -139,18 +139,24 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...keyframesCollapseInlineRule,
         animExpandInline   : [
             ['300ms', 'ease-out', 'both', keyframesExpandInline  ],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation'    ],
         animCollapseInline : [
             ['300ms', 'ease-out', 'both', keyframesCollapseInline],
-        ]                                                           as CssKnownProps['animation'],
+        ]                                                           as CssKnownProps['animation'    ],
+        
+        
+        
+        // spacings:
+        paddingInline      : '0px'                                  as CssKnownProps['paddingInline'],
+        paddingBlock       : '0px'                                  as CssKnownProps['paddingBlock' ],
     };
     
     
     
     const defaults = {
         // animations:
-        animExpand         : bases.animExpandBlock                  as CssKnownProps['animation'],
-        animCollapse       : bases.animCollapseBlock                as CssKnownProps['animation'],
+        animExpand         : bases.animExpandBlock                  as CssKnownProps['animation'    ],
+        animCollapse       : bases.animCollapseBlock                as CssKnownProps['animation'    ],
     };
     
     
