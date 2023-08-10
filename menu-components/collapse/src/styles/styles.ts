@@ -68,7 +68,7 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
     
     // features:
     const {animationRule, animationVars} = usesAnimation(collapses as any);
-    const {paddingRule  , paddingVars  } = usesPadding(collapses as any);
+    const {paddingRule  , paddingVars  } = usesPadding(collapses);
     
     
     
