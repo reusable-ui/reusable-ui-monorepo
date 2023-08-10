@@ -18,6 +18,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./configs": "./dist/configs/index.js",
+    "./styles": "./dist/styles/index.js",
+    "./effects": "./dist/effects/index.js",
+    "./package.json": "./package.json"
+  },
   "sideEffects": [
     "dist/effects/*.js"
   ],
