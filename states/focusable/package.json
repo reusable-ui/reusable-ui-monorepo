@@ -18,6 +18,11 @@
   "main": "dist/focusable.js",
   "types": "dist/focusable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/focusable.js",
+    "./index": "./dist/focusable.js",
+    "./index.js": "./dist/focusable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

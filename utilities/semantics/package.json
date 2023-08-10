@@ -18,6 +18,11 @@
   "main": "dist/semantics.js",
   "types": "dist/semantics.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/semantics.js",
+    "./index": "./dist/semantics.js",
+    "./index.js": "./dist/semantics.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

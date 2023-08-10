@@ -21,6 +21,11 @@
   "main": "dist/borders.js",
   "types": "dist/borders.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/borders.js",
+    "./index": "./dist/borders.js",
+    "./index.js": "./dist/borders.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

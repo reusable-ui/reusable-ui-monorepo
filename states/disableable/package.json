@@ -19,6 +19,11 @@
   "main": "dist/disableable.js",
   "types": "dist/disableable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/disableable.js",
+    "./index": "./dist/disableable.js",
+    "./index.js": "./dist/disableable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

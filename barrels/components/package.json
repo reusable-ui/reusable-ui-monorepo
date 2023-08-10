@@ -21,6 +21,11 @@
   "main": "dist/components.js",
   "types": "dist/components.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/components.js",
+    "./index": "./dist/components.js",
+    "./index.js": "./dist/components.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

@@ -24,6 +24,11 @@
   "main": "dist/spacers.js",
   "types": "dist/spacers.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/spacers.js",
+    "./index": "./dist/spacers.js",
+    "./index.js": "./dist/spacers.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

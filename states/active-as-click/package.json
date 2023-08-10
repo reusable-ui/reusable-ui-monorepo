@@ -24,6 +24,11 @@
   "main": "dist/active-as-click.js",
   "types": "dist/active-as-click.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/active-as-click.js",
+    "./index": "./dist/active-as-click.js",
+    "./index.js": "./dist/active-as-click.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

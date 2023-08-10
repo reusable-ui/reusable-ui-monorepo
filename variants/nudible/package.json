@@ -19,6 +19,11 @@
   "main": "dist/nudible.js",
   "types": "dist/nudible.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/nudible.js",
+    "./index": "./dist/nudible.js",
+    "./index.js": "./dist/nudible.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

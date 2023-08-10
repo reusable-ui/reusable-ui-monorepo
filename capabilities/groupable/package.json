@@ -21,6 +21,11 @@
   "main": "dist/groupable.js",
   "types": "dist/groupable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/groupable.js",
+    "./index": "./dist/groupable.js",
+    "./index.js": "./dist/groupable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

@@ -19,6 +19,11 @@
   "main": "dist/background.js",
   "types": "dist/background.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/background.js",
+    "./index": "./dist/background.js",
+    "./index.js": "./dist/background.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

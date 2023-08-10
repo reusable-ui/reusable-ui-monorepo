@@ -18,6 +18,11 @@
   "main": "dist/nodes.js",
   "types": "dist/nodes.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/nodes.js",
+    "./index": "./dist/nodes.js",
+    "./index.js": "./dist/nodes.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

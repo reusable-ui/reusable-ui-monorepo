@@ -20,6 +20,11 @@
   "main": "dist/themeable.js",
   "types": "dist/themeable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/themeable.js",
+    "./index": "./dist/themeable.js",
+    "./index.js": "./dist/themeable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

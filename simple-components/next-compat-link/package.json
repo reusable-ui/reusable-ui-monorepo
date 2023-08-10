@@ -21,6 +21,11 @@
   "main": "dist/Link.js",
   "types": "dist/Link.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/Link.js",
+    "./index": "./dist/Link.js",
+    "./index.js": "./dist/Link.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

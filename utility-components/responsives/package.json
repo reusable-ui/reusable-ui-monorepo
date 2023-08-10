@@ -17,6 +17,11 @@
   "main": "dist/responsives.js",
   "types": "dist/responsives.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/responsives.js",
+    "./index": "./dist/responsives.js",
+    "./index.js": "./dist/responsives.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

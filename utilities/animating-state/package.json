@@ -19,6 +19,11 @@
   "main": "dist/animating-state.js",
   "types": "dist/animating-state.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/animating-state.js",
+    "./index": "./dist/animating-state.js",
+    "./index.js": "./dist/animating-state.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

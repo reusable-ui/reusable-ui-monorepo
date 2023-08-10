@@ -20,6 +20,11 @@
   "main": "dist/ring.js",
   "types": "dist/ring.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/ring.js",
+    "./index": "./dist/ring.js",
+    "./index.js": "./dist/ring.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

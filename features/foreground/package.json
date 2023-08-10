@@ -19,6 +19,11 @@
   "main": "dist/foreground.js",
   "types": "dist/foreground.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/foreground.js",
+    "./index": "./dist/foreground.js",
+    "./index.js": "./dist/foreground.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

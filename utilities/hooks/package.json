@@ -17,6 +17,11 @@
   "main": "dist/hooks.js",
   "types": "dist/hooks.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/hooks.js",
+    "./index": "./dist/hooks.js",
+    "./index.js": "./dist/hooks.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

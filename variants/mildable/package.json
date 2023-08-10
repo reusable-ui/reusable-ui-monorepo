@@ -21,6 +21,11 @@
   "main": "dist/mildable.js",
   "types": "dist/mildable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/mildable.js",
+    "./index": "./dist/mildable.js",
+    "./index.js": "./dist/mildable.js"
+  },
   "sideEffects": [
     "dist/effects/styles.js"
   ],

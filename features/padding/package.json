@@ -20,6 +20,11 @@
   "main": "dist/padding.js",
   "types": "dist/padding.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/padding.js",
+    "./index": "./dist/padding.js",
+    "./index.js": "./dist/padding.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

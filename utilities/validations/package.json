@@ -17,6 +17,11 @@
   "main": "dist/validations.js",
   "types": "dist/validations.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/validations.js",
+    "./index": "./dist/validations.js",
+    "./index.js": "./dist/validations.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

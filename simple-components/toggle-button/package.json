@@ -22,6 +22,11 @@
   "main": "dist/ToggleButton.js",
   "types": "dist/ToggleButton.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/ToggleButton.js",
+    "./index": "./dist/ToggleButton.js",
+    "./index.js": "./dist/ToggleButton.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

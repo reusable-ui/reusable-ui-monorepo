@@ -19,6 +19,11 @@
   "main": "dist/animation.js",
   "types": "dist/animation.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/animation.js",
+    "./index": "./dist/animation.js",
+    "./index.js": "./dist/animation.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

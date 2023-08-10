@@ -22,6 +22,11 @@
   "main": "dist/CloseButton.js",
   "types": "dist/CloseButton.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/CloseButton.js",
+    "./index": "./dist/CloseButton.js",
+    "./index.js": "./dist/CloseButton.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

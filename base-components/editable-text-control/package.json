@@ -24,6 +24,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

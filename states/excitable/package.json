@@ -18,6 +18,11 @@
   "main": "dist/excitable.js",
   "types": "dist/excitable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/excitable.js",
+    "./index": "./dist/excitable.js",
+    "./index.js": "./dist/excitable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

@@ -22,6 +22,11 @@
   "main": "dist/validation-icon.js",
   "types": "dist/validation-icon.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/validation-icon.js",
+    "./index": "./dist/validation-icon.js",
+    "./index.js": "./dist/validation-icon.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

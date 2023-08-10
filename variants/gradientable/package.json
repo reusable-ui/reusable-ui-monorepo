@@ -20,6 +20,11 @@
   "main": "dist/gradientable.js",
   "types": "dist/gradientable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/gradientable.js",
+    "./index": "./dist/gradientable.js",
+    "./index.js": "./dist/gradientable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

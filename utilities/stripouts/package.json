@@ -21,6 +21,11 @@
   "main": "dist/stripouts.js",
   "types": "dist/stripouts.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/stripouts.js",
+    "./index": "./dist/stripouts.js",
+    "./index.js": "./dist/stripouts.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

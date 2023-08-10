@@ -18,6 +18,11 @@
   "main": "dist/numbers.js",
   "types": "dist/numbers.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/numbers.js",
+    "./index": "./dist/numbers.js",
+    "./index.js": "./dist/numbers.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

@@ -24,6 +24,11 @@
   "main": "dist/basic-variants.js",
   "types": "dist/basic-variants.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/basic-variants.js",
+    "./index": "./dist/basic-variants.js",
+    "./index.js": "./dist/basic-variants.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

@@ -18,6 +18,11 @@
   "main": "dist/dimensions.js",
   "types": "dist/dimensions.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/dimensions.js",
+    "./index": "./dist/dimensions.js",
+    "./index.js": "./dist/dimensions.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

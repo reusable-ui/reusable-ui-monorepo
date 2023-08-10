@@ -21,6 +21,11 @@
   "main": "dist/interactable.js",
   "types": "dist/interactable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/interactable.js",
+    "./index": "./dist/interactable.js",
+    "./index.js": "./dist/interactable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

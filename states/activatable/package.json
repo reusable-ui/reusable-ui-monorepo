@@ -21,6 +21,11 @@
   "main": "dist/activatable.js",
   "types": "dist/activatable.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/activatable.js",
+    "./index": "./dist/activatable.js",
+    "./index.js": "./dist/activatable.js"
+  },
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
