@@ -21,8 +21,14 @@
   "exports": {
     ".": "./dist/index.js",
     "./configs": "./dist/configs/index.js",
+    "./configs/index": "./dist/configs/index.js",
+    "./configs/index.js": "./dist/configs/index.js",
     "./styles": "./dist/styles/index.js",
+    "./styles/index": "./dist/styles/index.js",
+    "./styles/index.js": "./dist/styles/index.js",
     "./effects": "./dist/effects/index.js",
+    "./effects/index": "./dist/effects/index.js",
+    "./effects/index.js": "./dist/effects/index.js",
     "./package.json": "./package.json"
   },
   "sideEffects": [
