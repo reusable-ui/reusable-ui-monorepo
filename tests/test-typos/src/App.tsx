@@ -9,7 +9,7 @@ import './App.css';
 //     typoValues,
 //     cssTypoConfig,
 // } from '@reusable-ui/typos'
-import '@reusable-ui/typos/dist/effects';
+import '@reusable-ui/typos/effects';
 import '@cssfn/cssfn-dom'
 import { Content } from '@reusable-ui/content'
 
