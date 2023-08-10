@@ -92,8 +92,6 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         listMarginBlockExpand       : [[
             'calc(0px - ', basics.paddingBlock, ')',
         ]]                                                              as CssKnownProps['marginBlock'     ],
-        listPaddingInline           : '0px'                             as CssKnownProps['paddingInline'   ],
-        listPaddingBlock            : '0px'                             as CssKnownProps['paddingBlock'    ],
         
         // floating lists:
         listPositionCollapse        : 'absolute'                        as CssKnownProps['position'        ],
