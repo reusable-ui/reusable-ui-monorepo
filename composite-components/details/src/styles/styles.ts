@@ -88,7 +88,7 @@ export const usesDetailsLayout = () => {
     
     
     return style({
-        // features:
+        // capabilities:
         ...groupableRule(), // make a nicely rounded corners
         
         
