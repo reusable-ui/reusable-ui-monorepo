@@ -187,7 +187,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         // components:
         // @ts-ignore
         tabHeaderComponent,
-        headerComponent = tabHeaderComponent ?? (<TabHeader<Element> /> as React.ReactComponentElement<any, TabHeaderProps<Element> >),
+        headerComponent = (tabHeaderComponent !== undefined) ? tabHeaderComponent : (<TabHeader<Element> /> as React.ReactComponentElement<any, TabHeaderProps<Element> >),
         listComponent,
         listItemComponent,
         bodyComponent,
