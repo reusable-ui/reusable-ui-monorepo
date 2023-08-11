@@ -186,20 +186,22 @@ export const usesTabBodyLayout = () => {
     // dependencies:
     
     // features:
-    const {borderVars} = usesBorder();
+    const {borderVars   } = usesBorder();
+    const {paddingVars  } = usesPadding();
     
     // capabilities:
-    const {groupableRule} = usesGroupable({ // supports for <TabPanel>'s negative margin
-        orientationInlineSelector : null,   // never
-        orientationBlockSelector  : null,   // never
-        itemsSelector             : null,   // never
-    });
+    const {groupableVars} = usesGroupable(); // supports for <TabPanel>'s negative margin
     
     
     
     return style({
         // capabilities:
-        ...groupableRule(), // supports for <TabPanel>'s negative margin
+        // manually applying `groupableRule` capability:
+        ...vars({ // supports for <TabPanel>'s negative margin
+            // spacings:
+            [groupableVars.paddingInline] : paddingVars.paddingInline,
+            [groupableVars.paddingBlock ] : paddingVars.paddingBlock,
+        }),
         
         
         
