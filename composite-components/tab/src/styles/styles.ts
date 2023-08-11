@@ -185,42 +185,57 @@ export const usesTabBodyLayout = () => {
     // features:
     const {borderVars} = usesBorder();
     
+    // capabilities:
+    const {groupableRule} = usesGroupable({
+        orientationInlineSelector : null, // never
+        orientationBlockSelector  : null, // never
+        itemsSelector             : null, // never
+    });
+    
     
     
     return style({
+        // capabilities:
+        ...groupableRule(), // supports for <TabPanel>'s negative margin
+        
+        
+        
         // layouts:
-        display      : 'grid',
-        justifyItems : 'stretch', // overlaps each <TabPanel> to anothers
-        alignItems   : 'stretch', // overlaps each <TabPanel> to anothers
-        
-        
-        
-        // sizes:
-        flex         : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
-        
-        
-        
-        // scrolls:
-        overflow     : 'hidden', // force <TabPanel> to activate the `overflow: 'auto'`
-        
-        
-        
-        // borders:
-        ...rule(':not(:first-child)', {
-            [borderVars.borderStartStartRadius] : '0px', // remove top radius
-            [borderVars.borderStartEndRadius  ] : '0px', // remove top radius
-            borderBlockStartWidth               : '0px', // remove top border (already applied by <Tab>)
+        ...style({
+            // layouts:
+            display      : 'grid',
+            justifyItems : 'stretch', // overlaps each <TabPanel> to anothers
+            alignItems   : 'stretch', // overlaps each <TabPanel> to anothers
+            
+            
+            
+            // sizes:
+            flex         : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height
+            
+            
+            
+            // scrolls:
+            overflow     : 'hidden', // force <TabPanel> to activate the `overflow: 'auto'`
+            
+            
+            
+            // borders:
+            ...rule(':not(:first-child)', {
+                [borderVars.borderStartStartRadius] : '0px', // remove top radius
+                [borderVars.borderStartEndRadius  ] : '0px', // remove top radius
+                borderBlockStartWidth               : '0px', // remove top border (already applied by <Tab>)
+            }),
+            
+            
+            
+            // children:
+            ...children(tabPanelElm, usesTabPanelLayout()),
+            
+            
+            
+            // customize:
+            ...usesCssProps(usesPrefixedProps(tabs, 'body')), // apply config's cssProps starting with body***
         }),
-        
-        
-        
-        // children:
-        ...children(tabPanelElm, usesTabPanelLayout()),
-        
-        
-        
-        // customize:
-        ...usesCssProps(usesPrefixedProps(tabs, 'body')), // apply config's cssProps starting with body***
     });
 };
 export const usesTabBodyVariants = () => {
@@ -270,7 +285,7 @@ export const usesTabLayout = () => {
     
     
     return style({
-        // features:
+        // capabilities:
         ...groupableRule(), // make a nicely rounded corners
         
         

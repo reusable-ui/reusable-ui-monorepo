@@ -105,7 +105,11 @@ export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedCh
         >
 {
     // components:
+    /**
+     * @deprecated Renamed to `headerComponent`.
+     */
     tabHeaderComponent ?: React.ReactComponentElement<any, TabHeaderProps<Element>>|null
+    headerComponent    ?: React.ReactComponentElement<any, TabHeaderProps<Element>>|null
     
     
     
@@ -181,7 +185,9 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         
         
         // components:
-        tabHeaderComponent = (<TabHeader<Element> /> as React.ReactComponentElement<any, TabHeaderProps<Element> >),
+        // @ts-ignore
+        tabHeaderComponent,
+        headerComponent = tabHeaderComponent ?? (<TabHeader<Element> /> as React.ReactComponentElement<any, TabHeaderProps<Element> >),
         listComponent,
         listItemComponent,
         bodyComponent,
@@ -236,45 +242,45 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
             >
                 {/* the *main* component made from <List<Element> > */}
                 {/* <TabHeader<Element>> */}
-                {(tabHeaderComponent !== null) && React.cloneElement<TabHeaderProps<Element>>(tabHeaderComponent,
+                {(headerComponent !== null) && React.cloneElement<TabHeaderProps<Element>>(headerComponent,
                     // props:
                     {
                         // refs:
-                        elmRef            : elmRef,
+                        elmRef            : headerComponent.props.elmRef            ?? elmRef,
                         
                         
                         
                         // variants:
                         ...basicVariantProps,
                         
-                        orientation       : orientation,
-                        listStyle         : listStyle,
+                        orientation       : headerComponent.props.orientation       ?? orientation,
+                        listStyle         : headerComponent.props.listStyle         ?? listStyle,
                         
                         
                         
                         // accessibilities:
-                        label             : label,
+                        label             : headerComponent.props.label             ?? label,
                         
                         
                         
                         // behaviors:
-                        actionCtrl        : actionCtrl,
+                        actionCtrl        : headerComponent.props.actionCtrl        ?? actionCtrl,
                         
                         
                         
                         // states:
-                        enabled           : enabled,
-                        inheritEnabled    : inheritEnabled,
-                        active            : active,
-                        inheritActive     : inheritActive,
-                        readOnly          : readOnly,
-                        inheritReadOnly   : inheritReadOnly,
+                        enabled           : headerComponent.props.enabled           ?? enabled,
+                        inheritEnabled    : headerComponent.props.inheritEnabled    ?? inheritEnabled,
+                        active            : headerComponent.props.active            ?? active,
+                        inheritActive     : headerComponent.props.inheritActive     ?? inheritActive,
+                        readOnly          : headerComponent.props.readOnly          ?? readOnly,
+                        inheritReadOnly   : headerComponent.props.inheritReadOnly   ?? inheritReadOnly,
                         
                         
                         
                         // components:
-                        listComponent     : listComponent,
-                        listItemComponent : listItemComponent,
+                        listComponent     : headerComponent.props.listComponent     ?? listComponent,
+                        listItemComponent : headerComponent.props.listItemComponent ?? listItemComponent,
                     },
                 )}
                 
