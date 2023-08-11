@@ -154,10 +154,13 @@ export const usesTabPanelLayout = () => {
             
             
             // spacings:
-            marginInline     : `calc(0px - ${groupableVars.paddingInline})`, // cancel out parent's padding with negative margin
-            marginBlock      : `calc(0px - ${groupableVars.paddingBlock })`, // cancel out parent's padding with negative margin
-            paddingInline    : groupableVars.paddingInline,                  // restore parent's padding with positive margin
-            paddingBlock     : groupableVars.paddingBlock,                   // restore parent's padding with positive margin
+            // cancel-out <TabBody>'s padding with negative margin:
+            marginInline     : `calc(0px - ${groupableVars.paddingInline})`, // cancel out <TabBody>'s padding with negative margin
+            marginBlock      : `calc(0px - ${groupableVars.paddingBlock })`, // cancel out <TabBody>'s padding with negative margin
+            
+            // copy <TabBody>'s paddings:
+            paddingInline    : groupableVars.paddingInline,                  // restore <TabBody>'s padding with positive margin
+            paddingBlock     : groupableVars.paddingBlock,                   // restore <TabBody>'s padding with positive margin
             
             
             
@@ -186,10 +189,10 @@ export const usesTabBodyLayout = () => {
     const {borderVars} = usesBorder();
     
     // capabilities:
-    const {groupableRule} = usesGroupable({
-        orientationInlineSelector : null, // never
-        orientationBlockSelector  : null, // never
-        itemsSelector             : null, // never
+    const {groupableRule} = usesGroupable({ // supports for <TabPanel>'s negative margin
+        orientationInlineSelector : null,   // never
+        orientationBlockSelector  : null,   // never
+        itemsSelector             : null,   // never
     });
     
     
