@@ -1,3 +1,6 @@
+[med prior ] added inputComponent
+[med prior ] renamed WithAutoCapitalize to InputWithAutoCapitalize
+
 [med prior ] renamed **Api to **
 [med prior ] fix initial floatable position when inside the <ModalCard>
 
