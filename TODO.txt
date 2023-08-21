@@ -1,3 +1,5 @@
+[high prior] useMergeClasses of \.props\.on\w+\s*\?\?
+
 [med prior ] added inputComponent
 [med prior ] renamed WithAutoCapitalize to InputWithAutoCapitalize
 
