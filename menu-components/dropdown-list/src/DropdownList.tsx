@@ -170,11 +170,12 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         // states:
         expanded,         // take, to be handled by <Dropdown>
+        onExpandedChange, // take, to be handled by <Dropdown>
+        
         onExpandStart,    // take, to be handled by <Dropdown>
         onCollapseStart,  // take, to be handled by <Dropdown>
         onExpandEnd,      // take, to be handled by <Dropdown>
         onCollapseEnd,    // take, to be handled by <Dropdown>
-        onExpandedChange, // take, to be handled by <Dropdown>
         
         
         
@@ -412,11 +413,13 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             // states:
             expanded         : dropdownComponent.props.expanded        ?? expanded,
+            onExpandedChange : handleDropdownExpandedChange,
+            
             onExpandStart    : dropdownComponent.props.onExpandStart   ?? onExpandStart,
             onCollapseStart  : dropdownComponent.props.onCollapseStart ?? onCollapseStart,
             onExpandEnd      : dropdownComponent.props.onExpandEnd     ?? onExpandEnd,
             onCollapseEnd    : dropdownComponent.props.onCollapseEnd   ?? onCollapseEnd,
-            onExpandedChange : handleDropdownExpandedChange,
+            
             onAnimationStart : handleDropdownAnimationStart,
             onAnimationEnd   : handleDropdownAnimationEnd,
             
