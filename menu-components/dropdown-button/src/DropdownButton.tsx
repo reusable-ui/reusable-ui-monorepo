@@ -185,12 +185,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     // rest props:
     const {
-        // accessibilities:
-        setFocus,
-        restoreFocus,
-        
-        
-        
         // behaviors:
         lazy,
         
@@ -225,6 +219,14 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         // global stackable:
         viewport,
+        
+        
+        
+        // auto focusable:
+        autoFocusOn,
+        restoreFocusOn,
+        autoFocus,
+        restoreFocus,
         
         
         
@@ -464,12 +466,6 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    // accessibilities:
-                    setFocus           : dropdownComponent.props.setFocus           ?? setFocus,
-                    restoreFocus       : dropdownComponent.props.restoreFocus       ?? restoreFocus,
-                    
-                    
-                    
                     // behaviors:
                     lazy               : dropdownComponent.props.lazy               ?? lazy,
                     
@@ -503,6 +499,14 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     // global stackable:
                     viewport           : dropdownComponent.props.viewport           ?? viewport,
+                    
+                    
+                    
+                    // auto focusable:
+                    autoFocusOn        : dropdownComponent.props.autoFocusOn        ?? autoFocusOn,
+                    restoreFocusOn     : dropdownComponent.props.restoreFocusOn     ?? restoreFocusOn,
+                    autoFocus          : dropdownComponent.props.autoFocus          ?? autoFocus,
+                    restoreFocus       : dropdownComponent.props.restoreFocus       ?? restoreFocus,
                 },
                 
                 
