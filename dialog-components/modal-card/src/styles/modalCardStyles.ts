@@ -18,6 +18,12 @@ import {
     watchChanges,
 }                           from '@cssfn/core'                  // writes css in javascript
 
+// reusable-ui core:
+import {
+    // removes browser's default stylesheet:
+    stripoutFocusableElement,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
+
 // reusable-ui components:
 import {
     // configs:
@@ -62,65 +68,73 @@ export const usesModalCardLayout = () => {
         
         // children:
         ...children('*', { // <Card>
-            // children:
-            ...children([headerElm, footerElm, bodyElm], {
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'cardItem')), // apply config's cssProps starting with cardItem***
-            }),
-            ...children([headerElm, footerElm], {
-                // layouts:
-                display        : 'flex',
-                flexDirection  : 'row',
-                flexWrap       : 'nowrap',  // no wrapping
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'cardCaption')), // apply config's cssProps starting with cardCaption***
-            }),
-            ...children(headerElm, {
-                justifyContent : 'space-between', // separates between items as far as possible
-                alignItems     : 'center',        // center <Control> vertically
-                
-                
-                
+            // resets:
+            ...stripoutFocusableElement(), // clear browser's default styles
+            
+            
+            
+            // layouts:
+            ...style({
                 // children:
-                ...children(['button', '[role="button"]'], {
-                    ...rule(':first-child:last-child', {
-                        // spacings:
-                        marginInlineStart : 'auto', // align to right
+                ...children([headerElm, footerElm, bodyElm], {
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardItem')), // apply config's cssProps starting with cardItem***
+                }),
+                ...children([headerElm, footerElm], {
+                    // layouts:
+                    display        : 'flex',
+                    flexDirection  : 'row',
+                    flexWrap       : 'nowrap',  // no wrapping
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardCaption')), // apply config's cssProps starting with cardCaption***
+                }),
+                ...children(headerElm, {
+                    justifyContent : 'space-between', // separates between items as far as possible
+                    alignItems     : 'center',        // center <Control> vertically
+                    
+                    
+                    
+                    // children:
+                    ...children(['button', '[role="button"]'], {
+                        ...rule(':first-child:last-child', {
+                            // spacings:
+                            marginInlineStart : 'auto', // align to right
+                        }),
                     }),
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardHeader')), // apply config's cssProps starting with cardHeader***
+                }),
+                ...children(footerElm, {
+                    justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+                    alignItems     : 'center',  // center <Control> vertically
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardFooter')), // apply config's cssProps starting with cardFooter***
+                }),
+                ...children(bodyElm, {
+                    // scrolls:
+                    // prevents scrolling the content behind the <Backdrop>
+                    overscrollBehavior: 'contain',
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
                 }),
                 
                 
                 
                 // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'cardHeader')), // apply config's cssProps starting with cardHeader***
+                ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
             }),
-            ...children(footerElm, {
-                justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                alignItems     : 'center',  // center <Control> vertically
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'cardFooter')), // apply config's cssProps starting with cardFooter***
-            }),
-            ...children(bodyElm, {
-                // scrolls:
-                // prevents scrolling the content behind the <Backdrop>
-                overscrollBehavior: 'contain',
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(modalCards, 'cardBody')), // apply config's cssProps starting with cardBody***
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(usesPrefixedProps(modalCards, 'card')), // apply config's cssProps starting with card***
         }),
         
         
