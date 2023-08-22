@@ -162,12 +162,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     
     // rest props:
     const {
-        // accessibilities:
-        setFocus,
-        restoreFocus,
-        
-        
-        
         // behaviors:
         scrollToActiveItem = true,
         lazy,
@@ -201,6 +195,14 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         // global stackable:
         viewport,
+        
+        
+        
+        // auto focusable:
+        autoFocusOn,
+        restoreFocusOn,
+        autoFocus,
+        restoreFocus,
         
         
         
@@ -403,12 +405,6 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             
-            // accessibilities:
-            setFocus         : dropdownComponent.props.setFocus        ?? setFocus,
-            restoreFocus     : dropdownComponent.props.restoreFocus    ?? restoreFocus,
-            
-            
-            
             // behaviors:
             lazy             : dropdownComponent.props.lazy            ?? lazy,
             
@@ -443,6 +439,14 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             // global stackable:
             viewport,
+            
+            
+            
+            // auto focusable:
+            autoFocusOn      : dropdownComponent.props.autoFocusOn     ?? autoFocusOn,
+            restoreFocusOn   : dropdownComponent.props.restoreFocusOn  ?? restoreFocusOn,
+            autoFocus        : dropdownComponent.props.autoFocus       ?? autoFocus,
+            restoreFocus     : dropdownComponent.props.restoreFocus    ?? restoreFocus,
         },
         
         
