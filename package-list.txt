@@ -30,6 +30,7 @@
 // reusable-ui capabilities:
 [published  ] @reusable-ui/floatable
 [published  ] @reusable-ui/global-stackable
+[published  ] @reusable-ui/auto-focusable
 [published  ] @reusable-ui/groupable
 
 // reusable-ui variants:
