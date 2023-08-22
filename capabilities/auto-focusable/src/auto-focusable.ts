@@ -30,7 +30,7 @@ export interface AutoFocusableProps {
     autoFocus      ?: boolean
     restoreFocus   ?: boolean
 }
-export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: AutoFocusableProps, collapsibleApi: CollapsibleApi<TElement>) => {
+export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: AutoFocusableProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // rest props:
     const {
         // auto focusable:
