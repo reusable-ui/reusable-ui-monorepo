@@ -45,6 +45,12 @@ import {
     
     
     
+    // a capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed)
+    AutoFocusableProps,
+    useAutoFocusable,
+    
+    
+    
     // a capability of UI to rotate its layout:
     useOrientationable,
     
@@ -112,6 +118,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         
         // capabilities:
         GlobalStackableProps,
+        AutoFocusableProps,
         
         // states:
         ControllableCollapsibleProps<TDropdownExpandedChangeEvent>,
@@ -119,23 +126,53 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // components:
         DropdownUiComponentProps<Element>
 {
-    // accessibilities:
-    setFocus     ?: boolean
-    restoreFocus ?: boolean
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styleSheet             = useDropdownStyleSheet();
-    const uiStyleSheet           = useDropdownUiStyleSheet();
+    const styleSheet                 = useDropdownStyleSheet();
+    const uiStyleSheet               = useDropdownUiStyleSheet();
     
     
     
     // variants:
-    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const orientationableVariant     = useOrientationable(props, defaultOrientationableOptions);
     const determineFloatingPlacement = () => {
         // TODO: RTL direction aware
         return orientationableVariant.isOrientationBlock ? 'bottom' : 'right';
     };
+    
+    
+    
+    // refs:
+    const dropdownUiRefInternal      = useRef<Element|null>(null);
+    
+    
+    
+    // rest props:
+    const {
+        // states:
+        onExpandedChange,
+        floatingMiddleware,
+        
+        
+        
+        // global stackable:
+        viewport        : _viewport,        // remove
+        
+        
+        
+        // auto focusable:
+        autoFocusOn     = dropdownUiRefInternal.current, // take
+        restoreFocusOn  = props.floatingOn,              // take
+        autoFocus       = true,                          // take
+        restoreFocus    = true,                          // take
+        
+        
+        
+        // components:
+        tabIndex,
+        children: dropdownUiComponent,
+    ...restCollapseProps} = props;
     
     
     
@@ -147,32 +184,12 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     // capabilities:
     const {portalElm}            = useGlobalStackable(props);
-    
-    
-    
-    // rest props:
-    const {
-        // accessibilities:
-        setFocus     = true,
-        restoreFocus = true,
-        
-        
-        
-        // states:
-        onExpandedChange,
-        floatingMiddleware,
-        
-        
-        
-        // global stackable:
-        viewport     : _viewport, // remove
-        
-        
-        
-        // components:
-        tabIndex,
-        children: dropdownUiComponent,
-    ...restCollapseProps} = props;
+    useAutoFocusable({
+        autoFocusOn,
+        restoreFocusOn,
+        autoFocus,
+        restoreFocus,
+    }, collapsibleState);
     
     
     
@@ -184,7 +201,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // refs:
-    const dropdownUiRefInternal = useRef<Element|null>(null);
     const mergedDropdownUiRef   = useMergeRefs(
         // preserves the original `ref` from `dropdownUiComponent`:
         (
@@ -359,40 +375,6 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // dom effects:
-    
-    // set focus on <DropdownUi> each time it shown:
-    useEffect(() => {
-        // setups:
-        if (isExpanded) {
-            // when shown => focus the <DropdownUi>, so the user able to use [esc] key to close the <Dropdown>:
-            if (setFocus) {
-                (dropdownUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
-            } // if
-        }
-        else {
-            // if current focused element is inside the <Dropdown> or inside the <floatingOn> => back focus to <floatingOn>:
-            const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
-            if (restoreFocus && target && (target as HTMLElement|SVGElement).focus) {
-                setTimeout(() => {
-                    // conditions:
-                    const focusedElm = document.activeElement;
-                    if (!focusedElm) return; // nothing was focused => nothing to do
-                    
-                    const dropdownUi = dropdownUiRefInternal.current;
-                    if (                                    // neither
-                        !(dropdownUi?.contains(focusedElm)) // the current focused element is inside the <Dropdown>
-                        &&                                  // nor
-                        !target.contains(focusedElm)        // the current focused element is inside the <floatingOn>
-                    ) return;                               // => nothing to focus
-                    
-                    
-                    
-                    // restore the previously focused element (if any):
-                    (target as HTMLElement|SVGElement).focus({ preventScroll: true });
-                }, 0); // wait until the user decided to change the focus to another <element>
-            } // if
-        } // if
-    }, [isExpanded, props.floatingOn, setFocus, restoreFocus]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {
