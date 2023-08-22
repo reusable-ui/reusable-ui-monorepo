@@ -149,7 +149,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
     
     
     // jsx:
-    return React.cloneElement(inputComponent,
+    return React.cloneElement<React.InputHTMLAttributes<HTMLInputElement>>(inputComponent,
         // props:
         {
             // other props:
