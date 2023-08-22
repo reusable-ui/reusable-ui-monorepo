@@ -47,6 +47,12 @@ import {
     
     
     
+    // a capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed)
+    AutoFocusableProps,
+    useAutoFocusable,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
     CollapsibleProps,
@@ -116,6 +122,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         
         // capabilities:
         GlobalStackableProps,
+        AutoFocusableProps,
         
         // states:
         CollapsibleProps<TModalExpandedChangeEvent>,
@@ -128,12 +135,6 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
         // components:
         ModalUiComponentProps<Element>
 {
-    // accessibilities:
-    setFocus     ?: boolean
-    restoreFocus ?: boolean
-    
-    
-    
     // behaviors:
     lazy         ?: boolean
 }
@@ -149,8 +150,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     
-    // capabilities:
-    const {viewportElm, portalElm} = useGlobalStackable(props);
+    // refs:
+    const modalUiRefInternal       = useRef<Element|null>(null);
     
     
     
@@ -158,12 +159,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     const {
         // variants:
         backdropStyle   = 'regular',
-        
-        
-        
-        // accessibilities:
-        setFocus        = true,
-        restoreFocus    = true,
         
         
         
@@ -184,6 +179,14 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         // global stackable:
         viewport        : _viewport,        // remove
+        
+        
+        
+        // auto focusable:
+        autoFocusOn     = modalUiRefInternal.current, // take
+        restoreFocusOn  = null,                       // take
+        autoFocus       = true,                       // take
+        restoreFocus    = true,                       // take
         
         
         
@@ -211,6 +214,17 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     
+    // capabilities:
+    const {viewportElm, portalElm} = useGlobalStackable(props);
+    useAutoFocusable({
+        autoFocusOn,
+        restoreFocusOn,
+        autoFocus,
+        restoreFocus,
+    }, collapsibleState);
+    
+    
+    
     // verifies:
     React.Children.only(modalUiComponent);
     const isReusableUiModalComponent : boolean = isReusableUiComponent<GenericProps<Element>>(modalUiComponent);
@@ -219,7 +233,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // refs:
-    const modalUiRefInternal        = useRef<Element|null>(null);
     const mergedModalUiRef          = useMergeRefs(
         // preserves the original `ref` from `modalUiComponent`:
         (
@@ -234,7 +247,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         modalUiRefInternal,
     );
-    const prevFocusRef              = useRef<Element|null>(null);
     const noParentScrollRefInternal = useRef<HTMLDivElement|null>(null);
     
     
@@ -421,7 +433,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         if (backdropStyle === 'static') {
             setExcitedDn(true); // make <ModalUi> blinking
-            if (setFocus) {
+            if (autoFocus) {
                 (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
             } // if
         }
@@ -509,46 +521,6 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // dom effects:
-    
-    // set focus on <ModalUi> each time it shown:
-    useEffect(() => {
-        // setups:
-        if (isExpanded) {
-            // backup the current focused element (if any):
-            prevFocusRef.current = document.activeElement;
-            
-            // when shown => focus the <ModalUi>, so the user able to use [esc] key to close the <Modal>:
-            if (setFocus) {
-                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true });
-            } // if
-        }
-        else {
-            // if current focused element is inside the <Modal> => back focus to <prevFocusRef>:
-            const prevFocusElm = prevFocusRef.current;
-            if (restoreFocus && prevFocusElm && (prevFocusElm as HTMLElement|SVGElement).focus) {
-                setTimeout(() => {
-                    // conditions:
-                    const focusedElm = document.activeElement;
-                    if (!focusedElm) return; // nothing was focused => nothing to do
-                    
-                    const modalUi = modalUiRefInternal.current;
-                    if (                                 // neither
-                        !(modalUi?.contains(focusedElm)) // the current focused element is inside the <Modal>
-                    ) return;                            // => nothing to focus
-                    
-                    
-                    
-                    // restore the previously focused element (if any):
-                    (prevFocusElm as HTMLElement|SVGElement).focus({ preventScroll: true });
-                }, 0); // wait until the user decided to change the focus to another <element>
-            } // if
-            
-            
-            
-            // unreference the restored focused element:
-            prevFocusRef.current = null;
-        } // if
-    }, [isExpanded, setFocus, restoreFocus]);
     
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {

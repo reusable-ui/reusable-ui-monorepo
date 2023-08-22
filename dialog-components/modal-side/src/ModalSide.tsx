@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
 }                           from 'react'
 
 // cssfn:
@@ -142,12 +147,6 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         
         
         
-        // accessibilities:
-        setFocus,
-        restoreFocus,
-        
-        
-        
         // behaviors:
         lazy,
         
@@ -156,6 +155,14 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // states:
         expanded,         // take, to be handled by <Modal>
         onExpandedChange, // take, to be handled by <Modal>
+        
+        
+        
+        // auto focusable:
+        autoFocusOn,
+        restoreFocusOn,
+        autoFocus,
+        restoreFocus,
         
         
         
@@ -192,6 +199,21 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         modalRef,
         // preserves the original `outerRef` from `props`:
         props.outerRef,
+    );
+    
+    const cardRefInternal = useRef<TElement|null>(null);
+    const mergedCardRef   = useMergeRefs(
+        // preserves the original `elmRef` from `cardComponent`:
+        cardComponent.props.elmRef,
+        
+        
+        
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
+        
+        
+        
+        cardRefInternal,
     );
     
     
@@ -275,35 +297,37 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
             
             
             // variants:
-            backdropStyle    : modalComponent.props.backdropStyle ?? backdropStyle,
+            backdropStyle    : modalComponent.props.backdropStyle  ?? backdropStyle,
             
             
             
             // classes:
-            mainClass        : modalComponent.props.mainClass ?? props.mainClass ?? styleSheet.main,
+            mainClass        : modalComponent.props.mainClass      ?? props.mainClass ?? styleSheet.main,
             variantClasses,
             
             
             
-            // accessibilities:
-            setFocus         : modalComponent.props.setFocus     ?? setFocus,
-            restoreFocus     : modalComponent.props.restoreFocus ?? restoreFocus,
-            
-            
-            
             // behaviors:
-            lazy             : modalComponent.props.lazy ?? lazy,
+            lazy             : modalComponent.props.lazy           ?? lazy,
             
             
             
             // states:
-            expanded         : modalComponent.props.expanded ?? expanded,
+            expanded         : modalComponent.props.expanded       ?? expanded,
             onExpandedChange : handleExpandedChange,
             
             
             
             // global stackable:
-            viewport         : modalComponent.props.viewport ?? viewport,
+            viewport         : modalComponent.props.viewport       ?? viewport,
+            
+            
+            
+            // auto focusable:
+            autoFocusOn      : modalComponent.props.autoFocusOn    ?? autoFocusOn     ?? cardRefInternal,
+            restoreFocusOn   : modalComponent.props.restoreFocusOn ?? restoreFocusOn,
+            autoFocus        : modalComponent.props.autoFocus      ?? autoFocus,
+            restoreFocus     : modalComponent.props.restoreFocus   ?? restoreFocus,
             
             
             
@@ -331,7 +355,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 
                 
                 // variants:
-                orientation  : collapseComponent.props.orientation ?? (modalSideVariant.class.startsWith('inline') ? 'inline' : 'block'),
+                orientation  : collapseComponent.props.orientation  ?? (modalSideVariant.class.startsWith('inline') ? 'inline' : 'block'),
                 
                 
                 
@@ -341,7 +365,7 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                 
                 
                 // states:
-                expanded     : collapseComponent.props.expanded ?? collapsibleState.expanded,
+                expanded     : collapseComponent.props.expanded     ?? collapsibleState.expanded,
             },
             
             
@@ -357,14 +381,19 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
                     
                     
                     
+                    // refs:
+                    elmRef      : mergedCardRef,
+                    
+                    
+                    
                     // accessibilities:
-                    tabIndex    : cardComponent.props.tabIndex    ?? _defaultTabIndex,
+                    tabIndex    : cardComponent.props.tabIndex ?? _defaultTabIndex,
                 },
                 
                 
                 
                 // children:
-                cardComponent.props.children ?? cardChildren,
+                cardComponent.props.children                   ?? cardChildren,
             ),
         )),
     );
