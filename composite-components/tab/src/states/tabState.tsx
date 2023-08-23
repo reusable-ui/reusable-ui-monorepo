@@ -57,7 +57,7 @@ export interface TabExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-export interface TabStateApi
+export interface TabState
 {
     // behaviors:
     defaultLazy             ?: boolean
@@ -76,7 +76,7 @@ export interface TabStateApi
     tabPanelStyle            : TabPanelStyle
 }
 
-const TabStateContext = createContext<TabStateApi>({
+const TabStateContext = createContext<TabState>({
     // behaviors:
     defaultLazy              : undefined,
     
@@ -95,7 +95,7 @@ const TabStateContext = createContext<TabStateApi>({
 });
 TabStateContext.displayName  = 'TabState';
 
-export const useTabState = (): TabStateApi => {
+export const useTabState = (): TabState => {
     return useContext(TabStateContext);
 }
 
@@ -191,7 +191,7 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
     
     
     // states:
-    const tabStateApi = useMemo<TabStateApi>(() => ({
+    const tabState = useMemo<TabState>(() => ({
         // behaviors:
         defaultLazy           : lazy,                  // mutable value
         
@@ -228,7 +228,7 @@ const TabStateProvider = <TTabExpandedChangeEvent extends TabExpandedChangeEvent
     
     // jsx:
     return (
-        <TabStateContext.Provider value={tabStateApi}>
+        <TabStateContext.Provider value={tabState}>
             {children}
         </TabStateContext.Provider>
     );
