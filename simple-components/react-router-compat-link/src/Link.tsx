@@ -42,7 +42,7 @@ import type {
 export interface LinkProps extends BaseLinkProps
 {
     // react router links:
-    linkComponent ?: React.ReactElement
+    linkComponent ?: React.ReactElement<any>
     passHref      ?: boolean
 }
 
@@ -107,7 +107,7 @@ const Link = React.forwardRef(function LinkWithRef(props: LinkProps, ref: React.
     
     // jsx:
     const isReusableUiLinkComponent : boolean = isReusableUiComponent<GenericProps<Element>>(linkComponent);
-    return React.cloneElement(linkComponent,
+    return React.cloneElement<any>(linkComponent,
         // props:
         {
             // refs:
