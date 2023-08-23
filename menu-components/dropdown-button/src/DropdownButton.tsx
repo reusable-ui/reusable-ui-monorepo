@@ -395,6 +395,43 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         onFloatingUpdate,
     );
     
+    const handleExpandStart                  = useMergeEvents(
+        // preserves the original `onExpandStart` from `dropdownComponent`:
+        dropdownComponent.props.onExpandStart,
+        
+        
+        
+        // preserves the original `onExpandStart` from `props`:
+        onExpandStart,
+    );
+    const handleCollapseStart                = useMergeEvents(
+        // preserves the original `onCollapseStart` from `dropdownComponent`:
+        dropdownComponent.props.onCollapseStart,
+        
+        
+        
+        // preserves the original `onCollapseStart` from `props`:
+        onCollapseStart,
+    );
+    const handleExpandEnd                    = useMergeEvents(
+        // preserves the original `onExpandEnd` from `dropdownComponent`:
+        dropdownComponent.props.onExpandEnd,
+        
+        
+        
+        // preserves the original `onExpandEnd` from `props`:
+        onExpandEnd,
+    );
+    const handleCollapseEnd                  = useMergeEvents(
+        // preserves the original `onCollapseEnd` from `dropdownComponent`:
+        dropdownComponent.props.onCollapseEnd,
+        
+        
+        
+        // preserves the original `onCollapseEnd` from `props`:
+        onCollapseEnd,
+    );
+    
     
     
     // jsx:
@@ -475,10 +512,10 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     expanded           : dropdownComponent.props.expanded           ?? isExpanded,
                     onExpandedChange   : handleDropdownExpandedChange,
                     
-                    onExpandStart      : dropdownComponent.props.onExpandStart      ?? onExpandStart,
-                    onCollapseStart    : dropdownComponent.props.onCollapseStart    ?? onCollapseStart,
-                    onExpandEnd        : dropdownComponent.props.onExpandEnd        ?? onExpandEnd,
-                    onCollapseEnd      : dropdownComponent.props.onCollapseEnd      ?? onCollapseEnd,
+                    onExpandStart      : handleExpandStart,
+                    onCollapseStart    : handleCollapseStart,
+                    onExpandEnd        : handleExpandEnd,
+                    onCollapseEnd      : handleCollapseEnd,
                     
                     
                     
