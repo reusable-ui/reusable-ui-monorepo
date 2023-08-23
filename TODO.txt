@@ -1,9 +1,3 @@
-[med prior ] added inputComponent
-[med prior ] renamed WithAutoCapitalize to InputWithAutoCapitalize
-
-[med prior ] renamed **Api to **
-[med prior ] fix initial floatable position when inside the <ModalCard>
-
 [low prior ] fix React.cloneElement(...) to React.cloneElement<...>(...)
 [low prior ] fix useMergeRefs<...>(...)   to useMergeRefs(...)
 [low prior ] fix useMergeEvents<...>(...) to useMergeRefs(...)
@@ -17,7 +11,10 @@
 [minor err ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 [minor err ] fix <Tooltip outlined={true}> <Arrow>
 
-[unresolved] fix preventing default scoll implementation on Firefox
+[deferred  ] renamed **Api to **
+[deferred  ] fix initial floatable position when inside the <ModalCard>
+
+[unresolved] fix preventing default sccoll implementation on Firefox
 [unresolved] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [next ver  ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
