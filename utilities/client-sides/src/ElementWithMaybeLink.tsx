@@ -42,6 +42,21 @@ export interface ElementWithMaybeLinkProps {
      * The underlying `<Element>` to be `<Link>`-ed.
      */
     elementComponent  : React.ReactComponentElement<any, React.PropsWithChildren<{ outerRef?: React.Ref<Element> } & AccessibilityProps & SemanticProps>>
+    
+    
+    
+    // children:
+    /**
+     * Optional.
+     *   
+     * The `children` of `<Element>` that *may* contain `<Link>`.  
+     * If the `<Link>` exists, it will wrap the `<Element>`.  
+     * The rest `children` will be inside the `<Element>`.  
+     *   
+     * If not supplied, defaults to `<Element>`'s `children`.  
+     * If supplied, it will overwrite `<Element>`'s `children`.
+     */
+    children         ?: React.ReactNode
 }
 const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|null => {
     // rest props:
@@ -52,19 +67,10 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         
         
         // children:
+        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
     ...restElementProps} = props;
     
     
-    
-    /**
-     * The `children` of `<Element>` that *may* contain `<Link>`.  
-     * If the `<Link>` exists, it will wrap the `<Element>`.  
-     * The rest `children` will be inside the `<Element>`.  
-     *   
-     * If not supplied, defaults to `<Element>`'s `children`.  
-     * If supplied, it will overwrite `<Element>`'s `children`.
-     */
-    const children      = elementComponent.props.children;
     
     // convert the children to array (if necessary):
     const childrenArray : React.ReactNode[] = Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children);
