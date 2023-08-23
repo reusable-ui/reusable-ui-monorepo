@@ -20,7 +20,7 @@ import {
 
 
 // react components:
-export interface WithAutoActiveImplProps
+export interface ElementWithAutoActiveImplProps
     extends
         DetermineCurrentPageProps
 {
@@ -52,7 +52,7 @@ export interface WithAutoActiveImplProps
      */
     children         ?: React.ReactNode
 }
-const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null => {
+const ElementWithAutoActiveImpl = (props: ElementWithAutoActiveImplProps): JSX.Element|null => {
     // rest props:
     const {
         // navigations:
@@ -89,7 +89,7 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
     
     
     // jsx:
-    return React.cloneElement(elementComponent,
+    return React.cloneElement<React.PropsWithChildren<AccessibilityProps & Pick<React.AriaAttributes, 'aria-current'>>>(elementComponent,
         // props:
         {
             // other props:
@@ -114,6 +114,6 @@ const WithAutoActiveImpl = (props: WithAutoActiveImplProps): JSX.Element|null =>
     );
 };
 export {
-    WithAutoActiveImpl,
-    WithAutoActiveImpl as default,
+    ElementWithAutoActiveImpl,
+    ElementWithAutoActiveImpl as default,
 }

@@ -17,8 +17,8 @@ import type {
 }                           from './navigations.js'
 import {
     // react components:
-    WithAutoActiveImpl,
-}                           from './WithAutoActiveImpl.js'
+    ElementWithAutoActiveImpl,
+}                           from './ElementWithAutoActiveImpl.js'
 
 
 
@@ -77,7 +77,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
         <ElementWithMaybeLink
             // components:
             elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
-                <WithAutoActiveImpl
+                <ElementWithAutoActiveImpl
                     // other props:
                     {...restElementProps}
                     
@@ -99,7 +99,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
                     childrenOrigin={children}
                 >
                     {children}
-                </WithAutoActiveImpl>
+                </ElementWithAutoActiveImpl>
             }
         >
             {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
