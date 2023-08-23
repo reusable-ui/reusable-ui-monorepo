@@ -146,8 +146,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
     
     
     // jsx:
-    // if <Element> is disabled => no need to wrap with <Link>:
-    if (!propEnabled) return React.cloneElement(elementComponent,
+    const modifiedElementComponent = React.cloneElement(elementComponent,
         // props:
         {
             // other props:
@@ -163,6 +162,11 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
     
     
     
+    // if <Element> is disabled => no need to wrap with <Link>:
+    if (!propEnabled) return modifiedElementComponent;
+    
+    
+    
     // jsx:
     // if <Element> is enabled => wraps with <Link>:
     const isNextJsLink = !!linkComponent.props.href;
@@ -170,9 +174,9 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         // props:
         {
             // link props:
-            ...( isNextJsLink  ? { legacyBehavior : true             } : undefined), // NextJs's <Link>
-            ...(!isNextJsLink  ? { linkComponent  : elementComponent } : undefined), // ReactRouterCompat's <Link>
-            ...(isSemanticLink ? { passHref       : true             } : undefined),
+            ...( isNextJsLink  ? { legacyBehavior : true                     } : undefined), // NextJs's <Link>
+            ...(!isNextJsLink  ? { linkComponent  : modifiedElementComponent } : undefined), // ReactRouterCompat's <Link>
+            ...(isSemanticLink ? { passHref       : true                     } : undefined),
         },
         
         
@@ -187,16 +191,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
             // for NextJs's <Link> => wraps the children with <Element>:
             ((): React.ReactComponentElement<any, ElementWithForwardRefProps> => {
                 // props:
-                const elementComponentProps : typeof elementComponent.props = {
-                    // other props:
-                    ...restElementProps,
-                    ...elementComponent.props, // overwrites restElementProps (if any conflics)
-                    
-                    
-                    
-                    // children:
-                    children: mergedChildren,
-                };
+                const modifiedElementComponentProps = modifiedElementComponent.props;
                 
                 
                 
@@ -204,22 +199,22 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
                 return (
                     <ElementWithForwardRef
                         // other props:
-                        {...elementComponentProps} // steals all elementComponent's props, so the <Owner> can recognize the <ElementWithForwardRef> as <TheirChild>
+                        {...modifiedElementComponentProps} // steals all modifiedElementComponent's props, so the <Owner> can recognize the <ElementWithForwardRef> as <TheirChild>
                         
                         
                         
                         // components:
                         elementComponent={
-                            // clone elementComponent element with (almost) blank props:
-                            <elementComponent.type
+                            // clone modifiedElementComponent element with (almost) blank props:
+                            <modifiedElementComponent.type
                                 // identifiers:
-                                key={elementComponent.key}
+                                key={modifiedElementComponent.key}
                                 
                                 
                                 
                                 //#region restore conflicting props
                                 {...{
-                                    ...(('elementComponent' in elementComponentProps) ? { elementComponent : elementComponentProps.elementComponent } : undefined),
+                                    ...(('elementComponent' in modifiedElementComponentProps) ? { elementComponent : modifiedElementComponentProps.elementComponent } : undefined),
                                 }}
                                 //#endregion restore conflicting props
                             />
