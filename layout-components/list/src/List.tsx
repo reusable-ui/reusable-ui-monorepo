@@ -303,7 +303,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             // handlers:
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.Children.map(children, (child, index) => {
+            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
                 // conditions:
                 if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
                 
