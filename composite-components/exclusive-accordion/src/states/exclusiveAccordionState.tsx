@@ -49,21 +49,21 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
-export interface ExclusiveAccordionStateApi
+export interface ExclusiveAccordionState
 {
     // states:
     expandedListIndex         : number,
     triggerExpandedChange     : (expanded: boolean, listIndex: number) => void
 }
 
-const ExclusiveAccordionStateContext = createContext<ExclusiveAccordionStateApi>({
+const ExclusiveAccordionStateContext = createContext<ExclusiveAccordionState>({
     // states:
     expandedListIndex         : _defaultExpandedListIndex,
     triggerExpandedChange     : () => { throw Error('not inside <ExclusiveAccordionStateProvider>'); },
 });
 ExclusiveAccordionStateContext.displayName  = 'ExclusiveAccordionState';
 
-export const useExclusiveAccordionState = (): ExclusiveAccordionStateApi => {
+export const useExclusiveAccordionState = (): ExclusiveAccordionState => {
     return useContext(ExclusiveAccordionStateContext);
 }
 
@@ -128,7 +128,7 @@ const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends E
     
     
     // states:
-    const exclusiveAccordionStateApi = useMemo<ExclusiveAccordionStateApi>(() => ({
+    const exclusiveAccordionState = useMemo<ExclusiveAccordionState>(() => ({
         // states:
         expandedListIndex     : expandedListIndexFn,   // mutable value
         triggerExpandedChange : triggerExpandedChange, // stable ref
@@ -141,7 +141,7 @@ const ExclusiveAccordionStateProvider = <TExclusiveExpandedChangeEvent extends E
     
     // jsx:
     return (
-        <ExclusiveAccordionStateContext.Provider value={exclusiveAccordionStateApi}>
+        <ExclusiveAccordionStateContext.Provider value={exclusiveAccordionState}>
             {children}
         </ExclusiveAccordionStateContext.Provider>
     );
