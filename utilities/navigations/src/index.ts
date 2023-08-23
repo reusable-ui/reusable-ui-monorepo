@@ -1,2 +1,2 @@
 export *            from './navigations.js'
-export *            from './WithAutoActive.js'
+export *            from './ElementWithAutoActive.js'

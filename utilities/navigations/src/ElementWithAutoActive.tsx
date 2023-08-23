@@ -23,7 +23,7 @@ import {
 
 
 // react components:
-export interface WithAutoActiveProps
+export interface ElementWithAutoActiveProps
     extends
         Omit<DetermineCurrentPageProps,
             // children:
@@ -38,7 +38,7 @@ export interface WithAutoActiveProps
      */
     elementComponent  : React.ReactComponentElement<any, any>
 }
-const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
+const ElementWithAutoActive = (props: ElementWithAutoActiveProps): JSX.Element|null => {
     // rest props:
     const {
         // navigations:
@@ -132,6 +132,6 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     );
 };
 export {
-    WithAutoActive,
-    WithAutoActive as default,
+    ElementWithAutoActive,
+    ElementWithAutoActive as default,
 }

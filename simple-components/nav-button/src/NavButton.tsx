@@ -18,7 +18,7 @@ import {
     
     // a set of navigation functions:
     DetermineCurrentPageProps,
-    WithAutoActive,
+    ElementWithAutoActive,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -130,7 +130,7 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
         },
     );
     return (
-        <WithAutoActive
+        <ElementWithAutoActive
             // navigations:
             caseSensitive={caseSensitive}
             end={end}
