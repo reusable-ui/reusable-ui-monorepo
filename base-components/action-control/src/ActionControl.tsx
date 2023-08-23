@@ -117,11 +117,6 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
         
         // handlers:
         onClick      : _onClick,        // remove
-        
-        
-        
-        // children:
-        children,
     ...restControlProps} = props;
     
     
@@ -248,10 +243,7 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
                     //#endregion restore conflicting props
                 />
             }
-        >
-            {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
-            {children}
-        </ElementWithMaybeLink>
+        />
     );
 };
 export {
