@@ -113,7 +113,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
             
             
             // jsx:
-            return React.cloneElement(child,
+            return React.cloneElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child,
                 // props:
                 {
                     // behaviors:
