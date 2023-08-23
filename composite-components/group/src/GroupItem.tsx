@@ -40,7 +40,7 @@ export const useGroupItemStyleSheet = dynamicStyleSheet(
 export interface GroupItemProps
 {
     // components:
-    component : React.ReactElement
+    component : React.ReactElement<any>
 }
 export const GroupItem = (props: GroupItemProps): JSX.Element => {
     // styles:
@@ -81,7 +81,7 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
     
     
     // jsx:
-    return React.cloneElement(component,
+    return React.cloneElement<any>(component,
         // props:
         {
             // other props:
