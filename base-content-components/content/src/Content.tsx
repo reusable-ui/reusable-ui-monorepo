@@ -76,7 +76,7 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            {React.Children.map(children, (child) => {
+            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
                 // link:
                 if (
                     React.isValidElement<ButtonProps>(child)
