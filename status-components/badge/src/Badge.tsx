@@ -144,7 +144,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     
     
     // handlers:
-    const handleAnimationStart = useMergeEvents<React.AnimationEvent<TElement>>(
+    const handleAnimationStart = useMergeEvents(
         // preserves the original `onAnimationStart`:
         props.onAnimationStart,
         
@@ -153,7 +153,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
         // states:
         excitableState.handleAnimationStart,
     );
-    const handleAnimationEnd   = useMergeEvents<React.AnimationEvent<TElement>>(
+    const handleAnimationEnd   = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
         
