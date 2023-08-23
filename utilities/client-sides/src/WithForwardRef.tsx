@@ -58,7 +58,7 @@ const WithForwardRef = React.forwardRef<Element, WithForwardRefProps>((props, re
     
     
     // jsx:
-    return React.cloneElement(elementComponent,
+    return React.cloneElement<Pick<WithForwardRefProps, 'outerRef'>>(elementComponent,
         // props:
         {
             // other props:
