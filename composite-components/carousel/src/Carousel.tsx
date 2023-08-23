@@ -1481,7 +1481,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // handlers:
                     onScroll={listHandleScroll}
                 >
-                    {React.Children.map(children, (child, index) => {
+                    {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
                         // conditions:
                         if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
                         
@@ -1519,7 +1519,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // classes:
                     classes={_defaultDummyListElmClasses}
                 >
-                    {React.Children.map(children, (child, index) => {
+                    {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
                         // conditions:
                         if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
                         
@@ -1639,7 +1639,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 
                 // children:
-                navscrollComponent.props.children ?? React.Children.map(children, (child, index) => {
+                navscrollComponent.props.children ?? React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
                     // conditions:
                     if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
                     
