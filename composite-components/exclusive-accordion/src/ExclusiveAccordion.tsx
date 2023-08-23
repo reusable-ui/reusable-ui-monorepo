@@ -114,7 +114,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                 
                 
                 // children:
-                React.Children.map(accordionComponent.props.children ?? children, (accordionItem, listIndex) => {
+                React.Children.map<React.ReactNode, React.ReactNode>(accordionComponent.props.children ?? children, (accordionItem, listIndex) => {
                     // conditions:
                     if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => ignore
                     
