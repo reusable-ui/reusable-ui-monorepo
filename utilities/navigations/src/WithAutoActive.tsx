@@ -72,39 +72,87 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     
     
     
+    // props:
+    const elementComponentProps : typeof elementComponent.props = {
+        // other props:
+        ...restElementProps,
+        ...elementComponent.props, // overwrites restElementProps (if any conflics)
+        
+        
+        
+        // children:
+        children,
+    };
+    
+    
+    
     // jsx:
+    const elementWithAutoActiveImpl = (
+        <ElementWithAutoActiveImpl
+            // other props:
+            {...elementComponentProps} // steals all elementComponent's props, so the <Owner> can recognize the <ElementWithAutoActiveImpl> as <TheirChild>
+            
+            
+            
+            // navigations:
+            caseSensitive={caseSensitive}
+            end={end}
+            
+            
+            
+            // components:
+            elementComponent={ // the underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url
+                // clone elementComponent element with (almost) blank props:
+                <elementComponent.type
+                    // identifiers:
+                    key={elementComponent.key}
+                    
+                    
+                    
+                    //#region restore conflicting props
+                    {...{
+                        ...(('caseSensitive'    in elementComponentProps) ? { caseSensitive    : elementComponentProps.caseSensitive    } : undefined),
+                        ...(('end'              in elementComponentProps) ? { end              : elementComponentProps.end              } : undefined),
+                        ...(('elementComponent' in elementComponentProps) ? { elementComponent : elementComponentProps.elementComponent } : undefined),
+                        ...(('childrenOrigin'   in elementComponentProps) ? { childrenOrigin   : elementComponentProps.childrenOrigin   } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
+            }
+            
+            
+            
+            // children:
+            /* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */
+            childrenOrigin={children} // copy the children before be mutated by another <SomeWithSomething>
+        />
+    );
+    const elementWithAutoActiveImplProps = elementWithAutoActiveImpl.props;
+    
     return (
         <ElementWithMaybeLink
+            // other props:
+            {...elementWithAutoActiveImplProps} // steals all elementWithAutoActiveImpl's props, so the <Owner> can recognize the <ElementWithMaybeLink> as <TheirChild>
+            
+            
+            
             // components:
             elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
-                <ElementWithAutoActiveImpl
-                    // other props:
-                    {...restElementProps}
+                // clone elementWithAutoActiveImpl element with (almost) blank props:
+                <elementWithAutoActiveImpl.type
+                    // identifiers:
+                    key={elementWithAutoActiveImpl.key}
                     
                     
                     
-                    // navigations:
-                    caseSensitive={caseSensitive}
-                    end={end}
-                    
-                    
-                    
-                    // components:
-                    elementComponent={elementComponent} // the underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url
-                    
-                    
-                    
-                    // children:
-                    /* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */
-                    childrenOrigin={children}
-                >
-                    {children}
-                </ElementWithAutoActiveImpl>
+                    //#region restore conflicting props
+                    {...{
+                        ...(('elementComponent' in elementWithAutoActiveImplProps) ? { elementComponent : elementWithAutoActiveImplProps.elementComponent } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
             }
-        >
-            {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
-            {children}
-        </ElementWithMaybeLink>
+        />
     );
 };
 export {
