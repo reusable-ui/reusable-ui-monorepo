@@ -7,7 +7,7 @@ import {
 // reusable-ui utilities:
 import {
     // react components:
-    WithLinkAndElement,
+    ElementWithMaybeLink,
 }                           from '@reusable-ui/client-sides'    // a set of client-side functions
 
 // internals:
@@ -74,7 +74,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     
     // jsx:
     return (
-        <WithLinkAndElement
+        <ElementWithMaybeLink
             // components:
             elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
                 <WithAutoActiveImpl
@@ -104,7 +104,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
         >
             {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
             {children}
-        </WithLinkAndElement>
+        </ElementWithMaybeLink>
     );
 };
 export {

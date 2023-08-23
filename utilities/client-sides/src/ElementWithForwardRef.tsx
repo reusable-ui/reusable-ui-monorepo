@@ -13,12 +13,12 @@ import {
 
 
 // react components:
-export interface WithForwardRefProps {
+export interface ElementWithForwardRefProps {
     // refs:
     /**
      * The *reusable-ui* way of forward `ref`.
      */
-    outerRef ?: React.Ref<Element>
+    outerRef         ?: React.Ref<Element>
     
     
     
@@ -28,9 +28,9 @@ export interface WithForwardRefProps {
      *   
      * The underlying `<Element>` to be forward `ref`-ed.
      */
-    children  : React.ReactComponentElement<any, Pick<WithForwardRefProps, 'outerRef'>>
+    elementComponent  : React.ReactComponentElement<any, Pick<ElementWithForwardRefProps, 'outerRef'>>
 }
-const WithForwardRef = React.forwardRef<Element, WithForwardRefProps>((props, ref): JSX.Element|null => {
+const ElementWithForwardRef = React.forwardRef<Element, ElementWithForwardRefProps>((props, ref): JSX.Element|null => {
     // rest props:
     const {
         // refs:
@@ -39,8 +39,8 @@ const WithForwardRef = React.forwardRef<Element, WithForwardRefProps>((props, re
         
         
         // components:
-        children : elementComponent,
-    ...restElementProps} = props;
+        elementComponent,
+    ...restComponentProps} = props;
     
     
     
@@ -58,12 +58,12 @@ const WithForwardRef = React.forwardRef<Element, WithForwardRefProps>((props, re
     
     
     // jsx:
-    return React.cloneElement<Pick<WithForwardRefProps, 'outerRef'>>(elementComponent,
+    return React.cloneElement<Pick<ElementWithForwardRefProps, 'outerRef'>>(elementComponent,
         // props:
         {
             // other props:
-            ...restElementProps,
-            ...elementComponent.props, // overwrites restElementProps (if any conflics)
+            ...restComponentProps,
+            ...elementComponent.props, // overwrites restComponentProps (if any conflics)
             
             
             
@@ -73,6 +73,6 @@ const WithForwardRef = React.forwardRef<Element, WithForwardRefProps>((props, re
     );
 });
 export {
-    WithForwardRef,
-    WithForwardRef as default,
+    ElementWithForwardRef,
+    ElementWithForwardRef as default,
 }

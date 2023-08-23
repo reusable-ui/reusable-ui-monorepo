@@ -27,13 +27,13 @@ import {
 }                           from './client-sides.js'
 import {
     // react components:
-    WithForwardRef,
-}                           from './WithForwardRef.js'
+    ElementWithForwardRef,
+}                           from './ElementWithForwardRef.js'
 
 
 
 // react components:
-export interface WithLinkAndElementProps {
+export interface ElementWithMaybeLinkProps {
     // components:
     /**
      * Required.  
@@ -57,7 +57,7 @@ export interface WithLinkAndElementProps {
      */
     children         ?: React.ReactNode
 }
-const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null => {
+const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
@@ -184,25 +184,28 @@ const WithLinkAndElement = (props: WithLinkAndElementProps): JSX.Element|null =>
             mergedChildren
             :
             // for NextJs's <Link> => wraps the children with <Element>:
-            <WithForwardRef>
-                {React.cloneElement(elementComponent,
-                    // props:
-                    {
-                        // other props:
-                        ...restElementProps,
-                        ...elementComponent.props, // overwrites restElementProps (if any conflics)
-                    },
-                    
-                    
-                    
-                    // children:
-                    ...mergedChildren, // overwrite the children
-                )}
-            </WithForwardRef>
+            <ElementWithForwardRef
+                // components:
+                elementComponent={
+                    React.cloneElement(elementComponent,
+                        // props:
+                        {
+                            // other props:
+                            ...restElementProps,
+                            ...elementComponent.props, // overwrites restElementProps (if any conflics)
+                        },
+                        
+                        
+                        
+                        // children:
+                        ...mergedChildren, // overwrite the children
+                    )
+                }
+            />
         )
     );
 };
 export {
-    WithLinkAndElement,
-    WithLinkAndElement as default,
+    ElementWithMaybeLink,
+    ElementWithMaybeLink as default,
 }

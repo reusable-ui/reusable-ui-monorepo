@@ -34,7 +34,7 @@ import {
     
     
     // a set of client-side functions:
-    WithLinkAndElement,
+    ElementWithMaybeLink,
     
     
     
@@ -225,13 +225,13 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     );
     
     return (
-        <WithLinkAndElement
+        <ElementWithMaybeLink
             // components:
             elementComponent={actionControl} // the underlying `<Element>` to be `<Link>`-ed
         >
             {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
             {children}
-        </WithLinkAndElement>
+        </ElementWithMaybeLink>
     );
 };
 export {
