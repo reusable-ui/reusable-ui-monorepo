@@ -468,7 +468,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         );
     };
     const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
-        return React.Children.map(children, (child, index) => {
+        return React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
             // conditions:
             if (!React.isValidElement<ListItemProps<Element>>(child)) return child; // not a <ListItem> => ignore
             const listItem = child;
@@ -538,7 +538,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                         />
                     }
                 >
-                    {React.Children.map(listItemProps.children, (grandChild, grandIndex) => (
+                    {React.Children.map<React.ReactNode, React.ReactNode>(listItemProps.children, (grandChild, grandIndex) => (
                         (
                             React.isValidElement<NavscrollProps>(grandChild)
                             &&
