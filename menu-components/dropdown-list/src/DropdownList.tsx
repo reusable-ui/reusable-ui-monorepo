@@ -534,7 +534,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // children:
-            React.Children.map(listComponent.props.children ?? listItems, (listItem, index) => {
+            React.Children.map<React.ReactNode, React.ReactNode>(listComponent.props.children ?? listItems, (listItem, index) => {
                 // conditions:
                 if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => ignore
                 if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => ignore
