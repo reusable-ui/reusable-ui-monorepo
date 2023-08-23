@@ -187,7 +187,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
             // for NextJs's <Link> => wraps the children with <Element>:
             ((): React.ReactComponentElement<any, ElementWithForwardRefProps> => {
                 // props:
-                const elementComponentProps = {
+                const elementComponentProps : typeof elementComponent.props = {
                     // other props:
                     ...restElementProps,
                     ...elementComponent.props, // overwrites restElementProps (if any conflics)
