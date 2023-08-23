@@ -36,8 +36,8 @@ import {
 // internals:
 import {
     // react components:
-    WithAutoCapitalize,
-}                           from './WithAutoCapitalize.js'
+    InputWithAutoCapitalize,
+}                           from './InputWithAutoCapitalize.js'
 
 
 
@@ -131,9 +131,10 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
         ['text', 'search', /*'password', 'email', 'url'*/].includes(props.type ?? 'text')
     ) {
         return (
-            <WithAutoCapitalize>
-                {inputJsx}
-            </WithAutoCapitalize>
+            <InputWithAutoCapitalize
+                // components:
+                inputComponent={inputJsx}
+            />
         );
     } // if
     return inputJsx;
@@ -332,4 +333,12 @@ export {
     DateInput       as Date,
     DateTimeInput   as DateTime,
     MonthInput      as Month,
+}
+
+
+
+export interface InputComponentProps<TElement extends Element = HTMLSpanElement>
+{
+    // components:
+    inputComponent ?: React.ReactComponentElement<any, InputProps<TElement>>
 }

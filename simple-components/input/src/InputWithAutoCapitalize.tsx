@@ -15,24 +15,27 @@ import {
 
 
 // react components:
-export interface WithAutoCapitalizeProps
+export interface InputWithAutoCapitalizeProps
     extends
         // bases:
-        React.InputHTMLAttributes<HTMLInputElement>
+        Omit<React.InputHTMLAttributes<HTMLInputElement>,
+            // children:
+            |'children' // no nested children
+        >
 {
     // components:
     /**
      * Required.  
      *   
-     * The underlying `<Input>` to be autoCapitalized.
+     * The underlying `<Input>` or <input> to be autoCapitalized.
      */
-    children : React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement>>
+    inputComponent : React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement>>
 }
-const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null => {
+const InputWithAutoCapitalize = (props: InputWithAutoCapitalizeProps): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        children : inputComponent,
+        inputComponent,
     ...restInputProps} = props;
     
     
@@ -149,6 +152,7 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
     
     
     // jsx:
+    /* <Input> */
     return React.cloneElement<React.InputHTMLAttributes<HTMLInputElement>>(inputComponent,
         // props:
         {
@@ -164,6 +168,6 @@ const WithAutoCapitalize = (props: WithAutoCapitalizeProps): JSX.Element|null =>
     );
 };
 export {
-    WithAutoCapitalize,
-    WithAutoCapitalize as default,
+    InputWithAutoCapitalize,
+    InputWithAutoCapitalize as default,
 }
