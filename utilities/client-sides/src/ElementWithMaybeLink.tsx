@@ -27,6 +27,7 @@ import {
 }                           from './client-sides.js'
 import {
     // react components:
+    ElementWithForwardRefProps,
     ElementWithForwardRef,
 }                           from './ElementWithForwardRef.js'
 
@@ -184,24 +185,45 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
             mergedChildren
             :
             // for NextJs's <Link> => wraps the children with <Element>:
-            <ElementWithForwardRef
-                // components:
-                elementComponent={
-                    React.cloneElement(elementComponent,
-                        // props:
-                        {
-                            // other props:
-                            ...restElementProps,
-                            ...elementComponent.props, // overwrites restElementProps (if any conflics)
-                        },
+            ((): React.ReactComponentElement<any, ElementWithForwardRefProps> => {
+                // props:
+                const elementComponentProps = {
+                    // other props:
+                    ...restElementProps,
+                    ...elementComponent.props, // overwrites restElementProps (if any conflics)
+                };
+                
+                
+                
+                // jsx:
+                return (
+                    <ElementWithForwardRef
+                        // other props:
+                        {...elementComponentProps} // steals all elementComponent's props, so the <Owner> can recognize the <ElementWithForwardRef> as <TheirChild>
                         
                         
                         
-                        // children:
-                        ...mergedChildren, // overwrite the children
-                    )
-                }
-            />
+                        // components:
+                        elementComponent={
+                            // clone elementComponent element with (almost) blank props:
+                            <elementComponent.type
+                                // identifiers:
+                                key={elementComponent.key}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('elementComponent' in elementComponentProps) ? { elementComponent : elementComponentProps.elementComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
+                            >
+                                {mergedChildren}
+                            </elementComponent.type>
+                        }
+                    />
+                );
+            })()
         )
     );
 };
