@@ -11,7 +11,6 @@
 [minor err ] fix length accouracy of <ProgressBar value={70}> vs <ProgressBar value={30}> + <ProgressBar value={40}>
 [minor err ] fix <Tooltip outlined={true}> <Arrow>
 
-[deferred  ] renamed **Api to **
 [deferred  ] fix initial floatable position when inside the <ModalCard>
 
 [unresolved] fix preventing default scroll implementation on Firefox
