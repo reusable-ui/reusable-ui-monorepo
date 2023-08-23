@@ -1,5 +1,4 @@
 [low prior ] fix React.cloneElement(...) to React.cloneElement<...>(...)
-[low prior ] fix React.Children.map(...) to React.Children.map<...>(...)
 
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
