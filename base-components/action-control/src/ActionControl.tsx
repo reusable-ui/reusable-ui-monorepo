@@ -223,11 +223,31 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
             onAnimationEnd   = {handleAnimationEnd  }
         />
     );
+    const actionControlProps = actionControl.props;
     
     return (
         <ElementWithMaybeLink
+            // other props:
+            {...actionControlProps} // steals all actionControl's props, so the <Owner> can recognize the <ElementWithMaybeLink> as <TheirChild>
+            
+            
+            
             // components:
-            elementComponent={actionControl} // the underlying `<Element>` to be `<Link>`-ed
+            elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
+                // clone actionControl element with (almost) blank props:
+                <actionControl.type
+                    // identifiers:
+                    key={actionControl.key}
+                    
+                    
+                    
+                    //#region restore conflicting props
+                    {...{
+                        ...(('elementComponent' in actionControlProps) ? { elementComponent : actionControlProps.elementComponent } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
+            }
         >
             {/* detect for `<Link>` component to be a `<WrapperLink>` and wraps the `<Element>` with rest `children` */}
             {children}
