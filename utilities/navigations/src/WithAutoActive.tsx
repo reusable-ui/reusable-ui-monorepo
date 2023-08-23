@@ -25,7 +25,10 @@ import {
 // react components:
 export interface WithAutoActiveProps
     extends
-        DetermineCurrentPageProps
+        Omit<DetermineCurrentPageProps,
+            // children:
+            |'children' // no nested children
+        >
 {
     // components:
     /**
@@ -34,23 +37,6 @@ export interface WithAutoActiveProps
      * The underlying `<Element>` to be `<Link>`-ed and manipulated of `[active]` & `[aria-current]` props, based on the current page url.
      */
     elementComponent  : React.ReactComponentElement<any, any>
-    
-    
-    
-    // children:
-    /**
-     * Optional.
-     *   
-     * The `children` of `<Element>` that *may* contain `<Link>`.  
-     * If the `<Link>` exists, its `[to]`/`[href]` prop will be used for determining the current page.  
-     * If the `<Link>` exists, it will wrap the `<Element>`.  
-     * If the `<Link>` doesn't exist, the active state will never occur.  
-     * The rest `children` will be inside the `<Element>`.  
-     *   
-     * If not supplied, defaults to `<Element>`'s `children`.  
-     * If supplied, it will overwrite `<Element>`'s `children`.
-     */
-    children         ?: React.ReactNode
 }
 const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
     // rest props:
@@ -63,11 +49,6 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
         
         // components:
         elementComponent,
-        
-        
-        
-        // children:
-        children = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
     ...restElementProps} = props;
     
     
@@ -77,11 +58,6 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
         // other props:
         ...restElementProps,
         ...elementComponent.props, // overwrites restElementProps (if any conflics)
-        
-        
-        
-        // children:
-        children,
     };
     
     
@@ -124,7 +100,7 @@ const WithAutoActive = (props: WithAutoActiveProps): JSX.Element|null => {
             
             // children:
             /* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */
-            childrenOrigin={children} // copy the children before be mutated by another <SomeWithSomething>
+            childrenOrigin={elementComponentProps.children} // copy the children before will be mutated by another <SomeWithSomething>
         />
     );
     const elementWithAutoActiveImplProps = elementWithAutoActiveImpl.props;
