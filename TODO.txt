@@ -1,4 +1,5 @@
 [low prior ] fix React.cloneElement(...) to React.cloneElement<...>(...)
+[low prior ] fix React.Children.map(...) to React.Children.map<...>(...)
 [low prior ] fix useMergeRefs<...>(...)   to useMergeRefs(...)
 [low prior ] fix useMergeEvents<...>(...) to useMergeRefs(...)
 
