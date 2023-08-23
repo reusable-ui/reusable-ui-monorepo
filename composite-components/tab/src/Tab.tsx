@@ -201,7 +201,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
     
     
     // refs:
-    const mergedElmRef = useMergeRefs<Element>(
+    const mergedElmRef = useMergeRefs(
         // preserves the original `elmRef` from `headerComponent`:
         headerComponent?.props?.elmRef,
         
