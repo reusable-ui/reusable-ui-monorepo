@@ -320,7 +320,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                         // semantics:
                         tag={wrapperTag}
                     >
-                        {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement(child,
+                        {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement<ListItemProps<Element>>(child,
                             // props:
                             {
                                 // behaviors:
