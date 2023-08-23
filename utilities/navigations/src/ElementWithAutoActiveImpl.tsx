@@ -22,7 +22,10 @@ import {
 // react components:
 export interface ElementWithAutoActiveImplProps
     extends
-        DetermineCurrentPageProps
+        Omit<DetermineCurrentPageProps,
+            // children:
+            |'children' // no nested children
+        >
 {
     // components:
     /**
@@ -43,14 +46,6 @@ export interface ElementWithAutoActiveImplProps
      * If the `<Link>` doesn't exist, the active state will never occur.  
      */
     childrenOrigin    : React.ReactNode
-    
-    /**
-     * Optional.
-     *   
-     * If not supplied, defaults to `<Element>`'s `children`.  
-     * If supplied, it will overwrite `<Element>`'s `children`.
-     */
-    children         ?: React.ReactNode
 }
 const ElementWithAutoActiveImpl = (props: ElementWithAutoActiveImplProps): JSX.Element|null => {
     // rest props:
@@ -68,7 +63,6 @@ const ElementWithAutoActiveImpl = (props: ElementWithAutoActiveImplProps): JSX.E
         
         // children:
         childrenOrigin,
-        children        = elementComponent.props.children, // if not supplied, defaults to `<Element>`'s `children`
     ...restElementProps} = props;
     
     
@@ -106,11 +100,6 @@ const ElementWithAutoActiveImpl = (props: ElementWithAutoActiveImplProps): JSX.E
             // states:
             active         : activeFn,
         },
-        
-        
-        
-        // children:
-        children, // overwrite the children
     );
 };
 export {
