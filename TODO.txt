@@ -14,7 +14,7 @@
 [deferred  ] renamed **Api to **
 [deferred  ] fix initial floatable position when inside the <ModalCard>
 
-[unresolved] fix preventing default sccoll implementation on Firefox
+[unresolved] fix preventing default scroll implementation on Firefox
 [unresolved] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [next ver  ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
