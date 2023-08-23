@@ -191,6 +191,11 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
                     // other props:
                     ...restElementProps,
                     ...elementComponent.props, // overwrites restElementProps (if any conflics)
+                    
+                    
+                    
+                    // children:
+                    children: mergedChildren,
                 };
                 
                 
@@ -217,9 +222,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
                                     ...(('elementComponent' in elementComponentProps) ? { elementComponent : elementComponentProps.elementComponent } : undefined),
                                 }}
                                 //#endregion restore conflicting props
-                            >
-                                {mergedChildren}
-                            </elementComponent.type>
+                            />
                         }
                     />
                 );
