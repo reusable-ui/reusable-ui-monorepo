@@ -106,7 +106,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         
         
         // children:
-        listComponent.props.children ?? React.Children.map(children, (child) => {
+        listComponent.props.children ?? React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
             // conditions:
             if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => ignore
             
