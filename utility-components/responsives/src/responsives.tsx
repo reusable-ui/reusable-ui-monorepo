@@ -443,7 +443,7 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
     
     
     // jsx:
-    return React.cloneElement(component,
+    return React.cloneElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(component,
         // props:
         {
             // other props:
