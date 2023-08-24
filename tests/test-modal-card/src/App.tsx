@@ -6,6 +6,7 @@ import {
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import '@reusable-ui/typos/effects'
 import {
     ModalCard, ModalExpandedChangeEvent,
 } from '@reusable-ui/modal-card'
@@ -70,7 +71,7 @@ function App() {
                     onExpandEnd={() => console.log('expanded')}
                 >
                     <CardHeader>
-                        Test Modal Card
+                        <h1>Test Modal Card</h1>
                         <CloseButton onClick={handleClose} size='xs' />
                     </CardHeader>
                     <CardBody>

@@ -21,6 +21,12 @@ import {
 
 // reusable-ui core:
 import {
+    // a typography management system:
+    headings,
+    usesHeadingRule,
+    
+    
+    
     // removes browser's default stylesheet:
     stripoutFocusableElement,
     
@@ -148,11 +154,19 @@ export const usesModalSideLayout = () => {
                     
                     
                     // children:
+                    ...children(['h1', '.h1', 'h2', '.h2', 'h3', '.h3', 'h4', '.h4', 'h5', '.h5', 'h6', '.h6'], {
+                        ...rule([':first-child:last-child', ':first-child:nth-last-child(2)'], { // when the heading is SECOND_LAST|ALONE in the <CardHeader>
+                            ...usesHeadingRule(headings, '&', '&', [6]),
+                            ...rule(':nth-child(n)', {
+                                margin : '0px',
+                            }),
+                        }, { specificityWeight: 0 }),
+                    }),
                     ...children(['button', '[role="button"]'], {
-                        ...rule(':first-child:last-child', {
+                        ...rule(':first-child:last-child', { // when the close_button is ALONE in the <CardHeader>
                             // spacings:
                             marginInlineStart : 'auto', // align to right
-                        }),
+                        }, { specificityWeight: 0 }),
                     }),
                     
                     

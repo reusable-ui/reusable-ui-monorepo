@@ -47,7 +47,7 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
         .flatMap((level) =>
             selectors
             .map((selector) =>
-                `${selector}${level}`
+                ((selector === '&') ? '&' : `${selector}${level}`)
             )
         )
     );
@@ -111,7 +111,7 @@ export const usesHeadingRule = <THeadings extends typeof headings>(cssProps: THe
         // individual rule for each h1-h6:
         levels
         .map((level) =>
-            rule(selectors.map((selector) => `${selector}${level}`), {
+            rule(selectors.map((selector) => ((selector === '&') ? '&' : `${selector}${level}`)), {
                 ...rule(conditions, {
                     // customize with propName{level}:
                     ...overwriteProps(cssProps, usesSuffixedProps(cssProps, `${level}`)),
