@@ -129,8 +129,14 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             active         : activeSt,
         },
     );
+    const navButtonProps = navButton.props;
     return (
         <ElementWithAutoActive
+            // other props:
+            {...navButtonProps} // steals all navButton's props, so the <Owner> can recognize the <ElementWithAutoActive> as <TheirChild>
+            
+            
+            
             // navigations:
             caseSensitive={caseSensitive}
             end={end}
@@ -138,7 +144,23 @@ const NavButton = (props: NavButtonProps): JSX.Element|null => {
             
             
             // components:
-            elementComponent={navButton}
+            elementComponent={ // the underlying `<Element>` to be `<Link>`-ed and manipulated of `[active]` & `[aria-current]` props, based on the current page url
+                // clone navButton element with (almost) blank props:
+                <navButton.type
+                    // identifiers:
+                    key={navButton.key}
+                    
+                    
+                    
+                    //#region restore conflicting props
+                    {...{
+                        ...(('caseSensitive'    in navButtonProps) ? { caseSensitive    : navButtonProps.caseSensitive    } : undefined),
+                        ...(('end'              in navButtonProps) ? { end              : navButtonProps.end              } : undefined),
+                        ...(('elementComponent' in navButtonProps) ? { elementComponent : navButtonProps.elementComponent } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
+            }
         />
     );
 };

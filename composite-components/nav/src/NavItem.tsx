@@ -100,8 +100,14 @@ export const NavItem       = <TElement extends Element = HTMLElement>(props: Nav
             active         : activeSt,
         },
     );
+    const navItemProps = navItem.props;
     return (
         <ElementWithAutoActive
+            // other props:
+            {...navItemProps} // steals all navItem's props, so the <Owner> can recognize the <ElementWithAutoActive> as <TheirChild>
+            
+            
+            
             // navigations:
             caseSensitive={caseSensitive}
             end={end}
@@ -109,7 +115,23 @@ export const NavItem       = <TElement extends Element = HTMLElement>(props: Nav
             
             
             // components:
-            elementComponent={navItem}
+            elementComponent={ // the underlying `<Element>` to be `<Link>`-ed and manipulated of `[active]` & `[aria-current]` props, based on the current page url
+                // clone navItem element with (almost) blank props:
+                <navItem.type
+                    // identifiers:
+                    key={navItem.key}
+                    
+                    
+                    
+                    //#region restore conflicting props
+                    {...{
+                        ...(('caseSensitive'    in navItemProps) ? { caseSensitive    : navItemProps.caseSensitive    } : undefined),
+                        ...(('end'              in navItemProps) ? { end              : navItemProps.end              } : undefined),
+                        ...(('elementComponent' in navItemProps) ? { elementComponent : navItemProps.elementComponent } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
+            }
         />
     );
 };
