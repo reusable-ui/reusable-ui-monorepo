@@ -34,7 +34,7 @@ export type JsxReactRouterLink = React.ReactElement<{
     
     // components:
     passHref      ?: boolean
-    linkComponent ?: React.ReactElement
+    linkComponent ?: React.ReactElement<any>
     
     
     
