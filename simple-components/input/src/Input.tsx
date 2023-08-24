@@ -122,7 +122,7 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
 }
 const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // jsx:
-    const inputJsx = <InputInternal<TElement> {...props} />;
+    const inputInternal = <InputInternal<TElement> {...props} />;
     if (
         props.autoCapitalize
         &&
@@ -130,14 +130,39 @@ const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TEl
         &&
         ['text', 'search', /*'password', 'email', 'url'*/].includes(props.type ?? 'text')
     ) {
+        // props:
+        const inputInternalProps = inputInternal.props;
+        
+        
+        
+        // jsx:
         return (
             <InputWithAutoCapitalize
+                // other props:
+                {...inputInternalProps} // steals all inputInternal's props, so the <Owner> can recognize the <InputWithAutoCapitalize> as <TheirChild>
+                
+                
+                
                 // components:
-                inputComponent={inputJsx}
+                inputComponent={
+                    // clone inputInternal element with (almost) blank props:
+                    <inputInternal.type
+                        // identifiers:
+                        key={inputInternal.key}
+                        
+                        
+                        
+                        //#region restore conflicting props
+                        {...{
+                            ...(('inputComponent' in inputInternalProps) ? { inputComponent : inputInternalProps.inputComponent } : undefined),
+                        }}
+                        //#endregion restore conflicting props
+                    />
+                }
             />
         );
     } // if
-    return inputJsx;
+    return inputInternal;
 };
 const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // styles:
