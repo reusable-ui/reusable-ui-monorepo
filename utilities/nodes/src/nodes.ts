@@ -7,7 +7,7 @@ import {
 
 
 // utilities:
-export const isForwardRef = (node: React.ReactNode): node is React.ReactElement => {
+export const isForwardRef = (node: React.ReactNode): node is React.ReactElement<any> => {
     return (
         React.isValidElement(node)                                                          // JSX element
         &&
