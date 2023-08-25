@@ -55,6 +55,7 @@
     "@reusable-ui/content": "^6.1.0",
     "@reusable-ui/control": "^6.1.0",
     "@reusable-ui/details": "^6.1.0",
+    "@reusable-ui/dialog-message": "^6.1.0",
     "@reusable-ui/dimensions": "^6.1.0",
     "@reusable-ui/dropdown": "^6.1.0",
     "@reusable-ui/dropdown-button": "^6.1.0",

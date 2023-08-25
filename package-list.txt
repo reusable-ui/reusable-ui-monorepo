@@ -137,5 +137,6 @@
 [not needopt] [undocumented] @reusable-ui/dimensions                                            [no      config]
 [not needopt] [undocumented] @reusable-ui/responsives                                           [no      config]
 [not needopt] [undocumented] @reusable-ui/modal-status                                          [no      config]
+[not needopt] [undocumented] @reusable-ui/dialog-message                                        [no      config]
 
 [published  ] @reusable-ui/components

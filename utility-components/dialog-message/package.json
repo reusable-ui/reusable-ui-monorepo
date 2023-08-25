@@ -1,0 +1,62 @@
+{
+  "name": "@reusable-ui/dialog-message",
+  "version": "6.1.0",
+  "description": "Displays a modal dialog to notify the user that something has happened.",
+  "keywords": [
+    "message",
+    "alert",
+    "notification",
+    "modal",
+    "dialog",
+    "overlays",
+    "card",
+    "popup",
+    "show",
+    "hide",
+    "component",
+    "element",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/button": "^6.1.0",
+    "@reusable-ui/card": "^6.1.0",
+    "@reusable-ui/close-button": "^6.1.0",
+    "@reusable-ui/core": "^6.1.0",
+    "@reusable-ui/icon": "^6.1.0",
+    "@reusable-ui/list": "^6.1.0",
+    "@reusable-ui/modal": "^6.1.0",
+    "@reusable-ui/modal-status": "^6.1.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.0",
+    "react": "^18.0.0"
+  }
+}
