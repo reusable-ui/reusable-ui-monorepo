@@ -857,6 +857,94 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     );
     const isExpanded = (dialogMessage !== false);
     let hasAutoFocusButton = false;
+    const cardFooterChildren : React.ReactNode = (
+        cardFooterComponent.props.children ?? Array.from(answerOptions).map(([answer, answerComponent], index) => {
+            // components:
+            const answerButtonComponentWithChildren : React.ReactComponentElement<any, ButtonProps> = (
+                (
+                    !React.isValidElement<ButtonProps>(answerComponent) // NOT a <SomeElement> => treat as children
+                    ||
+                    (answerComponent.type === React.Fragment)           // a <React.Fragment>  => treat as children
+                )
+                ? React.cloneElement<ButtonProps>(answerButtonComponent,
+                    // props:
+                    undefined,
+                    
+                    
+                    
+                    // children:
+                    answerButtonComponent.props.children ?? answerComponent,
+                )
+                : answerComponent                                       // a <SomeElement> => treat as <Button>
+            );
+            
+            
+            
+            // props:
+            const answerButtonComponentWithChildrenProps = answerButtonComponentWithChildren.props;
+            
+            
+            
+            // jsx:
+            return (
+                <ButtonWithAnswer<any>
+                    // other props:
+                    {...answerButtonComponentWithChildrenProps} // steals all answerButtonComponentWithChildren's props, so the <Owner> can recognize the <ButtonWithAnswer> as <TheirChild>
+                    
+                    
+                    
+                    // identifiers:
+                    key={answerButtonComponentWithChildren.key ?? index}
+                    
+                    
+                    
+                    // refs:
+                    autoFocusRef={((): React.Ref<HTMLButtonElement>|undefined => {
+                        // conditions:
+                        if (hasAutoFocusButton) return undefined; // the autoFocus feature has already taken by another <Button>
+                        if (!answerButtonComponentWithChildrenProps.autoFocus) return undefined; // no autoFocus feature activated
+                        hasAutoFocusButton = true; // mark autoFocus feature as taken
+                        
+                        
+                        
+                        return autoFocusButtonRef;
+                    })()}
+                    
+                    
+                    
+                    // contents:
+                    answer={answer}
+                    
+                    
+                    
+                    // components:
+                    buttonComponent={
+                        // clone answerButtonComponentWithChildren element with (almost) blank props:
+                        <answerButtonComponentWithChildren.type
+                            // identifiers:
+                            key={answerButtonComponentWithChildren.key}
+                            
+                            
+                            
+                            //#region restore conflicting props
+                            {...{
+                                ...(('autoFocusRef'    in answerButtonComponentWithChildrenProps) ? { autoFocusRef    : answerButtonComponentWithChildrenProps.autoFocusRef    } : undefined),
+                                ...(('answer'          in answerButtonComponentWithChildrenProps) ? { answer          : answerButtonComponentWithChildrenProps.answer          } : undefined),
+                                ...(('buttonComponent' in answerButtonComponentWithChildrenProps) ? { buttonComponent : answerButtonComponentWithChildrenProps.buttonComponent } : undefined),
+                                ...(('onAnswer'        in answerButtonComponentWithChildrenProps) ? { onAnswer        : answerButtonComponentWithChildrenProps.onAnswer        } : undefined),
+                            }}
+                            //#endregion restore conflicting props
+                        />
+                    }
+                    
+                    
+                    
+                    // handlers:
+                    onAnswer={answerButtonHandleClick}
+                />
+            );
+        })
+    );
     return (
         <DialogMessageContext.Provider value={dialogMessageApi}>
             {children}
@@ -877,6 +965,11 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                     
                     // components:
                     cardComponent    : modalStatusComponent.props.cardComponent ?? cardComponent,
+                    
+                    
+                    
+                    // auto focusable:
+                    autoFocusOn      : modalStatusComponent.props.autoFocusOn   ?? (hasAutoFocusButton ? autoFocusButtonRef : undefined),
                     
                     
                     
@@ -923,92 +1016,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                         
                         
                         // children:
-                        (cardFooterComponent.props.children ?? Array.from(answerOptions).map(([answer, answerComponent], index) => {
-                            // components:
-                            const answerButtonComponentWithChildren : React.ReactComponentElement<any, ButtonProps> = (
-                                (
-                                    !React.isValidElement<ButtonProps>(answerComponent) // NOT a <SomeElement> => treat as children
-                                    ||
-                                    (answerComponent.type === React.Fragment)           // a <React.Fragment>  => treat as children
-                                )
-                                ? React.cloneElement<ButtonProps>(answerButtonComponent,
-                                    // props:
-                                    undefined,
-                                    
-                                    
-                                    
-                                    // children:
-                                    answerButtonComponent.props.children ?? answerComponent,
-                                )
-                                : answerComponent                                       // a <SomeElement> => treat as <Button>
-                            );
-                            
-                            
-                            
-                            // props:
-                            const answerButtonComponentWithChildrenProps = answerButtonComponentWithChildren.props;
-                            
-                            
-                            
-                            // jsx:
-                            return (
-                                <ButtonWithAnswer<any>
-                                    // other props:
-                                    {...answerButtonComponentWithChildrenProps} // steals all answerButtonComponentWithChildren's props, so the <Owner> can recognize the <ButtonWithAnswer> as <TheirChild>
-                                    
-                                    
-                                    
-                                    // identifiers:
-                                    key={answerButtonComponentWithChildren.key ?? index}
-                                    
-                                    
-                                    
-                                    // refs:
-                                    autoFocusRef={((): React.Ref<HTMLButtonElement>|undefined => {
-                                        // conditions:
-                                        if (hasAutoFocusButton) return undefined; // the autoFocus feature has already taken by another <Button>
-                                        if (!answerButtonComponentWithChildrenProps.autoFocus) return undefined; // no autoFocus feature activated
-                                        hasAutoFocusButton = true; // mark autoFocus feature as taken
-                                        
-                                        
-                                        
-                                        return autoFocusButtonRef;
-                                    })()}
-                                    
-                                    
-                                    
-                                    // contents:
-                                    answer={answer}
-                                    
-                                    
-                                    
-                                    // components:
-                                    buttonComponent={
-                                        // clone answerButtonComponentWithChildren element with (almost) blank props:
-                                        <answerButtonComponentWithChildren.type
-                                            // identifiers:
-                                            key={answerButtonComponentWithChildren.key}
-                                            
-                                            
-                                            
-                                            //#region restore conflicting props
-                                            {...{
-                                                ...(('autoFocusRef'    in answerButtonComponentWithChildrenProps) ? { autoFocusRef    : answerButtonComponentWithChildrenProps.autoFocusRef    } : undefined),
-                                                ...(('answer'          in answerButtonComponentWithChildrenProps) ? { answer          : answerButtonComponentWithChildrenProps.answer          } : undefined),
-                                                ...(('buttonComponent' in answerButtonComponentWithChildrenProps) ? { buttonComponent : answerButtonComponentWithChildrenProps.buttonComponent } : undefined),
-                                                ...(('onAnswer'        in answerButtonComponentWithChildrenProps) ? { onAnswer        : answerButtonComponentWithChildrenProps.onAnswer        } : undefined),
-                                            }}
-                                            //#endregion restore conflicting props
-                                        />
-                                    }
-                                    
-                                    
-                                    
-                                    // handlers:
-                                    onAnswer={answerButtonHandleClick}
-                                />
-                            );
-                        })),
+                        cardFooterChildren,
                     )}
                 </>)),
             )}

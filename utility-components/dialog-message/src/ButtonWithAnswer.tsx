@@ -79,6 +79,10 @@ const ButtonWithAnswer = <TAnswer extends any = 'ok'>(props: ButtonWithAnswerPro
         
         // preserves the original `elmRef` from `props`:
         props.elmRef,
+        
+        
+        
+        autoFocusRef,
     );
     
     

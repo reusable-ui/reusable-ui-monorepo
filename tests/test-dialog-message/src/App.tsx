@@ -36,10 +36,11 @@ function App() {
                 }) }>
                     Test dialog 1
                 </button>
-                <button onClick={async () => console.log(await showMessageError<'retry'|'ignore'>({
+                <button onClick={async () => console.log(await showMessageError<'abort'|'retry'|'ignore'>({
                     error: <p>Oops! An error occured. Please try again</p>,
                     options : {
-                        retry: <Button theme='success'>Retry</Button>,
+                        abort: <Button theme='danger'>Abort</Button>,
+                        retry: <Button autoFocus={true} theme='success'>Retry</Button>,
                         ignore : <Button theme='secondary'>Ignore</Button>
                     },
                 }))}>
