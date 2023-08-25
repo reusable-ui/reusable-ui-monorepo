@@ -21,6 +21,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a responsive management system:
+    ifScreenWidthAtLeast,
+    
+    
+    
     // a typography management system:
     headings,
     usesHeadingRule,
@@ -191,6 +196,15 @@ export const usesModalSideLayout = () => {
                     
                     
                     ...children(['button', '[role="button"]'], {
+                        // sizes:
+                        flex       : [[1, 1, '100%']], // growable, shrinkable, initial from max width
+                        ...ifScreenWidthAtLeast('sm', {
+                            flex   : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's width
+                        }),
+                        
+                        
+                        
+                        // typos:
                         whiteSpace : 'nowrap',
                     }),
                     
