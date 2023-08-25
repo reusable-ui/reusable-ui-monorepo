@@ -70,6 +70,7 @@ export * from '@reusable-ui/details'
 export * from '@reusable-ui/visually-hidden'
 export * from '@reusable-ui/dimensions'
 export * from '@reusable-ui/responsives'
+export * from '@reusable-ui/modal-status'
 
 
 

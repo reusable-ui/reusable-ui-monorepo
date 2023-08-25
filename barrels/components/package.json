@@ -77,6 +77,7 @@
     "@reusable-ui/modal": "^6.1.0",
     "@reusable-ui/modal-card": "^6.1.0",
     "@reusable-ui/modal-side": "^6.1.0",
+    "@reusable-ui/modal-status": "^6.1.0",
     "@reusable-ui/nav": "^6.1.0",
     "@reusable-ui/nav-button": "^6.1.0",
     "@reusable-ui/navbar": "^6.1.0",
