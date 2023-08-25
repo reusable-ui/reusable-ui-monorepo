@@ -94,17 +94,25 @@ export const usesModalCardLayout = () => {
                     
                     
                     
+                    // children:
+                    ...children('*', {
+                        flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's width
+                    }),
+                    
+                    
+                    
                     // customize:
                     ...usesCssProps(usesPrefixedProps(modalCards, 'cardCaption')), // apply config's cssProps starting with cardCaption***
                 }),
                 ...children(headerElm, {
+                    // layouts:
                     justifyContent : 'space-between', // separates between items as far as possible
                     alignItems     : 'center',        // center <Control> vertically
                     
                     
                     
                     // children:
-                    ...children(['h1', '.h1', 'h2', '.h2', 'h3', '.h3', 'h4', '.h4', 'h5', '.h5', 'h6', '.h6'], {
+                    ...children(['h1', '.h1', 'h2', '.h2', 'h3', '.h3', 'h4', '.h4', 'h5', '.h5', 'h6', '.h6', '[role="heading"]'], {
                         ...rule([':first-child:last-child', ':first-child:nth-last-child(2)'], { // when the heading is SECOND_LAST|ALONE in the <CardHeader>
                             ...usesHeadingRule(headings, '&', '&', [6]),
                             ...rule(':nth-child(n)', {
@@ -125,8 +133,16 @@ export const usesModalCardLayout = () => {
                     ...usesCssProps(usesPrefixedProps(modalCards, 'cardHeader')), // apply config's cssProps starting with cardHeader***
                 }),
                 ...children(footerElm, {
+                    // layouts:
                     justifyContent : 'end',     // if <Control> is not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
                     alignItems     : 'center',  // center <Control> vertically
+                    flexWrap       : 'wrap',    // wraps the list of <Button>s on narrow screen
+                    
+                    
+                    
+                    ...children(['button', '[role="button"]'], {
+                        whiteSpace : 'nowrap',
+                    }),
                     
                     
                     

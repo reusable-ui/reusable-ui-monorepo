@@ -3,6 +3,7 @@ import {
     useState,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
@@ -44,6 +45,8 @@ function App() {
     const [wideContent, setWideContent] = useState<boolean>(false);
     const [tallContent, setTallContent] = useState<boolean>(false);
     
+    const buttonSaveRef = useRef<HTMLButtonElement|null>(null);
+    
     
     
     return (
@@ -69,6 +72,8 @@ function App() {
                     onCollapseStart={() => console.log('collapsing')}
                     onExpandStart={() => console.log('expanding')}
                     onExpandEnd={() => console.log('expanded')}
+                    
+                    autoFocusOn={buttonSaveRef}
                 >
                     <CardHeader>
                         <h1>Test Modal Card</h1>
@@ -90,8 +95,9 @@ function App() {
                         </p>}
                     </CardBody>
                     <CardFooter>
-                        Goodbye
-                        <Button onClick={handleClose}>Close</Button>
+                        <Button elmRef={buttonSaveRef} onClick={handleClose}>Save</Button>
+                        <Button onClick={handleClose}>Don&apos;t save</Button>
+                        <Button onClick={handleClose}>Continue editing</Button>
                     </CardFooter>
                 </ModalCard>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
