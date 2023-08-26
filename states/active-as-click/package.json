@@ -44,9 +44,9 @@
     "@cssfn/core": "^3.1.0"
   },
   "peerDependencies": {
-    "@reusable-ui/activatable": "^6.1.0",
-    "@reusable-ui/clickable": "^6.1.0",
-    "@reusable-ui/mildable": "^6.1.0",
-    "@reusable-ui/outlineable": "^6.1.0"
+    "@reusable-ui/activatable": "^6.2.0",
+    "@reusable-ui/clickable": "^6.2.0",
+    "@reusable-ui/mildable": "^6.2.0",
+    "@reusable-ui/outlineable": "^6.2.0"
   }
 }
