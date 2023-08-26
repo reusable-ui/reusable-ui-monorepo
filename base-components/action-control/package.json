@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/action-control",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A base clickable (button) UI of Reusable-UI components.",
   "keywords": [
     "control",
@@ -44,8 +44,8 @@
   "dependencies": {
     "@cssfn/core": "^3.1.0",
     "@cssfn/cssfn-react": "^3.1.0",
-    "@reusable-ui/control": "^6.1.0",
-    "@reusable-ui/core": "^6.1.0"
+    "@reusable-ui/control": "^6.2.0",
+    "@reusable-ui/core": "^6.2.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

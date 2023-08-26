@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dropdown-button",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A button component with a dropdown UI.",
   "keywords": [
     "dropdown",
@@ -43,11 +43,11 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/button": "^6.1.0",
-    "@reusable-ui/button-icon": "^6.1.0",
-    "@reusable-ui/core": "^6.1.0",
-    "@reusable-ui/dropdown": "^6.1.0",
-    "@reusable-ui/toggle-button": "^6.1.0"
+    "@reusable-ui/button": "^6.2.0",
+    "@reusable-ui/button-icon": "^6.2.0",
+    "@reusable-ui/core": "^6.2.0",
+    "@reusable-ui/dropdown": "^6.2.0",
+    "@reusable-ui/toggle-button": "^6.2.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

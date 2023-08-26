@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/hamburger-menu-button",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A toggleable hamburger button for showing/hiding menu in Navbar.",
   "keywords": [
     "toggle",
@@ -44,10 +44,10 @@
   "dependencies": {
     "@cssfn/core": "^3.1.0",
     "@cssfn/cssfn-react": "^3.1.0",
-    "@reusable-ui/basic": "^6.1.0",
-    "@reusable-ui/button": "^6.1.0",
-    "@reusable-ui/core": "^6.1.0",
-    "@reusable-ui/toggle-button": "^6.1.0"
+    "@reusable-ui/basic": "^6.2.0",
+    "@reusable-ui/button": "^6.2.0",
+    "@reusable-ui/core": "^6.2.0",
+    "@reusable-ui/toggle-button": "^6.2.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

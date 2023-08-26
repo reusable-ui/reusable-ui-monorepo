@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/focusable",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A capability of UI to be focused.",
   "keywords": [
     "focusable",
@@ -36,8 +36,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.1.0",
-    "@reusable-ui/animating-state": "^6.1.0",
-    "@reusable-ui/hooks": "^6.1.0"
+    "@reusable-ui/animating-state": "^6.2.0",
+    "@reusable-ui/hooks": "^6.2.0"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.1.0",

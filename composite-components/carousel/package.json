@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/carousel",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A slideshow component for cycling through images, slides, or another elements.",
   "keywords": [
     "carousel",
@@ -41,14 +41,14 @@
   "dependencies": {
     "@cssfn/core": "^3.1.0",
     "@cssfn/cssfn-react": "^3.1.0",
-    "@reusable-ui/basic": "^6.1.0",
-    "@reusable-ui/button": "^6.1.0",
-    "@reusable-ui/button-icon": "^6.1.0",
-    "@reusable-ui/content": "^6.1.0",
-    "@reusable-ui/core": "^6.1.0",
-    "@reusable-ui/generic": "^6.1.0",
-    "@reusable-ui/list": "^6.1.0",
-    "@reusable-ui/navscroll": "^6.1.0"
+    "@reusable-ui/basic": "^6.2.0",
+    "@reusable-ui/button": "^6.2.0",
+    "@reusable-ui/button-icon": "^6.2.0",
+    "@reusable-ui/content": "^6.2.0",
+    "@reusable-ui/core": "^6.2.0",
+    "@reusable-ui/generic": "^6.2.0",
+    "@reusable-ui/list": "^6.2.0",
+    "@reusable-ui/navscroll": "^6.2.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",
