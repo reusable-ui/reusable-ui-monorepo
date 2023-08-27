@@ -1,3 +1,5 @@
+[low prior ] replace JSX.Element|null with React.ReactNode
+
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
