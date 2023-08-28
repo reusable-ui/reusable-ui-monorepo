@@ -64,7 +64,7 @@ export const useGlobalStackable = (props: GlobalStackableProps) => {
         
         // cleanups:
         return () => {
-            viewportElm.removeChild(newPortalElm); // remove side effect
+            newPortalElm.parentElement?.removeChild?.(newPortalElm); // remove side effect
         };
     }, [viewportElm]);
     
