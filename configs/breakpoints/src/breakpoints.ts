@@ -12,7 +12,7 @@ import {
     
     
     // writes css in javascript:
-    rule,
+    atRule,
     alwaysRule,
     neverRule,
 }                           from '@cssfn/core'          // writes css in javascript
@@ -123,7 +123,7 @@ export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles:
     
     
     
-    return rule(`@media (min-width: ${minWidth}px)`, styles);
+    return atRule(`@media (min-width: ${minWidth}px)`, styles);
 };
 
 /**
@@ -139,7 +139,7 @@ export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles:
     
     
     
-    return rule(`@media (max-width: ${maxWidthBeforeCurrent}px)`, styles);
+    return atRule(`@media (max-width: ${maxWidthBeforeCurrent}px)`, styles);
 };
 
 /**
@@ -160,10 +160,10 @@ export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, up
     
     
     if (minWidth) {
-        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+        return atRule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     }
     else {
-        return rule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+        return atRule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     } // if
 };
 
@@ -184,10 +184,10 @@ export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles:
     
     
     if (minWidth) {
-        return rule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+        return atRule(`@media (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     }
     else {
-        return rule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+        return atRule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     } // if
 };
 //#endregion rules
