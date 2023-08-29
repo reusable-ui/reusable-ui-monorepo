@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cssfn/cssfn-dom": "^3.1.0",
+    "@cssfn/cssfn-dom": "^3.2.0",
     "@reusable-ui/nav": "^6.2.0",
     "@reusable-ui/nav-button": "^6.2.0",
     "@types/node": "^20.1.0",

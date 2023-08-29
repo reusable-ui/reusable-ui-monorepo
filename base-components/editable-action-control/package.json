@@ -42,8 +42,8 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.1.0",
-    "@cssfn/cssfn-react": "^3.1.0",
+    "@cssfn/core": "^3.2.0",
+    "@cssfn/cssfn-react": "^3.2.0",
     "@reusable-ui/action-control": "^6.2.0",
     "@reusable-ui/core": "^6.2.0",
     "@reusable-ui/editable-control": "^6.2.0"
