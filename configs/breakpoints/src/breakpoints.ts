@@ -117,7 +117,7 @@ export const getBreakpointMaxWidthExclusive = (breakpointName: BreakpointName): 
  * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+export const ifScreenWidthAtLeast        = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const minWidth = getBreakpointMinWidthInclusive(breakpointName);
     if (minWidth === null) return alwaysRule(styles); // no minimum limit => always applied the `styles`
     
@@ -133,7 +133,7 @@ export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles:
  * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+export const ifScreenWidthSmallerThan    = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const maxWidthBeforeCurrent = getBreakpointMaxWidthExclusive(breakpointName);
     if (maxWidthBeforeCurrent === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
     
@@ -150,7 +150,7 @@ export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles:
  * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `lowerBreakpointName` or `upperBreakpointName` are not found in breakpoints.
  */
-export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+export const ifScreenWidthBetween        = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const minWidth             = getBreakpointMinWidthInclusive(lowerBreakpointName);
     
     const nextBp               = getBreakpointNextName(upperBreakpointName);
@@ -174,7 +174,7 @@ export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, up
  * @returns A `Rule` object represents the conditional breakpoint rule.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+export const ifScreenWidthAt             = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
     const minWidth             = getBreakpointMinWidthInclusive(breakpointName);
     
     const nextBp               = getBreakpointNextName(breakpointName);
@@ -188,6 +188,90 @@ export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles:
     }
     else {
         return atRule(`@media (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+    } // if
+};
+
+
+
+
+/**
+ * Applies given `styles` if the container width is equal to / bigger than the specified `breakpointName`.
+ * @param breakpointName The name of the minimum breakpoint.
+ * @param styles The style(s) to apply if the container width meets the minimum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
+ * @throws The specified `breakpointName` is not found in breakpoints.
+ */
+export const ifContainerWidthAtLeast     = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+    const minWidth = getBreakpointMinWidthInclusive(breakpointName);
+    if (minWidth === null) return alwaysRule(styles); // no minimum limit => always applied the `styles`
+    
+    
+    
+    return atRule(`@container (min-width: ${minWidth}px)`, styles);
+};
+
+/**
+ * Applies given `styles` if the container width is smaller than the specified `breakpointName`.
+ * @param breakpointName The name of the maximum breakpoint.
+ * @param styles The style(s) to apply if the container width meets the maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
+ * @throws The specified `breakpointName` is not found in breakpoints.
+ */
+export const ifContainerWidthSmallerThan = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+    const maxWidthBeforeCurrent = getBreakpointMaxWidthExclusive(breakpointName);
+    if (maxWidthBeforeCurrent === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    return atRule(`@container (max-width: ${maxWidthBeforeCurrent}px)`, styles);
+};
+
+/**
+ * Applies given `styles` if the container width is between the specified `lowerBreakpointName` and `upperBreakpointName`.
+ * @param lowerBreakpointName The name of the minimum breakpoint.
+ * @param upperBreakpointName The name of the maximum breakpoint.
+ * @param styles The style(s) to apply if the container width meets the minimum & maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
+ * @throws The specified `lowerBreakpointName` or `upperBreakpointName` are not found in breakpoints.
+ */
+export const ifContainerWidthBetween     = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+    const minWidth             = getBreakpointMinWidthInclusive(lowerBreakpointName);
+    
+    const nextBp               = getBreakpointNextName(upperBreakpointName);
+    const maxWidthBeforeNextBp = nextBp ? getBreakpointMaxWidthExclusive(nextBp) : null;
+    if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    if (minWidth) {
+        return atRule(`@container (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+    }
+    else {
+        return atRule(`@container (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+    } // if
+};
+
+/**
+ * Applies given `styles` if the container width is between the specified `breakpointName` and the next breakpoint.
+ * @param breakpointName The name of the desired breakpoint.
+ * @param styles The style(s) to apply if the container width meets the minimum & maximum breakpoint width.
+ * @returns A `Rule` object represents the conditional breakpoint rule.
+ * @throws The specified `breakpointName` is not found in breakpoints.
+ */
+export const ifContainerWidthAt          = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
+    const minWidth             = getBreakpointMinWidthInclusive(breakpointName);
+    
+    const nextBp               = getBreakpointNextName(breakpointName);
+    const maxWidthBeforeNextBp = nextBp ? getBreakpointMaxWidthExclusive(nextBp) : null;
+    if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
+    
+    
+    
+    if (minWidth) {
+        return atRule(`@container (min-width: ${minWidth}px) and (max-width: ${maxWidthBeforeNextBp}px)`, styles);
+    }
+    else {
+        return atRule(`@container (max-width: ${maxWidthBeforeNextBp}px)`, styles);
     } // if
 };
 //#endregion rules
