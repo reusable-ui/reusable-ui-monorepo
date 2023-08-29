@@ -62,7 +62,7 @@ const getSortedBreakpoints = () => (
  * @returns The name of the next breakpoint, -or- `null` for the next biggest breakpoint.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const next = (breakpointName: BreakpointName): BreakpointName|null => {
+export const getBreakpointNextName          = (breakpointName: BreakpointName): BreakpointName|null => {
     const sortedBreakpoints = getSortedBreakpoints();
     let foundIndex = sortedBreakpoints.findIndex(([searchName]) => (searchName === breakpointName));
     if (foundIndex < 0) throw TypeError(`Breakpoint '${breakpointName}' is not found in breakpoints.`); // invalid key
@@ -80,7 +80,7 @@ export const next = (breakpointName: BreakpointName): BreakpointName|null => {
  * @returns The minimum breakpoint width of the specified `breakpointName`, -or- `null` for the zero width breakpoint.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const min = (breakpointName: BreakpointName): BreakpointValue|null => {
+export const getBreakpointMinWidthInclusive = (breakpointName: BreakpointName): BreakpointValue|null => {
     const value = getSortedBreakpoints().find(([searchName]) => (searchName === breakpointName))?.[1];
     if (value === undefined) throw TypeError(`Breakpoint '${breakpointName}' is not found in breakpoints.`); // invalid key
     
@@ -96,13 +96,13 @@ export const min = (breakpointName: BreakpointName): BreakpointValue|null => {
  * @returns The maximum breakpoint width _before_ reaching the specified `breakpointName`, -or- `null` for the zero width breakpoint.
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
-export const maxBefore = (breakpointName: BreakpointName): BreakpointValue|null => {
-    const value = min(breakpointName);
-    if (value === null) return null; // nothing smaller than 0
+export const getBreakpointMaxWidthExclusive = (breakpointName: BreakpointName): BreakpointValue|null => {
+    const width = getBreakpointMinWidthInclusive(breakpointName);
+    if (width === null) return null; // nothing smaller than 0
     
     
     
-    if ((value >= 0.02)) return (value - 0.02);
+    if ((width >= 0.02)) return (width - 0.02);
     return null; // nothing smaller than 0.02 (near zero)
 };
 //#endregion utilities
@@ -118,7 +118,7 @@ export const maxBefore = (breakpointName: BreakpointName): BreakpointValue|null 
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
 export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth = min(breakpointName);
+    const minWidth = getBreakpointMinWidthInclusive(breakpointName);
     if (minWidth === null) return alwaysRule(styles); // no minimum limit => always applied the `styles`
     
     
@@ -134,7 +134,7 @@ export const ifScreenWidthAtLeast     = (breakpointName: BreakpointName, styles:
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
 export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const maxWidthBeforeCurrent = maxBefore(breakpointName);
+    const maxWidthBeforeCurrent = getBreakpointMaxWidthExclusive(breakpointName);
     if (maxWidthBeforeCurrent === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
     
     
@@ -151,10 +151,10 @@ export const ifScreenWidthSmallerThan = (breakpointName: BreakpointName, styles:
  * @throws The specified `lowerBreakpointName` or `upperBreakpointName` are not found in breakpoints.
  */
 export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, upperBreakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth             = min(lowerBreakpointName);
+    const minWidth             = getBreakpointMinWidthInclusive(lowerBreakpointName);
     
-    const nextBp               = next(upperBreakpointName);
-    const maxWidthBeforeNextBp = nextBp ? maxBefore(nextBp) : null;
+    const nextBp               = getBreakpointNextName(upperBreakpointName);
+    const maxWidthBeforeNextBp = nextBp ? getBreakpointMaxWidthExclusive(nextBp) : null;
     if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
     
     
@@ -175,10 +175,10 @@ export const ifScreenWidthBetween     = (lowerBreakpointName: BreakpointName, up
  * @throws The specified `breakpointName` is not found in breakpoints.
  */
 export const ifScreenWidthAt          = (breakpointName: BreakpointName, styles: CssStyleCollection): CssRule => {
-    const minWidth             = min(breakpointName);
+    const minWidth             = getBreakpointMinWidthInclusive(breakpointName);
     
-    const nextBp               = next(breakpointName);
-    const maxWidthBeforeNextBp = nextBp ? maxBefore(nextBp) : null;
+    const nextBp               = getBreakpointNextName(breakpointName);
+    const maxWidthBeforeNextBp = nextBp ? getBreakpointMaxWidthExclusive(nextBp) : null;
     if (maxWidthBeforeNextBp === null) return neverRule(); // nothing smaller than zero width limit => never apply the `styles`
     
     
