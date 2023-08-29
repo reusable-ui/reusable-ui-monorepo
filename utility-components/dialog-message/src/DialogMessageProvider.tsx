@@ -464,16 +464,20 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         // focus the first fieldError:
         if (fieldErrorAutoFocus) {
-            const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), iframe';
-            const firstFieldError   = fieldErrors?.[0];
-            const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
-            if (fieldErrorAutoFocusScroll) {
-                firstFieldError.scrollIntoView({
-                    block    : 'start',
-                    behavior : 'smooth',
-                });
-            } // if
-            firstFocusableElm?.focus?.({ preventScroll: true });
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), iframe';
+                    const firstFieldError   = fieldErrors?.[0];
+                    const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
+                    if (fieldErrorAutoFocusScroll) {
+                        firstFieldError.scrollIntoView({
+                            block    : 'start',
+                            behavior : 'smooth',
+                        });
+                    } // if
+                    firstFocusableElm?.focus?.({ preventScroll: true });
+                }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
+            }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
         } // if
     });
     const showMessageFetchError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>|false             | any            , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
