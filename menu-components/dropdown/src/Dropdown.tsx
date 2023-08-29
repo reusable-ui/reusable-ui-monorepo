@@ -162,10 +162,12 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         
         
         // auto focusable:
-        autoFocusOn     = dropdownUiRefInternal.current, // take
-        restoreFocusOn  = props.floatingOn,              // take
-        autoFocus       = true,                          // take
-        restoreFocus    = true,                          // take
+        autoFocusOn        = dropdownUiRefInternal.current, // take
+        restoreFocusOn     = props.floatingOn,              // take
+        autoFocus          = true,                          // take
+        restoreFocus       = true,                          // take
+        autoFocusScroll    = false,                         // take
+        restoreFocusScroll = false,                         // take
         
         
         
@@ -189,6 +191,8 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
     }, collapsibleState);
     
     

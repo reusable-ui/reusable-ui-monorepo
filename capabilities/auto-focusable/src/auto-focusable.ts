@@ -25,10 +25,12 @@ import type {
 //#region auto focusable
 export interface AutoFocusableProps {
     // auto focusable:
-    autoFocusOn    ?: React.RefObject<Element>|Element|null // getter ref
-    restoreFocusOn ?: React.RefObject<Element>|Element|null // getter ref
-    autoFocus      ?: boolean
-    restoreFocus   ?: boolean
+    autoFocusOn        ?: React.RefObject<Element>|Element|null // getter ref
+    restoreFocusOn     ?: React.RefObject<Element>|Element|null // getter ref
+    autoFocus          ?: boolean
+    restoreFocus       ?: boolean
+    autoFocusScroll    ?: boolean
+    restoreFocusScroll ?: boolean
 }
 export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: AutoFocusableProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // rest props:
@@ -36,8 +38,10 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
         // auto focusable:
         autoFocusOn,
         restoreFocusOn,
-        autoFocus    = true,
-        restoreFocus = true,
+        autoFocus          = true,
+        restoreFocus       = true,
+        autoFocusScroll    = false,
+        restoreFocusScroll = false,
     } = props;
     
     
@@ -72,7 +76,9 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
             const autoFocusElm = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
             if (autoFocus && autoFocusElm && (autoFocusElm as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
-                    (autoFocusElm as HTMLElement|SVGElement).focus({ preventScroll: true });
+                    requestAnimationFrame(() => {
+                        (autoFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !autoFocusScroll });
+                    }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
                 }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
             } // if
         }
@@ -85,21 +91,23 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
             );
             if (restoreFocus && restoreFocusElm && (restoreFocusElm as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
-                    // conditions:
-                    const focusedElm = document.activeElement;
-                    if (!focusedElm) return; // nothing was focused => nothing to re_focus_back
-                    
-                    const autoFocusElm = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
-                    if (                                                               // neither
-                        !(autoFocusElm?.contains?.(focusedElm))                        // the current_focused_element is inside the <Component> or the <Component> itself
-                        &&                                                             // nor
-                        (!!restoreFocusOn && !restoreFocusElm?.contains?.(focusedElm)) // the current_focused_element is inside the <RestoreFocusElm> or the <RestoreFocusElm> itself
-                    ) return;                                                          // => nothing to re_focus_back
-                    
-                    
-                    
-                    // restore the previously focused element (if any):
-                    (restoreFocusElm as HTMLElement|SVGElement).focus({ preventScroll: true });
+                    requestAnimationFrame(() => {
+                        // conditions:
+                        const focusedElm = document.activeElement;
+                        if (!focusedElm) return; // nothing was focused => nothing to re_focus_back
+                        
+                        const autoFocusElm = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
+                        if (                                                               // neither
+                            !(autoFocusElm?.contains?.(focusedElm))                        // the current_focused_element is inside the <Component> or the <Component> itself
+                            &&                                                             // nor
+                            (!!restoreFocusOn && !restoreFocusElm?.contains?.(focusedElm)) // the current_focused_element is inside the <RestoreFocusElm> or the <RestoreFocusElm> itself
+                        ) return;                                                          // => nothing to re_focus_back
+                        
+                        
+                        
+                        // restore the previously focused element (if any):
+                        (restoreFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !restoreFocusScroll });
+                    }); // wait until the user decided to change the focus to another <Element>
                 }, 0); // wait until the user decided to change the focus to another <Element>
             } // if
             
@@ -119,6 +127,8 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
     ]);
 };
 //#endregion auto focusable

@@ -203,6 +203,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         
         // floatable:
+        floatingRef,
+        
         floatingOn,
         floatingPlacement     = determineFloatingPlacement(),
         floatingMiddleware,
@@ -227,6 +229,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
         
         
         
@@ -520,6 +524,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     // floatable:
+                    floatingRef        : dropdownComponent.props.floatingRef        ?? floatingRef,
+                    
                     floatingOn         : dropdownComponent.props.floatingOn         ?? floatingOn         ?? buttonRefInternal,
                     floatingPlacement  : dropdownComponent.props.floatingPlacement  ?? floatingPlacement,
                     floatingMiddleware : dropdownComponent.props.floatingMiddleware ?? floatingMiddleware,
@@ -544,6 +550,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     restoreFocusOn     : dropdownComponent.props.restoreFocusOn     ?? restoreFocusOn,
                     autoFocus          : dropdownComponent.props.autoFocus          ?? autoFocus,
                     restoreFocus       : dropdownComponent.props.restoreFocus       ?? restoreFocus,
+                    autoFocusScroll    : dropdownComponent.props.autoFocusScroll    ?? autoFocusScroll,
+                    restoreFocusScroll : dropdownComponent.props.restoreFocusScroll ?? restoreFocusScroll,
                 },
                 
                 

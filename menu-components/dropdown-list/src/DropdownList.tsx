@@ -180,6 +180,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         // floatable:
+        floatingRef,
+        
         floatingOn,
         floatingPlacement,
         floatingMiddleware,
@@ -204,6 +206,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
         
         
         
@@ -463,6 +467,8 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // floatable:
+            floatingRef,
+            
             floatingOn,
             floatingPlacement,
             floatingMiddleware,
@@ -483,10 +489,12 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // auto focusable:
-            autoFocusOn      : dropdownComponent.props.autoFocusOn     ?? autoFocusOn,
-            restoreFocusOn   : dropdownComponent.props.restoreFocusOn  ?? restoreFocusOn,
-            autoFocus        : dropdownComponent.props.autoFocus       ?? autoFocus,
-            restoreFocus     : dropdownComponent.props.restoreFocus    ?? restoreFocus,
+            autoFocusOn        : dropdownComponent.props.autoFocusOn          ?? autoFocusOn,
+            restoreFocusOn     : dropdownComponent.props.restoreFocusOn       ?? restoreFocusOn,
+            autoFocus          : dropdownComponent.props.autoFocus            ?? autoFocus,
+            restoreFocus       : dropdownComponent.props.restoreFocus         ?? restoreFocus,
+            autoFocusScroll    : dropdownComponent.props.autoFocusScroll    ?? autoFocusScroll,
+            restoreFocusScroll : dropdownComponent.props.restoreFocusScroll ?? restoreFocusScroll,
         },
         
         

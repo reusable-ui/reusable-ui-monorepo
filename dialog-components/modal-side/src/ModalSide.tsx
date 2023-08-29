@@ -163,6 +163,8 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
         
         
         
@@ -292,53 +294,55 @@ const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeE
         // props:
         {
             // refs:
-            outerRef         : mergedModalRef,
+            outerRef           : mergedModalRef,
             
             
             
             // variants:
-            backdropStyle    : modalComponent.props.backdropStyle  ?? backdropStyle,
+            backdropStyle      : modalComponent.props.backdropStyle      ?? backdropStyle,
             
             
             
             // classes:
-            mainClass        : modalComponent.props.mainClass      ?? props.mainClass ?? styleSheet.main,
+            mainClass          : modalComponent.props.mainClass          ?? props.mainClass    ?? styleSheet.main,
             variantClasses,
             
             
             
             // behaviors:
-            lazy             : modalComponent.props.lazy           ?? lazy,
+            lazy               : modalComponent.props.lazy               ?? lazy,
             
             
             
             // states:
-            expanded         : modalComponent.props.expanded       ?? expanded,
-            onExpandedChange : handleExpandedChange,
+            expanded           : modalComponent.props.expanded           ?? expanded,
+            onExpandedChange   : handleExpandedChange,
             
             
             
             // global stackable:
-            viewport         : modalComponent.props.viewport       ?? viewport,
+            viewport           : modalComponent.props.viewport           ?? viewport,
             
             
             
             // auto focusable:
-            autoFocusOn      : modalComponent.props.autoFocusOn    ?? autoFocusOn     ?? cardRefInternal,
-            restoreFocusOn   : modalComponent.props.restoreFocusOn ?? restoreFocusOn,
-            autoFocus        : modalComponent.props.autoFocus      ?? autoFocus,
-            restoreFocus     : modalComponent.props.restoreFocus   ?? restoreFocus,
+            autoFocusOn        : modalComponent.props.autoFocusOn        ?? autoFocusOn        ?? cardRefInternal,
+            restoreFocusOn     : modalComponent.props.restoreFocusOn     ?? restoreFocusOn,
+            autoFocus          : modalComponent.props.autoFocus          ?? autoFocus,
+            restoreFocus       : modalComponent.props.restoreFocus       ?? restoreFocus,
+            autoFocusScroll    : modalComponent.props.autoFocusScroll    ?? autoFocusScroll,
+            restoreFocusScroll : modalComponent.props.restoreFocusScroll ?? restoreFocusScroll,
             
             
             
             // handlers:
-            onAnimationStart : handleAnimationStart,
-            onAnimationEnd   : handleAnimationEnd,
+            onAnimationStart   : handleAnimationStart,
+            onAnimationEnd     : handleAnimationEnd,
             
-            onExpandStart    : onExpandStart,
-            onCollapseStart  : onCollapseStart,
-            onExpandEnd      : onExpandEnd,
-            onCollapseEnd    : onCollapseEnd,
+            onExpandStart      : onExpandStart,
+            onCollapseStart    : onCollapseStart,
+            onExpandEnd        : onExpandEnd,
+            onCollapseEnd      : onCollapseEnd,
         },
         
         

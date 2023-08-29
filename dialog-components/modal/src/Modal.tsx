@@ -158,41 +158,43 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // rest props:
     const {
         // variants:
-        backdropStyle   = 'regular',
+        backdropStyle      = 'regular',
         
         
         
         // behaviors:
-        lazy            = false,
+        lazy               = false,
         
         
         
         // states:
-        expanded        : _expanded,        // remove
-        onExpandStart   : _onExpandStart,   // remove
-        onCollapseStart : _onCollapseStart, // remove
-        onExpandEnd     : _onExpandEnd,     // remove
-        onCollapseEnd   : _onCollapseEnd,   // remove
+        expanded           : _expanded,        // remove
+        onExpandStart      : _onExpandStart,   // remove
+        onCollapseStart    : _onCollapseStart, // remove
+        onExpandEnd        : _onExpandEnd,     // remove
+        onCollapseEnd      : _onCollapseEnd,   // remove
         onExpandedChange,
         
         
         
         // global stackable:
-        viewport        : _viewport,        // remove
+        viewport           : _viewport,        // remove
         
         
         
         // auto focusable:
-        autoFocusOn     = modalUiRefInternal.current, // take
-        restoreFocusOn  = null,                       // take
-        autoFocus       = true,                       // take
-        restoreFocus    = true,                       // take
+        autoFocusOn        = modalUiRefInternal.current, // take
+        restoreFocusOn     = null,                       // take
+        autoFocus          = true,                       // take
+        restoreFocus       = true,                       // take
+        autoFocusScroll    = false,                      // take
+        restoreFocusScroll = false,                      // take
         
         
         
         // components:
         tabIndex,
-        children        : modalUiComponent,
+        children           : modalUiComponent,
     ...restGenericProps} = props;
     
     
@@ -221,6 +223,8 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         restoreFocusOn,
         autoFocus,
         restoreFocus,
+        autoFocusScroll,
+        restoreFocusScroll,
     }, collapsibleState);
     
     
@@ -434,7 +438,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         if (backdropStyle === 'static') {
             setExcitedDn(true); // make <ModalUi> blinking
             if (autoFocus) {
-                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: true }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
+                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: !autoFocusScroll }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
             } // if
         }
         else {
