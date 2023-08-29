@@ -40,6 +40,6 @@
     "@cssfn/core": "^3.2.0"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^6.2.0"
+    "@reusable-ui/colors": "^6.3.0"
   }
 }

@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@reusable-ui/hooks": "^6.3.0",
-    "@reusable-ui/numbers": "^6.2.0"
+    "@reusable-ui/numbers": "^6.3.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

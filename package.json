@@ -1,5 +1,6 @@
 {
   "name": "reusable-ui-monorepo",
+  "version": "6.3.0",
   "private": true,
   "scripts": {
     "compile+test": "lerna run tsc && lerna run test",
@@ -37,6 +38,5 @@
     "utility-components/*",
     "barrels/*",
     "tests/*"
-  ],
-  "version": "0.0.1"
+  ]
 }
