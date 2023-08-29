@@ -78,7 +78,7 @@ export interface ShowMessageOptions<TAnswer extends any = 'ok'>
         >
 {
     // contents:
-    options             ?: AnswerOptionList<TAnswer>
+    options                   ?: AnswerOptionList<TAnswer>
 }
 
 
@@ -89,64 +89,65 @@ export interface DialogMessage<TAnswer extends any = 'ok'>
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    title               ?: React.ReactNode
-    message              : React.ReactNode
+    title                     ?: React.ReactNode
+    message                    : React.ReactNode
 }
 export interface DialogMessageError<TAnswer extends any = 'ok'>
     extends
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    title               ?: React.ReactNode
-    error                : React.ReactNode
+    title                     ?: React.ReactNode
+    error                      : React.ReactNode
 }
 export interface DialogMessageFieldError<TAnswer extends any = 'ok'>
     extends
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    fieldErrorTitle     ?: FieldErrorTitle
+    fieldErrorTitle           ?: FieldErrorTitle
     
-    fieldErrors          : FieldErrorList
-    fieldErrorMessage   ?: FieldErrorMessage
-    fieldErrorIconFind  ?: (fieldError: Element) => string|null|undefined
-    fieldErrorIcon      ?: IconProps<Element>['icon']
-    fieldErrorLabelFind ?: (fieldError: Element) => string|null|undefined
-    fieldErrorFocus     ?: boolean
+    fieldErrors                : FieldErrorList
+    fieldErrorMessage         ?: FieldErrorMessage
+    fieldErrorIconFind        ?: (fieldError: Element) => string|null|undefined
+    fieldErrorIcon            ?: IconProps<Element>['icon']
+    fieldErrorLabelFind       ?: (fieldError: Element) => string|null|undefined
+    fieldErrorAutoFocus       ?: boolean
+    fieldErrorAutoFocusScroll ?: boolean
     
     
     
     // contexts:
-    context             ?: any
+    context                   ?: any
 }
 export interface DialogMessageFetchError<TAnswer extends any = 'ok'>
     extends
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    fetchErrorTitle     ?: FetchErrorTitle
+    fetchErrorTitle           ?: FetchErrorTitle
     
-    fetchError           : any
-    fetchErrorMessage   ?: FetchErrorMessage
+    fetchError                 : any
+    fetchErrorMessage         ?: FetchErrorMessage
     
     
     
     // contexts:
-    context             ?: any
+    context                   ?: any
 }
 export interface DialogMessageSuccess<TAnswer extends any = 'ok'>
     extends
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    title               ?: React.ReactNode
-    success              : React.ReactNode
+    title                     ?: React.ReactNode
+    success                    : React.ReactNode
 }
 export interface DialogMessageNotification<TAnswer extends any = 'ok'>
     extends
         ShowMessageOptions<TAnswer>
 {
     // contents:
-    title               ?: React.ReactNode
-    notification         : React.ReactNode
+    title                     ?: React.ReactNode
+    notification               : React.ReactNode
 }

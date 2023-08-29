@@ -131,8 +131,8 @@ import {
 
 
 // defaults:
-const _fieldErrorTitleDefault     : Exclude<FieldErrorTitle  , Function> = undefined;
-const _fieldErrorMessageDefault   : Extract<FieldErrorMessage, Function> = ({fieldErrors}) => {
+const _fieldErrorTitleDefault           : Exclude<FieldErrorTitle  , Function> = undefined;
+const _fieldErrorMessageDefault         : Extract<FieldErrorMessage, Function> = ({fieldErrors}) => {
     const isPlural = (fieldErrors?.length > 1);
     return (
         <p>
@@ -140,13 +140,14 @@ const _fieldErrorMessageDefault   : Extract<FieldErrorMessage, Function> = ({fie
         </p>
     );
 };
-const _fieldErrorIconFindDefault  : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind' ]> = (fieldError: Element) => ((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image')?.slice?.(1, -1);
-const _fieldErrorIconDefault      : NonNullable<DialogMessageFieldError<any>['fieldErrorIcon'     ]> = 'text_fields';
-const _fieldErrorLabelFindDefault : NonNullable<DialogMessageFieldError<any>['fieldErrorLabelFind']> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('aria-label') || (fieldError.children?.[0] as HTMLInputElement)?.placeholder;
-const _fieldErrorFocusDefault     : NonNullable<DialogMessageFieldError<any>['fieldErrorFocus'    ]> = true;
+const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind'       ]> = (fieldError: Element) => ((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image')?.slice?.(1, -1);
+const _fieldErrorIconDefault            : NonNullable<DialogMessageFieldError<any>['fieldErrorIcon'           ]> = 'text_fields';
+const _fieldErrorLabelFindDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorLabelFind'      ]> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('aria-label') || (fieldError.children?.[0] as HTMLInputElement)?.placeholder;
+const _fieldErrorAutoFocusDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorAutoFocus'      ]> = true;
+const _fieldErrorAutoFocusScrollDefault : NonNullable<DialogMessageFieldError<any>['fieldErrorAutoFocusScroll']> = true;
 
-const _fetchErrorTitleDefault     : Exclude<FetchErrorTitle  , Function> = undefined;
-const _fetchErrorMessageDefault   : Extract<FetchErrorMessage, Function> = ({isRequestError, isServerError}) => <>
+const _fetchErrorTitleDefault           : Exclude<FetchErrorTitle  , Function> = undefined;
+const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> = ({isRequestError, isServerError}) => <>
     <p>
         Oops, there was an error processing the command.
     </p>
@@ -172,44 +173,45 @@ const _fetchErrorMessageDefault   : Extract<FetchErrorMessage, Function> = ({isR
 // react components:
 export interface DialogMessageProviderProps {
     // components:
-    modalStatusComponent         ?: React.ReactComponentElement<any, ModalStatusProps<Element>>
+    modalStatusComponent             ?: React.ReactComponentElement<any, ModalStatusProps<Element>>
     
-    cardComponent                ?: CardComponentProps<Element>['cardComponent']
-    cardHeaderComponent          ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
-    cardBodyComponent            ?: React.ReactComponentElement<any, CardBodyProps<Element>>
-    cardFooterComponent          ?: React.ReactComponentElement<any, CardFooterProps<Element>>
+    cardComponent                    ?: CardComponentProps<Element>['cardComponent']
+    cardHeaderComponent              ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
+    cardBodyComponent                ?: React.ReactComponentElement<any, CardBodyProps<Element>>
+    cardFooterComponent              ?: React.ReactComponentElement<any, CardFooterProps<Element>>
     
-    closeButtonComponent         ?: React.ReactComponentElement<any, ButtonProps>
-    answerButtonComponent        ?: React.ReactComponentElement<any, ButtonProps>
-    answerOkButtonComponent      ?: React.ReactComponentElement<any, ButtonProps>
+    closeButtonComponent             ?: React.ReactComponentElement<any, ButtonProps>
+    answerButtonComponent            ?: React.ReactComponentElement<any, ButtonProps>
+    answerOkButtonComponent          ?: React.ReactComponentElement<any, ButtonProps>
     
-    fieldErrorTitleDefault       ?: DialogMessageFieldError<any>['fieldErrorTitle']
-    fieldErrorMessageDefault     ?: DialogMessageFieldError<any>['fieldErrorMessage']
-    fieldErrorListComponent      ?: React.ReactComponentElement<any, ListProps<Element>>
-    fieldErrorListItemComponent  ?: React.ReactComponentElement<any, ListItemProps<Element>>
-    fieldErrorIconFindDefault    ?: DialogMessageFieldError<any>['fieldErrorIconFind']
-    fieldErrorIconDefault        ?: DialogMessageFieldError<any>['fieldErrorIcon']
-    fieldErrorIconComponent      ?: React.ReactComponentElement<any, IconProps<Element>>
-    fieldErrorLabelFindDefault   ?: DialogMessageFieldError<any>['fieldErrorLabelFind']
-    fieldErrorFocusDefault       ?: DialogMessageFieldError<any>['fieldErrorFocus']
+    fieldErrorTitleDefault           ?: DialogMessageFieldError<any>['fieldErrorTitle']
+    fieldErrorMessageDefault         ?: DialogMessageFieldError<any>['fieldErrorMessage']
+    fieldErrorListComponent          ?: React.ReactComponentElement<any, ListProps<Element>>
+    fieldErrorListItemComponent      ?: React.ReactComponentElement<any, ListItemProps<Element>>
+    fieldErrorIconFindDefault        ?: DialogMessageFieldError<any>['fieldErrorIconFind']
+    fieldErrorIconDefault            ?: DialogMessageFieldError<any>['fieldErrorIcon']
+    fieldErrorIconComponent          ?: React.ReactComponentElement<any, IconProps<Element>>
+    fieldErrorLabelFindDefault       ?: DialogMessageFieldError<any>['fieldErrorLabelFind']
+    fieldErrorAutoFocusDefault       ?: DialogMessageFieldError<any>['fieldErrorAutoFocus']
+    fieldErrorAutoFocusScrollDefault ?: DialogMessageFieldError<any>['fieldErrorAutoFocusScroll']
     
-    fetchErrorTitleDefault       ?: DialogMessageFetchError<any>['fetchErrorTitle']
-    fetchErrorMessageDefault     ?: DialogMessageFetchError<any>['fetchErrorMessage']
+    fetchErrorTitleDefault           ?: DialogMessageFetchError<any>['fetchErrorTitle']
+    fetchErrorMessageDefault         ?: DialogMessageFetchError<any>['fetchErrorMessage']
 }
 const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProviderProps>): JSX.Element|null => {
     // rest props:
     const {
         // components:
-        modalStatusComponent        = (<ModalStatus modalCardStyle='scrollable' /> as React.ReactComponentElement<any, ModalStatusProps<Element>>),
+        modalStatusComponent             = (<ModalStatus modalCardStyle='scrollable' /> as React.ReactComponentElement<any, ModalStatusProps<Element>>),
         
-        cardComponent               = (<Card<Element>                           /> as React.ReactComponentElement<any, CardProps<Element>>),
-        cardHeaderComponent         = (<CardHeader<Element>                     /> as React.ReactComponentElement<any, CardHeaderProps<Element>>),
-        cardBodyComponent           = (<CardBody<Element>                       /> as React.ReactComponentElement<any, CardBodyProps<Element>>),
-        cardFooterComponent         = (<CardFooter<Element>                     /> as React.ReactComponentElement<any, CardFooterProps<Element>>),
+        cardComponent                    = (<Card<Element>                           /> as React.ReactComponentElement<any, CardProps<Element>>),
+        cardHeaderComponent              = (<CardHeader<Element>                     /> as React.ReactComponentElement<any, CardHeaderProps<Element>>),
+        cardBodyComponent                = (<CardBody<Element>                       /> as React.ReactComponentElement<any, CardBodyProps<Element>>),
+        cardFooterComponent              = (<CardFooter<Element>                     /> as React.ReactComponentElement<any, CardFooterProps<Element>>),
         
-        closeButtonComponent        = (<CloseButton                             /> as React.ReactComponentElement<any, ButtonProps>),
-        answerButtonComponent       = (<Button                                  /> as React.ReactComponentElement<any, ButtonProps>),
-        answerOkButtonComponent     = React.cloneElement<ButtonProps>(answerButtonComponent,
+        closeButtonComponent             = (<CloseButton                             /> as React.ReactComponentElement<any, ButtonProps>),
+        answerButtonComponent            = (<Button                                  /> as React.ReactComponentElement<any, ButtonProps>),
+        answerOkButtonComponent          = React.cloneElement<ButtonProps>(answerButtonComponent,
             // props:
             {
                 // accessibilities:
@@ -222,18 +224,19 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             answerButtonComponent.props.children ?? 'Okay',
         ),
         
-        fieldErrorTitleDefault      = _fieldErrorTitleDefault,
-        fieldErrorMessageDefault    = _fieldErrorMessageDefault,
-        fieldErrorListComponent     = (<List<Element> listStyle='flat'          /> as React.ReactComponentElement<any, ListProps<Element>>),
-        fieldErrorListItemComponent = (<ListItem<Element>                       /> as React.ReactComponentElement<any, ListItemProps<Element>>),
-        fieldErrorIconFindDefault   = _fieldErrorIconFindDefault,
-        fieldErrorIconDefault       = _fieldErrorIconDefault,
-        fieldErrorIconComponent     = (<Icon<Element> icon={undefined as any}   /> as React.ReactComponentElement<any, IconProps<Element>>),
-        fieldErrorLabelFindDefault  = _fieldErrorLabelFindDefault,
-        fieldErrorFocusDefault      = _fieldErrorFocusDefault,
+        fieldErrorTitleDefault           = _fieldErrorTitleDefault,
+        fieldErrorMessageDefault         = _fieldErrorMessageDefault,
+        fieldErrorListComponent          = (<List<Element> listStyle='flat'          /> as React.ReactComponentElement<any, ListProps<Element>>),
+        fieldErrorListItemComponent      = (<ListItem<Element>                       /> as React.ReactComponentElement<any, ListItemProps<Element>>),
+        fieldErrorIconFindDefault        = _fieldErrorIconFindDefault,
+        fieldErrorIconDefault            = _fieldErrorIconDefault,
+        fieldErrorIconComponent          = (<Icon<Element> icon={undefined as any}   /> as React.ReactComponentElement<any, IconProps<Element>>),
+        fieldErrorLabelFindDefault       = _fieldErrorLabelFindDefault,
+        fieldErrorAutoFocusDefault       = _fieldErrorAutoFocusDefault,
+        fieldErrorAutoFocusScrollDefault = _fieldErrorAutoFocusScrollDefault,
         
-        fetchErrorTitleDefault      = _fetchErrorTitleDefault,
-        fetchErrorMessageDefault    = _fetchErrorMessageDefault,
+        fetchErrorTitleDefault           = _fetchErrorTitleDefault,
+        fetchErrorMessageDefault         = _fetchErrorMessageDefault,
         
         
         
@@ -362,14 +365,15 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         // defaults:
         const {
             // contents:
-            fieldErrorTitle     = fieldErrorTitleDefault,
+            fieldErrorTitle           = fieldErrorTitleDefault,
             
-            fieldErrors,        // take the [fieldErrors] as a part of [error message]
-            fieldErrorMessage   = fieldErrorMessageDefault,
-            fieldErrorIconFind  = fieldErrorIconFindDefault,
-            fieldErrorIcon      = fieldErrorIconDefault,
-            fieldErrorLabelFind = fieldErrorLabelFindDefault,
-            fieldErrorFocus     = fieldErrorFocusDefault,
+            fieldErrors,              // take the [fieldErrors] as a part of [error message]
+            fieldErrorMessage         = fieldErrorMessageDefault,
+            fieldErrorIconFind        = fieldErrorIconFindDefault,
+            fieldErrorIcon            = fieldErrorIconDefault,
+            fieldErrorLabelFind       = fieldErrorLabelFindDefault,
+            fieldErrorAutoFocus       = fieldErrorAutoFocusDefault,
+            fieldErrorAutoFocusScroll = fieldErrorAutoFocusScrollDefault,
             
             
             
@@ -459,14 +463,16 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // focus the first fieldError:
-        if (fieldErrorFocus) {
+        if (fieldErrorAutoFocus) {
             const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), iframe';
             const firstFieldError   = fieldErrors?.[0];
             const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
-            firstFieldError.scrollIntoView({
-                block    : 'start',
-                behavior : 'smooth',
-            });
+            if (fieldErrorAutoFocusScroll) {
+                firstFieldError.scrollIntoView({
+                    block    : 'start',
+                    behavior : 'smooth',
+                });
+            } // if
             firstFocusableElm?.focus?.({ preventScroll: true });
         } // if
     });
