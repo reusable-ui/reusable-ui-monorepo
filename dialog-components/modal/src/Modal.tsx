@@ -437,8 +437,16 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // actions:
         if (backdropStyle === 'static') {
             setExcitedDn(true); // make <ModalUi> blinking
-            if (autoFocus) {
-                (modalUiRefInternal.current as HTMLElement|SVGElement|null)?.focus({ preventScroll: !autoFocusScroll }); // re-focus to the <ModalUi>, so the focus is trapped inside the <Modal>
+            
+            
+            
+            const autoFocusElm = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
+            if (autoFocus && autoFocusElm && (autoFocusElm as HTMLElement|SVGElement).focus) {
+                setTimeout(() => {
+                    requestAnimationFrame(() => {
+                        (autoFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !autoFocusScroll }); // re-focus to the <FocusableTarget> of <Modal>, so the focus is trapped inside the <Modal>
+                    }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
+                }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
             } // if
         }
         else {
