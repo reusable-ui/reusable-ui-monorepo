@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/control",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "A base controllable UI of Reusable-UI components.",
   "keywords": [
     "control",
@@ -42,8 +42,8 @@
   "dependencies": {
     "@cssfn/core": "^3.2.0",
     "@cssfn/cssfn-react": "^3.2.0",
-    "@reusable-ui/core": "^6.2.0",
-    "@reusable-ui/indicator": "^6.2.0"
+    "@reusable-ui/core": "^6.3.0",
+    "@reusable-ui/indicator": "^6.3.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

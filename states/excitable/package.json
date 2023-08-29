@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/excitable",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "A capability of UI to highlight itself to attract user's attention.",
   "keywords": [
     "excitable",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.2.0",
-    "@reusable-ui/hooks": "^6.2.0"
+    "@reusable-ui/hooks": "^6.3.0"
   },
   "peerDependencies": {
     "@reusable-ui/animation": "^6.2.0",

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/activatable",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "A capability of UI to be highlighted/selected/activated.",
   "keywords": [
     "activatable",
@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.2.0",
-    "@reusable-ui/animating-state": "^6.2.0",
-    "@reusable-ui/hooks": "^6.2.0",
-    "@reusable-ui/semantics": "^6.2.0"
+    "@reusable-ui/animating-state": "^6.3.0",
+    "@reusable-ui/hooks": "^6.3.0",
+    "@reusable-ui/semantics": "^6.3.0"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.2.0",

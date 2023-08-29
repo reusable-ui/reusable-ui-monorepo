@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/invalidable",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "A possibility of UI having an invalid state.",
   "keywords": [
     "invalidable",
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^3.2.0",
-    "@reusable-ui/animating-state": "^6.2.0",
-    "@reusable-ui/hooks": "^6.2.0"
+    "@reusable-ui/animating-state": "^6.3.0",
+    "@reusable-ui/hooks": "^6.3.0"
   },
   "peerDependencies": {
     "@reusable-ui/accessibilities": "^6.2.0",
