@@ -109,7 +109,14 @@ const Collapse = <TElement extends Element = HTMLElement, TExpandedChangeEvent e
     
     
     // capabilities:
-    const floatable              = useFloatable<TElement>(props, isVisible);
+    /*
+        collapsibleState.state:
+        Collapsed  = 0, => false => not updateFloatingPosition()
+        Collapsing = 1, => true  => do  updateFloatingPosition()
+        Expanding  = 2, => true  => do  updateFloatingPosition()
+        Expanded   = 3, => true  => do  updateFloatingPosition()
+    */
+    const floatable              = useFloatable<TElement>(props, collapsibleState.state);
     
     
     

@@ -69,7 +69,7 @@ export interface FloatableProps
     
     onFloatingUpdate   ?: EventHandler<FloatingPosition>
 }
-export const useFloatable = <TElement extends Element = HTMLElement>(props: FloatableProps, isVisible: boolean = true) => {
+export const useFloatable = <TElement extends Element = HTMLElement>(props: FloatableProps, isVisible: boolean|number = true) => {
     // rest props:
     const {
         // floatable:

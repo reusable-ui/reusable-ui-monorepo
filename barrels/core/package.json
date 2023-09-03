@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -43,7 +43,7 @@
     "@reusable-ui/client-sides": "^6.3.0",
     "@reusable-ui/collapsible": "^6.3.0",
     "@reusable-ui/colorable": "^6.3.0",
-    "@reusable-ui/floatable": "^6.3.0",
+    "@reusable-ui/floatable": "^6.3.1",
     "@reusable-ui/focuses": "^6.3.0",
     "@reusable-ui/global-stackable": "^6.3.0",
     "@reusable-ui/hooks": "^6.3.0",
