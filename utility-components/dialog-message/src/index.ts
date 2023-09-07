@@ -1,4 +1,7 @@
 export *            from './types.js'
+export {
+    paragraphify,
+}                   from './utilities.js'
 export type {
     // contexts:
     DialogMessageApi,
