@@ -16,11 +16,11 @@ import {
 import {
     // react components:
     default as LinkOrigin,
-}                           from 'next/link'
+}                           from 'next/link.js'
 import {
     // hooks:
     usePathname,
-}                           from 'next/navigation'
+}                           from 'next/navigation.js'
 
 // reusable-ui core:
 import {
