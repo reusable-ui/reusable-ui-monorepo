@@ -10,6 +10,12 @@ import {
     useState,
 }                           from 'react'
 
+// reusable-ui utilities:
+import {
+    // hooks:
+    useEvent,
+}                           from '@reusable-ui/hooks'           // react helper hooks
+
 // internals:
 import {
     // utilities:
@@ -70,10 +76,21 @@ export const useGlobalStackable = (props: GlobalStackableProps) => {
     
     
     
+    // stable callbacks:
+    const ensureTopMost = useEvent((): void => {
+        const parentElement = portalElm?.parentElement;
+        if (parentElement && (parentElement.lastElementChild !== portalElm)) { // if not the_last_child
+            parentElement.appendChild?.(portalElm); // place at the last
+        } // if
+    });
+    
+    
+    
     // return the implementations:
     return {
         viewportElm,
         portalElm,
+        ensureTopMost,
     };
 };
 //#endregion global stackable

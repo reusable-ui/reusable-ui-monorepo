@@ -33,6 +33,7 @@ import {
     
     
     // react helper hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -217,7 +218,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // capabilities:
-    const {viewportElm, portalElm} = useGlobalStackable(props);
+    const {viewportElm, portalElm, ensureTopMost} = useGlobalStackable(props);
     useAutoFocusable({
         autoFocusOn,
         restoreFocusOn,
@@ -533,6 +534,17 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // dom effects:
+    
+    // make sure the <Modal> is top_most (if there is multiple <Modal>s shown at the same time):
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isExpanded) return; // <Modal> is not expanded => ignore
+        
+        
+        
+        // actions:
+        ensureTopMost();
+    }, [isExpanded]);
     
     // prevent the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {

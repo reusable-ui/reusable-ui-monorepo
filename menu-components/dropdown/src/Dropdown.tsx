@@ -27,6 +27,7 @@ import {
     
     
     // react helper hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     useMergeEvents,
     useMergeRefs,
@@ -179,13 +180,13 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // states:
-    const collapsibleState       = useCollapsible<TElement, TDropdownExpandedChangeEvent>(props);
-    const isExpanded             = collapsibleState.expanded;
+    const collapsibleState           = useCollapsible<TElement, TDropdownExpandedChangeEvent>(props);
+    const isExpanded                 = collapsibleState.expanded;
     
     
     
     // capabilities:
-    const {portalElm}            = useGlobalStackable(props);
+    const {portalElm, ensureTopMost} = useGlobalStackable(props);
     useAutoFocusable({
         autoFocusOn,
         restoreFocusOn,
@@ -379,6 +380,17 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
     
     
     // dom effects:
+    
+    // make sure the <Dropdown> is top_most (if there is multiple <Dropdown>s shown at the same time):
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!isExpanded) return; // <Dropdown> is not expanded => ignore
+        
+        
+        
+        // actions:
+        ensureTopMost();
+    }, [isExpanded]);
     
     // watch an onClick|onBlur event *outside* the <DropdownUi> each time it shown:
     useEffect(() => {

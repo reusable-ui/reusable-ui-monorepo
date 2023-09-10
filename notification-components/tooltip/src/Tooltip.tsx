@@ -27,6 +27,7 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
+    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -154,7 +155,7 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // capabilities:
-    const {portalElm}                 = useGlobalStackable(props);
+    const {portalElm, ensureTopMost}  = useGlobalStackable(props);
     
     
     
@@ -333,6 +334,18 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // dom effects:
+    
+    // make sure the <Tooltip> is top_most (if there is multiple <Tooltip>s shown at the same time):
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!expandedFn) return; // <Tooltip> is not expanded => ignore
+        
+        
+        
+        // actions:
+        ensureTopMost();
+    }, [expandedFn]);
+    
     const [targetStates] = useState({
         hovered    : false,
         focused    : false,
