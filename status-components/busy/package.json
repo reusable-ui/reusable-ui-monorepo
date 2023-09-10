@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/busy",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "Indicates a loading state of page.",
   "keywords": [
     "busy",
@@ -44,10 +44,10 @@
   "dependencies": {
     "@cssfn/core": "^3.2.0",
     "@cssfn/cssfn-react": "^3.2.0",
-    "@reusable-ui/badge": "^6.3.0",
-    "@reusable-ui/core": "^6.3.0",
-    "@reusable-ui/icon": "^6.3.0",
-    "@reusable-ui/visually-hidden": "^6.3.0"
+    "@reusable-ui/badge": "^6.4.0",
+    "@reusable-ui/core": "^6.4.0",
+    "@reusable-ui/icon": "^6.4.0",
+    "@reusable-ui/visually-hidden": "^6.4.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

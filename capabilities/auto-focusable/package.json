@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/auto-focusable",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "A capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed).",
   "keywords": [
     "focusable",
@@ -34,7 +34,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/collapsible": "^6.3.0"
+    "@reusable-ui/collapsible": "^6.4.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

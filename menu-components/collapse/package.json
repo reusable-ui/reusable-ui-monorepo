@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/collapse",
-  "version": "6.3.1",
+  "version": "6.4.0",
   "description": "A generic element with dynamic visibility (show/hide).",
   "keywords": [
     "collapse",
@@ -43,8 +43,8 @@
   "dependencies": {
     "@cssfn/core": "^3.2.0",
     "@cssfn/cssfn-react": "^3.2.0",
-    "@reusable-ui/core": "^6.3.1",
-    "@reusable-ui/generic": "^6.3.0"
+    "@reusable-ui/core": "^6.4.0",
+    "@reusable-ui/generic": "^6.4.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",
