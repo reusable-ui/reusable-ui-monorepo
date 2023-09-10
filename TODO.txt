@@ -1,4 +1,3 @@
-[low prior ] add barrels in typos => typos/effects.js => ./dist/effects/index.js
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] replace JSX.Element|null with React.ReactNode
 
