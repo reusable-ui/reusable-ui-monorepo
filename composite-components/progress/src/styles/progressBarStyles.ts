@@ -189,6 +189,7 @@ export const usesProgressBarVariants = () => {
                         // bottom layer:
                         backgroundVars.backg,
                     ],
+                    backgroundBlendMode : progresses.barBackgStripedBlendMode,
                 }),
             }),
         ]),
