@@ -41,13 +41,13 @@
     "@cssfn/core": "^3.2.0",
     "@reusable-ui/animating-state": "^6.4.0",
     "@reusable-ui/hooks": "^6.4.0",
-    "@reusable-ui/semantics": "^6.3.0"
+    "@reusable-ui/semantics": "^6.4.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.3.0",
-    "@reusable-ui/animation": "^6.3.0",
-    "@reusable-ui/mildable": "^6.3.0",
-    "@reusable-ui/outlineable": "^6.3.0",
+    "@reusable-ui/accessibilities": "^6.4.0",
+    "@reusable-ui/animation": "^6.4.0",
+    "@reusable-ui/mildable": "^6.4.0",
+    "@reusable-ui/outlineable": "^6.4.0",
     "@types/react": "^18.0.0",
     "react": "^18.0.0"
   }

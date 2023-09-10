@@ -42,10 +42,10 @@
     "@reusable-ui/hooks": "^6.4.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.3.0",
-    "@reusable-ui/animation": "^6.3.0",
-    "@reusable-ui/themeable": "^6.3.0",
-    "@reusable-ui/validations": "^6.3.0",
+    "@reusable-ui/accessibilities": "^6.4.0",
+    "@reusable-ui/animation": "^6.4.0",
+    "@reusable-ui/themeable": "^6.4.0",
+    "@reusable-ui/validations": "^6.4.0",
     "@types/react": "^18.0.0",
     "react": "^18.0.0"
   }
