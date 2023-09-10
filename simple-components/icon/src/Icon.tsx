@@ -71,6 +71,9 @@ export type BuiltinIconList = (typeof builtinIconList)[number]
 export const customIconList = [
     'instagram',
     'whatsapp',
+    'google',
+    'twitter',
+    'apple',
     'close',
     'busy',
     'navup',

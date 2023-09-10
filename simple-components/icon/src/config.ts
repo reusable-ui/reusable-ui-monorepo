@@ -57,6 +57,9 @@ export const iconConfig = {
         files : [
             'instagram.svg',
             'whatsapp.svg',
+            'google.svg',
+            'twitter.svg',
+            'apple.svg',
             'close.svg',
             'busy.svg',
             'navup.svg',

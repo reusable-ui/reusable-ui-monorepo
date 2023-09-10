@@ -50,7 +50,22 @@ function App() {
                     <ButtonIcon theme='primary' icon='whatsapp' mild={true}>
                         test &lt;Button&gt;
                     </ButtonIcon>
-                    <ButtonIcon theme='primary' icon='whatsapp' outlined={true}>
+                    <ButtonIcon theme='primary' icon='whatsapp'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='instagram'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='facebook'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='google'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='twitter'>
+                        test &lt;Button&gt;
+                    </ButtonIcon>
+                    <ButtonIcon theme='primary' icon='apple'>
                         test &lt;Button&gt;
                     </ButtonIcon>
                 </article>
