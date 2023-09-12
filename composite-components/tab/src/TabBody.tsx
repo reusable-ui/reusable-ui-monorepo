@@ -195,62 +195,70 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
         
         
         // children:
-        React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel, tabIndex) => {
-            // conditions:
-            if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => ignore
-            
-            
-            
-            // fn props:
-            const tabHeaderId = `${tabId}h${tabIndex}`;
-            const tabPanelId  = `${tabId}p${tabIndex}`;
-            
-            
-            
-            // props:
-            const tabPanelProps = tabPanel.props;
-            
-            
-            
-            // jsx:
-            return (
-                <TabPanelWithState<Element, TabExpandedChangeEvent>
-                    // other props:
-                    {...tabPanelProps} // steals all tabPanel's props, so the <Owner> can recognize the <TabPanelWithState> as <TheirChild>
-                    
-                    
-                    
-                    // positions:
-                    tabIndex={tabIndex}
-                    
-                    
-                    
-                    // components:
-                    tabPanelComponent={
-                        // clone tabPanel element with (almost) blank props:
-                        <tabPanel.type
-                            // identifiers:
-                            key={tabPanel.key}
-                            id={tabPanelProps.id ?? tabPanelId}
-                            
-                            
-                            
-                            // semantics:
-                            aria-labelledby={tabPanelProps['aria-labelledby'] ?? tabHeaderId}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('tabIndex'          in tabPanelProps) ? { tabIndex          : tabPanelProps.tabIndex          } : undefined),
-                                ...(('tabPanelComponent' in tabPanelProps) ? { tabPanelComponent : tabPanelProps.tabPanelComponent } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
-                />
-            );
-        })
+        ((): React.ReactNode => {
+            let tabIndex = -1;
+            return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel) => {
+                // conditions:
+                if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => ignore
+                
+                
+                
+                // valid tab counter:
+                tabIndex++;
+                
+                
+                
+                // fn props:
+                const tabHeaderId = `${tabId}h${tabIndex}`;
+                const tabPanelId  = `${tabId}p${tabIndex}`;
+                
+                
+                
+                // props:
+                const tabPanelProps = tabPanel.props;
+                
+                
+                
+                // jsx:
+                return (
+                    <TabPanelWithState<Element, TabExpandedChangeEvent>
+                        // other props:
+                        {...tabPanelProps} // steals all tabPanel's props, so the <Owner> can recognize the <TabPanelWithState> as <TheirChild>
+                        
+                        
+                        
+                        // positions:
+                        tabIndex={tabIndex}
+                        
+                        
+                        
+                        // components:
+                        tabPanelComponent={
+                            // clone tabPanel element with (almost) blank props:
+                            <tabPanel.type
+                                // identifiers:
+                                key={tabPanel.key}
+                                id={tabPanelProps.id ?? tabPanelId}
+                                
+                                
+                                
+                                // semantics:
+                                aria-labelledby={tabPanelProps['aria-labelledby'] ?? tabHeaderId}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('tabIndex'          in tabPanelProps) ? { tabIndex          : tabPanelProps.tabIndex          } : undefined),
+                                    ...(('tabPanelComponent' in tabPanelProps) ? { tabPanelComponent : tabPanelProps.tabPanelComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
+                            />
+                        }
+                    />
+                );
+            });
+        })(),
     );
 };
 export {
