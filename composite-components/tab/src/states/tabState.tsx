@@ -45,11 +45,13 @@ import {
 // states:
 
 //#region tabState
+
 // defaults:
 const _defaultExpandedTabIndex = 0;
 
 
 
+// types:
 export interface TabExpandedChangeEvent extends ExpandedChangeEvent {
     // positions:
     tabIndex : number
@@ -57,6 +59,7 @@ export interface TabExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
+// contexts:
 export interface TabState
 {
     // behaviors:

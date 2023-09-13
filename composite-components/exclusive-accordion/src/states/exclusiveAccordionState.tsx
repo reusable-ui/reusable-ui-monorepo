@@ -37,11 +37,13 @@ import {
 // states:
 
 //#region exclusiveAccordionState
+
 // defaults:
 const _defaultExpandedListIndex = -1;
 
 
 
+// types:
 export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
     // positions:
     listIndex : number
@@ -49,6 +51,7 @@ export interface ExclusiveExpandedChangeEvent extends ExpandedChangeEvent {
 
 
 
+// contexts:
 export interface ExclusiveAccordionState
 {
     // states:
@@ -69,6 +72,7 @@ export const useExclusiveAccordionState = (): ExclusiveAccordionState => {
 
 
 
+// react components:
 export interface ExclusiveAccordionStateProps<TExclusiveExpandedChangeEvent extends ExclusiveExpandedChangeEvent = ExclusiveExpandedChangeEvent>
 {
     // states:

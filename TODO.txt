@@ -1,3 +1,4 @@
+[med prior ] convert <Navbar> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] replace JSX.Element|null with React.ReactNode
 
