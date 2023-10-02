@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useId,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -17,6 +18,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // react helper hooks:
     useMergeRefs,
     
@@ -182,7 +188,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         readOnly,
         inheritReadOnly,
         
-        children : tabPanels,
+        children : tabPanelsRaw,
         defaultExpandedTabIndex,
         expandedTabIndex,
         onExpandedChange,
@@ -210,6 +216,11 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
         // preserves the original `elmRef` from `props`:
         elmRef,
     );
+    
+    
+    
+    // children:
+    const tabPanels = useMemo(() => flattenChildren(tabPanelsRaw), [tabPanelsRaw]);
     
     
     
