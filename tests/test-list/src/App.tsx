@@ -36,12 +36,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem>
                     A fourth item
                 </ListItem>
@@ -59,12 +61,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem>
                     A fourth item
                 </ListItem>
@@ -82,12 +86,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem>
                     A fourth item
                 </ListItem>
@@ -108,12 +114,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem actionCtrl={false}>
                     A fourth item
                 </ListItem>
@@ -131,12 +139,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem actionCtrl={false}>
                     A fourth item
                 </ListItem>
@@ -154,12 +164,14 @@ function App() {
                 <ListItem>
                     A first item
                 </ListItem>
-                <ListItem tag='span' role='presentation'>
-                    A second item
-                </ListItem>
-                <ListItem theme='success'>
-                    A third item
-                </ListItem>
+                <>
+                    <ListItem tag='span' role='presentation'>
+                        A second item
+                    </ListItem>
+                    <ListItem theme='success'>
+                        A third item
+                    </ListItem>
+                </>
                 <ListItem actionCtrl={false}>
                     A fourth item
                 </ListItem>

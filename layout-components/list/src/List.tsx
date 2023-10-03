@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -12,6 +17,12 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    isTruthyNode,
+    
+    
+    
     // react helper hooks:
     useMergeEvents,
     useMergeClasses,
@@ -278,6 +289,57 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     
     
     
+    // children:
+    const wrappedChildren = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(children)
+        .filter(isTruthyNode) // only truthy children
+        .map<React.ReactNode>((child, index) => {
+            // tests:
+            const isElement = React.isValidElement<ListItemProps<Element>>(child);
+            
+            
+            
+            // jsx:
+            return (
+                /* wrap child with <WrapperItem> */
+                <WrapperItem<HTMLLIElement>
+                    // identifiers:
+                    key={(isElement ? child.key : null) ?? index}
+                    
+                    
+                    
+                    // semantics:
+                    tag={wrapperTag}
+                >
+                    {!isElement ? child : React.cloneElement<ListItemProps<Element>>(child,
+                        // props:
+                        {
+                            // behaviors:
+                            ...(((): boolean => {
+                                // conditions:
+                                if (child.type === ListSeparatorItem)      return false;
+                                if (child.props.classes?.includes('void')) return false;
+                                
+                                
+                                
+                                // result:
+                                return (
+                                    child.props.actionCtrl
+                                    ??
+                                    defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
+                                    ??
+                                    false             // if <List>'s actionCtrl was not assigned => default to false
+                                );
+                            })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
+                        },
+                    )}
+                </WrapperItem>
+            );
+        })
+    , [children]);
+    
+    
+    
     // jsx:
     return (
         <Indicator<TElement>
@@ -303,48 +365,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             // handlers:
             onAnimationEnd={handleAnimationEnd}
         >
-            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
-                // conditions:
-                if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
-                
-                
-                
-                // jsx:
-                return (
-                    <WrapperItem<HTMLLIElement>
-                        // identifiers:
-                        key={index}
-                        
-                        
-                        
-                        // semantics:
-                        tag={wrapperTag}
-                    >
-                        {!React.isValidElement<ListItemProps<Element>>(child) ? child : React.cloneElement<ListItemProps<Element>>(child,
-                            // props:
-                            {
-                                // behaviors:
-                                ...(((): boolean => {
-                                    // conditions:
-                                    if (child.type === ListSeparatorItem)      return false;
-                                    if (child.props.classes?.includes('void')) return false;
-                                    
-                                    
-                                    
-                                    // result:
-                                    return (
-                                        child.props.actionCtrl
-                                        ??
-                                        defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
-                                        ??
-                                        false             // if <List>'s actionCtrl was not assigned => default to false
-                                    );
-                                })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
-                            },
-                        )}
-                    </WrapperItem>
-                );
-            })}
+            {wrappedChildren}
         </Indicator>
     );
 };
