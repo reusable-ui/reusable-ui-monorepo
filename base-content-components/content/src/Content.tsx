@@ -77,8 +77,9 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
     
     
     // children:
-    const mutatedChildren = useMemo<React.ReactNode[]>(() => {
-        return flattenChildren(children).map<React.ReactNode>((child) => {
+    const mutatedChildren = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(children)
+        .map<React.ReactNode>((child) => {
             // link:
             if (React.isValidElement<ButtonProps>(child) && (typeof(child.type) === 'string')) {
                 const classes = (child.props.className ?? '').split(' ');
@@ -121,8 +122,8 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
             
             // other component:
             return child;
-        });
-    }, [children]);
+        })
+    , [children]);
     
     
     
