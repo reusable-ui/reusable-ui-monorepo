@@ -386,3 +386,24 @@ features:                                                                      [
 012345601234560123456      [1-6]=5  vs  7-1+6=12  vs  7-6+1=2
        =#-----
       ~~#============
+
+
+=========================================================================================
+
+
+Components with children mutation:
+
+
+<Content>		updated of mutating <a> => <Button buttonStyle='link'>
+
+
+<Carousel>		unwrap, ignores nullish children, wrap with <li>
+<Tab>			unwrap, ignores nullish children
+
+<Accordion>		unwrap, mutate default [lazy] of children
+<ExclusiveAccordion>	unwrap, wrap with <AccordionItemWithState>
+
+<Group>			unwrap, wrap with <GroupItem>
+<Navscroll>		unwrap, wrap with <ListItemWithNavigation>, downgrade to <Nav>
+<List>			unwrap, wrap with <WrapperItem>
+<DropdownList>		unwrap, wrap with <ListItemWithExpandedHandler>
