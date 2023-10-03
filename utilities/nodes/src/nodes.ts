@@ -26,3 +26,6 @@ export const isReusableUiComponent = <TProps = any, TConstructor extends React.J
         !isForwardRef(node)
     );
 };
+
+export const isTruthyNode = (node: React.ReactNode) => (node !== undefined) && (node !== null) && (node !== true) && (node !== false);
+export const isFalsyNode  = (node: React.ReactNode) => (node === undefined) || (node === null) || (node === true) || (node === false);
