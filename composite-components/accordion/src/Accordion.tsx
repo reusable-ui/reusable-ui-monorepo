@@ -113,7 +113,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
                 // props:
                 {
                     // behaviors:
-                    lazy : child.props.lazy ?? lazy,
+                    lazy : lazy,
                 },
             );
         });
