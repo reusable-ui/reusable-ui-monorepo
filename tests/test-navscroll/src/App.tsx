@@ -215,12 +215,14 @@ function App() {
                     <ListItem>
                         First section
                     </ListItem>
-                    <ListItem>
-                        Second section
-                    </ListItem>
-                    <ListItem>
-                        Third section
-                    </ListItem>
+                    <>
+                        <ListItem>
+                            Second section
+                        </ListItem>
+                        <ListItem>
+                            Third section
+                        </ListItem>
+                    </>
                     <ListItem>
                         Fourth section
                         <Navscroll>

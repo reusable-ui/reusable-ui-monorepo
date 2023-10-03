@@ -18,6 +18,11 @@ import type {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // react helper hooks:
     useEvent,
     EventHandler,
@@ -468,92 +473,105 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         );
     };
     const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
-        return React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
-            // conditions:
-            if (!React.isValidElement<ListItemProps<Element>>(child)) return child; // not a <ListItem> => ignore
-            const listItem = child;
-            
-            
-            
-            const deepLevelsCurrent = [...deepLevelsParent, index];
-            
-            
-            
-            // props:
-            const listItemProps = listItem.props;
-            
-            
-            
-            // defaults:
-            const actionCtrl = listItemProps.actionCtrl ?? props.actionCtrl ?? true;
-            
-            
-            
-            // jsx:
-            return (
-                <ListItemWithNavigation<Element>
-                    // other props:
-                    {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithNavigation> as <TheirChild>
-                    
-                    
-                    
-                    // positions:
-                    deepLevels={deepLevelsCurrent}
-                    
-                    
-                    
-                    // behaviors:
-                    actionCtrl={actionCtrl}
-                    
-                    
-                    
-                    // states:
-                    active={listItemProps.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
-                    
-                    
-                    
-                    // handlers:
-                    handleNavigate={(actionCtrl || undefined) && handleNavigate}
-                    
-                    
-                    
-                    // components:
-                    listItemComponent={
-                        // clone listItem element with (almost) blank props:
-                        <listItem.type
-                            // identifiers:
-                            key={listItem.key}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('deepLevels'        in listItemProps) ? { deepLevels        : listItemProps.deepLevels        } : undefined),
-                                ...(('actionCtrl'        in listItemProps) ? { actionCtrl        : listItemProps.actionCtrl        } : undefined),
-                                ...(('active'            in listItemProps) ? { active            : listItemProps.active            } : undefined),
-                                ...(('handleNavigate'    in listItemProps) ? { handleNavigate    : listItemProps.handleNavigate    } : undefined),
-                                ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
-                >
-                    {React.Children.map<React.ReactNode, React.ReactNode>(listItemProps.children, (grandChild, grandIndex) => (
-                        (
-                            React.isValidElement<NavscrollProps>(grandChild)
-                            &&
-                            (grandChild.type === navscrollComponent.type)
-                            &&
-                            !grandChild.props.scrollingOf
-                        )
-                        ?
-                        mutateNestedNavscroll(grandChild.props, grandChild.key ?? grandIndex, /*deepLevelsParent: */deepLevelsCurrent)
-                        :
-                        grandChild
-                    ))}
-                </ListItemWithNavigation>
-            );
-        });
+        return (
+            flattenChildren(children)
+            .map<React.ReactNode>((listItem, index) => {
+                // conditions:
+                if (!React.isValidElement<ListItemProps<Element>>(listItem)) return listItem; // not a <ListItem> => place it anyway
+                
+                
+                
+                const deepLevelsCurrent = [...deepLevelsParent, index];
+                
+                
+                
+                // props:
+                const listItemProps = listItem.props;
+                
+                
+                
+                // defaults:
+                const actionCtrl = listItemProps.actionCtrl ?? props.actionCtrl ?? true;
+                
+                
+                
+                // children:
+                const mutatedListItemChildren = (
+                    flattenChildren(listItemProps.children)
+                    .map<React.ReactNode>((nestedNavscroll, nestedNavscrollIndex) => {
+                        // conditions:
+                        if (!React.isValidElement<NavscrollProps>(nestedNavscroll)) return nestedNavscroll; // not an         <element> => place it anyway
+                        if (nestedNavscroll.type !== navscrollComponent.type)       return nestedNavscroll; // not a        <Navscroll> => place it anyway
+                        if (!!nestedNavscroll.props.scrollingOf)                    return nestedNavscroll; // not a nested <Navscroll> => place it anyway
+                        
+                        
+                        
+                        // jsx:
+                        return mutateNestedNavscroll(nestedNavscroll.props, nestedNavscroll.key ?? nestedNavscrollIndex, /*deepLevelsParent: */deepLevelsCurrent);
+                    })
+                );
+                
+                
+                
+                // jsx:
+                return (
+                    <ListItemWithNavigation<Element>
+                        // other props:
+                        {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithNavigation> as <TheirChild>
+                        
+                        
+                        
+                        // identifiers:
+                        key={listItem.key}
+                        
+                        
+                        
+                        // positions:
+                        deepLevels={deepLevelsCurrent}
+                        
+                        
+                        
+                        // behaviors:
+                        actionCtrl={actionCtrl}
+                        
+                        
+                        
+                        // states:
+                        active={listItemProps.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
+                        
+                        
+                        
+                        // handlers:
+                        handleNavigate={(actionCtrl || undefined) && handleNavigate}
+                        
+                        
+                        
+                        // components:
+                        listItemComponent={
+                            // clone listItem element with (almost) blank props:
+                            <listItem.type
+                                // identifiers:
+                                key={listItem.key}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('deepLevels'        in listItemProps) ? { deepLevels        : listItemProps.deepLevels        } : undefined),
+                                    ...(('actionCtrl'        in listItemProps) ? { actionCtrl        : listItemProps.actionCtrl        } : undefined),
+                                    ...(('active'            in listItemProps) ? { active            : listItemProps.active            } : undefined),
+                                    ...(('handleNavigate'    in listItemProps) ? { handleNavigate    : listItemProps.handleNavigate    } : undefined),
+                                    ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
+                            />
+                        }
+                    >
+                        {mutatedListItemChildren}
+                    </ListItemWithNavigation>
+                );
+            })
+        );
     };
     
     
