@@ -69,8 +69,10 @@ function App() {
                 
                 <Group theme='primary'>
                     <Button theme='primary' className='solid fluid'>Pizza</Button>
-                    <Button theme='warning' className='solid fluid'>Salad</Button>
-                    <Check nude={false} checkStyle='switch' theme='danger' className='solid fluid'>Spicy</Check>
+                    <>
+                        <Button theme='warning' className='solid fluid'>Salad</Button>
+                        <Check nude={false} checkStyle='switch' theme='danger' className='solid fluid'>Spicy</Check>
+                    </>
                 </Group>
             </div>
         </>

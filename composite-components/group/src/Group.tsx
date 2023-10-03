@@ -2,7 +2,18 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
+
+// reusable-ui core:
+import {
+    // a set of React node utility functions:
+    flattenChildren,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import type {
@@ -73,6 +84,65 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
     
     
     
+    // children:
+    const mutatedChildren = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(children)
+        .map<React.ReactNode>((child) => {
+            // conditions:
+            if (!React.isValidElement<BasicProps>(child)) return child; // not an <Element> => place it anyway
+            
+            
+            
+            // props:
+            const childProps = {
+                // other props:
+                ...child.props,
+                
+                
+                
+                // variants:
+                size : child.props.size ?? size,
+            };
+            
+            
+            
+            // jsx:
+            return (
+                /* wrap child with <GroupItem> */
+                <GroupItem
+                    // identifiers:
+                    key={child.key}
+                    
+                    
+                    
+                    // other props:
+                    {...childProps} // steals all child's props, so the <Owner> can recognize the <GroupItem> as <TheirChild>
+                    
+                    
+                    
+                    // components:
+                    component={
+                        // clone child element with (almost) blank props:
+                        <child.type
+                            // identifiers:
+                            key={child.key}
+                            
+                            
+                            
+                            //#region restore conflicting props
+                            {...{
+                                ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                            }}
+                            //#endregion restore conflicting props
+                        />
+                    }
+                />
+            );
+        })
+    , [children]);
+    
+    
+    
     // jsx:
     return (
         <List<TElement>
@@ -92,52 +162,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             orientation={props.orientation ?? 'inline'}
             mild={props.mild ?? false}
         >
-            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
-                // conditions:
-                if (!React.isValidElement<BasicProps>(child)) return child; // not an <Element> => ignore
-                
-                
-                
-                // props:
-                const childProps = {
-                    // other props:
-                    ...child.props,
-                    
-                    
-                    
-                    // variants:
-                    size : child.props.size ?? size,
-                };
-                
-                
-                
-                // jsx:
-                return (
-                    <GroupItem
-                        // other props:
-                        {...childProps} // steals all child's props, so the <Owner> can recognize the <GroupItem> as <TheirChild>
-                        
-                        
-                        
-                        // components:
-                        component={
-                            // clone child element with (almost) blank props:
-                            <child.type
-                                // identifiers:
-                                key={child.key}
-                                
-                                
-                                
-                                //#region restore conflicting props
-                                {...{
-                                    ...(('component' in childProps) ? { component : childProps.component } : undefined),
-                                }}
-                                //#endregion restore conflicting props
-                            />
-                        }
-                    />
-                );
-            })}
+            {mutatedChildren}
         </List>
     );
 };
