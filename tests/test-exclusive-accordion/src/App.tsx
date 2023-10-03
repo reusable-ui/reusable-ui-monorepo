@@ -65,21 +65,23 @@ function App() {
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </AccordionItem>
-                    <AccordionItem key={2} label='A third item' theme='success'>
-                        <p>The detail of third item.</p>
-                        <ParagraphLorem />
-                        <ParagraphLorem />
-                    </AccordionItem>
-                    <AccordionItem key={3} label='A fourth item' defaultExpanded={true}>
-                        <p>The detail of fourth item.</p>
-                        <ParagraphLorem />
-                        <ParagraphLorem />
-                    </AccordionItem>
-                    <AccordionItem key={4} label='A fifth item' theme='danger'>
-                        <p>The detail of fifth item.</p>
-                        <ParagraphLorem />
-                        <ParagraphLorem />
-                    </AccordionItem>
+                    <>
+                        <AccordionItem key={2} label='A third item' theme='success'>
+                            <p>The detail of third item.</p>
+                            <ParagraphLorem />
+                            <ParagraphLorem />
+                        </AccordionItem>
+                        <AccordionItem key={3} label='A fourth item' defaultExpanded={true}>
+                            <p>The detail of fourth item.</p>
+                            <ParagraphLorem />
+                            <ParagraphLorem />
+                        </AccordionItem>
+                        <AccordionItem key={4} label='A fifth item' theme='danger'>
+                            <p>The detail of fifth item.</p>
+                            <ParagraphLorem />
+                            <ParagraphLorem />
+                        </AccordionItem>
+                    </>
                 </ExclusiveAccordion>
             </div>
         </>
