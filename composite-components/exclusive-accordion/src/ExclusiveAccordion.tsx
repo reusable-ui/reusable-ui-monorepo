@@ -106,7 +106,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     // children:
     const accordionComponentChildren = accordionComponent.props.children;
-    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
+    const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
         accordionComponentChildren
         ??
         flattenChildren(children)
@@ -183,7 +183,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                 
                 
                 // children:
-                mutatedChildren,
+                wrappedChildren,
             )}
         </ExclusiveAccordionStateProvider>
     );
