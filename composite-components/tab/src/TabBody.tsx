@@ -199,7 +199,7 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
             let tabIndex = -1;
             return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel) => {
                 // conditions:
-                if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => ignore
+                if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => place it anyway
                 
                 
                 

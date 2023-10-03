@@ -156,7 +156,7 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
         // children:
         React.Children.map<React.ReactNode, React.ReactNode>(listComponent.props.children ?? tabPanels, (tabPanel, tabIndex) => {
             // conditions:
-            if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => ignore
+            if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return null; // not a <TabPanel> => ignore
             
             
             

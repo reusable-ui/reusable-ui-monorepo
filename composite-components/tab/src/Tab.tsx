@@ -20,6 +20,7 @@ import {
 import {
     // a set of React node utility functions:
     flattenChildren,
+    isTruthyNode,
     
     
     
@@ -220,7 +221,10 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
     
     
     // children:
-    const tabPanels = useMemo(() => flattenChildren(tabPanelsRaw), [tabPanelsRaw]);
+    const tabPanels = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(tabPanelsRaw)
+        .filter(isTruthyNode) // only truthy children
+    , [tabPanelsRaw]);
     
     
     
