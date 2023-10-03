@@ -25,6 +25,7 @@ import {
 import {
     // a set of React node utility functions:
     flattenChildren,
+    isTruthyNode,
     
     
     
@@ -250,7 +251,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     const wrappedChildren = useMemo<React.ReactNode[]>(() => {
         return (
             flattenChildren(children)
-            .filter((child) => (child !== undefined) && (child !== null) && (child !== true) && (child !== false)) // ignore nullish child
+            .filter(isTruthyNode) // only truthy children
             .map<React.ReactNode>((child, index) =>
                 /* wrap child with <li> */
                 <Generic<TElement>
