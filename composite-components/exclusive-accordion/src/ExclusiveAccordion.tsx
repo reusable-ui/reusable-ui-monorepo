@@ -123,6 +123,7 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
             
             // jsx:
             return (
+                /* wrap child with <AccordionItemWithState> */
                 <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
                     // other props:
                     {...accordionItemProps} // steals all accordionItem's props, so the <Owner> can recognize the <AccordionItemWithState> as <TheirChild>
