@@ -101,6 +101,11 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
                 ) {
                     return (
                         <Button
+                            // identifiers:
+                            key={child.key}
+                            
+                            
+                            
                             // semantics:
                             tag={(child.type ?? 'a') as Tag} // copy the original <tag>
                             
