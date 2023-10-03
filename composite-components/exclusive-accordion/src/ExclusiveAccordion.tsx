@@ -106,8 +106,10 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     // children:
     const accordionComponentChildren = accordionComponent.props.children;
-    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
-        return accordionComponentChildren ?? flattenChildren(children).map<React.ReactNode>((accordionItem, listIndex) => {
+    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
+        accordionComponentChildren
+        ??
+        flattenChildren(children).map<React.ReactNode>((accordionItem, listIndex) => {
             // conditions:
             if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => place it anyway
             
@@ -150,8 +152,8 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     }
                 />
             );
-        });
-    }, [accordionComponentChildren, children]);
+        })
+    , [accordionComponentChildren, children]);
     
     
     
