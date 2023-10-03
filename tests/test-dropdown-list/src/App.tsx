@@ -53,12 +53,14 @@ function App() {
                     Show menu
                 </ButtonIcon>
                 <DropdownList floatingOn={btnRef} theme='primary' expanded={showDropdown} onExpandedChange={handleExpandedChange}>
-                    <ListItem>
-                        A first item
-                    </ListItem>
-                    <ListItem>
-                        A second item
-                    </ListItem>
+                    <>
+                        <ListItem>
+                            A first item
+                        </ListItem>
+                        <ListItem>
+                            A second item
+                        </ListItem>
+                    </>
                     <ListItem theme='success' actionCtrl={false}>
                         A third item
                         <hr />

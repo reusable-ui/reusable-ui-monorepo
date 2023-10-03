@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useRef,
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -17,6 +18,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // react helper hooks:
     useIsomorphicLayoutEffect,
     useEvent,
@@ -426,6 +432,73 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
     }, [isFullyExpanded, scrollToActiveItem]);
     
     
+    
+    // children:
+    const listComponentChildren = listComponent.props.children;
+    const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
+        listComponentChildren
+        ??
+        flattenChildren(listItems)
+        .map<React.ReactNode>((listItem, index) => {
+            // conditions:
+            if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => place it anyway
+            if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => place it anyway
+            if (!(listItem.props.actionCtrl ?? defaultActionCtrl ?? false)) return listItem; // <ListItem actionCtrl={false}>  => place it anyway
+            if (listItem.type === ListSeparatorItem)                        return listItem; // <ListSeparatorItem>            => place it anyway
+            if (listItem.props.classes?.includes('void'))                   return listItem; // a foreign <ListItem>           => place it anyway
+            // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
+            
+            
+            
+            // props:
+            const listItemProps = listItem.props;
+            
+            
+            
+            // jsx:
+            return (
+                /* wrap child with <ListItemWithExpandedHandler> */
+                <ListItemWithExpandedHandler<Element, TDropdownListExpandedChangeEvent>
+                    // other props:
+                    {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithExpandedHandler> as <TheirChild>
+                    
+                    
+                    
+                    // positions:
+                    listIndex={index}
+                    
+                    
+                    
+                    // states:
+                    onExpandedChange={onExpandedChange}
+                    
+                    
+                    
+                    // components:
+                    listItemComponent={
+                        // clone listItem element with (almost) blank props:
+                        <listItem.type
+                            // identifiers:
+                            key={listItem.key}
+                            
+                            
+                            
+                            //#region restore conflicting props
+                            {...{
+                                ...(('listIndex'         in listItemProps) ? { listIndex         : listItemProps.listIndex         } : undefined),
+                                ...(('onExpandedChange'  in listItemProps) ? { onExpandedChange  : listItemProps.onExpandedChange  } : undefined),
+                                ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
+                            }}
+                            //#endregion restore conflicting props
+                        />
+                    }
+                />
+            );
+        })
+    , [listComponentChildren, listItems]);
+    
+    
+    
     // jsx:
     /* <Dropdown> */
     return React.cloneElement<DropdownProps<Element, TDropdownListExpandedChangeEvent>>(dropdownComponent,
@@ -542,61 +615,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             
             
             // children:
-            React.Children.map<React.ReactNode, React.ReactNode>(listComponent.props.children ?? listItems, (listItem, index) => {
-                // conditions:
-                if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => ignore
-                if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => ignore
-                if (!(listItem.props.actionCtrl ?? defaultActionCtrl ?? false)) return listItem; // <ListItem actionCtrl={false}>  => ignore
-                if (listItem.type === ListSeparatorItem)                        return listItem; // <ListSeparatorItem>            => ignore
-                if (listItem.props.classes?.includes('void'))                   return listItem; // a foreign <ListItem>           => ignore
-                // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
-                
-                
-                
-                // props:
-                const listItemProps = listItem.props;
-                
-                
-                
-                // jsx:
-                return (
-                    <ListItemWithExpandedHandler<Element, TDropdownListExpandedChangeEvent>
-                        // other props:
-                        {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithExpandedHandler> as <TheirChild>
-                        
-                        
-                        
-                        // positions:
-                        listIndex={index}
-                        
-                        
-                        
-                        // states:
-                        onExpandedChange={onExpandedChange}
-                        
-                        
-                        
-                        // components:
-                        listItemComponent={
-                            // clone listItem element with (almost) blank props:
-                            <listItem.type
-                                // identifiers:
-                                key={listItem.key}
-                                
-                                
-                                
-                                //#region restore conflicting props
-                                {...{
-                                    ...(('listIndex'         in listItemProps) ? { listIndex         : listItemProps.listIndex         } : undefined),
-                                    ...(('onExpandedChange'  in listItemProps) ? { onExpandedChange  : listItemProps.onExpandedChange  } : undefined),
-                                    ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
-                                }}
-                                //#endregion restore conflicting props
-                            />
-                        }
-                    />
-                );
-            }),
+            wrappedChildren,
         )),
     );
 };
