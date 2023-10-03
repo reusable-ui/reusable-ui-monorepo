@@ -248,26 +248,24 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // children:
-    const wrappedChildren = useMemo<React.ReactNode[]>(() => {
-        return (
-            flattenChildren(children)
-            .filter(isTruthyNode) // only truthy children
-            .map<React.ReactNode>((child, index) =>
-                /* wrap child with <li> */
-                <Generic<TElement>
-                    // identifiers:
-                    key={index}
-                    
-                    
-                    
-                    // semantics:
-                    tag='li'
-                >
-                    {child}
-                </Generic>
-            )
-        );
-    }, [children]);
+    const wrappedChildren = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(children)
+        .filter(isTruthyNode) // only truthy children
+        .map<React.ReactNode>((child, index) =>
+            /* wrap child with <li> */
+            <Generic<TElement>
+                // identifiers:
+                key={index}
+                
+                
+                
+                // semantics:
+                tag='li'
+            >
+                {child}
+            </Generic>
+        )
+    , [children]);
     
     
     
