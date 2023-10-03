@@ -255,7 +255,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
             /* wrap child with <li> */
             <Generic<TElement>
                 // identifiers:
-                key={index}
+                key={(React.isValidElement<{}>(child) ? child.key : null) ?? index}
                 
                 
                 
