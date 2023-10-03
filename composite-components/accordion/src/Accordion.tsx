@@ -2,10 +2,20 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // reusable-ui core:
-import type {
+import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -88,6 +98,29 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
     
     
     
+    // children:
+    const listComponentChildren = listComponent.props.children;
+    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
+        return listComponentChildren ?? flattenChildren(children).map<React.ReactNode>((child) => {
+            // conditions:
+            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => ignore
+            if (child.props.lazy !== undefined) return child; // the default [lazy] has already assigned => do not mutate
+            
+            
+            
+            // jsx:
+            return React.cloneElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child,
+                // props:
+                {
+                    // behaviors:
+                    lazy : child.props.lazy ?? lazy,
+                },
+            );
+        });
+    }, [listComponentChildren, children]);
+    
+    
+    
     // jsx:
     /* <List> */
     return React.cloneElement<ListProps<TElement>>(listComponent,
@@ -106,21 +139,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         
         
         // children:
-        listComponent.props.children ?? React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
-            // conditions:
-            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => ignore
-            
-            
-            
-            // jsx:
-            return React.cloneElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child,
-                // props:
-                {
-                    // behaviors:
-                    lazy : child.props.lazy ?? lazy,
-                },
-            );
-        }),
+        mutatedChildren,
     );
 };
 export {
