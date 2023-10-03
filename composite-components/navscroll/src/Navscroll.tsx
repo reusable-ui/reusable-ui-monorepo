@@ -522,7 +522,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                         
                         
                         // identifiers:
-                        key={listItem.key}
+                        key={listItem.key ?? index}
                         
                         
                         
