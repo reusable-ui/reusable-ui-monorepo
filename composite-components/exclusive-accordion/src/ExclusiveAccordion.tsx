@@ -129,6 +129,11 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
                     
                     
                     
+                    // identifiers:
+                    key={accordionItem.key}
+                    
+                    
+                    
                     // positions:
                     listIndex={listIndex}
                     
