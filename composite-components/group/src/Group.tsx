@@ -87,7 +87,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
     // children:
     const mutatedChildren = useMemo<React.ReactNode[]>(() =>
         flattenChildren(children)
-        .map<React.ReactNode>((child) => {
+        .map<React.ReactNode>((child, index) => {
             // conditions:
             if (!React.isValidElement<BasicProps>(child)) return child; // not an <Element> => place it anyway
             
@@ -111,7 +111,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                 /* wrap child with <GroupItem> */
                 <GroupItem
                     // identifiers:
-                    key={child.key}
+                    key={child.key ?? index}
                     
                     
                     
