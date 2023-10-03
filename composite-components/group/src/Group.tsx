@@ -85,7 +85,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
     
     
     // children:
-    const mutatedChildren = useMemo<React.ReactNode[]>(() =>
+    const wrappedChildren = useMemo<React.ReactNode[]>(() =>
         flattenChildren(children)
         .map<React.ReactNode>((child, index) => {
             // conditions:
@@ -162,7 +162,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             orientation={props.orientation ?? 'inline'}
             mild={props.mild ?? false}
         >
-            {mutatedChildren}
+            {wrappedChildren}
         </List>
     );
 };
