@@ -46,6 +46,9 @@ function App() {
                     <p>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo aut deserunt nulla iusto quod a est debitis tenetur dolorem? Molestiae unde nulla amet odio eveniet, quis eum libero aperiam natus?
                     </p>
+                    <a href='/visit-me'>visit me</a>
+                    <a href='/demo'>see demo</a>
+                    <a href='/gallery'>gallery</a>
                 </Content>
             </div>
         </>

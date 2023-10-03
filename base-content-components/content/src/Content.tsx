@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -11,7 +16,12 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
-import type {
+import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // a semantic management system for react web components:
     Tag,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -27,6 +37,12 @@ import {
     ButtonProps,
     Button,
 }                           from '@reusable-ui/button'          // a button component
+
+// internals:
+import {
+    isLinkClass,
+    isNotLinkClass,
+}                           from './utilities.js'
 
 
 
@@ -60,41 +76,27 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
     
     
     
-    // jsx:
-    return (
-        <Basic<TElement>
-            // other props:
-            {...restProps}
-            
-            
-            
-            // variants:
-            mild={props.mild ?? true}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-        >
-            {React.Children.map<React.ReactNode, React.ReactNode>(children, (child) => {
-                // link:
+    // children:
+    const mutatedChildren = useMemo<React.ReactNode[]>(() => {
+        return flattenChildren(children).map<React.ReactNode>((child) => {
+            // link:
+            if (React.isValidElement<ButtonProps>(child) && (typeof(child.type) === 'string')) {
+                const classes = (child.props.className ?? '').split(' ');
                 if (
-                    React.isValidElement<ButtonProps>(child)
-                    &&
+                    // native <a>:
                     (
-                        // native <a>:
                         (child.type === 'a')
-                        ||
-                        // native <foo class="... link ...">:
-                        (
-                            (typeof(child.type) === 'string')
-                            &&
-                            (child.props.className ?? '').split(' ').some((className) => (className === 'link'))
-                        )
+                        &&
+                        // not <a class="... not-link ...">:
+                        !classes.some(isNotLinkClass)
                     )
-                    &&
-                    // not <foo class="... not-link ...">:
-                    !(child.props.className ?? '').split(' ').some((className) => (className === 'not-link'))
+                    ||
+                    // native <foo class="... link ...">:
+                    (
+                        (typeof(child.type) === 'string')
+                        &&
+                        classes.some(isLinkClass)
+                    )
                 ) {
                     return (
                         <Button
@@ -113,12 +115,34 @@ const Content = <TElement extends Element = HTMLElement>(props: ContentProps<TEl
                         />
                     );
                 } // if
-                
-                
-                
-                // other component:
-                return child;
-            })}
+            } // if
+            
+            
+            
+            // other component:
+            return child;
+        });
+    }, [children]);
+    
+    
+    
+    // jsx:
+    return (
+        <Basic<TElement>
+            // other props:
+            {...restProps}
+            
+            
+            
+            // variants:
+            mild={props.mild ?? true}
+            
+            
+            
+            // classes:
+            mainClass={props.mainClass ?? styleSheet.main}
+        >
+            {mutatedChildren}
         </Basic>
     );
 };
