@@ -100,8 +100,11 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
     
     // children:
     const listComponentChildren = listComponent.props.children;
-    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
-        return listComponentChildren ?? flattenChildren(children).map<React.ReactNode>((child) => {
+    const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
+        listComponentChildren
+        ??
+        flattenChildren(children)
+        .map<React.ReactNode>((child) => {
             // conditions:
             if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => place it anyway
             if (child.props.lazy !== undefined) return child; // the default [lazy] has already assigned => do not mutate
@@ -116,8 +119,8 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
                     lazy : lazy,
                 },
             );
-        });
-    }, [listComponentChildren, children]);
+        })
+    , [listComponentChildren, children]);
     
     
     
