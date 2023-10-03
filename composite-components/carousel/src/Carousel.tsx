@@ -23,6 +23,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // react helper hooks:
     useIsomorphicLayoutEffect,
     useEvent,
@@ -241,6 +246,30 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     
+    // children:
+    const wrappedChildren = useMemo<React.ReactNode[]>(() => {
+        return (
+            flattenChildren(children)
+            .filter((child) => (child !== undefined) && (child !== null) && (child !== true) && (child !== false)) // ignore nullish child
+            .map<React.ReactNode>((child, index) =>
+                /* wrap child with <li> */
+                <Generic<TElement>
+                    // identifiers:
+                    key={index}
+                    
+                    
+                    
+                    // semantics:
+                    tag='li'
+                >
+                    {child}
+                </Generic>
+            )
+        );
+    }, [children]);
+    
+    
+    
     // refs:
     const listRefInternal      = useRef<TElement|null>(null);
     const mergedListRef        = useMergeRefs<TElement>(
@@ -271,7 +300,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     
     
     // fn props:
-    const itemsCount              = React.Children.count(children);
+    const itemsCount              = wrappedChildren.length;
     
     const minItemIndex            = 0;
     const maxItemIndex            = (itemsCount - 1);
@@ -1460,7 +1489,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // children:
         basicComponent.props.children ?? (<>
-            {children && <>
+            {!!itemsCount && <>
                 {/* .list */}
                 <Generic<TElement>
                     // refs:
@@ -1481,27 +1510,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // handlers:
                     onScroll={listHandleScroll}
                 >
-                    {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
-                        // conditions:
-                        if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
-                        
-                        
-                        
-                        /* wrap child with .item */
-                        return (
-                            <Generic<TElement>
-                                // identifiers:
-                                key={index}
-                                
-                                
-                                
-                                // semantics:
-                                tag='li'
-                            >
-                                {child}
-                            </Generic>
-                        );
-                    })}
+                    {wrappedChildren}
                 </Generic>
                 
                 {/* .dummy */}
@@ -1519,20 +1528,13 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // classes:
                     classes={_defaultDummyListElmClasses}
                 >
-                    {React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
-                        // conditions:
-                        if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
-                        
-                        
-                        
-                        /* convert child to .dummy-item */
-                        return (
-                            <div
-                                // identifiers:
-                                key={index}
-                            />
-                        );
-                    })}
+                    {React.Children.map<React.ReactNode, React.ReactNode>(wrappedChildren, (child, index) =>
+                        /* convert <li> to <div> */
+                        <div
+                            // identifiers:
+                            key={index}
+                        />
+                    )}
                 </Generic>}
             </>}
             
@@ -1639,32 +1641,25 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 
                 
                 // children:
-                navscrollComponent.props.children ?? React.Children.map<React.ReactNode, React.ReactNode>(children, (child, index) => {
-                    // conditions:
-                    if ((child === undefined) || (child === null) || (child === true) || (child === false)) return child; // ignore nullish child
-                    
-                    
-                    
-                    /* convert child to button */
-                    return (
-                        <ListItem
-                            // identifiers:
-                            key={index}
-                            
-                            
-                            
-                            // semantics:
-                            tag='button'
-                            
-                            
-                            
-                            // accessibilities:
-                            {...(React.isValidElement<React.HTMLAttributes<HTMLElement>>(child) ? ({
-                                title : child.props.title,
-                            } as React.HTMLAttributes<HTMLElement>) : null)}
-                        />
-                    );
-                }),
+                navscrollComponent.props.children ?? React.Children.map<React.ReactNode, React.ReactNode>(wrappedChildren, (child, index) =>
+                    /* convert <li> to <button> */
+                    <ListItem
+                        // identifiers:
+                        key={index}
+                        
+                        
+                        
+                        // semantics:
+                        tag='button'
+                        
+                        
+                        
+                        // accessibilities:
+                        {...(React.isValidElement<React.HTMLAttributes<HTMLElement>>(child) ? ({
+                            title : child.props.title,
+                        } as React.HTMLAttributes<HTMLElement>) : null)}
+                    />
+                ),
             )}
         </>),
     );
