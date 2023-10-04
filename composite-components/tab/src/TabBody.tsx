@@ -169,7 +169,7 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
     const bodyComponentChildren = bodyComponent.props.children;
     const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
         let tabIndex = -1;
-        return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel, childIndex) => {
+        return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponentChildren ?? tabPanels, (tabPanel, childIndex) => {
             // conditions:
             if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => place it anyway
             

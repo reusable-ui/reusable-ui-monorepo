@@ -127,7 +127,7 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
     const listComponentChildren = listComponent.props.children;
     const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
         let tabIndex = -1;
-        return React.Children.map<React.ReactNode, React.ReactNode>(listComponent.props.children ?? tabPanels, (tabPanel, childIndex) => {
+        return React.Children.map<React.ReactNode, React.ReactNode>(listComponentChildren ?? tabPanels, (tabPanel, childIndex) => {
             // conditions:
             if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return null; // not a <TabPanel> => ignore
             
