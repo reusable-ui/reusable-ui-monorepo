@@ -7,13 +7,14 @@ import {
 
 
 // utilities:
+const forwardRefType = Symbol.for('react.forward_ref');
 export const isForwardRef = (node: React.ReactNode): node is React.ReactElement<any> => {
     return (
-        React.isValidElement(node)                                                          // JSX element
+        React.isValidElement(node)                                         // JSX element
         &&
-        (typeof(node.type) === 'object')                                                    // forwardRef
+        (typeof(node.type) === 'object')                                   // forwardRef
         &&
-        ((node.type as React.ExoticComponent).$$typeof === Symbol.for('react.forward_ref')) // forwardRef
+        ((node.type as React.ExoticComponent).$$typeof === forwardRefType) // forwardRef
     );
 };
 
