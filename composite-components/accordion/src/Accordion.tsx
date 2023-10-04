@@ -104,16 +104,16 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         listComponentChildren
         ??
         flattenChildren(children)
-        .map<React.ReactNode>((child) => {
+        .map<React.ReactNode>((accordionItem) => {
             // conditions:
-            if (lazy === undefined) return child; // the default [lazy] is not assigned => nothing to mutate
-            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => place it anyway
-            if (child.props.lazy !== undefined) return child; // the default [lazy] has already assigned => do not mutate
+            if (lazy === undefined) return accordionItem; // the default [lazy] is not assigned => nothing to mutate
+            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => place it anyway
+            if (accordionItem.props.lazy !== undefined) return accordionItem; // the default [lazy] has already assigned => do not mutate
             
             
             
             // jsx:
-            return React.cloneElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child,
+            return React.cloneElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem,
                 // props:
                 {
                     // behaviors:
