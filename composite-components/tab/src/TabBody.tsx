@@ -204,7 +204,7 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
                 
                 
                 // valid tab counter:
-                tabIndex++;
+                tabIndex++; // only count of <TabPanel>s, ignores of foreign nodes
                 
                 
                 
