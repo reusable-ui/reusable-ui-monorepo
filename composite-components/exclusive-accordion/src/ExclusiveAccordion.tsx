@@ -106,61 +106,69 @@ const ExclusiveAccordion = <TElement extends Element = HTMLElement, TExclusiveEx
     
     // children:
     const accordionComponentChildren = accordionComponent.props.children;
-    const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
-        accordionComponentChildren
-        ??
-        flattenChildren(children)
-        .map<React.ReactNode>((accordionItem, listIndex) => {
-            // conditions:
-            if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => place it anyway
-            
-            
-            
-            // props:
-            const accordionItemProps = accordionItem.props;
-            
-            
-            
-            // jsx:
-            return (
-                /* wrap child with <AccordionItemWithState> */
-                <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
-                    // other props:
-                    {...accordionItemProps} // steals all accordionItem's props, so the <Owner> can recognize the <AccordionItemWithState> as <TheirChild>
-                    
-                    
-                    
-                    // identifiers:
-                    key={accordionItem.key ?? listIndex}
-                    
-                    
-                    
-                    // positions:
-                    listIndex={listIndex}
-                    
-                    
-                    
-                    // components:
-                    accordionItemComponent={
-                        // clone accordionItem element with (almost) blank props:
-                        <accordionItem.type
-                            // identifiers:
-                            key={accordionItem.key}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('listIndex'              in accordionItemProps) ? { listIndex              : accordionItemProps.listIndex              } : undefined),
-                                ...(('accordionItemComponent' in accordionItemProps) ? { accordionItemComponent : accordionItemProps.accordionItemComponent } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
-                />
-            );
-        })
-    , [accordionComponentChildren, children]);
+    const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
+        let listIndex = -1;
+        return (
+            accordionComponentChildren
+            ??
+            flattenChildren(children)
+            .map<React.ReactNode>((accordionItem, childIndex) => {
+                // conditions:
+                if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(accordionItem)) return accordionItem; // not an <AccordionItem> => place it anyway
+                
+                
+                
+                // a valid listItem counter:
+                listIndex++; // only count of <AccordionItem>s, ignores of foreign nodes
+                
+                
+                
+                // props:
+                const accordionItemProps = accordionItem.props;
+                
+                
+                
+                // jsx:
+                return (
+                    /* wrap child with <AccordionItemWithState> */
+                    <AccordionItemWithState<Element, TExclusiveExpandedChangeEvent>
+                        // other props:
+                        {...accordionItemProps} // steals all accordionItem's props, so the <Owner> can recognize the <AccordionItemWithState> as <TheirChild>
+                        
+                        
+                        
+                        // identifiers:
+                        key={accordionItem.key ?? childIndex}
+                        
+                        
+                        
+                        // positions:
+                        listIndex={listIndex}
+                        
+                        
+                        
+                        // components:
+                        accordionItemComponent={
+                            // clone accordionItem element with (almost) blank props:
+                            <accordionItem.type
+                                // identifiers:
+                                key={accordionItem.key}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('listIndex'              in accordionItemProps) ? { listIndex              : accordionItemProps.listIndex              } : undefined),
+                                    ...(('accordionItemComponent' in accordionItemProps) ? { accordionItemComponent : accordionItemProps.accordionItemComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
+                            />
+                        }
+                    />
+                );
+            })
+        );
+    }, [accordionComponentChildren, children]);
     
     
     
