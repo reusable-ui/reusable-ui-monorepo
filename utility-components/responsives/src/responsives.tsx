@@ -461,7 +461,7 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
 
 
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
-export type ChildrenFallbackHandler<TFallback> = (currentFallback: TFallback) => React.ReactNode
+export type ResponsiveChildrenHandler<TFallback> = (currentFallback: TFallback) => React.ReactNode
 export interface ResponsiveProviderProps<TFallback>
     extends
         ResponsiveResizeObserverOptions
@@ -473,7 +473,7 @@ export interface ResponsiveProviderProps<TFallback>
     
     
     // children:
-    children        : React.ReactNode | ChildrenFallbackHandler<TFallback>
+    children        : React.ReactNode | ResponsiveChildrenHandler<TFallback>
 }
 const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>): JSX.Element|null => {
     // rest props:

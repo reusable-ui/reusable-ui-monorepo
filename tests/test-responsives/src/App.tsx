@@ -6,7 +6,7 @@ import {
 // import logo from './logo.svg';
 import './App.css';
 import {
-    ChildrenFallbackHandler,
+    ResponsiveChildrenHandler,
     Fallbacks,
     ResponsiveProvider,
 } from '@reusable-ui/responsives'
@@ -24,7 +24,7 @@ function App() {
     };
     
     // handlers:
-    const handleChildrenFallback = useEvent<ChildrenFallbackHandler<string>>((currentFallback) =>
+    const handleResponsiveChildren = useEvent<ResponsiveChildrenHandler<string>>((currentFallback) =>
         <>
             <article className='responsive-test'>
                 <ResponsiveLayout width={currentFallback} />
@@ -47,7 +47,7 @@ function App() {
                 <ResponsiveProvider
                     fallbacks={fallbacks}
                 >
-                    {handleChildrenFallback}
+                    {handleResponsiveChildren}
                 </ResponsiveProvider>
             </div>
         </>
