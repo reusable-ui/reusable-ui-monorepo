@@ -127,88 +127,92 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
     const listComponentChildren = listComponent.props.children;
     const wrappedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() => {
         let tabIndex = -1;
-        return React.Children.map<React.ReactNode, React.ReactNode>(listComponentChildren ?? tabPanels, (tabPanel, childIndex) => {
-            // conditions:
-            if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return null; // not a <TabPanel> => ignore
-            
-            
-            
-            // a valid tab counter:
-            tabIndex++; // only count of <TabPanel>s, ignores of foreign nodes
-            
-            
-            
-            // fn props:
-            const tabHeaderId = `${tabId}h${tabIndex}`;
-            const tabPanelId  = `${tabId}p${tabIndex}`;
-            const {props: {label: tabPanelLabel}} = tabPanel;
-            
-            
-            
-            // props:
-            const listItemComponentProps : ListItemProps<Element> = {
-                // other props:
-                ...listItemComponent.props,
+        return (
+            listComponentChildren
+            ??
+            React.Children.map<React.ReactNode, React.ReactNode>(tabPanels, (tabPanel, childIndex) => {
+                // conditions:
+                if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return null; // not a <TabPanel> => ignore
                 
                 
                 
-                // identifiers:
-                id              : listItemComponent.props.id               ?? tabHeaderId,
+                // a valid tab counter:
+                tabIndex++; // only count of <TabPanel>s, ignores of foreign nodes
                 
                 
                 
-                // semantics:
-                semanticTag     : listItemComponent.props.semanticTag      ?? '',    // no corresponding semantic tag => defaults to <div>
-                semanticRole    : listItemComponent.props.semanticRole     ?? 'tab', // uses [role="tab"] as the default semantic role
-                'aria-controls' : listItemComponent.props['aria-controls'] ?? tabPanelId,
+                // fn props:
+                const tabHeaderId = `${tabId}h${tabIndex}`;
+                const tabPanelId  = `${tabId}p${tabIndex}`;
+                const {props: {label: tabPanelLabel}} = tabPanel;
                 
                 
                 
-                // children:
-                children        : listItemComponent.props.children         ?? tabPanelLabel,
-            };
-            
-            
-            
-            // jsx:
-            return (
-                /* wrap child with <ListItemWithState> */
-                <ListItemWithState<Element, TabExpandedChangeEvent>
+                // props:
+                const listItemComponentProps : ListItemProps<Element> = {
                     // other props:
-                    {...listItemComponentProps} // steals all listItemComponent's props, so the <Owner> can recognize the <ListItemWithState> as <TheirChild>
+                    ...listItemComponent.props,
                     
                     
                     
                     // identifiers:
-                    key={tabPanel.key ?? childIndex}
+                    id              : listItemComponent.props.id               ?? tabHeaderId,
                     
                     
                     
-                    // positions:
-                    tabIndex={tabIndex}
+                    // semantics:
+                    semanticTag     : listItemComponent.props.semanticTag      ?? '',    // no corresponding semantic tag => defaults to <div>
+                    semanticRole    : listItemComponent.props.semanticRole     ?? 'tab', // uses [role="tab"] as the default semantic role
+                    'aria-controls' : listItemComponent.props['aria-controls'] ?? tabPanelId,
                     
                     
                     
-                    // components:
-                    listItemComponent={
-                        // clone listItemComponent element with (almost) blank props:
-                        <listItemComponent.type
-                            // identifiers:
-                            key={listItemComponent.key ?? tabPanel.key ?? childIndex}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('tabIndex'          in listItemComponentProps) ? { tabIndex          : listItemComponentProps.tabIndex          } : undefined),
-                                ...(('listItemComponent' in listItemComponentProps) ? { listItemComponent : listItemComponentProps.listItemComponent } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
-                />
-            );
-        });
+                    // children:
+                    children        : listItemComponent.props.children         ?? tabPanelLabel,
+                };
+                
+                
+                
+                // jsx:
+                return (
+                    /* wrap child with <ListItemWithState> */
+                    <ListItemWithState<Element, TabExpandedChangeEvent>
+                        // other props:
+                        {...listItemComponentProps} // steals all listItemComponent's props, so the <Owner> can recognize the <ListItemWithState> as <TheirChild>
+                        
+                        
+                        
+                        // identifiers:
+                        key={tabPanel.key ?? childIndex}
+                        
+                        
+                        
+                        // positions:
+                        tabIndex={tabIndex}
+                        
+                        
+                        
+                        // components:
+                        listItemComponent={
+                            // clone listItemComponent element with (almost) blank props:
+                            <listItemComponent.type
+                                // identifiers:
+                                key={listItemComponent.key ?? tabPanel.key ?? childIndex}
+                                
+                                
+                                
+                                //#region restore conflicting props
+                                {...{
+                                    ...(('tabIndex'          in listItemComponentProps) ? { tabIndex          : listItemComponentProps.tabIndex          } : undefined),
+                                    ...(('listItemComponent' in listItemComponentProps) ? { listItemComponent : listItemComponentProps.listItemComponent } : undefined),
+                                }}
+                                //#endregion restore conflicting props
+                            />
+                        }
+                    />
+                );
+            })
+        );
     }, [listComponentChildren, tabPanels]);
     
     
