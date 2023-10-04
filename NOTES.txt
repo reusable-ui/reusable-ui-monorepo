@@ -397,17 +397,17 @@ Components with children mutation:
       Component         |                           Purpose                           |           Ignore Nullish
 ----------------------------------------------------------------------------------------------------------------------
 
-<Content>		            mutate <a> => <Button buttonStyle='link'>
-<Accordion>		            mutate default [lazy] of children
+<Content                    mutate <a> => <Button buttonStyle='link'>
+<Accordion>                 mutate default [lazy] of children
 
-<Carousel>		            wrap with <li>                                                  ignores nullish children to easily count the number of slides
-<Tab>			            wrap with <ListItemWithState> & <TabPanelWithState>
+<Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
+<Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
 
 <ExclusiveAccordion>        wrap with <AccordionItemWithState>
 
-<Group>			            wrap with <GroupItem>
-<Navscroll>		            wrap with <ListItemWithNavigation>, downgrade to <Nav>
-<List>			            wrap with <WrapperItem>                                         ignores nullish children to easily count the number of <ListItem>s
-<DropdownList>		        wrap with <ListItemWithExpandedHandler>
+<Group>                     wrap with <GroupItem>
+<Navscroll>                 wrap with <ListItemWithNavigation>, downgrade to <Nav>
+<List>                      wrap with <WrapperItem>                                         ignores nullish children to easily count the number of <ListItem>s
+<DropdownList>              wrap with <ListItemWithExpandedHandler>
 
 <ResponsiveProvider>        wrap with <ChildWithRef>
