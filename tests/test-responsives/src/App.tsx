@@ -1,12 +1,19 @@
 import {
     default as React,
     useState,
+    useMemo,
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import {
+    ChildrenFallbackHandler,
+    Fallbacks,
     ResponsiveProvider,
 } from '@reusable-ui/responsives'
+import {
+    // react helper hooks:
+    useEvent,
+}                           from '@reusable-ui/core'
 
 
 
@@ -16,7 +23,18 @@ function App() {
         setValue(value + 1);
     };
     
-    
+    // handlers:
+    const handleChildrenFallback = useEvent<ChildrenFallbackHandler<string>>((currentFallback) =>
+        <>
+            <article className='responsive-test'>
+                <ResponsiveLayout width={currentFallback} />
+            </article>
+            <article className='responsive-test'>
+                <ResponsiveLayout width={currentFallback} />
+            </article>
+        </>
+    );
+    const fallbacks = useMemo<Fallbacks<string>>(() => ['1000px', '800px', '600px', '400px'], []);
     
     return (
         <>
@@ -27,12 +45,9 @@ function App() {
                     </button>
                 </article>
                 <ResponsiveProvider
-                    fallbacks={['1000px', '800px', '600px', '400px']}
-                >{(currentFallback) =>
-                    <article className='responsive-test'>
-                        <ResponsiveLayout width={currentFallback} />
-                    </article>
-                }
+                    fallbacks={fallbacks}
+                >
+                    {handleChildrenFallback}
                 </ResponsiveProvider>
             </div>
         </>
@@ -43,7 +58,7 @@ interface ResponsiveLayoutProps {
     width: string
 }
 function ResponsiveLayout({ width }: ResponsiveLayoutProps): JSX.Element | null {
-    console.log(`render <ResponsiveLayout width='${width}'>`);
+    // console.log(`render <ResponsiveLayout width='${width}'>`);
     return (
         <div style={{ width: width }}>resize me</div>
     );

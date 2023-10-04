@@ -26,6 +26,7 @@ import {
 import {
     // a set of React node utility functions:
     isReusableUiComponent,
+    flattenChildren,
     
     
     
@@ -460,6 +461,7 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
 
 
 export type Fallbacks<TFallback> = [TFallback, ...TFallback[]]
+export type ChildrenFallbackHandler<TFallback> = (currentFallback: TFallback) => React.ReactNode
 export interface ResponsiveProviderProps<TFallback>
     extends
         ResponsiveResizeObserverOptions
@@ -471,7 +473,7 @@ export interface ResponsiveProviderProps<TFallback>
     
     
     // children:
-    children        : React.ReactNode | ((fallback: TFallback) => React.ReactNode)
+    children        : React.ReactNode | ChildrenFallbackHandler<TFallback>
 }
 const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback>): JSX.Element|null => {
     // rest props:
@@ -506,61 +508,73 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     const maxFallbackIndex = (fallbacks.length - 1);
     const currentFallback  = (currentFallbackIndex.current <= maxFallbackIndex) ? fallbacks[currentFallbackIndex.current] : fallbacks[maxFallbackIndex];
     
-    const childrenOrigin   = (
-        (typeof(childrenFn) !== 'function')
-        ?
-        childrenFn
-        :
-        childrenFn(currentFallback)
-    );
-    const childrenWithRefs = React.Children.map<React.ReactNode, React.ReactNode>(childrenOrigin, (child, childIndex) => {
-        // conditions:
-        if (!React.isValidElement<{}>(child)) return child; // not an <Element> => ignore
-        
-        
-        
-        // props:
-        const childProps = child.props;
-        
-        
-        
-        // jsx:
-        const childId = child.key ?? childIndex;
-        if (!childRefs.has(childId)) childRefs.set(childId, null); // initially, set the outerElm ref as null to maintain the `childRefs`'s size remain constant between renders
-        return (
-            <ChildWithRef
-                // other props:
-                {...childProps} // steals all child's props, so the <Owner> can recognize the <ChildWithRef> as <TheirChild>
-                
-                
-                
-                // refs:
-                childId={childId}
-                childRefs={childRefs}
-                
-                
-                
-                // components:
-                component={
-                    // clone child element with (almost) blank props:
-                    <child.type
-                        // identifiers:
-                        key={child.key}
-                        
-                        
-                        
-                        //#region restore conflicting props
-                        {...{
-                            ...(('childId'   in childProps) ? { childId   : childProps.childId   } : undefined),
-                            ...(('childRefs' in childProps) ? { childRefs : childProps.childRefs } : undefined),
-                            ...(('component' in childProps) ? { component : childProps.component } : undefined),
-                        }}
-                        //#endregion restore conflicting props
-                    />
-                }
-            />
-        );
-    });
+    
+    const wrappedChildren = useMemo<React.ReactNode[]>(() =>
+        flattenChildren(
+            (typeof(childrenFn) !== 'function')
+            ?
+            childrenFn
+            :
+            childrenFn(currentFallback)
+        )
+        .map<React.ReactNode>((child, childIndex) => {
+            // conditions:
+            if (!React.isValidElement<{}>(child)) return child; // not an <Element> => place it anyway
+            
+            
+            
+            // props:
+            const childProps = child.props;
+            
+            
+            
+            // jsx:
+            const childId = child.key ?? childIndex;
+            
+            /* Warning: The final argument passed to useLayoutEffect changed size between renders. The order and size of this array must remain constant. */
+            // initially, set the outerElm ref as null to maintain the `childRefs`'s size remain constant between renders:
+            if (!childRefs.has(childId)) childRefs.set(childId, null);
+            
+            return (
+                <ChildWithRef
+                    // other props:
+                    {...childProps} // steals all child's props, so the <Owner> can recognize the <ChildWithRef> as <TheirChild>
+                    
+                    
+                    
+                    // identifiers:
+                    key={child.key ?? childIndex}
+                    
+                    
+                    
+                    // refs:
+                    childId={childId}
+                    childRefs={childRefs}
+                    
+                    
+                    
+                    // components:
+                    component={
+                        // clone child element with (almost) blank props:
+                        <child.type
+                            // identifiers:
+                            key={child.key}
+                            
+                            
+                            
+                            //#region restore conflicting props
+                            {...{
+                                ...(('childId'   in childProps) ? { childId   : childProps.childId   } : undefined),
+                                ...(('childRefs' in childProps) ? { childRefs : childProps.childRefs } : undefined),
+                                ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                            }}
+                            //#endregion restore conflicting props
+                        />
+                    }
+                />
+            );
+        })
+    , [childrenFn, currentFallback]);
     
     
     
@@ -620,7 +634,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     // jsx:
     return (
         <ResponsiveContext.Provider value={responsiveState}>
-            {childrenWithRefs}
+            {wrappedChildren}
         </ResponsiveContext.Provider>
     );
 };
