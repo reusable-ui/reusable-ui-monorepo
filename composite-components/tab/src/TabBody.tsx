@@ -197,13 +197,13 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
         // children:
         ((): React.ReactNode => {
             let tabIndex = -1;
-            return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel) => {
+            return React.Children.map<React.ReactNode, React.ReactNode>(bodyComponent.props.children ?? tabPanels, (tabPanel, childIndex) => {
                 // conditions:
                 if (!React.isValidElement<TabPanelProps<Element, TabExpandedChangeEvent>>(tabPanel)) return tabPanel; // not a <TabPanel> => place it anyway
                 
                 
                 
-                // valid tab counter:
+                // a valid tab counter:
                 tabIndex++; // only count of <TabPanel>s, ignores of foreign nodes
                 
                 
@@ -221,9 +221,15 @@ const TabBody = <TElement extends Element = HTMLElement>(props: TabBodyProps<TEl
                 
                 // jsx:
                 return (
+                    /* wrap child with <TabPanelWithState> */
                     <TabPanelWithState<Element, TabExpandedChangeEvent>
                         // other props:
                         {...tabPanelProps} // steals all tabPanel's props, so the <Owner> can recognize the <TabPanelWithState> as <TheirChild>
+                        
+                        
+                        
+                        // identifiers:
+                        key={tabPanel.key ?? childIndex}
                         
                         
                         

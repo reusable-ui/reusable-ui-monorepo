@@ -68,22 +68,24 @@ function App() {
                     </TabPanel>
                 </Tab>
                 
-                <Tab tabHeaderComponent={null} theme='primary' lazy expandedTabIndex={expandedTabIndex} onExpandedChange={(event) => setExpandedTabIndex(event.tabIndex)}>
+                <Tab headerComponent={null} theme='primary' lazy expandedTabIndex={expandedTabIndex} onExpandedChange={(event) => setExpandedTabIndex(event.tabIndex)}>
                     <TabPanel label='first'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
-                    <TabPanel label='second'>
-                        <p>The detail of second item.</p>
-                        <ParagraphLorem />
-                    </TabPanel>
-                    <TabPanel label='third'>
-                        <p>The detail of third item.</p>
-                        <ParagraphLorem />
-                        <ParagraphLorem />
-                        <ParagraphLorem />
-                    </TabPanel>
+                    <>
+                        <TabPanel label='second'>
+                            <p>The detail of second item.</p>
+                            <ParagraphLorem />
+                        </TabPanel>
+                        <TabPanel label='third'>
+                            <p>The detail of third item.</p>
+                            <ParagraphLorem />
+                            <ParagraphLorem />
+                            <ParagraphLorem />
+                        </TabPanel>
+                    </>
                 </Tab>
                 
                 {/* <Tab theme='primary' outlined>
