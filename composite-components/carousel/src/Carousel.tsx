@@ -250,10 +250,10 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     // children:
     const wrappedChildren = useMemo<React.ReactNode[]>(() =>
         flattenChildren(children)
-        .filter(isTruthyNode) // only truthy children
+        .filter(isTruthyNode) // only truthy children, so the `itemsCount` accurately represents the number of slides
         .map<React.ReactNode>((child, index) =>
             /* wrap child with <li> */
-            <Generic<TElement>
+            <Generic
                 // identifiers:
                 key={(React.isValidElement<{}>(child) ? child.key : null) ?? index}
                 
