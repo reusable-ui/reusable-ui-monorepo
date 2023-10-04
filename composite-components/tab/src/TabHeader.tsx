@@ -194,7 +194,7 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
                         // clone listItemComponent element with (almost) blank props:
                         <listItemComponent.type
                             // identifiers:
-                            key={listItemComponent.key}
+                            key={listItemComponent.key ?? tabPanel.key ?? childIndex}
                             
                             
                             
