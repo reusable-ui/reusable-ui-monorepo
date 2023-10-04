@@ -400,8 +400,8 @@ Components with children mutation:
 <Content>		            mutate <a> => <Button buttonStyle='link'>
 <Accordion>		            mutate default [lazy] of children
 
-<Carousel>		            wrap with <li>                                                  ignores nullish children
-<Tab>			                                                                            ignores nullish children
+<Carousel>		            wrap with <li>                                                  ignores nullish children to easily count the number of slides
+<Tab>			                                                                            ignores nullish children to easily count the number of tabs
 
 <ExclusiveAccordion>        wrap with <AccordionItemWithState>
 
