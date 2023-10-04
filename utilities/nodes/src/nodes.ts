@@ -27,5 +27,5 @@ export const isReusableUiComponent = <TProps = any, TConstructor extends React.J
     );
 };
 
-export const isTruthyNode = (node: React.ReactNode) => (node !== undefined) && (node !== null) && (node !== true) && (node !== false);
-export const isFalsyNode  = (node: React.ReactNode) => (node === undefined) || (node === null) || (node === true) || (node === false);
+export const isTruthyNode = (node: React.ReactNode): node is Exclude<typeof node, undefined|null|boolean> => (node !== undefined) && (node !== null) && (node !== true) && (node !== false);
+export const isFalsyNode  = (node: React.ReactNode): node is Extract<typeof node, undefined|null|boolean> => (node === undefined) || (node === null) || (node === true) || (node === false);
