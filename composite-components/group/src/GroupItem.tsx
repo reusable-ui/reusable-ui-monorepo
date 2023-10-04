@@ -57,7 +57,7 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
     
     
     // verifies:
-    const isReusableUiModalComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
+    const isReusableUiGroupItemComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
     
     
     
@@ -65,7 +65,7 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
     const classes = useMergeClasses(
         // preserves the original `classes` from `component`:
         (
-            isReusableUiModalComponent
+            isReusableUiGroupItemComponent
             ?
             (component.props as GenericProps<Element>).classes
             :
@@ -90,7 +90,7 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
             
             
             // classes:
-            ...(isReusableUiModalComponent ? {
+            ...(isReusableUiGroupItemComponent ? {
                 classes   : classes,
             } : {
                 className : classes.filter((c) => !!c).join(' '),
