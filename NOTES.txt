@@ -401,13 +401,13 @@ Components with children mutation:
 <Accordion>		            mutate default [lazy] of children
 
 <Carousel>		            wrap with <li>                                                  ignores nullish children to easily count the number of slides
-<Tab>			                                                                            ignores nullish children to easily count the number of tabs
+<Tab>			            wrap with <ListItemWithState> & <TabPanelWithState>
 
 <ExclusiveAccordion>        wrap with <AccordionItemWithState>
 
 <Group>			            wrap with <GroupItem>
 <Navscroll>		            wrap with <ListItemWithNavigation>, downgrade to <Nav>
-<List>			            wrap with <WrapperItem>
+<List>			            wrap with <WrapperItem>                                         ignores nullish children to easily count the number of <ListItem>s
 <DropdownList>		        wrap with <ListItemWithExpandedHandler>
 
 <ResponsiveProvider>        wrap with <ChildWithRef>
