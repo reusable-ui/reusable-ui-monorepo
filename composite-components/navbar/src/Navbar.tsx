@@ -62,6 +62,7 @@ import {
 import {
     // react components:
     Fallbacks,
+    ResponsiveChildrenHandler,
     ResponsiveProvider,
 }                           from '@reusable-ui/responsives'     // a responsive management system for react web components
 
@@ -107,7 +108,11 @@ export interface NavbarParams {
     handleActiveChange      : EventHandler<ActiveChangeEvent>
     handleClickToToggleList : React.MouseEventHandler<Element>
 }
-export type NavbarChildren = React.ReactNode | ((params: NavbarParams) => React.ReactNode)
+export type ResponsiveNavbarChildrenHandler = ((params: NavbarParams) => React.ReactNode)
+/**
+ * @deprecated use `ResponsiveNavbarChildrenHandler`.
+ */
+export type NavbarChildren                  = React.ReactNode | ResponsiveNavbarChildrenHandler
 export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
@@ -139,9 +144,9 @@ export interface NavbarProps<TElement extends Element = HTMLElement, TExpandedCh
     
     
     // children:
-    children   ?: NavbarChildren
+    children   ?: React.ReactNode | ResponsiveNavbarChildrenHandler
 }
-const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+const Navbar                       = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // fn props:
     const breakpoint    = props.breakpoint;
     const mediaMinWidth = breakpoint ? breakpoints[breakpoint] : undefined;
@@ -154,24 +159,57 @@ const Navbar = <TElement extends Element = HTMLElement, TExpandedChangeEvent ext
     
     // controllable [expanded]:
     if (expanded !== undefined) return (
-        <NavbarInternal {...props} expanded={expanded} />
+        <NavbarImplementation {...props} expanded={expanded} />
     );
     
     // internal controllable [expanded] using provided [breakpoint]:
     if (mediaMinWidth || (mediaMinWidth === 0)) return (
-        <WindowResponsive mediaMinWidth={mediaMinWidth}>{(expanded) => (
-            <NavbarInternal {...props} expanded={expanded} />
-        )}</WindowResponsive>
+        <NavbarWithWindowResponsive {...props} mediaMinWidth={mediaMinWidth} />
     );
     
     // internal controllable [expanded] using overflow detection:
     return (
-        <ResponsiveProvider fallbacks={_defaultResponsiveFallbacks}>{(fallback) => (
-            <NavbarInternal {...props} expanded={fallback} />
-        )}</ResponsiveProvider>
+        <NavbarWithResponsiveProvider {...props} />
     );
 };
-const NavbarInternal = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+const NavbarWithWindowResponsive   = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent> & { mediaMinWidth : number }): JSX.Element|null => {
+    // rest props:
+    const {
+        mediaMinWidth,
+    ...restNavbarProps} = props;
+    
+    
+    
+    // handlers:
+    const handleResponsiveChildren = useEvent((expanded: boolean) =>
+        <NavbarImplementation {...restNavbarProps} expanded={expanded} />
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <WindowResponsive mediaMinWidth={mediaMinWidth}>
+            {handleResponsiveChildren}
+        </WindowResponsive>
+    );
+};
+const NavbarWithResponsiveProvider = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+    // handlers:
+    const handleResponsiveChildren = useEvent<ResponsiveChildrenHandler<boolean>>((currentFallback) =>
+        <NavbarImplementation {...props} expanded={currentFallback} />
+    );
+    
+    
+    
+    // jsx:
+    return (
+        <ResponsiveProvider fallbacks={_defaultResponsiveFallbacks}>
+            {handleResponsiveChildren}
+        </ResponsiveProvider>
+    );
+};
+const NavbarImplementation         = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet        = useNavbarStyleSheet();
     
