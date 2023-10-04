@@ -110,13 +110,13 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
             return (
                 /* wrap child with <GroupItem> */
                 <GroupItem
-                    // identifiers:
-                    key={child.key ?? index}
-                    
-                    
-                    
                     // other props:
                     {...childProps} // steals all child's props, so the <Owner> can recognize the <GroupItem> as <TheirChild>
+                    
+                    
+                    
+                    // identifiers:
+                    key={child.key ?? index}
                     
                     
                     
