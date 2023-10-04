@@ -20,7 +20,6 @@ import {
 import {
     // a set of React node utility functions:
     flattenChildren,
-    isTruthyNode,
     
     
     
@@ -222,8 +221,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
     
     // children:
     const tabPanels = useMemo<React.ReactNode[]>(() =>
-        flattenChildren(tabPanelsRaw)
-        .filter(isTruthyNode) // only truthy children
+        flattenChildren(tabPanelsRaw) // flatten the children to easily count the number of tabs
     , [tabPanelsRaw]);
     
     
