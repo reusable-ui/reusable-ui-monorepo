@@ -106,6 +106,7 @@ const Accordion = <TElement extends Element = HTMLElement>(props: AccordionProps
         flattenChildren(children)
         .map<React.ReactNode>((child) => {
             // conditions:
+            if (lazy === undefined) return child; // the default [lazy] is not assigned => nothing to mutate
             if (!React.isValidElement<AccordionItemProps<Element, ExpandedChangeEvent>>(child)) return child; // not an <AccordionItem> => place it anyway
             if (child.props.lazy !== undefined) return child; // the default [lazy] has already assigned => do not mutate
             
