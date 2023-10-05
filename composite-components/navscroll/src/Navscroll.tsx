@@ -424,7 +424,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     
     // jsx functions:
-    const mutateNestedNavscroll = (nestNavProps: NavscrollProps<TElement>, key: React.Key|null, deepLevelsParent: number[]) => {
+    const mutateNestedNavscroll = (nestNavProps: NavscrollProps<TElement>, key: React.Key|null, deepLevelsParent: number[]): React.ReactNode => {
         // rest props:
         const {
             // scrolls:
@@ -472,7 +472,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */deepLevelsParent),
         );
     };
-    const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]): React.ReactNode[] => {
+    const mutateListItems       = (children: React.ReactNode, deepLevelsParent: number[]): React.ReactNode[] => {
         let listIndex = -1;
         return (
             flattenChildren(children)
