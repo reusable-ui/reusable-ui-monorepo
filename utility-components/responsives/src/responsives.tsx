@@ -389,7 +389,7 @@ interface ChildWithRefProps
     
     
     // components:
-    component : React.ReactElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
+    elementComponent : React.ReactElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>
 }
 const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
     // rest props:
@@ -401,13 +401,13 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
         
         
         // components:
-        component,
+        elementComponent,
     ...restComponentProps} = props;
     
     
     
     // verifies:
-    const isReusableUiChildComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
+    const isReusableUiChildComponent : boolean = isReusableUiComponent<GenericProps<Element>>(elementComponent);
     
     
     
@@ -416,13 +416,13 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
         childRefs.set(childId, outerElm);
     });
     const mergedChildOuterRef   = useMergeRefs(
-        // preserves the original `outerRef` from `component`:
+        // preserves the original `outerRef` from `elementComponent`:
         (
             isReusableUiChildComponent
             ?
-            (component.props as GenericProps<Element>).outerRef
+            (elementComponent.props as GenericProps<Element>).outerRef
             :
-            (component.props as React.RefAttributes<Element>).ref
+            (elementComponent.props as React.RefAttributes<Element>).ref
         ),
         
         
@@ -444,7 +444,7 @@ const ChildWithRef = (props: ChildWithRefProps): JSX.Element => {
     
     
     // jsx:
-    return React.cloneElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(component,
+    return React.cloneElement<GenericProps<Element>|React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>>(elementComponent,
         // props:
         {
             // other props:
@@ -554,7 +554,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                     
                     
                     // components:
-                    component={
+                    elementComponent={
                         // clone child element with (almost) blank props:
                         <child.type
                             // identifiers:
@@ -564,9 +564,9 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
                             
                             //#region restore conflicting props
                             {...{
-                                ...(('childId'   in childProps) ? { childId   : childProps.childId   } : undefined),
-                                ...(('childRefs' in childProps) ? { childRefs : childProps.childRefs } : undefined),
-                                ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                                ...(('childId'          in childProps) ? { childId          : childProps.childId          } : undefined),
+                                ...(('childRefs'        in childProps) ? { childRefs        : childProps.childRefs        } : undefined),
+                                ...(('elementComponent' in childProps) ? { elementComponent : childProps.elementComponent } : undefined),
                             }}
                             //#endregion restore conflicting props
                         />
