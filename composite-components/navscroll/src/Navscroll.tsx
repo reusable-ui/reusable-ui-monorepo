@@ -8,7 +8,6 @@ import {
     // hooks:
     useReducer,
     useEffect,
-    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -425,7 +424,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     
     // jsx functions:
-    const mutateNestedNavscroll = useEvent((nestNavProps: NavscrollProps<TElement>, key: React.Key|null, deepLevelsParent: number[]): React.ReactNode => {
+    const mutateNestedNavscroll = (nestNavProps: NavscrollProps<TElement>, key: React.Key|null, deepLevelsParent: number[]): React.ReactNode => {
         // rest props:
         const {
             // scrolls:
@@ -472,8 +471,8 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             // children:
             navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */deepLevelsParent),
         );
-    });
-    const mutateListItems       = useEvent((children: React.ReactNode, deepLevelsParent: number[]): React.ReactNode[] => {
+    };
+    const mutateListItems       = (children: React.ReactNode, deepLevelsParent: number[]): React.ReactNode[] => {
         let listIndex = -1;
         return (
             flattenChildren(children)
@@ -581,43 +580,22 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 );
             })
         );
-    });
+    };
     
     
     
     // children:
-    // const navComponentChildren = navComponent.props.children;
-    // const mutatedChildren = useMemo<React.ReactNode|React.ReactNode[]>(() =>
-    //     navComponentChildren
-    //     ??
-    //     mutateListItems(children, /*deepLevelsParent: */[])
-    // , [
-    //     // states:
-    //     activeIndices,
-    //     
-    //     
-    //     
-    //     // variants:
-    //     orientation,
-    //     
-    //     
-    //     
-    //     // components:
-    //     navComponent,
-    //     navscrollComponent,
-    //     
-    //     
-    //     
-    //     // children:
-    //     navComponentChildren,
-    //     children,
-    // ]);
+    /* useMemo() => doesn't work, reason: still unknown */
+    const mutatedChildren = (
+        navComponent.props.children
+        ??
+        mutateListItems(children, /*deepLevelsParent: */[])
+    );
     
     
     
     // jsx:
     /* <Nav> */
-    console.log('activeIndices: ', activeIndices.join(', '));
     return React.cloneElement<NavProps<TElement>>(navComponent,
         // props:
         {
@@ -630,7 +608,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
         
         
         // children:
-        navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */[]),
+        mutatedChildren,
     );
 };
 export {
