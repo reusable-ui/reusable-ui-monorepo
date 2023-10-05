@@ -121,7 +121,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                     
                     
                     // components:
-                    component={
+                    elementComponent={
                         // clone child element with (almost) blank props:
                         <child.type
                             // identifiers:
@@ -131,7 +131,7 @@ const Group = <TElement extends Element = HTMLElement>(props: GroupProps<TElemen
                             
                             //#region restore conflicting props
                             {...{
-                                ...(('component' in childProps) ? { component : childProps.component } : undefined),
+                                ...(('elementComponent' in childProps) ? { elementComponent : childProps.elementComponent } : undefined),
                             }}
                             //#endregion restore conflicting props
                         />

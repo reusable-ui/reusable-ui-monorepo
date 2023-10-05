@@ -40,7 +40,7 @@ export const useGroupItemStyleSheet = dynamicStyleSheet(
 export interface GroupItemProps
 {
     // components:
-    component : React.ReactElement<any>
+    elementComponent : React.ReactElement<any>
 }
 export const GroupItem = (props: GroupItemProps): JSX.Element => {
     // styles:
@@ -51,25 +51,25 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
     // rest props:
     const {
         // components:
-        component,
+        elementComponent,
     ...restComponentProps} = props;
     
     
     
     // verifies:
-    const isReusableUiGroupItemComponent : boolean = isReusableUiComponent<GenericProps<Element>>(component);
+    const isReusableUiGroupItemComponent : boolean = isReusableUiComponent<GenericProps<Element>>(elementComponent);
     
     
     
     // classes:
     const classes = useMergeClasses(
-        // preserves the original `classes` from `component`:
+        // preserves the original `classes` from `elementComponent`:
         (
             isReusableUiGroupItemComponent
             ?
-            (component.props as GenericProps<Element>).classes
+            (elementComponent.props as GenericProps<Element>).classes
             :
-            ((component.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
+            ((elementComponent.props as React.HTMLAttributes<HTMLElement>|React.SVGAttributes<SVGElement>).className ?? '').split(' ')
         ),
         
         
@@ -81,7 +81,7 @@ export const GroupItem = (props: GroupItemProps): JSX.Element => {
     
     
     // jsx:
-    return React.cloneElement<any>(component,
+    return React.cloneElement<any>(elementComponent,
         // props:
         {
             // other props:
