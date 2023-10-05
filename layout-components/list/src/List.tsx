@@ -292,10 +292,19 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     // children:
     const wrappedChildren = useMemo<React.ReactNode[]>(() =>
         flattenChildren(children)
-        .filter(isTruthyNode) // only truthy children
+        .filter(isTruthyNode) // only truthy children, so the <WrapperItem> doesn't wrap nullish children
         .map<React.ReactNode>((child, index) => {
             // tests:
-            const isElement = React.isValidElement<ListItemProps<Element>>(child);
+            const isElement        = React.isValidElement<ListItemProps<Element>>(child);
+            const mutateActionCtrl = isElement && (
+                (defaultActionCtrl === true)             // assign <ListItem>'s [actionCtrl] props if <List>'s [actionCtrl === true], otherwise do not mutate
+                &&
+                (child.props.actionCtrl !== undefined)   // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
+                &&
+                (child.type !== ListSeparatorItem)       // not a <ListSeparatorItem>, otherwise do not mutate
+                &&
+                (!child.props.classes?.includes('void')) // not marked as '.void', otherwise do not mutate
+            );
             
             
             
@@ -311,28 +320,17 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                     // semantics:
                     tag={wrapperTag}
                 >
-                    {!isElement ? child : React.cloneElement<ListItemProps<Element>>(child,
-                        // props:
-                        {
-                            // behaviors:
-                            ...(((): boolean => {
-                                // conditions:
-                                if (child.type === ListSeparatorItem)      return false;
-                                if (child.props.classes?.includes('void')) return false;
-                                
-                                
-                                
-                                // result:
-                                return (
-                                    child.props.actionCtrl
-                                    ??
-                                    defaultActionCtrl // the default <ListItem>'s actionCtrl value, if not assigned
-                                    ??
-                                    false             // if <List>'s actionCtrl was not assigned => default to false
-                                );
-                            })() ? { actionCtrl: true } : null), // assign actionCtrl props if (actionCtrl === true), otherwise do not append actionCtrl prop
-                        },
-                    )}
+                    {
+                        mutateActionCtrl
+                        ? React.cloneElement<ListItemProps<Element>>(child,
+                            // props:
+                            {
+                                // behaviors:
+                                actionCtrl : true,
+                            },
+                        )
+                        : child
+                    }
                 </WrapperItem>
             );
         })
