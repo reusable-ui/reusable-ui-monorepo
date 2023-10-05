@@ -39,12 +39,12 @@ export interface ListItemWithNavigationProps<TElement extends Element = HTMLElem
         Required<ListItemComponentProps<TElement>>
 {
     // positions:
-    deepLevels      : number[]
+    deepLevels  : number[]
     
     
     
     // handlers:
-    handleNavigate ?: EventHandler<number[]>
+    onNavigate ?: EventHandler<number[]>
 }
 export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: ListItemWithNavigationProps<TElement>): JSX.Element|null => {
     // rest props:
@@ -59,13 +59,13 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         
         
         
-        // handlers:
-        handleNavigate,
-        
-        
-        
         // components:
         listItemComponent,
+        
+        
+        
+        // handlers:
+        onNavigate,
     ...restListItemProps} = props;
     
     
@@ -78,8 +78,8 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         
         
         // handlers:
-        if (handleNavigate) {
-            handleNavigate(deepLevels);
+        if (onNavigate) {
+            onNavigate(deepLevels);
             event.stopPropagation(); // do not bubbling click event from nested <Navscroll> to parent <Navscroll>
             event.preventDefault();  // handled
         } // if
@@ -91,7 +91,7 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         
         
         // handlers:
-        handleNavigate && handleClickInternal,
+        onNavigate && handleClickInternal,
     );
     
     

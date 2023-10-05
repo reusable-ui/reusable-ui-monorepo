@@ -424,7 +424,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
     
     
     // jsx functions:
-    const mutateNestedNavscroll = (nestNavProps: NavscrollProps, key: React.Key|null, deepLevelsParent: number[]) => {
+    const mutateNestedNavscroll = (nestNavProps: NavscrollProps<TElement>, key: React.Key|null, deepLevelsParent: number[]) => {
         // rest props:
         const {
             // scrolls:
@@ -472,16 +472,22 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
             navComponent.props.children ?? mutateListItems(children, /*deepLevelsParent: */deepLevelsParent),
         );
     };
-    const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]) => {
+    const mutateListItems = (children: React.ReactNode, deepLevelsParent: number[]): React.ReactNode[] => {
+        let listIndex = -1;
         return (
             flattenChildren(children)
-            .map<React.ReactNode>((listItem, index) => {
+            .map<React.ReactNode>((listItem, childIndex) => {
                 // conditions:
                 if (!React.isValidElement<ListItemProps<Element>>(listItem)) return listItem; // not a <ListItem> => place it anyway
                 
                 
                 
-                const deepLevelsCurrent = [...deepLevelsParent, index];
+                // a valid listItem counter:
+                listIndex++; // only count of <ListItem>s, ignores of foreign nodes
+                
+                
+                
+                const deepLevelsCurrent = [...deepLevelsParent, listIndex];
                 
                 
                 
@@ -500,9 +506,9 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                     flattenChildren(listItemProps.children)
                     .map<React.ReactNode>((nestedNavscroll, nestedNavscrollIndex) => {
                         // conditions:
-                        if (!React.isValidElement<NavscrollProps>(nestedNavscroll)) return nestedNavscroll; // not an         <element> => place it anyway
-                        if (nestedNavscroll.type !== navscrollComponent.type)       return nestedNavscroll; // not a        <Navscroll> => place it anyway
-                        if (!!nestedNavscroll.props.scrollingOf)                    return nestedNavscroll; // not a nested <Navscroll> => place it anyway
+                        if (!React.isValidElement<NavscrollProps<TElement>>(nestedNavscroll)) return nestedNavscroll; // not an         <element> => place it anyway
+                        if (nestedNavscroll.type !== navscrollComponent.type)                 return nestedNavscroll; // not a        <Navscroll> => place it anyway
+                        if (!!nestedNavscroll.props.scrollingOf)                              return nestedNavscroll; // not a nested <Navscroll> => place it anyway
                         
                         
                         
@@ -515,6 +521,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 
                 // jsx:
                 return (
+                    /* wrap child with <ListItemWithNavigation> */
                     <ListItemWithNavigation<Element>
                         // other props:
                         {...listItemProps} // steals all listItem's props, so the <Owner> can recognize the <ListItemWithNavigation> as <TheirChild>
@@ -522,7 +529,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                         
                         
                         // identifiers:
-                        key={listItem.key ?? index}
+                        key={listItem.key ?? childIndex}
                         
                         
                         
@@ -537,12 +544,12 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                         
                         
                         // states:
-                        active={listItemProps.active ?? (index === activeIndices[deepLevelsCurrent.length - 1])}
+                        active={listItemProps.active ?? (listIndex === activeIndices[deepLevelsCurrent.length - 1])}
                         
                         
                         
                         // handlers:
-                        handleNavigate={(actionCtrl || undefined) && handleNavigate}
+                        onNavigate={(actionCtrl || undefined) && handleNavigate}
                         
                         
                         
@@ -560,7 +567,7 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                                     ...(('deepLevels'        in listItemProps) ? { deepLevels        : listItemProps.deepLevels        } : undefined),
                                     ...(('actionCtrl'        in listItemProps) ? { actionCtrl        : listItemProps.actionCtrl        } : undefined),
                                     ...(('active'            in listItemProps) ? { active            : listItemProps.active            } : undefined),
-                                    ...(('handleNavigate'    in listItemProps) ? { handleNavigate    : listItemProps.handleNavigate    } : undefined),
+                                    ...(('onNavigate'        in listItemProps) ? { onNavigate        : listItemProps.onNavigate        } : undefined),
                                     ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
                                 }}
                                 //#endregion restore conflicting props
