@@ -306,7 +306,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                 (
                     (!child.props.classes?.includes?.('void'))                // not marked as '.void', otherwise do not mutate
                     ||
-                    (child.props.className?.split?.(' ')?.includes?.('void')) // not marked as '.void', otherwise do not mutate
+                    (!child.props.className?.split?.(' ')?.includes?.('void')) // not marked as '.void', otherwise do not mutate
                 )
             );
             
