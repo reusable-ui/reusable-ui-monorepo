@@ -297,13 +297,17 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             // tests:
             const isElement        = React.isValidElement<ListItemProps<Element>>(child);
             const mutateActionCtrl = isElement && (
-                (defaultActionCtrl === true)             // assign <ListItem>'s [actionCtrl] props if <List>'s [actionCtrl === true], otherwise do not mutate
+                (defaultActionCtrl === true)                                  // assign <ListItem>'s [actionCtrl] props if <List>'s [actionCtrl === true], otherwise do not mutate
                 &&
-                (child.props.actionCtrl === undefined)   // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
+                (child.props.actionCtrl === undefined)                        // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
                 &&
-                (child.type !== ListSeparatorItem)       // not a <ListSeparatorItem>, otherwise do not mutate
+                (child.type !== ListSeparatorItem)                            // not a <ListSeparatorItem>, otherwise do not mutate
                 &&
-                (!child.props.classes?.includes('void')) // not marked as '.void', otherwise do not mutate
+                (
+                    (!child.props.classes?.includes?.('void'))                // not marked as '.void', otherwise do not mutate
+                    ||
+                    (child.props.className?.split?.(' ')?.includes?.('void')) // not marked as '.void', otherwise do not mutate
+                )
             );
             
             
