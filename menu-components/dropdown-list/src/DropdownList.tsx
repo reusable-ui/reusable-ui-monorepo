@@ -445,9 +445,10 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
                 // conditions:
                 if (!onExpandedChange)                                          return listItem; // [onExpandedChange] was not set => place it anyway
                 if (!React.isValidElement<ListItemProps<Element>>(listItem))    return listItem; // not a <ListItem>               => place it anyway
-                if (!(listItem.props.actionCtrl ?? defaultActionCtrl ?? false)) return listItem; // <ListItem actionCtrl={false}>  => place it anyway
+                if (!(listItem.props.actionCtrl ?? defaultActionCtrl))          return listItem; // <ListItem actionCtrl={false}>  => place it anyway
                 if (listItem.type === ListSeparatorItem)                        return listItem; // <ListSeparatorItem>            => place it anyway
-                if (listItem.props.classes?.includes('void'))                   return listItem; // a foreign <ListItem>           => place it anyway
+                if (listItem.props.classes?.includes?.('void'))                 return listItem; // a foreign <ListItem>           => place it anyway
+                if (listItem.props.className?.split?.(' ')?.includes?.('void')) return listItem; // a foreign <ListItem>           => place it anyway
                 // if <Dropdown> or <List> or <ListItem> is disabled => the <AccessibilityProvider> will take care for us
                 
                 
