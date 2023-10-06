@@ -17,6 +17,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // react helper hooks:
     useMergeClasses,
     
@@ -135,27 +140,40 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
     
     
     
-    // jsx:
-    // get the (1 - sum(<ProgressBar>.valueRatio)):
-    const remainingValueRatio = 1 - Math.min((
-        React.Children.toArray(children).map((child) => {
-            // <ProgressBar> component:
-            if (React.isValidElement<ProgressBarProps<Element>>(child)) {
-                // fn props:
-                const {valueRatio} = calculateValues<Element>(child.props);
-                return valueRatio;
-            }// if
-            
-            
-            
-            // foreign component:
-            return 0;
-        })
-        .reduce((accum, valueRatio) => accum + valueRatio, /*initialAccum = */0) // sum
-    ), 1); // trim to 1 if the total > 1
-    
-    const restProgressBar = useMemo((): JSX.Element => {
-        return (
+    // children:
+    const [flattenedChildren, restProgressBar] = useMemo<readonly [React.ReactNode[], React.ReactNode]>(() => {
+        const flattenedChildren = flattenChildren(children);
+        
+        
+        
+        // get the rest of (1 - sum(<ProgressBar>.valueRatio)):
+        const restValueRatio = (
+            1
+            -
+            Math.min((
+                flattenedChildren
+                .reduce<number>((accum, child) => { // sum the `valueRatio`(s)
+                    // conditions:
+                    if (!React.isValidElement<ProgressBarProps<Element>>(child)) return accum; // foreign component => not accumulated
+                    
+                    
+                    
+                    // fn props:
+                    const {valueRatio} = calculateValues<Element>(child.props);
+                    
+                    
+                    
+                    // accumulate the `valueRatio`:
+                    return accum + valueRatio;
+                }, /*initialAccum = */0)
+            ), 1) // trim to 1 if the total > 1
+        );
+        
+        
+        
+        // jsx:
+        return [
+            (isOrientationBlock ? flattenedChildren.reverse() : flattenedChildren),
             <Generic
                 // semantics:
                 aria-hidden={true} // just a dummy element, no meaningful content here
@@ -173,12 +191,15 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
                     [
                         progressBarVars.valueRatio
                         .slice(4, -1) // fix: var(--customProp) => --customProp
-                    ] : remainingValueRatio,
+                    ] : restValueRatio,
                 }}
-            />
-        )
-    }, [remainingValueRatio]);
+            />,
+        ];
+    }, [isOrientationBlock, children]);
     
+    
+    
+    // jsx:
     return (
         <Basic<TElement>
             // other props:
@@ -199,7 +220,7 @@ const Progress = <TElement extends Element = HTMLElement>(props: ProgressProps<T
             variantClasses={variantClasses}
         >
             { isOrientationBlock ? restProgressBar : null }
-            { isOrientationBlock ? React.Children.toArray(children).slice().reverse() : children }
+            { flattenedChildren }
             { isOrientationBlock ? null : restProgressBar }
         </Basic>
     );

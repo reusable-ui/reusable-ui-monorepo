@@ -38,8 +38,10 @@ function App() {
                 </Progress>
                 <br />
                 <Progress theme='success'>
-                    <ProgressBar value={30}>30%</ProgressBar>
-                    <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    <>
+                        <ProgressBar value={30}>30%</ProgressBar>
+                        <ProgressBar value={40} theme='danger' progressBarStyle='striped' running>40%</ProgressBar>
+                    </>
                 </Progress>
                 <br />
                 <Progress theme='danger'>
