@@ -299,7 +299,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             const mutateActionCtrl = isElement && (
                 (defaultActionCtrl === true)             // assign <ListItem>'s [actionCtrl] props if <List>'s [actionCtrl === true], otherwise do not mutate
                 &&
-                (child.props.actionCtrl !== undefined)   // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
+                (child.props.actionCtrl === undefined)   // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
                 &&
                 (child.type !== ListSeparatorItem)       // not a <ListSeparatorItem>, otherwise do not mutate
                 &&
