@@ -13,6 +13,7 @@ import {
 import {
     // a set of React node utility functions:
     flattenChildren,
+    isTruthyNode,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -106,7 +107,10 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
                 
                 
                 
-                const childrenArr = flattenChildren(children);
+                const childrenArr = (
+                    flattenChildren(children)
+                    .filter(isTruthyNode) // only truthy children, so the `childrenArr.length` accurately represents the number of pages
+                );
                 const activeIndex = childrenArr.findIndex((child) => React.isValidElement<ListItemProps>(child) && child.props.active);
                 if (activeIndex < 0) return childrenArr.slice(0, itemsLimit); // no active child => limit the children from the beginning
                 

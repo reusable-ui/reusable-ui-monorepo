@@ -399,6 +399,7 @@ Components with children mutation:
 
 <Content                    mutate <a> => <Button buttonStyle='link'>
 <Accordion>                 mutate default [lazy] of children
+<Pagination>                mutate to limited children                                      ignores nullish children to easily count the number of pages
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
