@@ -508,8 +508,7 @@ const ResponsiveProvider = <TFallback,>(props: ResponsiveProviderProps<TFallback
     const maxFallbackIndex = (fallbacks.length - 1);
     const currentFallback  = (currentFallbackIndex.current <= maxFallbackIndex) ? fallbacks[currentFallbackIndex.current] : fallbacks[maxFallbackIndex];
     
-    
-    const wrappedChildren = useMemo<React.ReactNode[]>(() =>
+    const wrappedChildren  = useMemo<React.ReactNode[]>(() =>
         flattenChildren(
             (typeof(childrenFn) !== 'function')
             ?
