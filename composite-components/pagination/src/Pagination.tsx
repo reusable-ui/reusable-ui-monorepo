@@ -103,16 +103,16 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
             {((): React.ReactNode|React.ReactNode[] => {
                 // conditions:
                 if (itemsLimit === undefined) return children; // limiter was not set => nothing to limit
-                if (itemsLimit <= 0) return [];
+                if (itemsLimit <= 0) return null; // limiter is zero or negative => return empty child
                 
                 
                 
-                const childrenArr = (
+                const flattenedChildren = (
                     flattenChildren(children)
-                    .filter(isTruthyNode) // only truthy children, so the `childrenArr.length` accurately represents the number of pages
+                    .filter(isTruthyNode) // only truthy children, so the `flattenedChildren.length` accurately represents the number of pages
                 );
-                const activeIndex = childrenArr.findIndex((child) => React.isValidElement<ListItemProps>(child) && child.props.active);
-                if (activeIndex < 0) return childrenArr.slice(0, itemsLimit); // no active child => limit the children from the beginning
+                const activeIndex = flattenedChildren.findIndex((child) => React.isValidElement<ListItemProps<Element>>(child) && child.props.active);
+                if (activeIndex < 0) return flattenedChildren.slice(0, itemsLimit); // no active child => limit the children from the beginning
                 
                 
                 
@@ -124,7 +124,7 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
                 const limitIndexRight   = activeIndex + limitCountRight; // the theoretical limit index at the right
                 
                 const minChildIndex     = 0;
-                const maxChildIndex     = childrenArr.length - 1;
+                const maxChildIndex     = flattenedChildren.length - 1;
                 
                 // the missing item count due to *out_of_range*,
                 // the missing ones will be *compensated* on the other sides:
@@ -136,7 +136,7 @@ const Pagination = <TElement extends Element = HTMLElement>(props: PaginationPro
                 
                 
                 
-                return childrenArr.slice(trimmedIndexLeft, trimmedIndexRight + 1);
+                return flattenedChildren.slice(trimmedIndexLeft, trimmedIndexRight + 1);
             })()}
             {nextItems}
         </>
