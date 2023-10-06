@@ -54,17 +54,19 @@ function App() {
                         />
                     }
                 >
-                    {listArr.map((index) => {
-                        return (
-                            <ListItem
-                                key={index}
-                                active={(selectedIndex === index)}
-                                onClick={() => setSelectedIndex(index)}
-                            >
-                                {index + 1}
-                            </ListItem>
-                        );
-                    })}
+                    <>
+                        {listArr.map((index) => {
+                            return (
+                                <ListItem
+                                    key={index}
+                                    active={(selectedIndex === index)}
+                                    onClick={() => setSelectedIndex(index)}
+                                >
+                                    {index + 1}
+                                </ListItem>
+                            );
+                        })}
+                    </>
                 </Pagination>
                 <hr />
                 <Pagination theme='primary'
