@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -11,7 +16,13 @@ import {
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
-import type {
+import {
+    // a set of React node utility functions:
+    flattenChildren,
+    isTruthyNode,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     ExpandedChangeEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -75,7 +86,7 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
     
     
     // rest props:
-    let {
+    const {
         // accessibilities:
         label,
         
@@ -93,18 +104,35 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
     
     
     
-    // if no [label] and [children] are text-able => move them from [children] to [label]
-    if (!label && children) {
-        const childrenArr = React.Children.toArray(children);
-        if (childrenArr.length && childrenArr.every((child) => (typeof(child) === 'string') || (typeof(child) === 'number'))) {
-            label    = childrenArr.join(''); // move in
-            children = undefined;            // move out
-        } // if
-    } // if
+    // if necessary, geneate auto label from [children]:
+    const autoLabel = useMemo<string|null>(() => {
+        // conditions:
+        if (label !== undefined)     return null; // the [label] is explicitly defined => no need to generate auto label
+        if (!isTruthyNode(children)) return null; // the [children] is not defined     =>  unable to generate auto label
+        
+        
+        
+        // flatten the (nested) children to single deep children:
+        const flattenedChildren = (
+            flattenChildren(children)
+            .filter(isTruthyNode) // only truthy children, so all elements represent valid nodes
+        );
+        
+        
+        
+        // conditions:
+        if (flattenedChildren.some((child) => (typeof(child) !== 'string') && (typeof(child) !== 'number'))) return null; // contains one/more non_stringable node(s) => unable to generate auto label
+        
+        
+        
+        // merge all stringable children to single string:
+        return flattenedChildren.join('');
+    }, [label, children]);
     
     
     
     // jsx:
+    console.log({autoLabel});
     return (
         <Badge<TElement, TExpandedChangeEvent>
             // other props:
@@ -125,7 +153,7 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
             
             
             // accessibilities:
-            label={label ?? 'Loading...'}
+            label={label ?? autoLabel ?? 'Loading...'}
         >
             {/* <Icon> */}
             {React.cloneElement<IconProps<Element>>(iconComponent,
@@ -136,8 +164,8 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
                 },
             )}
             
-            { children && <VisuallyHidden>
-                { children }
+            { (autoLabel === null) && !!children && <VisuallyHidden>
+                {children}
             </VisuallyHidden> }
         </Badge>
     );

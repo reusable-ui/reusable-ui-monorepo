@@ -40,7 +40,15 @@ function App() {
                     I'm here
                 </button>
                 <Busy floatingOn={btnRef} theme='danger' expanded={true} floatingPlacement='right' floatingOffset={10}>
-                    loading...
+                    <>
+                        Fetching data...
+                        <>
+                            {' '}
+                            Please
+                            {' '}
+                            wait...
+                        </>
+                    </>
                 </Busy>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
             </div>

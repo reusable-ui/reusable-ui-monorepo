@@ -176,7 +176,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             // semantics:
             tag={props.tag ?? 'span'}
             
-            aria-label={props['aria-label'] ?? label}
+            aria-label={props['aria-label'] ?? (label || undefined)}
             
             
             
