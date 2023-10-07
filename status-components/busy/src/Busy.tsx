@@ -132,7 +132,6 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
     
     
     // jsx:
-    console.log({autoLabel});
     return (
         <Badge<TElement, TExpandedChangeEvent>
             // other props:

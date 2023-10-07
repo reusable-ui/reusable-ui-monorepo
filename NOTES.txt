@@ -401,6 +401,7 @@ Components with children mutation:
 <Accordion>                 mutate default [lazy] of children
 <Pagination>                mutate to limited children                                      ignores nullish children to easily count the number of pages
 <Progress>                  mutate to reversed children & calculate a `restValueRatio`
+<Busy>                      mutate to autoLabel
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
