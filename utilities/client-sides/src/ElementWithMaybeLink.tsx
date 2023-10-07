@@ -6,6 +6,10 @@ import {
 
 // reusable-ui utilities:
 import {
+    // utilities:
+    flattenChildren,
+}                           from '@reusable-ui/nodes'           // a set of React node utility functions
+import {
     // hooks:
     SemanticProps,
     useTestSemantic,
@@ -73,10 +77,10 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
     
     
     // convert the children to array (if necessary):
-    const childrenArray : React.ReactNode[] = Array.isArray(children) ? (children as React.ReactNode[]) : React.Children.toArray(children);
+    const flattenedChildren = flattenChildren(children);
     
     // inspect if <Element>'s children contain one/more <Link>:
-    const linkComponent = childrenArray.find(isClientSideLink); // take the first <Link> (if any)
+    const linkComponent = flattenedChildren.find(isClientSideLink); // take the first <Link> (if any)
     
     // if no contain <Link> => normal <Element>:
     if (!linkComponent) return React.cloneElement(elementComponent,
@@ -90,7 +94,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         
         
         // children:
-        ...childrenArray, // overwrite the children
+        ...flattenedChildren, // overwrite the children
     );
     
     
@@ -119,7 +123,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         ]
     */
     const mergedChildren : React.ReactNode[] = (
-        childrenArray
+        flattenedChildren
         .flatMap((child: React.ReactNode): React.ReactNode[] => {
             // not a found <Link> => current <Element>'s children:
             if (child !== linkComponent) return [child];
