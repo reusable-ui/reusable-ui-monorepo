@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // cssfn:
@@ -12,6 +17,12 @@ import {
 
 // reusable-ui core:
 import {
+    // a set of React node utility functions:
+    flattenChildren,
+    isTruthyNode,
+    
+    
+    
     // react helper hooks:
     useMergeEvents,
     useMergeClasses,
@@ -116,8 +127,18 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     /*
      * state is expand/collapse based on [controllable expanded] (if set) and fallback to [uncontrollable expanded]
      */
-    const autoExpanded : boolean = !!(children && (children !== true));
-    const expandedFn   : boolean = expanded /*controllable*/ ?? autoExpanded /*uncontrollable*/;
+    const autoExpanded = useMemo<boolean>(() => {
+        // conditions:
+        if (expanded !== undefined) return expanded; // the *controllable* is defined => use it
+        
+        
+        
+        return !!(
+            flattenChildren(children)
+            .filter(isTruthyNode) // only truthy children, so all elements represent valid nodes
+            .length               // at least one truthy child => `autoExpanded = true`
+        );
+    }, [expanded, children]);
     
     
     
@@ -188,7 +209,7 @@ const Badge = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             
             
             // states:
-            expanded={expandedFn}
+            expanded={autoExpanded}
             
             
             
