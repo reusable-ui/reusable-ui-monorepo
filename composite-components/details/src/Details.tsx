@@ -420,28 +420,28 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // jsx:
     return (
-        <Basic<TElement>
-            // other props:
-            {...restBasicProps}
-            
-            
-            
-            // semantics:
-            semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
-            semanticRole = {props.semanticRole ?? _defaultSemanticRole}
-            
-            
-            
-            // variants:
-            mild={mild}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
-        >
-            <AccessibilityProvider {...propAccess}>
+        <AccessibilityProvider {...propAccess}>
+            <Basic<TElement>
+                // other props:
+                {...restBasicProps}
+                
+                
+                
+                // semantics:
+                semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
+                semanticRole = {props.semanticRole ?? _defaultSemanticRole}
+                
+                
+                
+                // variants:
+                mild={mild}
+                
+                
+                
+                // classes:
+                mainClass={props.mainClass ?? styleSheet.main}
+                variantClasses={variantClasses}
+            >
                 {/* <ToggleButton> */}
                 {React.cloneElement<ToggleButtonProps>(toggleButtonComponent,
                     // props:
@@ -543,8 +543,8 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
                     // children:
                     bodyComponent.props.children ?? ((!lazy || isVisible) && children),
                 )}
-            </AccessibilityProvider>
-        </Basic>
+            </Basic>
+        </AccessibilityProvider>
     );
 };
 export {
