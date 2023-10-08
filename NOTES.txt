@@ -422,3 +422,4 @@ no need to flatten the children:
 
 <ElementWithMaybeLink>      mutate to mergedChildren, detect the presence of <Link> to be a <WrapperLink>
 useSemanticButton                                     detect the presence of <Link> for [tag] & [role]
+navigations                                           detect the presence of <Link> for [href] / [to]
