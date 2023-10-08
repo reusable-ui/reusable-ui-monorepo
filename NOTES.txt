@@ -403,7 +403,7 @@ Components with children mutation:
 <Progress>                  mutate to reversed children & calculate for `restValueRatio`
 <Busy>                      calculate for autoLabel                                         ignores nullish children to easily count the number of valid children
 <Badge>                     calculate for autoExpanded                                      ignores nullish children to easily count the number of valid children
-<DropdownList>              calculate for  semanticRole
+<DropdownList>              calculate for  semanticRole of 'dialog'|'menu'
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
