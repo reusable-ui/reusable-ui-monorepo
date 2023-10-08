@@ -403,6 +403,7 @@ Components with children mutation:
 <Progress>                  mutate to reversed children & calculate a `restValueRatio`
 <Busy>                      mutate to autoLabel                                             ignores nullish children to easily count the number of valid children
 <Badge>                     mutate to autoExpanded                                          ignores nullish children to easily count the number of valid children
+<ElementWithMaybeLink>      mutate to mergedChildren
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
