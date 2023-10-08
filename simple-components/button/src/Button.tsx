@@ -41,7 +41,7 @@ import {
     // semantics:
     SemanticButtonProps,
     useSemanticButton,
-}                           from './capabilities/semantic-button.js'
+}                           from './capabilities/SemanticButton.js'
 import {
     // variants:
     ButtonVariant,

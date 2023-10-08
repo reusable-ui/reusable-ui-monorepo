@@ -1,5 +1,5 @@
 export *            from './defaults.js'
-export *            from './capabilities/semantic-button.js'
+export *            from './capabilities/SemanticButton.js'
 export *            from './variants/ButtonVariant.js'
 
 export *            from './styles/config.js'
