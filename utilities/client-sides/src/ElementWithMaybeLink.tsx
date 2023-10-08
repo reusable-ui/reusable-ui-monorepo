@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useMemo,
 }                           from 'react'
 
 // reusable-ui utilities:
@@ -27,6 +32,7 @@ import {
 // internals:
 import {
     // utilities:
+    JsxClientSideLink,
     isClientSideLink,
 }                           from './client-sides.js'
 import {
@@ -76,13 +82,90 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
     
     
     
-    // convert the children to array (if necessary):
-    const flattenedChildren = flattenChildren(children);
+    const [mutatedChildren, linkComponent] = useMemo<readonly [React.ReactNode[], JsxClientSideLink|null]>(() => {
+        // convert the <Element>'s children to flattened array:
+        const flattenedChildren = flattenChildren(children);
+        
+        
+        
+        // inspect if <Element>'s children contain one/more <Link>:
+        const linkComponent = flattenedChildren.find(isClientSideLink); // take the first <Link> (if any)
+        
+        
+        
+        // if not_contain <Link> => nothing to merge:
+        if (!linkComponent) return [
+            flattenedChildren,
+            null,
+        ];
+        
+        
+        
+        /*
+            merge <Link>'s children and <Element>'s children:
+            
+            declaration: [
+                <c1>
+                <c2>
+                <Link>
+                    <c3>
+                    <c4>
+                </Link>
+                <c5>
+                <c6>
+            ]
+            
+            rendered to: [
+                <c1>
+                <c2>
+                <c3>
+                <c4>
+                <c5>
+                <c6>
+            ]
+        */
+        const mergedChildren : React.ReactNode[] = (
+            flattenedChildren
+            .flatMap((child: React.ReactNode): React.ReactNode[] => {
+                // not a <Link> => current <Element>'s child:
+                if (child !== linkComponent) return [child];
+                
+                
+                
+                // merge with <Link>'s children:
+                return (
+                    flattenChildren(linkComponent.props.children) // unwrap the <Link>'s children & flattened them
+                    .map((grandChild: React.ReactNode, childIndex): React.ReactNode => {
+                        // conditions:
+                        if (!React.isValidElement<{}>(grandChild)) return grandChild; // not an <Element> => place it anyway
+                        
+                        
+                        
+                        // jsx:
+                        const linkKey = linkComponent.key ?? `.${childIndex}`;
+                        return React.cloneElement<{}>(grandChild,
+                            // props:
+                            {
+                                key : `${linkKey}/${grandChild.key}`, // fix the grandChild's key to avoid collision
+                            },
+                        );
+                    })
+                );
+            })
+        );
+        
+        
+        
+        // if contain <Link> => return the `mergedChildren`:
+        return [
+            mergedChildren,
+            linkComponent,
+        ];
+    }, [children]);
     
-    // inspect if <Element>'s children contain one/more <Link>:
-    const linkComponent = flattenedChildren.find(isClientSideLink); // take the first <Link> (if any)
     
-    // if no contain <Link> => normal <Element>:
+    
+    // if not_contain <Link> => normal <Element>:
     if (!linkComponent) return React.cloneElement(elementComponent,
         // props:
         {
@@ -94,51 +177,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         
         
         // children:
-        ...flattenedChildren, // overwrite the children
-    );
-    
-    
-    
-    /*
-        merge <Link>'s children and <Element>'s children:
-        
-        declaration: [
-            <c1>
-            <c2>
-            <Link>
-                <c3>
-                <c4>
-            </Link>
-            <c5>
-            <c6>
-        ]
-        
-        rendered to: [
-            <c1>
-            <c2>
-            <c3>
-            <c4>
-            <c5>
-            <c6>
-        ]
-    */
-    const mergedChildren : React.ReactNode[] = (
-        flattenedChildren
-        .flatMap((child: React.ReactNode): React.ReactNode[] => {
-            // not a found <Link> => current <Element>'s children:
-            if (child !== linkComponent) return [child];
-            
-            
-            
-            // merge with <Link>'s children:
-            return (
-                React.Children.toArray(linkComponent.props.children) // unwrap the <Link>
-                .map((grandChild: React.ReactNode): React.ReactNode => {
-                    if (!React.isValidElement(grandChild)) return grandChild;
-                    return React.cloneElement(grandChild, { key: `${child.key}-${grandChild.key}` }); // fix the grandChild's key
-                })
-            );
-        })
+        mutatedChildren, // overwrite the children
     );
     
     
@@ -161,7 +200,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         
         
         // children:
-        ...mergedChildren, // overwrite the children
+        mutatedChildren, // overwrite the children
     );
     
     
@@ -188,12 +227,12 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
         // children:
         (
             !isNextJsLink
-            ?
+            
             // for ReactRouterCompat's <Link> => uses the usual children:
-            mergedChildren
-            :
+            ? mutatedChildren
+            
             // for NextJs's <Link> => wraps the children with <Element>:
-            ((): React.ReactComponentElement<any, ElementWithForwardRefProps> => {
+            : ((): React.ReactComponentElement<any, ElementWithForwardRefProps> => {
                 // props:
                 const modifiedElementComponentProps = modifiedElementComponent.props;
                 
