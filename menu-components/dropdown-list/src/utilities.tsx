@@ -5,7 +5,12 @@ import {
 }                           from 'react'
 
 // reusable-ui core:
-import type {
+import {
+    // a set of React node utility functions:
+    flattenChildren,
+    
+    
+    
     // a semantic management system for react web components:
     Role,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -27,7 +32,7 @@ export const calculateSemanticRole = <TElement extends Element = HTMLElement>(pr
     
     
     const listItems         = props.children;
-    if (React.Children.toArray(listItems).some((listItem) => {
+    if (flattenChildren(listItems).some((listItem) => {
         if (!React.isValidElement<ListItemProps<Element>>(listItem)) {
             return !(defaultActionCtrl ?? false);                              // if the default is not an actionCtrl => not a menu item => role='dialog'
         }

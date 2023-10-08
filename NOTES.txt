@@ -400,9 +400,10 @@ Components with children mutation:
 <Content                    mutate <a> => <Button buttonStyle='link'>
 <Accordion>                 mutate default [lazy] of children
 <Pagination>                mutate to limited children                                      ignores nullish children to easily count the number of pages
-<Progress>                  mutate to reversed children & calculate a `restValueRatio`
-<Busy>                      mutate to autoLabel                                             ignores nullish children to easily count the number of valid children
-<Badge>                     mutate to autoExpanded                                          ignores nullish children to easily count the number of valid children
+<Progress>                  mutate to reversed children & calculate for `restValueRatio`
+<Busy>                      calculate for autoLabel                                         ignores nullish children to easily count the number of valid children
+<Badge>                     calculate for autoExpanded                                      ignores nullish children to easily count the number of valid children
+calculateSemanticRole       calculate for  semanticRole
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
