@@ -11,10 +11,6 @@ import {
 
 // reusable-ui utilities:
 import {
-    // utilities:
-    flattenChildren,
-}                           from '@reusable-ui/nodes'           // a set of React node utility functions
-import {
     // hooks:
     SemanticProps,
     useTestSemantic,
@@ -83,19 +79,19 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
     
     
     const [mutatedChildren, linkComponent] = useMemo<readonly [React.ReactNode[], JsxClientSideLink|null]>(() => {
-        // convert the <Element>'s children to flattened array:
-        const flattenedChildren = flattenChildren(children);
+        // convert the <Element>'s children to array  (no need to flattened them):
+        const childrenArray = React.Children.toArray(children);
         
         
         
         // inspect if <Element>'s children contain one/more <Link>:
-        const linkComponent = flattenedChildren.find(isClientSideLink); // take the first <Link> (if any)
+        const linkComponent = childrenArray.find(isClientSideLink); // take the first <Link> (if any)
         
         
         
         // if not_contain <Link> => nothing to merge:
         if (!linkComponent) return [
-            flattenedChildren,
+            childrenArray,
             null,
         ];
         
@@ -125,7 +121,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
             ]
         */
         const mergedChildren : React.ReactNode[] = (
-            flattenedChildren
+            childrenArray
             .flatMap((child: React.ReactNode): React.ReactNode[] => {
                 // not a <Link> => current <Element>'s child:
                 if (child !== linkComponent) return [child];
@@ -134,7 +130,7 @@ const ElementWithMaybeLink = (props: ElementWithMaybeLinkProps): JSX.Element|nul
                 
                 // merge with <Link>'s children:
                 return (
-                    flattenChildren(linkComponent.props.children) // unwrap the <Link>'s children & flattened them
+                    React.Children.toArray(linkComponent.props.children) // unwrap the <Link>'s children (no need to flattened them)
                     .map((grandChild: React.ReactNode, childIndex): React.ReactNode => {
                         // conditions:
                         if (!React.isValidElement<{}>(grandChild)) return grandChild; // not an <Element> => place it anyway
