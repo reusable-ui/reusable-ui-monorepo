@@ -12,6 +12,12 @@ import {
     
     
     
+    // an accessibility management system:
+    AccessibilityProps,
+    AccessibilityProvider,
+    
+    
+    
     // a capability of UI to expand/reduce its size or toggle the visibility:
     CollapsibleProps,
     useCollapsible,
@@ -40,6 +46,13 @@ export interface TabPanelProps<TElement extends Element = HTMLElement, TTabExpan
     extends
         // bases:
         GenericProps<TElement>,
+        
+        // accessibilities:
+        Pick<AccessibilityProps,
+            // states:
+            |'enabled'
+            |'inheritEnabled'
+        >,
         
         // states:
         CollapsibleProps<TTabExpandedChangeEvent>,
@@ -100,6 +113,9 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
         
         
         // states:
+        enabled         : enabled,          // take
+        inheritEnabled  : inheritEnabled,   // take
+        
         expanded        : _expanded,        // remove
         onExpandStart   : _onExpandStart,   // remove
         onCollapseStart : _onCollapseStart, // remove
@@ -184,37 +200,45 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
     
     
     // jsx:
-    /* <Panel> */
-    return React.cloneElement<GenericProps<TElement>>(panelComponent,
-        // props:
-        {
-            // other props:
-            ...restGenericProps,
-            ...panelComponent.props, // overwrites restGenericProps (if any conflics)
-            
-            
-            
-            // semantics:
-            semanticTag       : panelComponent.props.semanticTag  ?? props.semanticTag  ?? '',         // no corresponding semantic tag => defaults to <div>
-            semanticRole      : panelComponent.props.semanticRole ?? props.semanticRole ?? 'tabpanel', // uses [role="tabpanel"] as the default semantic role
-            
-            
-            
-            // classes:
-            classes           : classes,
-            stateClasses      : stateClasses,
-            
-            
-            
-            // handlers:
-            onAnimationStart  : handleAnimationStart,
-            onAnimationEnd    : handleAnimationEnd,
-        },
-        
-        
-        
-        // children:
-        panelComponent.props.children ?? ((!lazy || isVisible || (tabPanelStyle === 'maxContent')) && children),
+    return (
+        <AccessibilityProvider
+            // states:
+            enabled={enabled}
+            inheritEnabled={inheritEnabled}
+        >
+            {/* <Panel> */}
+            {React.cloneElement<GenericProps<TElement>>(panelComponent,
+                // props:
+                {
+                    // other props:
+                    ...restGenericProps,
+                    ...panelComponent.props, // overwrites restGenericProps (if any conflics)
+                    
+                    
+                    
+                    // semantics:
+                    semanticTag       : panelComponent.props.semanticTag  ?? props.semanticTag  ?? '',         // no corresponding semantic tag => defaults to <div>
+                    semanticRole      : panelComponent.props.semanticRole ?? props.semanticRole ?? 'tabpanel', // uses [role="tabpanel"] as the default semantic role
+                    
+                    
+                    
+                    // classes:
+                    classes           : classes,
+                    stateClasses      : stateClasses,
+                    
+                    
+                    
+                    // handlers:
+                    onAnimationStart  : handleAnimationStart,
+                    onAnimationEnd    : handleAnimationEnd,
+                },
+                
+                
+                
+                // children:
+                panelComponent.props.children ?? ((!lazy || isVisible || (tabPanelStyle === 'maxContent')) && children),
+            )}
+        </AccessibilityProvider>
     );
 };
 export {

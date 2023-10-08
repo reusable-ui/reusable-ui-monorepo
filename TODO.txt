@@ -1,4 +1,3 @@
-[high prior] add [enabled] property to TabPanelProps
 [high prior] <Input>'s validation icon swap to left if the text aligned on right
 [med prior ] remove export styles/elements for composite components
 [med prior ] convert <Navbar> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState

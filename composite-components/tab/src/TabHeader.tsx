@@ -167,6 +167,12 @@ const TabHeader = <TElement extends Element = HTMLElement>(props: TabHeaderProps
                     
                     
                     
+                    // states:
+                    enabled         : listItemComponent.props.enabled          ?? tabPanel.props.enabled,
+                    inheritEnabled  : listItemComponent.props.inheritEnabled   ?? tabPanel.props.inheritEnabled,
+                    
+                    
+                    
                     // children:
                     children        : listItemComponent.props.children         ?? tabPanelLabel,
                 };

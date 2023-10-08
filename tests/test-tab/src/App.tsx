@@ -12,6 +12,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
+import { Button } from '@reusable-ui/button';
 
 
 
@@ -66,6 +67,10 @@ function App() {
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </TabPanel>
+                    <TabPanel label='disabled' enabled={false}>
+                        <p>The detail of disabled item.</p>
+                        <Button theme='primary'>Click me</Button>
+                    </TabPanel>
                 </Tab>
                 
                 <Tab headerComponent={null} theme='primary' lazy expandedTabIndex={expandedTabIndex} onExpandedChange={(event) => setExpandedTabIndex(event.tabIndex)}>
@@ -86,6 +91,10 @@ function App() {
                             <ParagraphLorem />
                         </TabPanel>
                     </>
+                    <TabPanel label='disabled' enabled={false}>
+                        <p>The detail of disabled item.</p>
+                        <Button theme='primary'>Click me</Button>
+                    </TabPanel>
                 </Tab>
                 
                 {/* <Tab theme='primary' outlined>
