@@ -33,7 +33,7 @@ function App() {
                         Trigger re-render whole app
                     </button>
                 </article>
-                <Indicator>
+                <Indicator theme='primary'>
                     test &lt;Indicator&gt;
                 </Indicator>
             </div>

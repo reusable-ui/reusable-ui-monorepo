@@ -94,11 +94,6 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
         
         readOnly        : _readOnly,        // remove
         inheritReadOnly : _inheritReadOnly, // remove
-        
-        
-        
-        // children:
-        children,
     ...restBasicProps} = props;
     
     
@@ -143,39 +138,37 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     // jsx:
     return (
-        <Basic<TElement>
-            // other props:
-            {...restBasicProps}
-            
-            
-            
-            // variants:
-            mild={props.mild ?? true}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
-            
-            
-            
-            // :disabled | [aria-disabled]
-            {...disableableState.props}
-            
-            // :checked | [aria-checked] | [aria-pressed] | [aria-selected]
-            {...activatableState.props}
-            
-            
-            
-            // handlers:
-            onAnimationStart = {handleAnimationStart}
-            onAnimationEnd   = {handleAnimationEnd  }
-        >
-            { children && <AccessibilityProvider {...propAccess}>
-                { children }
-            </AccessibilityProvider> }
-        </Basic>
+        <AccessibilityProvider {...propAccess}>
+            <Basic<TElement>
+                // other props:
+                {...restBasicProps}
+                
+                
+                
+                // variants:
+                mild={props.mild ?? true}
+                
+                
+                
+                // classes:
+                mainClass={props.mainClass ?? styleSheet.main}
+                stateClasses={stateClasses}
+                
+                
+                
+                // :disabled | [aria-disabled]
+                {...disableableState.props}
+                
+                // :checked | [aria-checked] | [aria-pressed] | [aria-selected]
+                {...activatableState.props}
+                
+                
+                
+                // handlers:
+                onAnimationStart = {handleAnimationStart}
+                onAnimationEnd   = {handleAnimationEnd  }
+            />
+        </AccessibilityProvider>
     );
 };
 export {
