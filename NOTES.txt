@@ -403,7 +403,7 @@ Components with children mutation:
 <Progress>                  mutate to reversed children & calculate for `restValueRatio`
 <Busy>                      calculate for autoLabel                                         ignores nullish children to easily count the number of valid children
 <Badge>                     calculate for autoExpanded                                      ignores nullish children to easily count the number of valid children
-calculateSemanticRole       calculate for  semanticRole
+<DropdownList>              calculate for  semanticRole
 
 <Carousel>                  wrap with <li>                                                  ignores nullish children to easily count the number of slides
 <Tab>                       wrap with <ListItemWithState> & <TabPanelWithState>
@@ -422,5 +422,5 @@ calculateSemanticRole       calculate for  semanticRole
 no need to flatten the children:
 
 <ElementWithMaybeLink>      mutate to mergedChildren, detect the presence of <Link> to be a <WrapperLink>
-useSemanticButton                                     detect the presence of <Link> for [tag] & [role]
+<Button>                                              detect the presence of <Link> for [tag] & [role]
 navigations                                           detect the presence of <Link> for [href] / [to]
