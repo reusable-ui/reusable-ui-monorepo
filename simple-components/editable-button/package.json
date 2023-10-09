@@ -1,0 +1,53 @@
+{
+  "name": "@reusable-ui/editable-button",
+  "version": "6.4.0",
+  "description": "A button with validation indicator.",
+  "keywords": [
+    "button",
+    "editable",
+    "clickable",
+    "action",
+    "control",
+    "component",
+    "styled",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/EditableButton.js",
+  "types": "dist/EditableButton.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/EditableButton.js",
+    "./index": "./dist/EditableButton.js",
+    "./index.js": "./dist/EditableButton.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/core": "^3.2.0",
+    "@cssfn/cssfn-react": "^3.2.0",
+    "@reusable-ui/button": "^6.4.0",
+    "@reusable-ui/core": "^6.4.0",
+    "@reusable-ui/editable-control": "^6.4.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.0",
+    "react": "^18.0.0"
+  }
+}
