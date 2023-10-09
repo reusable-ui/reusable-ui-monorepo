@@ -129,12 +129,12 @@ export interface TabProps<TElement extends Element = HTMLElement, TTabExpandedCh
 }
 const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent extends TabExpandedChangeEvent = TabExpandedChangeEvent>(props: TabProps<TElement, TTabExpandedChangeEvent>): JSX.Element|null => {
     // styles:
-    const styles = useTabStyleSheet();
+    const styleSheet = useTabStyleSheet();
     
     
     
     // identifiers:
-    const defaultId = useId();
+    const defaultId  = useId();
     
     
     
@@ -251,7 +251,7 @@ const Tab = <TElement extends Element = HTMLElement, TTabExpandedChangeEvent ext
             
             
             // classes:
-            mainClass={props.mainClass ?? styles.main}
+            mainClass={props.mainClass ?? styleSheet.main}
         >
             <TabStateProvider<TTabExpandedChangeEvent>
                 // behaviors:
