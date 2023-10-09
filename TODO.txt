@@ -1,4 +1,5 @@
 [high prior] <Input>'s validation icon swap to left if the text aligned on right
+[med prior ] remove calendar icon on Input type='date' on Firefox
 [low prior ] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
