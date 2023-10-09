@@ -20,13 +20,13 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/EditableButton.js",
-  "types": "dist/EditableButton.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/EditableButton.js",
-    "./index": "./dist/EditableButton.js",
-    "./index.js": "./dist/EditableButton.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
