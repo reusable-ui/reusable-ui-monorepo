@@ -1,12 +1,13 @@
-[high prior] <Input>'s validation icon swap to left if the text aligned on right
-[med prior ] remove calendar icon on Input type='date' on Firefox
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] make useEvent server-component friendly
 [low prior ] add 'use client' for all interactive components
 
+[unresolved] <Input>'s validation icon swap to left if the text aligned on right
+[unresolved] remove calendar icon on Input type='date' on Firefox
 [no err det] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
+
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
 
