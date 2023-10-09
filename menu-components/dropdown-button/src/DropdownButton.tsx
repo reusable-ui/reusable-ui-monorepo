@@ -273,8 +273,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
     
     
     // refs:
-    const buttonRefInternal = useRef<HTMLButtonElement|null>(null);
-    const mergedButtonRef   = useMergeRefs(
+    const buttonRefInternal    = useRef<HTMLButtonElement|null>(null);
+    const mergedButtonRef      = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
         buttonComponent.props.elmRef,
         
@@ -289,7 +289,16 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         
         buttonRefInternal,
     );
-    const mergedDropdownRef = useMergeRefs(
+    const mergedButtonOuterRef = useMergeRefs(
+        // preserves the original `outerRef` from `buttonComponent`:
+        buttonComponent.props.outerRef,
+        
+        
+        
+        // preserves the original `outerRef` from `props`:
+        props.outerRef,
+    );
+    const mergedDropdownRef    = useMergeRefs(
         // preserves the original `outerRef` from `dropdownComponent`:
         dropdownComponent.props.outerRef,
         
@@ -473,6 +482,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                             
                             // refs:
                             elmRef      : mergedButtonRef,
+                            outerRef    : mergedButtonOuterRef,
                             
                             
                             
