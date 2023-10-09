@@ -71,7 +71,7 @@ const ButtonWithAnswer = <TAnswer extends any = 'ok'>(props: ButtonWithAnswerPro
     
     
     // refs:
-    const mergedElmRef = useMergeRefs(
+    const mergedElmRef   = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
         buttonComponent.props.elmRef,
         
@@ -83,6 +83,15 @@ const ButtonWithAnswer = <TAnswer extends any = 'ok'>(props: ButtonWithAnswerPro
         
         
         autoFocusRef,
+    );
+    const mergedOuterRef = useMergeRefs(
+        // preserves the original `outerRef` from `buttonComponent`:
+        buttonComponent.props.outerRef,
+        
+        
+        
+        // preserves the original `outerRef` from `props`:
+        props.outerRef,
     );
     
     
@@ -127,7 +136,8 @@ const ButtonWithAnswer = <TAnswer extends any = 'ok'>(props: ButtonWithAnswerPro
             
             
             // refs:
-            elmRef  : mergedElmRef,
+            elmRef   : mergedElmRef,
+            outerRef : mergedOuterRef,
             
             
             
