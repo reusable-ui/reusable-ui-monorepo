@@ -424,3 +424,81 @@ no need to flatten the children:
 <ElementWithMaybeLink>      mutate to mergedChildren, detect the presence of <Link> to be a <WrapperLink>
 <Button>                                              detect the presence of <Link> for [tag] & [role]
 navigations                                           detect the presence of <Link> for [href] / [to]
+
+
+=========================================================================================
+
+
+elm selector exports:
+
+// base-components:
+    <EditableTextControl>:
+        iconElm                         = '::after'
+
+// simple-components:
+    <Input>:
+        inputElm                        = ':where(:first-child)'
+    
+    <Check>:
+        dummyElm                        = '::before'
+        inputElm                        = ':where(:first-child)'
+        checkElm                        = '::before'
+        labelElm                        = ':where(:nth-child(1n+2))'
+    
+    <Range>:
+        inputElm                        = ':where(:first-child)'
+        trackElm                        = '.track'
+        trackLowerElm                   = '.tracklower'
+        trackUpperElm                   = '.trackupper'
+        thumbElm                        = '.thumb'
+    
+    <HamburgerMenuButton>:
+        svgElm                          = ':where(svg)'
+
+// layout-components:
+    <List>:
+        wrapperElm                      = '*'
+        listItemElm                     = ':where(:first-child)'
+        horzRuleElm                     = ':where(hr)'
+    
+    <Card>:
+        headerElm                       = '.header'
+        footerElm                       = '.footer'
+        bodyElm                         = '.body'
+
+// notification-components:
+    <Alert>:
+        iconElm                         = '.icon'                           PRIVATE
+        bodyElm                         = ':where(.body)'                   PRIVATE
+        controlElm                      = '.control'                        PRIVATE
+    
+    <Tooltip>:
+        arrowElm                        = '.arrow'
+
+// dialog-components:
+    <Modal>:
+        noParentScrollElm               = '.noParentScroll'
+        noParentScrollDummyChildElm     = '::before'
+
+// composite-components:
+    <Carousel>:
+        listElm                         = ':where(.list)'                   PRIVATE
+        dummyListElm                    = '.dummy'                          PRIVATE
+        itemElm                         = '*'                               PRIVATE
+        prevBtnElm                      = '.prevBtn'                        PRIVATE
+        nextBtnElm                      = '.nextBtn'                        PRIVATE
+        navElm                          = '.nav'                            PRIVATE
+    
+    <Details>:
+        itemElm                         = ':nth-child(n)'
+    
+    <Navbar>:
+        logoElm                         = '.logo'
+        togglerElm                      = '.toggler'
+        listElm                         = '.list'
+        menuElm                         = ':is(.menu, ...)
+    
+    <Tab>:
+        tabHeaderElm                    = '.tabHeader'
+        tabBodyElm                      = '.tabBody'
+        tabPanelElm                     = '.tabPanel'
