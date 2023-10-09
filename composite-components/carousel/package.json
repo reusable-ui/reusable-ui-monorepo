@@ -25,7 +25,9 @@
   "exports": {
     ".": "./dist/index.js",
     "./index": "./dist/index.js",
-    "./index.js": "./dist/index.js"
+    "./index.js": "./dist/index.js",
+    "./elements": "./dist/styles/elements.js",
+    "./elements.js": "./dist/styles/elements.js"
   },
   "sideEffects": false,
   "publishConfig": {
