@@ -468,9 +468,9 @@ elm selector exports:
 
 // notification-components:
     <Alert>:
-        iconElm                         = '.icon'                           PRIVATE
-        bodyElm                         = ':where(.body)'                   PRIVATE
-        controlElm                      = '.control'                        PRIVATE
+        iconElm                         = '.icon'                           EXPLICITLY EXPORTED
+        bodyElm                         = ':where(.body)'                   EXPLICITLY EXPORTED
+        controlElm                      = '.control'                        EXPLICITLY EXPORTED
     
     <Tooltip>:
         arrowElm                        = '.arrow'
@@ -482,12 +482,12 @@ elm selector exports:
 
 // composite-components:
     <Carousel>:
-        listElm                         = ':where(.list)'                   PRIVATE
-        dummyListElm                    = '.dummy'                          PRIVATE
-        itemElm                         = '*'                               PRIVATE
-        prevBtnElm                      = '.prevBtn'                        PRIVATE
-        nextBtnElm                      = '.nextBtn'                        PRIVATE
-        navElm                          = '.nav'                            PRIVATE
+        listElm                         = ':where(.list)'                   EXPLICITLY EXPORTED
+        dummyListElm                    = '.dummy'                          EXPLICITLY EXPORTED
+        itemElm                         = '*'                               EXPLICITLY EXPORTED
+        prevBtnElm                      = '.prevBtn'                        EXPLICITLY EXPORTED
+        nextBtnElm                      = '.nextBtn'                        EXPLICITLY EXPORTED
+        navElm                          = '.nav'                            EXPLICITLY EXPORTED
     
     <Details>:
         itemElm                         = ':nth-child(n)'
