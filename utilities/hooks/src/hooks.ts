@@ -26,12 +26,17 @@ import {
 
 
 
+// utilities:
+const emptyDependency : React.DependencyList = [];
+
+
+
 // hooks:
 
 /**
  * A React helper hook for using `useLayoutEffect` with a fallback to a regular `useEffect` for environments where `useLayoutEffect` should not be used (such as server-side rendering).
  */
-export const useIsomorphicLayoutEffect = isClientSide ? useLayoutEffect : useEffect;
+export const useIsomorphicLayoutEffect : typeof useLayoutEffect = isClientSide ? useLayoutEffect : useEffect;
 
 
 
@@ -48,6 +53,7 @@ export const useTriggerRender = () => {
 
 
 
+const useClientOnlyInsertionEffect : typeof useInsertionEffect = isClientSide ? useInsertionEffect : () => { /* noop */ }
 export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TCallback) => {
     // refs:
     const callbackRef = useRef<TCallback>(callback);
@@ -55,8 +61,8 @@ export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TC
     
     
     // dom effects:
-    useInsertionEffect(() => {
-        // re-update the callbackRef:
+    useClientOnlyInsertionEffect(() => {
+        // keep track of the latest `callback`:
         callbackRef.current = callback;
     }); // runs on every render
     
@@ -64,7 +70,7 @@ export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TC
     
     return useCallback<TCallback>(((...args) => {
         return callbackRef.current(...args);
-    }) as TCallback, []); // runs once on startup (and never re-created)
+    }) as TCallback, emptyDependency); // runs once on startup (and never re-created)
 };
 
 export type EventHandler<in TEvent> = (event: TEvent) => void;
@@ -176,7 +182,7 @@ export const useMountedFlag = () => {
         return () => {
             isMounted.current = false; // mark as unmounted
         };
-    }, []);
+    }, emptyDependency);
     
     
     

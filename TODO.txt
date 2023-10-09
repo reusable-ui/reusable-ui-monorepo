@@ -1,7 +1,6 @@
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
-[low prior ] make useEvent server-component friendly
 [low prior ] add 'use client' for all interactive components
 
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
