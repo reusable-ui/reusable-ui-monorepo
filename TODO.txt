@@ -1,8 +1,8 @@
 [high prior] <Input>'s validation icon swap to left if the text aligned on right
-[med prior ] convert <Navbar> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
 [low prior ] add EditableButton of EditableActionControl
-[low prior ] replace JSX.Element|null with React.ReactNode
+[low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
+[low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
