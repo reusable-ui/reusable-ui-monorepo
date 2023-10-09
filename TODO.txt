@@ -3,7 +3,6 @@
 [low prior ] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
 [low prior ] add EditableButton of EditableActionControl
 [low prior ] replace JSX.Element|null with React.ReactNode
-[low prior ] rename const\s+styles\s+= to const styleSheet
 
 [minor err ] fixed minor animation_abort_effect in active-as-click
 [minor err ] upgrade onAnimationEnd detection on animating-state/excitable-state (side effect of *hack* on active-as-click)
