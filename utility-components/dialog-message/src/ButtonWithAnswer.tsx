@@ -142,7 +142,7 @@ const ButtonWithAnswer = <TAnswer extends any = 'ok'>(props: ButtonWithAnswerPro
             
             
             // handlers:
-            onClick : handleClick,
+            onClick  : handleClick,
         },
     );
 };
