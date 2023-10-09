@@ -231,6 +231,12 @@ export const usesContentChildrenFill         = memoizeStyle((options?: ContentCh
                 boxSizing      : 'border-box', // the final size is including borders & paddings
                 inlineSize     : 'fill-available',
                 ...fallback({
+                    inlineSize : '-webkit-fill-available',
+                }),
+                ...fallback({
+                    inlineSize : '-moz-available',
+                }),
+                ...fallback({
                     inlineSize : `calc(100% + (${positivePaddingInline} * 2))`,
                 }),
                 
