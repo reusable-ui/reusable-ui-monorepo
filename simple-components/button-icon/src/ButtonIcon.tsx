@@ -132,7 +132,7 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
     
     
     // refs:
-    const mergedButtonRef   = useMergeRefs(
+    const mergedElmRef   = useMergeRefs(
         // preserves the original `elmRef` from `buttonComponent`:
         buttonComponent.props.elmRef,
         
@@ -140,6 +140,15 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
         
         // preserves the original `elmRef` from `props`:
         props.elmRef,
+    );
+    const mergedOuterRef = useMergeRefs(
+        // preserves the original `outerRef` from `buttonComponent`:
+        buttonComponent.props.outerRef,
+        
+        
+        
+        // preserves the original `outerRef` from `props`:
+        props.outerRef,
     );
     
     
@@ -156,7 +165,8 @@ const ButtonIcon = (props: ButtonIconProps): JSX.Element|null => {
             
             
             // refs:
-            elmRef    : mergedButtonRef,
+            elmRef    : mergedElmRef,
+            outerRef  : mergedOuterRef,
             
             
             
