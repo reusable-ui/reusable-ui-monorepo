@@ -62,6 +62,7 @@
     "@reusable-ui/dropdown-list": "^6.4.0",
     "@reusable-ui/dropdown-list-button": "^6.4.0",
     "@reusable-ui/editable-action-control": "^6.4.0",
+    "@reusable-ui/editable-button": "^6.4.0",
     "@reusable-ui/editable-control": "^6.4.0",
     "@reusable-ui/editable-text-control": "^6.4.0",
     "@reusable-ui/exclusive-accordion": "^6.4.0",

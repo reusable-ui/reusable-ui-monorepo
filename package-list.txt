@@ -82,16 +82,17 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/icon                               [updated config]    [Xs|Sm|Md|Lg|Xl|1em]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/label                              [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/button                             [updated config]    [Sm|Md|Lg]
+[slimmodular] [new         ] [full    compound] @reusable-ui/editable-button                    [no      config]
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button                      [no      config]
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button                         [no      config]
 [modularized] [documented  ] [full    compound] @reusable-ui/button-icon                        [updated config]    [Xs|Sm|Md|Lg|Xl]
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button                       [no      config]
+[slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]
 [slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]    [Inline|Block]
 [modularized] [documented  ] [          atomic] @reusable-ui/check                              [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/radio                              [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
 
 // layout-components:
 [slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]  [Inline|Block]
