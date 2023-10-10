@@ -53,7 +53,6 @@ export const useEditableButtonStyleSheet = dynamicStyleSheet(
 
 
 
-
 // react components:
 export interface EditableButtonProps
     extends
@@ -135,7 +134,7 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // classes:
-        styleSheet.main,
+        styleSheet.main, // additional styleSheet
     );
     const stateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `buttonComponent`:
