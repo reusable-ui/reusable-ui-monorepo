@@ -41,11 +41,11 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@reusable-ui/gradientable": "^6.4.0",
-    "@reusable-ui/mildable": "^6.4.0",
-    "@reusable-ui/outlineable": "^6.4.0",
-    "@reusable-ui/resizable": "^6.4.0",
-    "@reusable-ui/themeable": "^6.4.0",
+    "@reusable-ui/gradientable": "^6.5.0",
+    "@reusable-ui/mildable": "^6.5.0",
+    "@reusable-ui/outlineable": "^6.5.0",
+    "@reusable-ui/resizable": "^6.5.0",
+    "@reusable-ui/themeable": "^6.5.0",
     "@types/react": "^18.0.0",
     "react": "^18.0.0"
   }
