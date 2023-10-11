@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/input",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "description": "An interactive control in order to accept data from the user.",
   "keywords": [
     "input",
@@ -41,8 +41,8 @@
   "dependencies": {
     "@cssfn/core": "^3.2.0",
     "@cssfn/cssfn-react": "^3.2.0",
-    "@reusable-ui/core": "^6.4.0",
-    "@reusable-ui/editable-text-control": "^6.4.0"
+    "@reusable-ui/core": "^6.5.0",
+    "@reusable-ui/editable-text-control": "^6.5.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",
