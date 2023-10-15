@@ -3,6 +3,8 @@
 [high prior] add <CollapsibleSuspense>
 [med  prior] add RadioDecorator, CheckDecorator
 [low prior ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
+[low prior ] rename ModalStatus => StatusDialog
+[low prior ] rename DialogMessage => NotificationDialog
 [low  prior] add PrintDialog
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
