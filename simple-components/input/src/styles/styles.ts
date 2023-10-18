@@ -1,7 +1,6 @@
 // cssfn:
 import {
     // writes css in javascript:
-    fallback,
     children,
     style,
     
@@ -114,6 +113,9 @@ export const usesInputLayout = memoizeStyle(() => {
                     // strip out the *weird input's prop [size]* so it can follow flex behavior:
                     // span to maximum width including parent's paddings:
                     boxSizing      : 'border-box', // the final size is including borders & paddings
+                    /*
+                    // doesn't work, use `calc(...) instead`:
+                    
                     inlineSize     : 'fill-available',
                     ...fallback({
                         inlineSize : '-webkit-fill-available',
@@ -124,6 +126,8 @@ export const usesInputLayout = memoizeStyle(() => {
                     ...fallback({
                         inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
                     }),
+                    */
+                    inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
                     
                     flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
                     alignSelf      : 'stretch',        // follows parent's height
