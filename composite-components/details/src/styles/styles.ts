@@ -27,6 +27,11 @@ import {
     
     
     
+    // padding (inner spacing) stuff of UI:
+    usesPadding,
+    
+    
+    
     // groups a list of UIs into a single UI:
     usesGroupable,
     
@@ -188,10 +193,27 @@ export const usesTogglerVariants = () => {
 
 
 export const usesCollapsibleBodyLayout = () => {
+    // dependencies:
+    
+    // features:
+    const {paddingVars} = usesPadding();
+    
+    
+    
     return style({
         // layouts:
         ...usesCollapseLayout(),
         ...style({
+            // spacings:
+            padding                     : null, // remove usesCollapseLayout's padding
+            paddingInline               : null, // remove usesCollapseLayout's padding
+            paddingBlock                : null, // remove usesCollapseLayout's padding
+            [paddingVars.paddingInline] : null, // remove usesCollapseLayout's padding
+            [paddingVars.paddingBlock ] : null, // remove usesCollapseLayout's padding
+            [paddingVars.padding      ] : null, // remove usesCollapseLayout's padding
+            
+            
+            
             // customize:
             ...usesCssProps(usesPrefixedProps(details, 'body')), // apply config's cssProps starting with body***
         }),
