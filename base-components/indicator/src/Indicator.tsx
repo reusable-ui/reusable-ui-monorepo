@@ -19,7 +19,6 @@ import {
     
     
     // an accessibility management system:
-    usePropAccessibility,
     AccessibilityProps,
     AccessibilityProvider,
     
@@ -78,22 +77,17 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     
     
-    // fn props:
-    const propAccess       = usePropAccessibility(props);
-    
-    
-    
     // rest props:
     const {
         // states:
-        enabled         : _enabled,         // remove
-        inheritEnabled  : _inheritEnabled,  // remove
+        enabled,         // take, to be handled by `<AccessibilityProvider>`
+        inheritEnabled,  // take, to be handled by `<AccessibilityProvider>`
         
-        active          : _active,          // remove
-        inheritActive   : _inheritActive,   // remove
+        active,          // take, to be handled by `<AccessibilityProvider>`
+        inheritActive,   // take, to be handled by `<AccessibilityProvider>`
         
-        readOnly        : _readOnly,        // remove
-        inheritReadOnly : _inheritReadOnly, // remove
+        readOnly,        // take, to be handled by `<AccessibilityProvider>`
+        inheritReadOnly, // take, to be handled by `<AccessibilityProvider>`
     ...restBasicProps} = props;
     
     
@@ -138,7 +132,17 @@ const Indicator = <TElement extends Element = HTMLElement>(props: IndicatorProps
     
     // jsx:
     return (
-        <AccessibilityProvider {...propAccess}>
+        <AccessibilityProvider
+            // states:
+            enabled={enabled}
+            inheritEnabled={inheritEnabled}
+            
+            active={active}
+            inheritActive={inheritActive}
+            
+            readOnly={readOnly}
+            inheritReadOnly={inheritReadOnly}
+        >
             <Basic<TElement>
                 // other props:
                 {...restBasicProps}
