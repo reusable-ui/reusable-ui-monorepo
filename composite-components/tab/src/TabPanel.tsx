@@ -113,8 +113,8 @@ const TabPanel = <TElement extends Element = HTMLElement, TTabExpandedChangeEven
         
         
         // states:
-        enabled         : enabled,          // take
-        inheritEnabled  : inheritEnabled,   // take
+        enabled         : enabled,          // take, to be handled by `<AccessibilityProvider>`
+        inheritEnabled  : inheritEnabled,   // take, to be handled by `<AccessibilityProvider>`
         
         expanded        : _expanded,        // remove
         onExpandStart   : _onExpandStart,   // remove
