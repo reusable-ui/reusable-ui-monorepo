@@ -195,14 +195,14 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // states:
-        enabled,
-        inheritEnabled,
+        enabled,         // take, to be handled by `<AccessibilityProvider>`
+        inheritEnabled,  // take, to be handled by `<AccessibilityProvider>`
         
-        active,
-        inheritActive,
+        active,          // take, to be handled by `<AccessibilityProvider>`
+        inheritActive,   // take, to be handled by `<AccessibilityProvider>`
         
-        readOnly,
-        inheritReadOnly,
+        readOnly,        // take, to be handled by `<AccessibilityProvider>`
+        inheritReadOnly, // take, to be handled by `<AccessibilityProvider>`
         
         defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
@@ -343,8 +343,11 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     
     // accessibilities:
-    const propAccess           = usePropAccessibility(props);
-    const {enabled: propEnabled, readOnly: propReadOnly, active: propActive} = propAccess;
+    const {
+        enabled  : propEnabled,
+        readOnly : propReadOnly,
+        active   : propActive,
+    } = usePropAccessibility(props);
     const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
     
     
@@ -420,7 +423,17 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // jsx:
     return (
-        <AccessibilityProvider {...propAccess}>
+        <AccessibilityProvider
+            // states:
+            enabled={enabled}
+            inheritEnabled={inheritEnabled}
+            
+            active={active}
+            inheritActive={inheritActive}
+            
+            readOnly={readOnly}
+            inheritReadOnly={inheritReadOnly}
+        >
             <Basic<TElement>
                 // other props:
                 {...restBasicProps}
