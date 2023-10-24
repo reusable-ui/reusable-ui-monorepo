@@ -195,14 +195,14 @@ const Details = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         
         // states:
-        enabled,         // take, to be handled by `<AccessibilityProvider>`
-        inheritEnabled,  // take, to be handled by `<AccessibilityProvider>`
+        enabled,          // take, to be handled by `<AccessibilityProvider>`
+        inheritEnabled,   // take, to be handled by `<AccessibilityProvider>`
         
-        active,          // take, to be handled by `<AccessibilityProvider>`
-        inheritActive,   // take, to be handled by `<AccessibilityProvider>`
+        active,           // take, to be handled by `<AccessibilityProvider>`
+        inheritActive,    // take, to be handled by `<AccessibilityProvider>`
         
-        readOnly,        // take, to be handled by `<AccessibilityProvider>`
-        inheritReadOnly, // take, to be handled by `<AccessibilityProvider>`
+        readOnly,         // take, to be handled by `<AccessibilityProvider>`
+        inheritReadOnly,  // take, to be handled by `<AccessibilityProvider>`
         
         defaultExpanded,  // take, to be handled by `useUncontrollableCollapsible`
         expanded,         // take, to be handled by `useUncontrollableCollapsible`
