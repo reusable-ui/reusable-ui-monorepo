@@ -1,3 +1,11 @@
+rename context types:
+    Accessibility
+    Validation
+    ExclusiveAccordionState
+    TabState
+    DialogMessageApi
+    Responsive
+
 [high prior] style portal element of <div> be display='content'
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
 [high prior] add <CollapsibleSuspense>
