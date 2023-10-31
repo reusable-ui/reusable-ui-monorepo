@@ -508,12 +508,12 @@ elm selector exports:
 
 
 contexts:
-    Accessibility               OK
-    Validation                  OK
+    Accessibility               value={propAccess}>
+    Validation                  value={propValidation}>
     
-    ExclusiveAccordionState     OK
-    TabState                    OK
+    ExclusiveAccordionState     value={exclusiveAccordionState}
+    TabState                    value={tabState}
     
-    DialogMessageApi            OK
-    Responsive                  OK
+    DialogMessageApi            value={dialogMessageApi}
+    Responsive(State)           value={responsiveState}
 
