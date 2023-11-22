@@ -1,4 +1,4 @@
-[high prior] add onValueChange(value) as the complement of onChange(event)
+[high prior] add onValueChange(TValue) as the complement of onChange(event)
 [high prior] rename Responsive                   to    ResponsiveState
 [high prior] rename useResponsiveCurrentFallback to useResponsiveState
 [high prior] rename currentFallback              to fallback
