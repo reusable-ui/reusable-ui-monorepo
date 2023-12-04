@@ -140,7 +140,7 @@ const _fieldErrorMessageDefault         : Extract<FieldErrorMessage, Function> =
         </p>
     );
 };
-const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind'       ]> = (fieldError: Element) => ((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image')?.slice?.(1, -1);
+const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind'       ]> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('data-icon' ) || (((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image') || undefined)?.slice?.(1, -1);
 const _fieldErrorIconDefault            : NonNullable<DialogMessageFieldError<any>['fieldErrorIcon'           ]> = 'text_fields';
 const _fieldErrorLabelFindDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorLabelFind'      ]> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('aria-label') || (fieldError.children?.[0] as HTMLInputElement)?.placeholder;
 const _fieldErrorAutoFocusDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorAutoFocus'      ]> = true;
