@@ -142,7 +142,7 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
             inputValidator.handleInit(element);
         }
         else {
-            const firstInput = element.querySelector('input, select, textarea') as (EditableControlElement|null);
+            const firstInput = element.querySelector(':is(input, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex], iframe):not([tabindex="-1"])') as (EditableControlElement|null);
             if (firstInput) inputValidator.handleInit(firstInput);
         } // if
     });

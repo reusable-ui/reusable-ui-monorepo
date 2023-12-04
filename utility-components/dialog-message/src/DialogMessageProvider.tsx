@@ -466,7 +466,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         if (fieldErrorAutoFocus) {
             setTimeout(() => {
                 requestAnimationFrame(() => {
-                    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), iframe';
+                    const focusableSelector = ':is(button, [href], input, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex], iframe):not([tabindex="-1"])';
                     const firstFieldError   = fieldErrors?.[0];
                     const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
                     if (fieldErrorAutoFocusScroll) {
