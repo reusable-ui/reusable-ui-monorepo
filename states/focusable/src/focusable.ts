@@ -109,7 +109,7 @@ export const selectorFocusVisibleWithin : CssSelector = (
     ?
     ':is(:focus-visible, :focus:where([data-assertive-focusable]), :has(:focus-visible, :focus:where([data-assertive-focusable])))'
     :
-    ':focus-visible'
+    ':is(:focus-visible, :focus:where([data-assertive-focusable]), :focus-within)'
 );
 
 // .focused will be added after focusing-animation done:
