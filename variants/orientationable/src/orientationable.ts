@@ -31,6 +31,15 @@ let defaultBlockOrientationableStuffsCache  : WeakRef<OrientationableStuff>|unde
 
 
 
+// utilities:
+const fallbacks = <TValue>(value1: TValue|undefined, value2: TValue|undefined, value3: TValue): TValue => {
+    if (value1 !== undefined) return value1;
+    if (value2 !== undefined) return value2;
+    return value3;
+};
+
+
+
 export type OrientationName = 'inline'|'block'
 export interface OrientationableStuff {
     defaultOrientation        : OrientationName
@@ -92,9 +101,9 @@ export const usesOrientationable = (options?: OrientationableOptions, defaultOpt
     
     
     
-    const defaultOrientation        = options?.defaultOrientation        ?? defaultOptions.defaultOrientation        ?? 'block';
-    const orientationInlineSelector = options?.orientationInlineSelector ?? defaultOptions.orientationInlineSelector ?? ((defaultOrientation === 'inline') ? ':not(:is(.block, .block-start, .block-end))'    : ':is(.inline, .inline-start, .inline-end)');
-    const orientationBlockSelector  = options?.orientationBlockSelector  ?? defaultOptions.orientationBlockSelector  ?? ((defaultOrientation === 'block' ) ? ':not(:is(.inline, .inline-start, .inline-end))' : ':is(.block, .block-start, .block-end)' );
+    const defaultOrientation        = fallbacks<OrientationName      >(options?.defaultOrientation        , defaultOptions.defaultOrientation        , 'block');
+    const orientationInlineSelector = fallbacks<CssSelectorCollection>(options?.orientationInlineSelector , defaultOptions.orientationInlineSelector , ((defaultOrientation === 'inline') ? ':not(:is(.block, .block-start, .block-end))'    : ':is(.inline, .inline-start, .inline-end)'));
+    const orientationBlockSelector  = fallbacks<CssSelectorCollection>(options?.orientationBlockSelector  , defaultOptions.orientationBlockSelector  , ((defaultOrientation === 'block' ) ? ':not(:is(.inline, .inline-start, .inline-end))' : ':is(.block, .block-start, .block-end)' ));
     
     
     
@@ -180,11 +189,11 @@ export const defaultBlockStartOrientationableWithDirectionOptions  : Orientation
 export const defaultBlockEndOrientationableWithDirectionOptions    : OrientationableWithDirectionOptions = { defaultOrientation: 'block-end'    };
 
 export const usesOrientationableWithDirection = (options?: OrientationableWithDirectionOptions, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions): OrientationableWithDirectionStuff & Pick<OrientationableStuff, 'ifOrientationInline'|'ifOrientationBlock'> => {
-    const defaultOrientation             = options?.defaultOrientation             ?? defaultOptions.defaultOrientation             ?? 'block-end';
-    const orientationInlineStartSelector = options?.orientationInlineStartSelector ?? defaultOptions.orientationInlineStartSelector ?? ((defaultOrientation === 'inline-start') ? ':not(:is(.block-start, .block-end, .inline-end))'    : '.inline-start');
-    const orientationInlineEndSelector   = options?.orientationInlineEndSelector   ?? defaultOptions.orientationInlineEndSelector   ?? ((defaultOrientation === 'inline-end'  ) ? ':not(:is(.block-start, .block-end, .inline-start))'  : '.inline-end'  );
-    const orientationBlockStartSelector  = options?.orientationBlockStartSelector  ?? defaultOptions.orientationBlockStartSelector  ?? ((defaultOrientation === 'block-start' ) ? ':not(:is(.inline-start, .inline-end, .block-end))'   : '.block-start' );
-    const orientationBlockEndSelector    = options?.orientationBlockEndSelector    ?? defaultOptions.orientationBlockEndSelector    ?? ((defaultOrientation === 'block-end'   ) ? ':not(:is(.inline-start, .inline-end, .block-start))' : '.block-end'   );
+    const defaultOrientation             = fallbacks<OrientationWithDirectionName>(options?.defaultOrientation             , defaultOptions.defaultOrientation             , 'block-end');
+    const orientationInlineStartSelector = fallbacks<CssSelectorCollection       >(options?.orientationInlineStartSelector , defaultOptions.orientationInlineStartSelector , ((defaultOrientation === 'inline-start') ? ':not(:is(.block-start, .block-end, .inline-end))'    : '.inline-start'));
+    const orientationInlineEndSelector   = fallbacks<CssSelectorCollection       >(options?.orientationInlineEndSelector   , defaultOptions.orientationInlineEndSelector   , ((defaultOrientation === 'inline-end'  ) ? ':not(:is(.block-start, .block-end, .inline-start))'  : '.inline-end'  ));
+    const orientationBlockStartSelector  = fallbacks<CssSelectorCollection       >(options?.orientationBlockStartSelector  , defaultOptions.orientationBlockStartSelector  , ((defaultOrientation === 'block-start' ) ? ':not(:is(.inline-start, .inline-end, .block-end))'   : '.block-start' ));
+    const orientationBlockEndSelector    = fallbacks<CssSelectorCollection       >(options?.orientationBlockEndSelector    , defaultOptions.orientationBlockEndSelector    , ((defaultOrientation === 'block-end'   ) ? ':not(:is(.inline-start, .inline-end, .block-start))' : '.block-end'   ));
     
     
     
