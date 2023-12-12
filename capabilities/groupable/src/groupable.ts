@@ -120,14 +120,22 @@ const groupableChildrenRuleOfOrientationInline = memoizeStyle((): CssRule => {
                 */
                 [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                 
-                [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
+                /*
+                    the two props below using `!important` to overwrite `groupableRule()`,
+                    if the_current_element is a_child_of_container and also a_separator.
+                */
+                [groupableVars.borderStartStartRadius] : ['inherit', '!important'], // reads parent's prop
+                [groupableVars.borderEndStartRadius  ] : ['inherit', '!important'], // reads parent's prop
             }),
             ...style({
                 // borders:
                 // add rounded corners on left:
-                [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                /*
+                    the two props below using `!important` to overwrite `borderRule()`,
+                    if the_current_element defines `...borderRule()`.
+                */
+                [borderVars.borderStartStartRadius   ] : [`calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
+                [borderVars.borderEndStartRadius     ] : [`calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
                 
                 /* recursive calculation of borderRadius is not supported yet */
             }),
@@ -143,14 +151,22 @@ const groupableChildrenRuleOfOrientationInline = memoizeStyle((): CssRule => {
                 */
                 [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                 
-                [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
-                [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                /*
+                    the two props below using `!important` to overwrite `groupableRule()`,
+                    if the_current_element is a_child_of_container and also a_separator.
+                */
+                [groupableVars.borderStartEndRadius  ] : ['inherit', '!important'], // reads parent's prop
+                [groupableVars.borderEndEndRadius    ] : ['inherit', '!important'], // reads parent's prop
             }),
             ...style({
                 // borders:
                 // add rounded corners on right:
-                [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                /*
+                    the two props below using `!important` to overwrite `borderRule()`,
+                    if the_current_element defines `...borderRule()`.
+                */
+                [borderVars.borderStartEndRadius     ] : [`calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
+                [borderVars.borderEndEndRadius       ] : [`calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
                 
                 /* recursive calculation of borderRadius is not supported yet */
             }),
@@ -177,14 +193,22 @@ const groupableChildrenRuleOfOrientationBlock  = memoizeStyle((): CssRule => {
                 */
                 [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                 
-                [groupableVars.borderStartStartRadius] : 'inherit', // reads parent's prop
-                [groupableVars.borderStartEndRadius  ] : 'inherit', // reads parent's prop
+                /*
+                    the two props below using `!important` to overwrite `groupableRule()`,
+                    if the_current_element is a_child_of_container and also a_separator.
+                */
+                [groupableVars.borderStartStartRadius] : ['inherit', '!important'], // reads parent's prop
+                [groupableVars.borderStartEndRadius  ] : ['inherit', '!important'], // reads parent's prop
             }),
             ...style({
                 // borders:
                 // add rounded corners on top:
-                [borderVars.borderStartStartRadius   ] : `calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                [borderVars.borderStartEndRadius     ] : `calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                /*
+                    the two props below using `!important` to overwrite `borderRule()`,
+                    if the_current_element defines `...borderRule()`.
+                */
+                [borderVars.borderStartStartRadius   ] : [`calc(${groupableVars.borderStartStartRadius} - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
+                [borderVars.borderStartEndRadius     ] : [`calc(${groupableVars.borderStartEndRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
                 
                 /* recursive calculation of borderRadius is not supported yet */
             }),
@@ -200,14 +224,22 @@ const groupableChildrenRuleOfOrientationBlock  = memoizeStyle((): CssRule => {
                 */
                 [groupableVars.borderWidth           ] : ['inherit', '!important'], // reads parent's prop
                 
-                [groupableVars.borderEndStartRadius  ] : 'inherit', // reads parent's prop
-                [groupableVars.borderEndEndRadius    ] : 'inherit', // reads parent's prop
+                /*
+                    the two props below using `!important` to overwrite `groupableRule()`,
+                    if the_current_element is a_child_of_container and also a_separator.
+                */
+                [groupableVars.borderEndStartRadius  ] : ['inherit', '!important'], // reads parent's prop
+                [groupableVars.borderEndEndRadius    ] : ['inherit', '!important'], // reads parent's prop
             }),
             ...style({
                 // borders:
                 // add rounded corners on bottom:
-                [borderVars.borderEndStartRadius     ] : `calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
-                [borderVars.borderEndEndRadius       ] : `calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`,
+                /*
+                    the two props below using `!important` to overwrite `borderRule()`,
+                    if the_current_element defines `...borderRule()`.
+                */
+                [borderVars.borderEndStartRadius     ] : [`calc(${groupableVars.borderEndStartRadius  } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
+                [borderVars.borderEndEndRadius       ] : [`calc(${groupableVars.borderEndEndRadius    } - ${groupableVars.borderWidth} - min(${groupableVars.borderWidth}, 0.5px))`, '!important'],
                 
                 /* recursive calculation of borderRadius is not supported yet */
             }),
