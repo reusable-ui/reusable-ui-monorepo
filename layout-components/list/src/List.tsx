@@ -91,6 +91,25 @@ export const useListStyleSheet = dynamicStyleSheet(
 
 
 // handlers:
+export const handleAnimationStartForward : React.AnimationEventHandler<Element> = (event) => {
+    /**
+     * because the `usesListLayout` is neither inherit from `usesIndicatorLayout` nor applies `anim: ...`,
+     * so the `onAnimationStart` will __never__ triggered directly (non_bubbled).
+     * 
+     * the `useDisableable() => handleAnimationStart` only perform non_bubbled `onAnimationStart`.
+     * 
+     * thus we need to trigger `onAnimationStart` at <List> level by forwarding `onAnimationStart` bubbled from <ListItem>
+     * 
+     * <List>
+     *     <wrapper>
+     *         <ListItem onAnimationStart={...} />
+     *     </wrapper>
+     * </List>
+     */
+    if ((event.target as Element)?.parentElement?.parentElement === event.currentTarget) {
+        event.currentTarget.dispatchEvent(new AnimationEvent('animationstart', { animationName: event.animationName, bubbles: true, composed: true }));
+    } // if
+};
 export const handleAnimationEndForward : React.AnimationEventHandler<Element> = (event) => {
     /**
      * because the `usesListLayout` is neither inherit from `usesIndicatorLayout` nor applies `anim: ...`,
@@ -277,6 +296,15 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
     
     
     // handlers:
+    const handleAnimationStart = useMergeEvents(
+        // preserves the original `onAnimationStart`:
+        props.onAnimationStart,
+        
+        
+        
+        // hack:
+        handleAnimationStartForward,
+    );
     const handleAnimationEnd = useMergeEvents(
         // preserves the original `onAnimationEnd`:
         props.onAnimationEnd,
@@ -365,6 +393,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             
             
             // handlers:
+            onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}
         >
             {wrappedChildren}

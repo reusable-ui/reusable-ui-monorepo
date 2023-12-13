@@ -19,6 +19,10 @@ function App() {
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    const [enabled, setEnabled] = useState<boolean>(true);
+    const [active , setActive ] = useState<boolean>(false);
+    const [localEnabled, setLocalEnabled] = useState<boolean>(true);
+    const [localActive , setLocalActive ] = useState<boolean>(false);
     
     
     
@@ -57,8 +61,19 @@ function App() {
                     A seventh item
                 </ListItem>
             </List>
-            <List theme='primary'>
-                <ListItem>
+            
+            <hr />
+            
+            <label htmlFor='chkEnb'><input id='chkEnb' type='checkbox' checked={enabled} onChange={({target: {checked}}) => setEnabled(checked)} /> enabled</label>
+            <label htmlFor='chkAct'><input id='chkAct' type='checkbox' checked={active } onChange={({target: {checked}}) =>  setActive(checked)} /> active</label>
+            
+            <label htmlFor='lChkEnb'><input id='lChkEnb' type='checkbox' checked={localEnabled} onChange={({target: {checked}}) => setLocalEnabled(checked)} /> local enabled</label>
+            <label htmlFor='lChkAct'><input id='lChkAct' type='checkbox' checked={localActive } onChange={({target: {checked}}) =>  setLocalActive(checked)} /> local active</label>
+            
+            <hr />
+            
+            <List theme='primary' enabled={enabled} active={active}>
+                <ListItem enabled={localEnabled} active={localActive}>
                     A first item
                 </ListItem>
                 <>
