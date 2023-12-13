@@ -22,6 +22,8 @@ function App() {
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
+    const [enabled, setEnabled] = useState<boolean>(true);
+    const [active , setActive ] = useState<boolean>(false);
     
     
     
@@ -37,7 +39,7 @@ function App() {
                     </button>
                 </article>
                 
-                <Card theme='primary'>
+                <Card theme='primary' enabled={enabled} active={active}>
                     <CardHeader>
                         Test Card
                     </CardHeader>
@@ -54,6 +56,11 @@ function App() {
                         Just for fun!
                     </CardFooter>
                 </Card>
+                
+                <hr />
+                
+                <label htmlFor='chkEnb'><input id='chkEnb' type='checkbox' checked={enabled} onChange={({target: {checked}}) => setEnabled(checked)} /> enabled</label>
+                <label htmlFor='chkAct'><input id='chkAct' type='checkbox' checked={active } onChange={({target: {checked}}) =>  setActive(checked)} /> active</label>
             </div>
         </>
     );

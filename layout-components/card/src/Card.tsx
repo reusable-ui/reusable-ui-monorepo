@@ -13,7 +13,6 @@ import {
 // reusable-ui core:
 import {
     // react helper hooks:
-    useMergeEvents,
     useMergeClasses,
     
     
@@ -77,6 +76,9 @@ export const useCardStyleSheet = dynamicStyleSheet(
 
 
 // handlers:
+/**
+ * @deprecated no longer used.
+ */
 export const handleAnimationEndForward : React.AnimationEventHandler<Element> = (event) => {
     /**
      * because the `usesCardLayout` is neither inherit from `usesIndicatorLayout` nor applies `anim: ...`,
@@ -294,19 +296,6 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
     
     
     
-    // handlers:
-    const handleAnimationEnd = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
-        
-        
-        
-        // hack:
-        handleAnimationEndForward,
-    );
-    
-    
-    
     // jsx:
     return (
         <Indicator<TElement>
@@ -326,11 +315,6 @@ const Card = <TElement extends Element = HTMLElement>(props: CardProps<TElement>
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
             variantClasses={variantClasses}
-            
-            
-            
-            // handlers:
-            onAnimationEnd={handleAnimationEnd}
         />
     );
 };
