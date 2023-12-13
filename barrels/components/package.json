@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -74,7 +74,7 @@
     "@reusable-ui/indicator": "^6.5.0",
     "@reusable-ui/input": "^6.5.0",
     "@reusable-ui/label": "^6.5.0",
-    "@reusable-ui/list": "^6.5.0",
+    "@reusable-ui/list": "^6.5.1",
     "@reusable-ui/masonry": "^6.5.0",
     "@reusable-ui/modal": "^6.5.0",
     "@reusable-ui/modal-card": "^6.5.0",

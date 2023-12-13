@@ -81,4 +81,4 @@ export { defaultBlockOrientationableOptions as defaultOrientationableOptions } f
 export { SizeName, sizeOptions } from '@reusable-ui/resizable'
 export { CustomValidatorHandler } from '@reusable-ui/editable-control'
 export { inputElm } from '@reusable-ui/input'
-export { handleAnimationEndForward } from '@reusable-ui/card'
+export { handleAnimationStartForward, handleAnimationEndForward } from '@reusable-ui/list'
