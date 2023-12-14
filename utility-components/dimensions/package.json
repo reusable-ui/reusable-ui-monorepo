@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dimensions",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "A set of React helper for fetching the dimension of elements.",
   "keywords": [
     "react",
@@ -15,13 +15,13 @@
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
   },
-  "main": "dist/dimensions.js",
-  "types": "dist/dimensions.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/dimensions.js",
-    "./index": "./dist/dimensions.js",
-    "./index.js": "./dist/dimensions.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {

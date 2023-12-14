@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.5.1",
+  "version": "6.5.2",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -56,7 +56,7 @@
     "@reusable-ui/control": "^6.5.0",
     "@reusable-ui/details": "^6.5.0",
     "@reusable-ui/dialog-message": "^6.5.0",
-    "@reusable-ui/dimensions": "^6.5.0",
+    "@reusable-ui/dimensions": "^6.5.1",
     "@reusable-ui/dropdown": "^6.5.0",
     "@reusable-ui/dropdown-button": "^6.5.0",
     "@reusable-ui/dropdown-list": "^6.5.0",
@@ -82,7 +82,7 @@
     "@reusable-ui/modal-status": "^6.5.0",
     "@reusable-ui/nav": "^6.5.0",
     "@reusable-ui/nav-button": "^6.5.0",
-    "@reusable-ui/navbar": "^6.5.0",
+    "@reusable-ui/navbar": "^6.5.1",
     "@reusable-ui/navscroll": "^6.5.0",
     "@reusable-ui/pagination": "^6.5.0",
     "@reusable-ui/popup": "^6.5.0",

@@ -7,6 +7,7 @@ import {
     
     // hooks:
     useState,
+    useCallback,
 }                           from 'react'
 
 // cssfn:
@@ -65,16 +66,16 @@ import {
     ResponsiveChildrenHandler,
     ResponsiveProvider,
 }                           from '@reusable-ui/responsives'     // a responsive management system for react web components
+import {
+    // react components:
+    WindowResponsive,
+}                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements
 
 // internals:
 import {
     // elements:
     menuElm,
 }                           from './styles/elements.js'
-import {
-    // react components:
-    WindowResponsive,
-}                           from './WindowResponsive.js'
 
 
 
@@ -181,9 +182,9 @@ const NavbarWithWindowResponsive   = <TElement extends Element = HTMLElement, TE
     
     
     // handlers:
-    const handleResponsiveChildren = useEvent((expanded: boolean) =>
+    const handleResponsiveChildren = useCallback((expanded: boolean) =>
         <NavbarImplementation {...restNavbarProps} expanded={expanded} />
-    );
+    , [props]); // re-create (and re-render) the callback if the `props` changed
     
     
     
@@ -196,9 +197,9 @@ const NavbarWithWindowResponsive   = <TElement extends Element = HTMLElement, TE
 };
 const NavbarWithResponsiveProvider = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // handlers:
-    const handleResponsiveChildren = useEvent<ResponsiveChildrenHandler<boolean>>((currentFallback) =>
+    const handleResponsiveChildren = useCallback<ResponsiveChildrenHandler<boolean>>((currentFallback) =>
         <NavbarImplementation {...props} expanded={currentFallback} />
-    );
+    , [props]); // re-create (and re-render) the callback if the `props` changed
     
     
     

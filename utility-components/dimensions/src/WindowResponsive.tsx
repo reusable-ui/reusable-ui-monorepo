@@ -15,12 +15,12 @@ import {
     useEvent,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
-// reusable-ui components:
+// internals:
 import {
     // hooks:
     WindowResizeCallback,
     useWindowResizeObserver,
-}                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements
+}                           from './dimensions.js'
 
 
 
@@ -34,7 +34,7 @@ export interface WindowResponsiveProps {
     // children:
     children      : React.ReactNode | ((expanded: boolean) => React.ReactNode);
 }
-export const WindowResponsive = ({mediaMinWidth, children: childrenFn}: WindowResponsiveProps): JSX.Element|null => {
+const WindowResponsive = ({mediaMinWidth, children: childrenFn}: WindowResponsiveProps): JSX.Element|null => {
     // states:
     const [expanded, setExpanded] = useState<boolean>(mediaMinWidth === 0); // initially expanded if (mediaMinWidth === 0); otherwise initially collapsed
     
@@ -61,3 +61,7 @@ export const WindowResponsive = ({mediaMinWidth, children: childrenFn}: WindowRe
         }</>
     );
 };
+export {
+    WindowResponsive,
+    WindowResponsive as default,
+}
