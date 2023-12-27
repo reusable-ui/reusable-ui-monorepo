@@ -10,6 +10,7 @@
 [med  prior] add RadioDecorator, CheckDecorator
 [med  prior] fix clipped focus box shadow of child on TabPanel overflow: 'auto' and TabBody overflow: 'hidden'
 [med  prior] // one degree specificity => // zero degree specificity (combined with .parent, the descendants are always 1 degree specificity)
+[med  prior] update DialogMessage to having multiple dialogs in parallel way
 [low prior ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
 [low prior ] rename ModalStatus => StatusDialog
 [low prior ] rename DialogMessage => NotificationDialog
