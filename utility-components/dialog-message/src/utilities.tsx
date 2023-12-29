@@ -38,10 +38,8 @@ export const isTypeError      = (error: any): boolean => {
     );
 };
 
-export const isReactNode      = <TDialogMessage extends {}>(dialogMessage : React.SetStateAction<TDialogMessage|false> | React.ReactNode, uniqueProp: keyof TDialogMessage): dialogMessage is Exclude<React.ReactNode, false|Function> => {
+export const isReactNode      = <TDialogMessage extends {}>(dialogMessage : TDialogMessage | React.ReactNode, uniqueProp: keyof TDialogMessage): dialogMessage is React.ReactNode => {
     return (
-        (dialogMessage             !==  false      ) // not `false`                       /* `false`         is used for closing     <ModalStatus> */
-        &&
         (typeof(dialogMessage)     !== 'function'  ) // not a Function                    /* Function        is used for dispatching <ModalStatus> */
         &&
         (
@@ -53,10 +51,8 @@ export const isReactNode      = <TDialogMessage extends {}>(dialogMessage : Reac
         )
     );
 };
-export const isFieldErrorList = <TDialogMessage extends {}>(dialogMessage : React.SetStateAction<TDialogMessage|false> | FieldErrorList , uniqueProp: keyof TDialogMessage): dialogMessage is FieldErrorList => {
+export const isFieldErrorList = <TDialogMessage extends {}>(dialogMessage : TDialogMessage | FieldErrorList , uniqueProp: keyof TDialogMessage): dialogMessage is FieldErrorList => {
     return (
-        (dialogMessage             !==  false      ) // not `false`                       /* `false`         is used for closing     <ModalStatus> */
-        &&
         (typeof(dialogMessage)     !== 'function'  ) // not a Function                    /* Function        is used for dispatching <ModalStatus> */
         &&
         (
@@ -68,10 +64,8 @@ export const isFieldErrorList = <TDialogMessage extends {}>(dialogMessage : Reac
         )
     );
 };
-export const isError          = <TDialogMessage extends {}>(dialogMessage : React.SetStateAction<TDialogMessage|false> | any            , uniqueProp: keyof TDialogMessage): dialogMessage is any => {
+export const isError          = <TDialogMessage extends {}>(dialogMessage : TDialogMessage | any            , uniqueProp: keyof TDialogMessage): dialogMessage is any => {
     return (
-        (dialogMessage             !==  false      ) // not `false`                       /* `false`         is used for closing     <ModalStatus> */
-        &&
         (typeof(dialogMessage)     !== 'function'  ) // not a Function                    /* Function        is used for dispatching <ModalStatus> */
         &&
         (

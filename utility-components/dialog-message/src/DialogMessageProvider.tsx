@@ -15,8 +15,6 @@ import {
 import {
     // react helper hooks:
     useEvent,
-    EventHandler,
-    useMergeEvents,
     useMountedFlag,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
@@ -26,15 +24,10 @@ import {
     IconProps,
     Icon,
 }                           from '@reusable-ui/icon'            // an icon component
-import {
+import type {
     // react components:
     ButtonProps,
-    Button,
 }                           from '@reusable-ui/button'          // a button component for initiating an action
-import {
-    // react components:
-    CloseButton,
-}                           from '@reusable-ui/close-button'    // a close button component
 import {
     // react components:
     ListItemProps,
@@ -43,44 +36,33 @@ import {
     ListProps,
     List,
 }                           from '@reusable-ui/list'            // represents a series of content
-import {
+import type {
     // react components:
     CardHeaderProps,
-    CardHeader,
-    
     CardFooterProps,
-    CardFooter,
-    
     CardBodyProps,
-    CardBody,
-    
-    CardProps,
-    Card,
     
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 import type {
     // react components:
-    ModalExpandedChangeEvent,
-}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
-import {
-    // react components:
+    ModalBaseProps,
     ModalStatusProps,
-    ModalStatus,
 }                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
 
 // internal components:
 import {
     // react components:
-    ButtonWithAnswer,
-}                           from './ButtonWithAnswer.js'
+    ModalStatusWithAnswerOptions,
+}                           from './ModalStatusWithAnswerOptions.js'
 
 // internals:
 import type {
     // types:
+    ModalExpandedChangeWithAnswerEvent,
+    DialogState,
+    
     FieldErrorList,
-    AnswerButtonComponentOrChildren,
-    AnswerOptionList,
     
     
     
@@ -173,7 +155,7 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 // react components:
 export interface DialogMessageProviderProps {
     // components:
-    modalStatusComponent             ?: React.ReactComponentElement<any, ModalStatusProps<Element>>
+    modalStatusComponent             ?: React.ReactComponentElement<any, ModalStatusProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>
     
     cardComponent                    ?: CardComponentProps<Element>['cardComponent']
     cardHeaderComponent              ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
@@ -202,27 +184,16 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     // rest props:
     const {
         // components:
-        modalStatusComponent             = (<ModalStatus modalCardStyle='scrollable' /> as React.ReactComponentElement<any, ModalStatusProps<Element>>),
+        modalStatusComponent,
         
-        cardComponent                    = (<Card<Element>                           /> as React.ReactComponentElement<any, CardProps<Element>>),
-        cardHeaderComponent              = (<CardHeader<Element>                     /> as React.ReactComponentElement<any, CardHeaderProps<Element>>),
-        cardBodyComponent                = (<CardBody<Element>                       /> as React.ReactComponentElement<any, CardBodyProps<Element>>),
-        cardFooterComponent              = (<CardFooter<Element>                     /> as React.ReactComponentElement<any, CardFooterProps<Element>>),
+        cardComponent,
+        cardHeaderComponent,
+        cardBodyComponent,
+        cardFooterComponent,
         
-        closeButtonComponent             = (<CloseButton                             /> as React.ReactComponentElement<any, ButtonProps>),
-        answerButtonComponent            = (<Button                                  /> as React.ReactComponentElement<any, ButtonProps>),
-        answerOkButtonComponent          = React.cloneElement<ButtonProps>(answerButtonComponent,
-            // props:
-            {
-                // accessibilities:
-                autoFocus : answerButtonComponent.props.autoFocus ?? true,
-            },
-            
-            
-            
-            // children:
-            answerButtonComponent.props.children ?? 'Okay',
-        ),
+        closeButtonComponent,
+        answerButtonComponent,
+        answerOkButtonComponent,
         
         fieldErrorTitleDefault           = _fieldErrorTitleDefault,
         fieldErrorMessageDefault         = _fieldErrorMessageDefault,
@@ -247,15 +218,79 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     // states:
-    const [dialogMessage, setDialogMessage] = useState<DialogMessage<any>|false>(false);
-    const signalsDialogMessageClosed        = useRef<((answer: any|undefined) => void)[]>([]);
-    const isMounted                         = useMountedFlag();
-    const answerRef                         = useRef<any|undefined>(undefined);
+    const [dialogs, setDialogs] = useState<DialogState[]>([]);
+    const idCounter             = useRef<number>(0);
+    const isMounted             = useMountedFlag();
     
     
     
     // stable callbacks:
-    const showMessage             = useEvent(async <TAnswer extends any = 'ok'>(dialogMessage             : React.SetStateAction<DialogMessage<TAnswer>|false> | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showDialog              = useEvent(async <TAnswer extends any = 'ok'>(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>): Promise<TAnswer|undefined> => {
+        // <Dialog> handlers:
+        const handleExpandedChange = (event: ModalExpandedChangeWithAnswerEvent<TAnswer>): void => {
+            // preserves the original `onExpandedChange` from `dialogComponent`:
+            dialogComponent.props.onExpandedChange?.(event);
+            
+            
+            
+            // actions:
+            dialogState.lastExpandedEvent = event;
+            dialogState.expanded          = event.expanded;
+            setDialogs((current) => current.slice(0)); // force to re-render
+        };
+        
+        const handleCollapseEnd    = (): void => {
+            // preserves the original `onCollapseEnd` from `dialogComponent`:
+            dialogComponent.props.onCollapseEnd?.();
+            
+            
+            
+            // actions:
+            setDialogs((current) => {
+                const foundIndex = current.indexOf(dialogState);
+                if (foundIndex < 0) return current; // not found
+                // return current.toSpliced(foundIndex, 1);
+                const copy = current.slice(0);
+                copy.splice(foundIndex, 1);
+                return copy;
+            });
+            closeResolved(); // signal that the modal is fully closed
+        };
+        
+        
+        
+        // show a new <Dialog>:
+        const dialogState     : DialogState<TAnswer> = {
+            dialogComponent   : React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>(dialogComponent,
+                // props:
+                {
+                    // identifiers:
+                    key              : ++idCounter.current,
+                    
+                    
+                    
+                    // handlers:
+                    onExpandedChange : handleExpandedChange,
+                    onCollapseEnd    : handleCollapseEnd,
+                },
+            ),
+            lastExpandedEvent : undefined,
+            
+            expanded          : true,
+        };
+        setDialogs((current) => [...current, dialogState]);
+        
+        
+        
+        // when <Dialog> closed:
+        let   closeResolved   : () => void;
+        await new Promise<void>((resolved) => {
+              closeResolved   = resolved; // wait until <Dialog> to be closed by user
+        });
+        return dialogState.lastExpandedEvent?.answer;
+    });
+    
+    const showMessage             = useEvent(async <TAnswer extends any = 'ok'>(dialogMessage             : DialogMessage<TAnswer>                        | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessage, 'message')) {
             return await showMessage({ // recursive call
@@ -271,29 +306,52 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         
-        // simulate an answer if the <ModalStatus> was already opened:
-        if (isExpanded) {
-            // notify the <ModalStatus> is closed by user:
-            for (const signalDialogMessageClosed of signalsDialogMessageClosed.current) {
-                signalDialogMessageClosed(/* answer: */ undefined /* (not answered) */);
-            } // for
-            signalsDialogMessageClosed.current.splice(0); // clear
-        } // if
+        // show a new message:
+        const {
+            title   : modalTitle,
+            message : modalMessage,
+            options : answerOptions,
+        ...restModalBaseProps} = dialogMessage;
         
-        
-        
-        // show|hide message:
-        setDialogMessage(dialogMessage);
-        
-        
-        
-        // when message closed:
-        return new Promise<TAnswer|undefined>((resolved) => {
-            signalsDialogMessageClosed.current.push(resolved); // wait until <ModalStatus> to be closed by user
-        });
+        return showDialog(
+            <ModalStatusWithAnswerOptions<Element, TAnswer, ModalExpandedChangeWithAnswerEvent<TAnswer>>
+                // other props:
+                {...restModalBaseProps}
+                
+                
+                
+                // options:
+                answerOptions={answerOptions}
+                
+                
+                
+                // accessibilities:
+                modalTitle={modalTitle}
+                modalMessage={modalMessage}
+                
+                
+                
+                // behaviors:
+                lazy={true}
+                
+                
+                
+                // components:
+                modalStatusComponent={modalStatusComponent}
+                
+                cardComponent={cardComponent}
+                cardHeaderComponent={cardHeaderComponent}
+                cardBodyComponent={cardBodyComponent}
+                cardFooterComponent={cardFooterComponent}
+                
+                closeButtonComponent={closeButtonComponent}
+                answerButtonComponent={answerButtonComponent}
+                answerOkButtonComponent={answerOkButtonComponent}
+            />
+        );
     });
     
-    const showMessageError        = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageError        : DialogMessageError<TAnswer>|false                  | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageError        = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageError        : DialogMessageError<TAnswer>                   | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageError, 'error')) {
             return await showMessageError({ // recursive call
@@ -306,11 +364,6 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...options, // DialogMessageError extends ShowMessageOptions
             });
         } // if
-        
-        
-        
-        // hide message if `false`:
-        if (dialogMessageError === false) return await showMessage(false);
         
         
         
@@ -341,7 +394,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageFieldError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TAnswer>|false             | FieldErrorList , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageFieldError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TAnswer>              | FieldErrorList , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isFieldErrorList(dialogMessageFieldError, 'fieldErrors')) {
             return await showMessageFieldError({ // recursive call
@@ -354,11 +407,6 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...options, // DialogMessageFieldError extends ShowMessageOptions
             });
         } // if
-        
-        
-        
-        // hide message if `false`:
-        if (dialogMessageFieldError === false) return await showMessageError(false);
         
         
         
@@ -480,7 +528,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
         } // if
     });
-    const showMessageFetchError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>|false             | any            , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageFetchError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>              | any            , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isError(dialogMessageFetchError, 'fetchError')) {
             return await showMessageFetchError({ // recursive call
@@ -494,11 +542,6 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             });
         } // if
         dialogMessageFetchError = dialogMessageFetchError as unknown as (DialogMessageFetchError<TAnswer>|false); // for satisfying TS
-        
-        
-        
-        // hide message if `false`:
-        if (dialogMessageFetchError === false) return await showMessageError(false);
         
         
         
@@ -658,7 +701,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageSuccess      = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TAnswer>|false                | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageSuccess      = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TAnswer>                 | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageSuccess, 'success')) {
             return await showMessageSuccess({ // recursive call
@@ -671,11 +714,6 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...options, // DialogMessageSuccess extends ShowMessageOptions
             });
         } // if
-        
-        
-        
-        // hide message if `false`:
-        if (dialogMessageSuccess === false) return await showMessage(false);
         
         
         
@@ -706,7 +744,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageNotification = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TAnswer>|false           | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageNotification = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TAnswer>            | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageNotification, 'notification')) {
             return await showMessageNotification({ // recursive call
@@ -719,11 +757,6 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...options, // DialogMessageNotification extends ShowMessageOptions
             });
         } // if
-        
-        
-        
-        // hide message if `false`:
-        if (dialogMessageNotification === false) return await showMessage(false);
         
         
         
@@ -757,83 +790,10 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     
-    // cache:
-    const prevDialogMessage       = useRef<DialogMessage<any>|false>(dialogMessage);
-    if (dialogMessage !== false) prevDialogMessage.current = dialogMessage;
-    
-    
-    
-    // handlers:
-    const handleCloseDialogMessage          = useEvent((): void => {
-        setDialogMessage(false); // close the <ModalStatus>
-    });
-    const closeButtonHandleClick            = useMergeEvents(
-        // preserves the original `onClick` from `closeButtonComponent`:
-        closeButtonComponent.props.onClick,
-        
-        
-        
-        // actions:
-        handleCloseDialogMessage, // click [x] button => close the <ModalStatus> *without* answer
-    );
-    const answerButtonHandleClick           = useEvent((answer: any): void => {
-        // actions:
-        answerRef.current = answer;
-        handleCloseDialogMessage(); // click [answer] button => close the <ModalStatus> with answer
-    });
-    
-    const handleModalExpandedChangeInternal = useEvent<EventHandler<ModalExpandedChangeEvent>>(({expanded}) => {
-        // conditions:
-        if (expanded) return; // only interested of collapsed event
-        
-        
-        
-        // actions:
-        handleCloseDialogMessage(); // escape_key|click_on_backdrop => close the <ModalStatus> *without* answer
-    });
-    const handleModalExpandedChange         = useMergeEvents(
-        // preserves the original `onExpandedChange` from `modalStatusComponent`:
-        modalStatusComponent.props.onExpandedChange,
-        
-        
-        
-        // actions:
-        handleModalExpandedChangeInternal,
-    );
-    
-    const handleClosedDialogMessageInternal = useEvent((): void => {
-        // clear the prevDialogMessage *after* the <ModalStatus> is fully hidden:
-        prevDialogMessage.current = false;
-        
-        
-        
-        // take & clear the answer:
-        const answer = answerRef.current; // take
-        answerRef.current = undefined;    // clear
-        
-        
-        
-        // notify the <ModalStatus> is closed by user:
-        for (const signalDialogMessageClosed of signalsDialogMessageClosed.current) {
-            signalDialogMessageClosed(answer);
-        } // for
-        signalsDialogMessageClosed.current.splice(0); // clear
-    });
-    const handleClosedDialogMessage         = useMergeEvents(
-        // preserves the original `onCollapseEnd` from `modalStatusComponent`:
-        modalStatusComponent.props.onCollapseEnd,
-        
-        
-        
-        // actions:
-        handleClosedDialogMessageInternal,
-    );
-    
-    
-    
     // apis:
     const dialogMessageApi = useMemo<DialogMessageApi>(() => ({
         // dialogs:
+        showDialog,              // stable ref
         showMessage,             // stable ref
         showMessageError,        // stable ref
         showMessageFieldError,   // stable ref
@@ -844,191 +804,19 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     
-    // refs:
-    const autoFocusButtonRef = useRef<HTMLButtonElement|null>(null);
-    
-    
-    
     // jsx:
-    const {
-        // contents:
-        title,   // take
-        message, // take
-        options, // take
-    ...restModalBaseProps} = prevDialogMessage.current || {};
-    const answerOptions : Extract<AnswerOptionList<any>, Map<any, any>> = (
-        (!options || !((options instanceof Map) ? options.size : Object.keys(options).length))
-        ? new Map<'ok', AnswerButtonComponentOrChildren>([
-            ['ok', answerOkButtonComponent],
-        ])
-        : (options instanceof Map)
-            ? options
-            : new Map<string|number|symbol, AnswerButtonComponentOrChildren>(Object.entries(options))
-    );
-    const isExpanded = (dialogMessage !== false);
-    let hasAutoFocusButton = false;
-    const cardFooterChildren : React.ReactNode = (
-        cardFooterComponent.props.children ?? Array.from(answerOptions).map(([answer, answerComponent], index) => {
-            // components:
-            const answerButtonComponentWithChildren : React.ReactComponentElement<any, ButtonProps> = (
-                (
-                    !React.isValidElement<ButtonProps>(answerComponent) // NOT a <SomeElement> => treat as children
-                    ||
-                    (answerComponent.type === React.Fragment)           // a <React.Fragment>  => treat as children
-                )
-                ? React.cloneElement<ButtonProps>(answerButtonComponent,
-                    // props:
-                    undefined,
-                    
-                    
-                    
-                    // children:
-                    answerButtonComponent.props.children ?? answerComponent,
-                )
-                : answerComponent                                       // a <SomeElement> => treat as <Button>
-            );
-            
-            
-            
-            // props:
-            const answerButtonComponentWithChildrenProps = answerButtonComponentWithChildren.props;
-            
-            
-            
-            // jsx:
-            return (
-                <ButtonWithAnswer<any>
-                    // other props:
-                    {...answerButtonComponentWithChildrenProps} // steals all answerButtonComponentWithChildren's props, so the <Owner> can recognize the <ButtonWithAnswer> as <TheirChild>
-                    
-                    
-                    
-                    // identifiers:
-                    key={answerButtonComponentWithChildren.key ?? index}
-                    
-                    
-                    
-                    // refs:
-                    autoFocusRef={((): React.Ref<HTMLButtonElement>|undefined => {
-                        // conditions:
-                        if (hasAutoFocusButton) return undefined; // the autoFocus feature has already taken by another <Button>
-                        if (!answerButtonComponentWithChildrenProps.autoFocus) return undefined; // no autoFocus feature activated
-                        hasAutoFocusButton = true; // mark autoFocus feature as taken
-                        
-                        
-                        
-                        return autoFocusButtonRef;
-                    })()}
-                    
-                    
-                    
-                    // contents:
-                    answer={answer}
-                    
-                    
-                    
-                    // components:
-                    buttonComponent={
-                        // clone answerButtonComponentWithChildren element with (almost) blank props:
-                        <answerButtonComponentWithChildren.type
-                            // identifiers:
-                            key={answerButtonComponentWithChildren.key}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('autoFocusRef'    in answerButtonComponentWithChildrenProps) ? { autoFocusRef    : answerButtonComponentWithChildrenProps.autoFocusRef    } : undefined),
-                                ...(('answer'          in answerButtonComponentWithChildrenProps) ? { answer          : answerButtonComponentWithChildrenProps.answer          } : undefined),
-                                ...(('buttonComponent' in answerButtonComponentWithChildrenProps) ? { buttonComponent : answerButtonComponentWithChildrenProps.buttonComponent } : undefined),
-                                ...(('onAnswer'        in answerButtonComponentWithChildrenProps) ? { onAnswer        : answerButtonComponentWithChildrenProps.onAnswer        } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
-                    
-                    
-                    
-                    // handlers:
-                    onAnswer={answerButtonHandleClick}
-                />
-            );
-        })
-    );
     return (
         <DialogMessageContext.Provider value={dialogMessageApi}>
             {children}
             
-            {React.cloneElement<ModalStatusProps<Element>>(modalStatusComponent,
-                // props:
-                {
-                    // other props:
-                    ...restModalBaseProps,
-                    ...modalStatusComponent.props, // overwrites restModalBaseProps (if any conflics)
-                    
-                    
-                    
-                    // behaviors:
-                    lazy             : modalStatusComponent.props.lazy          ?? true,
-                    
-                    
-                    
-                    // components:
-                    cardComponent    : modalStatusComponent.props.cardComponent ?? cardComponent,
-                    
-                    
-                    
-                    // auto focusable:
-                    autoFocusOn      : modalStatusComponent.props.autoFocusOn   ?? (hasAutoFocusButton ? autoFocusButtonRef : undefined),
-                    
-                    
-                    
-                    // handlers:
-                    onExpandedChange : handleModalExpandedChange,
-                    onCollapseEnd    : handleClosedDialogMessage,
-                },
-                
-                
-                
-                // children:
-                (modalStatusComponent.props.children ?? (isExpanded && <>
-                    {React.cloneElement<CardHeaderProps<Element>>(cardHeaderComponent,
-                        // props:
-                        undefined,
-                        
-                        
-                        
-                        // children:
-                        cardHeaderComponent.props.children ?? <>
-                            {title}
-                            {React.cloneElement<ButtonProps>(closeButtonComponent,
-                                // props:
-                                {
-                                    // handlers:
-                                    onClick : closeButtonHandleClick,
-                                },
-                            )}
-                        </>,
-                    )}
-                    {React.cloneElement<CardBodyProps<Element>>(cardBodyComponent,
-                        // props:
-                        undefined,
-                        
-                        
-                        
-                        // children:
-                        cardBodyComponent.props.children ?? message,
-                    )}
-                    {React.cloneElement<CardFooterProps<Element>>(cardFooterComponent,
-                        // props:
-                        undefined,
-                        
-                        
-                        
-                        // children:
-                        cardFooterChildren,
-                    )}
-                </>)),
+            {dialogs.map(({dialogComponent, expanded}) =>
+                React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>(dialogComponent,
+                    // props:
+                    {
+                        // states:
+                        expanded : dialogComponent.props.expanded ?? expanded,
+                    },
+                )
             )}
         </DialogMessageContext.Provider>
     );

@@ -15,20 +15,37 @@ import type {
 }                           from '@reusable-ui/button'          // a button component for initiating an action
 import type {
     // react components:
+    ModalExpandedChangeEvent,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
+import type {
+    // react components:
     ModalBaseProps,
 }                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
 
 
 
 // types:
+export interface ModalExpandedChangeWithAnswerEvent<TAnswer extends any = 'ok'>
+    extends
+        ModalExpandedChangeEvent
+{
+    answer ?: TAnswer
+}
+export interface DialogState<TAnswer extends any = any> {
+    dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>
+    lastExpandedEvent : ModalExpandedChangeWithAnswerEvent<TAnswer>|undefined
+    
+    expanded          : boolean
+}
+
 export type FieldErrorList                               = ArrayLike<Element>|null|undefined
 export type AnswerButtonComponentOrChildren              =
     |Required<ButtonComponentProps>['buttonComponent']                                                                  // <Button>
     |React.ReactComponentElement<React.ExoticComponent<{ children?: React.ReactNode }>, { children?: React.ReactNode }> // <React.Fragment>
     |Iterable<React.ReactNode>                                                                                          // Array<React.Node>
 export type AnswerOptionList<TAnswer extends any = 'ok'> =
-    |Map   <        TAnswer                       , AnswerButtonComponentOrChildren> // { answer => TheComponent }
-    |Record<Extract<TAnswer, string|number|symbol>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
+    |Map   <        TAnswer            , AnswerButtonComponentOrChildren> // { answer => TheComponent }
+    |Record<Extract<TAnswer, keyof any>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
 
 
 

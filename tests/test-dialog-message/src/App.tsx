@@ -16,11 +16,12 @@ import {
     HeadPortal,
 } from '@cssfn/cssfn-react'
 import { Button } from '@reusable-ui/components';
+import { CustomDialog } from './CustomDialog';
 
 
 
 function App() {
-    const { showMessage, showMessageError } = useDialogMessage();
+    const { showDialog, showMessage, showMessageError } = useDialogMessage();
     
     
     
@@ -31,20 +32,41 @@ function App() {
             </HeadPortal>
             <div className="App">
                 <button onClick={() => showMessage({
+                    theme   : 'primary',
                     title   : <h1>Say Hello</h1>,
                     message : <p>Hello world. This is very <strong>awesome</strong>.</p>,
                 }) }>
                     Test dialog 1
                 </button>
-                <button onClick={async () => console.log(await showMessageError<'abort'|'retry'|'ignore'>({
-                    error: <p>Oops! An error occured. Please try again</p>,
-                    options : {
-                        abort: <Button theme='danger'>Abort</Button>,
-                        retry: <Button autoFocus={true} theme='success'>Retry</Button>,
-                        ignore : <Button theme='secondary'>Ignore</Button>
-                    },
-                }))}>
+                <button onClick={() => {
+                    const showQuestion = async () => {
+                        const answer = await showMessageError<'abort'|'retry'|'ignore'|'again'|symbol>({
+                            error: <p>Oops! An error occured. Please try again</p>,
+                            options : {
+                                abort  : <Button theme='danger'>Abort</Button>,
+                                retry  : <Button autoFocus={true} theme='success'>Retry</Button>,
+                                ignore : <Button theme='secondary'>Ignore</Button>,
+                                again  : <Button theme='warning' onClick={(event) => {
+                                    showQuestion();
+                                    event.preventDefault();
+                                }}>Again</Button>,
+                                [Symbol('mehh')] : <Button theme='danger'>Mehh</Button>,
+                                [Symbol('bleh')] : <Button theme='success'>Blehh</Button>,
+                            },
+                        });
+                        console.log(answer);
+                    };
+                    showQuestion();
+                }}>
                     Test error dialog
+                </button>
+                <button onClick={async () => {
+                    const answer = await showDialog<'yessMase'>(
+                        <CustomDialog theme='primary' />
+                    );
+                    console.log(answer);
+                }}>
+                    Test Custom Dialog
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

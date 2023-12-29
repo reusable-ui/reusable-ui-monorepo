@@ -9,9 +9,17 @@ import {
     createContext,
 }                           from 'react'
 
+// reusable-ui components:
+import type {
+    // react components:
+    ModalBaseProps,
+}                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
+
 // internals:
 import type {
     // types:
+    ModalExpandedChangeWithAnswerEvent,
+    
     FieldErrorList,
     
     
@@ -42,26 +50,29 @@ const notNestedError = async (): Promise<any|undefined> => {
 // contexts:
 export interface DialogMessageApi {
     // dialogs:
-    showMessage             <TAnswer extends any = 'ok'>(dialogMessage             : React.SetStateAction<DialogMessage<TAnswer>|false>                                       ): Promise<TAnswer|undefined>
-    showMessage             <TAnswer extends any = 'ok'>(message                   : React.ReactNode                                   , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showDialog              <TAnswer extends any = 'ok'>(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>): Promise<TAnswer|undefined>
     
-    showMessageError        <TAnswer extends any = 'ok'>(dialogMessageError        : DialogMessageError<TAnswer>|false                                                        ): Promise<TAnswer|undefined>
-    showMessageError        <TAnswer extends any = 'ok'>(error                     : React.ReactNode                                   , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showMessage             <TAnswer extends any = 'ok'>(dialogMessage             : DialogMessage<TAnswer>                                                                                ): Promise<TAnswer|undefined>
+    showMessage             <TAnswer extends any = 'ok'>(message                   : React.ReactNode                                                , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
     
-    showMessageFieldError   <TAnswer extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TAnswer>|false                                                   ): Promise<TAnswer|undefined>
-    showMessageFieldError   <TAnswer extends any = 'ok'>(fieldErrors               : FieldErrorList                                    , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showMessageError        <TAnswer extends any = 'ok'>(dialogMessageError        : DialogMessageError<TAnswer>                                                                           ): Promise<TAnswer|undefined>
+    showMessageError        <TAnswer extends any = 'ok'>(error                     : React.ReactNode                                                , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
     
-    showMessageFetchError   <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>|false                                                   ): Promise<TAnswer|undefined>
-    showMessageFetchError   <TAnswer extends any = 'ok'>(fetchError                : any                                               , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showMessageFieldError   <TAnswer extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TAnswer>                                                                      ): Promise<TAnswer|undefined>
+    showMessageFieldError   <TAnswer extends any = 'ok'>(fieldErrors               : FieldErrorList                                                 , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
     
-    showMessageSuccess      <TAnswer extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TAnswer>|false                                                      ): Promise<TAnswer|undefined>
-    showMessageSuccess      <TAnswer extends any = 'ok'>(success                   : React.ReactNode                                   , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showMessageFetchError   <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>                                                                      ): Promise<TAnswer|undefined>
+    showMessageFetchError   <TAnswer extends any = 'ok'>(fetchError                : any                                                            , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
     
-    showMessageNotification <TAnswer extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TAnswer>|false                                                 ): Promise<TAnswer|undefined>
-    showMessageNotification <TAnswer extends any = 'ok'>(notification              : React.ReactNode                                   , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    showMessageSuccess      <TAnswer extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TAnswer>                                                                         ): Promise<TAnswer|undefined>
+    showMessageSuccess      <TAnswer extends any = 'ok'>(success                   : React.ReactNode                                                , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
+    
+    showMessageNotification <TAnswer extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TAnswer>                                                                    ): Promise<TAnswer|undefined>
+    showMessageNotification <TAnswer extends any = 'ok'>(notification              : React.ReactNode                                                , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined>
 }
 export const DialogMessageContext = createContext<DialogMessageApi>({
     // dialogs:
+    showDialog              : notNestedError,
     showMessage             : notNestedError,
     showMessageError        : notNestedError,
     showMessageFieldError   : notNestedError,
