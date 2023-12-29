@@ -64,7 +64,7 @@ import type {
 
 
 // react components:
-export interface ModalStatusWithAnswerOptionsProps<TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>
+export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>
     extends
         // bases:
         ModalStatusProps<TElement, TModalExpandedChangeEvent>
@@ -91,7 +91,7 @@ export interface ModalStatusWithAnswerOptionsProps<TElement extends Element = HT
     answerButtonComponent   ?: React.ReactComponentElement<any, ButtonProps>
     answerOkButtonComponent ?: React.ReactComponentElement<any, ButtonProps>
 }
-const ModalStatusWithAnswerOptions = <TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>(props: ModalStatusWithAnswerOptionsProps<TElement, TAnswer, TModalExpandedChangeEvent>): JSX.Element|null => {
+const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>(props: DialogWithAnswerProps<TElement, TAnswer, TModalExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // options:
@@ -361,6 +361,6 @@ const ModalStatusWithAnswerOptions = <TElement extends Element = HTMLElement, TA
     );
 };
 export {
-    ModalStatusWithAnswerOptions,
-    ModalStatusWithAnswerOptions as default,
+    DialogWithAnswer,
+    DialogWithAnswer as default,
 }

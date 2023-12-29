@@ -53,8 +53,8 @@ import type {
 // internal components:
 import {
     // react components:
-    ModalStatusWithAnswerOptions,
-}                           from './ModalStatusWithAnswerOptions.js'
+    DialogWithAnswer,
+}                           from './DialogWithAnswer.js'
 
 // internals:
 import type {
@@ -314,7 +314,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         ...restModalBaseProps} = dialogMessage;
         
         return showDialog(
-            <ModalStatusWithAnswerOptions<Element, TAnswer, ModalExpandedChangeWithAnswerEvent<TAnswer>>
+            <DialogWithAnswer<Element, TAnswer, ModalExpandedChangeWithAnswerEvent<TAnswer>>
                 // other props:
                 {...restModalBaseProps}
                 
