@@ -39,12 +39,13 @@ import {
     
     CardProps,
     Card,
+    
+    CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 import {
     // react components:
-    ModalStatusProps,
-    ModalStatus,
-}                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
+    ModalCard,
+}                           from '@reusable-ui/modal-card'      // overlays a card dialog to the entire site's page
 
 // internal components:
 import {
@@ -56,6 +57,7 @@ import {
 import type {
     // types:
     ModalExpandedChangeWithAnswerEvent,
+    ModalBaseProps,
     
     AnswerButtonComponentOrChildren,
     AnswerOptionList,
@@ -67,7 +69,7 @@ import type {
 export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>
     extends
         // bases:
-        ModalStatusProps<TElement, TModalExpandedChangeEvent>
+        ModalBaseProps<TElement, TModalExpandedChangeEvent>
 {
     // options:
     answerOptions            : AnswerOptionList<TAnswer>|undefined
@@ -81,8 +83,9 @@ export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, T
     
     
     // components:
-    modalStatusComponent    ?: React.ReactComponentElement<any, ModalStatusProps<TElement, TModalExpandedChangeEvent>>
+    modalComponent          ?: React.ReactComponentElement<any, ModalBaseProps<TElement, TModalExpandedChangeEvent>>
     
+    cardComponent           ?: CardComponentProps<Element>['cardComponent']
     cardHeaderComponent     ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
     cardBodyComponent       ?: React.ReactComponentElement<any, CardBodyProps<Element>>
     cardFooterComponent     ?: React.ReactComponentElement<any, CardFooterProps<Element>>
@@ -106,15 +109,15 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
         
         
         // components:
-        modalStatusComponent    = (<ModalStatus modalCardStyle='scrollable' /> as React.ReactComponentElement<any, ModalStatusProps<TElement, TModalExpandedChangeEvent>>),
+        modalComponent          = (<ModalCard modalCardStyle='scrollable' lazy={true} /> as React.ReactComponentElement<any, ModalBaseProps<TElement, TModalExpandedChangeEvent>>),
         
-        cardComponent           = (<Card<Element>                           /> as React.ReactComponentElement<any, CardProps<Element>>),
-        cardHeaderComponent     = (<CardHeader<Element>                     /> as React.ReactComponentElement<any, CardHeaderProps<Element>>),
-        cardBodyComponent       = (<CardBody<Element>                       /> as React.ReactComponentElement<any, CardBodyProps<Element>>),
-        cardFooterComponent     = (<CardFooter<Element>                     /> as React.ReactComponentElement<any, CardFooterProps<Element>>),
+        cardComponent           = (<Card<Element>                                     /> as React.ReactComponentElement<any, CardProps<Element>>),
+        cardHeaderComponent     = (<CardHeader<Element>                               /> as React.ReactComponentElement<any, CardHeaderProps<Element>>),
+        cardBodyComponent       = (<CardBody<Element>                                 /> as React.ReactComponentElement<any, CardBodyProps<Element>>),
+        cardFooterComponent     = (<CardFooter<Element>                               /> as React.ReactComponentElement<any, CardFooterProps<Element>>),
         
-        closeButtonComponent    = (<CloseButton                             /> as React.ReactComponentElement<any, ButtonProps>),
-        answerButtonComponent   = (<Button                                  /> as React.ReactComponentElement<any, ButtonProps>),
+        closeButtonComponent    = (<CloseButton                                       /> as React.ReactComponentElement<any, ButtonProps>),
+        answerButtonComponent   = (<Button                                            /> as React.ReactComponentElement<any, ButtonProps>),
         answerOkButtonComponent = React.cloneElement<ButtonProps>(answerButtonComponent,
             // props:
             {
@@ -127,7 +130,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
             // children:
             answerButtonComponent.props.children ?? 'Okay',
         ),
-    ...restModalStatusProps} = props;
+    ...restModalProps} = props;
     
     
     
@@ -162,8 +165,8 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
     
     // handlers:
     const handleExpandedChange           = useMergeEvents(
-        // preserves the original `onExpandedChange` from `modalStatusComponent`:
-        modalStatusComponent.props.onExpandedChange,
+        // preserves the original `onExpandedChange` from `modalComponent`:
+        modalComponent.props.onExpandedChange,
         
         
         
@@ -297,17 +300,17 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
             );
         })
     );
-    return React.cloneElement<ModalStatusProps<TElement, TModalExpandedChangeEvent>>(modalStatusComponent,
+    return React.cloneElement<ModalBaseProps<TElement, TModalExpandedChangeEvent>>(modalComponent,
         // props:
         {
             // other props:
-            ...restModalStatusProps,
-            ...modalStatusComponent.props, // overwrites restModalStatusProps (if any conflics)
+            ...restModalProps,
+            ...modalComponent.props, // overwrites restModalProps (if any conflics)
             
             
             
             // auto focusable:
-            autoFocusOn      : modalStatusComponent.props.autoFocusOn ?? props.autoFocusOn ?? (hasAutoFocusButton ? autoFocusButtonRef : undefined),
+            autoFocusOn      : modalComponent.props.autoFocusOn ?? props.autoFocusOn ?? (hasAutoFocusButton ? autoFocusButtonRef : undefined),
             
             
             
@@ -318,7 +321,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
         
         
         // children:
-        modalStatusComponent.props.children ?? props.children ?? <>
+        modalComponent.props.children ?? props.children ?? <>
             {React.cloneElement<CardHeaderProps<Element>>(cardHeaderComponent,
                 // props:
                 undefined,

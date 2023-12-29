@@ -9,16 +9,11 @@ import {
     createContext,
 }                           from 'react'
 
-// reusable-ui components:
-import type {
-    // react components:
-    ModalBaseProps,
-}                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
-
 // internals:
 import type {
     // types:
     ModalExpandedChangeWithAnswerEvent,
+    ModalBaseProps,
     
     FieldErrorList,
     

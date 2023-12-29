@@ -7,6 +7,10 @@ import {
 // reusable-ui components:
 import type {
     // react components:
+    BasicProps,
+}                           from '@reusable-ui/basic'           // a styled basic building block of Reusable-UI components
+import type {
+    // react components:
     IconProps,
 }                           from '@reusable-ui/icon'            // an icon component
 import type {
@@ -14,13 +18,19 @@ import type {
     ButtonComponentProps,
 }                           from '@reusable-ui/button'          // a button component for initiating an action
 import type {
+    // types:
+    AutoFocusableProps,
+}                           from '@reusable-ui/auto-focusable'  // a capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed)
+import type {
+    // types:
+    CollapsibleProps,
+    CollapsibleEventProps,
+    ControllableCollapsibleProps,
+}                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
+import type {
     // react components:
     ModalExpandedChangeEvent,
 }                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
-import type {
-    // react components:
-    ModalBaseProps,
-}                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
 
 
 
@@ -30,6 +40,21 @@ export interface ModalExpandedChangeWithAnswerEvent<TAnswer extends any = 'ok'>
         ModalExpandedChangeEvent
 {
     answer ?: TAnswer
+}
+export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+    extends
+        // bases:
+        BasicProps<TElement>,
+        
+        // capabilities:
+        AutoFocusableProps,
+        
+        // states:
+        CollapsibleProps<TModalExpandedChangeEvent>,
+        CollapsibleEventProps,
+        ControllableCollapsibleProps<TModalExpandedChangeEvent>
+{
+    /* empty */
 }
 export interface DialogState<TAnswer extends any = any> {
     dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>

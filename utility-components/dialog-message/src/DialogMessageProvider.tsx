@@ -44,11 +44,6 @@ import type {
     
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
-import type {
-    // react components:
-    ModalBaseProps,
-    ModalStatusProps,
-}                           from '@reusable-ui/modal-status'    // overlays a card dialog to the entire site's page
 
 // internal components:
 import {
@@ -60,6 +55,7 @@ import {
 import type {
     // types:
     ModalExpandedChangeWithAnswerEvent,
+    ModalBaseProps,
     DialogState,
     
     FieldErrorList,
@@ -155,7 +151,7 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 // react components:
 export interface DialogMessageProviderProps {
     // components:
-    modalStatusComponent             ?: React.ReactComponentElement<any, ModalStatusProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>
+    modalComponent                   ?: React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>
     
     cardComponent                    ?: CardComponentProps<Element>['cardComponent']
     cardHeaderComponent              ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
@@ -184,7 +180,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     // rest props:
     const {
         // components:
-        modalStatusComponent,
+        modalComponent,
         
         cardComponent,
         cardHeaderComponent,
@@ -331,13 +327,8 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 
                 
                 
-                // behaviors:
-                lazy={true}
-                
-                
-                
                 // components:
-                modalStatusComponent={modalStatusComponent}
+                modalComponent={modalComponent}
                 
                 cardComponent={cardComponent}
                 cardHeaderComponent={cardHeaderComponent}
