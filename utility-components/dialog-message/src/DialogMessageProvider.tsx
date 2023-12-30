@@ -287,7 +287,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         await new Promise<void>((resolved) => {
               closeResolved   = resolved; // wait until <Dialog> to be closed by user
         });
-        return dialogState.lastExpandedEvent?.answer;
+        return dialogState.lastExpandedEvent?.data;
     });
     
     const showMessage             = useEvent(async <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                        | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {

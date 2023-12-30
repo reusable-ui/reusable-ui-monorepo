@@ -179,7 +179,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TData extends 
         handleExpandedChange?.({
             actionType : 'ui',
             expanded   : false,
-            answer     : answer,
+            data       : answer,
         } as TModalExpandedChangeEvent);
     });
     

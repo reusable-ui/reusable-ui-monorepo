@@ -39,7 +39,7 @@ export interface ModalExpandedChangeWithAnswerEvent<TData extends any = any>
     extends
         ModalExpandedChangeEvent
 {
-    answer ?: TData
+    data ?: TData
 }
 export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
     extends
