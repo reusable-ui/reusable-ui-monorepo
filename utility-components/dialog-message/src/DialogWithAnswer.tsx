@@ -130,7 +130,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
             // children:
             answerButtonComponent.props.children ?? 'Okay',
         ),
-    ...restModalProps} = props;
+    ...restModalBaseProps} = props;
     
     
     
@@ -304,8 +304,8 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
         // props:
         {
             // other props:
-            ...restModalProps,
-            ...modalComponent.props, // overwrites restModalProps (if any conflics)
+            ...restModalBaseProps,
+            ...modalComponent.props, // overwrites restModalBaseProps (if any conflics)
             
             
             
