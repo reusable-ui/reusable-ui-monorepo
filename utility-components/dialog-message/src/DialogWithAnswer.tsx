@@ -235,19 +235,9 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
             
             
             
-            // props:
-            const answerButtonComponentWithChildrenProps = answerButtonComponentWithChildren.props;
-            
-            
-            
             // jsx:
             return (
                 <ButtonWithAnswer<TAnswer|'ok'>
-                    // other props:
-                    {...answerButtonComponentWithChildrenProps} // steals all answerButtonComponentWithChildren's props, so the <Owner> can recognize the <ButtonWithAnswer> as <TheirChild>
-                    
-                    
-                    
                     // identifiers:
                     key={answerButtonComponentWithChildren.key ?? index}
                     
@@ -257,7 +247,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
                     autoFocusRef={((): React.Ref<HTMLButtonElement>|undefined => {
                         // conditions:
                         if (hasAutoFocusButton) return undefined; // the autoFocus feature has already taken by another <Button>
-                        if (!answerButtonComponentWithChildrenProps.autoFocus) return undefined; // no autoFocus feature activated
+                        if (!answerButtonComponentWithChildren.props.autoFocus) return undefined; // no autoFocus feature activated
                         hasAutoFocusButton = true; // mark autoFocus feature as taken
                         
                         
@@ -273,24 +263,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
                     
                     
                     // components:
-                    buttonComponent={
-                        // clone answerButtonComponentWithChildren element with (almost) blank props:
-                        <answerButtonComponentWithChildren.type
-                            // identifiers:
-                            key={answerButtonComponentWithChildren.key}
-                            
-                            
-                            
-                            //#region restore conflicting props
-                            {...{
-                                ...(('autoFocusRef'    in answerButtonComponentWithChildrenProps) ? { autoFocusRef    : answerButtonComponentWithChildrenProps.autoFocusRef    } : undefined),
-                                ...(('answer'          in answerButtonComponentWithChildrenProps) ? { answer          : answerButtonComponentWithChildrenProps.answer          } : undefined),
-                                ...(('buttonComponent' in answerButtonComponentWithChildrenProps) ? { buttonComponent : answerButtonComponentWithChildrenProps.buttonComponent } : undefined),
-                                ...(('onAnswer'        in answerButtonComponentWithChildrenProps) ? { onAnswer        : answerButtonComponentWithChildrenProps.onAnswer        } : undefined),
-                            }}
-                            //#endregion restore conflicting props
-                        />
-                    }
+                    buttonComponent={answerButtonComponentWithChildren}
                     
                     
                     
