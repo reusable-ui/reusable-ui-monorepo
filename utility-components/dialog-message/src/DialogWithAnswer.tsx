@@ -66,13 +66,13 @@ import type {
 
 
 // react components:
-export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>
+export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>
     extends
         // bases:
         ModalBaseProps<TElement, TModalExpandedChangeEvent>
 {
     // options:
-    answerOptions            : AnswerOptionList<TAnswer>|undefined
+    answerOptions            : AnswerOptionList<TData>|undefined
     
     
     
@@ -94,7 +94,7 @@ export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, T
     answerButtonComponent   ?: React.ReactComponentElement<any, ButtonProps>
     answerOkButtonComponent ?: React.ReactComponentElement<any, ButtonProps>
 }
-const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>(props: DialogWithAnswerProps<TElement, TAnswer, TModalExpandedChangeEvent>): JSX.Element|null => {
+const DialogWithAnswer = <TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>(props: DialogWithAnswerProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // options:
@@ -135,7 +135,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
     
     
     // options:
-    const answerButtonOptions    : Extract<AnswerOptionList<TAnswer|'ok'>, Map<TAnswer|'ok', AnswerButtonComponentOrChildren>> = (
+    const answerButtonOptions    : Extract<AnswerOptionList<TData|'ok'>, Map<TData|'ok', AnswerButtonComponentOrChildren>> = (
         // if no option defined -or- defined as empty collection:
         (
             !answerOptions
@@ -155,9 +155,9 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
         // use defined option(s):
         : (answerOptions instanceof Map)
             ? answerOptions
-            : new Map<TAnswer, AnswerButtonComponentOrChildren>([
-                ...Object.entries(answerOptions) as [TAnswer, AnswerButtonComponentOrChildren][],
-                ...Object.getOwnPropertySymbols(answerOptions).map((sym): [TAnswer, AnswerButtonComponentOrChildren] => [sym as TAnswer, answerOptions[sym as TAnswer]]),
+            : new Map<TData, AnswerButtonComponentOrChildren>([
+                ...Object.entries(answerOptions) as [TData, AnswerButtonComponentOrChildren][],
+                ...Object.getOwnPropertySymbols(answerOptions).map((sym): [TData, AnswerButtonComponentOrChildren] => [sym as TData, answerOptions[sym as TData]]),
             ])
     );
     
@@ -174,7 +174,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
         props.onExpandedChange,
     );
     
-    const handleAnswer                   = useEvent((answer: TAnswer|'ok'|undefined): void => {
+    const handleAnswer                   = useEvent((answer: TData|'ok'|undefined): void => {
         // actions:
         handleExpandedChange?.({
             actionType : 'ui',
@@ -237,7 +237,7 @@ const DialogWithAnswer = <TElement extends Element = HTMLElement, TAnswer extend
             
             // jsx:
             return (
-                <ButtonWithAnswer<TAnswer|'ok'>
+                <ButtonWithAnswer<TData|'ok'>
                     // identifiers:
                     key={answerButtonComponentWithChildren.key ?? index}
                     

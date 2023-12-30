@@ -225,9 +225,9 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     // stable callbacks:
-    const showDialog              = useEvent(async <TAnswer extends any = 'ok'>(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>): Promise<TAnswer|undefined> => {
+    const showDialog              = useEvent(async <TData extends any = 'ok'>(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>): Promise<TData|undefined> => {
         // <Dialog> handlers:
-        const handleExpandedChange = (event: ModalExpandedChangeWithAnswerEvent<TAnswer>): void => {
+        const handleExpandedChange = (event: ModalExpandedChangeWithAnswerEvent<TData>): void => {
             // preserves the original `onExpandedChange` from `dialogComponent`:
             dialogComponent.props.onExpandedChange?.(event);
             
@@ -260,8 +260,8 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show a new <Dialog>:
-        const dialogState     : DialogState<TAnswer> = {
-            dialogComponent   : React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>(dialogComponent,
+        const dialogState     : DialogState<TData> = {
+            dialogComponent   : React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>(dialogComponent,
                 // props:
                 {
                     // identifiers:
@@ -290,7 +290,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         return dialogState.lastExpandedEvent?.answer;
     });
     
-    const showMessage             = useEvent(async <TAnswer extends any = 'ok'>(dialogMessage             : DialogMessage<TAnswer>                        | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessage             = useEvent(async <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                        | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessage, 'message')) {
             return await showMessage({ // recursive call
@@ -314,7 +314,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         ...restModalBaseProps} = dialogMessage;
         
         return showDialog(
-            <DialogWithAnswer<Element, TAnswer, ModalExpandedChangeWithAnswerEvent<TAnswer>>
+            <DialogWithAnswer<Element, TData, ModalExpandedChangeWithAnswerEvent<TData>>
                 // other props:
                 {...restModalBaseProps}
                 
@@ -346,7 +346,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         );
     });
     
-    const showMessageError        = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageError        : DialogMessageError<TAnswer>                   | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageError        = useEvent(async <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                   | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageError, 'error')) {
             return await showMessageError({ // recursive call
@@ -389,7 +389,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageFieldError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TAnswer>              | FieldErrorList , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageFieldError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>              | FieldErrorList , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isFieldErrorList(dialogMessageFieldError, 'fieldErrors')) {
             return await showMessageFieldError({ // recursive call
@@ -473,7 +473,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                             
                             // children:
                             (fieldErrorListItemComponent.props.children ?? ((): React.ReactNode => {
-                                let icon : DialogMessageFieldError<TAnswer>['fieldErrorIcon']|null = fieldErrorIconComponent.props.icon;
+                                let icon : DialogMessageFieldError<TData>['fieldErrorIcon']|null = fieldErrorIconComponent.props.icon;
                                 if (icon === undefined) icon = fieldErrorIconFind(fieldError);
                                 if (icon === undefined) icon = fieldErrorIcon;
                                 const label = fieldErrorLabelFind(fieldError);
@@ -523,7 +523,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
         } // if
     });
-    const showMessageFetchError   = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TAnswer>              | any            , options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageFetchError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>              | any            , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isError(dialogMessageFetchError, 'fetchError')) {
             return await showMessageFetchError({ // recursive call
@@ -536,7 +536,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...options, // DialogMessageFetchError extends ShowMessageOptions
             });
         } // if
-        dialogMessageFetchError = dialogMessageFetchError as unknown as (DialogMessageFetchError<TAnswer>|false); // for satisfying TS
+        dialogMessageFetchError = dialogMessageFetchError as unknown as (DialogMessageFetchError<TData>|false); // for satisfying TS
         
         
         
@@ -696,7 +696,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageSuccess      = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TAnswer>                 | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageSuccess      = useEvent(async <TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                 | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageSuccess, 'success')) {
             return await showMessageSuccess({ // recursive call
@@ -739,7 +739,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageNotification = useEvent(async <TAnswer extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TAnswer>            | React.ReactNode, options?: ShowMessageOptions<TAnswer>): Promise<TAnswer|undefined> => {
+    const showMessageNotification = useEvent(async <TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>            | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageNotification, 'notification')) {
             return await showMessageNotification({ // recursive call

@@ -35,11 +35,11 @@ import type {
 
 
 // types:
-export interface ModalExpandedChangeWithAnswerEvent<TAnswer extends any = 'ok'>
+export interface ModalExpandedChangeWithAnswerEvent<TData extends any = 'ok'>
     extends
         ModalExpandedChangeEvent
 {
-    answer ?: TAnswer
+    answer ?: TData
 }
 export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
     extends
@@ -56,9 +56,9 @@ export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalEx
 {
     /* empty */
 }
-export interface DialogState<TAnswer extends any = any> {
-    dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TAnswer>>>
-    lastExpandedEvent : ModalExpandedChangeWithAnswerEvent<TAnswer>|undefined
+export interface DialogState<TData extends any = any> {
+    dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>
+    lastExpandedEvent : ModalExpandedChangeWithAnswerEvent<TData>|undefined
     
     expanded          : boolean
 }
@@ -68,9 +68,9 @@ export type AnswerButtonComponentOrChildren              =
     |Required<ButtonComponentProps>['buttonComponent']                                                                  // <Button>
     |React.ReactComponentElement<React.ExoticComponent<{ children?: React.ReactNode }>, { children?: React.ReactNode }> // <React.Fragment>
     |Iterable<React.ReactNode>                                                                                          // Array<React.Node>
-export type AnswerOptionList<TAnswer extends any = 'ok'> =
-    |Map   <        TAnswer            , AnswerButtonComponentOrChildren> // { answer => TheComponent }
-    |Record<Extract<TAnswer, keyof any>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
+export type AnswerOptionList<TData extends any = 'ok'> =
+    |Map   <        TData            , AnswerButtonComponentOrChildren> // { answer => TheComponent }
+    |Record<Extract<TData, keyof any>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
 
 
 
@@ -111,7 +111,7 @@ export type FetchErrorMessage = React.ReactNode | ((errorInfo: FetchErrorInfo) =
 
 
 // options:
-export interface ShowMessageOptions<TAnswer extends any = 'ok'>
+export interface ShowMessageOptions<TData extends any = 'ok'>
     extends
         Omit<ModalBaseProps<Element>,
             // contents:
@@ -120,31 +120,31 @@ export interface ShowMessageOptions<TAnswer extends any = 'ok'>
         >
 {
     // contents:
-    options                   ?: AnswerOptionList<TAnswer>
+    options                   ?: AnswerOptionList<TData>
 }
 
 
 
 // states:
-export interface DialogMessage<TAnswer extends any = 'ok'>
+export interface DialogMessage<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     title                     ?: React.ReactNode
     message                    : React.ReactNode
 }
-export interface DialogMessageError<TAnswer extends any = 'ok'>
+export interface DialogMessageError<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     title                     ?: React.ReactNode
     error                      : React.ReactNode
 }
-export interface DialogMessageFieldError<TAnswer extends any = 'ok'>
+export interface DialogMessageFieldError<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     fieldErrorTitle           ?: FieldErrorTitle
@@ -162,9 +162,9 @@ export interface DialogMessageFieldError<TAnswer extends any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageFetchError<TAnswer extends any = 'ok'>
+export interface DialogMessageFetchError<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     fetchErrorTitle           ?: FetchErrorTitle
@@ -177,17 +177,17 @@ export interface DialogMessageFetchError<TAnswer extends any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageSuccess<TAnswer extends any = 'ok'>
+export interface DialogMessageSuccess<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     title                     ?: React.ReactNode
     success                    : React.ReactNode
 }
-export interface DialogMessageNotification<TAnswer extends any = 'ok'>
+export interface DialogMessageNotification<TData extends any = 'ok'>
     extends
-        ShowMessageOptions<TAnswer>
+        ShowMessageOptions<TData>
 {
     // contents:
     title                     ?: React.ReactNode

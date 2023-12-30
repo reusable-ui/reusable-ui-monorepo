@@ -20,7 +20,7 @@ import type {
 
 
 // react components:
-export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>
+export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>
     extends
         // bases:
         ModalBaseProps<TElement, TModalExpandedChangeEvent>
@@ -28,7 +28,7 @@ export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TA
     // components:
     modalComponent : React.ReactComponentElement<any, ModalBaseProps<TElement, TModalExpandedChangeEvent>>
 }
-const DialogWithDelay = <TElement extends Element = HTMLElement, TAnswer extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'> = ModalExpandedChangeWithAnswerEvent<TAnswer|'ok'>>(props: DialogWithDelayProps<TElement, TAnswer, TModalExpandedChangeEvent>): JSX.Element|null => {
+const DialogWithDelay = <TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>(props: DialogWithDelayProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // components:
