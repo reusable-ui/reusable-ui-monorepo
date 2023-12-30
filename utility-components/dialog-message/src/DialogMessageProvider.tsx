@@ -161,17 +161,17 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 // utilities:
 const createPromiseDialog = <TData extends any = any>(promiseResolved: Promise<void>, getLastExpandedEvent?: (() => ModalExpandedChangeEvent<TData>|undefined)): PromiseDialog<TData> => {
-    const promiseResult = (
+    const promiseData = (
         promiseResolved
         .then(() =>                        // wait until `lastExpandedEvent` is ready
             getLastExpandedEvent?.()?.data // now get `lastExpandedEvent` and get `data`
         )
     );
-    (promiseResult as any).collapseEndEvent = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
+    (promiseData as any).collapseEndEvent = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
         await promiseResolved;             // wait until `lastExpandedEvent` is ready
         return getLastExpandedEvent?.();   // now get `lastExpandedEvent`
     };
-    return promiseResult as any;
+    return promiseData as any;
 };
 
 
