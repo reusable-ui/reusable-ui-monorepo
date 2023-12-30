@@ -50,6 +50,10 @@ import {
     // react components:
     DialogWithAnswer,
 }                           from './DialogWithAnswer.js'
+import {
+    // react components:
+    DialogWithDelay,
+}                           from './DialogWithDelay.js'
 
 // internals:
 import type {
@@ -261,7 +265,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 // props:
                 {
                     // identifiers:
-                    key              : ++idCounter.current,
+                    key              : dialogComponent.key ?? ++idCounter.current,
                     
                     
                     
@@ -800,14 +804,24 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         <DialogMessageContext.Provider value={dialogMessageApi}>
             {children}
             
-            {dialogs.map(({dialogComponent, expanded}) =>
-                React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>(dialogComponent,
-                    // props:
-                    {
-                        // states:
-                        expanded : dialogComponent.props.expanded ?? expanded,
-                    },
-                )
+            {dialogs.map(({dialogComponent, expanded}, index) =>
+                <DialogWithDelay<Element, any, ModalExpandedChangeWithAnswerEvent<any|'ok'>>
+                    // identifiers:
+                    key={dialogComponent.key ?? index}
+                    
+                    
+                    
+                    // components:
+                    modalComponent={
+                        React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>(dialogComponent,
+                            // props:
+                            {
+                                // states:
+                                expanded : dialogComponent.props.expanded ?? expanded,
+                            },
+                        )
+                    }
+                />
             )}
         </DialogMessageContext.Provider>
     );
