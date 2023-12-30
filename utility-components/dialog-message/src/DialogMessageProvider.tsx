@@ -167,7 +167,7 @@ const createPromiseDialog = <TData extends any = any>(promiseResolved: Promise<v
             getLastExpandedEvent?.()?.data // now get `lastExpandedEvent` and get `data`
         )
     );
-    (promiseResult as any).event = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
+    (promiseResult as any).collapseEndEvent = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
         await promiseResolved;             // wait until `lastExpandedEvent` is ready
         return getLastExpandedEvent?.();   // now get `lastExpandedEvent`
     };
@@ -728,7 +728,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 
                 // options:
                 ...restShowMessageOptions,
-            }).event();
+            }).collapseEndEvent();
             resolved();
         });
         return createPromiseDialog(promiseResolved, () => lastExpandedEvent);

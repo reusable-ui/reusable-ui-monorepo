@@ -69,12 +69,12 @@ function App() {
                     Test Custom Dialog
                 </button>
                 <button onClick={async () => {
-                    const event = await showDialog<'yessMase'>(
+                    const collapseEndEvent = await showDialog<'yessMase'>(
                         <CustomDialog theme='primary' />
-                    ).event();
-                    console.log('event: ', event);
+                    ).collapseEndEvent();
+                    console.log('collapseEndEvent: ', collapseEndEvent);
                 }}>
-                    Test Custom Dialog w event
+                    Test Custom Dialog w collapseEndEvent
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
