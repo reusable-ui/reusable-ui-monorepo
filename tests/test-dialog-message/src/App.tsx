@@ -71,7 +71,7 @@ function App() {
                 <button onClick={async () => {
                     const event = await showDialog<'yessMase'>(
                         <CustomDialog theme='primary' />
-                    ).unwrap();
+                    ).event();
                     console.log('event: ', event);
                 }}>
                     Test Custom Dialog w unwrap

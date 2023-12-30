@@ -161,10 +161,15 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 // utilities:
 const createPromiseDialog = <TData extends any = any>(promiseResolved: Promise<void>, getLastExpandedEvent?: (() => ModalExpandedChangeEvent<TData>|undefined)): PromiseDialog<TData> => {
-    const promiseResult = promiseResolved.then(() => getLastExpandedEvent?.()?.data);
-    (promiseResult as any).unwrap = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
-        await promiseResolved;
-        return getLastExpandedEvent?.();
+    const promiseResult = (
+        promiseResolved
+        .then(() =>                        // wait until `lastExpandedEvent` is ready
+            getLastExpandedEvent?.()?.data // now get `lastExpandedEvent` and get `data`
+        )
+    );
+    (promiseResult as any).event = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
+        await promiseResolved;             // wait until `lastExpandedEvent` is ready
+        return getLastExpandedEvent?.();   // now get `lastExpandedEvent`
     };
     return promiseResult as any;
 };
@@ -723,7 +728,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 
                 // options:
                 ...restShowMessageOptions,
-            }).unwrap();
+            }).event();
             resolved();
         });
         return createPromiseDialog(promiseResolved, () => lastExpandedEvent);

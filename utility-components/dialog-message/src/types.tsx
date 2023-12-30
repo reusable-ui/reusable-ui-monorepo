@@ -39,7 +39,7 @@ export interface PromiseDialog<TData extends any = any>
     extends
         Promise<TData|undefined>
 {
-    unwrap(): Promise<ModalExpandedChangeEvent<TData>|undefined>
+    event(): Promise<ModalExpandedChangeEvent<TData>|undefined>
 }
 
 
