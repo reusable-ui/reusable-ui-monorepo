@@ -26,7 +26,7 @@ export const CustomDialog = (props: CustomDialogProps): JSX.Element|null => {
                     props.onExpandedChange?.({
                         actionType : 'ui',
                         expanded   : false,
-                        answer     : 'yessMase',
+                        data       : 'yessMase',
                     });
                 }}>
                     Yess Mase
