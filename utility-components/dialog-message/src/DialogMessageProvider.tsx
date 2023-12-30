@@ -44,6 +44,10 @@ import type {
     
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
+import type {
+    // react components:
+    ModalExpandedChangeEvent,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
 
 // internal components:
 import {
@@ -58,7 +62,6 @@ import {
 // internals:
 import type {
     // types:
-    ModalExpandedChangeWithAnswerEvent,
     ModalBaseProps,
     DialogState,
     
@@ -155,7 +158,7 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 // react components:
 export interface DialogMessageProviderProps {
     // components:
-    modalComponent                   ?: React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>
+    modalComponent                   ?: React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<any>>>
     
     cardComponent                    ?: CardComponentProps<Element>['cardComponent']
     cardHeaderComponent              ?: React.ReactComponentElement<any, CardHeaderProps<Element>>
@@ -225,9 +228,9 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     // stable callbacks:
-    const showDialog              = useEvent(async <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>): Promise<TData|undefined> => {
+    const showDialog              = useEvent(async <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>): Promise<TData|undefined> => {
         // <Dialog> handlers:
-        const handleExpandedChange = (event: ModalExpandedChangeWithAnswerEvent<TData>): void => {
+        const handleExpandedChange = (event: ModalExpandedChangeEvent<TData>): void => {
             // preserves the original `onExpandedChange` from `dialogComponent`:
             dialogComponent.props.onExpandedChange?.(event);
             
@@ -261,7 +264,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         // show a new <Dialog>:
         const dialogState     : DialogState<TData> = {
-            dialogComponent   : React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>(dialogComponent,
+            dialogComponent   : React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>(dialogComponent,
                 // props:
                 {
                     // identifiers:
@@ -314,7 +317,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         ...restModalBaseProps} = dialogMessage;
         
         return showDialog<TData>(
-            <DialogWithAnswer<Element, TData, ModalExpandedChangeWithAnswerEvent<TData>>
+            <DialogWithAnswer<Element, TData, ModalExpandedChangeEvent<TData>>
                 // other props:
                 {...restModalBaseProps}
                 
@@ -805,7 +808,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             {children}
             
             {dialogs.map(({dialogComponent, expanded}, index) =>
-                <DialogWithDelay<Element, any, ModalExpandedChangeWithAnswerEvent<any>>
+                <DialogWithDelay<Element, any, ModalExpandedChangeEvent<any>>
                     // identifiers:
                     key={dialogComponent.key ?? index}
                     
@@ -813,7 +816,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                     
                     // components:
                     modalComponent={
-                        React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<any>>>(dialogComponent,
+                        React.cloneElement<ModalBaseProps<Element, ModalExpandedChangeEvent<any>>>(dialogComponent,
                             // props:
                             {
                                 // states:

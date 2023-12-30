@@ -35,12 +35,6 @@ import type {
 
 
 // types:
-export interface ModalExpandedChangeWithAnswerEvent<TData extends any = any>
-    extends
-        ModalExpandedChangeEvent<TData>
-{
-    data ?: TData
-}
 export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
@@ -57,8 +51,8 @@ export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalEx
     /* empty */
 }
 export interface DialogState<TData extends any = any> {
-    dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>
-    lastExpandedEvent : ModalExpandedChangeWithAnswerEvent<TData>|undefined
+    dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>
+    lastExpandedEvent : ModalExpandedChangeEvent<TData>|undefined
     
     expanded          : boolean
 }

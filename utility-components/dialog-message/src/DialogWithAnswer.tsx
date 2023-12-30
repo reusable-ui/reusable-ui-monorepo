@@ -42,6 +42,10 @@ import {
     
     CardComponentProps,
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
+import type {
+    // react components:
+    ModalExpandedChangeEvent,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
 import {
     // react components:
     ModalCard,
@@ -56,7 +60,6 @@ import {
 // internals:
 import type {
     // types:
-    ModalExpandedChangeWithAnswerEvent,
     ModalBaseProps,
     
     AnswerButtonComponentOrChildren,
@@ -66,7 +69,7 @@ import type {
 
 
 // react components:
-export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>
+export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeEvent<TData|'ok'> = ModalExpandedChangeEvent<TData|'ok'>>
     extends
         // bases:
         ModalBaseProps<TElement, TModalExpandedChangeEvent>
@@ -94,7 +97,7 @@ export interface DialogWithAnswerProps<TElement extends Element = HTMLElement, T
     answerButtonComponent   ?: React.ReactComponentElement<any, ButtonProps>
     answerOkButtonComponent ?: React.ReactComponentElement<any, ButtonProps>
 }
-const DialogWithAnswer = <TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData|'ok'> = ModalExpandedChangeWithAnswerEvent<TData|'ok'>>(props: DialogWithAnswerProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
+const DialogWithAnswer = <TElement extends Element = HTMLElement, TData extends any = 'ok', TModalExpandedChangeEvent extends ModalExpandedChangeEvent<TData|'ok'> = ModalExpandedChangeEvent<TData|'ok'>>(props: DialogWithAnswerProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // options:

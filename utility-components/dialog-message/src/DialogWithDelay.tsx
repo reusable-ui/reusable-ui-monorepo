@@ -10,17 +10,22 @@ import {
     useEffect,
 }                           from 'react'
 
+// reusable-ui components:
+import type {
+    // react components:
+    ModalExpandedChangeEvent,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
+
 // internals:
 import type {
     // types:
-    ModalExpandedChangeWithAnswerEvent,
     ModalBaseProps,
 }                           from './types.js'
 
 
 
 // react components:
-export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TData extends any = any, TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData> = ModalExpandedChangeWithAnswerEvent<TData>>
+export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TData extends any = any, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<TData> = ModalExpandedChangeEvent<TData>>
     extends
         // bases:
         ModalBaseProps<TElement, TModalExpandedChangeEvent>
@@ -28,7 +33,7 @@ export interface DialogWithDelayProps<TElement extends Element = HTMLElement, TD
     // components:
     modalComponent : React.ReactComponentElement<any, ModalBaseProps<TElement, TModalExpandedChangeEvent>>
 }
-const DialogWithDelay = <TElement extends Element = HTMLElement, TData extends any = any, TModalExpandedChangeEvent extends ModalExpandedChangeWithAnswerEvent<TData> = ModalExpandedChangeWithAnswerEvent<TData>>(props: DialogWithDelayProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
+const DialogWithDelay = <TElement extends Element = HTMLElement, TData extends any = any, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<TData> = ModalExpandedChangeEvent<TData>>(props: DialogWithDelayProps<TElement, TData, TModalExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // components:

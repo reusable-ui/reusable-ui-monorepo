@@ -9,10 +9,15 @@ import {
     createContext,
 }                           from 'react'
 
+// reusable-ui components:
+import type {
+    // react components:
+    ModalExpandedChangeEvent,
+}                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
+
 // internals:
 import type {
     // types:
-    ModalExpandedChangeWithAnswerEvent,
     ModalBaseProps,
     
     FieldErrorList,
@@ -45,25 +50,25 @@ const notNestedError = async (): Promise<any|undefined> => {
 // contexts:
 export interface DialogMessageApi {
     // dialogs:
-    showDialog              <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>): Promise<TData|undefined>
+    showDialog              <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>): Promise<TData|undefined>
     
-    showMessage             <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                                                                                ): Promise<TData|undefined>
-    showMessage             <TData extends any = 'ok'>(message                   : React.ReactNode                                                , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessage             <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                                                                      ): Promise<TData|undefined>
+    showMessage             <TData extends any = 'ok'>(message                   : React.ReactNode                                      , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
     
-    showMessageError        <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                                                                           ): Promise<TData|undefined>
-    showMessageError        <TData extends any = 'ok'>(error                     : React.ReactNode                                                , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessageError        <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                                                                 ): Promise<TData|undefined>
+    showMessageError        <TData extends any = 'ok'>(error                     : React.ReactNode                                      , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
     
-    showMessageFieldError   <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>                                                                      ): Promise<TData|undefined>
-    showMessageFieldError   <TData extends any = 'ok'>(fieldErrors               : FieldErrorList                                                 , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessageFieldError   <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>                                                            ): Promise<TData|undefined>
+    showMessageFieldError   <TData extends any = 'ok'>(fieldErrors               : FieldErrorList                                       , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
     
-    showMessageFetchError   <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>                                                                      ): Promise<TData|undefined>
-    showMessageFetchError   <TData extends any = 'ok'>(fetchError                : any                                                            , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessageFetchError   <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>                                                            ): Promise<TData|undefined>
+    showMessageFetchError   <TData extends any = 'ok'>(fetchError                : any                                                  , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
     
-    showMessageSuccess      <TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                                                                         ): Promise<TData|undefined>
-    showMessageSuccess      <TData extends any = 'ok'>(success                   : React.ReactNode                                                , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessageSuccess      <TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                                                               ): Promise<TData|undefined>
+    showMessageSuccess      <TData extends any = 'ok'>(success                   : React.ReactNode                                      , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
     
-    showMessageNotification <TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>                                                                    ): Promise<TData|undefined>
-    showMessageNotification <TData extends any = 'ok'>(notification              : React.ReactNode                                                , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
+    showMessageNotification <TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>                                                          ): Promise<TData|undefined>
+    showMessageNotification <TData extends any = 'ok'>(notification              : React.ReactNode                                      , options?: ShowMessageOptions<TData>): Promise<TData|undefined>
 }
 export const DialogMessageContext = createContext<DialogMessageApi>({
     // dialogs:

@@ -1,8 +1,8 @@
-import { Button, CardBody, CardHeader, ModalCard, ModalCardProps, ModalExpandedChangeWithAnswerEvent } from '@reusable-ui/components'
+import { Button, CardBody, CardHeader, ModalCard, ModalCardProps, ModalExpandedChangeEvent } from '@reusable-ui/components'
 
 
 
-export interface CustomDialogProps extends ModalCardProps<HTMLElement, ModalExpandedChangeWithAnswerEvent<'yessMase'>> {}
+export interface CustomDialogProps extends ModalCardProps<HTMLElement, ModalExpandedChangeEvent<'yessMase'>> {}
 export const CustomDialog = (props: CustomDialogProps): JSX.Element|null => {
     // jsx:
     return (
