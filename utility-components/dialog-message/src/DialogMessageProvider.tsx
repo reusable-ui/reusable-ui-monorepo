@@ -313,7 +313,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             options : answerOptions,
         ...restModalBaseProps} = dialogMessage;
         
-        return showDialog(
+        return showDialog<TData>(
             <DialogWithAnswer<Element, TData, ModalExpandedChangeWithAnswerEvent<TData>>
                 // other props:
                 {...restModalBaseProps}
@@ -805,7 +805,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             {children}
             
             {dialogs.map(({dialogComponent, expanded}, index) =>
-                <DialogWithDelay<Element, any, ModalExpandedChangeWithAnswerEvent<any|'ok'>>
+                <DialogWithDelay<Element, any, ModalExpandedChangeWithAnswerEvent<any>>
                     // identifiers:
                     key={dialogComponent.key ?? index}
                     
