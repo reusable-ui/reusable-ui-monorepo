@@ -62,6 +62,10 @@ import {
 // internals:
 import type {
     // types:
+    PromiseDialog,
+    
+    
+    
     ModalBaseProps,
     DialogState,
     
@@ -155,6 +159,18 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 
 
+// utilities:
+const createPromiseDialog = <TData extends any = any>(promiseResolved: Promise<void>, getLastExpandedEvent?: (() => ModalExpandedChangeEvent<TData>|undefined)): PromiseDialog<TData> => {
+    const promiseResult = promiseResolved.then(() => getLastExpandedEvent?.()?.data);
+    (promiseResult as any).unwrap = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
+        await promiseResolved;
+        return getLastExpandedEvent?.();
+    };
+    return promiseResult as any;
+};
+
+
+
 // react components:
 export interface DialogMessageProviderProps {
     // components:
@@ -228,7 +244,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     // stable callbacks:
-    const showDialog              = useEvent(async <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>): Promise<TData|undefined> => {
+    const showDialog              = useEvent(<TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>): PromiseDialog<TData> => {
         // <Dialog> handlers:
         const handleExpandedChange = (event: ModalExpandedChangeEvent<TData>): void => {
             // preserves the original `onExpandedChange` from `dialogComponent`:
@@ -287,16 +303,17 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         // when <Dialog> closed:
         let   closeResolved   : () => void;
-        await new Promise<void>((resolved) => {
+        const promiseResolved = new Promise<void>((resolved) => {
               closeResolved   = resolved; // wait until <Dialog> to be closed by user
         });
-        return dialogState.lastExpandedEvent?.data;
+        // return dialogState.lastExpandedEvent?.data;
+        return createPromiseDialog(promiseResolved, () => dialogState.lastExpandedEvent);
     });
     
-    const showMessage             = useEvent(async <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                        | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessage             = useEvent(<TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessage, 'message')) {
-            return await showMessage({ // recursive call
+            return showMessage({ // recursive call
                 // contents:
                 message : dialogMessage,
                 
@@ -349,10 +366,10 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         );
     });
     
-    const showMessageError        = useEvent(async <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                   | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageError        = useEvent(<TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>           | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageError, 'error')) {
-            return await showMessageError({ // recursive call
+            return showMessageError({ // recursive call
                 // contents:
                 error : dialogMessageError,
                 
@@ -380,7 +397,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return await showMessage({
+        return showMessage({
             // contents:
             title,
             message : error,
@@ -392,10 +409,10 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageFieldError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>              | FieldErrorList , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageFieldError   = useEvent(<TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>      | FieldErrorList , options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isFieldErrorList(dialogMessageFieldError, 'fieldErrors')) {
-            return await showMessageFieldError({ // recursive call
+            return showMessageFieldError({ // recursive call
                 // contents:
                 fieldErrors : dialogMessageFieldError,
                 
@@ -430,7 +447,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // conditions:
-        if (!fieldErrors?.length) return; // no field error => nothing to show => ignore
+        if (!fieldErrors?.length) return createPromiseDialog(Promise.resolve<undefined>(undefined)); // no field error => nothing to show => ignore
         
         
         
@@ -452,7 +469,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         if (title   === undefined) title   = _fieldErrorTitleDefault;
         let message : React.ReactNode      = (typeof(fieldErrorMessage) === 'function') ? fieldErrorMessage(fieldErrorInfo) : fieldErrorMessage;
         if (message === undefined) message = _fieldErrorMessageDefault(fieldErrorInfo);
-        await showMessageError({
+        const promiseDialog = showMessageError({
             // contents:
             title,
             error : <>
@@ -504,32 +521,39 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             // options:
             ...restShowMessageOptions,
         });
-        if (!isMounted.current) return; // unmounted => abort
-        
-        
-        
-        // focus the first fieldError:
-        if (fieldErrorAutoFocus) {
-            setTimeout(() => {
-                requestAnimationFrame(() => {
-                    const focusableSelector = ':is(button, [href], input, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex], iframe):not([tabindex="-1"])';
-                    const firstFieldError   = fieldErrors?.[0];
-                    const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
-                    if (fieldErrorAutoFocusScroll) {
-                        firstFieldError.scrollIntoView({
-                            block    : 'start',
-                            behavior : 'smooth',
-                        });
-                    } // if
-                    firstFocusableElm?.focus?.({ preventScroll: true });
-                }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
-            }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
-        } // if
+        try {
+            return promiseDialog;
+        }
+        finally {
+            promiseDialog.then((): void => {
+                if (!isMounted.current) return; // unmounted => abort
+                
+                
+                
+                // focus the first fieldError:
+                if (fieldErrorAutoFocus) {
+                    setTimeout(() => {
+                        requestAnimationFrame(() => {
+                            const focusableSelector = ':is(button, [href], input, select, textarea, [contenteditable]:not([contenteditable="false"]), [tabindex], iframe):not([tabindex="-1"])';
+                            const firstFieldError   = fieldErrors?.[0];
+                            const firstFocusableElm = (firstFieldError.matches(focusableSelector) ? firstFieldError : firstFieldError?.querySelector(focusableSelector)) as HTMLElement|null;
+                            if (fieldErrorAutoFocusScroll) {
+                                firstFieldError.scrollIntoView({
+                                    block    : 'start',
+                                    behavior : 'smooth',
+                                });
+                            } // if
+                            firstFocusableElm?.focus?.({ preventScroll: true });
+                        }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
+                    }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
+                } // if
+            });
+        } // try
     });
-    const showMessageFetchError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>              | any            , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageFetchError   = useEvent(<TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>      | any            , options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isError(dialogMessageFetchError, 'fetchError')) {
-            return await showMessageFetchError({ // recursive call
+            return showMessageFetchError({ // recursive call
                 // contents:
                 fetchError : dialogMessageFetchError,
                 
@@ -607,102 +631,107 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         // show message:
         let title   : React.ReactNode      = (typeof(fetchErrorTitle  ) === 'function') ? fetchErrorTitle(fetchErrorInfo  ) : fetchErrorTitle;
         if (title   === undefined) title   = _fetchErrorTitleDefault;
-        await showMessageError({
-            // contents:
-            title,
-            error : (
-                // axios'  human_readable server error   response:
-                // axios'  human_readable server message response:
-                // rtkq's  human_readable server error   response:
-                // rtkq's  human_readable server message response:
-                ((): React.ReactElement|undefined => {
-                    const data = (
-                        fetchError?.response?.data // axios' response data
-                        ??
-                        fetchError?.data           // rtkq's response data
-                    );
-                    
-                    
-                    
-                    // response as json:
-                    if (typeof(data) === 'object') {
-                        const error   = data?.error;
-                        if ((typeof(error)   === 'string') && !!error  ) return paragraphify(error);   // not an empty string => a valid error message
+        let lastExpandedEvent: ModalExpandedChangeEvent<TData>|undefined = undefined;
+        const promiseResolved = new Promise<void>(async (resolved): Promise<void> => {
+            lastExpandedEvent = await showMessageError<TData>({
+                // contents:
+                title,
+                error : (
+                    // axios'  human_readable server error   response:
+                    // axios'  human_readable server message response:
+                    // rtkq's  human_readable server error   response:
+                    // rtkq's  human_readable server message response:
+                    ((): React.ReactElement|undefined => {
+                        const data = (
+                            fetchError?.response?.data // axios' response data
+                            ??
+                            fetchError?.data           // rtkq's response data
+                        );
                         
-                        const message = data?.message;
-                        if ((typeof(message) === 'string') && !!message) return paragraphify(message); // not an empty string => a valid error message
-                    }
-                    // response as text:
-                    else if (typeof(data) === 'string') {
-                        if (!!data) return paragraphify(data); // not an empty string => a valid error message
-                    } // if
-                    
-                    
-                    
-                    return undefined; // unknown response format => skip
-                })()
-                ??
-                // fetch's human_readable server error   response:
-                // fetch's human_readable server message response:
-                (await (async (): Promise<React.ReactElement|undefined> => {
-                    // conditions:
-                    const response = fetchError?.cause; // a `Response` object passed on Error('string', Response)
-                    if (!(response instanceof Response)) return undefined; // not a `Response` object => skip
-                    const contentType = response.headers.get('Content-Type');
-                    if (!contentType) return undefined; // no 'Content-Type' defined => skip
-                    
-                    
-                    
-                    // response as json:
-                    if ((/^application\/json/i).test(contentType)) {
-                        try {
-                            const data    = await response.json();
-                            
+                        
+                        
+                        // response as json:
+                        if (typeof(data) === 'object') {
                             const error   = data?.error;
                             if ((typeof(error)   === 'string') && !!error  ) return paragraphify(error);   // not an empty string => a valid error message
                             
                             const message = data?.message;
                             if ((typeof(message) === 'string') && !!message) return paragraphify(message); // not an empty string => a valid error message
                         }
-                        catch {
-                            return undefined; // parse failed => skip
-                        } // try
-                    }
-                    // response as text:
-                    else if ((/^text/i).test(contentType)) {
-                        try {
-                            const text = await response.text();
-                            
-                            if (!!text) return paragraphify(text); // not an empty string => a valid error message
+                        // response as text:
+                        else if (typeof(data) === 'string') {
+                            if (!!data) return paragraphify(data); // not an empty string => a valid error message
+                        } // if
+                        
+                        
+                        
+                        return undefined; // unknown response format => skip
+                    })()
+                    ??
+                    // fetch's human_readable server error   response:
+                    // fetch's human_readable server message response:
+                    (await (async (): Promise<React.ReactElement|undefined> => {
+                        // conditions:
+                        const response = fetchError?.cause; // a `Response` object passed on Error('string', Response)
+                        if (!(response instanceof Response)) return undefined; // not a `Response` object => skip
+                        const contentType = response.headers.get('Content-Type');
+                        if (!contentType) return undefined; // no 'Content-Type' defined => skip
+                        
+                        
+                        
+                        // response as json:
+                        if ((/^application\/json/i).test(contentType)) {
+                            try {
+                                const data    = await response.json();
+                                
+                                const error   = data?.error;
+                                if ((typeof(error)   === 'string') && !!error  ) return paragraphify(error);   // not an empty string => a valid error message
+                                
+                                const message = data?.message;
+                                if ((typeof(message) === 'string') && !!message) return paragraphify(message); // not an empty string => a valid error message
+                            }
+                            catch {
+                                return undefined; // parse failed => skip
+                            } // try
                         }
-                        catch {
-                            return undefined; // parse failed => skip
-                        } // try
-                    } // if
-                    
-                    
-                    
-                    return undefined; // unknown response format => skip
-                })())
-                ??
-                // if there is a request/client/server error => assumes as a connection problem:
-                ((): React.ReactNode => {
-                    let message : React.ReactNode      = (typeof(fetchErrorMessage) === 'function') ? fetchErrorMessage(fetchErrorInfo) : fetchErrorMessage;
-                    if (message === undefined) message = _fetchErrorMessageDefault(fetchErrorInfo);
-                    return message;
-                })()
-            ),
-            
-            
-            
-            // options:
-            ...restShowMessageOptions,
+                        // response as text:
+                        else if ((/^text/i).test(contentType)) {
+                            try {
+                                const text = await response.text();
+                                
+                                if (!!text) return paragraphify(text); // not an empty string => a valid error message
+                            }
+                            catch {
+                                return undefined; // parse failed => skip
+                            } // try
+                        } // if
+                        
+                        
+                        
+                        return undefined; // unknown response format => skip
+                    })())
+                    ??
+                    // if there is a request/client/server error => assumes as a connection problem:
+                    ((): React.ReactNode => {
+                        let message : React.ReactNode      = (typeof(fetchErrorMessage) === 'function') ? fetchErrorMessage(fetchErrorInfo) : fetchErrorMessage;
+                        if (message === undefined) message = _fetchErrorMessageDefault(fetchErrorInfo);
+                        return message;
+                    })()
+                ),
+                
+                
+                
+                // options:
+                ...restShowMessageOptions,
+            }).unwrap();
+            resolved();
         });
+        return createPromiseDialog(promiseResolved, () => lastExpandedEvent);
     });
-    const showMessageSuccess      = useEvent(async <TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                 | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageSuccess      = useEvent(<TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>         | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageSuccess, 'success')) {
-            return await showMessageSuccess({ // recursive call
+            return showMessageSuccess({ // recursive call
                 // contents:
                 success : dialogMessageSuccess,
                 
@@ -730,7 +759,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return await showMessage({
+        return showMessage({
             // contents:
             title,
             message : success,
@@ -742,10 +771,10 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageNotification = useEvent(async <TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>            | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageNotification = useEvent(<TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>    | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageNotification, 'notification')) {
-            return await showMessageNotification({ // recursive call
+            return showMessageNotification({ // recursive call
                 // contents:
                 notification : dialogMessageNotification,
                 
@@ -773,7 +802,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return await showMessage({
+        return showMessage({
             // contents:
             title,
             message : notification,

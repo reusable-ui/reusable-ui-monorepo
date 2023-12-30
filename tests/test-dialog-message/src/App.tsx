@@ -68,6 +68,14 @@ function App() {
                 }}>
                     Test Custom Dialog
                 </button>
+                <button onClick={async () => {
+                    const event = await showDialog<'yessMase'>(
+                        <CustomDialog theme='primary' />
+                    ).unwrap();
+                    console.log('event: ', event);
+                }}>
+                    Test Custom Dialog w unwrap
+                </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

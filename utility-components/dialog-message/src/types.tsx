@@ -35,6 +35,15 @@ import type {
 
 
 // types:
+export interface PromiseDialog<TData extends any = any>
+    extends
+        Promise<TData|undefined>
+{
+    unwrap(): Promise<ModalExpandedChangeEvent<TData>|undefined>
+}
+
+
+
 export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
