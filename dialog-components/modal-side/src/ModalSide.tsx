@@ -87,7 +87,7 @@ export const useBackdropSideStyleSheet = dynamicStyleSheet(
 // react components:
 export { ModalExpandedChangeEvent }
 
-export interface ModalSideProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+export interface ModalSideProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
         CardProps<TElement>,
@@ -123,7 +123,7 @@ export interface ModalSideProps<TElement extends Element = HTMLElement, TModalEx
         ModalComponentProps<Element, TModalExpandedChangeEvent>
 {
 }
-const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalSideProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
+const ModalSide = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>(props: ModalSideProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet         = useBackdropSideStyleSheet();
     const collapseStyleSheet = useModalSideStyleSheet();

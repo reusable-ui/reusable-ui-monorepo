@@ -37,11 +37,11 @@ import type {
 // types:
 export interface ModalExpandedChangeWithAnswerEvent<TData extends any = any>
     extends
-        ModalExpandedChangeEvent
+        ModalExpandedChangeEvent<TData>
 {
     data ?: TData
 }
-export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
         BasicProps<TElement>,

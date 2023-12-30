@@ -109,11 +109,12 @@ export interface ModalUiComponentProps<TElement extends Element = HTMLElement>
 }
 
 export type ModalActionType = 'shortcut'|'backdrop'|'ui'|{}
-export interface ModalExpandedChangeEvent extends ExpandedChangeEvent {
-    actionType : ModalActionType
+export interface ModalExpandedChangeEvent<TData extends any = any> extends ExpandedChangeEvent {
+    actionType  : ModalActionType
+    data       ?: TData
 }
 
-export interface ModalProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+export interface ModalProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
         Omit<GenericProps<TElement>,
@@ -139,7 +140,7 @@ export interface ModalProps<TElement extends Element = HTMLElement, TModalExpand
     // behaviors:
     lazy         ?: boolean
 }
-const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
+const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>(props: ModalProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet               = useBackdropStyleSheet();
     const uiStyleSheet             = useModalUiStyleSheet();
@@ -707,7 +708,7 @@ export {
 
 
 
-export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+export interface ModalComponentProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
 {
     // refs:
     modalRef       ?: React.Ref<TElement> // setter ref

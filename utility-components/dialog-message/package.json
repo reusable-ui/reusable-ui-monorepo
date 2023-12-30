@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dialog-message",
-  "version": "6.5.2",
+  "version": "6.6.0",
   "description": "Displays a modal dialog to notify the user that something has happened.",
   "keywords": [
     "message",
@@ -54,8 +54,8 @@
     "@reusable-ui/core": "^6.5.0",
     "@reusable-ui/icon": "^6.5.0",
     "@reusable-ui/list": "^6.5.0",
-    "@reusable-ui/modal": "^6.5.0",
-    "@reusable-ui/modal-card": "^6.5.0"
+    "@reusable-ui/modal": "^6.6.0",
+    "@reusable-ui/modal-card": "^6.6.0"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

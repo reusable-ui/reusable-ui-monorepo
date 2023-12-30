@@ -88,7 +88,7 @@ export const useBackdropCardStyleSheet = dynamicStyleSheet(
 // react components:
 export { ModalExpandedChangeEvent }
 
-export interface ModalCardProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>
+export interface ModalCardProps<TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>
     extends
         // bases:
         CardProps<TElement>,
@@ -124,7 +124,7 @@ export interface ModalCardProps<TElement extends Element = HTMLElement, TModalEx
         ModalComponentProps<Element, TModalExpandedChangeEvent>
 {
 }
-const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent = ModalExpandedChangeEvent>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
+const ModalCard = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent extends ModalExpandedChangeEvent<any> = ModalExpandedChangeEvent<any>>(props: ModalCardProps<TElement, TModalExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet       = useBackdropCardStyleSheet();
     const popupStyleSheet  = useModalCardStyleSheet();

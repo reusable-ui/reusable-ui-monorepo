@@ -29,7 +29,7 @@ function App() {
     };
     
     const [showModal, setShowModal] = useState<boolean>(true);
-    const handleExpandedChange = useCallback((event: ModalExpandedChangeEvent) => {
+    const handleExpandedChange = useCallback((event: ModalExpandedChangeEvent<any>) => {
         console.log('onExpandedChange', event.expanded, event.actionType);
         setShowModal(event.expanded);
     }, []);
