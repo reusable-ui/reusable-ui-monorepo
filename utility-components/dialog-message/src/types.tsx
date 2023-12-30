@@ -35,7 +35,7 @@ import type {
 
 
 // types:
-export interface ModalExpandedChangeWithAnswerEvent<TData extends keyof any = any>
+export interface ModalExpandedChangeWithAnswerEvent<TData extends any = any>
     extends
         ModalExpandedChangeEvent
 {
@@ -56,7 +56,7 @@ export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalEx
 {
     /* empty */
 }
-export interface DialogState<TData extends keyof any = any> {
+export interface DialogState<TData extends any = any> {
     dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>
     lastExpandedEvent : ModalExpandedChangeWithAnswerEvent<TData>|undefined
     
@@ -68,7 +68,7 @@ export type AnswerButtonComponentOrChildren              =
     |Required<ButtonComponentProps>['buttonComponent']                                                                  // <Button>
     |React.ReactComponentElement<React.ExoticComponent<{ children?: React.ReactNode }>, { children?: React.ReactNode }> // <React.Fragment>
     |Iterable<React.ReactNode>                                                                                          // Array<React.Node>
-export type AnswerOptionList<TData extends keyof any = 'ok'> =
+export type AnswerOptionList<TData extends any = 'ok'> =
     |Map   <        TData            , AnswerButtonComponentOrChildren> // { answer => TheComponent }
     |Record<Extract<TData, keyof any>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
 
@@ -111,7 +111,7 @@ export type FetchErrorMessage = React.ReactNode | ((errorInfo: FetchErrorInfo) =
 
 
 // options:
-export interface ShowMessageOptions<TData extends keyof any = 'ok'>
+export interface ShowMessageOptions<TData extends any = 'ok'>
     extends
         Omit<ModalBaseProps<Element>,
             // contents:
@@ -126,7 +126,7 @@ export interface ShowMessageOptions<TData extends keyof any = 'ok'>
 
 
 // states:
-export interface DialogMessage<TData extends keyof any = 'ok'>
+export interface DialogMessage<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -134,7 +134,7 @@ export interface DialogMessage<TData extends keyof any = 'ok'>
     title                     ?: React.ReactNode
     message                    : React.ReactNode
 }
-export interface DialogMessageError<TData extends keyof any = 'ok'>
+export interface DialogMessageError<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -142,7 +142,7 @@ export interface DialogMessageError<TData extends keyof any = 'ok'>
     title                     ?: React.ReactNode
     error                      : React.ReactNode
 }
-export interface DialogMessageFieldError<TData extends keyof any = 'ok'>
+export interface DialogMessageFieldError<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -162,7 +162,7 @@ export interface DialogMessageFieldError<TData extends keyof any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageFetchError<TData extends keyof any = 'ok'>
+export interface DialogMessageFetchError<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -177,7 +177,7 @@ export interface DialogMessageFetchError<TData extends keyof any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageSuccess<TData extends keyof any = 'ok'>
+export interface DialogMessageSuccess<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -185,7 +185,7 @@ export interface DialogMessageSuccess<TData extends keyof any = 'ok'>
     title                     ?: React.ReactNode
     success                    : React.ReactNode
 }
-export interface DialogMessageNotification<TData extends keyof any = 'ok'>
+export interface DialogMessageNotification<TData extends any = 'ok'>
     extends
         ShowMessageOptions<TData>
 {

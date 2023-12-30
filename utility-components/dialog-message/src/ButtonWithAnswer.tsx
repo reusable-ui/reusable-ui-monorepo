@@ -23,7 +23,7 @@ import {
 
 
 // react components:
-export interface ButtonWithAnswerProps<TData extends keyof any = any>
+export interface ButtonWithAnswerProps<TData extends any = any>
     extends
         // bases:
         ButtonProps,
@@ -46,7 +46,7 @@ export interface ButtonWithAnswerProps<TData extends keyof any = any>
     // handlers:
     onAnswer      : (answer: TData) => void
 }
-const ButtonWithAnswer = <TData extends keyof any = any>(props: ButtonWithAnswerProps<TData>): JSX.Element|null => {
+const ButtonWithAnswer = <TData extends any = any>(props: ButtonWithAnswerProps<TData>): JSX.Element|null => {
     // rest props:
     const {
         // refs:

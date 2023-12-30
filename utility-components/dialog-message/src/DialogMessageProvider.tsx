@@ -225,7 +225,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     
     
     // stable callbacks:
-    const showDialog              = useEvent(async <TData extends keyof any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>): Promise<TData|undefined> => {
+    const showDialog              = useEvent(async <TData extends any = any >(dialogComponent           : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeWithAnswerEvent<TData>>>): Promise<TData|undefined> => {
         // <Dialog> handlers:
         const handleExpandedChange = (event: ModalExpandedChangeWithAnswerEvent<TData>): void => {
             // preserves the original `onExpandedChange` from `dialogComponent`:
@@ -290,7 +290,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         return dialogState.lastExpandedEvent?.answer;
     });
     
-    const showMessage             = useEvent(async <TData extends keyof any = 'ok'>(dialogMessage             : DialogMessage<TData>                        | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessage             = useEvent(async <TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                        | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessage, 'message')) {
             return await showMessage({ // recursive call
@@ -346,7 +346,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         );
     });
     
-    const showMessageError        = useEvent(async <TData extends keyof any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                   | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageError        = useEvent(async <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                   | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageError, 'error')) {
             return await showMessageError({ // recursive call
@@ -389,7 +389,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageFieldError   = useEvent(async <TData extends keyof any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>              | FieldErrorList , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageFieldError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>              | FieldErrorList , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isFieldErrorList(dialogMessageFieldError, 'fieldErrors')) {
             return await showMessageFieldError({ // recursive call
@@ -523,7 +523,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
         } // if
     });
-    const showMessageFetchError   = useEvent(async <TData extends keyof any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>              | any            , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageFetchError   = useEvent(async <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>              | any            , options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isError(dialogMessageFetchError, 'fetchError')) {
             return await showMessageFetchError({ // recursive call
@@ -696,7 +696,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageSuccess      = useEvent(async <TData extends keyof any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                 | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageSuccess      = useEvent(async <TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>                 | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageSuccess, 'success')) {
             return await showMessageSuccess({ // recursive call
@@ -739,7 +739,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             ...restShowMessageOptions,
         });
     });
-    const showMessageNotification = useEvent(async <TData extends keyof any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>            | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
+    const showMessageNotification = useEvent(async <TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>            | React.ReactNode, options?: ShowMessageOptions<TData>): Promise<TData|undefined> => {
         // handle overloads:
         if (isReactNode(dialogMessageNotification, 'notification')) {
             return await showMessageNotification({ // recursive call
