@@ -19,6 +19,7 @@ import type {
 import type {
     // types:
     PromiseDialog,
+    CancelablePromiseDialog,
     
     
     
@@ -62,8 +63,8 @@ export interface DialogMessageApi {
     showMessageError        <TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>                                                                 ): PromiseDialog<TData>
     showMessageError        <TData extends any = 'ok'>(error                     : React.ReactNode                                      , options?: ShowMessageOptions<TData>): PromiseDialog<TData>
     
-    showMessageFieldError   <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>                                                            ): PromiseDialog<TData>
-    showMessageFieldError   <TData extends any = 'ok'>(fieldErrors               : FieldErrorList                                       , options?: ShowMessageOptions<TData>): PromiseDialog<TData>
+    showMessageFieldError   <TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>                                                            ): CancelablePromiseDialog<TData>
+    showMessageFieldError   <TData extends any = 'ok'>(fieldErrors               : FieldErrorList                                       , options?: ShowMessageOptions<TData>): CancelablePromiseDialog<TData>
     
     showMessageFetchError   <TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>                                                            ): PromiseDialog<TData>
     showMessageFetchError   <TData extends any = 'ok'>(fetchError                : any                                                  , options?: ShowMessageOptions<TData>): PromiseDialog<TData>

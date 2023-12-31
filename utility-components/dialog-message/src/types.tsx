@@ -39,6 +39,13 @@ export interface PromiseDialog<TData extends any = any>
     extends
         Promise<TData|undefined>
 {
+    collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>>
+    collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>>
+}
+export interface CancelablePromiseDialog<TData extends any = any>
+    extends
+        Promise<TData|undefined>
+{
     collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>|undefined>
     collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>|undefined>
 }
