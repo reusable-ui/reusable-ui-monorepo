@@ -5,15 +5,13 @@
 [high prior] rename currentFallback              to fallback
 
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
-[high prior] add <CollapsibleSuspense>
 [med prior ] replace -webkit-fill-available with calc(...)
 [med  prior] add RadioDecorator, CheckDecorator
 [med  prior] fix clipped focus box shadow of child on TabPanel overflow: 'auto' and TabBody overflow: 'hidden'
 [med  prior] // one degree specificity => // zero degree specificity (combined with .parent, the descendants are always 1 degree specificity)
-[med  prior] update DialogMessage to having multiple dialogs in parallel way
-[low prior ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
-[low prior ] rename ModalStatus => StatusDialog
-[low prior ] rename DialogMessage => NotificationDialog
+[breaking  ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
+[low prior ] obsoleting ModalStatus
+[breaking  ] rename DialogMessage => <DialogProvider> & useDialogManager
 [low  prior] add PrintDialog
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
