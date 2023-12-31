@@ -39,6 +39,23 @@ function App() {
                     Test dialog 1
                 </button>
                 <button onClick={() => {
+                    const promiseDialog = showMessage<string>({
+                        theme   : 'primary',
+                        title   : <h1>Say Hello</h1>,
+                        message : <p>Hello world. This is very <strong>awesome</strong>.</p>,
+                    });
+                    
+                    promiseDialog.collapseEndEvent().then((event) =>
+                        console.log('collapseEndEvent: ', event)
+                    );
+                    
+                    setTimeout(() => {
+                        promiseDialog.closeDialog('beuh...', 'timedout');
+                    }, 3000);
+                }}>
+                    Test dialog with TO
+                </button>
+                <button onClick={() => {
                     const showQuestion = async () => {
                         const answer = await showMessageError<'abort'|'retry'|'ignore'|'again'|symbol>({
                             error: <p>Oops! An error occured. Please try again</p>,
@@ -112,6 +129,19 @@ function App() {
                     console.log(answer);
                 }}>
                     Test Field Error Empty Singular
+                </button>
+                <button onClick={async () => {
+                    const promiseDialog = showMessageFieldError<string>([inputRef.current!]);
+                    
+                    promiseDialog.collapseEndEvent().then((event) =>
+                        console.log('collapseEndEvent: ', event)
+                    );
+                    
+                    setTimeout(() => {
+                        promiseDialog.closeDialog('beuh...', 'timedout');
+                    }, 3000);
+                }}>
+                    Test Field Error w TO
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>

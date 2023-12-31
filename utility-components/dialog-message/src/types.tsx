@@ -29,22 +29,29 @@ import type {
 }                           from '@reusable-ui/collapsible'     // a capability of UI to expand/reduce its size or toggle the visibility
 import type {
     // react components:
+    ModalActionType,
     ModalExpandedChangeEvent,
 }                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
 
 
 
 // types:
+export interface PromiseDialogBase<TData extends any = any>
+extends
+    Promise<TData|undefined>
+{
+    closeDialog(data: TData|undefined, actionType?: ModalActionType) : void
+}
 export interface PromiseDialog<TData extends any = any>
     extends
-        Promise<TData|undefined>
+        PromiseDialogBase<TData>
 {
     collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>>
     collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>>
 }
 export interface CancelablePromiseDialog<TData extends any = any>
     extends
-        Promise<TData|undefined>
+        PromiseDialogBase<TData>
 {
     collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>|undefined>
     collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>|undefined>

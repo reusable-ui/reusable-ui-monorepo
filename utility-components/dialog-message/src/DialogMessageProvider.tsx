@@ -46,6 +46,7 @@ import type {
 }                           from '@reusable-ui/card'            // a flexible and extensible content container, with optional header and footer
 import type {
     // react components:
+    ModalActionType,
     ModalExpandedChangeEvent,
 }                           from '@reusable-ui/modal'           // overlays a dialog to the entire site's page
 
@@ -165,7 +166,7 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 
 // utilities:
-const createPromiseDialog         = <TData extends any = any>(promiseCollapseStart: Promise<void>, promiseCollapseEnd: Promise<void>, getLastExpandedEvent: (() => ModalExpandedChangeEvent<TData>)): PromiseDialog<TData> => {
+const createPromiseDialog         = <TData extends any = any>(closeDialog: ((data: TData|undefined) => void), promiseCollapseStart: Promise<void>, promiseCollapseEnd: Promise<void>, getLastExpandedEvent: (() => ModalExpandedChangeEvent<TData>)): PromiseDialog<TData> => {
     const promiseData = (
         promiseCollapseEnd
         .then(() =>                     // wait until `lastExpandedEvent` is updated
@@ -175,6 +176,7 @@ const createPromiseDialog         = <TData extends any = any>(promiseCollapseSta
     
     
     
+    (promiseData as any).closeDialog        = closeDialog;
     (promiseData as any).collapseStartEvent = async (): Promise<ModalExpandedChangeEvent<TData>> => {
         await promiseCollapseStart;     // wait until `lastExpandedEvent` is updated
         return getLastExpandedEvent();  // now get `lastExpandedEvent`
@@ -193,6 +195,7 @@ const createCanceledPromiseDialog = <TData extends any = any>(): CancelablePromi
     
     
     
+    (promiseData as any).closeDialog        = () => {};
     (promiseData as any).collapseStartEvent = Promise.resolve<undefined>(undefined);
     (promiseData as any).collapseEndEvent   = Promise.resolve<undefined>(undefined);
     
@@ -289,6 +292,19 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             dialogState.expanded          = event.expanded;
             setDialogs((current) => current.slice(0)); // force to re-render
         };
+        const handleCloseDialog    = (data: TData|undefined, actionType?: ModalActionType): void => {
+            // conditions:
+            if (!dialogState.expanded) return; // already closed => noting to do
+            
+            
+            
+            // actions:
+            handleExpandedChange({
+                actionType : actionType ?? '',
+                expanded   : false,
+                data       : data,
+            });
+        };
         
         const handleCollapseStart  = (): void => {
             // preserves the original `onCollapseStart` from `dialogComponent`:
@@ -355,6 +371,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         const getLastExpandedEvent = () => dialogState.lastExpandedEvent!; // the `lastExpandedEvent` is guaranteed to be set (not undefined) after `promiseCollapseStart`|`promiseCollapseEnd` resolved
         // return dialogState.lastExpandedEvent?.data;
         return createPromiseDialog(
+            handleCloseDialog,
             promiseCollapseStart,
             promiseCollapseEnd,
             getLastExpandedEvent,
@@ -684,7 +701,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         let title : React.ReactNode    = (typeof(fetchErrorTitle  ) === 'function') ? fetchErrorTitle(fetchErrorInfo  ) : fetchErrorTitle;
         if (title === undefined) title = _fetchErrorTitleDefault;
         
-        const promiseEvents = (async (): Promise<Pick<PromiseDialog<TData>, 'collapseStartEvent'|'collapseEndEvent'>> => {
+        const promiseEvents = (async (): Promise<Pick<PromiseDialog<TData>, 'closeDialog'|'collapseStartEvent'|'collapseEndEvent'>> => {
             const promiseDialog = showMessageError<TData>({
                 // contents:
                 title,
@@ -777,10 +794,14 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 ...restShowMessageOptions,
             });
             return {
+                closeDialog        : promiseDialog.closeDialog,
                 collapseStartEvent : promiseDialog.collapseStartEvent,
                 collapseEndEvent   : promiseDialog.collapseEndEvent,
             };
         })();
+        const closeDialog          = async (data: TData|undefined, actionType?: ModalActionType): Promise<void> => {
+            (await promiseEvents).closeDialog(data, actionType);
+        };
         let   lastExpandedEvent    : ModalExpandedChangeEvent<TData>|undefined = undefined;
         const promiseCollapseStart = promiseEvents.then(async ({collapseStartEvent}): Promise<void> => {
             const event = await collapseStartEvent(); // wait until <Dialog> to be starting_to_close by user
@@ -792,6 +813,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         });
         const getLastExpandedEvent = () => lastExpandedEvent!; // the `lastExpandedEvent` is guaranteed to be set (not undefined) after `promiseCollapseStart`|`promiseCollapseEnd` resolved
         return createPromiseDialog(
+            closeDialog,
             promiseCollapseStart,
             promiseCollapseEnd,
             getLastExpandedEvent,
