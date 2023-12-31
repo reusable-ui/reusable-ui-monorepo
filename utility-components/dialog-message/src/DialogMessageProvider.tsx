@@ -164,20 +164,20 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 const createPromiseDialog = <TData extends any = any>(promiseCollapseStart: Promise<void>, promiseCollapseEnd: Promise<void>, getLastExpandedEvent: (() => ModalExpandedChangeEvent<TData>)): PromiseDialog<TData> => {
     const promiseData = (
         promiseCollapseEnd
-        .then(() =>                        // wait until `lastExpandedEvent` is updated
-            getLastExpandedEvent?.()?.data // now get `lastExpandedEvent` and get `data`
+        .then(() =>                     // wait until `lastExpandedEvent` is updated
+            getLastExpandedEvent().data // now get `lastExpandedEvent` and get `data`
         )
     );
     
     
     
     (promiseData as any).collapseStartEvent = async (): Promise<ModalExpandedChangeEvent<TData>> => {
-        await promiseCollapseStart;        // wait until `lastExpandedEvent` is updated
-        return getLastExpandedEvent();     // now get `lastExpandedEvent`
+        await promiseCollapseStart;     // wait until `lastExpandedEvent` is updated
+        return getLastExpandedEvent();  // now get `lastExpandedEvent`
     };
     (promiseData as any).collapseEndEvent   = async (): Promise<ModalExpandedChangeEvent<TData>> => {
-        await promiseCollapseEnd;          // wait until `lastExpandedEvent` is updated
-        return getLastExpandedEvent();     // now get `lastExpandedEvent`
+        await promiseCollapseEnd;       // wait until `lastExpandedEvent` is updated
+        return getLastExpandedEvent();  // now get `lastExpandedEvent`
     };
     
     
@@ -186,6 +186,7 @@ const createPromiseDialog = <TData extends any = any>(promiseCollapseStart: Prom
 };
 const createCanceledPromiseDialog = <TData extends any = any>(): CancelablePromiseDialog<TData> => {
     const promiseData = Promise.resolve<undefined>(undefined);
+    
     
     
     (promiseData as any).collapseStartEvent = Promise.resolve<undefined>(undefined);
@@ -347,7 +348,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         const promiseCollapseEnd   = new Promise<void>((resolved) => {
               signalCollapseEnd    = resolved; // wait until <Dialog> to be fully_closed by user
         });
-        const getLastExpandedEvent = () => dialogState.lastExpandedEvent!;
+        const getLastExpandedEvent = () => dialogState.lastExpandedEvent!; // the `lastExpandedEvent` is guaranteed to be set (not undefined) after `promiseCollapseStart`|`promiseCollapseEnd` resolved
         // return dialogState.lastExpandedEvent?.data;
         return createPromiseDialog(
             promiseCollapseStart,
@@ -776,9 +777,15 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             };
         })();
         let   lastExpandedEvent    : ModalExpandedChangeEvent<TData>|undefined = undefined;
-        const promiseCollapseStart = promiseEvents.then(({collapseStartEvent}) => collapseStartEvent().then((event): void => { lastExpandedEvent = event; }));
-        const promiseCollapseEnd   = promiseEvents.then(({collapseEndEvent  }) =>   collapseEndEvent().then((event): void => { lastExpandedEvent = event; }));
-        const getLastExpandedEvent = () => lastExpandedEvent!;
+        const promiseCollapseStart = promiseEvents.then(async ({collapseStartEvent}): Promise<void> => {
+            const event = await collapseStartEvent(); // wait until <Dialog> to be starting_to_close by user
+            lastExpandedEvent = event;
+        });
+        const promiseCollapseEnd   = promiseEvents.then(async ({collapseEndEvent  }): Promise<void> => {
+            const event = await collapseEndEvent();   // wait until <Dialog> to be fully_closed by user
+            lastExpandedEvent = event;
+        });
+        const getLastExpandedEvent = () => lastExpandedEvent!; // the `lastExpandedEvent` is guaranteed to be set (not undefined) after `promiseCollapseStart`|`promiseCollapseEnd` resolved
         return createPromiseDialog(
             promiseCollapseStart,
             promiseCollapseEnd,
