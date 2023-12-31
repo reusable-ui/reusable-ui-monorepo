@@ -161,7 +161,7 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 
 // utilities:
-const createPromiseDialog = <TData extends any = any>(promiseCollapseStart: Promise<void>, promiseCollapseEnd: Promise<void>, getLastExpandedEvent: (() => ModalExpandedChangeEvent<TData>)): PromiseDialog<TData> => {
+const createPromiseDialog         = <TData extends any = any>(promiseCollapseStart: Promise<void>, promiseCollapseEnd: Promise<void>, getLastExpandedEvent: (() => ModalExpandedChangeEvent<TData>)): PromiseDialog<TData> => {
     const promiseData = (
         promiseCollapseEnd
         .then(() =>                     // wait until `lastExpandedEvent` is updated
