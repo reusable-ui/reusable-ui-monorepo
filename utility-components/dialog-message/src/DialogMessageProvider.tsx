@@ -123,7 +123,11 @@ import {
 // defaults:
 const _fieldErrorTitleDefault           : Exclude<FieldErrorTitle  , Function> = undefined;
 const _fieldErrorMessageDefault         : Extract<FieldErrorMessage, Function> = ({fieldErrors}) => {
-    const isPlural = (fieldErrors?.length > 1);
+    const isPlural = (
+        (fieldErrors instanceof Element)
+        ? 1
+        : (fieldErrors?.length > 1)
+    );
     return (
         <p>
             There {isPlural ? 'are some' : 'is an'} invalid field{isPlural ? 's' : ''} that {isPlural ? 'need' : 'needs'} to be fixed:
@@ -477,7 +481,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             // contents:
             fieldErrorTitle           = fieldErrorTitleDefault,
             
-            fieldErrors,              // take the [fieldErrors] as a part of [error message]
+            fieldErrors               : fieldErrorsRaw, // take the [fieldErrors] as a part of [error message]
             fieldErrorMessage         = fieldErrorMessageDefault,
             fieldErrorIconFind        = fieldErrorIconFindDefault,
             fieldErrorIcon            = fieldErrorIconDefault,
@@ -494,6 +498,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // conditions:
+        const fieldErrors = (fieldErrorsRaw instanceof Element) ? [fieldErrorsRaw] : fieldErrorsRaw;
         if (!fieldErrors?.length) return createCanceledPromiseDialog(); // no field error => nothing to show => ignore
         
         

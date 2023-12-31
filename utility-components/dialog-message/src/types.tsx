@@ -74,7 +74,7 @@ export interface DialogState<TData extends any = any> {
     expanded          : boolean
 }
 
-export type FieldErrorList                               = ArrayLike<Element>|null|undefined
+export type FieldErrorList                               = ArrayLike<Element>|Element|null|undefined
 export type AnswerButtonComponentOrChildren              =
     |Required<ButtonComponentProps>['buttonComponent']                                                                  // <Button>
     |React.ReactComponentElement<React.ExoticComponent<{ children?: React.ReactNode }>, { children?: React.ReactNode }> // <React.Fragment>

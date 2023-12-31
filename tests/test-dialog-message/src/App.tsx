@@ -96,10 +96,22 @@ function App() {
                     Test Field Error
                 </button>
                 <button onClick={async () => {
+                    const answer = await showMessageFieldError(inputRef.current!);
+                    console.log(answer);
+                }}>
+                    Test Field Error Singular
+                </button>
+                <button onClick={async () => {
                     const answer = await showMessageFieldError([]);
                     console.log(answer);
                 }}>
                     Test Field Error Empty
+                </button>
+                <button onClick={async () => {
+                    const answer = await showMessageFieldError(null);
+                    console.log(answer);
+                }}>
+                    Test Field Error Empty Singular
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
