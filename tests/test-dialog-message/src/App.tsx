@@ -21,7 +21,7 @@ import { CustomDialog } from './CustomDialog';
 
 
 function App() {
-    const { showDialog, showMessage, showMessageError } = useDialogMessage();
+    const { showDialog, showMessage, showMessageError, showMessageFetchError } = useDialogMessage();
     
     
     
@@ -75,6 +75,14 @@ function App() {
                     console.log('collapseEndEvent: ', collapseEndEvent);
                 }}>
                     Test Custom Dialog w collapseEndEvent
+                </button>
+                <button onClick={async () => {
+                    const collapseEndEvent = await showMessageFetchError(
+                        new TypeError('Uh oh... Something is wrong!', { cause: 404 })
+                    ).collapseEndEvent();
+                    console.log('collapseEndEvent: ', collapseEndEvent);
+                }}>
+                    Test Fetch Error
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
