@@ -278,7 +278,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 copy.splice(foundIndex, 1);
                 return copy;
             });
-            closeResolved(); // signal that the modal is fully closed
+            signalCollapseEnd(); // signal that the modal is fully closed
         };
         
         
@@ -307,9 +307,9 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // when <Dialog> closed:
-        let   closeResolved : () => void;
+        let   signalCollapseEnd : () => void;
         const promiseCollapseEnd = new Promise<void>((resolved) => {
-              closeResolved = resolved; // wait until <Dialog> to be closed by user
+              signalCollapseEnd = resolved; // wait until <Dialog> to be closed by user
         });
         // return dialogState.lastExpandedEvent?.data;
         return createPromiseDialog(promiseCollapseEnd, () => dialogState.lastExpandedEvent);
