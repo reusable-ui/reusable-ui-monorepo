@@ -360,7 +360,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessage             = useEvent(<TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessage, 'message')) {
-            return showMessage({ // recursive call
+            return showMessage<TData>({ // recursive call
                 // contents:
                 message : dialogMessage,
                 
@@ -416,7 +416,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessageError        = useEvent(<TData extends any = 'ok'>(dialogMessageError        : DialogMessageError<TData>           | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageError, 'error')) {
-            return showMessageError({ // recursive call
+            return showMessageError<TData>({ // recursive call
                 // contents:
                 error : dialogMessageError,
                 
@@ -444,7 +444,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return showMessage({
+        return showMessage<TData>({
             // contents:
             title,
             message : error,
@@ -459,7 +459,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessageFieldError   = useEvent(<TData extends any = 'ok'>(dialogMessageFieldError   : DialogMessageFieldError<TData>      | FieldErrorList , options?: ShowMessageOptions<TData>): CancelablePromiseDialog<TData> => {
         // handle overloads:
         if (isFieldErrorList(dialogMessageFieldError, 'fieldErrors')) {
-            return showMessageFieldError({ // recursive call
+            return showMessageFieldError<TData>({ // recursive call
                 // contents:
                 fieldErrors : dialogMessageFieldError,
                 
@@ -516,7 +516,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         if (title   === undefined) title   = _fieldErrorTitleDefault;
         let message : React.ReactNode      = (typeof(fieldErrorMessage) === 'function') ? fieldErrorMessage(fieldErrorInfo) : fieldErrorMessage;
         if (message === undefined) message = _fieldErrorMessageDefault(fieldErrorInfo);
-        const promiseDialog = showMessageError({
+        const promiseDialog = showMessageError<TData>({
             // contents:
             title,
             error : <>
@@ -600,7 +600,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessageFetchError   = useEvent(<TData extends any = 'ok'>(dialogMessageFetchError   : DialogMessageFetchError<TData>      | any            , options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isError(dialogMessageFetchError, 'fetchError')) {
-            return showMessageFetchError({ // recursive call
+            return showMessageFetchError<TData>({ // recursive call
                 // contents:
                 fetchError : dialogMessageFetchError,
                 
@@ -795,7 +795,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessageSuccess      = useEvent(<TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>         | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageSuccess, 'success')) {
-            return showMessageSuccess({ // recursive call
+            return showMessageSuccess<TData>({ // recursive call
                 // contents:
                 success : dialogMessageSuccess,
                 
@@ -823,7 +823,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return showMessage({
+        return showMessage<TData>({
             // contents:
             title,
             message : success,
@@ -838,7 +838,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
     const showMessageNotification = useEvent(<TData extends any = 'ok'>(dialogMessageNotification : DialogMessageNotification<TData>    | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
         if (isReactNode(dialogMessageNotification, 'notification')) {
-            return showMessageNotification({ // recursive call
+            return showMessageNotification<TData>({ // recursive call
                 // contents:
                 notification : dialogMessageNotification,
                 
@@ -866,7 +866,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        return showMessage({
+        return showMessage<TData>({
             // contents:
             title,
             message : notification,
