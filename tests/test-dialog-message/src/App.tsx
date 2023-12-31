@@ -15,14 +15,14 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
-import { Button } from '@reusable-ui/components';
+import { Button, Group, Input, Label } from '@reusable-ui/components';
 import { CustomDialog } from './CustomDialog';
 
 
 
 function App() {
-    const { showDialog, showMessage, showMessageError, showMessageFetchError } = useDialogMessage();
-    
+    const { showDialog, showMessage, showMessageError, showMessageFetchError, showMessageFieldError } = useDialogMessage();
+    const inputRef = useRef<HTMLInputElement|null>(null);
     
     
     return (
@@ -84,6 +84,22 @@ function App() {
                     promiseDialog.collapseEndEvent().then(   (collapseEndEvent)   => console.log('collapseEndEvent: '  , collapseEndEvent  , Date.now()));
                 }}>
                     Test Fetch Error
+                </button>
+                <Group>
+                    <Label className='solid'>Favorite Pet</Label>
+                    <Input className='fluid' type='text' theme='primary' outerRef={inputRef} placeholder='Favorite Pet' />
+                </Group>
+                <button onClick={async () => {
+                    const answer = await showMessageFieldError([inputRef.current!]);
+                    console.log(answer);
+                }}>
+                    Test Field Error
+                </button>
+                <button onClick={async () => {
+                    const answer = await showMessageFieldError([]);
+                    console.log(answer);
+                }}>
+                    Test Field Error Empty
                 </button>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
