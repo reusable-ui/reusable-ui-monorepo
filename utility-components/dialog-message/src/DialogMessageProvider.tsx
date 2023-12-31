@@ -160,15 +160,15 @@ const _fetchErrorMessageDefault         : Extract<FetchErrorMessage, Function> =
 
 
 // utilities:
-const createPromiseDialog = <TData extends any = any>(promiseResolved: Promise<void>, getLastExpandedEvent?: (() => ModalExpandedChangeEvent<TData>|undefined)): PromiseDialog<TData> => {
+const createPromiseDialog = <TData extends any = any>(promiseCollapseEnd: Promise<void>, getLastExpandedEvent?: (() => ModalExpandedChangeEvent<TData>|undefined)): PromiseDialog<TData> => {
     const promiseData = (
-        promiseResolved
+        promiseCollapseEnd
         .then(() =>                        // wait until `lastExpandedEvent` is ready
             getLastExpandedEvent?.()?.data // now get `lastExpandedEvent` and get `data`
         )
     );
     (promiseData as any).collapseEndEvent = async (): Promise<ModalExpandedChangeEvent<TData>|undefined> => {
-        await promiseResolved;             // wait until `lastExpandedEvent` is ready
+        await promiseCollapseEnd;          // wait until `lastExpandedEvent` is ready
         return getLastExpandedEvent?.();   // now get `lastExpandedEvent`
     };
     return promiseData as any;
@@ -307,12 +307,12 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // when <Dialog> closed:
-        let   closeResolved   : () => void;
-        const promiseResolved = new Promise<void>((resolved) => {
-              closeResolved   = resolved; // wait until <Dialog> to be closed by user
+        let   closeResolved : () => void;
+        const promiseCollapseEnd = new Promise<void>((resolved) => {
+              closeResolved = resolved; // wait until <Dialog> to be closed by user
         });
         // return dialogState.lastExpandedEvent?.data;
-        return createPromiseDialog(promiseResolved, () => dialogState.lastExpandedEvent);
+        return createPromiseDialog(promiseCollapseEnd, () => dialogState.lastExpandedEvent);
     });
     
     const showMessage             = useEvent(<TData extends any = 'ok'>(dialogMessage             : DialogMessage<TData>                | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
@@ -634,10 +634,10 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // show message:
-        let title   : React.ReactNode      = (typeof(fetchErrorTitle  ) === 'function') ? fetchErrorTitle(fetchErrorInfo  ) : fetchErrorTitle;
-        if (title   === undefined) title   = _fetchErrorTitleDefault;
+        let title : React.ReactNode    = (typeof(fetchErrorTitle  ) === 'function') ? fetchErrorTitle(fetchErrorInfo  ) : fetchErrorTitle;
+        if (title === undefined) title = _fetchErrorTitleDefault;
         let lastExpandedEvent: ModalExpandedChangeEvent<TData>|undefined = undefined;
-        const promiseResolved = new Promise<void>(async (resolved): Promise<void> => {
+        const promiseCollapseEnd = new Promise<void>(async (resolved): Promise<void> => {
             lastExpandedEvent = await showMessageError<TData>({
                 // contents:
                 title,
@@ -731,7 +731,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
             }).collapseEndEvent();
             resolved();
         });
-        return createPromiseDialog(promiseResolved, () => lastExpandedEvent);
+        return createPromiseDialog(promiseCollapseEnd, () => lastExpandedEvent);
     });
     const showMessageSuccess      = useEvent(<TData extends any = 'ok'>(dialogMessageSuccess      : DialogMessageSuccess<TData>         | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
         // handle overloads:
