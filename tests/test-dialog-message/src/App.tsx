@@ -77,10 +77,11 @@ function App() {
                     Test Custom Dialog w collapseEndEvent
                 </button>
                 <button onClick={async () => {
-                    const collapseEndEvent = await showMessageFetchError(
+                    const promiseDialog = showMessageFetchError(
                         new TypeError('Uh oh... Something is wrong!', { cause: 404 })
-                    ).collapseEndEvent();
-                    console.log('collapseEndEvent: ', collapseEndEvent);
+                    );
+                    promiseDialog.collapseStartEvent().then( (collapseStartEvent) => console.log('collapseStartEvent: ', collapseStartEvent, Date.now()));
+                    promiseDialog.collapseEndEvent().then(   (collapseEndEvent)   => console.log('collapseEndEvent: '  , collapseEndEvent  , Date.now()));
                 }}>
                     Test Fetch Error
                 </button>
