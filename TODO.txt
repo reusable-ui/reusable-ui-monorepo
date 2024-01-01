@@ -14,6 +14,7 @@
 [breaking  ] rename DialogMessage => <DialogProvider> & useDialogManager
 [low  prior] add PrintDialog
 [low  prior] add CaptchaDialog
+[low  prior] add BlankSection, BlankPage
 [low prior ] convert <Navbar>   to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] add 'use client' for all interactive components
