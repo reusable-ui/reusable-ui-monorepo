@@ -20,6 +20,8 @@
 [low prior ] add 'use client' for all interactive components
 [low prior ] onValidation & customValidator seem do the same thing, remove customValidator & upgrade ValidityChangeEvent to support preventDefault();
 
+[low prior ] make a demo of showMessage() for replacing alert()
+
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
 [unresolved] remove calendar icon on Input type='date' on Firefox
 [no err det] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
