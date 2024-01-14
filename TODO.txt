@@ -4,6 +4,7 @@
 [high prior] rename Responsive                   to    ResponsiveState
 [high prior] rename useResponsiveCurrentFallback to useResponsiveState
 [high prior] rename currentFallback              to fallback
+[high prior] implement GlobalStackableProps for <Badge> similar to <Tooltip>, so the <Badge> wouldn't be clipped out by neighboring components
 
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
 [med prior ] replace -webkit-fill-available with calc(...)
