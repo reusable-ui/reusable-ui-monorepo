@@ -95,7 +95,7 @@ import {
 
 
 // react components:
-export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
+export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>
     extends
         // bases:
         Omit<ButtonProps,
@@ -133,7 +133,7 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         DropdownComponentProps<Element, TDropdownExpandedChangeEvent>
 {
 }
-const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
+const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // variants:
     const dropdownOrientationableVariant = useOrientationableWithDirection(props, defaultOrientationableWithDirectionOptions);
     const determineDropdownIcon = () => {

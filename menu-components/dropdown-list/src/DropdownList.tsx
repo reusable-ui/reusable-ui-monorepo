@@ -122,11 +122,11 @@ export {
 
 
 export type DropdownListActionType = DropdownActionType|number
-export interface DropdownListExpandedChangeEvent extends DropdownExpandedChangeEvent {
+export interface DropdownListExpandedChangeEvent<TData extends any = any> extends DropdownExpandedChangeEvent<TData> {
     actionType : DropdownListActionType
 }
 
-export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
+export interface DropdownListProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>
     extends
         // bases:
         ListProps<TElement>,
@@ -160,7 +160,7 @@ export interface DropdownListProps<TElement extends Element = HTMLElement, TDrop
     // behaviors:
     scrollToActiveItem ?: boolean
 }
-const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>(props: DropdownListProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet = useDropdownListStyleSheet();
     
@@ -642,7 +642,7 @@ export type { ListStyle, ListVariant }
 
 
 
-interface ListItemWithExpandedHandlerProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
+interface ListItemWithExpandedHandlerProps<TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>
     extends
         // bases:
         ListItemProps<TElement>,
@@ -656,7 +656,7 @@ interface ListItemWithExpandedHandlerProps<TElement extends Element = HTMLElemen
     // positions:
     listIndex : number
 }
-const ListItemWithExpandedHandler = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: ListItemWithExpandedHandlerProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const ListItemWithExpandedHandler = <TElement extends Element = HTMLElement, TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>(props: ListItemWithExpandedHandlerProps<TElement, TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // rest props:
     const {
         // positions:

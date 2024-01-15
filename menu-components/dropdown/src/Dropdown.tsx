@@ -105,11 +105,12 @@ export interface DropdownUiComponentProps<TElement extends Element = HTMLElement
 }
 
 export type DropdownActionType = 'shortcut'|'blur'|'ui'|{}
-export interface DropdownExpandedChangeEvent extends ExpandedChangeEvent {
-    actionType : DropdownActionType
+export interface DropdownExpandedChangeEvent<TData extends any = any> extends ExpandedChangeEvent {
+    actionType  : DropdownActionType
+    data       ?: TData
 }
 
-export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
+export interface DropdownProps<TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>
     extends
         // bases:
         Omit<CollapseProps<TElement, TDropdownExpandedChangeEvent>,
@@ -128,7 +129,7 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         DropdownUiComponentProps<Element>
 {
 }
-const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
+const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet                 = useDropdownStyleSheet();
     const uiStyleSheet               = useDropdownUiStyleSheet();
@@ -517,7 +518,7 @@ export {
 
 
 
-export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent = DropdownExpandedChangeEvent>
+export interface DropdownComponentProps<TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>
 {
     // refs:
     dropdownRef         ?: React.Ref<TElement> // setter ref

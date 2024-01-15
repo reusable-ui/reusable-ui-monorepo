@@ -84,7 +84,7 @@ export {
 
 
 
-export interface DropdownListButtonProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>
+export interface DropdownListButtonProps<TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>
     extends
         // bases:
         Omit<DropdownButtonProps<TDropdownListExpandedChangeEvent>,
@@ -103,7 +103,7 @@ export interface DropdownListButtonProps<TDropdownListExpandedChangeEvent extend
         >
 {
 }
-const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent = DropdownListExpandedChangeEvent>(props: DropdownListButtonProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
+const DropdownListButton = <TDropdownListExpandedChangeEvent extends DropdownListExpandedChangeEvent<any> = DropdownListExpandedChangeEvent<any>>(props: DropdownListButtonProps<TDropdownListExpandedChangeEvent>): JSX.Element|null => {
     // basic variant props:
     const basicVariantProps = useBasicVariantProps(props);
     

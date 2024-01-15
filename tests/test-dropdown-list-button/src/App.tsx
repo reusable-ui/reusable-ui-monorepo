@@ -28,7 +28,7 @@ function App() {
     };
     
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const handleExpandedChange = useCallback((event: DropdownListExpandedChangeEvent) => {
+    const handleExpandedChange = useCallback((event: DropdownListExpandedChangeEvent<any>) => {
         console.log('onExpandedChange', event.expanded, event.actionType);
         setShowDropdown(event.expanded);
     }, []);
