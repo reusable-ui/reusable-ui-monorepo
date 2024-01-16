@@ -79,7 +79,7 @@ export interface TabState
     tabPanelStyle            : TabPanelStyle
 }
 
-const noopHandler = () => { throw Error('not inside <TabStateProvider>'); };
+const noopHandler = () => { throw Error('not inside <Tab>'); };
 const TabStateContext = createContext<TabState>({
     // behaviors:
     defaultLazy              : undefined,
