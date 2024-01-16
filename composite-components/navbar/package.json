@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/navbar",
-  "version": "6.6.0",
+  "version": "6.6.1",
   "description": "A responsive navigation header. Supports for branding, navigation and more.",
   "keywords": [
     "menu",
