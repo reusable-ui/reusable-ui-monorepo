@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.7.0",
+  "version": "6.8.0",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -82,7 +82,7 @@
     "@reusable-ui/modal-status": "^6.6.0",
     "@reusable-ui/nav": "^6.5.0",
     "@reusable-ui/nav-button": "^6.5.0",
-    "@reusable-ui/navbar": "^6.5.1",
+    "@reusable-ui/navbar": "^6.6.0",
     "@reusable-ui/navscroll": "^6.5.0",
     "@reusable-ui/pagination": "^6.5.0",
     "@reusable-ui/popup": "^6.5.0",

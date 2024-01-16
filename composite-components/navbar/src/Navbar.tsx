@@ -1,3 +1,5 @@
+'use client'
+
 // react:
 import {
     // react:
@@ -6,7 +8,6 @@ import {
     
     
     // hooks:
-    useState,
     useCallback,
 }                           from 'react'
 
@@ -25,7 +26,6 @@ import {
     
     
     // react helper hooks:
-    useIsomorphicLayoutEffect,
     useEvent,
     EventHandler,
     useMergeEvents,
@@ -72,6 +72,15 @@ import {
 }                           from '@reusable-ui/dimensions'      // a set of React helper for fetching the dimension of elements
 
 // internals:
+import {
+    // hooks:
+    useNavbarState,
+    
+    
+    
+    // react components:
+    NavbarStateProvider,
+}                           from './states/navbarState.js'
 import {
     // elements:
     menuElm,
@@ -210,14 +219,55 @@ const NavbarWithResponsiveProvider = <TElement extends Element = HTMLElement, TE
         </ResponsiveProvider>
     );
 };
+
 const NavbarImplementation         = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
-    // styles:
-    const styleSheet        = useNavbarStyleSheet();
-    
-    
-    
     // basic variant props:
     const basicVariantProps = useBasicVariantProps(props, { mild: false });
+    
+    
+    
+    // jsx:
+    return (
+        <NavbarStateProvider
+            // basic variant props:
+            basicVariantProps={basicVariantProps}
+            
+            
+            
+            // states:
+            navbarExpanded={props.expanded ?? false}
+        >
+            <NavbarContextImplementation
+                // other props:
+                {...props}
+            />
+        </NavbarStateProvider>
+    );
+};
+const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+    // states:
+    const {
+        // basic variant props:
+        basicVariantProps,
+        
+        
+        
+        // states:
+        navbarExpanded,
+        listExpanded,
+        
+        
+        
+        // handlers:
+        toggleList,
+        handleActiveChange,
+        handleClickToToggleList,
+    } = useNavbarState();
+    
+    
+    
+    // styles:
+    const styleSheet        = useNavbarStyleSheet();
     
     
     
@@ -229,7 +279,7 @@ const NavbarImplementation         = <TElement extends Element = HTMLElement, TE
         
         
         // states:
-        expanded   : navbarExpanded = false, // take
+        expanded   : _expanded,   // remove
         
         
         
@@ -259,36 +309,7 @@ const NavbarImplementation         = <TElement extends Element = HTMLElement, TE
     
     
     
-    // states:
-    const [listExpanded, setListExpanded] = useState<boolean>(false);
-    
-    
-    
     // handlers:
-    const toggleList                = useEvent<EventHandler<boolean|undefined>>((newListExpanded) => {
-        // conditions:
-        if (navbarExpanded) return; // the expand/collapse functionality is only for the mobile version of <Navbar>
-        
-        
-        
-        // actions:
-        setListExpanded(newListExpanded ?? !listExpanded);
-    }) as ((newListExpanded ?: boolean) => void);
-    const handleActiveChange        = useEvent<EventHandler<ActiveChangeEvent>>((event) => {
-        // actions:
-        toggleList(event.active);
-    });
-    const handleClickToToggleList   = useEvent<React.MouseEventHandler<Element>>((event) => {
-        // conditions:
-        if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
-        
-        
-        
-        // actions:
-        toggleList();
-        event.preventDefault(); // handled
-    });
-    
     const handleClickToCollapseList = useEvent<React.MouseEventHandler<Element>>((event) => {
         // conditions:
         // if (event.defaultPrevented) return; // always handle click even if the event has been handled
@@ -313,33 +334,6 @@ const NavbarImplementation         = <TElement extends Element = HTMLElement, TE
         // actions:
         handleClickToCollapseList,
     );
-    
-    
-    
-    // dom effects:
-    // collapses the <Navbar>'s list if switched from mobile to desktop:
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (!listExpanded)  return;  // the <Navbar>'s list was already collapsed => ignore
-        if (!navbarExpanded) return; // the <Navbar> is in mobile version         => ignore
-        
-        
-        
-        // setups:
-        let cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
-            cancelRequest = requestAnimationFrame(() => { // give the <ResponsiveProvider> an enough time to calculate the most suitable layout
-                setListExpanded(false); // collapsing the <Navbar>'s list
-            });
-        });
-        
-        
-        
-        // cleanups:
-        return () => {
-            // the <Navbar> immediately switched to mobile version => aborts
-            cancelAnimationFrame(cancelRequest);
-        };
-    }, [navbarExpanded, listExpanded]);
     
     
     
