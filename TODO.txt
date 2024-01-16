@@ -13,6 +13,7 @@
 [med  prior] add RadioDecorator, CheckDecorator
 [med  prior] fix clipped focus box shadow of child on TabPanel overflow: 'auto' and TabBody overflow: 'hidden'
 [med  prior] // one degree specificity => // zero degree specificity (combined with .parent, the descendants are always 1 degree specificity)
+[med  prior] auto close <Navbar>'s menu when click outside, without distracting/sudden_closing sub menu (if any)
 [breaking  ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
 [low prior ] obsoleting ModalStatus
 [breaking  ] rename DialogMessage => <DialogProvider> & useDialogManager
