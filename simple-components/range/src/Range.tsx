@@ -713,6 +713,14 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             &&
             (event.buttons === 1)  // only left button pressed, ignore multi button pressed
         );
+        
+        if (
+            (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
+            ||
+            ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
+        ) {
+            watchSliding(false); // unwatch global mouse/touch move
+        } // if
     });
     const handleMouseActive       = useEvent<React.MouseEventHandler<TElement>>((event) => {
         handleMouseStatusNative(event.nativeEvent);
@@ -727,9 +735,50 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         // actions:
         isTouchActive.current = (event.touches.length === 1); // only single touch
+        
+        if (
+            (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
+            ||
+            ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
+        ) {
+            watchSliding(false); // unwatch global mouse/touch move
+        } // if
     });
     const handleTouchActive       = useEvent<React.TouchEventHandler<TElement>>((event) => {
         handleTouchStatusNative(event.nativeEvent);
+    });
+    
+    const watchSlidingStatusRef   = useRef<boolean>(false);
+    const watchSliding            = useEvent((active: boolean): void => {
+        // conditions:
+        const shouldActive = active && propEditable;                // control is disabled or readOnly => no response required
+        if (watchSlidingStatusRef.current === shouldActive) return; // already activated|deactivated => nothing to do
+        watchSlidingStatusRef.current = shouldActive;               // sync
+        
+        
+        
+        // actions:
+        if (shouldActive) {
+            // setups:
+            const passiveOption : AddEventListenerOptions = { passive: true };
+            window.addEventListener('mousemove'  , handleMouseMoveNative   , passiveOption); // activating event
+            window.addEventListener('touchmove'  , handleTouchMoveNative   , passiveOption); // activating event
+            
+            window.addEventListener('mouseup'    , handleMouseStatusNative , passiveOption); // deactivating event
+            window.addEventListener('touchend'   , handleTouchStatusNative , passiveOption); // deactivating event
+            window.addEventListener('touchcancel', handleTouchStatusNative , passiveOption); // deactivating event
+            console.log('watch');
+        }
+        else {
+            // cleanups:
+            window.removeEventListener('mousemove'  , handleMouseMoveNative  ); // activating event
+            window.removeEventListener('touchmove'  , handleTouchMoveNative  ); // activating event
+            
+            window.removeEventListener('mouseup'    , handleMouseStatusNative); // deactivating event
+            window.removeEventListener('touchend'   , handleTouchStatusNative); // deactivating event
+            window.removeEventListener('touchcancel', handleTouchStatusNative); // deactivating event
+            console.log('UNWATCH');
+        } // if
     });
     
     useEffect(() => {
@@ -756,6 +805,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         const thumb = thumbRefInternal.current;
         if (!track)                 return;
         if (!thumb)                 return;
+        
+        
+        
+        watchSliding(true); // watch global mouse/touch move
         
         
         
@@ -853,34 +906,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             event.preventDefault(); // prevents the whole page from scrolling when the user press the [up],[down],[left],[right],[pg up],[pg down],[home],[end]
         } // if
     });
-    
-    useEffect(() => {
-        // conditions:
-        if (!propEditable) return; // control is disabled or readOnly => no response required
-        
-        
-        
-        // setups:
-        const passiveOption : AddEventListenerOptions = { passive: true };
-        window.addEventListener('mousemove'  , handleMouseMoveNative   , passiveOption); // activating event
-        window.addEventListener('touchmove'  , handleTouchMoveNative   , passiveOption); // activating event
-        
-        window.addEventListener('mouseup'    , handleMouseStatusNative , passiveOption); // deactivating event
-        window.addEventListener('touchend'   , handleTouchStatusNative , passiveOption); // deactivating event
-        window.addEventListener('touchcancel', handleTouchStatusNative , passiveOption); // deactivating event
-        
-        
-        
-        // cleanups:
-        return () => {
-            window.removeEventListener('mousemove'  , handleMouseMoveNative  ); // activating event
-            window.removeEventListener('touchmove'  , handleTouchMoveNative  ); // activating event
-            
-            window.removeEventListener('mouseup'    , handleMouseStatusNative); // deactivating event
-            window.removeEventListener('touchend'   , handleTouchStatusNative); // deactivating event
-            window.removeEventListener('touchcancel', handleTouchStatusNative); // deactivating event
-        };
-    }, [propEditable]);
     
     const handleMouseDown         = useMergeEvents(
         // preserves the original `onMouseDown`:
