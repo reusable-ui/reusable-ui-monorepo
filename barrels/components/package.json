@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.8.0",
+  "version": "6.8.1",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -88,7 +88,7 @@
     "@reusable-ui/popup": "^6.5.0",
     "@reusable-ui/progress": "^6.5.0",
     "@reusable-ui/radio": "^6.5.0",
-    "@reusable-ui/range": "^6.5.0",
+    "@reusable-ui/range": "^6.5.1",
     "@reusable-ui/responsives": "^6.5.0",
     "@reusable-ui/tab": "^6.5.0",
     "@reusable-ui/toggle-button": "^6.5.0",
