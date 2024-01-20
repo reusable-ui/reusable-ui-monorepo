@@ -767,7 +767,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             window.addEventListener('mouseup'    , handleMouseStatusNative , passiveOption); // deactivating event
             window.addEventListener('touchend'   , handleTouchStatusNative , passiveOption); // deactivating event
             window.addEventListener('touchcancel', handleTouchStatusNative , passiveOption); // deactivating event
-            console.log('watch');
         }
         else {
             // cleanups:
@@ -777,7 +776,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             window.removeEventListener('mouseup'    , handleMouseStatusNative); // deactivating event
             window.removeEventListener('touchend'   , handleTouchStatusNative); // deactivating event
             window.removeEventListener('touchcancel', handleTouchStatusNative); // deactivating event
-            console.log('UNWATCH');
         } // if
     });
     
