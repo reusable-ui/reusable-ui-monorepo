@@ -105,13 +105,13 @@ import type {
 }                           from './types.js'
 import {
     // utilities:
-    paragraphify,
-    
-    isTypeError,
-    
     isReactNode,
     isFieldErrorList,
     isError,
+    
+    isFetchRequestError,
+    getFetchErrorCode,
+    getFetchErrorMessage,
 }                           from './utilities.js'
 import {
     // contexts:
@@ -653,29 +653,9 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         
         
         // populate data:
-        const isRequestError = (  // the request was made but no response was received
-            // axios'  error request:
-            !!fetchError?.request // the request property must be exist
-            ||
-            // rtkq's  error request:
-            isTypeError(fetchError?.error)
-            ||
-            // fetch's error request:
-            isTypeError(fetchError)
-        );
+        const isRequestError = isFetchRequestError(fetchError); // the request was made but no response was received
         
-        let errorCode = (
-            // axios'  error status code:
-            fetchError?.response?.status
-            ??
-            // rtkq's  error status code:
-            fetchError?.status
-            ??
-            // fetch's error status code:
-            fetchError?.cause?.status // passing a `Response` object
-            ??
-            fetchError?.cause         // passing a `Response`'s status code
-        );
+        let errorCode = getFetchErrorCode(fetchError);
         if (typeof(errorCode) !== 'number') errorCode = 0; // ignore if the code is not a number
         const isClientError  = (errorCode >= 400) && (errorCode <= 499); // 400-499
         const isServerError  = (errorCode >= 500) && (errorCode <= 599); // 500-599
@@ -706,79 +686,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 // contents:
                 title,
                 error : (
-                    // axios'  human_readable server error   response:
-                    // axios'  human_readable server message response:
-                    // rtkq's  human_readable server error   response:
-                    // rtkq's  human_readable server message response:
-                    ((): React.ReactElement|undefined => {
-                        const data = (
-                            fetchError?.response?.data // axios' response data
-                            ??
-                            fetchError?.data           // rtkq's response data
-                        );
-                        
-                        
-                        
-                        // response as json:
-                        if (typeof(data) === 'object') {
-                            const error   = data?.error;
-                            if ((typeof(error)   === 'string') && !!error  ) return paragraphify(error);   // not an empty string => a valid error message
-                            
-                            const message = data?.message;
-                            if ((typeof(message) === 'string') && !!message) return paragraphify(message); // not an empty string => a valid error message
-                        }
-                        // response as text:
-                        else if (typeof(data) === 'string') {
-                            if (!!data) return paragraphify(data); // not an empty string => a valid error message
-                        } // if
-                        
-                        
-                        
-                        return undefined; // unknown response format => skip
-                    })()
-                    ??
-                    // fetch's human_readable server error   response:
-                    // fetch's human_readable server message response:
-                    (await (async (): Promise<React.ReactElement|undefined> => {
-                        // conditions:
-                        const response = fetchError?.cause; // a `Response` object passed on Error('string', Response)
-                        if (!(response instanceof Response)) return undefined; // not a `Response` object => skip
-                        const contentType = response.headers.get('Content-Type');
-                        if (!contentType) return undefined; // no 'Content-Type' defined => skip
-                        
-                        
-                        
-                        // response as json:
-                        if ((/^application\/json/i).test(contentType)) {
-                            try {
-                                const data    = await response.json();
-                                
-                                const error   = data?.error;
-                                if ((typeof(error)   === 'string') && !!error  ) return paragraphify(error);   // not an empty string => a valid error message
-                                
-                                const message = data?.message;
-                                if ((typeof(message) === 'string') && !!message) return paragraphify(message); // not an empty string => a valid error message
-                            }
-                            catch {
-                                return undefined; // parse failed => skip
-                            } // try
-                        }
-                        // response as text:
-                        else if ((/^text/i).test(contentType)) {
-                            try {
-                                const text = await response.text();
-                                
-                                if (!!text) return paragraphify(text); // not an empty string => a valid error message
-                            }
-                            catch {
-                                return undefined; // parse failed => skip
-                            } // try
-                        } // if
-                        
-                        
-                        
-                        return undefined; // unknown response format => skip
-                    })())
+                    getFetchErrorMessage(fetchError)
                     ??
                     // if there is a request/client/server error => assumes as a connection problem:
                     ((): React.ReactNode => {

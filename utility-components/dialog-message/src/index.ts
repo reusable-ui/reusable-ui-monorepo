@@ -1,6 +1,10 @@
 export *            from './types.js'
 export {
     paragraphify,
+    
+    isFetchRequestError,
+    getFetchErrorCode,
+    getFetchErrorMessage,
 }                   from './utilities.js'
 export type {
     // contexts:
