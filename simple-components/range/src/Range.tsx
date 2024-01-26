@@ -917,7 +917,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const watchGlobalPointerStatusRef = useRef<undefined|(() => void)>(undefined);
     const watchGlobalPointer          = useEvent((active: boolean): void => {
         // conditions:
-        const shouldActive = active && propEditable;                  // control is disabled or readOnly => no response required
+        const shouldActive = active && propEditable; // control is disabled or readOnly => no response required
         if (!!watchGlobalPointerStatusRef.current === shouldActive) return; // already activated|deactivated => nothing to do
         
         
