@@ -719,7 +719,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             ||
             ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
         ) {
-            watchSliding(false); // unwatch global mouse/touch move
+            watchGlobalPointer(false); // unwatch global mouse/touch move
         } // if
     });
     const handleMouseActive       = useEvent<React.MouseEventHandler<TElement>>((event) => {
@@ -741,54 +741,12 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             ||
             ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
         ) {
-            watchSliding(false); // unwatch global mouse/touch move
+            watchGlobalPointer(false); // unwatch global mouse/touch move
         } // if
     });
     const handleTouchActive       = useEvent<React.TouchEventHandler<TElement>>((event) => {
         handleTouchStatusNative(event.nativeEvent);
     });
-    
-    const watchSlidingStatusRef   = useRef<boolean>(false);
-    const watchSliding            = useEvent((active: boolean): void => {
-        // conditions:
-        const shouldActive = active && propEditable;                // control is disabled or readOnly => no response required
-        if (watchSlidingStatusRef.current === shouldActive) return; // already activated|deactivated => nothing to do
-        watchSlidingStatusRef.current = shouldActive;               // sync
-        
-        
-        
-        // actions:
-        if (shouldActive) {
-            // setups:
-            const passiveOption : AddEventListenerOptions = { passive: true };
-            window.addEventListener('mousemove'  , handleMouseMoveNative   , passiveOption); // activating event
-            window.addEventListener('touchmove'  , handleTouchMoveNative   , passiveOption); // activating event
-            
-            window.addEventListener('mouseup'    , handleMouseStatusNative , passiveOption); // deactivating event
-            window.addEventListener('touchend'   , handleTouchStatusNative , passiveOption); // deactivating event
-            window.addEventListener('touchcancel', handleTouchStatusNative , passiveOption); // deactivating event
-        }
-        else {
-            // cleanups:
-            window.removeEventListener('mousemove'  , handleMouseMoveNative  ); // activating event
-            window.removeEventListener('touchmove'  , handleTouchMoveNative  ); // activating event
-            
-            window.removeEventListener('mouseup'    , handleMouseStatusNative); // deactivating event
-            window.removeEventListener('touchend'   , handleTouchStatusNative); // deactivating event
-            window.removeEventListener('touchcancel', handleTouchStatusNative); // deactivating event
-        } // if
-    });
-    
-    useEffect(() => {
-        // conditions:
-        if (propEditable) return; // control is enabled and mutable => no reset required
-        
-        
-        
-        // resets:
-        isMouseActive.current = false; // unmark as pressed
-        isTouchActive.current = false; // unmark as touched
-    }, [propEditable]);
     
     const handleMouseMoveNative   = useEvent<EventHandler<MouseEvent>>((event) => {
         // conditions:
@@ -806,7 +764,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         
-        watchSliding(true); // watch global mouse/touch move
+        watchGlobalPointer(true); // watch global mouse/touch move
         
         
         
@@ -849,7 +807,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         
-        // simulates the touch as sliding pointer:
+        // simulates the TouchMove as MouseMove:
         handleMouseMoveNative({
             ...event,
             clientX : event.touches[0].clientX,
@@ -857,10 +815,13 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             buttons : 1, // primary button (usually the left button)
         } as unknown as MouseEvent);
     });
-    const handlePointerSlide      = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    
+    const handleMouseSlide        = useEvent<React.MouseEventHandler<TElement>>((event) => {
+        // simulates the Slide as *unmove* Move:
         handleMouseMoveNative(event.nativeEvent);
     });
     const handleTouchSlide        = useEvent<React.TouchEventHandler<TElement>>((event) => {
+        // simulates the Slide as *unmove* Move:
         handleTouchMoveNative(event.nativeEvent);
     });
     const handleKeyboardSlide     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
@@ -912,19 +873,9 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         // range handlers:
-        handleMouseActive,
-        handlePointerSlide,
+        handleMouseActive, // update the mouse active status
+        handleMouseSlide,  // update the mouse position
     );
-    // // const handleMouseMove         = useMergeEvents(
-    // //     // preserves the original `onMouseMove`:
-    // //     props.onMouseMove,
-    // //     
-    // //     
-    // //     
-    // //     // range handlers:
-    // //     handlePointerSlide,
-    // // );
-    
     const handleTouchStart        = useMergeEvents(
         // preserves the original `onTouchStart`:
         props.onTouchStart,
@@ -932,19 +883,9 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         // range handlers:
-        handleTouchActive,
-        handleTouchSlide,
+        handleTouchActive, // update the touch active status
+        handleTouchSlide,  // update the touch position
     );
-    // // const handleTouchMove         = useMergeEvents(
-    // //     // preserves the original `onTouchMove`:
-    // //     props.onTouchMove,
-    // //     
-    // //     
-    // //     
-    // //     // range handlers:
-    // //     handleTouchSlide,
-    // // );
-    
     const handleKeyDown           = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
@@ -952,7 +893,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         // range handlers:
-        handleKeyboardSlide,
+        handleKeyboardSlide, // update the keyboard arrow keys
         
         
         
@@ -969,6 +910,67 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         // dummy:
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
+    
+    
+    
+    // global handlers:
+    const watchGlobalPointerStatusRef = useRef<undefined|(() => void)>(undefined);
+    const watchGlobalPointer          = useEvent((active: boolean): void => {
+        // conditions:
+        const shouldActive = active && propEditable;                  // control is disabled or readOnly => no response required
+        if (!!watchGlobalPointerStatusRef.current === shouldActive) return; // already activated|deactivated => nothing to do
+        
+        
+        
+        // actions:
+        if (shouldActive) {
+            // setups:
+            const passiveOption : AddEventListenerOptions = { passive: true };
+            
+            const currentHandleMouseMoveNative   = handleMouseMoveNative;
+            const currentHandleTouchMoveNative   = handleTouchMoveNative;
+            const currentHandleMouseStatusNative = handleMouseStatusNative;
+            const currentHandleTouchStatusNative = handleTouchStatusNative;
+            
+            window.addEventListener('mousemove'  , currentHandleMouseMoveNative   , passiveOption); // activating event
+            window.addEventListener('touchmove'  , currentHandleTouchMoveNative   , passiveOption); // activating event
+            
+            window.addEventListener('mouseup'    , currentHandleMouseStatusNative , passiveOption); // deactivating event
+            window.addEventListener('touchend'   , currentHandleTouchStatusNative , passiveOption); // deactivating event
+            window.addEventListener('touchcancel', currentHandleTouchStatusNative , passiveOption); // deactivating event
+            
+            
+            
+            // cleanups later:
+            watchGlobalPointerStatusRef.current = () => {
+                window.removeEventListener('mousemove'  , currentHandleMouseMoveNative  ); // activating event
+                window.removeEventListener('touchmove'  , currentHandleTouchMoveNative  ); // activating event
+                
+                window.removeEventListener('mouseup'    , currentHandleMouseStatusNative); // deactivating event
+                window.removeEventListener('touchend'   , currentHandleTouchStatusNative); // deactivating event
+                window.removeEventListener('touchcancel', currentHandleTouchStatusNative); // deactivating event
+            };
+        }
+        else {
+            // cleanups:
+            watchGlobalPointerStatusRef.current?.();
+            watchGlobalPointerStatusRef.current = undefined;
+        } // if
+    });
+    
+    
+    
+    // effects:
+    useEffect(() => {
+        // conditions:
+        if (propEditable) return; // control is enabled and mutable => no reset required
+        
+        
+        
+        // resets:
+        isMouseActive.current = false; // unmark as pressed
+        isTouchActive.current = false; // unmark as touched
+    }, [propEditable]);
     
     
     
