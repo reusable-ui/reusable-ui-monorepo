@@ -702,16 +702,9 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     const isMouseActive           = useRef<boolean>(false);
     const handleMouseStatusNative = useEvent<EventHandler<MouseEvent>>((event) => {
-        // conditions:
-        if (!propEditable) return; // control is disabled or readOnly => no response required
-        
-        
-        
         // actions:
-        isMouseActive.current = (
-            !isTouchActive.current // not in touch mode
-            &&
-            (event.buttons === 1)  // only left button pressed, ignore multi button pressed
+        isMouseActive.current = propEditable && (
+            (event.buttons === 1) // only left button pressed, ignore multi button pressed
         );
         
         if (
@@ -728,13 +721,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     const isTouchActive           = useRef<boolean>(false);
     const handleTouchStatusNative = useEvent<EventHandler<TouchEvent>>((event) => {
-        // conditions:
-        if (!propEditable) return; // control is disabled or readOnly => no response required
-        
-        
-        
         // actions:
-        isTouchActive.current = (event.touches.length === 1); // only single touch
+        isTouchActive.current = propEditable && (
+            (event.touches.length === 1) // only single touch
+        );
         
         if (
             (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
@@ -970,6 +960,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         // resets:
         isMouseActive.current = false; // unmark as pressed
         isTouchActive.current = false; // unmark as touched
+        watchGlobalPointer(false);     // unwatch global mouse/touch move
     }, [propEditable]);
     
     
