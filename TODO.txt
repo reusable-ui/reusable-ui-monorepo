@@ -48,6 +48,7 @@
 [unresolved] unknown bug: `ResizeObserver loop limit exceeded` of test-dropdown
 
 [next ver  ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
+[next ver  ] change TData from any to unknown for more type safety
 
 
 
