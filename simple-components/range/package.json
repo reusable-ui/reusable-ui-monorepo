@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/range",
-  "version": "6.5.3",
+  "version": "6.5.4",
   "description": "A UI for the user defines a numeric value in the specified range.",
   "keywords": [
     "input",
