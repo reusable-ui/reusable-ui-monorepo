@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",

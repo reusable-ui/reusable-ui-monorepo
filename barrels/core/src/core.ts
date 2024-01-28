@@ -32,6 +32,7 @@ export * from '@reusable-ui/floatable'                      // a capability of U
 export * from '@reusable-ui/global-stackable'               // a capability of UI to stack on top-most of another UI(s) regardless of DOM's stacking context
 export * from '@reusable-ui/auto-focusable'                 // a capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed)
 /*peer*/ export * from '@reusable-ui/groupable'             // groups a list of UIs into a single UI
+export * from '@reusable-ui/pointer-capturable'             // a capability of UI to capture the mouse/touch event inside & outside the UI itself
 
 // reusable-ui variants:
 /*peer*/ export * from '@reusable-ui/orientationable'       // a capability of UI to rotate its layout

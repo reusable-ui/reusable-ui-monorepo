@@ -32,6 +32,7 @@
 [published  ] @reusable-ui/global-stackable
 [published  ] @reusable-ui/auto-focusable
 [published  ] @reusable-ui/groupable
+[published  ] @reusable-ui/pointer-capturable
 
 // reusable-ui variants:
 [published  ] @reusable-ui/orientationable

@@ -1,0 +1,45 @@
+{
+  "name": "@reusable-ui/pointer-capturable",
+  "version": "6.5.0",
+  "description": "A capability of UI to capture the mouse/touch event inside & outside the UI itself.",
+  "keywords": [
+    "mouse",
+    "touch",
+    "pointer",
+    "move",
+    "events"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+  },
+  "main": "dist/pointer-capturable.js",
+  "types": "dist/pointer-capturable.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/pointer-capturable.js",
+    "./index": "./dist/pointer-capturable.js",
+    "./index.js": "./dist/pointer-capturable.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/hooks": "^6.5.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.0",
+    "react": "^18.0.0"
+  }
+}
