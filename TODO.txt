@@ -27,7 +27,7 @@
 
 [low prior ] make a demo of showMessage() for replacing alert()
 
-[low prior ] create 'global-pointer' from <Range> and draggable
+[low prior ] create draggable & droppable using pointer-capturable
 
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
 [unresolved] remove calendar icon on Input type='date' on Firefox
