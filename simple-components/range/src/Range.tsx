@@ -344,7 +344,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     // capabilities:
-    const pointerCapturable   = usePointerCapturable<TElement>({
+    const pointerCapturable = usePointerCapturable<TElement>({
         enabled : propEditable,
         onPointerCaptureMove(event) {
             // conditions:
