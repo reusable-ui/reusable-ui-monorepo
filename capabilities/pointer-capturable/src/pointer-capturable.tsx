@@ -33,7 +33,7 @@ export interface PointerCapturableProps {
     // handlers:
     onPointerCaptureStart ?: () => void
     onPointerCaptureEnd   ?: () => void
-    onPointerCaptureMove   : EventHandler<MouseEvent>
+    onPointerCaptureMove   : (event: MouseEvent) => void
 }
 export interface PointerCapturableApi<TElement extends Element = HTMLElement> {
     // handlers:
