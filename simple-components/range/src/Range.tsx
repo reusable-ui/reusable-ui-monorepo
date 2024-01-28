@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
     useMemo,
 }                           from 'react'
 
@@ -35,7 +34,6 @@ import {
     // react helper hooks:
     useTriggerRender,
     useEvent,
-    EventHandler,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -47,6 +45,11 @@ import {
     // an accessibility management system:
     usePropEnabled,
     usePropReadOnly,
+    
+    
+    
+    // a capability of UI to capture the mouse/touch event inside & outside the UI itself:
+    usePointerCapturable,
     
     
     
@@ -337,6 +340,56 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const theme          = props.theme ?? 'primary';
     const mild           = props.mild  ?? false;
     const mildAlternate  = !mild;
+    
+    
+    
+    // capabilities:
+    const pointerCapturable   = usePointerCapturable<TElement>({
+        enabled : propEditable,
+        onPointerCaptureMove(event) {
+            // conditions:
+            const track = trackRefInternal.current;
+            const thumb = thumbRefInternal.current;
+            if (!track) return;
+            if (!thumb) return;
+            
+            
+            
+            const style        = getComputedStyle(track);
+            const borderStart  = (Number.parseInt(isOrientationVertical ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
+            const paddingStart = (Number.parseInt(isOrientationVertical ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
+            const paddingEnd   = (Number.parseInt(isOrientationVertical ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
+            const thumbSize    =  (isOrientationVertical ? thumb.offsetHeight : thumb.offsetWidth);
+            const trackSize    = ((isOrientationVertical ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
+            
+            const rect         = track.getBoundingClientRect();
+            const cursorStart  = (isOrientationVertical ? event.clientY : event.clientX) - (isOrientationVertical ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
+            // if ((cursorStart < 0) || (cursorStart > trackSize)) return; // setValueRatio will take care of this
+            
+            let valueRatio     = cursorStart / trackSize;
+            if (isOrientationVertical || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
+            
+            changeValue('setValueRatio', valueRatio);
+            
+            
+            
+            // indicates the <Range> is currently being pressed/touched
+            switch(event.type) {
+                case 'mousedown':
+                    clickableState.handleMouseDown({
+                        ...event,
+                        nativeEvent : event,
+                    } as unknown as React.MouseEvent<TElement>);
+                    break;
+                case 'touchstart':
+                    clickableState.handleTouchStart({
+                        ...event,
+                        nativeEvent : event,
+                    } as unknown as React.TouchEvent<TElement>);
+                    break;
+            } // switch
+        },
+    });
     
     
     
@@ -700,119 +753,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         clickableState.handleAnimationEnd,
     );
     
-    const isMouseActive           = useRef<boolean>(false);
-    const isTouchActive           = useRef<boolean>(false);
-    const handlePointerStatus     = useEvent((): void => {
-        // actions:
-        if (
-            (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
-            ||
-            ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
-        ) {
-            watchGlobalPointer(false);                         // unwatch global mouse/touch move
-            
-            // if (watchGlobalPointer(false) === false) {      // unwatch global mouse/touch move
-            //     /* cleanup here */
-            // } // if
-        } // if
-    });
-    const handleMouseStatusNative = useEvent<EventHandler<MouseEvent>>((event) => {
-        // actions:
-        isMouseActive.current = propEditable && (
-            (event.buttons === 1) // only left button pressed, ignore multi button pressed
-        );
-        handlePointerStatus(); // update pointer status
-    });
-    const handleMouseActive       = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        handleMouseStatusNative(event.nativeEvent);
-    });
-    const handleTouchStatusNative = useEvent<EventHandler<TouchEvent>>((event) => {
-        // actions:
-        isTouchActive.current = propEditable && (
-            (event.touches.length === 1) // only single touch
-        );
-        handlePointerStatus(); // update pointer status
-    });
-    const handleTouchActive       = useEvent<React.TouchEventHandler<TElement>>((event) => {
-        handleTouchStatusNative(event.nativeEvent);
-    });
-    
-    const handleMouseMoveNative   = useEvent<EventHandler<MouseEvent>>((event) => {
-        // conditions:
-        // one of the mouse or touch is active but not both are active:
-        if (
-            (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
-            ||
-            ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
-        ) return;
-        
-        const track = trackRefInternal.current;
-        const thumb = thumbRefInternal.current;
-        if (!track)                 return;
-        if (!thumb)                 return;
-        
-        
-        
-        watchGlobalPointer(true); // watch global mouse/touch move
-        
-        
-        
-        const style        = getComputedStyle(track);
-        const borderStart  = (Number.parseInt(isOrientationVertical ? style.borderTopWidth : style.borderLeftWidth) || 0 /* NaN => 0 */);
-        const paddingStart = (Number.parseInt(isOrientationVertical ? style.paddingTop     : style.paddingLeft    ) || 0 /* NaN => 0 */);
-        const paddingEnd   = (Number.parseInt(isOrientationVertical ? style.paddingBottom  : style.paddingRight   ) || 0 /* NaN => 0 */);
-        const thumbSize    =  (isOrientationVertical ? thumb.offsetHeight : thumb.offsetWidth);
-        const trackSize    = ((isOrientationVertical ? track.clientHeight : track.clientWidth) - paddingStart - paddingEnd - thumbSize);
-        
-        const rect         = track.getBoundingClientRect();
-        const cursorStart  = (isOrientationVertical ? event.clientY : event.clientX) - (isOrientationVertical ? rect.top : rect.left) - borderStart - paddingStart - (thumbSize / 2);
-        // if ((cursorStart < 0) || (cursorStart > trackSize)) return; // setValueRatio will take care of this
-        
-        let valueRatio     = cursorStart / trackSize;
-        if (isOrientationVertical || (style.direction === 'rtl')) valueRatio = (1 - valueRatio); // reverse the ratio from end
-        
-        changeValue('setValueRatio', valueRatio);
-        
-        
-        // indicates the <Range> is currently being pressed/touched
-        switch(event.type) {
-            case 'mousedown':
-                clickableState.handleMouseDown({
-                    ...event,
-                    nativeEvent : event,
-                } as unknown as React.MouseEvent<TElement>);
-                break;
-            case 'touchstart':
-                clickableState.handleTouchStart({
-                    ...event,
-                    nativeEvent : event,
-                } as unknown as React.TouchEvent<TElement>);
-                break;
-        } // switch
-    });
-    const handleTouchMoveNative   = useEvent<EventHandler<TouchEvent>>((event) => {
-        // conditions:
-        if (event.touches.length !== 1) return; // only single touch
-        
-        
-        
-        // simulates the TouchMove as MouseMove:
-        handleMouseMoveNative({
-            ...event,
-            clientX : event.touches[0].clientX,
-            clientY : event.touches[0].clientY,
-            buttons : 1, // primary button (usually the left button)
-        } as unknown as MouseEvent);
-    });
-    
-    const handleMouseSlide        = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        // simulates the Slide as *unmove* Move:
-        handleMouseMoveNative(event.nativeEvent);
-    });
-    const handleTouchSlide        = useEvent<React.TouchEventHandler<TElement>>((event) => {
-        // simulates the Slide as *unmove* Move:
-        handleTouchMoveNative(event.nativeEvent);
-    });
     const handleKeyboardSlide     = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (!propEditable)          return; // control is disabled or readOnly => no response required
@@ -861,9 +801,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         
-        // range handlers:
-        handleMouseActive, // update the mouse active status
-        handleMouseSlide,  // update the mouse position
+        // capabilities:
+        pointerCapturable.handleMouseDown,
     );
     const handleTouchStart        = useMergeEvents(
         // preserves the original `onTouchStart`:
@@ -871,9 +810,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         
-        // range handlers:
-        handleTouchActive, // update the touch active status
-        handleTouchSlide,  // update the touch position
+        // capabilities:
+        pointerCapturable.handleTouchStart,
     );
     const handleKeyDown           = useMergeEvents(
         // preserves the original `onKeyDown`:
@@ -899,72 +837,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         // dummy:
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
-    
-    
-    
-    // global handlers:
-    const watchGlobalPointerStatusRef = useRef<undefined|(() => void)>(undefined);
-    const watchGlobalPointer          = useEvent((active: boolean): boolean|null => {
-        // conditions:
-        const shouldActive = active && propEditable; // control is disabled or readOnly => no response required
-        if (!!watchGlobalPointerStatusRef.current === shouldActive) return null; // already activated|deactivated => nothing to do
-        
-        
-        
-        // actions:
-        if (shouldActive) {
-            // setups:
-            const passiveOption : AddEventListenerOptions = { passive: true };
-            
-            const currentHandleMouseMoveNative   = handleMouseMoveNative;
-            const currentHandleTouchMoveNative   = handleTouchMoveNative;
-            const currentHandleMouseStatusNative = handleMouseStatusNative;
-            const currentHandleTouchStatusNative = handleTouchStatusNative;
-            
-            window.addEventListener('mousemove'  , currentHandleMouseMoveNative   , passiveOption); // activating event
-            window.addEventListener('touchmove'  , currentHandleTouchMoveNative   , passiveOption); // activating event
-            
-            window.addEventListener('mouseup'    , currentHandleMouseStatusNative , passiveOption); // deactivating event
-            window.addEventListener('touchend'   , currentHandleTouchStatusNative , passiveOption); // deactivating event
-            window.addEventListener('touchcancel', currentHandleTouchStatusNative , passiveOption); // deactivating event
-            
-            
-            
-            // cleanups later:
-            watchGlobalPointerStatusRef.current = () => {
-                window.removeEventListener('mousemove'  , currentHandleMouseMoveNative  ); // activating event
-                window.removeEventListener('touchmove'  , currentHandleTouchMoveNative  ); // activating event
-                
-                window.removeEventListener('mouseup'    , currentHandleMouseStatusNative); // deactivating event
-                window.removeEventListener('touchend'   , currentHandleTouchStatusNative); // deactivating event
-                window.removeEventListener('touchcancel', currentHandleTouchStatusNative); // deactivating event
-            };
-        }
-        else {
-            // cleanups:
-            watchGlobalPointerStatusRef.current?.();
-            watchGlobalPointerStatusRef.current = undefined;
-        } // if
-        
-        
-        
-        return shouldActive;
-    });
-    
-    
-    
-    // effects:
-    useEffect(() => {
-        // conditions:
-        if (propEditable) return; // control is enabled and mutable => no reset required
-        
-        
-        
-        // resets:
-        isMouseActive.current = false; // unmark as pressed
-        isTouchActive.current = false; // unmark as touched
-        handlePointerStatus();         // update pointer status
-    }, [propEditable]);
     
     
     
