@@ -16,6 +16,8 @@ export type GlobalStacks = {
     dropdown      : CssKnownProps['zIndex'],
     
     tooltip       : CssKnownProps['zIndex'],
+    
+    dragOverlay   : CssKnownProps['zIndex'],
 }
 export const globalStacks : GlobalStacks = {
     sticky        : 1020, // a <Modal> should above (covering) the <Navbar>
@@ -27,4 +29,6 @@ export const globalStacks : GlobalStacks = {
     dropdown      : 1060, // a <Dropdown> may inside (on the top) of <Modal> and may contain nested <Component>s including <Tooltip>, so placed it between <Modal> and <Tooltip>
     
     tooltip       : 1080, // [<Popup>, <Badge>, <Busy>, <Alert>, <Tooltip>] are rarely contain <Dropdown>, so placed it at highest position
+    
+    dragOverlay   : 1090, // the <DragOverlay> should the top most of others components
 };
