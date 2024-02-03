@@ -104,6 +104,7 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
         
         
         // handlers:
+        // THIS is a bug, causing the <Indicator> cannot be clicked:
         onClick      : _onClick,        // remove
         //#endregion <ActionControl> props
         

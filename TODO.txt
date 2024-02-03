@@ -1,3 +1,4 @@
+[high prior] remove this code bug: ListItem.tsx 106-108 : onClick      : _onClick,        // remove
 [high prior] add <DataTable>
 [high prior] aliasing [someDn, setSomeDn] to [uncontrollableSome, setUncontrollableSome]; some to controllableSome; defaultSome to defaultUncontrollableSome; onSomeChange to onControllableSomeChange; handleSomeChange to handleControllableSomeChange; handleSomeChangeInternal to handleUncontrollableSomeChange (by copying @heymarco/next-auth/**/signInState)
 [high prior] add onValueChange(TValue) as the complement of onChange(event)
