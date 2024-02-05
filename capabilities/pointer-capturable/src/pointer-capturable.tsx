@@ -101,6 +101,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
                         ? event
                         // simulates the Touch(Start|End|Cancel) as Mouse(Down|Up):
                         : new MouseEvent((event?.type === 'touchstart') ? 'mousedown' : 'mouseup', {
+                            // simulates for `onPointerCaptureCancel(event)` & `onPointerCaptureEnd(event)`:
                             ...event,
                             ...(() => {
                                 const isTouchStart = event?.type === 'touchstart';
@@ -183,6 +184,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         
         // simulates the TouchMove as MouseMove:
         handleMouseMoveNative(new MouseEvent('mousemove', {
+            // simulates for `onPointerCaptureStart(event)` & `onPointerCaptureMove(event)`:
             ...event,
             ...(() => {
                 const touch = event?.touches?.[0];
@@ -190,13 +192,13 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
                     clientX : touch?.clientX ?? 0,
                     clientY : touch?.clientY ?? 0,
                     
-                    // screenX : touch?.screenX ?? 0, // not needed, just for internal use
-                    // screenY : touch?.screenY ?? 0, // not needed, just for internal use
+                    screenX : touch?.screenX ?? 0,
+                    screenY : touch?.screenY ?? 0,
                     
-                    // pageX   : touch?.pageX   ?? 0, // not needed, just for internal use
-                    // pageY   : touch?.pageY   ?? 0, // not needed, just for internal use
+                    pageX   : touch?.pageX   ?? 0,
+                    pageY   : touch?.pageY   ?? 0,
                     
-                    // button  : 1,                   // not needed, just for internal use
+                    button  : 1, // primary button (usually the left button)
                     buttons : 1, // primary button (usually the left button)
                 };
             })(),
