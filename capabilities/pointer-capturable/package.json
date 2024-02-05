@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/pointer-capturable",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "description": "A capability of UI to capture the mouse/touch event inside & outside the UI itself.",
   "keywords": [
     "mouse",

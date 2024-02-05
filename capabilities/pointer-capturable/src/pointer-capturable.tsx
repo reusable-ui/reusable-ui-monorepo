@@ -31,9 +31,10 @@ export interface PointerCapturableProps {
     
     
     // handlers:
-    onPointerCaptureStart ?: () => void
-    onPointerCaptureEnd   ?: () => void
-    onPointerCaptureMove   : (event: MouseEvent) => void
+    onPointerCaptureStart  ?: (event: MouseEvent) => void
+    onPointerCaptureEnd    ?: (event: MouseEvent) => void
+    onPointerCaptureCancel ?: (event: MouseEvent) => void
+    onPointerCaptureMove    : (event: MouseEvent) => void
 }
 export interface PointerCapturableApi<TElement extends Element = HTMLElement> {
     // handlers:
@@ -51,6 +52,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         // handlers:
         onPointerCaptureStart,
         onPointerCaptureEnd,
+        onPointerCaptureCancel,
         onPointerCaptureMove,
     } = props;
     
@@ -60,7 +62,18 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
     // handlers:
     const isMouseActive           = useRef<boolean>(false);
     const isTouchActive           = useRef<boolean>(false);
-    const handlePointerStatus     = useEvent((): void => {
+    const lastPointerStatusEvent  = useRef<MouseEvent|TouchEvent|undefined>(undefined);
+    const handlePointerStatus     = useEvent((event: MouseEvent|TouchEvent|undefined): void => {
+        // updates:
+        if (event) {
+            lastPointerStatusEvent.current = event;
+        }
+        else {
+            event = lastPointerStatusEvent.current;
+        } // if
+        
+        
+        
         // actions:
         if (
             (!isMouseActive.current && !isTouchActive.current) // both mouse & touch are inactive
@@ -68,8 +81,56 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
             ( isMouseActive.current &&  isTouchActive.current) // both mouse & touch are active
         ) {
             if (watchGlobalPointer(false) === false) { // unwatch global mouse/touch move
-                onPointerCaptureEnd?.();
+                if (onPointerCaptureEnd || onPointerCaptureCancel) {
+                    const isCanceled = (
+                        !enabled // canceled by disabled
+                        ||
+                        !event   // canceled by unknown event
+                        ||
+                        (
+                            (
+                                ((event as MouseEvent|null)?.buttons ?? 0)
+                                +
+                                ((event as TouchEvent|null)?.touches?.length ?? 0)
+                            )
+                            > 1  // canceled by pressed_mouse_nonprimary_button and/or multiple touched_screen
+                        )
+                    );
+                    const mouseEvent : MouseEvent = (
+                        (event && ('buttons' in event))
+                        ? event
+                        // simulates the Touch(Start|End|Cancel) as Mouse(Down|Up):
+                        : new MouseEvent((event?.type === 'touchstart') ? 'mousedown' : 'mouseup', {
+                            ...event,
+                            ...(() => {
+                                const touch = (event?.type === 'touchstart') ? event?.touches?.[0] : event?.changedTouches?.[0];
+                                if (!touch) return undefined;
+                                return {
+                                    clientX : touch.clientX,
+                                    clientY : touch.clientY,
+                                    
+                                    screenX : touch.screenX,
+                                    screenY : touch.screenY,
+                                    
+                                    pageX   : touch.pageX,
+                                    pageY   : touch.pageY,
+                                };
+                            })(),
+                            buttons : (event?.type === 'touchstart') ? 1 : 0, // if touched: simulates primary button (usually the left button), otherwise simulates no button pressed
+                        })
+                    );
+                    if (isCanceled) {
+                        onPointerCaptureCancel?.(mouseEvent);
+                    }
+                    else {
+                        onPointerCaptureEnd?.(mouseEvent);
+                    } // if
+                } // if
             } // if
+            
+            
+            
+            lastPointerStatusEvent.current = undefined; // clear the last pointer status event
         } // if
     });
     const handleMouseStatusNative = useEvent<EventHandler<MouseEvent>>((event) => {
@@ -77,7 +138,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         isMouseActive.current = enabled && (
             (event.buttons === 1) // only left button pressed, ignore multi button pressed
         );
-        handlePointerStatus(); // update pointer status
+        handlePointerStatus(event); // update pointer status
     });
     const handleMouseActive       = useEvent<React.MouseEventHandler<TElement>>((event) => {
         handleMouseStatusNative(event.nativeEvent);
@@ -87,7 +148,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         isTouchActive.current = enabled && (
             (event.touches.length === 1) // only single touch
         );
-        handlePointerStatus(); // update pointer status
+        handlePointerStatus(event); // update pointer status
     });
     const handleTouchActive       = useEvent<React.TouchEventHandler<TElement>>((event) => {
         handleTouchStatusNative(event.nativeEvent);
@@ -105,7 +166,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         
         
         if (watchGlobalPointer(true) === true){ // watch global mouse/touch move
-            onPointerCaptureStart?.();
+            onPointerCaptureStart?.(event);
         } // if
         
         
@@ -119,12 +180,24 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         
         
         // simulates the TouchMove as MouseMove:
-        handleMouseMoveNative({
+        handleMouseMoveNative(new MouseEvent('mousemove', {
             ...event,
-            clientX : event.touches[0].clientX,
-            clientY : event.touches[0].clientY,
+            ...(() => {
+                const touch = event?.touches?.[0];
+                if (!touch) return undefined;
+                return {
+                    clientX : touch.clientX,
+                    clientY : touch.clientY,
+                    
+                    // screenX : touch.screenX, // not needed, just for internal use
+                    // screenY : touch.screenY, // not needed, just for internal use
+                    
+                    // pageX   : touch.pageX,   // not needed, just for internal use
+                    // pageY   : touch.pageY,   // not needed, just for internal use
+                };
+            })(),
             buttons : 1, // primary button (usually the left button)
-        } as unknown as MouseEvent);
+        }));
     });
     
     const handleMouseSlide        = useEvent<React.MouseEventHandler<TElement>>((event) => {
@@ -206,9 +279,9 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
         
         
         // resets:
-        isMouseActive.current = false; // unmark as pressed
-        isTouchActive.current = false; // unmark as touched
-        handlePointerStatus();         // update pointer status
+        isMouseActive.current = false;  // unmark as pressed
+        isTouchActive.current = false;  // unmark as touched
+        handlePointerStatus(undefined); // update pointer status
     }, [enabled]);
     
     
