@@ -128,11 +128,11 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
     });
     
     const handleMouseSlide        = useEvent<React.MouseEventHandler<TElement>>((event) => {
-        // simulates the Slide as *unmove* Move:
+        // simulates the MouseDown as MouseMove (update the mouse position):
         handleMouseMoveNative(event.nativeEvent);
     });
     const handleTouchSlide        = useEvent<React.TouchEventHandler<TElement>>((event) => {
-        // simulates the Slide as *unmove* Move:
+        // simulates the TouchStart as TouchMove (update the touch position):
         handleTouchMoveNative(event.nativeEvent);
     });
     
