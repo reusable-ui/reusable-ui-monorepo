@@ -196,7 +196,7 @@ export const usePointerCapturable = <TElement extends Element = HTMLElement>(pro
                     // pageX   : touch?.pageX   ?? 0, // not needed, just for internal use
                     // pageY   : touch?.pageY   ?? 0, // not needed, just for internal use
                     
-                    button  : 1, // not needed, just for internal use
+                    // button  : 1,                   // not needed, just for internal use
                     buttons : 1, // primary button (usually the left button)
                 };
             })(),
