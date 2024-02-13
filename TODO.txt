@@ -37,6 +37,8 @@ export *            from './types.js'
 to
 export type *       from './types.js'
 
+[low prior ] export loader.ts from index.ts
+
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
 [unresolved] remove calendar icon on Input type='date' on Firefox
 [no err det] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
