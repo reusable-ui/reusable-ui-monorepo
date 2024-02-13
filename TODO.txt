@@ -32,6 +32,11 @@
 
 [low prior ] create draggable & droppable using pointer-capturable
 
+[low prior ] modify export:
+export *            from './types.js'
+to
+export type *       from './types.js'
+
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
 [unresolved] remove calendar icon on Input type='date' on Firefox
 [no err det] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
