@@ -52,8 +52,8 @@
 
 [next ver  ] register css_vars of animation of: excitable|collapsible|disableable|activatable|focusable|interactable|clickable|invalidable|etc...
 [next ver  ] change TData from any to unknown for more type safety
-[next ver  ] change React.ReactComponentElement<any, ...> to React.ReactComponentElement<unknown, ...>
 [next ver  ] change any to unknown if possible
+[future ver] change React.ReactComponentElement<any, ...> to React.ReactComponentElement<unknown, ...>
 
 
 
