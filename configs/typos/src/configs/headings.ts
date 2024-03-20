@@ -48,7 +48,7 @@ export const [headings, headingValues, cssHeadingConfig] = cssConfig(() => {
         fontSize6         : [['calc(', 1.00, '*', typos.fontSize, ')']] as CssKnownProps['fontSize'         ],
         
         fontFamily        : 'inherit'                                   as CssKnownProps['fontFamily'       ],
-        fontWeight        : 500                                         as CssKnownProps['fontWeight'       ],
+        fontWeight        : typos.fontWeightSemibold                    as CssKnownProps['fontWeight'       ],
         fontStyle         : 'inherit'                                   as CssKnownProps['fontStyle'        ],
         textDecoration    : 'inherit'                                   as CssKnownProps['textDecoration'   ],
         lineHeight        : 1.25                                        as CssKnownProps['lineHeight'       ],
