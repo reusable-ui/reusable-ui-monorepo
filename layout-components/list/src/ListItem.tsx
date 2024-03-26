@@ -29,10 +29,16 @@ import {
     useSemanticButton,
 }                           from '@reusable-ui/button'          // a button component
 
-
-
-// defaults:
-const _defaultItemActionCtrl : boolean = false
+// internals:
+import {
+    // states:
+    useListState,
+    
+    
+    
+    // react components:
+    ListStateProps,
+}                           from './states/listState.js'
 
 
 
@@ -54,7 +60,10 @@ export const useListActionItemStyleSheet = dynamicStyleSheet(
 export interface ListItemProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        SemanticButtonProps<TElement>
+        SemanticButtonProps<TElement>,
+        
+        // states:
+        ListStateProps
 {
     // accessibilities:
     // change default value to `true`
@@ -64,11 +73,6 @@ export interface ListItemProps<TElement extends Element = HTMLElement>
      * `false`     : independent `active`.
      */
     inheritActive ?: boolean
-    
-    
-    
-    // behaviors:
-    actionCtrl    ?: boolean
     
     
     
@@ -82,10 +86,18 @@ export const ListItem = <TElement extends Element = HTMLElement>(props: ListItem
     
     
     
+    // states:
+    const {
+        // behaviors:
+        defaultActionCtrl,
+    } = useListState();
+    
+    
+    
     // rest props:
     const {
         // behaviors:
-        actionCtrl = _defaultItemActionCtrl,
+        actionCtrl = defaultActionCtrl,
     ...restActionControlProps} = props;
     
     const {

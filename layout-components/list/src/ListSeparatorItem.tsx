@@ -90,6 +90,11 @@ export const ListSeparatorItem = <TElement extends Element = HTMLElement>(props:
             
             
             
+            // behaviors:
+            actionCtrl={false} // actionCtrl is not supported
+            
+            
+            
             // classes:
             mainClass={props.mainClass ?? `${styleSheet.main} ${separatorStyleSheet.main}`}
             classes={classes}

@@ -64,22 +64,21 @@ import {
     ListVariant,
     useListVariant,
 }                           from './variants/ListVariant.js'
+import {
+    // react components:
+    ListStateProps,
+    ListStateProvider,
+}                           from './states/listState.js'
 import type {
     // react components:
     ListItemProps,
 }                           from './ListItem.js'
-import {
-    // react components:
-    ListSeparatorItem,
-}                           from './ListSeparatorItem.js'
 
 
 
 // defaults:
 const _defaultSemanticTag  : SemanticTag        = ['ul', 'ol'] // uses <ul>          as the default semantic tag, fallbacks to <ol>
 const _defaultSemanticRole : SemanticRole       = ['list'    ] // uses [role="list"] as the default semantic role
-
-const _defaultActionCtrl   : boolean|undefined  = undefined
 
 
 
@@ -220,8 +219,8 @@ export interface ListProps<TElement extends Element = HTMLElement>
         OrientationableProps,
         ListVariant,
         
-        // behaviors:
-        Pick<ListItemProps<TElement>, 'actionCtrl'>
+        // states:
+        ListStateProps
 {
     // children:
     children ?: React.ReactNode
@@ -247,7 +246,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
         
         
         // behaviors:
-        actionCtrl  : defaultActionCtrl = _defaultActionCtrl,
+        actionCtrl,
         
         
         
@@ -323,20 +322,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
         .filter(isTruthyNode) // only truthy children, so the <WrapperItem> doesn't wrap nullish children
         .map<React.ReactNode>((child, index) => {
             // tests:
-            const isElement        = React.isValidElement<ListItemProps<Element>>(child);
-            const mutateActionCtrl = isElement && (
-                (defaultActionCtrl === true)                                   // assign <ListItem>'s [actionCtrl] props if <List>'s [actionCtrl === true], otherwise do not mutate
-                &&
-                (child.props.actionCtrl === undefined)                         // the <ListItem>'s [actionCtrl] is not already been set, otherwise do not mutate
-                &&
-                (child.type !== ListSeparatorItem)                             // not a <ListSeparatorItem>, otherwise do not mutate
-                &&
-                (
-                    (!child.props.classes?.includes?.('void'))                 // not marked as '.void', otherwise do not mutate
-                    ||
-                    (!child.props.className?.split?.(' ')?.includes?.('void')) // not marked as '.void', otherwise do not mutate
-                )
-            );
+            const isElement = React.isValidElement<ListItemProps<Element>>(child);
             
             
             
@@ -352,17 +338,7 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
                     // semantics:
                     tag={wrapperTag}
                 >
-                    {
-                        mutateActionCtrl
-                        ? React.cloneElement<ListItemProps<Element>>(child,
-                            // props:
-                            {
-                                // behaviors:
-                                actionCtrl : true,
-                            },
-                        )
-                        : child
-                    }
+                    {child}
                 </WrapperItem>
             );
         })
@@ -396,7 +372,12 @@ const List = <TElement extends Element = HTMLElement>(props: ListProps<TElement>
             onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}
         >
-            {wrappedChildren}
+            <ListStateProvider
+                // behaviors:
+                actionCtrl={actionCtrl}
+            >
+                {wrappedChildren}
+            </ListStateProvider>
         </Indicator>
     );
 };
