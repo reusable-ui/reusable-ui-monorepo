@@ -332,18 +332,18 @@ export {
 
 
 // shortcuts:
-export const TextInput     = (props: InputProps) => <Input type='text'           {...props} />
-export const SearchInput   = (props: InputProps) => <Input type='search'         {...props} />
-export const PasswordInput = (props: InputProps) => <Input type='password'       {...props} />
-export const EmailInput    = (props: InputProps) => <Input type='email'          {...props} />
-export const TelInput      = (props: InputProps) => <Input type='tel'            {...props} />
-export const UrlInput      = (props: InputProps) => <Input type='url'            {...props} />
-export const NumberInput   = (props: InputProps) => <Input type='number'         {...props} />
-export const TimeInput     = (props: InputProps) => <Input type='time'           {...props} />
-export const WeekInput     = (props: InputProps) => <Input type='week'           {...props} />
-export const DateInput     = (props: InputProps) => <Input type='date'           {...props} />
-export const DateTimeInput = (props: InputProps) => <Input type='datetime-local' {...props} />
-export const MonthInput    = (props: InputProps) => <Input type='month'          {...props} />
+export const TextInput     = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='text'           {...props} />
+export const SearchInput   = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='search'         {...props} />
+export const PasswordInput = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='password'       {...props} />
+export const EmailInput    = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='email'          {...props} />
+export const TelInput      = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='tel'            {...props} />
+export const UrlInput      = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='url'            {...props} />
+export const NumberInput   = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='number'         {...props} />
+export const TimeInput     = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='time'           {...props} />
+export const WeekInput     = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='week'           {...props} />
+export const DateInput     = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='date'           {...props} />
+export const DateTimeInput = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='datetime-local' {...props} />
+export const MonthInput    = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>) => <Input<TElement> type='month'          {...props} />
 
 export {
     TextInput       as Text,
