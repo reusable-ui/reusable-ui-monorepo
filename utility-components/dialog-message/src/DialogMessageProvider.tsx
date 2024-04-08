@@ -149,7 +149,10 @@ const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<an
             propValue = decodeURI(propValue);
             const lastSlash = propValue.lastIndexOf('/');
             if (lastSlash < 0) return propValue;
-            return propValue.slice(lastSlash + 1);
+            propValue = propValue.slice(lastSlash + 1);
+            const lastExt = propValue.lastIndexOf('.');
+            if (lastExt < 0) return propValue;
+            return propValue.slice(0, lastExt);
         } // if
         return propValue;
     })()
