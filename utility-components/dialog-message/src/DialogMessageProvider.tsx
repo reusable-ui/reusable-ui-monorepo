@@ -135,7 +135,27 @@ const _fieldErrorMessageDefault         : Extract<FieldErrorMessage, Function> =
         </p>
     );
 };
-const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind'       ]> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('data-icon' ) || (((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image') || undefined)?.slice?.(1, -1);
+const _fieldErrorIconFindDefault        : NonNullable<DialogMessageFieldError<any>['fieldErrorIconFind'       ]> = (fieldError: Element) => (
+    (fieldError as HTMLElement).getAttribute?.('data-icon')
+    ||
+    ((): string|undefined => {
+        let propValue = ((fieldError.parentElement?.previousElementSibling as HTMLElement)?.children?.[0]?.children?.[0] as HTMLElement)?.style?.getPropertyValue?.('--icon-image');
+        if (!propValue) return undefined;
+        if ((propValue.length >= 2) && ['"', "'"].includes(propValue[0]) && (propValue[0] === propValue[propValue.length - 1])) propValue = propValue.slice?.(1, -1); // remove quote character at the first & last value
+        if (propValue.startsWith('url(') && propValue.endsWith(')')) {
+            propValue = propValue.slice(4, -1); // remove 'url(' & ')'
+            // remove quote character at the first & last value of the url("/blah/foo.svg"):
+            if ((propValue.length >= 2) && ['"', "'"].includes(propValue[0]) && (propValue[0] === propValue[propValue.length - 1])) propValue = propValue.slice?.(1, -1);
+            propValue = decodeURI(propValue);
+            const lastSlash = propValue.lastIndexOf('/');
+            if (lastSlash < 0) return propValue;
+            return propValue.slice(lastSlash + 1);
+        } // if
+        return propValue;
+    })()
+    ||
+    undefined
+);
 const _fieldErrorIconDefault            : NonNullable<DialogMessageFieldError<any>['fieldErrorIcon'           ]> = 'text_fields';
 const _fieldErrorLabelFindDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorLabelFind'      ]> = (fieldError: Element) => (fieldError as HTMLElement).getAttribute?.('aria-label') || (fieldError.children?.[0] as HTMLInputElement)?.placeholder;
 const _fieldErrorAutoFocusDefault       : NonNullable<DialogMessageFieldError<any>['fieldErrorAutoFocus'      ]> = true;
