@@ -66,7 +66,7 @@ export const usesGroupItemLayout = (options?: OrientationableOptions) => {
             
             // sizes:
             // just a few tweak:
-            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+            flex      : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.oBlock`) or width (for variant `.oInline`)
             
             
             

@@ -193,7 +193,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                 flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'start',       // if wrappers are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first wrapper should be visible first
-            alignItems        : 'stretch',     // wrappers width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            alignItems        : 'stretch',     // wrappers width are 100% of the parent (for variant `.oBlock`) or height (for variant `.oInline`)
             flexWrap          : 'nowrap',      // no wrapping
             
             
@@ -231,7 +231,7 @@ export const usesListLayout = (options?: OrientationableOptions) => {
                     
                     
                     // sizes:
-                    flex           : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                    flex           : [[1, 1, 'auto']], // growable, shrinkable, initial from it's height (for variant `.oBlock`) or width (for variant `.oInline`)
                     ...rule(':where(.fluid:not(.solid))', { // only .fluid
                         flexBasis  : '100%', // fill the space as much as possible
                     }),
@@ -674,7 +674,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                                 
                                 
                                 // sizes:
-                                flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                                flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.oBlock`) or width (for variant `.oInline`)
                                 
                                 
                                 
@@ -731,7 +731,7 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                 // children:
                 ...children(wrapperElm, {
                     // sizes:
-                    flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.block`) or width (for variant `.inline`)
+                    flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.oBlock`) or width (for variant `.oInline`)
                     
                     
                     

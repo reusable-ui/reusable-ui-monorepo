@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/groupable",
-  "version": "6.5.1",
+  "version": "6.5.2",
   "description": "Groups a list of UIs into a single UI.",
   "keywords": [
     "groupable",
@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/border": "^6.5.0",
-    "@reusable-ui/orientationable": "^6.5.0",
+    "@reusable-ui/orientationable": "^6.5.2",
     "@reusable-ui/padding": "^6.5.0"
   }
 }

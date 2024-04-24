@@ -182,7 +182,7 @@ export const usesCardCaptionLayout = () => {
     return style({
         // sizes:
         // the default <Card>'s items height are unresizeable (excepts for the <Card>'s body):
-        flex : [[0, 1, 'auto']], // ungrowable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
+        flex : [[0, 1, 'auto']], // ungrowable, shrinkable, initial from it's width (for variant `.oInline`) or height (for variant `.oBlock`)
         
         
         
@@ -206,7 +206,7 @@ export const usesCardBodyLayout    = () => {
     return style({
         // sizes:
         // the default <Card>'s body height is resizeable, ensuring footers are aligned to the bottom:
-        flex     : [[1, 1, 'auto']], // growable, shrinkable, initial from it's width (for variant `.inline`) or height (for variant `.block`)
+        flex     : [[1, 1, 'auto']], // growable, shrinkable, initial from it's width (for variant `.oInline`) or height (for variant `.oBlock`)
         
         
         
@@ -273,7 +273,7 @@ export const usesCardLayout = (options?: OrientationableOptions) => {
                 flexDirection : 'column',      // items are stacked vertically
             }),
             justifyContent    : 'start',       // if items are not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-            alignItems        : 'stretch',     // items width are 100% of the parent (for variant `.block`) or height (for variant `.inline`)
+            alignItems        : 'stretch',     // items width are 100% of the parent (for variant `.oBlock`) or height (for variant `.oInline`)
             flexWrap          : 'nowrap',      // no wrapping
             
             
