@@ -5,10 +5,13 @@ import {
     CssStyleCollection,
     CssSelectorCollection,
     
+    CssClassName,
+    
     
     
     // writes css in javascript:
     rule,
+    startsCapitalized,
 }                           from '@cssfn/core'                  // writes css in javascript
 
 
@@ -19,6 +22,25 @@ import {
 
 //#region orientationable
 //#region caches
+const orientationClassesCache       = new Map<OrientationName|OrientationWithDirectionName|undefined, CssClassName|null>();
+export const createOrientationClass = (orientationName: OrientationName|OrientationWithDirectionName|undefined): CssClassName|null => {
+    const cached = orientationClassesCache.get(orientationName);
+    if (cached !== undefined) return cached; // null is allowed
+    
+    
+    
+    if (orientationName === undefined) {
+        orientationClassesCache.set(orientationName, null);
+        return null;
+    } // if
+    
+    
+    
+    const orientationClass = `o${startsCapitalized(orientationName)}`;
+    orientationClassesCache.set(orientationName, orientationClass);
+    return orientationClass;
+};
+
 let defaultInlineOrientationableStuffsCache : WeakRef<OrientationableStuff>|undefined = undefined;
 let defaultBlockOrientationableStuffsCache  : WeakRef<OrientationableStuff>|undefined = undefined;
 
@@ -133,7 +155,7 @@ export interface OrientationableProps {
     orientation ?: OrientationName
 }
 export const useOrientationable = ({orientation}: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => ({
-    class: orientation ?? null,
+    class: createOrientationClass(orientation) ?? null,
     
     get isOrientationBlock(): boolean {
         return(
@@ -223,7 +245,7 @@ export interface OrientationableWithDirectionProps {
     orientation ?: OrientationWithDirectionName
 }
 export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions) => ({
-    class: orientation ?? null,
+    class: createOrientationClass(orientation) ?? null,
     
     get orientation(): OrientationWithDirectionName {
         return(
