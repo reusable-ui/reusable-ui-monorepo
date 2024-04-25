@@ -266,6 +266,11 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         
         
         
+        // preserves the original `elmRef` from `props`:
+        props.elmRef,
+        
+        
+        
         listRefInternal,
     );
     
