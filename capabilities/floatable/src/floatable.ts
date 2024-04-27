@@ -44,6 +44,44 @@ import {
 
 
 
+// utilities:
+const findAncestors = (element: Element): Element[] => {
+    const ancestors : Element[] = [];
+    
+    
+    
+    for (let parent = element.parentElement; !!parent; parent = parent.parentElement) {
+        ancestors.push(parent); // collect the ancestor(s)
+    } // for
+    
+    
+    
+    return ancestors;
+};
+const findAncestorsUptoOffsetParent = (element: Element): Element[] => {
+    if (!(element instanceof HTMLElement)) return [];
+    
+    
+    
+    const offsetAncestors : Element[] = [];
+    
+    
+    
+    const offsetParent = element.offsetParent;
+    if (offsetParent) {
+        for (let parent = element.parentElement; !!parent; parent = parent.parentElement) {
+            offsetAncestors.push(parent); // collect the ancestor(s)
+            if (parent === offsetParent) break; // stop iterating on nearest offsetParent
+        } // for
+    } // if
+    
+    
+    
+    return offsetAncestors;
+};
+
+
+
 // hooks:
 
 // capabilities:
@@ -224,6 +262,8 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
     
     
     // dom effects:
+    
+    // updates the floating position if floating** props changes:
     useIsomorphicLayoutEffect(() => {
         // actions:
         updateFloatingPosition();
@@ -244,6 +284,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         floatingShift,     // update the position when the floating shift     change
     ]);
     
+    // updates the floating position if floatingOn props changes -or- the scrolling ancestors scrolls:
     useIsomorphicLayoutEffect(() => {
         // conditions:
         const floatingUi = outerRef.current;
@@ -256,7 +297,7 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         
         // handlers:
         let scrollHandled = false;
-        const handleOffsetAncestorsScroll = () => {
+        const updateFloatingPositionWithThrottle = () => {
             // conditions:
             if (scrollHandled) return; // already being handled => nothing to do
             
@@ -275,48 +316,40 @@ export const useFloatable = <TElement extends Element = HTMLElement>(props: Floa
         // setups:
         let cleanups : (() => void)|undefined = undefined;
         const cancelRequest = requestAnimationFrame(() => { // avoids *force-reflow* of calling `(target as HTMLElement).offsetParent` by delaying the execution
-            // watch scrolling of <target>'s <parent> up to <offsetParent>:
-            const offsetAncestors : Element[] = [];
-            if (typeof(window) !== 'undefined') { // client_side only
-                const offsetParent = (target as HTMLElement).offsetParent;
-                if (offsetParent) {
-                    for (let parent = floatingUi.parentElement; parent; parent = parent.parentElement) {
-                        offsetAncestors.push(parent); // collect the ancestor(s)
-                        if (parent === offsetParent) break; // stop iterating on nearest offsetParent
-                    } // for
-                } // if
-            } // if
-            for (const offsetAncestor of offsetAncestors) {
-                offsetAncestor.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
+            // watch scrolling of <target>'s <ancestor>s up to <document>:
+            const scrollableAncestors = [
+                ...findAncestors(target),
+                document,
+            ];
+            for (const scrollableAncestor of scrollableAncestors) {
+                scrollableAncestor.addEventListener('scroll', updateFloatingPositionWithThrottle, { passive: true });
             } // for
-            if (typeof(document) !== 'undefined') {
-                document.addEventListener('scroll', handleOffsetAncestorsScroll, { passive: true });
-            } // if
             
             
             
-            // watch size changes of the <target>, <ancestor>s, & <floatingUi>:
-            const elmResizeObserver = new ResizeObserver(updateFloatingPosition);
-            elmResizeObserver.observe(target, { box: 'border-box' });
+            // watch size changes of the <target>, <floatingUi>'s <ancestor>s, & <floatingUi>:
+            const elmResizeObserver = new ResizeObserver(updateFloatingPositionWithThrottle);
+            
+            elmResizeObserver.observe(target, { box: 'border-box' }); // the outer size of <target>
+            
+            const offsetAncestors = findAncestorsUptoOffsetParent(floatingUi as Element as HTMLElement);
             for (const offsetAncestor of offsetAncestors) {
-                elmResizeObserver.observe(offsetAncestor, { box: 'content-box' });
+                elmResizeObserver.observe(offsetAncestor, { box: 'content-box' }); // the content size of <floatingUi>'s <ancestor>s
             } // for
-            elmResizeObserver.observe(floatingUi, { box: 'border-box' });
+            
+            elmResizeObserver.observe(floatingUi, { box: 'border-box' }); // the outer size of <floatingUi>
             
             
             
             cleanups = () => {
-                // un-watch scrolling of <target>'s <parent> up to <offsetParent>:
-                for (const offsetAncestor of offsetAncestors) {
-                    offsetAncestor.removeEventListener('scroll', handleOffsetAncestorsScroll);
+                // un-watch scrolling of <target>'s <ancestor>s up to <document>:
+                for (const scrollableAncestor of scrollableAncestors) {
+                    scrollableAncestor.removeEventListener('scroll', updateFloatingPositionWithThrottle);
                 } // for
-                if (typeof(document) !== 'undefined') {
-                    document.removeEventListener('scroll', handleOffsetAncestorsScroll);
-                } // if
                 
                 
                 
-                // un-watch size changes of the <target>, <ancestor>s, & <floatingUi>:
+                // un-watch size changes of the <target>, <floatingUi>'s <ancestor>s, & <floatingUi>:
                 elmResizeObserver.disconnect();
             };
         });
