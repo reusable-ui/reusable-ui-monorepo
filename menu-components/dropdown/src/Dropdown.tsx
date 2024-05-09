@@ -128,6 +128,8 @@ export interface DropdownProps<TElement extends Element = HTMLElement, TDropdown
         // components:
         DropdownUiComponentProps<Element>
 {
+    // floatable:
+    floatingFriends ?: Set<React.RefObject<Element>|Element>|null // getter ref
 }
 const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>(props: DropdownProps<TElement, TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -155,6 +157,11 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
         // states:
         onExpandedChange,
         floatingMiddleware,
+        
+        
+        
+        // floatable:
+        floatingFriends,
         
         
         
@@ -417,15 +424,25 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             
             
             
-            // check if focusedTarget is inside the <Dropdown> or not:
-            const dropdownUi = dropdownUiRefInternal.current;
-            if ((focusedTarget instanceof Element) && dropdownUi?.contains(focusedTarget)) return; // focus is still inside <Dropdown> => nothing to do
-            
-            
-            
-            // <floatingOn> is <Dropdown>'s friend, so focus on <floatingOn> is considered not to lost focus on <Dropdown>:
-            const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
-            if ((focusedTarget instanceof Element) && target?.contains(focusedTarget)) return;
+            if (focusedTarget instanceof Element) {
+                // check if focusedTarget is inside the <Dropdown> or not:
+                const dropdownUi = dropdownUiRefInternal.current;
+                if (dropdownUi?.contains(focusedTarget)) return; // focus is still inside <Dropdown> => nothing to do
+                
+                
+                
+                // <floatingOn> is <Dropdown>'s friend, so focus on <floatingOn> is considered not to lost focus on <Dropdown>:
+                const target = (props.floatingOn instanceof Element) ? props.floatingOn : props.floatingOn?.current;
+                if (target?.contains(focusedTarget)) return;
+                
+                
+                
+                // `floatingFriends` is <Dropdown>'s friend, so focus on `floatingFriends` is considered not to lost focus on <Dropdown>:
+                if (!!floatingFriends && Array.from(floatingFriends.values()).some((floatingFriend): boolean => {
+                    const floatingFriendElm = (floatingFriend instanceof Element) ? floatingFriend : floatingFriend?.current;
+                    return !!floatingFriendElm?.contains(focusedTarget);
+                })) return;
+            } // if
             
             
             

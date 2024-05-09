@@ -189,6 +189,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
         floatingRef,
         
         floatingOn,
+        floatingFriends,
         floatingPlacement,
         floatingMiddleware,
         floatingStrategy,
@@ -562,6 +563,7 @@ const DropdownList = <TElement extends Element = HTMLElement, TDropdownListExpan
             floatingRef,
             
             floatingOn,
+            floatingFriends,
             floatingPlacement,
             floatingMiddleware,
             floatingStrategy,

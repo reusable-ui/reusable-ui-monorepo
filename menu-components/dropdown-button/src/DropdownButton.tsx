@@ -206,6 +206,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         floatingRef,
         
         floatingOn,
+        floatingFriends,
         floatingPlacement     = determineFloatingPlacement(),
         floatingMiddleware,
         floatingStrategy,
@@ -537,6 +538,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     floatingRef        : dropdownComponent.props.floatingRef        ?? floatingRef,
                     
                     floatingOn         : dropdownComponent.props.floatingOn         ?? floatingOn         ?? buttonRefInternal,
+                    floatingFriends    : dropdownComponent.props.floatingFriends    ?? floatingFriends,
                     floatingPlacement  : dropdownComponent.props.floatingPlacement  ?? floatingPlacement,
                     floatingMiddleware : dropdownComponent.props.floatingMiddleware ?? floatingMiddleware,
                     floatingStrategy   : dropdownComponent.props.floatingStrategy   ?? floatingStrategy,
