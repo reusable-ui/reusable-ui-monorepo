@@ -467,7 +467,7 @@ const Dropdown = <TElement extends Element = HTMLElement, TDropdownExpandedChang
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('focus'    , handleFocus    , { capture: true });
         };
-    }, [isExpanded, props.floatingOn, handleExpandedChange]);
+    }, [isExpanded, props.floatingOn, floatingFriends, handleExpandedChange]);
     
     
     
