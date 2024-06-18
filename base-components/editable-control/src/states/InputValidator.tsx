@@ -41,7 +41,7 @@ import {
 
 //#region InputValidator
 export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
-export type CustomValidatorHandler = (state: ValidityState, value: string) => ValResult
+export type CustomValidatorHandler = (validityState: ValidityState, value: string) => ValResult|Promise<ValResult>
 
 export const isEditableControlElement = (element: Element): element is EditableControlElement => {
     // a native html control should have .validity property, otherwise (like <div>, <span>, etc) is always undefined
@@ -75,10 +75,10 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
     }, []); // runs once on startup
     
     const validate = (element: TElement, immediately = false) => {
-        const performUpdate = () => {
+        const performUpdate = async (): Promise<void> => {
             // remember the validation result:
             const currentValidity = element.validity;
-            const newIsValid : ValResult = (customValidator ? customValidator(currentValidity, element.value) : currentValidity.valid);
+            const newIsValid : ValResult = (customValidator ? (await customValidator(currentValidity, element.value)) : currentValidity.valid);
             if (isValid.current !== newIsValid) {
                 isValid.current = newIsValid;
                 

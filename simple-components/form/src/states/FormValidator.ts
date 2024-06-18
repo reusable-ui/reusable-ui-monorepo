@@ -40,7 +40,7 @@ import {
 // states:
 
 //#region FormValidator
-export type CustomValidatorHandler = (isValid: ValResult) => ValResult
+export type CustomValidatorHandler = (isValid: ValResult) => ValResult|Promise<ValResult>
 
 const isFormValid = (element: HTMLFormElement): ValResult => {
     if (element.matches(':valid'  )) return true;  // valid
@@ -75,10 +75,10 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler):
     }, []); // runs once on startup
     
     const validate = (element: HTMLFormElement, immediately = false) => {
-        const performUpdate = () => {
+        const performUpdate = async (): Promise<void> => {
             // remember the validation result:
             const currentIsValid = isFormValid(element);
-            const newIsValid : ValResult = (customValidator ? customValidator(currentIsValid) : currentIsValid);
+            const newIsValid : ValResult = (customValidator ? (await customValidator(currentIsValid)) : currentIsValid);
             if (isValid.current !== newIsValid) {
                 isValid.current = newIsValid;
                 
