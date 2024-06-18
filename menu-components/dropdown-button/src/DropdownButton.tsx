@@ -71,6 +71,7 @@ import {
 }                           from '@reusable-ui/toggle-button'   // a button with toggleable active state
 import {
     // react components:
+    ButtonIconProps,
     ButtonIcon,
 }                           from '@reusable-ui/button-icon'     // a button component with a nice icon
 import {
@@ -127,11 +128,18 @@ export interface DropdownButtonProps<TDropdownExpandedChangeEvent extends Dropdo
         // components:
         Omit<ButtonComponentProps,
             |'buttonStyle' // the <DropdownButton> already have buttonStyle prop
+            
+            
+            
+            // components:
+            |'buttonComponent' // we use a more specific button: <ButtonIcon>
         >,
         ToggleButtonComponentProps,
         DropdownUiComponentProps<Element>,
         DropdownComponentProps<Element, TDropdownExpandedChangeEvent>
 {
+    // components:
+    buttonComponent ?: React.ReactComponentElement<any, ButtonProps|ButtonIconProps>
 }
 const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedChangeEvent<any> = DropdownExpandedChangeEvent<any>>(props: DropdownButtonProps<TDropdownExpandedChangeEvent>): JSX.Element|null => {
     // variants:
@@ -238,7 +246,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
         // components:
         buttonRef,
         buttonOrientation     = 'inline',
-        buttonComponent       = (<ButtonIcon iconPosition={determineDropdownIconPosition(buttonOrientation)} icon={determineDropdownIcon()} />   as React.ReactComponentElement<any, ButtonProps>),
+        buttonComponent       = (<ButtonIcon iconPosition={determineDropdownIconPosition(buttonOrientation)} icon={determineDropdownIcon()} />   as React.ReactComponentElement<any, ButtonIconProps>),
         buttonChildren,
         
         toggleButtonComponent = (<ToggleButton /> as React.ReactComponentElement<any, ToggleButtonProps>),
@@ -471,8 +479,8 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                     
                     
                     
-                    /* <Button> */
-                    buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps>(buttonComponent,
+                    /* <Button> | <ButtonIcon> */
+                    buttonComponent : toggleButtonComponent.props.buttonComponent ?? React.cloneElement<ButtonProps|ButtonIconProps>(buttonComponent,
                         // props:
                         {
                             // other props:
@@ -490,7 +498,7 @@ const DropdownButton = <TDropdownExpandedChangeEvent extends DropdownExpandedCha
                             // variants:
                             orientation : buttonComponent.props.orientation ?? buttonOrientation,
                         },
-                    ),
+                    ) as React.ReactComponentElement<any, ButtonProps>,
                 },
                 
                 
