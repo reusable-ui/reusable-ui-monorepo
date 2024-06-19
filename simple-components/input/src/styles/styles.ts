@@ -127,7 +127,8 @@ export const usesInputLayout = memoizeStyle(() => {
                         inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
                     }),
                     */
-                    inlineSize : `calc(100% + (${paddingVars.paddingInline} * 2))`,
+                    inlineSize     : `calc(100% + (${paddingVars.paddingInline} * 2))`,
+                    minBlockSize   : '1lh', // makes an empty box has height of a character plus its lineHeight
                     
                     flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
                     alignSelf      : 'stretch',        // follows parent's height
@@ -158,9 +159,14 @@ export const usesInputLayout = memoizeStyle(() => {
                     
                     
                     // children:
-                    ...children('::placeholder', {
+                    ...children(['::placeholder', '.placeholder'], { // .placeholder supports for custom placeholder
+                        // accessibilities:
+                        userSelect : 'none', // disable selecting placeholder's text
+                        
+                        
+                        
                         // foregrounds:
-                        foreg : 'currentColor',
+                        foreg      : 'currentColor',
                         
                         
                         
