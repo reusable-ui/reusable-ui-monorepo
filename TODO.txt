@@ -35,6 +35,8 @@
 [low prior ] onValidation & customValidator seem do the same thing, remove customValidator & upgrade ValidityChangeEvent to support preventDefault();
 [low prior ] create a polyfill <DateTime> editor
 [low prior ] rename Result to ValidationResult
+[breaking  ] update invalidable::onValidation() to follow React's livecycle (useIsomorphicLayoutEffect)
+onValidation remove customValidator() for InputValidator & FormValidator (overwrite invalidable::onValidation() with a more specific event arg)
 
 [low prior ] make a demo of showMessage() for replacing alert()
 
