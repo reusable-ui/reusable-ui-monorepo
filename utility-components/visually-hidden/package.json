@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/visually-hidden",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "A generic element that is visually invisible while still allowing it to be exposed to screen readers.",
   "keywords": [
     "hidden",

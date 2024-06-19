@@ -4,11 +4,10 @@ import {
     default as React,
 }                           from 'react'
 
-// cssfn:
+// styles:
 import {
-    // style sheets:
-    dynamicStyleSheet,
-}                           from '@cssfn/cssfn-react'           // writes css in react hook
+    useVisuallyHiddenStyleSheet,
+}                           from './styles/loader.js'
 
 // reusable-ui components:
 import {
@@ -16,13 +15,6 @@ import {
     GenericProps,
     Generic,
 }                           from '@reusable-ui/generic'         // a base component
-
-
-
-// styles:
-export const useVisuallyHiddenStyleSheet = dynamicStyleSheet(
-    () => import(/* webpackPrefetch: true */ './styles/styles.js')
-, { id: 'zxyty1yae5' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
 
 
