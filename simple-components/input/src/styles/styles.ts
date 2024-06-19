@@ -128,7 +128,7 @@ export const usesInputLayout = memoizeStyle(() => {
                     }),
                     */
                     inlineSize     : `calc(100% + (${paddingVars.paddingInline} * 2))`,
-                    minBlockSize   : '1lh', // makes an empty box has height of a character plus its lineHeight
+                    minBlockSize   : `calc(1lh  + (${paddingVars.paddingBlock } * 2))`, // makes an empty box has height of a character + its lineHeight + its paddingBlock
                     
                     flex           : [[1, 1, '100%']], // growable, shrinkable, initial 100% parent's width
                     alignSelf      : 'stretch',        // follows parent's height
