@@ -412,7 +412,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
                 
                 {...{
                     // autoFocus,    // still on <EditableControl> element
-                    tabIndex : -1,   // not focusable
+                    tabIndex : -2,   // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
                     // enterKeyHint, // not supported
                 }}
                 
