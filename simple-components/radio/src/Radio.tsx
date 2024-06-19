@@ -203,7 +203,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
                     
                     
                     // fire a custom `onClear` event to notify other <Radio>(s) to *uncheck*:
-                    radio.dispatchEvent(new CustomEvent('clear', { bubbles: false }));
+                    radio.dispatchEvent(new CustomEvent('clear', { bubbles: true })); // needs to bubble to support <EditableControl> => `inputValidator.handleChange()`
                 } // for
             });
         } // if

@@ -2,6 +2,12 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -132,7 +138,8 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     
     // refs:
-    const setInputRef = useEvent<React.RefCallback<TElement>>((element) => {
+    const inputRefInternal = useRef<TElement|null>(null);
+    const setInputRef      = useEvent<React.RefCallback<TElement>>((element) => {
         // conditions:
         if (!element) return;
         
@@ -146,12 +153,13 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
             if (firstInput) inputValidator.handleInit(firstInput);
         } // if
     });
-    const elmRef = useMergeRefs(
+    const elmRef           = useMergeRefs(
         // preserves the original `elmRef`:
         props.elmRef,
         
         
         
+        inputRefInternal,
         setInputRef,
     );
     
@@ -200,6 +208,29 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         // states:
         invalidableState.handleAnimationEnd,
     );
+    
+    
+    
+    // effects:
+    
+    // supports for <Radio> or <Radio>-like:
+    useEffect(() => {
+        // conditions:
+        const currentRadio = inputRefInternal.current;
+        if (!currentRadio) return; // radio was unmounted => nothing to do
+        
+        
+        
+        // setups:
+        currentRadio.addEventListener('clear', inputValidator.handleChange as unknown as EventListener);
+        
+        
+        
+        // cleanups:
+        return () => {
+            currentRadio.removeEventListener('clear', inputValidator.handleChange as unknown as EventListener);
+        };
+    }, []);
     
     
     

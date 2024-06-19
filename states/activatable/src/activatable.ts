@@ -426,6 +426,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
             // react *hack*: trigger `onChange` event:
             // side effect: toggles the [checked] prop:
             if (element && doTriggerOnChange) {
+                if ((element.tagName === 'INPUT') && (element.type === 'checkbox')) element.checked = !active; // react *hack* in order to Native *update* [checked] prop and update the [validity] prop (NOTE: 'checkbox' only, the 'radio' is not needed)
                 (element as any)._valueTracker?.setValue(`${!active}`); // react *hack* in order to React *see* the changes when `input` event fired
                 
                 // fire `click` native event to trigger `onChange` synthetic event:
