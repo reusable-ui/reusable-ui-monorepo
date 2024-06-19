@@ -281,31 +281,40 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     /*
      * state is always uncheck if not editable
-     * state is valid/invalid/uncheck based on [controllable isValid] (if set) and fallback to [uncontrollable onValidation]
+     * state is valid/invalid/uncheck based on [controllable isValid] (if set) and forwarded to [onValidation] callback (if specified)
      */
     const isValidFn : boolean|0|-0 = ((): boolean|null => {
-        // if control is not editable => no validation
-        if (!propEditable)             return null;
+        const isValidResult1 : boolean|null = ((): boolean|null => {
+            // if control is not editable => no validation
+            if (!propEditable)             return null;
+            
+            
+            
+            /*controllable*/
+            // if [isValid] was set => use [isValid] as the final result:
+            if (propIsValid !== undefined) return propIsValid;
+            
+            
+            
+            // use default value as fallback:
+            return defaultIsValid;
+        })();
         
         
         
-        /*controllable*/
-        // if [isValid] was set => use [isValid] as the final result:
-        if (propIsValid !== undefined) return propIsValid;
+        const isValidResult2 : boolean|null = (
+            (onValidation && validatorLoaded)
+            ? ((): boolean|null => {
+                const event : ValidityChangeEvent = { isValid: isValidResult1 };
+                onValidation(event as TValidityChangeEvent);
+                return event.isValid;
+            })()
+            : isValidResult1
+        );
         
         
         
-        /*uncontrollable*/
-        if (onValidation && validatorLoaded) {
-            const event : ValidityChangeEvent = { isValid: null };
-            onValidation(event as TValidityChangeEvent);
-            return event.isValid;
-        } // if
-        
-        
-        
-        // use default value as fallback:
-        return defaultIsValid;
+        return isValidResult2;
     })() ?? (wasValid.current ? +0 : -0);
     
     
