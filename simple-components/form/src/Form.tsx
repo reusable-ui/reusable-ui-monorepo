@@ -69,6 +69,9 @@ export interface FormProps
         InvalidableProps
 {
     // validations:
+    /**
+     * @deprecated use `onValidation` for watching and/or modifying the validation.
+     */
     customValidator ?: CustomValidatorHandler
     
     
@@ -95,13 +98,17 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     // states:
     const formValidator    = useFormValidator(props.customValidator);
     const handleValidation = useMergeEvents(
-        // preserves the original `onValidation`:
-        props.onValidation,
+        /* sequentially runs validators from `formValidator.handleValidation()` then followed by `props.onValidation()` */
         
         
         
         // states:
         formValidator.handleValidation,
+        
+        
+        
+        // preserves the original `onValidation`:
+        props.onValidation,
     );
     const invalidableState = useInvalidable<HTMLFormElement>({
      // enabled           : props.enabled,         // the <Form> can't be disabled

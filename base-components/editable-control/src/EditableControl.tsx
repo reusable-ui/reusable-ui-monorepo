@@ -78,6 +78,9 @@ export interface EditableControlProps<TElement extends Element = HTMLElement>
     
     
     // validations:
+    /**
+     * @deprecated use `onValidation` for watching and/or modifying the validation.
+     */
     customValidator ?: CustomValidatorHandler
     required        ?: boolean
     
@@ -103,13 +106,17 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     // states:
     const inputValidator   = useInputValidator<EditableControlElement>(props.customValidator);
     const handleValidation = useMergeEvents(
-        // preserves the original `onValidation`:
-        props.onValidation,
+        /* sequentially runs validators from `inputValidator.handleValidation()` then followed by `props.onValidation()` */
         
         
         
         // states:
         inputValidator.handleValidation,
+        
+        
+        
+        // preserves the original `onValidation`:
+        props.onValidation,
     );
     const invalidableState = useInvalidable<TElement>({
         enabled           : props.enabled,

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "6.9.4",
+  "version": "6.10.0",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -47,7 +47,7 @@
     "@reusable-ui/focuses": "^6.5.0",
     "@reusable-ui/global-stackable": "^6.6.0",
     "@reusable-ui/hooks": "^6.5.0",
-    "@reusable-ui/invalidable": "^6.5.0",
+    "@reusable-ui/invalidable": "^6.6.0",
     "@reusable-ui/layouts": "^6.5.0",
     "@reusable-ui/navigations": "^6.5.0",
     "@reusable-ui/nodes": "^6.5.0",
@@ -86,7 +86,7 @@
     "@reusable-ui/spacers": "^6.5.0",
     "@reusable-ui/themeable": "^6.5.0",
     "@reusable-ui/typos": "^6.5.1",
-    "@reusable-ui/validation-icon": "^6.5.0",
+    "@reusable-ui/validation-icon": "^6.6.0",
     "@reusable-ui/validations": "^6.5.0"
   }
 }

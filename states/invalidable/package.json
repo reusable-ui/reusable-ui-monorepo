@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/invalidable",
-  "version": "6.5.1",
+  "version": "6.6.0",
   "description": "A possibility of UI having an invalid state.",
   "keywords": [
     "invalidable",

@@ -41,6 +41,9 @@ import {
 
 //#region InputValidator
 export type EditableControlElement = HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement
+/**
+ * @deprecated use `onValidation` for watching and/or modifying the validation.
+ */
 export type CustomValidatorHandler = (validityState: ValidityState, value: string) => ValResult|Promise<ValResult>
 
 export const isEditableControlElement = (element: Element): element is EditableControlElement => {
@@ -122,7 +125,13 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
      * `false` = invalid.
      */
     const handleValidation = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
-        if (event.isValid !== undefined) event.isValid = isValid.current;
+        // conditions:
+        if (event.isValid !== true) return; // ignore if was *invalid*|*uncheck* (only perform a further_validation if was *valid*)
+        
+        
+        
+        // further validations:
+        event.isValid = isValid.current;
     });
     
     const handleInit       = useEvent<EventHandler<TElement>>((element) => {

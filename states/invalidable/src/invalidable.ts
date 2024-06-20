@@ -42,6 +42,7 @@ import {
     // hooks:
     useIsomorphicLayoutEffect,
     EventHandler,
+    useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -270,52 +271,65 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
-    // defaults:
-    const defaultIsValid : ValResult = null; // if [isValid] was not specified => the default value is unchecked (neither valid nor invalid)
-    
-    
-    
     // fn states:
-    const wasValid = useRef<boolean>(true);
-    const [validatorLoaded, setValidatorLoaded] = useState<boolean>(false);
     
     /*
      * state is always uncheck if not editable
      * state is valid/invalid/uncheck based on [controllable isValid] (if set) and forwarded to [onValidation] callback (if specified)
      */
-    const isValidFn : boolean|0|-0 = ((): boolean|null => {
-        const isValidResult1 : boolean|null = ((): boolean|null => {
-            // if control is not editable => no validation
-            if (!propEditable)             return null;
-            
-            
-            
-            /*controllable*/
-            // if [isValid] was set => use [isValid] as the final result:
-            if (propIsValid !== undefined) return propIsValid;
-            
-            
-            
-            // use default value as fallback:
-            return defaultIsValid;
-        })();
+    const isValidPhase1Fn : ValResult|undefined = ((): ValResult|undefined => {
+        // if control is not editable => no validation
+        if (!propEditable)             return null; // defined as *uncheck*
         
         
         
-        const isValidResult2 : boolean|null = (
-            (onValidation && validatorLoaded)
-            ? ((): boolean|null => {
-                const event : ValidityChangeEvent = { isValid: isValidResult1 };
-                onValidation(event as TValidityChangeEvent);
-                return event.isValid;
-            })()
-            : isValidResult1
-        );
+        /*controllable*/
+        // if [isValid] was set => use [isValid] as the final result:
+        if (propIsValid !== undefined) return propIsValid; // defined as *uncheck*|*valid*|*invalid*
         
         
         
-        return isValidResult2;
-    })() ?? (wasValid.current ? +0 : -0);
+        // the result is NOT_YET_defined:
+        return undefined;
+    })();
+    
+    const [isValidPhase2Fn, setIsValidPhase2Fn] = useState<ValResult|undefined>(isValidPhase1Fn);
+    const isMounted = useMountedFlag();
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (!onValidation) return; // onValidation() is not specified => ignore
+        
+        
+        
+        // actions:
+        const isValidPhase1 : ValResult = (isValidPhase1Fn !== undefined) ? isValidPhase1Fn : true; // if was NOT_YET_defined => assumes as *valid*
+        
+        
+        
+        const event : ValidityChangeEvent = { isValid: isValidPhase1 };
+        onValidation(event as TValidityChangeEvent); // waiting for mutation
+        if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+        const newIsValidPhase2Fn = event.isValid;
+        
+        
+        
+        if (isValidPhase2Fn === newIsValidPhase2Fn) return; // already in sync => ignore
+        setIsValidPhase2Fn(newIsValidPhase2Fn); // sync and then re-render
+    }); // runs on every re-render
+    
+    const wasValid = useRef<boolean>(true); // assumes initially was *valid*
+    const isValidFn : boolean|0|-0 = (
+        (
+            !onValidation // onValidation() is not specified => setIsValidPhase2Fn() is never called => isValidPhase2Fn is never mutated => use isValidPhase1Fn
+            ? isValidPhase1Fn
+            : isValidPhase2Fn
+        )
+        ??
+        // if above is null|undefined => use 0 (positive 0 -or- negative 0) in which indicating as *uncheck*
+        // positive 0: now is *uncheck* and was *valid*
+        // negative 0: now is *uncheck* and was *invalid*
+        (wasValid.current ? +0 : -0)
+    );
     
     
     
@@ -342,21 +356,6 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     } // if
     
     wasValid.current = (typeof(isValid) === 'boolean') ? isValid : Object.is(isValid, +0);
-    
-    
-    
-    // dom effects:
-    // marks the validator as loaded (ready to use) at startup:
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (!onValidation)   return; // the validator callback is not specified   => ignore
-        if (validatorLoaded) return; // the validator is already marked as loaded => ignore
-        
-        
-        
-        // setups:
-        setValidatorLoaded(true);
-    }, [onValidation, validatorLoaded]);
     
     
     
