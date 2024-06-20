@@ -3,7 +3,6 @@ import {
     // hooks:
     useEffect,
     useLayoutEffect,
-    useInsertionEffect,
     useReducer,
     useCallback,
     useRef,
@@ -53,18 +52,22 @@ export const useTriggerRender = () => {
 
 
 
-const useClientOnlyInsertionEffect : typeof useInsertionEffect = isClientSide ? useInsertionEffect : () => { /* noop */ }
-export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TCallback) => {
+// const useClientOnlyInsertionEffect : typeof useInsertionEffect = isClientSide ? useInsertionEffect : () => { /* noop */ }
+export const useEvent = <TCallback extends ((...args: any[]) => unknown)>(callback: TCallback) => {
     // refs:
     const callbackRef = useRef<TCallback>(callback);
     
     
     
-    // dom effects:
-    useClientOnlyInsertionEffect(() => {
-        // keep track of the latest `callback`:
-        callbackRef.current = callback;
-    }); // runs on every render
+    // too overkill:
+    // // dom effects:
+    // useClientOnlyInsertionEffect(() => {
+    //     // keep track of the latest `callback`:
+    //     callbackRef.current = callback;
+    // }); // runs on every render
+    
+    // update the callback reference on each re-render is enough:
+    callbackRef.current = callback;
     
     
     
@@ -73,11 +76,11 @@ export const useEvent = <TCallback extends ((...args: any) => any)>(callback: TC
     }) as TCallback, emptyDependency); // runs once on startup (and never re-created)
 };
 
-export type EventHandler<in TEvent> = (event: TEvent) => void;
-export const useMergeEvents = <TEvent>(...eventHandlers: Optional<EventHandler<TEvent>>[]): EventHandler<TEvent>|undefined => {
-    return useMemo<EventHandler<TEvent>|undefined>(() => {
+export type EventHandler<in TEvent, in TExtra extends unknown[] = []> = (event: TEvent, ...extra: TExtra) => void;
+export const useMergeEvents = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra>>[]): EventHandler<TEvent, TExtra>|undefined => {
+    return useMemo<EventHandler<TEvent, TExtra>|undefined>(() => {
         // check if singular eventHandler:
-        let firstEventHandler : EventHandler<TEvent>|undefined = undefined;
+        let firstEventHandler : EventHandler<TEvent, TExtra>|undefined = undefined;
         let multiEventHandlers = false;
         for (const eventHandler of eventHandlers) {
             if (!eventHandler) continue; // ignores empty eventHandler
@@ -97,9 +100,9 @@ export const useMergeEvents = <TEvent>(...eventHandlers: Optional<EventHandler<T
         
         
         // merge eventHandlers:
-        return (event) => {
+        return (event, ...extra) => {
             for (const eventHandler of eventHandlers) {
-                eventHandler?.(event);
+                eventHandler?.(event, ...extra);
             } // for
         };
     }, eventHandlers);
