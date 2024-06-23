@@ -36,6 +36,8 @@
 [low prior ] create a polyfill <DateTime> editor
 [low prior ] rename Result to ValidationResult
 onValidation remove customValidator() for InputValidator & FormValidator (overwrite invalidable::onValidation() with a more specific event arg)
+[low prior ] add useOnFocusOutside(excludesRef: Array) to reusable-ui/focusable
+[low prior ] add useOnClickOutside(excludesRef: Array) to reusable-ui/clickable
 
 [low prior ] make a demo of showMessage() for replacing alert()
 
