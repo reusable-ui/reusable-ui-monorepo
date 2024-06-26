@@ -508,10 +508,10 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
                     // values:
                     defaultValue      : nativeInputDefaultValue,
                     value             : nativeInputValue,
+                    onChange          : handleChange,
                     
                     // defaultChecked : nativeInputDefaultChecked,
                     checked           : nativeInputChecked,
-                    onChange          : handleChange,
                     
                     
                     
