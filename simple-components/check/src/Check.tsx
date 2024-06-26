@@ -113,6 +113,9 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
             |'enterKeyHint'          // no special [enter] keyboard
             |'disabled'              // we use [enabled] instead of [disabled]
             
+            // values:
+            |'defaultValue'|'value'  // supports numeric and string value
+            
             // validations:
             |'minLength'|'maxLength' // text length constraint is not supported
             |'min'|'max'|'step'      // range & step are not supported
@@ -121,9 +124,6 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
             // formats:
             |'type'                              // always [type="checkbox"] or [type="radio"]
             |'placeholder'|'autoComplete'|'list' // text hints are not supported
-            
-            // values:
-            |'defaultValue'|'value'  // supports numeric and string value
         >,
         
         // variants:
@@ -138,14 +138,14 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
     
     
     
-    // formats:
-    type                 ?: 'checkbox' | 'radio'
-    
-    
-    
     // values:
     defaultChecked       ?: boolean
     checked              ?: boolean
+    
+    
+    
+    // formats:
+    type                 ?: 'checkbox' | 'radio'
     
     
     
@@ -190,22 +190,11 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         // accessibilities:
         
-        // still on <EditableActionControl> element
-        // autoFocus,
-        // tabIndex,
-        // enterKeyHint,
+        // autoFocus,    // still on <EditableActionControl> element
+        // tabIndex,     // still on <EditableActionControl> element
+        // enterKeyHint, // still on <EditableActionControl> element
         
         label,
-        
-        
-        
-        // validations:
-        required,
-        
-        
-        
-        // formats:
-        type = 'checkbox',
         
         
         
@@ -225,6 +214,16 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         
         
+        // validations:
+        required,
+        
+        
+        
+        // formats:
+        type = 'checkbox',
+        
+        
+        
         // components:
         nativeInputComponent = (<input /> as React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>),
         
@@ -239,7 +238,12 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     // refs:
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
     const mergedInputRef   = useMergeRefs(
-        // preserves the original `elmRef`:
+        // preserves the original `elmRef` from `nativeInputComponent`:
+        nativeInputComponent.props.ref,
+        
+        
+        
+        // preserves the original `elmRef` from `props`:
         elmRef,
         
         
@@ -284,7 +288,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     
     
     // handlers:
-    const handleClickInternal   = useEvent<React.MouseEventHandler<TElement>>((event) => {
+    const handleClickInternal    = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -294,7 +298,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         toggleActive();         // handle click as toggle [active]
         event.preventDefault(); // handled
     });
-    const handleClick           = useMergeEvents(
+    const handleClick            = useMergeEvents(
         // preserves the original `onClick`:
         props.onClick,
         
@@ -304,7 +308,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         handleClickInternal,
     );
     
-    const handleKeyDownInternal = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleKeyDownInternal  = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -315,7 +319,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             event.preventDefault(); // prevents pressing space for scrolling page
         } // if
     });
-    const handleKeyDown         = useMergeEvents(
+    const handleKeyDown          = useMergeEvents(
         // preserves the original `onKeyDown`:
         props.onKeyDown,
         
@@ -325,7 +329,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         handleKeyDownInternal,
     );
     
-    const handleKeyUpInternal   = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
+    const handleKeyUpInternal    = useEvent<React.KeyboardEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
@@ -337,7 +341,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             event.preventDefault(); // handled
         } // if
     });
-    const handleKeyUp           = useMergeEvents(
+    const handleKeyUp            = useMergeEvents(
         // preserves the original `onKeyUp`:
         props.onKeyUp,
         
@@ -347,8 +351,13 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         handleKeyUpInternal,
     );
     
-    const handleChange          = useMergeEvents(
-        // preserves the original `onChange`:
+    const handleChange           = useMergeEvents(
+        // preserves the original `onChange` from `nativeInputComponent`:
+        nativeInputComponent.props.onChange,
+        
+        
+        
+        // preserves the original `onChange` from `props`:
         onChange,
         
         
@@ -356,6 +365,59 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         // dummy:
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
+    
+    const nativeInputHandleClick = useMergeEvents(
+        // preserves the original `onClick` from `nativeInputComponent`:
+        nativeInputComponent.props.onClick,
+        
+        
+        
+        // hacks:
+        handleInputClickTriggersChange, // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
+    );
+    
+    
+    
+    // default props:
+    const {
+        // accessibilities:
+        // autoFocus      : nativeInputAutoFocus    = autoFocus,    // still on <EditableActionControl> element
+        tabIndex          : nativeInputTabIndex     = -2,           // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
+        // enterKeyHint   : nativeInputEnterKeyHint = enterKeyHint, // not supported
+        
+        disabled          : nativeInputDisabled     = !propEnabled, // do not submit the value if disabled
+        readOnly          : nativeInputReadOnly     = propReadOnly, // locks the value & no validation if readOnly
+        
+        
+        
+        // forms:
+        name              : nativeInputName         = name,
+        form              : nativeInputForm         = form,
+        
+        
+        
+        // values:
+        defaultValue      : nativeInputDefaultValue = defaultValue,
+        value             : nativeInputValue        = value,
+        
+        // defaultChecked : nativeInputDefaultChecked,          // fully controllable, no defaultChecked
+        checked           : nativeInputChecked      = isActive, // fully controllable
+        
+        
+        
+        // validations:
+        required          : nativeInputRequired     = required,
+        
+        
+        
+        // formats:
+        type              : nativeInputType         = type,
+        
+        
+        
+        // other props:
+        ...restNativeInputComponentProps
+    } = nativeInputComponent.props;
     
     
     
@@ -412,55 +474,64 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
                 // type,
             }}
         >
+            {/* <input> */}
             {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
                 // props:
                 {
+                    // other props:
+                    ...restNativeInputComponentProps,
+                    
+                    
+                    
                     // refs:
-                    ref      : mergedInputRef,
+                    ref               : mergedInputRef,
                     
                     
                     
                     // accessibilities:
+                    // autoFocus      : nativeInputAutoFocus,
+                    tabIndex          : nativeInputTabIndex,
+                    // enterKeyHint   : nativeInputEnterKeyHint,
                     
-                    // autoFocus,    // still on <EditableControl> element
-                    tabIndex : -2,   // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
-                    // enterKeyHint, // not supported
-                    
-                    disabled : !propEnabled, // do not submit the value if disabled
-                    readOnly : propReadOnly, // locks the value & no validation if readOnly
+                    disabled          : nativeInputDisabled,
+                    readOnly          : nativeInputReadOnly,
                     
                     
                     
                     // forms:
-                    name,
-                    form,
+                    name              : nativeInputName,
+                    form              : nativeInputForm,
                     
                     
                     
                     // values:
-                    defaultValue,
-                    value,
+                    defaultValue      : nativeInputDefaultValue,
+                    value             : nativeInputValue,
                     
-                    // defaultChecked,       // fully controllable, no defaultChecked
-                    checked  : isActive,     // fully controllable
-                    onChange : handleChange,
+                    // defaultChecked : nativeInputDefaultChecked,
+                    checked           : nativeInputChecked,
+                    onChange          : handleChange,
                     
                     
                     
                     // validations:
-                    required,
+                    required          : nativeInputRequired,
                     
                     
                     
                     // formats:
-                    type,
+                    type              : nativeInputType,
                     
                     
                     
                     // handlers:
-                    onClick  : handleInputClickTriggersChange, // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
+                    onClick           : nativeInputHandleClick,
                 },
             )}
+            
+            
+            
+            {/* <label> */}
             { !!children && <span>
                 { children }
             </span> }
