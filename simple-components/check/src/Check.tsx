@@ -261,8 +261,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         readOnly        : props.readOnly,
         inheritReadOnly : props.inheritReadOnly,
         
-        defaultActive   : defaultActive,
-        active          : active,
+        defaultActive,
+        active,
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
