@@ -382,37 +382,37 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     // default props:
     const {
         // accessibilities:
-        // autoFocus      : nativeInputAutoFocus    = autoFocus,    // still on <EditableActionControl> element
-        tabIndex          : nativeInputTabIndex     = -2,           // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
-        // enterKeyHint   : nativeInputEnterKeyHint = enterKeyHint, // not supported
+        // autoFocus      : nativeInputAutoFocus      = autoFocus,    // still on <EditableActionControl> element
+        tabIndex          : nativeInputTabIndex       = -2,           // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
+        // enterKeyHint   : nativeInputEnterKeyHint   = enterKeyHint, // not supported
         
-        disabled          : nativeInputDisabled     = !propEnabled, // do not submit the value if disabled
-        readOnly          : nativeInputReadOnly     = propReadOnly, // locks the value & no validation if readOnly
+        disabled          : nativeInputDisabled       = !propEnabled, // do not submit the value if disabled
+        readOnly          : nativeInputReadOnly       = propReadOnly, // locks the value & no validation if readOnly
         
         
         
         // forms:
-        name              : nativeInputName         = name,
-        form              : nativeInputForm         = form,
+        name              : nativeInputName           = name,
+        form              : nativeInputForm           = form,
         
         
         
         // values:
-        defaultValue      : nativeInputDefaultValue = defaultValue,
-        value             : nativeInputValue        = value,
+        defaultValue      : nativeInputDefaultValue   = defaultValue,
+        value             : nativeInputValue          = value,
         
         // defaultChecked : nativeInputDefaultChecked,          // fully controllable, no defaultChecked
-        checked           : nativeInputChecked      = isActive, // fully controllable
+        checked           : nativeInputChecked        = isActive, // fully controllable
         
         
         
         // validations:
-        required          : nativeInputRequired     = required,
+        required          : nativeInputRequired       = required,
         
         
         
         // formats:
-        type              : nativeInputType         = type,
+        type              : nativeInputType           = type,
         
         
         
