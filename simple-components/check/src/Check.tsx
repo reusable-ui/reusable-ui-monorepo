@@ -181,7 +181,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         
         // accessibilities:
-        
         // autoFocus,    // still on <EditableActionControl> element
         // tabIndex,     // still on <EditableActionControl> element
         // enterKeyHint, // still on <EditableActionControl> element
