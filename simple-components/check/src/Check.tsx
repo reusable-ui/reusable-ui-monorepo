@@ -466,14 +466,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             onClick   = {handleClick}
             onKeyDown = {handleKeyDown}
             onKeyUp   = {handleKeyUp}
-            
-            
-            
-            // Check props:
-            {...{
-                // actions:
-                // type,
-            }}
         >
             {/* <input> */}
             {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
