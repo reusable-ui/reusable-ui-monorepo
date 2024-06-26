@@ -180,14 +180,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         
         
-        // states:
-        defaultActive,  // take, to be handled by `useUncontrollableActivatable`
-        active,         // take, to be handled by `useUncontrollableActivatable`
-        inheritActive,  // take, to be handled by `useUncontrollableActivatable`
-        onActiveChange, // take, to be handled by `useUncontrollableActivatable`
-        
-        
-        
         // accessibilities:
         
         // autoFocus,    // still on <EditableActionControl> element
@@ -221,6 +213,16 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         // formats:
         type = 'checkbox',
+        
+        
+        
+        // states:
+        // aliased `defaultChecked` to `defaultActive`:
+        defaultActive = defaultChecked,   // take, to be handled by `useUncontrollableActivatable`
+        // aliased `checked` to `active`:
+        active        = checked,          // take, to be handled by `useUncontrollableActivatable`
+        inheritActive,                    // take, to be handled by `useUncontrollableActivatable`
+        onActiveChange,                   // take, to be handled by `useUncontrollableActivatable`
         
         
         
@@ -260,8 +262,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         readOnly        : props.readOnly,
         inheritReadOnly : props.inheritReadOnly,
         
-        defaultActive   : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
-        active          : active        ?? checked,        // aliased `checked`        to `active`
+        defaultActive   : defaultActive,
+        active          : active,
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
