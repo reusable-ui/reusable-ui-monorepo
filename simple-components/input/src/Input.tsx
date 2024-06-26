@@ -13,6 +13,7 @@ import {
 import {
     // react helper hooks:
     useMergeEvents,
+    useMergeRefs,
     
     
     
@@ -91,21 +92,26 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
         Pick<React.HTMLAttributes<TElement>, 'inputMode'>
 {
     // validations:
-    min            ?: number|string
-    max            ?: number|string
-    step           ?: number|string
-    pattern        ?: string
+    min                  ?: number|string
+    max                  ?: number|string
+    step                 ?: number|string
+    pattern              ?: string
     
     
     
     // formats:
-    type           ?: InputType
-    placeholder    ?: string
-    autoComplete   ?: string
-    autoCapitalize ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {})
-    list           ?: string
+    type                 ?: InputType
+    placeholder          ?: string
+    autoComplete         ?: string
+    autoCapitalize       ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {})
+    list                 ?: string
+    
+    
+    
+    // components:
+    nativeInputComponent ?: React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>
 }
-const Input = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
+const Input         = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
     // jsx:
     const inputInternal = <InputInternal<TElement> {...props} />;
     if (
@@ -202,7 +208,25 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         autoCapitalize,
         list,
         inputMode,
+        
+        
+        
+        // components:
+        nativeInputComponent = (<input /> as React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>),
     ...restEditableTextControlProps}  = props;
+    
+    
+    
+    // refs:
+    const mergedInputRef   = useMergeRefs(
+        // preserves the original `elmRef` from `nativeInputComponent`:
+        nativeInputComponent.props.ref,
+        
+        
+        
+        // preserves the original `elmRef` from `props`:
+        elmRef,
+    );
     
     
     
@@ -214,7 +238,12 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     
     // handlers:
     const handleChange = useMergeEvents(
-        // preserves the original `onChange`:
+        // preserves the original `onChange` from `nativeInputComponent`:
+        nativeInputComponent.props.onChange,
+        
+        
+        
+        // preserves the original `onChange` from `props`:
         onChange,
         
         
@@ -222,6 +251,59 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         // dummy:
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
+    
+    
+    
+    // default props:
+    const {
+        // accessibilities:
+        autoFocus         : nativeInputAutoFocus      = autoFocus,
+        tabIndex          : nativeInputTabIndex       = tabIndex,
+        enterKeyHint      : nativeInputEnterKeyHint   = enterKeyHint,
+        
+        disabled          : nativeInputDisabled       = !propEnabled, // do not submit the value if disabled
+        readOnly          : nativeInputReadOnly       = propReadOnly, // locks the value & no validation if readOnly
+        
+        
+        
+        // forms:
+        name              : nativeInputName           = name,
+        form              : nativeInputForm           = form,
+        
+        
+        
+        // values:
+        defaultValue      : nativeInputDefaultValue   = defaultValue,
+        value             : nativeInputValue          = value,
+        
+        
+        
+        // validations:
+        required          : nativeInputRequired       = required,
+        
+        minLength         : nativeInputMinLength      = minLength,
+        maxLength         : nativeInputMaxLength      = maxLength,
+        
+        min               : nativeInputMin            = min,
+        max               : nativeInputMax            = max,
+        step              : nativeInputStep           = step,
+        pattern           : nativeInputPattern        = pattern,
+        
+        
+        
+        // formats:
+        type              : nativeInputType           = type,
+        placeholder       : nativeInputPlaceholder    = placeholder,
+        autoComplete      : nativeInputAutoComplete   = autoComplete,
+        autoCapitalize    : nativeInputAutoCapitalize = autoCapitalize,
+        list              : nativeInputList           = list,
+        inputMode         : nativeInputInputMode      = inputMode,
+        
+        
+        
+        // other props:
+        ...restNativeInputComponentProps
+    } = nativeInputComponent.props;
     
     
     
@@ -246,66 +328,65 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-visible-within` (pseudo) => the wrapper is also `.focus` (synthetic)
         >
-            <input
-                // refs:
-                ref={elmRef}
-                
-                
-                
-                // accessibilities:
-                {...{
-                    autoFocus,
-                    tabIndex,
-                    enterKeyHint,
-                }}
-                
-                disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value & no validation if readOnly
-                
-                
-                
-                // forms:
-                {...{
-                    name,
-                    form,
-                }}
-                
-                
-                
-                // values:
-                {...{
-                    defaultValue,
-                    value,
-                    onChange : handleChange,
-                }}
-                
-                
-                
-                // validations:
-                {...{
-                    required,
+            {/* <input> */}
+            {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
+                // props:
+                {
+                    // other props:
+                    ...restNativeInputComponentProps,
                     
-                    minLength,
-                    maxLength,
                     
-                    min,
-                    max,
-                    step,
-                    pattern,
-                }}
-                
-                
-                
-                // formats:
-                {...{
-                    type,
-                    placeholder,
-                    autoComplete,
-                    autoCapitalize,
-                    list,
-                    inputMode,
-                }}
-            />
+                    
+                    // refs:
+                    ref               : mergedInputRef,
+                    
+                    
+                    
+                    // accessibilities:
+                    autoFocus         : nativeInputAutoFocus,
+                    tabIndex          : nativeInputTabIndex,
+                    enterKeyHint      : nativeInputEnterKeyHint,
+                    
+                    disabled          : nativeInputDisabled,
+                    readOnly          : nativeInputReadOnly,
+                    
+                    
+                    
+                    // forms:
+                    name              : nativeInputName,
+                    form              : nativeInputForm,
+                    
+                    
+                    
+                    // values:
+                    defaultValue      : nativeInputDefaultValue,
+                    value             : nativeInputValue,
+                    onChange          : handleChange,
+                    
+                    
+                    
+                    // validations:
+                    required          : nativeInputRequired,
+                    
+                    minLength         : nativeInputMinLength,
+                    maxLength         : nativeInputMaxLength,
+                    
+                    min               : nativeInputMin,
+                    max               : nativeInputMax,
+                    step              : nativeInputStep,
+                    pattern           : nativeInputPattern,
+                    
+                    
+                    
+                    // formats:
+                    type              : nativeInputType,
+                    placeholder       : nativeInputPlaceholder,
+                    autoComplete      : nativeInputAutoComplete,
+                    autoCapitalize    : nativeInputAutoCapitalize,
+                    list              : nativeInputList,
+                    inputMode         : nativeInputInputMode,
+                },
+            )}
         </EditableTextControl>
     );
 };
